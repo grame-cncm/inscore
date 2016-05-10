@@ -15,4 +15,10 @@ gray = 100;
 /ITL/scene/curve set txt hello world;
 /ITL/scene/curve get;
 /ITL/scene get color;
+/ITL/log get width height;
+
+/ITL/scene/img set img toto.png;
+/ITL/scene/img get;
+
+
 #/ITL save;
