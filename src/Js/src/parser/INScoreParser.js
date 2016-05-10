@@ -93,7 +93,7 @@ case 6:
  debugyacc("expr ENDSCRIPT "); return true; 
 break;
 case 7:
- if ($$[$0].length) debugyacc("expr script: " + $$[$0]);
+ if ($$[$0].length) rparse (array2string(context_eval($$[$0]) )); 
 break;
 case 8:
  this.$ = new Message($$[$0], new Array()); 
@@ -313,6 +313,33 @@ parse: function parse(input) {
 	function debugyacc(str){
 //		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
+	function array2string(a){
+		if (typeof a == "string") return a;
+		if (typeof a == "object") {
+			let out = "";
+			for (let i=0; i<a.length; i++) {
+				out += array2string(a[i]) + "\n";
+			}
+			return out;
+		}
+		return "";
+	}
+	function rparse(str){
+		if (!str.length) return;
+		INScoreParser.parse (str);
+	}
+	function context_vars(){
+		let vars = parser.vars;
+		let out  = "";
+		for (let key in vars)
+			out += "var " + key + "=" + vars[key][0].toString() + ";\n";
+		return out;
+	}
+	function context_eval(str){
+		var gInscoreParserContext = this;
+		this['print'] = function (s) { console.log(s); }
+		return gInscoreParserContext.eval( context_vars() + str);
+	}
 
 parser.msgs = new Array;
 parser.vars = new Array;
@@ -333,6 +360,7 @@ function Message (addr, params) {
 parser.get = (function () {
 	var msgs = parser.msgs;
 	parser.msgs = [];
+	parser.vars = [];
 	return msgs;
 })
 

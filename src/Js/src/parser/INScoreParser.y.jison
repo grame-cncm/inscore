@@ -5,6 +5,33 @@
 	function debugyacc(str){
 //		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
+	function array2string(a){
+		if (typeof a == "string") return a;
+		if (typeof a == "object") {
+			let out = "";
+			for (let i=0; i<a.length; i++) {
+				out += array2string(a[i]) + "\n";
+			}
+			return out;
+		}
+		return "";
+	}
+	function rparse(str){
+		if (!str.length) return;
+		INScoreParser.parse (str);
+	}
+	function context_vars(){
+		let vars = parser.vars;
+		let out  = "";
+		for (let key in vars)
+			out += "var " + key + "=" + vars[key][0].toString() + ";\n";
+		return out;
+	}
+	function context_eval(str){
+		var gInscoreParserContext = this;
+		this['print'] = function (s) { console.log(s); }
+		return gInscoreParserContext.eval( context_vars() + str);
+	}
 %}
 
 
@@ -30,7 +57,7 @@ expr		: message  ENDEXPR		{ parser.msgs.push($1); }
 //_______________________________________________
 // javascript support
 //_______________________________________________
-script		: JSCRIPT			{ if ($1.length) debugyacc("expr script: " + $1);}
+script		: JSCRIPT			{ if ($1.length) rparse (array2string(context_eval($1) )); }
 			;
 
 //_______________________________________________
@@ -127,6 +154,7 @@ function Message (addr, params) {
 parser.get = (function () {
 	var msgs = parser.msgs;
 	parser.msgs = [];
+	parser.vars = [];
 	return msgs;
 })
 
