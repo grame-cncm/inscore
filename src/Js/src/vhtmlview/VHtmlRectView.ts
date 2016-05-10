@@ -1,5 +1,4 @@
 
-///<reference path="SvgFactory.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
 class VHtmlRectView extends VHtmlView {
