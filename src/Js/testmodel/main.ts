@@ -1,4 +1,5 @@
 
+///<reference path="src/parser/INScoreParser.js"/>
 ///<reference path="src/inscore.ts"/>
 ///<reference path="src/controller/IGlue.ts"/>
 ///<reference path="src/model/TILoader.ts"/>
