@@ -2,6 +2,7 @@
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="IObject.ts"/>
 ///<reference path="IProxy.ts"/>
+///<reference path="IApplStaticNodes.ts"/>
 
 class IAppl extends IObject {
  
@@ -16,6 +17,11 @@ class IAppl extends IObject {
         this.fReceivedMsgs = 0;
         this.fRate = 100;
     } 
+
+    createStaticNodes() : void {
+    	let log = new IApplLog ("log", this);
+    	this.addChild (log);
+    }
 
     getAppl() : IObject					{ return this; }
     getSet(): IMessage					{ let msg : IMessage; return msg; }
@@ -46,11 +52,11 @@ class IAppl extends IObject {
 			tail = OSCAddress.addressTail(i->second.first);
 		}
 */
-		if (tail.length) 			// application is not the final destination of the message
+		if (tail.length) {			// application is not the final destination of the message
 			status = super.processMsg(head, tail, msg);
+		}
 	
-//		else if (match(head)) {		// the message is for the application itself
-		else if (head === "ITL") {		// the message is for the application itself
+		else if (this.match(head)) {		// the message is for the application itself
 			status = this.execute(msg);
 			if (status & msgStatus.kProcessed)
 				this.setState(objState.kModified);
