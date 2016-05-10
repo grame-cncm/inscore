@@ -1,7 +1,7 @@
 
 ///<reference path="IObject.ts"/>
 ///<reference path="../inscore.ts"/>
-///<reference path="../parser/INScoreParser.js"/>
+//<reference path="../parser/INScoreParser.js"/>
 
 declare var INScoreParser: any;
 
@@ -15,9 +15,8 @@ class TILoader {
 	        INScoreParser.parse(msg);
 	    }
 	    catch (e) {
-	    	
 	    }
-        return INScoreParser.msgs;  
+        return INScoreParser.get();  
     }
 
    process(buffer: string, root: IObject) {
