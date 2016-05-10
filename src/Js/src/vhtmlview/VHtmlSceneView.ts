@@ -4,17 +4,17 @@
 ///<reference path="../model/IObject.ts"/>
 
 //--------------------------------------------------
-// a fake html view to serve as scene view parent
+// VHtmlSceneContainer detects the current element 
+// and provides it as a container to the scene
 //--------------------------------------------------
 class VHtmlSceneContainer extends VHtmlView {  
+
 	static getDiv() : HTMLDivElement {
 		let scripts = document.getElementsByTagName('script');
     	return <HTMLDivElement>(scripts[scripts.length - 1].parentNode);
 	}
 
-    constructor() {
-    	super (VHtmlSceneContainer.getDiv());
-	}
+    constructor() 	{ super (VHtmlSceneContainer.getDiv()); }
    
    updatePos() : void {
     	let size = TWindow.getSize();
@@ -29,8 +29,7 @@ class VHtmlSceneView extends VHtmlView {
     	let parent = new VHtmlSceneContainer();
     	super (document.createElement('div'), parent);
     	this.fDoc = parent;
-    	let div = this.getDiv();
-        div.className = "inscore-scene";
+        this.getDiv().className = "inscore-scene";
     }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }
