@@ -1,8 +1,40 @@
 /ITL/scene new;
-gray = 100;
+gray = 240;
 /ITL/scene color $gray $gray $gray ;
 
-/ITL/scene/rect set rect 1 1 ;
+<? javascript
+	function doit (address, n, fhue)
+	{
+		var j=1;
+		var out = new Array;
+		for (i=1; i <= n; i++) {
+			x = (i-(n/2)-0.5) * (1.8 / n);
+			hue = fhue(i);
+			out[j++]= address+i+" set rect 0.1 0.1;"; 
+			out[j++]= address+i+" x "+x+" ;" ;
+			out[j++]= address+i+" hsb " + hue + " " + gray + " 100;";
+		}
+		print( out );
+		return out;
+	}
+
+	function shorthue (i, n)	{ return i * 10; }
+	function longhue (i, n)		{ return i * 20; }
+?>
+
+/ITL/scene/* del;
+
+/ITL/scene/title set txt "Welcome to JavaScript";
+/ITL/scene/title y -0.3;
+/ITL/scene/title scale 2;
+
+<?javascript doit ("/ITL/scene/r_", 4, shorthue); ?>
+
+__END__
+/ITL/scene/r_5 hsb 50 100 100;
+
+/ITL/scene scale 0.8 ;
+/ITL/scene/rect hsb 50 100 100;
 /ITL/scene/rect get ;
 /ITL/scene/rect get width ;
 /ITL/scene/rect2 set rect 0.3 0.5 ;
@@ -15,10 +47,6 @@ gray = 100;
 /ITL/scene/curve set txt hello world;
 /ITL/scene/curve get;
 /ITL/scene get color;
-/ITL/log get width height;
-
-/ITL/scene/img set img toto.png;
-/ITL/scene/img get;
 
 
 #/ITL save;
