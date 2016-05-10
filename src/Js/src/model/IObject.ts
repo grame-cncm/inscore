@@ -1,12 +1,13 @@
 
-///<reference path="../externals/fraction/fraction.ts"/>
-///<reference path="../lib/OSCAddress.ts"/>
-///<reference path="../lib/Tools.ts"/>
-///<reference path="../lib/ITLError.ts"/>
-///<reference path="../lib/ITLOut.ts"/>
-///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../controller/TGetMessageHandlers.ts"/>
 ///<reference path="../controller/THandlersPrototypes.ts"/>
+///<reference path="../controller/TSetMessageHandlers.ts"/>
+///<reference path="../externals/fraction/fraction.ts"/>
+///<reference path="../lib/ITLError.ts"/>
+///<reference path="../lib/ITLOut.ts"/>
+///<reference path="../lib/OSCAddress.ts"/>
+///<reference path="../lib/OSCRegexp.ts"/>
+///<reference path="../lib/Tools.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
 ///<reference path="Methods.ts"/>
@@ -66,12 +67,15 @@ abstract class IObject implements Tree<IObject> {
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
-        this.setHandlers(); 
+        this.setHandlers();
+        this.createStaticNodes();
     } 
     
+    createStaticNodes() : void {}
+
 // HANDLERS
 //--------------------------------------------------------------  
-    setHandlers() {
+    setHandlers(): void {
         this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler(this._set());
         this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler(this._get());
         this.fMsgHandlerMap[ksave_SetMethod]= new TMethodHandler(this._save());
@@ -133,6 +137,7 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kdz_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addZOrder());
         this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum(this.fPosition._addAngle());
         this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum(this.fPosition._multScale());
+        this.fMsgHandlerMap[kshow_GetSetMethod]		= new TMsgHandlerNum(this.fPosition._setVisible());
 
         this.fGetMsgHandlerMap[kx_GetSetMethod]			= new TGetMsgHandlerNum(this.fPosition._getXPos());
         this.fGetMsgHandlerMap[ky_GetSetMethod]			= new TGetMsgHandlerNum(this.fPosition._getYPos());
@@ -190,6 +195,8 @@ abstract class IObject implements Tree<IObject> {
     getSubNodesCount(): number 		{ return this.fSubNodes.length; }
     getAppl() : IObject				{ return this.fParent.getAppl(); }
     getScene(): IObject 			{ return this.fParent.getScene(); }
+	// get the object scale recursively
+    getRScale(): number 			{ return this.fPosition.getScale() * this.fParent.getRScale(); }
     getPosition(): {x: number, y: number } 			{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
     getSize():     {w: number, h: number } 			{ return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
@@ -205,35 +212,40 @@ abstract class IObject implements Tree<IObject> {
     getName(): string 				{ return this.fName; }
     getTypeString(): string 		{ return this.fTypeString; }        
     
-    find(expr: string, outlist: Array<IObject>): boolean {
+    
+    //-----------------------------
+    match(address: string): boolean
+    {
+        let re = new OSCRegexp(address);
+        return re.match (this.fName);
+    }
+
+    find(expr: string): Array<IObject> {
         if (!Tools.regexp(expr)) {
-            return this.exactfind(expr, outlist);
+            return this.exactfind(expr);
         }
         else {
-            let size = outlist.length;
+        	let re = new OSCRegexp(expr);
+	        let out: Array<IObject> = [];
             let n 	 = this.getSubNodesCount();
-            
             for (let i = 0; i < n; i++) {
-                let elt: IObject = this.fSubNodes[i];
-                if (!elt.getDeleted()) { outlist.push(elt); }       
+                let elt = this.fSubNodes[i];
+                if (!elt.getDeleted() && re.match(elt.fName)) { out.push(elt); }       
             }
-            
-            return outlist.length > size;
+            return out;
         }
     }
     
     //-----------------------------
-    exactfind(name:string, outlist: Array<IObject>): boolean {
+    exactfind(name:string): Array<IObject> {
+        let out: Array<IObject> = [];
         let n: number = this.fSubNodes.length;
-        let ret: boolean = false;
-        for (let i: number = 0; i < n; i++) {
-            let elt: IObject = this.fSubNodes[i];
-            if ((!elt.getDeleted()) && (elt.fName == name)) {
-                outlist.push(this.fSubNodes[i]);
-                ret = true;
-            }
+        for (let i = 0; i < n; i++) {
+            let elt = this.fSubNodes[i];
+            if ((!elt.getDeleted()) && (elt.fName == name))
+                out.push(this.fSubNodes[i]);
         }
-        return ret;
+        return out;
     }
     
     //-----------------------------    
@@ -255,27 +267,13 @@ abstract class IObject implements Tree<IObject> {
         //dest.fPosition.setPenWidth(getPenWidth());
         //dest.fPosition.setPenColor(getPenColor());
         //dest.fPosition.setPenStyle(getPenStyle());
-        
         return dest;
     }   
-    
-    //-----------------------------
-    accept(address: string/*, const IMessage*/): boolean {
-        return (this.fName == address);
-        //return match(address);
-    }
 
     // View
     //-----------------------------    
     setView(view: VObjectView): void 	{ this.fObjectView = view }
     getView(): VObjectView 				{ return this.fObjectView }
-    
-    //-----------------------------
-    /*match(adress: string): boolean
-    {
-        OSCRegexp r (regexp.c_str());
-        return r.match(name().c_str());
-    }*/
     
     //-----------------------------
     execute (msg: IMessage): number {
@@ -323,7 +321,7 @@ abstract class IObject implements Tree<IObject> {
     processMsg (address: string, addressTail: string , msg: IMessage): msgStatus {
 
         let result: number = msgStatus.kBadAddress;
-        if (this.accept(address/*, msg*/)) {
+        if (this.match(address)) {
             let beg: string = OSCAddress.addressFirst(addressTail);	
             let tail: string = OSCAddress.addressTail(addressTail);
                 
@@ -333,11 +331,11 @@ abstract class IObject implements Tree<IObject> {
             }
 
             else {										
-                let targets: Array<IObject> = new Array;
-                if (this.find (beg, targets)) {	
-                    let n: number = targets.length;
-                    for (let i: number = 0; i < n; i++) {
-                        let target: IObject = targets[i];
+                let targets = this.find (beg);
+                let n = targets.length;
+                if (n) {	
+                    for (let i = 0; i < n; i++) {
+                        let target = targets[i];
                         result |= target.execute(msg);	
                         if (result & msgStatus.kProcessed) { target.addState(objState.kModified); }
                     }
@@ -388,10 +386,7 @@ abstract class IObject implements Tree<IObject> {
         	let attribute = msg.paramStr(i);
         	if (attribute.correct) {
         		let outmsg = this.get1AttributeMsg (attribute.value);
-//        		let h = this.fGetMsgHandlerMap[attribute.value];
         		if (outmsg) { 
-//        			let outmsg = new IMessage (this.getOSCAddress(), attribute.value);
-//        			h.fill (outmsg);
         			ITLOut.write (outmsg.toString());
         		}
         	}
