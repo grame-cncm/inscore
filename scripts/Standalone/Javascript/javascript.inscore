@@ -12,7 +12,7 @@ rversion = 0.96;
 		for (i=1; i <= n; i++) {
 			x = (i-(n/2)-0.5) * (1.8 / n);
 			hue = fhue(i);
-			out[j++]= address+i+" set 'rect' 0.1 0.1;"; 
+			out[j++]= address+i+" set rect 0.1 0.1;"; 
 			out[j++]= address+i+" x "+x+" ;" ;
 			out[j++]= address+i+" hsb "+hue+" 100 100;";
 		}
