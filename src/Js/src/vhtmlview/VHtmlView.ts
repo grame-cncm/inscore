@@ -2,24 +2,24 @@
 ///<reference path="../view/VObjectView.ts"/>
 
 class VHtmlView extends VObjectView {
-    protected fDiv 	  : HTMLDivElement;
-    protected fParent : VHtmlView;
+    protected fHtmlElt : HTMLElement;
+    protected fParent  : VHtmlView;
     
     fTop: number;	fLeft: number;
     fWidth: number; fHeight: number;
 
-    constructor(div: HTMLDivElement, parent?: VHtmlView)  { 
+    constructor(elt: HTMLElement, parent?: VHtmlView)  { 
     	super();
     	this.fParent = parent;
     	this.setPos(0, 0, 100, 100);
-    	this.fDiv = div; 
-    	if (parent) parent.getDiv().appendChild (div);
+    	this.fHtmlElt = elt; 
+    	if (parent) parent.getHtml().appendChild (elt);
    }
 
-	getParent() : VObjectView 					{ return this.fParent; }
-	getDiv() : HTMLDivElement 					{ return this.fDiv; }
+	getParent() : VObjectView 			{ return this.fParent; }
+	getHtml() : HTMLElement 			{ return this.fHtmlElt; }
 
-	remove() : void 					{ this.fDiv.parentNode.removeChild(this.fDiv); }
+	remove() : void 					{ this.fHtmlElt.parentNode.removeChild(this.fHtmlElt); }
 
 	updateView	( obj: IObject) : void {
 		this.updatePos (obj);
@@ -28,7 +28,7 @@ class VHtmlView extends VObjectView {
 
 	updateColor (obj: IObject): void {
         if (obj.fColor.modified())
-	        this.fDiv.style.background = obj.fColor.getRGBString();
+	        this.fHtmlElt.style.background = obj.fColor.getRGBString();
 	}
 
 	getScale (obj: IObject): number { return obj.fPosition.getScale();  }
@@ -42,20 +42,20 @@ class VHtmlView extends VObjectView {
         let left  	= this.relative2SceneX (pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
         let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
 
-    	let div = this.getDiv();
-        div.style.width  = w.toString()+"px";
-        div.style.height = h.toString()+"px";
-        div.style.left 	=  left.toString() + "px";
-        div.style.top 	=  top.toString() + "px";
-        div.style.zIndex = z.toString();
-		div.style.transform  = this.getTransform(obj);
+    	let elt = this.getHtml();
+        elt.style.width  = w.toString()+"px";
+        elt.style.height = h.toString()+"px";
+        elt.style.left 	=  left.toString() + "px";
+        elt.style.top 	=  top.toString() + "px";
+        elt.style.zIndex = z.toString();
+		elt.style.transform  = this.getTransform(obj);
         this.setPos( top, left, w, h);
 	}
 
-	// to be used for divs with auto width and height
+	// to be used for elts with auto width and height
 	updateObjectSize ( obj: IObject) : void {
-        let w = this.scene2RelativeWidth(this.fDiv.clientWidth);
-        let h = this.scene2RelativeHeight(this.fDiv.clientHeight);
+        let w = this.scene2RelativeWidth(this.fHtmlElt.clientWidth);
+        let h = this.scene2RelativeHeight(this.fHtmlElt.clientHeight);
 
 		obj.fPosition.setWidth (w);
 		obj.fPosition.setHeight (h);

@@ -6,8 +6,7 @@ class VHtmlHtmlView extends VHtmlView {
 
     constructor(parent: VHtmlView) {
 		super( document.createElement('div'), parent); 
-    	let div = this.getDiv();
-        div.className = "inscore-html";
+        this.getHtml().className = "inscore-html";
     }    
 
 	getText	( obj: IText) : string { return obj.getText(); }
@@ -15,15 +14,15 @@ class VHtmlHtmlView extends VHtmlView {
 	getScale (obj: IObject): number { return obj.getRScale();  }
 	updateColor (obj: IObject): void {
         if (obj.fColor.modified())
-	        this.fDiv.style.color = obj.fColor.getRGBString();
+	        this.getHtml().style.color = obj.fColor.getRGBString();
 	}
 
 	updateView	( obj: IObject) : void {
 		let t = <IText>obj;
-    	let div = this.getDiv();
-        div.innerHTML  = this.getText(t);
-        div.style.height = "auto";
-        div.style.width = "auto";
+    	let elt = this.getHtml();
+        elt.innerHTML  = this.getText(t);
+        elt.style.height = "auto";
+        elt.style.width = "auto";
 		this.updateObjectSize (obj);
 		super.updateView(obj);
 	}

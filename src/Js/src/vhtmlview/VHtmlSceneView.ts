@@ -9,12 +9,12 @@
 //--------------------------------------------------
 class VHtmlSceneContainer extends VHtmlView {  
 
-	static getDiv() : HTMLDivElement {
+	static getHtml() : HTMLElement {
 		let scripts = document.getElementsByTagName('script');
-    	return <HTMLDivElement>(scripts[scripts.length - 1].parentNode);
+    	return <HTMLElement>(scripts[scripts.length - 1].parentNode);
 	}
 
-    constructor() 	{ super (VHtmlSceneContainer.getDiv()); }
+    constructor() 	{ super (VHtmlSceneContainer.getHtml()); }
    
    updatePos() : void {
     	let size = TWindow.getSize();
@@ -29,7 +29,7 @@ class VHtmlSceneView extends VHtmlView {
     	let parent = new VHtmlSceneContainer();
     	super (document.createElement('div'), parent);
     	this.fDoc = parent;
-        this.getDiv().className = "inscore-scene";
+        this.getHtml().className = "inscore-scene";
     }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }

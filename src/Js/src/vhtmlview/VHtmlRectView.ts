@@ -5,7 +5,6 @@ class VHtmlRectView extends VHtmlView {
     
     constructor(parent: VHtmlView) {
         super( document.createElement('div'), parent); 
-    	let div = this.getDiv();
-        div.className = "inscore-rect";
+    	this.getHtml().className = "inscore-rect";
     }    
 }

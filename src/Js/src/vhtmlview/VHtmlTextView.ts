@@ -6,9 +6,9 @@ class VHtmlTextView extends VHtmlHtmlView {
 
     constructor(parent: VHtmlView) {
 		super(parent); 
-    	let div = this.getDiv();
-        div.className = "inscore-txt";
-        div.style.verticalAlign = "middle";
+    	let elt = this.getHtml();
+        elt.className = "inscore-txt";
+        elt.style.verticalAlign = "middle";
     }    
 
 	getText	( obj: IText) : string { return "<pre>" + obj.getText() +"</pre>"; }
