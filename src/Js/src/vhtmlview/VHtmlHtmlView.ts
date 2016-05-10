@@ -12,7 +12,7 @@ class VHtmlHtmlView extends VHtmlView {
 
 	getText	( obj: IText) : string { return obj.getText(); }
 
-	getScale (obj: IObject): number { return 1;  }
+	getScale (obj: IObject): number { return obj.getRScale();  }
 	updateColor (obj: IObject): void {
         if (obj.fColor.modified())
 	        this.fDiv.style.color = obj.fColor.getRGBString();
@@ -29,7 +29,8 @@ class VHtmlHtmlView extends VHtmlView {
 	}
 
 	getTransform (obj: IObject): string {
-		let scale 	= obj.fPosition.getScale();
+		let scale 	= obj.getRScale();
 		return super.getTransform(obj) + ` scale(${scale})`;
 	}
+
 }
