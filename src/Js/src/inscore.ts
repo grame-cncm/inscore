@@ -2,12 +2,14 @@
 ///<reference path="controller/IMessage.ts"/>
 ///<reference path="controller/THandlersPrototypes.ts"/>
 ///<reference path="controller/IGlue.ts"/>
-///<reference path="model/IAppl.ts"/>
-///<reference path="lib/TEnums.ts"/>
 ///<reference path="lib/ITLError.ts"/>
+///<reference path="lib/ITLOut.ts"/>
+///<reference path="lib/TEnums.ts"/>
+///<reference path="model/IAppl.ts"/>
 
 
 class INScore {
+	private static fVersion: number = 0.5;
 	private static fAppl: IAppl;
 	private static fGlue: IGlue;
 	private static fErrStrings = new Array<string>();
@@ -30,8 +32,11 @@ class INScore {
 	// ------------------------------------------------------------
 	// static methods
 	// ------------------------------------------------------------
+	static version () : number { return INScore.fVersion; }
+
 	static start (scene?: string) : void {
 		if (!INScore.fGlue) {
+			ITLOut.write ("INScore version " + INScore.version());
 			INScore.fGlue = new IGlue();
 			INScore.fGlue.initEventHandlers();
 		}
