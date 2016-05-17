@@ -9,6 +9,7 @@
 ///<reference path="IRect.ts"/>
 ///<reference path="IScene.ts"/>
 ///<reference path="IText.ts"/>
+///<reference path="ITextf.ts"/>
 ///<reference path="Methods.ts"/>
 
 
@@ -57,6 +58,11 @@ class IObjectFactory {
                 
             case "txt":
                 obj = new IText(name, parent);
+                this.createView(obj, parent.getView());  
+                break;    
+                
+            case "txtf":
+                obj = new ITextf(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 

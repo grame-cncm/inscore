@@ -27,6 +27,7 @@ class HtmlViewFactory implements ViewFactory {
                 return new VHtmlLineView (parent);
 
             case "txt":
+            case "txtf":
                 return new VHtmlTextView (parent);
 
             case "html":
