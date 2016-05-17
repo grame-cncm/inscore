@@ -6,13 +6,16 @@
 
     <link href="css/inscore.css" rel="stylesheet">
 	<script src="../mainhtml.js"></script>
+ 	<script>
+	function showlog(v) {
+		INScore.postMessage("/ITL/log", ["show", v]);
+	}
+	</script>
 </head>
 
 <body style="margin: 20px">
 	<h1>INScore test1</h1>
-	<pre>toto</pre>
-	<pre>titi</pre>
-	<pre>tata</pre>
+	<p><a title="Open INScore log" onclick='showlog(1)', style="cursor:pointer;">INScore log</a></p>
     <script type="text/javascript"> StartINScore() </script>
 </body>
 
