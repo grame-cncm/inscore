@@ -159,5 +159,6 @@ parser.get = (function () {
 })
 
 parser.parseError = function(str, hash) {
-	typeof console !== 'undefined' ? console.log(str) : print(str);
+	ITLError.write(str);
+//	typeof console !== 'undefined' ? console.log(str) : print(str);
 }
