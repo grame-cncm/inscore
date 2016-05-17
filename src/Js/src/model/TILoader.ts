@@ -13,10 +13,12 @@ class TILoader {
     protected parse(msg: string): Array<any> {
         try {
 	        INScoreParser.parse(msg);
+        	return INScoreParser.get();  
 	    }
 	    catch (e) {
+//	    	console.log("parse exception");
 	    }
-        return INScoreParser.get();  
+        return [];  
     }
 
    process(buffer: string, root: IObject) {
