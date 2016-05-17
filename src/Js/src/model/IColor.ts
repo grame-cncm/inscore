@@ -70,23 +70,20 @@ class IColor {
 //--------------------------------------------------------------         
     
     setParam( param: string , value:number , min:number , max:number , isHSV:boolean ) {
-        
         if ( min <= value && value <= max ) {  
             switch(param) {
                 case "fH" : this.fHSB[0] = value; break;
                 case "fS" : this.fHSB[1] = value; break;
-                case "fB" : this.fHSB[2] = value; break;
+                case "fV" : this.fHSB[2] = value; break;
                 case "fR" : this.fRGB[0] = value; break;
                 case "fG" : this.fRGB[1] = value; break;
                 case "fB" : this.fRGB[2] = value; break;
                 case "fA" : this.fA = value; break;
+                default: console.log ("IColor setParam " + param + " not found");
             }
-           
             this.fModified = true;
-            if ( isHSV )
-                this.updateRGB();
-            else
-                this.updateHSB();
+            if ( isHSV )	this.updateRGB();
+            else			this.updateHSB();
         }
     }
     
@@ -97,7 +94,7 @@ class IColor {
     
     setH(h:number): void 		{ this.setParam("fH" , Math.floor(h), 0, 360, true); }  
     setS(s:number): void 		{ this.setParam("fS", Math.floor(s), 0, 100, true); }
-    setV(b:number): void 		{ this.setParam("fB", Math.floor(b), 0, 100, true); }
+    setV(b:number): void 		{ this.setParam("fV", Math.floor(b), 0, 100, true); }
     _setH()	: SetNumMethod 		{ return (n) => this.setH(n); };
     _setS()	: SetNumMethod 		{ return (n) => this.setS(n); };
     _setV()	: SetNumMethod 		{ return (n) => this.setV(n); };
