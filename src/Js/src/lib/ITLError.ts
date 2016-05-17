@@ -1,6 +1,13 @@
+
+///<reference path="../inscore.ts"/>
+
 class ITLError {
     
-    static write (str: string) 					{ console.log ("Error: " + str); }
+    static write (str: string) {
+    	let errmsg = "Error: " + str; 
+    	console.log (errmsg); 
+    	INScore.postMessage ("/ITL/log", ["write", errmsg]);
+    }
     static badParameter (msg: string, p: any) 	{ this.write ("bad parameter " + p + " in " + msg); }
 
 }
