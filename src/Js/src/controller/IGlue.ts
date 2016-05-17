@@ -6,12 +6,12 @@
 ///<reference path="../events/documentEvents.ts"/>
 ///<reference path="../view/ViewUpdater.ts"/>
 
-interface TTimerTask  { (): void; }
+interface TTimerTask  	{ (): void; }
 
 class IGlue { 
 	protected fAppl: IAppl;
-//	protected fTimer: number;
-	protected fTimer: any;
+//	protected fTimer: number;		// this is to catch multiple defs in nodes and in browser contexts
+	protected fTimer: any;			// should find a typed solution
 	
     constructor() 			{ 
     	this.fAppl = new IAppl(); 
