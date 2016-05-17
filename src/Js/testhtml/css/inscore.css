@@ -18,8 +18,14 @@
     background-color: rgba(220,220,250,200);
 }
 
+.inscore-line {
+	position: absolute;
+	border: 0px blue solid;
+}
+
 .inscore-img {
 	position: absolute;
+	border: 2px blue solid;
 }
 
 .inscore-ellipse {
@@ -29,7 +35,7 @@
     background-color: rgb(220,250,200);
 }
 
-.inscore-txt 	{  position: absolute; }
+.inscore-txt 	{  position: absolute; border: 1px blue solid;}
 .inscore-txt > pre	{ 
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
@@ -41,5 +47,16 @@
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
 	font-style: normal; 
-	font-size: 12px; 
+	font-size: 12px;
+	border: 1px green solid;
+}
+
+.inscore-log 	{ 
+	margin: 10px 20px 10px 20px;
+}
+
+.inscore-log > pre	{ 
+	font-family: 'courier'; 
+	font-size: 10pt; 
+	color: rgb(120,120,120); 
 }
