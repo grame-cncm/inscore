@@ -3,15 +3,16 @@
 ///<reference path="../view/VObjectView.ts"/>
 ///<reference path="../inscore.ts"/>
 
+interface TCloseHandler  		{ (): void; }
+
 class VHtmlLog extends VObjectView {
-	protected fWindow : Window;	
-	protected fOpened : boolean;
-	protected fPreviousX : number = -1; 		// used to detect window move
+	protected fWindow : Window;
+	protected fPreviousX : number = -1; 		// the window previous position: used to detect window move
 	protected fPreviousY : number = -1;
-	protected fPreviousOX : number = -1; 		// used to handle window move
+	protected fPreviousOX : number = -1; 		// the object previous position: used to handle window move
 	protected fPreviousOY : number = -1;
 
-	constructor() { super(); this.fOpened = false; }
+	constructor() { super(); } 
 
 	updateView ( obj: IObject) : void {
 		if (obj.fPosition.getVisible()) {
@@ -34,18 +35,18 @@ class VHtmlLog extends VObjectView {
 			this.writelog(<IApplLog>obj);
 		} 
 		else if (this.fWindow) {
-			if (!this.fWindow.closed) this.fWindow.close();
-			this.fOpened = false;
+			this.fWindow.close();
+			this.close(obj);
 		}
 	}
 
 	writelog ( log: IApplLog ) : void {
 		if (log.cleared())
 			this.fWindow.document.body.innerHTML = "";
-
 		let content = log.content();
 		for (let i=0; i < content.length; i++)
-			this.fWindow.document.write("<pre>" + content[i] + "</pre>");
+//			this.fWindow.document.write(content[i] + "<br />\n");
+			this.fWindow.document.write("<pre>"+content[i] + "</pre>");
 		log.done();
 	}
 
@@ -59,13 +60,25 @@ class VHtmlLog extends VObjectView {
 		this.fPreviousY = wy;
 	}
 
-	checkwindow ( obj: IObject ) : void {
-		if (!this.fWindow || !this.fOpened) {
+	close (obj: IObject) :  void  {			// cleanup the view and object state
+		this.checkwindowpos ( obj );		// update the last window position
+		this.fWindow = undefined;
+	}
+	
+	closeHandler (obj: IObject) :  void  {	// set on window unload event
+		this.close(obj);
+		obj.fPosition.setVisible(0);
+	}
+	_close (o: IObject) :  TCloseHandler  	{ return () => this.closeHandler (o); }
+
+	checkwindow ( obj: IObject ) : void {	// checks if the window is opened and otherwise creates the window
+		if (!this.fWindow) {
 			let specs	= "menubar=no, titlebar=no, status=no, directories=no, location=no";
-			this.fWindow = window.open("", "", specs);
-			this.fWindow.document.write("<head><title>"+obj.getOSCAddress()+"</title>");
+			this.fWindow = window.open("_blank", obj.getOSCAddress(), specs);
+			this.fWindow.document.write("<head><title>"+obj.getOSCAddress()+"</title>\n<link href='css/inscore.css' rel='stylesheet'></head>");
+			this.fWindow.document.write("<body class='inscore-log'></body>");
 			this.fWindow.addEventListener("resize", this._resizeLog(obj));
-			this.fOpened = true;
+			this.fWindow.addEventListener("unload", this._close(obj));
 		}
 		else this.checkwindowpos (obj);
 	}
@@ -91,6 +104,5 @@ class VHtmlLog extends VObjectView {
 	scene2RelativeHeight(height: number) : number	{ return height * 2 / screen.availHeight; }
 	scene2RelativeX(x: number) : number				{ let w = screen.availWidth/2;  return (x - w) / w; }
 	scene2RelativeY(y: number) : number				{ let h = screen.availHeight/2; return (y - h) / h; }
-//	updateLocalMapping (obj: IObject ): void		{ }
 	initialize (obj: IObject ): void				{ }
 }
