@@ -11,7 +11,8 @@ class VHtmlHtmlView extends VHtmlView {
 
 	getText	( obj: IText) : string { return obj.getText(); }
 
-	getScale (obj: IObject): number { return obj.getRScale();  }
+	// scaling is applied as a transform only
+	getScale (obj: IObject): number { return 1; }
 	updateColor (obj: IObject): void {
         if (obj.fColor.modified())
 	        this.getHtml().style.color = obj.fColor.getRGBString();
