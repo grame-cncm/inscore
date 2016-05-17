@@ -5,8 +5,9 @@ class ILine extends IObject {
     
     protected kLineType: string;
     protected fPoint: TPoint;
-    protected fWAMode: boolean;		
-
+    protected fWAMode: boolean;
+    protected fLWidth: number
+    protected fLAngle: number
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
@@ -18,8 +19,7 @@ class ILine extends IObject {
     }
     
     setPoint(p: TPoint)		{ this.fPoint = p; }
-    getPoint()		        { return this.fPoint; }
-
+    getPoint() : TPoint		{ return this.fPoint; }
     _getPoint(): GetArrayMethod        { return () => this.fPoint.toArray(); }
 
 
@@ -31,19 +31,19 @@ class ILine extends IObject {
             let mode = msg.paramStr(2); 
             let a = msg.paramNum(3), b = msg.paramNum(4); 
             
-            if (!mode.correct)
-                return msgStatus.kBadParameters;
-            if (!a.correct || !b.correct) {
-                return msgStatus.kBadParameters;
-            }
+            if (!mode.correct)				return msgStatus.kBadParameters;
+            if (!a.correct || !b.correct) 	return msgStatus.kBadParameters;
                
             if (mode.value == "xy") {
-                this.setPoint( new TPoint(a.value, b.value) );
+                this.fWAMode = false;
+            	this.setPoint( new TPoint(a.value, b.value) );
             }
             else if (mode.value == "wa") {
                 this.fWAMode = true;
-                let x: number = a.value * Math.cos(Math.PI * b.value / 180);
-                let y: number = a.value * Math.sin(Math.PI * b.value / 180);
+                this.fLWidth = a.value;
+                this.fLAngle = b.value;
+                let x = a.value * Math.cos(Math.PI * b.value / 180);
+                let y = a.value * Math.sin(Math.PI * b.value / 180);
                 this.setPoint( new TPoint(x, y) );
             }
             else return msgStatus.kBadParameters;
@@ -53,8 +53,22 @@ class ILine extends IObject {
         else status = msgStatus.kBadParameters;
         return status;
     }
-    
+
+    getSetLine(p: Array<any>): Array<any>	{
+    	if (this.fWAMode) {
+    		p.push ("wa");
+    		p.push (this.fLWidth);
+    		p.push (this.fLAngle);
+    	}
+    	else {
+    		p.push ("xy");
+    		p.push (this.fPoint.getX());
+    		p.push (this.fPoint.getY());
+    	}
+    	return p; 
+    }
+
     getSet(): IMessage	{
-    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.kLineType, "todo"]); 
+    	return new IMessage(this.getOSCAddress(), this.getSetLine([kset_SetMethod, this.kLineType])); 
     }
 }
