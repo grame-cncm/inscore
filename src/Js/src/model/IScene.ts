@@ -13,10 +13,14 @@ class IScene extends IRectShape {
         this.fPosition.setWidth (2);
         this.fPosition.setHeight (2);
         this.fMsgHandlerMap[knew_SetMethod] = new TMsgHandlerVoid(this._newScene());
+        this.fMsgHandlerMap["redraw"]	= new TMsgHandlerVoid(this._redraw());
     }
 
     getRScale(): number 		{ return this.fPosition.getScale(); }    
     timeAble(): void 			{ }
+
+    redraw(): void 				{ this.posPropagate(); }
+    _redraw(): SetVoidMethod 	{ return () => this.redraw(); };
 
     newScene(): void 			{ }
     _newScene(): SetVoidMethod 	{ return () => this.newScene(); };

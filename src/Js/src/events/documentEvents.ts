@@ -30,15 +30,5 @@ function dragOverEvent(e: any) {
     e.preventDefault();
 }
 
-var _previousWidth: number = 0;
-function resizeDocument() {
-	let size = TWindow.getSize();
-	let w = Math.min(size.w, size.h);
-	let scale = 1.0;
-	if (_previousWidth) {
-		scale = w * 1.0 / _previousWidth;
-	}
-	_previousWidth = w;
-	INScore.postMessage ("/ITL/*", ["scale", scale]);
-}
+function resizeDocument() { INScore.postMessage ("/ITL/*", ["redraw"]); }
 
