@@ -107,16 +107,15 @@ win32 {
 	}
 }
 !win32 {
-    QMAKE_CXXFLAGS += -Wno-deprecated-register -Wno-unused-parameter
+    QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
 
 ############################## 
 # macos x support
 ############################## 
 macx {
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -Wno-deprecated-register
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
-#    QMAKE_MAC_SDK = macosx10.9		# drag & drop doesn't work with macosx10.10 sdk on yosemite
 	CONFIG += lib_bundle explicitlib
 	QMAKE_INFO_PLIST = $$PWD/libInfo.plist
 	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/

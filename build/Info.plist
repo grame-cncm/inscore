@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDisplayName</key>
+	<string>INScoreViewer</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -24,16 +28,54 @@
 			<true/>
 		</dict>
 	</array>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>INScoreViewer</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIconFile</key>
 	<string>INScoreViewer.icns</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>Icon-40.png</string>
+				<string>Icon-60@2x.png</string>
+				<string>Icon-76@2x.png</string>
+				<string>Icon-40@2x.png</string>
+				<string>Icon-60@3x.png</string>
+				<string>Icon-83.5@2x.png</string>
+				<string>Icon-40@3x.png</string>
+				<string>Icon-76.png</string>
+				<string>Icon-Small.png</string>
+				<string>Icon-Small@2x.png</string>
+				<string>Icon-Small@3x.png</string>
+			</array>
+		</dict>
+	</dict>
+	<key>CFBundleIcons~ipad</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>Icon-40.png</string>
+				<string>Icon-60@2x.png</string>
+				<string>Icon-76@2x.png</string>
+				<string>Icon-40@2x.png</string>
+				<string>Icon-60@3x.png</string>
+				<string>Icon-83.5@2x.png</string>
+				<string>Icon-40@3x.png</string>
+				<string>Icon-76.png</string>
+				<string>Icon-Small.png</string>
+				<string>Icon-Small@2x.png</string>
+				<string>Icon-Small@3x.png</string>
+			</array>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>fr.grame.INScore</string>
+	<string>fr.grame.iGrame.INScore</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
@@ -43,7 +85,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>v.1.18</string>
+	<string>1.18</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -52,40 +94,9 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2009-2016 Grame</string>
-        <key>UIFileSharingEnabled</key>
-        <string>TRUE</string>
-        <key>CFBundleDisplayName</key>
-        <string>INScoreViewer</string>
-<key>CFBundleIcons</key>
-<dict>
-    <key>CFBundlePrimaryIcon</key>
-    <dict>
-        <key>CFBundleIconFiles</key>
-        <array>
-            <string>Icon-Small</string>
-            <string>Icon-Small-40</string>
-            <string>Icon-Small-50</string>
-            <string>Icon.png</string>
-            <string>Icon-60</string>
-            <string>Icon-72</string>
-        </array>
-    </dict>
-</dict>
-<key>CFBundleIcons~ipad</key>
-<dict>
-    <key>CFBundlePrimaryIcon</key>
-    <dict>
-        <key>CFBundleIconFiles</key>
-        <array>
-            <string>Icon-Small</string>
-            <string>Icon-Small-40</string>
-            <string>Icon-Small-50</string>
-            <string>Icon-72</string>
-            <string>Icon-76</string>
-        </array>
-    </dict>
-</dict>
-<key>UILaunchImages~ipad</key>
+	<key>NSMainNibFile</key>
+	<string>LaunchScreen</string>
+	<key>UILaunchImages~ipad</key>
 	<array>
 		<dict>
 			<key>UILaunchImageMinimumOSVersion</key>
@@ -111,12 +122,19 @@
 			<key>UILaunchImageMinimumOSVersion</key>
 			<string>7.0</string>
 			<key>UILaunchImageName</key>
-			<string>Default</string>
+			<string>Default-Portrait</string>
 			<key>UILaunchImageOrientation</key>
 			<string>Portrait</string>
 			<key>UILaunchImageSize</key>
 			<string>{768, 1024}</string>
 		</dict>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 </dict>
 </plist>

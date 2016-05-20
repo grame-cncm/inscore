@@ -1,4 +1,4 @@
-/ITL watch error (/ITL/log show 1);
+!/ITL watch error (/ITL/log show 1);
 
 <? javascript
 	function randomdur () 		{ return Math.pow(2, Math.floor( Math.random() * 5) ); }
@@ -31,20 +31,31 @@
 
 /ITL/scene/* del;
 
+##########################################
+# a comment for the input stream
 /ITL/scene/rcomment set txt "This is the whole stream";
 /ITL/scene/rcomment x -0.95;
 /ITL/scene/rcomment y -0.99;
 /ITL/scene/rcomment fontSize 16;
-/ITL/scene/rscore set gmnstream '[ \clef<"g"> \meter<"4/4">  \pageFormat<18cm, 18cm, 5,5,5,5>';
+
+##########################################
+# create a score as a gmn stream
+/ITL/scene/rscore set gmnstream '[ \clef<"g"> \meter<"4/4"> \barFormat<style="system"> \pageFormat<18cm, 18cm, 5,5,5,5>';
 /ITL/scene/rscore scale 0.18;
 /ITL/scene/r* xorigin -1;
 /ITL/scene/r* yorigin -1;
 /ITL/scene/rscore x -0.99;
 /ITL/scene/rscore y -0.94;
 /ITL/scene/rscore columns 3;
+
+##########################################
+# watch new data and the page count 
 /ITL/scene/rscore watch newData 	(/ITL/scene/[pc]score expr reeval);
 /ITL/scene/rscore watch pageCount	(/ITL/scene/javascript run "pageturn('/ITL/scene/rscore')");
 
+##########################################
+# setup a text object as a controler to 
+# generate the input score
 color = 154 23 23;
 /ITL/scene/write set txt "Write";
 /ITL/scene/write y -0.15;
@@ -55,17 +66,24 @@ color = 154 23 23;
 /ITL/scene/write watch mouseLeave (/ITL/scene/write color $color);
 /ITL/scene/write watch mouseDown  (/ITL/scene/javascript run "randomscore(2)");
 
+##########################################
+# that's where the score computation takes place
+# it makes use of an intermediate hidden object
 /ITL/scene/pscore set gmn expr(tail &rscore (tail &rscore "[a*2/1]"));
 /ITL/scene/pscore scale 0.3;
 /ITL/scene/pscore show 0;
 
+# the final score expression is here
 /ITL/scene/cscore set gmn expr(par 
 	&pscore 
 	(transpose '[\meter<"4/4"> g e f a f d c/2]' &pscore)) ;
 /ITL/scene/cscore scale 0.4;
 /ITL/scene/cscore y 0.1;
+
+##########################################
+# here are some comments
 /ITL/scene/ccomment1 set txt "The tail of the stream is in parallel with a static score.";
-/ITL/scene/ccomment2 set txt "The static part is transposed to first note of the tail.";
+/ITL/scene/ccomment2 set txt "The static part is transposed to the first note of the tail.";
 /ITL/scene/ccomment1 y 0.4;
 /ITL/scene/ccomment2 y 0.45;
 /ITL/scene/ccomment* fontSize 18;

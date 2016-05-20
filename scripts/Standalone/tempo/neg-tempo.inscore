@@ -22,7 +22,7 @@ ntempo	= -120;
 /ITL/scene/subtitle fontSize $textsize;
 /ITL/scene/subtitle color $gray;
 /ITL/scene/subtitle y -0.42;
-/ITL/scene/tempo set txt Tempo $starttempo;
+/ITL/scene/tempo set txt Tempo $ptempo;
 /ITL/scene/tempo color $gray;
 /ITL/scene/tempo fontSize 32;
 /ITL/scene/tempo y 0.42;

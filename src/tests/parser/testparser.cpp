@@ -26,27 +26,26 @@
 #include "ITLparser.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
-#include "TV8Js.h"
 #include "IExpression.h"
+#include "TParseEnv.h"
 
 using namespace std;
 using namespace inscore;
 
+class TestEnv : public TParseEnv
+{
+	public:
+	virtual TJSEngine*	getJSEngine()	{ return 0; }
+	virtual TLua*		getLUAEngine()	{ return 0; }
+};
 
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
 		ifstream in (argv[1]);
 
-#ifdef V8ENGINE
-		TJSEngine js;
-		ITLparser p(&in, 0, &js, 0);
-#elif defined(LUA)
-		TLua lua;
-		ITLparser p(&in, 0, 0, &lua);
-#else
-		ITLparser p(&in, 0, 0, 0);
-#endif
+		TestEnv env;
+		ITLparser p(&in, 0, &env);
 		SIMessageList outMsgs;
 		outMsgs = p.parse ();
 		if (outMsgs) {

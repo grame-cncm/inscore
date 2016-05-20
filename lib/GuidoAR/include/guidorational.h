@@ -31,7 +31,7 @@
 \brief	Rational number representation.
 */
 
-class export rational {
+class gar_export rational {
 
    private:    
    
@@ -104,7 +104,7 @@ class export rational {
 };
 
 typedef std::vector<rational> rationals;
-export std::ostream& operator << (std::ostream& os, rational);
-export std::ostream& operator << (std::ostream& os, rationals );
+gar_export std::ostream& operator << (std::ostream& os, rational);
+gar_export std::ostream& operator << (std::ostream& os, rationals);
 
 #endif

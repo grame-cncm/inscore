@@ -24,9 +24,9 @@
 #ifdef WIN32
 
 # ifdef GUIDOAR_EXPORTS
-#  define export		 _declspec (dllexport)
+#  define gar_export		 _declspec (dllexport)
 # else
-#  define export		 _declspec (dllimport)
+#  define gar_export		 _declspec (dllimport)
 # endif
 
 # pragma warning ( disable : 4275 4251 )
@@ -34,9 +34,9 @@
 #else
 
 # ifdef GUIDOAR_EXPORTS
-#  define export		 __attribute__ ((visibility("default")))
+#  define gar_export		 __attribute__ ((visibility("default")))
 # else
-#  define export		
+#  define gar_export		
 # endif
 
 #endif

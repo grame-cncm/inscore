@@ -56,16 +56,15 @@ macx {
 ##############################
 ios {
     QMAKE_IOS_DEPLOYMENT_TARGET = 7.0
-	QMAKE_LFLAGS += -L/ios/Release-iphoneos
+	QMAKE_LFLAGS += -L Release-iphoneos
 	LIBS += -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
-	QMAKE_INFO_PLIST = $$PWD/Info.plist
-	ios_icon.files = $$files($$ROOT/rsrc/ios/*.png)
+	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
+	ios_icon.files = $$files($$ROOT/rsrc/ios-icons/*.png)
 	QMAKE_BUNDLE_DATA += ios_icon
-	ICON 		= $$ROOT/rsrc/INScoreViewer.icns
 	OBJECTIVE_SOURCES += $$SRC/mobile/ios/QtAppDelegate.mm
 	INCLUDEPATH += $$SRC/mobile/ios
 	HEADERS += $$files($$SRC/mobile/ios/*.h)
-	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
+	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobileios.qrc
 	DEFINES += IOS __MOBILE__
     CONFIG+= arm64 armv7 armv7s
 }

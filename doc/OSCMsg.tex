@@ -829,7 +829,7 @@ setMsg : 'set' (
 	('gmnstream' gmnStream) |
 	('musicxml' xmlString) |
 	('musicxmlf' xmlFilePath) |
-	('expr' scoreExpression)
+	('gmn' 'expr' scoreExpression)
 )
 \end{rail}
 \index{Common messages!set}
@@ -845,7 +845,7 @@ setMsg : 'set' (
 \item \OSC{gmnstream}: a Guido score defined by a GMN stream (a GMN string that can be written in several times).
 \item \OSC{musicxml}: a score defined by a MusicXML string.
 \item \OSC{musicxmlf}: a score defined by a MusicXML file.
-\item \OSC{expr}: a score defined by a \emph{score expression}.
+\item \OSC{gmn expr}: a score defined by a \emph{score expression}. See section \fullref{scoreExpr} for the score expressions reference.
 \end{itemize}
 
 \example \\
@@ -871,7 +871,8 @@ Piano roll music notation is based on the Guido Music Notation format [GMN].
 setMsg : 'set' (
 	('pianoroll' gmnString) |
 	('pianorollstream' gmnStream) |
-	('pianorollf' filePath)
+	('pianorollf' filePath) |
+	('pianoroll' 'expr' scoreExpression)
 )
 \end{rail}
 \index{Common messages!set}
@@ -883,6 +884,7 @@ setMsg : 'set' (
 \item \OSC{pianoroll}: a piano roll defined by a GMN string.
 \item \OSC{pianorollstream}: a piano roll defined by a GMN stream (a GMN string that can be written in several times).
 \item \OSC{pianorollf}: a piano roll defined by a guido file (with ".gmn" extension) or by a midi file (with ".mid" extension). Warning: url forms are not supported for midi files.
+\item \OSC{pianoroll expr}: a piano roll defined by a \emph{score expression}. See section \fullref{scoreExpr} for the score expressions reference.
 \end{itemize}
 
 \example \\

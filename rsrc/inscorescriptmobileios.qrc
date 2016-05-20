@@ -1,0 +1,10 @@
+ 
+<RCC>
+    <qresource prefix="/scripts">
+	<file alias="Welcome.ibundle">../scripts/mobile/Welcome.ibundle</file>
+	<file alias="Multi-touch.inscore">../scripts/mobile/Multi-touch.inscore</file>
+	<file alias="Metro.inscore">../scripts/mobile/metro.inscore</file>
+	<file alias="Tempo.inscore">../scripts/mobile/Animated-cursor.inscore</file>
+	<file alias="Clock.ibundle">../scripts/mobile/Clock.ibundle</file>
+    </qresource>
+</RCC>

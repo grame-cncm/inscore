@@ -1,0 +1,6 @@
+This score makes use of remote resources:
+- a symbolic notation score that comes from 
+  inscore.grame.fr
+- a graphic score from wikimedia.org
+- a picture, also from wikimedia.org
+and of a local resource: this text.
