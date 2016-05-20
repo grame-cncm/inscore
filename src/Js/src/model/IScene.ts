@@ -17,6 +17,7 @@ class IScene extends IRectShape {
     }
 
     getRScale(): number 		{ return this.fPosition.getScale(); }    
+    getRSizeAsScale(): number 	{ return Math.min(this.fPosition.getWidth(), this.fPosition.getHeight()) / 2; }
     timeAble(): void 			{ }
 
     redraw(): void 				{ this.posPropagate(); }

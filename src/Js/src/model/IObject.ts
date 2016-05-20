@@ -197,6 +197,12 @@ abstract class IObject implements Tree<IObject> {
     getScene(): IObject 			{ return this.fParent.getScene(); }
 	// get the object scale recursively
     getRScale(): number 			{ return this.fPosition.getScale() * this.fParent.getRScale(); }
+	// get the object size as scale recursively - takes account of the smallest dimension
+    getRSizeAsScale(): number 		{ 
+    	let size = Math.min(this.fPosition.getWidth(), this.fPosition.getHeight()); 
+    	return size / 2 * this.fParent.getRSizeAsScale(); 
+    }
+
     getPosition(): {x: number, y: number } 			{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
     getSize():     {w: number, h: number } 			{ return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
