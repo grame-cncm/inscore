@@ -18,6 +18,8 @@ class VHtmlView extends VObjectView {
 
 	getParent() : VObjectView 			{ return this.fParent; }
 	getHtml() : HTMLElement 			{ return this.fHtmlElt; }
+	// nominal scale is implemented at scene view level
+	nominalScale() : number 			{ return 1 * this.fParent.nominalScale(); }
 
 	remove() : void 					{ this.fHtmlElt.parentNode.removeChild(this.fHtmlElt); }
 
@@ -32,7 +34,10 @@ class VHtmlView extends VObjectView {
 	}
 
 	// getScale is intended to catch the div using auto height and width (like text, html...)
-	getScale (obj: IObject): number { return obj.fPosition.getScale();  }
+	getScale (obj: IObject): number 	{ return obj.fPosition.getScale();  }
+	// getScale is intended to divs using auto height and width (like text, html...)
+	autoScale (obj: IObject): number 	{ return obj.getRScale() * obj.getParent().getRSizeAsScale() * this.nominalScale(); }
+
 	updatePos (obj: IObject): void {
 		let pos 	= obj.getPosition();
 		let size 	= obj.getSize();
@@ -44,10 +49,10 @@ class VHtmlView extends VObjectView {
         let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
 
     	let elt = this.getHtml();
-        elt.style.width  = w.toString()+"px";
-        elt.style.height = h.toString()+"px";
-        elt.style.left 	=  left.toString() + "px";
-        elt.style.top 	=  top.toString() + "px";
+        elt.style.width  = w +"px";
+        elt.style.height = h +"px";
+        elt.style.left 	=  left + "px";
+        elt.style.top 	=  top + "px";
         elt.style.zIndex = z.toString();
 		elt.style.transform  = this.getTransform(obj);
         elt.style.visibility  = obj.fPosition.getVisible() ? "inherit" : "hidden";
