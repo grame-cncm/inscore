@@ -4,8 +4,9 @@ color = 20 0 150;
 /ITL/scene/* del;
 /ITL/scene/welcome set txt "Welcome to INScore";
 /ITL/scene/welcome color $color;
-#/ITL/scene/welcome fontSize 32;
-#/ITL/scene/welcome fontWeight bold;
+/ITL/scene/welcome fontSize 40;
+/ITL/scene/welcome fontWeight bold;
+/ITL/scene/welcome fontWeight light;
 #/ITL/scene/welcome effect $shadow;
 /ITL/scene/welcome y -0.5;
 
@@ -17,7 +18,7 @@ color = 20 0 150;
 /ITL/scene/what2 set txt "interactive, augmented music scores.";
 /ITL/scene/what1 y -0.34;
 /ITL/scene/what2 y -0.28;
-#/ITL/scene/what* fontSize 18;
+/ITL/scene/what* fontSize 18;
 
 #/ITL/scene/score set gmn "[ a f# g ]";
 #/ITL/scene/score effect $shadow;
@@ -32,8 +33,8 @@ dy = 0.05;
 /ITL/scene/c[3-4] dy $dy;
 /ITL/scene/c4 dy $dy;
 /ITL/scene/c4 dy 0.01;
-#/ITL/scene/c4 fontWeight bold;
-#/ITL/scene/c4 fontSize 18;
+/ITL/scene/c4 fontWeight bold;
+/ITL/scene/c4 fontSize 18;
 /ITL/scene/c4 color $color;
 #/ITL/scene/c4 effect $shadow;
 

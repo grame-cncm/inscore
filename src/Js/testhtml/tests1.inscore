@@ -14,9 +14,15 @@ ceci est 1;
 /ITL/scene x 0.5 ;
 /ITL/scene z 1 ;
 /ITL/scene scale 1 ;
-/ITL/scene width 2.5 ;
+/ITL/scene scale 0.5 ;
+/ITL/scene width 2 ;
+/ITL/scene height 2 ;
 /ITL/scene width 1.5 ;
 /ITL/scene height 1.5 ;
+/ITL/scene angle 30 ;
+/ITL/scene angle 60 ;
+/ITL/scene angle 0 ;
+/ITL/scene get width height;
 
 /ITL/scene/* del;
 
@@ -34,7 +40,8 @@ ceci est 1;
 /ITL/scene/rect get angle;
 
 /ITL/scene/text set txtf "main.ts";
-/ITL/scene/text set img grame.png;
+/ITL/scene/img set img grame.png;
+/ITL/scene/img get width height;
 
 /ITL/scene/text set html "hello world";
 /ITL/scene/text set txt "hello world";
@@ -45,14 +52,18 @@ ceci est 1;
 /ITL/scene/line set line wa 1 0;
 /ITL/scene/line xorigin 1;
 /ITL/scene/line xorigin -1;
-/ITL/scene/line xorigin 0.5;
+/ITL/scene/line xorigin -0.5;
 /ITL/scene/line xorigin 0;
 /ITL/scene/line set ellipse 1 1;
 /ITL/scene/line color 0  0 0;
-/ITL/scene/line red 250;
+/ITL/scene/* red 250;
 /ITL/scene/line get color;
 /ITL/scene/line get;
 /ITL/scene/ellipse set ellipse 1 1;
+/ITL/scene/ellipse set ellipse 0.5 0.5;
+/ITL/scene/ellipse del;
+
+/ITL/scene/line set img grame.png;
 
 
 /ITL/scene/* del;
