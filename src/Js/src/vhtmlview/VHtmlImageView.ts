@@ -14,7 +14,6 @@ class VHtmlImageView extends VHtmlView {
         this.getHtml().className = "inscore-img";
     }    
 
-	getScale (obj: IObject): number { return obj.getRScale();  }
 	updateView	( obj: IObject) : void {
 		let img = <IImage>obj;
     	let elt = this.getHtml();
@@ -35,7 +34,7 @@ class VHtmlImageView extends VHtmlView {
 	}
 
 	getTransform (obj: IObject): string {
-		let scale 	= obj.getRScale();
+		let scale 	= this.autoScale(obj);
 		return super.getTransform(obj) + ` scale(${scale})`;
 	}
 }
