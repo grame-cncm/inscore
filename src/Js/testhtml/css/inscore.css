@@ -25,30 +25,28 @@
 
 .inscore-img {
 	position: absolute;
-	border: 2px blue solid;
+	border: 0px blue solid;
 }
 
 .inscore-ellipse {
 	position: absolute;
-	margin: 0px;
-	border: 2px blue solid;
-    background-color: rgb(220,250,200);
 }
 
-.inscore-txt 	{  position: absolute; border: 1px blue solid;}
+.inscore-txt 	{  position: absolute; border: 0px blue solid;}
+
 .inscore-txt > pre	{ 
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
 	font-style: normal; 
-	font-size: 12px; 
+	font-size: 14px; 
 }
 .inscore-html 	{ 
 	position: absolute; 
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
 	font-style: normal; 
-	font-size: 12px;
-	border: 1px green solid;
+	font-size: 14px;
+	border: 0px green solid;
 }
 
 .inscore-log 	{ 
