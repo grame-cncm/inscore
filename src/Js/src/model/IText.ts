@@ -6,6 +6,7 @@ class IText extends IObject {
 	protected fFontFamily: string;
 	protected fFontWeight: string;
 	protected fFontStyle: string;
+	protected fFontModified: boolean
     
     protected kTextType: string;
 
@@ -31,6 +32,7 @@ class IText extends IObject {
         this.fFontFamily = "Arial"
         this.fFontWeight = IText.kWeightNormal;
 	    this.fFontStyle = IText.kStyleNormal;
+	    this.fFontModified = false;
 
      	this.fGetMsgHandlerMap[""] = new TGetMsgHandlerText(this._getText());
         super.setHandlers();
@@ -43,31 +45,33 @@ class IText extends IObject {
         this.fMsgHandlerMap[kfontFamily_GetSetMethod]	    = new TMsgHandlerText(this._setFontFamily());
 
         this.fGetMsgHandlerMap[kfontStyle_GetSetMethod]	    = new TGetMsgHandlerText(this._getFontStyle());
-        this.fMsgHandlerMap[kfontStyle_GetSetMethod]	    = new TMsgHandlerText(this._setFontStyle());
+        this.fMsgHandlerMap[kfontStyle_GetSetMethod]	    = new TMethodHandler(this._setFontStyle());
 
         this.fGetMsgHandlerMap[kfontWeight_GetSetMethod]	= new TGetMsgHandlerText(this._getFontWeight());
-        this.fMsgHandlerMap[kfontWeight_GetSetMethod]	    = new TMsgHandlerText(this._setFontWeight());
+        this.fMsgHandlerMap[kfontWeight_GetSetMethod]	    = new TMethodHandler(this._setFontWeight());
     }    
 
 // GETS / SETS VALUES 
 //--------------------------------------------------------------    
+    fontModified(): boolean         { return this.fFontModified; }
     getText(): string               { return this.fText; }
     setText(txt: string): void      { this.fText = txt; }
     
     getFontSize(): number           { return this.fFontSize; }
-    setFontSize(s: number): void    { this.fFontSize = s; }
+    setFontSize(s: number): void    { this.fFontSize = s; this.fFontModified = true;}
     
     getFontFamily(): string         { return this.fFontFamily; }
-    setFontFamily(f: string): void  { this.fFontFamily = f; }
+    setFontFamily(f: string): void  { this.fFontFamily = f; this.fFontModified = true; }
     
     getFontStyle(): string          { return this.fFontStyle; } 
     setFontStyle(msg: IMessage): msgStatus {
         let n = msg.size();
-        if (n == 1) {
-            let fontStyle = msg.paramStr(0);
+        if (n == 2) {
+            let fontStyle = msg.paramStr(1);
             if(fontStyle.correct) {
                 if(fontStyle.value == IText.kStyleNormal || fontStyle.value == IText.kStyleItalic	|| fontStyle.value == IText.kStyleOblique) {
                     this.fFontStyle = fontStyle.value;
+                    this.fFontModified = true;
                     return msgStatus.kProcessed;
                 }
             }
@@ -78,12 +82,13 @@ class IText extends IObject {
     getFontWeight(): string         { return this.fFontWeight; }
     setFontWeight(msg: IMessage): msgStatus {
         let n = msg.size();
-        if (n == 1) {
-            let fontWeight = msg.paramStr(0);
+        if (n == 2) {
+            let fontWeight = msg.paramStr(1);
             if(fontWeight.correct) {
                 if(fontWeight.value == IText.kWeightNormal || fontWeight.value == IText.kWeightLight
                         || fontWeight.value == IText.kWeightDemiBold || fontWeight.value == IText.kWeightBold || fontWeight.value == IText.kWeightBlack) {
                     this.fFontWeight = fontWeight.value;
+                    this.fFontModified = true;
                     return msgStatus.kProcessed;
                 }
             }
@@ -96,16 +101,16 @@ class IText extends IObject {
     _getText(): GetStringMethod         { return () => this.fText; }
     
     _getFontSize() : GetNumMethod       { return () => this.fFontSize; }
-    _setFontSize() : SetNumMethod       { return () => this.fFontSize; }
+    _setFontSize() : SetNumMethod       { return (n) => this.setFontSize(n); }
     
     _getFontFamily() : GetStringMethod  { return () => this.fFontFamily; }
-    _setFontFamily() : SetStringMethod  { return () => this.fFontFamily; }
+    _setFontFamily() : SetStringMethod  { return (s) => this.setFontFamily(s); }
     
     _getFontStyle() : GetStringMethod   { return () => this.fFontStyle; }
-    _setFontStyle() : SetStringMethod   { return () => this.fFontStyle; }
+    _setFontStyle() : SetMsgMethod   	{ return (m) => this.setFontStyle(m); }
 
     _getFontWeight() : GetStringMethod  { return () => this.fFontWeight; }
-    _setFontWeight() : SetStringMethod  { return () => this.fFontWeight; }
+    _setFontWeight() : SetMsgMethod  	{ return (m) => this.setFontWeight(m); }
 
 // SET HANDLER
 //--------------------------------------------------------------    
