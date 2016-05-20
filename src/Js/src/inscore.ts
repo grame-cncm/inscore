@@ -36,11 +36,11 @@ class INScore {
 
 	static start (scene?: string) : void {
 		if (!INScore.fGlue) {
-			ITLOut.write ("INScore version " + INScore.version());
 			INScore.fGlue = new IGlue();
 			INScore.fGlue.initEventHandlers();
 		}
 		INScore.fGlue.start(scene);
+		ITLOut.write ("INScore version " + INScore.version());
 	}
 
 	static getRoot() : IAppl		{ return this.fAppl; }
