@@ -6,7 +6,7 @@ color = 20 0 150;
 /ITL/scene/welcome color $color;
 /ITL/scene/welcome fontSize 40;
 /ITL/scene/welcome fontWeight bold;
-/ITL/scene/welcome fontWeight light;
+
 #/ITL/scene/welcome effect $shadow;
 /ITL/scene/welcome y -0.5;
 

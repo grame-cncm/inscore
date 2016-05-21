@@ -50,9 +50,10 @@ ceci est 1;
 /ITL/scene scale 0.5;
 
 /ITL/scene/line set line wa 1 0;
-/ITL/scene/line xorigin 1;
-/ITL/scene/line xorigin -1;
-/ITL/scene/line xorigin -0.5;
+/ITL/scene/* scale 0.5;
+/ITL/scene/* xorigin 1;
+/ITL/scene/* xorigin -1;
+/ITL/scene/* xorigin -0.5;
 /ITL/scene/line xorigin 0;
 /ITL/scene/line set ellipse 1 1;
 /ITL/scene/line color 0  0 0;
@@ -61,6 +62,7 @@ ceci est 1;
 /ITL/scene/line get;
 /ITL/scene/ellipse set ellipse 1 1;
 /ITL/scene/ellipse set ellipse 0.5 0.5;
+/ITL/scene/ellipse x 0;
 /ITL/scene/ellipse del;
 
 /ITL/scene/line set img grame.png;
