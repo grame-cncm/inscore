@@ -8,6 +8,7 @@
 ///<reference path="VHtmlRectView.ts"/>
 ///<reference path="VHtmlSceneView.ts"/>
 ///<reference path="VHtmlTextView.ts"/>
+///<reference path="VHtmlGMNView.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
 class HtmlViewFactory implements ViewFactory {
@@ -38,6 +39,9 @@ class HtmlViewFactory implements ViewFactory {
             
             case "img":
                 return new VHtmlImageView (parent);
+                
+            case "gmn":
+                    return new VHtmlGMNView (parent);
                 
             default:
                 return null;
