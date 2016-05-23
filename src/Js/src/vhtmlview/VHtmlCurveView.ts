@@ -6,7 +6,7 @@ class VHtmlCurveView extends VHtmlView {
     
     constructor(parent: VHtmlView) {
         super( SvgFactory.createSvg('curve'), parent);
-        let div = this.getDiv();
+        let div = this.getHtml();
         div.className = "inscore-curve";  
     }    
 }

@@ -45,6 +45,11 @@ class IObjectFactory {
                 obj = new ILine(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
+                
+            case "gmn":
+                obj = new IGuidoCode(name, parent);                
+                this.createView(obj, parent.getView());    
+                break;                
                    
             case "scene":
                 obj = new IScene(name, parent);
