@@ -1,5 +1,5 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
-///<reference path="../externals/fraction/fraction.ts"/>
+///<reference path="../externals/fraction.ts"/>
 
 class IDate {
     

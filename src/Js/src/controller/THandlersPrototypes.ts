@@ -1,7 +1,7 @@
 
 ///<reference path="./IMessage.ts"/>
 ///<reference path="../lib/TEnums.ts"/>
-///<reference path="../externals/fraction/fraction.ts"/>
+///<reference path="../externals/fraction.ts"/>
 
 "use strict"
 

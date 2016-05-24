@@ -2,7 +2,7 @@
 ///<reference path="../controller/TGetMessageHandlers.ts"/>
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
-///<reference path="../externals/fraction/fraction.ts"/>
+///<reference path="../externals/fraction.ts"/>
 ///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
@@ -255,7 +255,8 @@ abstract class IObject implements Tree<IObject> {
     }
     
     //-----------------------------    
-    newData(state: boolean): void { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
+    newData     (state: boolean): void  { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
+    isNewData   (): boolean             { return this.fNewData; }
     
     setState (s: objState): void 	{ this.fState = s; }
     addState (s: objState): void 	{ this.fState |= s; }
