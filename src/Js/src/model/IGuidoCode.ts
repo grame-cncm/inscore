@@ -1,11 +1,11 @@
 ///<reference path="IObject.ts"/>
-///<reference path="../externals/guido/libGUIDOEngine.d.ts"/>
+///<reference path="../externals/libGUIDOEngine.d.ts"/>
 
 
 class IGuidoCode extends IObject { 
     protected kGuidoCodeType: string;
     
-    protected fGMN: string;
+    protected fGMNsvg: string;
     protected fPage: number;
     protected fPageFormat: Array<number>;
     
@@ -24,12 +24,12 @@ class IGuidoCode extends IObject {
         super.setHandlers();
     }
     
-    setGMN(gmn: string): void				            { this.fGMN = gmn; /*localMapModified(true);*/ }
+    setGMNsvg(gmn: string): void				        { this.fGMNsvg = gmn; /*localMapModified(true);*/ }
 	setPage(page: number): void							{ this.fPage = page; /*localMapModified(true);*/ }
 	setPageFormat(pageFormat: Array<number>): void	    { this.fPageFormat = pageFormat; /*localMapModified(true);*/ }
     //setdPage(dpage: number): void                       {}
     
-    getGMN(): string			        { return this.fGMN; }
+    getGMNsvg(): string			        { return this.fGMNsvg; }
 	getPage(): number					{ return this.fPage; }
 	getPageFormat(): Array<number>		{ return this.fPageFormat; }
 	//getPageCount(): number              {return}
@@ -55,8 +55,11 @@ class IGuidoCode extends IObject {
             else
                     fExprHandler.clearExpr();
             */
-            if (gmn.value != this.getGMN()) {
-                this.setGMN(gmn.value);
+            if (gmn.value != this.getGMNsvg()) {
+                let gr = guidoEngine.ar2gr(ar);
+                this.setGMNsvg(guidoEngine.gr2SVG(gr, 1, false, 0));
+                guidoEngine.freeGR(gr);
+                
                 status = msgStatus.kProcessed;
                 this.newData(true);
             }
@@ -64,6 +67,8 @@ class IGuidoCode extends IObject {
 
         }
         else status = msgStatus.kBadParameters;
+        guidoEngine.freeAR(ar);
+        guidoEngine.closeParser(p);
         return status;
     }
     
