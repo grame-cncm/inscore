@@ -20,8 +20,9 @@ color = 20 0 150;
 /ITL/scene/what2 y -0.28;
 /ITL/scene/what* fontSize 18;
 
-#/ITL/scene/score set gmn "[ a f# g ]";
+/ITL/scene/score set gmn "[ a f# g ]";
 #/ITL/scene/score effect $shadow;
+/ITL/scene/score y 0.03;
 
 dy = 0.05;
 /ITL/scene/c1 set txt "INScore is an open source project";
