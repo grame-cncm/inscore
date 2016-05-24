@@ -11,15 +11,20 @@ class VHtmlGMNView extends VHtmlSvg {
     }
       
     updateView	(obj: IObject) : void {           	
+        // si le code gmn a changé, on le charge
         let gmn = this.updateGMN(obj);
         if (gmn.modif) this.fSVG.innerHTML = gmn.gmnCode;
+              
+        // on récupère la taille de fSVG pour l'écrire dans le modele
+        this.updateObjectSize (obj);
         
-        let elt = this.getHtml();
-    	//this.updateSvgSize (elt.clientWidth, elt.clientHeight);   
-		this.updateObjectSize (obj);
+        // update de la couleur et de la position => on récupère dans le modèle pour
+        // pour changer les propriétés de la div
 		super.updateView(obj);
 
-
+        // mis à jour de fSVG        
+        let elt = this.getHtml(); 
+        this.updateSvgSize (elt.clientWidth, elt.clientHeight);
 
 /*
         elt.style.height = "auto";
