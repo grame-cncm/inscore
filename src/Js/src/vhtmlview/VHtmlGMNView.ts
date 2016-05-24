@@ -10,7 +10,7 @@ class VHtmlGMNView extends VHtmlSvg {
         this.getHtml().className = "inscore-gmn";
     }
       
-    updateView	(obj: IGuidoCode) : void {           	
+    updateView	(obj: IObject) : void {           	
         let gmn = this.updateGMN(obj);
         if (gmn.modif) this.fSVG.innerHTML = gmn.gmnCode;
         
@@ -33,17 +33,18 @@ class VHtmlGMNView extends VHtmlSvg {
 */        
 	}
        
-    updateGMN(obj: IGuidoCode) : { gmnCode: string, modif: boolean } {
+    updateGMN(obj: IObject) : { gmnCode: string, modif: boolean } {
         if (obj.isNewData()) {
-            return { gmnCode: obj.getGMNsvg(), modif: true }    
+            let gmn = <IGuidoCode>obj;
+            return { gmnCode: gmn.getGMNsvg(), modif: true }    
         } 
     
         return { gmnCode: null, modif: false };     
         }  
 
-	_updateView	( obj: IGuidoCode) : RefreshMethod { return () => this.updateView (obj); }
+	_updateView	( obj: IObject) : RefreshMethod { return () => this.updateView (obj); }
 
-	updateObjectSize ( obj: IGuidoCode) : void {
+	updateObjectSize ( obj: IObject) : void {
         let w = this.scene2RelativeWidth(this.fSVG.clientWidth);
         let h = this.scene2RelativeHeight(this.fSVG.clientHeight);
 		obj.fPosition.setWidth (w);
@@ -51,6 +52,7 @@ class VHtmlGMNView extends VHtmlSvg {
 		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
 	}
 }
+
              
  /*     
         let div = this.getHtml();
