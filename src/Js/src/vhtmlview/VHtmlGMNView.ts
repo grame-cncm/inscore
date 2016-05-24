@@ -4,20 +4,23 @@
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
 
 class VHtmlGMNView extends VHtmlSvg {
-    //fSVGContainer: SVGElement;
     
     constructor(parent: VHtmlView) {
         super(parent); 
-        //this.fSVGContainer = document.createElementNS('http://www.w3.org/2000/svg','svg');
         this.getHtml().className = "inscore-gmn";
-        //this.getHtml().appendChild(this.fSVGContainer);
     }
       
     updateView	(obj: IGuidoCode) : void {           	
-        this.fSVG.innerHTML = this.updateGMN(obj);
+        let gmn = this.updateGMN(obj);
+        if (gmn.modif) this.fSVG.innerHTML = gmn.gmnCode;
+        
         let elt = this.getHtml();
-    	this.updateSvgSize (elt.clientWidth*2, elt.clientHeight*2);   
+    	//this.updateSvgSize (elt.clientWidth, elt.clientHeight);   
 		this.updateObjectSize (obj);
+		super.updateView(obj);
+
+
+
 /*
         elt.style.height = "auto";
         elt.style.width = "auto";                
@@ -28,14 +31,27 @@ class VHtmlGMNView extends VHtmlSvg {
 		let h = this.relative2SceneHeight( obj.fPosition.getHeight() ) * scale;
         console.log('w : ' + w + ' / h : ' + h + ' / scale : ' + scale);
 */        
-		super.updateView(obj);
 	}
        
-    updateGMN(obj: IGuidoCode) : string {
+    updateGMN(obj: IGuidoCode) : { gmnCode: string, modif: boolean } {
         if (obj.isNewData()) {
-            return obj.getGMNsvg();    
+            return { gmnCode: obj.getGMNsvg(), modif: true }    
         } 
-               
+    
+        return { gmnCode: null, modif: false };     
+        }  
+
+	_updateView	( obj: IGuidoCode) : RefreshMethod { return () => this.updateView (obj); }
+
+	updateObjectSize ( obj: IGuidoCode) : void {
+        let w = this.scene2RelativeWidth(this.fSVG.clientWidth);
+        let h = this.scene2RelativeHeight(this.fSVG.clientHeight);
+		obj.fPosition.setWidth (w);
+		obj.fPosition.setHeight (h);
+		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
+	}
+}
+             
  /*     
         let div = this.getHtml();
         let gmn = obj.getGMNsvg();
@@ -52,17 +68,4 @@ class VHtmlGMNView extends VHtmlSvg {
 	    guidoEngine.freeGR(gr);
 	    guidoEngine.freeAR(ar);
         return result;
-*/       
-    return null;     
-    }  
-
-	_updateView	( obj: IGuidoCode) : RefreshMethod { return () => this.updateView (obj); }
-
-	updateObjectSize ( obj: IGuidoCode) : void {
-        let w = this.scene2RelativeWidth(this.fSVG.clientWidth);
-        let h = this.scene2RelativeHeight(this.fSVG.clientHeight);
-		obj.fPosition.setWidth (w);
-		obj.fPosition.setHeight (h);
-		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
-	}
-}
+*/   
