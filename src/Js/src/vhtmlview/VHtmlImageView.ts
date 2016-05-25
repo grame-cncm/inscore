@@ -14,6 +14,8 @@ class VHtmlImageView extends VHtmlView {
         this.getHtml().className = "inscore-img";
     }    
 
+	// getScale is intended to catch the div using auto height and width (like text, html...)
+	getScale (obj: IObject): number 	{ return 1;  }
 	updateView	( obj: IObject) : void {
 		let img = <IImage>obj;
     	let elt = this.getHtml();
