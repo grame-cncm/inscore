@@ -4,7 +4,7 @@
 shadow = shadow 5 5 0 0 0 75 20;
 color = 20 0 150;
 
-/ITL/scene/title set txt "Another permutation example !";
+/ITL/scene/title set txt "A permutation example !";
 /ITL/scene/title scale 3;
 /ITL/scene/title y -0.6;
 /ITL/scene/title color $color;

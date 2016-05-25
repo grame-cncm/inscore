@@ -11,10 +11,22 @@ gray = 200;
 
 ceci est 1;
 
+/ITL/scene/score set gmn "[a g e f ]";
+/ITL/scene/score get width height;
+/ITL/scene/score scale 2.6;
+/ITL/scene/score blue 0;
+/ITL/scene/score penWidth 1;
+/ITL/scene/score penColor 255 0 0;
+
+
+/ITL/scene/grame scale 2;
+/ITL/scene/logo scale 1;
+
+
 /ITL/scene x 0.5 ;
 /ITL/scene z 1 ;
 /ITL/scene scale 1 ;
-/ITL/scene scale 0.5 ;
+/ITL/scene scale 0.7 ;
 /ITL/scene width 2 ;
 /ITL/scene height 2 ;
 /ITL/scene width 1.5 ;
@@ -58,10 +70,11 @@ ceci est 1;
 /ITL/scene/text color 200 150 150;
 /ITL/scene scale 0.5;
 
-/ITL/scene/line set line wa 1 0;
+/ITL/scene/line set line wa 1 160;
 /ITL/scene/* scale 0.5;
 /ITL/scene/* xorigin 1;
-/ITL/scene/* xorigin -1;
+/ITL/scene/* xorigin 1;
+/ITL/scene/* angle 0;
 /ITL/scene/* xorigin -0.5;
 /ITL/scene/line xorigin 0;
 /ITL/scene/line set ellipse 1 1;
@@ -74,7 +87,8 @@ ceci est 1;
 /ITL/scene/ellipse x 0;
 /ITL/scene/ellipse del;
 
-/ITL/scene/line set img grame.png;
+/ITL/scene/img set img grame.png;
+/ITL/scene/img scale 1.5;
 
 
 /ITL/scene/* del;
