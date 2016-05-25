@@ -5,6 +5,8 @@
 
 function dropEvent(e: any) {
     dragOverEvent(e);
+	var targetScene = e.target.getAttribute("name");
+	console.log(targetScene);
 
     let data = e.dataTransfer.getData("Text");
 	if (data) {			// check if text has been dropped
@@ -30,24 +32,24 @@ function dropEvent(e: any) {
 				}
 				
 				else if ( ext == "png" || ext == "jpeg" ) {
-					post("/ITL/scene/" + name, ["set", "img", file]);	
+					post("/ITL/"+ targetScene + "/" + name, ["set", "img", file]);	
 				}
 				
 				else {
 					let file = <Blob>filelist[i]
 					let reader: FileReader = new FileReader();
 					reader.readAsText(file);
-					reader.onloadend = _process(reader);
+					reader.onloadend = _process(reader, targetScene);
 				}
 			}
 		}
 	}
 }	
 	
-function _process(reader : FileReader) : TLoadEndHandler { 
+function _process(reader : FileReader, targetScene: string) : TLoadEndHandler { 
    		return () => {
        		let data: string = reader.result;
-			post("/ITL/scene/" + name, ["set", "txt", data]);
+			post("/ITL/"+ targetScene + "/" + name, ["set", "txt", data]);
    		}
 }
 
