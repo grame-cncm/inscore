@@ -13,7 +13,7 @@
 
 class HtmlViewFactory implements ViewFactory {
     
-    create (type: string, parent?: VHtmlView): VObjectView {   
+    create (type: string, parent?: VHtmlView, name?: string): VObjectView {   
         switch (type) {
             case "ellipse":
                 return new VHtmlEllipseView (parent);
@@ -35,7 +35,7 @@ class HtmlViewFactory implements ViewFactory {
                 return new VHtmlHtmlView (parent);
             
             case "scene":
-                return new VHtmlSceneView ();
+                return new VHtmlSceneView (name);
             
             case "img":
                 return new VHtmlImageView (parent);

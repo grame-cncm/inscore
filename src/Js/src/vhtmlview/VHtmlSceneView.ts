@@ -24,14 +24,18 @@ class VHtmlSceneContainer extends VHtmlView {
 }
 
 class VHtmlSceneView extends VHtmlView {
-    protected fDoc: VHtmlSceneContainer;
+	protected fDoc: VHtmlSceneContainer;
     static fNominalSize = 800;
 
-    constructor() {
+    constructor(name: string) {
     	let parent = new VHtmlSceneContainer();
     	super (document.createElement('div'), parent);
     	this.fDoc = parent;
-        this.getHtml().className = "inscore-scene";
+        let div = this.getHtml();
+		div.className = "inscore-scene";
+		div.setAttribute("name", name); 
+		div.addEventListener("drop", dropEvent, false);
+		div.addEventListener("dragover", dragOverEvent, false);
     }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }

@@ -18,7 +18,7 @@ class IObjectFactory {
     
 	static createView(obj: IObject, parent?: VObjectView): void {
 		if (gCreateView) {
-			let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent);
+			let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent, obj.getName());
 			obj.setView (view);
 		}
     }
