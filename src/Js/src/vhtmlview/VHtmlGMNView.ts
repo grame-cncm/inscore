@@ -4,12 +4,14 @@
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
 
 class VHtmlGMNView extends VHtmlSvg {
+	static fGMNScale = 2.6;		// scaling applied to get homogeneous size with inscore app
     
     constructor(parent: VHtmlView) {
         super(parent); 
         this.getHtml().className = "inscore-gmn";
     }
       
+	getScale (obj: IObject): number 	{ return 1;  }
     updateView	(obj: IObject) : void {           	
         // si le code gmn a changé, on le charge
         let gmn = this.updateGMN(obj);
@@ -25,17 +27,6 @@ class VHtmlGMNView extends VHtmlSvg {
         // mis à jour de fSVG        
         let elt = this.getHtml(); 
         this.updateSvgSize (elt.clientWidth, elt.clientHeight);
-
-/*
-        elt.style.height = "auto";
-        elt.style.width = "auto";                
-*/
-/*
-        let scale = obj.fPosition.getScale();
-		let w = this.relative2SceneWidth( obj.fPosition.getWidth() ) * scale;
-		let h = this.relative2SceneHeight( obj.fPosition.getHeight() ) * scale;
-        console.log('w : ' + w + ' / h : ' + h + ' / scale : ' + scale);
-*/        
 	}
        
     updateGMN(obj: IObject) : { gmnCode: string, modif: boolean } {
@@ -45,7 +36,7 @@ class VHtmlGMNView extends VHtmlSvg {
         } 
     
         return { gmnCode: null, modif: false };     
-        }  
+    }
 
 	_updateView	( obj: IObject) : RefreshMethod { return () => this.updateView (obj); }
 
@@ -56,23 +47,9 @@ class VHtmlGMNView extends VHtmlSvg {
 		obj.fPosition.setHeight (h);
 		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
 	}
-}
 
-             
- /*     
-        let div = this.getHtml();
-        let gmn = obj.getGMNsvg();
-   
-        let guidoEngine = new Module.GuidoEngineAdapter;
-        guidoEngine.init();        
-        let p = guidoEngine.openParser();
-	    let ar = guidoEngine.string2AR(p, gmn);
-	    guidoEngine.closeParser(p);
-        
-        let gr = guidoEngine.ar2gr(ar);
-	    let result = guidoEngine.gr2SVG(gr, 1, false, 0);
-        
-	    guidoEngine.freeGR(gr);
-	    guidoEngine.freeAR(ar);
-        return result;
-*/   
+	getTransform (obj: IObject): string {
+		let scale 	= this.autoScale(obj) * VHtmlGMNView.fGMNScale;
+		return super.getTransform(obj) + ` scale(${scale})`;
+	}
+}
