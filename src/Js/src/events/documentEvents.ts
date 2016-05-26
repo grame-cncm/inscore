@@ -75,7 +75,7 @@ function getFileProperties(file: string): { name: string, ext: string } {
 function buildCorrectName(name: string): string {
 	let myRegex = /^[a-zA-Z-_][-_a-zA-Z0-9]+$/.test(name);
 	if (!myRegex) {
-		let first = name.substring[0, 1];
+		let first: string = name.substring(0, 1);
 		let myRegex = /^[a-zA-Z-_]$/.test(first);
 		if (!myRegex) {
 			name = name.substring(1, name.length)
