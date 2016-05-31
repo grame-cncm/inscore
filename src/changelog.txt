@@ -18,6 +18,8 @@ Version 1.18
 - new 'error' event supported at application level
 - new 'browse' message at application level to open a document in a web browser
 - web api documentation included in package
+- 'file' type translation operates now on low and upper case
+- file sharing activated on iOS (1.181)
 
 ----------------------------------------------------
 Version 1.17 - 2016-02-16
