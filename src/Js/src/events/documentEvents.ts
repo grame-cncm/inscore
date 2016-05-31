@@ -5,7 +5,19 @@
 
 function dropEvent(e: any) {
     dragOverEvent(e);
-	var targetScene = e.target.getAttribute("name");
+	var target = e.target;
+	var targetScene: string
+	var targetType: string = target.getAttribute("class");
+	
+	if (targetType == "inscore-scene") { targetScene = e.target.getAttribute("name"); }
+	
+	else {
+		while (targetType != "inscore-scene") {
+			target = target.parentNode;
+			targetType = target.getAttribute("class");
+		 }
+		targetScene = target.getAttribute("name"); 	 
+	}	
 	console.log(targetScene);
 
     let data = e.dataTransfer.getData("Text");
@@ -32,7 +44,7 @@ function dropEvent(e: any) {
 				}
 				
 				else if ( ext == "png" || ext == "jpeg" ) {
-					post("/ITL/"+ targetScene + "/" + name, ["set", "img", file]);	
+					INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", "img", file]);	
 				}
 				
 				else {
@@ -49,14 +61,9 @@ function dropEvent(e: any) {
 function _process(reader : FileReader, targetScene: string) : TLoadEndHandler { 
    		return () => {
        		let data: string = reader.result;
-			post("/ITL/"+ targetScene + "/" + name, ["set", "txt", data]);
+			INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", "txt", data]);
    		}
 }
-
-function post(address: string, params: Array<any>) {
-	INScore.postMessage (address, params)	
-}
-
 
 function dragOverEvent(e: any) {
     e.stopPropagation();
@@ -75,27 +82,21 @@ function getFileProperties(file: string): { name: string, ext: string } {
 function buildCorrectName(name: string): string {
 	let myRegex = /^[a-zA-Z-_][-_a-zA-Z0-9]+$/.test(name);
 	if (!myRegex) {
-		let first: string = name.substring(0, 1);
-		let myRegex = /^[a-zA-Z-_]$/.test(first);
-		if (!myRegex) {
-			name = name.substring(1, name.length)
+		let first: string = name[0];
+		let myRegex = /^[0-9]$/.test(first);
+		if (myRegex) {
+			name = '_' + name;
 		}
 		for (let i =1; i < name.length; i++ ) {
-		let myRegex = /^[-_a-zA-Z0-9]$/.test(name[i]);
-		if (!myRegex) {
-			name = name.replace(name[i], "")
-		}	
+			let myRegex = /^[-_a-zA-Z0-9]$/.test(name[i]);
+			if (!myRegex) {
+				name = name.replace(name[i], "_");
+			}	
 		}			
 	}	
 	console.log(name);
 	return name	
 }
-
-// controller le nom avec regExp
-// 
-
-
-
 
 /*
 function dropEvent(e: any) {
@@ -118,5 +119,24 @@ function dropEvent(e: any) {
 			} 
 		} 
     }
+}
+
+function buildCorrectName(name: string): string {
+	let myRegex = /^[a-zA-Z-_][-_a-zA-Z0-9]+$/.test(name);
+	if (!myRegex) {
+		let first: string = name.substring(0, 1);
+		let myRegex = /^[a-zA-Z-_]$/.test(first);
+		if (!myRegex) {
+			name = name.substring(1, name.length)
+		}
+		for (let i =1; i < name.length; i++ ) {
+		let myRegex = /^[-_a-zA-Z0-9]$/.test(name[i]);
+		if (!myRegex) {
+			name = name.replace(name[i], "")
+		}	
+		}			
+	}	
+	console.log(name);
+	return name	
 }
 */
