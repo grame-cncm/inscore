@@ -22,7 +22,7 @@
 
 /ITL/scene/title set txt "Welcome to JavaScript";
 /ITL/scene/title y -0.3;
-#/ITL/scene/title scale 3.;
+/ITL/scene/title scale 3.;
 
 <?javascript list ("/ITL/scene/r_", 15, shorthue); ?>
 <?javascript list ("/ITL/scene/rectr_", 15, longhue); ?>

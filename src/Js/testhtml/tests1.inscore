@@ -11,6 +11,7 @@ gray = 200;
 
 ceci est 1;
 
+/ITL/toto/score set gmn "[a g e f ]";
 /ITL/scene/score set gmn "[a g e f ]";
 /ITL/scene/score get width height;
 /ITL/scene/score scale 2.6;

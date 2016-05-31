@@ -36,10 +36,7 @@
 	border: 0px blue solid;
 }
 
-.inscore-ellipse {
-	position: absolute;
-}
-
+.inscore-ellipse { position: absolute; }
 .inscore-txt 	{  position: absolute; border: 0px blue solid;}
 
 .inscore-txt > pre	{ 
@@ -69,6 +66,6 @@
 
 .inscore-gmn {
 	position: absolute;
-	border: 1px blue solid;
+	border: 0px blue solid;
 }
 

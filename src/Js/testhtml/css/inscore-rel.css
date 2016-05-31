@@ -1,3 +1,15 @@
+@font-face {
+	font-family: CarlitoRegular;
+    src: url('../fonts/Carlito-Regular.ttf') format('truetype') ;   
+    font-family: 'Guido2';
+    src: url('../fonts/guido2-webfont.eot');
+    src: url('../fonts/guido2-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/guido2-webfont.woff') format('woff'),
+         url('../fonts/guido2-webfont.ttf') format('truetype'),
+         url('../fonts/guido2-webfont.svg#guido2regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 
 .inscore-scene {
 	margin: 0px;
@@ -9,7 +21,7 @@
 
 .toto  .inscore-scene {
 	margin: auto;
-	border: 2px blue solid;
+	border: 0px blue solid;
 }
 
 .inscore-rect {
@@ -20,19 +32,41 @@
     background-color: rgba(220,220,250,200);
 }
 
-.inscore-ellipse {
+.inscore-img {
 	position: absolute;
-	margin: 0px;
-	border: 2px blue solid;
-    background-color: rgb(220,250,200);
+	border: 0px blue solid;
 }
 
-.inscore-txt {
-	position: absolute;
-	border: 1px lightgray solid;
+.inscore-ellipse { position: absolute; }
+.inscore-txt 	{  position: absolute; border: 0px blue solid;}
+
+.inscore-txt > pre	{ 
+	font-family: 'CarlitoRegular'; 
+	font-weight: normal; 
+	font-style: normal; 
+	font-size: 14px; 
 }
 
-.inscore-html {
+.inscore-html 	{ 
+	position: absolute; 
+	font-family: 'CarlitoRegular'; 
+	font-weight: normal; 
+	font-style: normal; 
+	font-size: 14px;
+	border: 0px green solid;
+}
+
+.inscore-log 	{ 
+	margin: 10px 20px 10px 20px;
+}
+
+.inscore-log > pre	{ 
+	font-family: 'courier'; 
+	font-size: 10pt; 
+	color: rgb(120,120,120); 
+}
+
+.inscore-gmn {
 	position: absolute;
-	border: 1px lightgray solid;
+	border: 0px blue solid;
 }
