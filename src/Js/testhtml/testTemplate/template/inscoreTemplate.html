@@ -1,0 +1,85 @@
+
+<!-- ******************** Template INScore ******************** -->
+
+<template id="inscoreTemplate">
+	<style>
+		#inscoreCode {
+			float : left;
+			width: 25%;
+		}
+		#inscoreSandbox {
+	        width: 95%;
+	    }
+
+	    #text {
+	        font-weight: bold;
+	        font-family: Verdana;
+	        font-size: 70%;
+	        color: rgb(20, 0, 150);
+	    }
+	</style>
+
+	<div id="inscoreCode">	
+		<p id="text">Type your INScore code here :</p>
+		<textarea id="inscoreSandbox" rows="10"></textarea>
+	</div>
+</template>
+
+<script>
+	// importDoc references this document which is import by other 
+	var importDoc = document.currentScript.ownerDocument;
+	
+	// Find template in document
+	var tmpl = importDoc.querySelector('#inscoreTemplate');
+
+	// Create a prototype for a new element that extends HTMLElement
+	var inscoreProto = Object.create(HTMLElement.prototype);
+	
+	function initComponent() {
+		// Setup our Shadow DOM and clone the template for each element guido-viewer created
+		inscoreProto.createdCallback = function() {
+			root = this.createShadowRoot();
+			root.appendChild(document.importNode(tmpl.content, true));
+
+			var sandBox = root.querySelector("#inscoreSandbox");
+			
+			// Register evenement
+			sandBox.onkeyup = function(evt) {
+				processINScore(sandBox);
+			};
+			
+			// Get the text content of component
+			var initCode = this.textContent;
+			if(initCode) {
+				sandBox.value = initCode;
+				processINScore(sandBox);
+			}
+			
+			// Read attributes and display or not the textarea
+			var isINScoreCode = this.getAttribute("inscoreCode");
+			if (isINScoreCode == "false") {
+				root.querySelector("#inscoreCode").style.display="none";
+			}
+		};
+
+		// Register our new element
+		var inscore = document.registerElement('inscore-code', {'prototype': inscoreProto});
+	}
+	
+	function initINScore() {
+		StartINScore();
+	}
+		
+	function processINScore(sandBox) {		
+		let loader = new TILoader;
+		loader.process (sandBox.value, INScore.getRoot());
+	}
+	
+	$(document).ready(function(e) {
+		console.log('Initialisation');
+		initComponent();
+		initINScore();
+	});
+</script>
+
+<!-- ******************** End Template INScore ******************** -->
