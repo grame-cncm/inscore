@@ -5,10 +5,11 @@
 
 function dropEvent(e: any) {
     dragOverEvent(e);
-	var target = e.target;
-	var targetScene: string
-	var targetType: string = target.getAttribute("class");
+	let target = e.target;
+	let targetScene: string
+	let targetType: string = target.getAttribute("class");
 	
+	// take target scene
 	if (targetType == "inscore-scene") { targetScene = e.target.getAttribute("name"); }
 	
 	else {
@@ -18,51 +19,76 @@ function dropEvent(e: any) {
 		 }
 		targetScene = target.getAttribute("name"); 	 
 	}	
-	console.log(targetScene);
 
+	// check if text has been dropped
     let data = e.dataTransfer.getData("Text");
-	if (data) {			// check if text has been dropped
+	if (data) {			
 		let loader = new TILoader;
 		loader.process (data, INScore.getRoot());
 	}
 
-	else {				// check if files have been dropped
+	// check if files have been dropped
+	else {				
 		let filelist = e.dataTransfer.files;
 		if (!filelist) return;
 		
 		let filecount = filelist.length;
 		if (filecount > 0) {
 			for (let i = 0; i < filecount; i++ ) {
-				let file: string = filelist[i].name;
-				let properties = getFileProperties(file);
+				let fileName: string = filelist[i].name;
+				let properties = getFileProperties(fileName);
 				let name 	= properties.name;
-				let ext 	= properties.ext;
+				let ext 	= properties.ext.toLocaleLowerCase();
 				
-				if ( ext == "inscore" ) {
-					let loader = new TILoader;
-					loader.load(filelist[i], INScore.getRoot());	
-				}
+				let file = <Blob>filelist[i]
+				let reader: FileReader = new FileReader();				
 				
-				else if ( ext == "png" || ext == "jpeg" ) {
-					INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", "img", file]);	
-				}
+				switch (ext) {
+					case "txt": case "text": 
+						reader.readAsText(file);
+						reader.onloadend = _process(reader, targetScene, name, 'txt');
+						break;
+						
+					case "svg":  
+						reader.readAsText(file);
+						reader.onloadend = _process(reader, targetScene, name, 'svg');
+						break;
 				
-				else {
-					let file = <Blob>filelist[i]
-					let reader: FileReader = new FileReader();
-					reader.readAsText(file);
-					reader.onloadend = _process(reader, targetScene);
-				}
+					case "html": case "htm": 
+						reader.readAsText(file);
+						reader.onloadend = _process(reader, targetScene, name, 'html');
+						break;	
+						
+					case "gmn":  
+						reader.readAsText(file);
+						reader.onloadend = _process(reader, targetScene, name, 'gmn');
+						break;
+						
+					case "jpg": case "jpeg": case "gif": case "png": case "bmp": case "tiff": 
+						INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", "img", fileName]);
+						break;
+						
+					case "inscore":
+						let loader = new TILoader;
+						loader.load(filelist[i], INScore.getRoot());																	
+						break;
+						
+					default:
+						reader.readAsText(file);
+						reader.onloadend = _process(reader, targetScene, name, 'txt');					
+						break;
+				}					
+				// to do : xml, pianoroll, vidéo, faust		
 			}
 		}
 	}
 }	
 	
-function _process(reader : FileReader, targetScene: string) : TLoadEndHandler { 
-   		return () => {
-       		let data: string = reader.result;
-			INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", "txt", data]);
-   		}
+function _process(reader : FileReader, targetScene: string, name: string, type: string) : TLoadEndHandler { 
+	return () => {
+		let data: string = reader.result;
+		INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", type, data]);
+	}
 }
 
 function dragOverEvent(e: any) {
@@ -94,49 +120,5 @@ function buildCorrectName(name: string): string {
 			}	
 		}			
 	}	
-	console.log(name);
 	return name	
 }
-
-/*
-function dropEvent(e: any) {
-    dragOverEvent(e);
-
-    let data = e.dataTransfer.getData("Text");
-	if (data) {			// check if text has been dropped
-		let loader = new TILoader;
-		loader.process (data, INScore.getRoot());
-	}
-	else {				// check if files have been dropped
-	    let filelist =  e.dataTransfer.files;
-    	if (!filelist) return; 
-
-		let filecount = filelist.length;
-		if (filecount > 0) {                
-			for (let i=0; i < filecount; i++) {
-				let loader = new TILoader;
-				loader.load(filelist[i], INScore.getRoot());      
-			} 
-		} 
-    }
-}
-
-function buildCorrectName(name: string): string {
-	let myRegex = /^[a-zA-Z-_][-_a-zA-Z0-9]+$/.test(name);
-	if (!myRegex) {
-		let first: string = name.substring(0, 1);
-		let myRegex = /^[a-zA-Z-_]$/.test(first);
-		if (!myRegex) {
-			name = name.substring(1, name.length)
-		}
-		for (let i =1; i < name.length; i++ ) {
-		let myRegex = /^[-_a-zA-Z0-9]$/.test(name[i]);
-		if (!myRegex) {
-			name = name.replace(name[i], "")
-		}	
-		}			
-	}	
-	console.log(name);
-	return name	
-}
-*/
