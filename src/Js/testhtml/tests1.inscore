@@ -1,5 +1,7 @@
+192.168.1.93:7000/ITL forward '192.168.1.21';
 
 /ITL/scene/* del;
+/ITL/* scale 0.7;
 /ITL/scene parse error
 /ITL/toto scale 0.8 ;
 /ITL/scene ertiu -0.3 ;
