@@ -22,6 +22,7 @@
 .toto  .inscore-scene {
 	margin: auto;
 	border: 0px blue solid;
+    background-color: #aaa;
 }
 
 .inscore-rect {
