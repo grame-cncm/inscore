@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>INScore Javascript</title>
+
+    <link href="../css/inscore.css" rel="stylesheet">
+	<script src="../libGUIDOEngine.js"></script>
+	<script src="../mainhtml.js"></script>
+	<script src="inscore-code.js"></script>
+</head>
+
+<body style="margin: 20px">
+	<inscore-code>
+		&lt;?javascript
+			function list (address, n, fhue)
+			{
+				var j=1;
+				var out = new Array;
+				for (i=1; i <= n; i++) {
+					x = (i-(n/2)-0.5) * (1.8 / n);
+					hue = fhue(i);
+					out[j++]= address+i+" set rect 0.1 0.1;"; 
+					out[j++]= address+i+" x "+x+" ;" ;
+					out[j++]= address+i+" hsb "+hue+" 100 100;";
+				}
+				return out;
+			}
+
+			function shorthue (i, n)	{ return i * 10; }
+			function longhue (i, n)		{ return i * 20; }
+		?&gt;
+
+		/ITL/scene/* del;
+
+		/ITL/scene/title set txt "Welcome to JavaScript";
+		/ITL/scene/title y -0.3;
+		/ITL/scene/title scale 3.;
+
+		&lt;?javascript list ("/ITL/scene/r_", 15, shorthue); ?&gt;
+		&lt;?javascript list ("/ITL/scene/rectr_", 15, longhue); ?&gt;
+
+		/ITL/scene/rect* y 0.15 ;
+		/ITL/scene color 240 240 240;
+	</inscore-code>
+
+<script> start(); </script>
+</body>
+</html>
