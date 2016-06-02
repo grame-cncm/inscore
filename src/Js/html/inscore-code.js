@@ -18,7 +18,6 @@
 //		INScore.postMessage ("/ITL/scene", ["redraw"]);
 	}
 	
-	function start() {
-		StartINScore();
+	function start_inscore_code() {
 		initComponent();
 	};
