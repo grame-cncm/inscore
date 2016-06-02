@@ -12,6 +12,10 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
+Version 1.9
+- embed new guido engine (corrects a crash bug in beaming strategy)
+
+----------------------------------------------------
 Version 1.18
 - new 'tempo' message supported by all objects
 - new 'pageCount' event supported by symbolic score objects
