@@ -22,6 +22,10 @@ ceci est 1;
 /ITL/scene/score penColor 255 0 0;
 
 
+/ITL/scene/textFile scale 2;
+/ITL/scene/textFile y 1;
+
+
 /ITL/scene/grame scale 2;
 /ITL/scene/logo scale 1;
 
