@@ -1,0 +1,7 @@
+
+.inscore-scene {
+	border: 1px black solid;
+    box-shadow: 2px 2px 4px gray;
+    border-radius: 8px;
+    background-color: rgb(250,250,250);
+}

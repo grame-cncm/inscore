@@ -5,15 +5,19 @@
     <title>Welcome to INScore</title>
 
     <link href="../css/inscore.css" rel="stylesheet">
+    <link href="../css/inscore-scene-relative.css" rel="stylesheet">
 	<script src="../libGUIDOEngine.js"></script>
 	<script src="../inscore.js"></script>
 	<script src="inscore-code.js"></script>
 </head>
 
 <body style="margin: 20px">
+
 	<h4> Welcome to INScore </h4>
 	<p> quelques explications </p>
 	
+	<div>
+	<script> StartINScore(); </script>
 	<inscore-code>
 		color = 20 0 150;
 
@@ -63,9 +67,30 @@
 		/ITL/scene/* dy -0.12;
 		/ITL/scene width 1.7;
 		/ITL/scene height 1.7;
-		/ITL/scene y 0.1;
 	</inscore-code>
+	</div>
 
-<script> start(); </script>
+	<p> encore des  explications </p>
+
+	<div>
+	</div>
+
+	<div>
+	<script> StartINScore("toto"); </script>	
+	<inscore-code>
+		color = 20 0 150;
+		/ITL/toto/welcome set txt "Welcome to toto";
+		/ITL/toto/welcome color $color;
+		/ITL/toto/welcome fontSize 40;
+		/ITL/toto/welcome fontWeight bold;
+		/ITL/toto width 1.5;
+		/ITL/toto height 1.5;
+	</inscore-code>
+	</div>
+
+
+	<p> toujours des  explications </p>
+
+	<script> start_inscore_code(); </script>
 </body>
 </html>
