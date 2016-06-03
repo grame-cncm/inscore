@@ -71,16 +71,18 @@ IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(
 
 	// Method to manage font
 	fGetMsgHandlerMap[kfontSize_GetSetMethod]	= TGetParamMethodHandler<IText, int (IText::*)() const>::create(this, &IText::getFontSize);
-	fMsgHandlerMap[kfontSize_GetSetMethod]	= TSetMethodMsgHandler<IText, int>::create(this, &IText::setFontSize);
+	fMsgHandlerMap[kfontSize_GetSetMethod]		= TSetMethodMsgHandler<IText, int>::create(this, &IText::setFontSize);
 
 	fGetMsgHandlerMap[kfontFamily_GetSetMethod]	= TGetParamMethodHandler<IText, string (IText::*)() const>::create(this, &IText::getFontFamily);
 	fMsgHandlerMap[kfontFamily_GetSetMethod]	= TSetMethodMsgHandler<IText, string>::create(this, &IText::setFontFamily);
 
 	fGetMsgHandlerMap[kfontStyle_GetSetMethod]	= TGetParamMethodHandler<IText, string (IText::*)() const>::create(this, &IText::getFontStyle);
-	fMsgHandlerMap[kfontStyle_GetSetMethod]	= TMethodMsgHandler<IText>::create(this, &IText::setFontStyle);
+	fMsgHandlerMap[kfontStyle_GetSetMethod]		= TMethodMsgHandler<IText>::create(this, &IText::setFontStyle);
 
 	fGetMsgHandlerMap[kfontWeight_GetSetMethod]	= TGetParamMethodHandler<IText, string (IText::*)() const>::create(this, &IText::getFontWeight);
 	fMsgHandlerMap[kfontWeight_GetSetMethod]	= TMethodMsgHandler<IText>::create(this, &IText::setFontWeight);
+
+	fMsgHandlerMap[kwrite_SetMethod]			= TMethodMsgHandler<IText, MsgHandler::msgStatus (IText::*)(const IMessage*)>::create(this, &IText::writeMsg);
 }
 
 //--------------------------------------------------------------------------
@@ -124,6 +126,24 @@ MsgHandler::msgStatus IText::set( const IMessage* msg )
 	return status;
 }
 
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IText::writeMsg (const IMessage* msg)
+{
+	if ((msg->size() >= 1)) {
+		stringstream sstr;
+		
+		for (int i=0; i < msg->size(); i++) {
+			sstr << " ";
+			msg->print (sstr, i, 1, " ");
+		}
+		setText( fText + sstr.str() );
+		newData(true);
+		return MsgHandler::kProcessed;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IText::setFontWeight(const IMessage *msg)
 {
 	int n = msg->size();
@@ -140,6 +160,7 @@ MsgHandler::msgStatus IText::setFontWeight(const IMessage *msg)
 	return MsgHandler::kBadParameters;
 }
 
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IText::setFontStyle(const IMessage *msg)
 {
 	int n = msg->size();

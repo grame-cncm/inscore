@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.9
+- new 'write' message supported by text based objects
 - embed new guido engine (corrects a crash bug in beaming strategy)
 
 ----------------------------------------------------
