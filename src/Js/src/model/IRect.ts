@@ -2,11 +2,11 @@
 
 class IRect extends IRectShape {
     
-    protected kRectType: string;
+    //protected kRectType: string;
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kRectType = 'rect';
-        this.fTypeString = this.kRectType;      
+        //this.kRectType = 'rect';
+        this.fTypeString = kRectType;      
     } 
 }

@@ -3,12 +3,12 @@
 
 class IScene extends IRectShape {
     
-    protected kSceneType: string;
+    //protected kSceneType: string;
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kSceneType = 'scene';
-        this.fTypeString = this.kSceneType;        
+        //this.kSceneType = 'scene';
+        this.fTypeString = kSceneType;        
 
         this.fPosition.setWidth (2);
         this.fPosition.setHeight (2);

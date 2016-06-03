@@ -8,7 +8,7 @@ class IText extends IObject {
 	protected fFontStyle: string;
 	protected fFontModified: boolean
     
-    protected kTextType: string;
+    //protected kTextType: string;
 
     // Constants for font style and font weight.
 	static kStyleNormal = "normal" ;
@@ -22,8 +22,8 @@ class IText extends IObject {
         
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kTextType = 'txt';
-        this.fTypeString = this.kTextType;
+        //this.kTextType = 'txt';
+        this.fTypeString = kTextType;
         
         //Default Parameters
         this.fColor.setRGB([0, 0, 0]);
@@ -138,7 +138,7 @@ class IText extends IObject {
 // GETSET METHOD
 //--------------------------------------------------------------    
     getSet(): IMessage	{ 
-    	let a: Array<any> = [kset_SetMethod, this.kTextType];
+    	let a: Array<any> = [kset_SetMethod, this.fTypeString];
     	return new IMessage(this.getOSCAddress(), a.concat (this.fText) ); 
     }
 }

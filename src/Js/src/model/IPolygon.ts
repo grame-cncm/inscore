@@ -2,13 +2,13 @@
 ///<reference path="../lib/TPoint.ts"/>
 
 class IPolygon extends IObject {
-    protected kPolygonType: string;
+    //protected kPolygonType: string;
     protected fPoints: Array<TPoint>;
  
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kPolygonType = 'polygon';
-        this.fTypeString = this.kPolygonType;
+        //this.kPolygonType = 'polygon';
+        this.fTypeString = kPolygonType;
         this.fPoints = new Array<TPoint>();
         
         super.setHandlers();

@@ -17,13 +17,13 @@ class BezierCurve {
 
 class ICurve extends IObject {
     
-    protected kCurveType: string;
+    //protected kCurveType: string;
     protected fPoints: Array<BezierCurve>;
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kCurveType = 'curve';
-        this.fTypeString = this.kCurveType;
+        //this.kCurveType = 'curve';
+        this.fTypeString = kCurveType;
         this.fPoints = new Array<BezierCurve>();
         
         super.setHandlers();
@@ -85,7 +85,7 @@ class ICurve extends IObject {
     }
 
     getSet(): IMessage	{ 
-    	let a: Array<any> = [kset_SetMethod, this.kCurveType];
+    	let a: Array<any> = [kset_SetMethod, this.fTypeString];
     	return new IMessage(this.getOSCAddress(), a.concat (this.toArray()) ); 
     }
 }

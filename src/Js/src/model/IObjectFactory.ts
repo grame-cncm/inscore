@@ -26,57 +26,57 @@ class IObjectFactory {
     static createObj (name: string , type: string, parent: IObject): IObject {
         let obj: IObject;
         switch (type) {
-            case "ellipse":
+            case kEllipseType:
                 obj = new IEllipse(name, parent);
                 this.createView(obj, parent.getView());  
                 break;
             
-            case "rect":
+            case kRectType:
                 obj = new IRect(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
                 
-            case "curve":
+            case kCurveType:
                 obj = new ICurve(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
                 
-            case "line":
+            case kLineType:
                 obj = new ILine(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
                 
-            case "gmn":
+            case kGuidoCodeType:
                 obj = new IGuidoCode(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;                
                    
-            case "scene":
+            case kSceneType:
                 obj = new IScene(name, parent);
                 this.createView(obj);  
                 break;
                 
-            case "polygon":
+            case kPolygonType:
                 obj = new IPolygon(name, parent);
                 this.createView(obj, parent.getView());  
                 break;
                 
-            case "txt":
+            case kTextType:
                 obj = new IText(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 
-            case "txtf":
+            case kTextfType:
                 obj = new ITextf(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 
-            case "html":
+            case kHtmlType:
                 obj = new IHtml(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 
-            case "img":
+            case kImgType:
                 obj = new IImage(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    

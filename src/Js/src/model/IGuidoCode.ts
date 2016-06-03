@@ -3,7 +3,7 @@
 
 
 class IGuidoCode extends IObject { 
-    protected kGuidoCodeType: string;
+    //protected kGuidoCodeType: string;
     
     protected fGMNsvg: string;
     protected fPage: number;
@@ -14,8 +14,8 @@ class IGuidoCode extends IObject {
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kGuidoCodeType = 'gmn';
-        this.fTypeString = this.kGuidoCodeType;
+        //this.kGuidoCodeType = 'gmn';
+        this.fTypeString = kGuidoCodeType;
         
         this.fCurrentPagesCount = 1; 
         this.fPage = 1; 
