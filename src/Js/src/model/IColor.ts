@@ -1,5 +1,6 @@
 
 ///<reference path="../controller/THandlersPrototypes.ts"/>
+///<reference path="Constants.ts"/>
 
 class IColor {
 
@@ -72,13 +73,13 @@ class IColor {
     setParam( param: string , value:number , min:number , max:number , isHSV:boolean ) {
         if ( min <= value && value <= max ) {  
             switch(param) {
-                case "fH" : this.fHSB[0] = value; break;
-                case "fS" : this.fHSB[1] = value; break;
-                case "fV" : this.fHSB[2] = value; break;
-                case "fR" : this.fRGB[0] = value; break;
-                case "fG" : this.fRGB[1] = value; break;
-                case "fB" : this.fRGB[2] = value; break;
-                case "fA" : this.fA = value; break;
+                case kcolorHue      : this.fHSB[0] = value; break;
+                case kcolorSat      : this.fHSB[1] = value; break;
+                case kcolorVal      : this.fHSB[2] = value; break;
+                case kcolorRed      : this.fRGB[0] = value; break;
+                case kcolorGreen    : this.fRGB[1] = value; break;
+                case kcolorBlue     : this.fRGB[2] = value; break;
+                case kcolorAlpha    : this.fA = value; break;
                 default: console.log ("IColor setParam " + param + " not found");
             }
             this.fModified = true;
@@ -92,21 +93,21 @@ class IColor {
     _setRGB()	: SetColorMethod 		{ return (n) => this.setRGB(n); };
     _setHSB()	: SetColorMethod 		{ return (n) => this.setHSB(n); };
     
-    setH(h:number): void 		{ this.setParam("fH" , Math.floor(h), 0, 360, true); }  
-    setS(s:number): void 		{ this.setParam("fS", Math.floor(s), 0, 100, true); }
-    setV(b:number): void 		{ this.setParam("fV", Math.floor(b), 0, 100, true); }
+    setH(h:number): void 		{ this.setParam(kcolorHue , Math.floor(h), 0, 360, true); }  
+    setS(s:number): void 		{ this.setParam(kcolorSat , Math.floor(s), 0, 100, true); }
+    setV(b:number): void 		{ this.setParam(kcolorVal , Math.floor(b), 0, 100, true); }
     _setH()	: SetNumMethod 		{ return (n) => this.setH(n); };
     _setS()	: SetNumMethod 		{ return (n) => this.setS(n); };
     _setV()	: SetNumMethod 		{ return (n) => this.setV(n); };
 
-    setR(r:number): void 		{ this.setParam("fR", Math.floor(r), 0, 255, false); }
-    setG(g:number): void 		{ this.setParam("fG", Math.floor(g), 0, 255, false); }
-	setB(b:number): void 		{ this.setParam("fB", Math.floor(b), 0, 255, false); }
+    setR(r:number): void 		{ this.setParam(kcolorRed   , Math.floor(r), 0, 255, false); }
+    setG(g:number): void 		{ this.setParam(kcolorGreen , Math.floor(g), 0, 255, false); }
+	setB(b:number): void 		{ this.setParam(kcolorBlue  , Math.floor(b), 0, 255, false); }
     _setR()	: SetNumMethod 		{ return (n) => this.setR(n); };
     _setG()	: SetNumMethod 		{ return (n) => this.setG(n); };
     _setB()	: SetNumMethod 		{ return (n) => this.setB(n); };
 				
-	setA(a:number): void 		{ this.setParam("fA", Math.floor(a), 0, 255, false); }	
+	setA(a:number): void 		{ this.setParam(kcolorAlpha , Math.floor(a), 0, 255, false); }	
     _setA()	: SetNumMethod 		{ return (n) => this.setA(n); };
 		
 	dA(a:number): void 			{ this.setA( this.getA() + Math.floor(a) ); }	
