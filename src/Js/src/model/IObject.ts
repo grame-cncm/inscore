@@ -10,6 +10,7 @@
 ///<reference path="../lib/Tools.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
+///<reference path="Constants.ts"/>
 ///<reference path="Methods.ts"/>
 ///<reference path="Icolor.ts"/>
 ///<reference path="IDate.ts"/>
