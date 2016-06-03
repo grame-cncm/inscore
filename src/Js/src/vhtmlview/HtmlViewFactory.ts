@@ -15,32 +15,32 @@ class HtmlViewFactory implements ViewFactory {
     
     create (type: string, parent?: VHtmlView, name?: string): VObjectView {   
         switch (type) {
-            case "ellipse":
+            case kEllipseType:
                 return new VHtmlEllipseView (parent);
                             
-            case "rect":
+            case kRectType:
                 return new VHtmlRectView (parent);
                 
-            case "curve":
+            case kCurveType:
                 return new VHtmlCurveView (parent);
                 
-            case "line":
+            case kLineType:
                 return new VHtmlLineView (parent);
 
-            case "txt":
-            case "txtf":
+            case kTextType:
+            case kTextfType:
                 return new VHtmlTextView (parent);
 
-            case "html":
+            case kHtmlType:
                 return new VHtmlHtmlView (parent);
             
-            case "scene":
+            case kSceneType:
                 return new VHtmlSceneView (name);
             
-            case "img":
+            case kImgType:
                 return new VHtmlImageView (parent);
                 
-            case "gmn":
+            case kGuidoCodeType:
                     return new VHtmlGMNView (parent);
                 
             default:
