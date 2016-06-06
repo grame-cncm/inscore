@@ -15,6 +15,7 @@
 ///<reference path="Icolor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
+///<reference path="IPenControl.ts"/>
 
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -45,9 +46,11 @@ abstract class IObject implements Tree<IObject> {
     
     protected fObjectView: VObjectView;
     
-    fPosition: 	IPosition;
-    fDate: 		IDate;
-    fColor: 	IColor;
+    fPosition   : IPosition;
+    fDate       : IDate;
+    fColor      : IColor;
+    
+    fPenControl : IPenControl;
 
     
 // CONSTRUCTOR
@@ -65,6 +68,8 @@ abstract class IObject implements Tree<IObject> {
         this.fPosition = new IPosition;
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
+        
+        this.fPenControl = new IPenControl(kObjType);
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
@@ -85,6 +90,7 @@ abstract class IObject implements Tree<IObject> {
  	    this.colorAble();
 	    this.positionAble();
 	    this.timeAble();
+        this.penControlAble();
     }
     
     colorAble(): void {
@@ -166,6 +172,18 @@ abstract class IObject implements Tree<IObject> {
 
         this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
         this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime(this.fDate._getDuration());
+    }
+    
+    penControlAble() {
+        this.fMsgHandlerMap[kpenWidth_GetSetMethod]     = new TMsgHandlerNum(this.fPenControl._setPenWidth());
+        this.fMsgHandlerMap[kpenColor_GetSetMethod] 	= new TMsgHandlerColor(this.fPenControl.fPenColor._setRGB());
+        this.fMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TMsgHandlerNum(this.fPenControl._setPenStyle());
+        this.fMsgHandlerMap[kpenAlpha_GetSetMethod] 	= new TMsgHandlerNum(this.fPenControl._setPenAlpha());
+
+        this.fGetMsgHandlerMap[kpenWidth_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPenControl._getPenWidth());
+        this.fGetMsgHandlerMap[kpenColor_GetSetMethod] 	= new TGetMsgHandlerArray(this.fPenControl.fPenColor._getRGB());
+        this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPenControl._getPenStyle());
+        this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum(this.fPenControl._getPenAlpha());
     }
     
 //--------------------------------------------------------------  

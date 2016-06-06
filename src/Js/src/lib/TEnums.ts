@@ -15,3 +15,10 @@ enum objState {
     kMasterModified = 8, 
 }
 
+enum penStyle {
+    solid,
+    dash,
+    dot,
+    dashDot,
+    dashDotDot,
+}
