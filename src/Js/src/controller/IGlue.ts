@@ -19,9 +19,8 @@ class IGlue {
     }
 
     initEventHandlers(): void {
-		//document.addEventListener("drop", dropEvent, false);
-		document.addEventListener("dragover", dragOverEvent, false);
-		window.addEventListener("resize", resizeDocument);
+		document.addEventListener("dragover", inscore_dragOverEvent, false);
+		window.addEventListener("resize", inscore_resizeDocument);
     }
     
     start(scene?: string): void {
