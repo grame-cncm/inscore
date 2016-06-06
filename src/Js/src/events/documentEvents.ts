@@ -1,6 +1,7 @@
 
 ///<reference path="../inscore.ts"/>
 ///<reference path="../model/TILoader.ts"/>
+///<reference path="../model/Constants.ts"/>
 ///<reference path="../vhtmlview/VHtmlTools.ts"/>
 
 class dropLoader {
@@ -8,7 +9,7 @@ class dropLoader {
 	protected fTargetType	: string;
 	protected fTargetScene	: string;
 
-	protected fExtHandlers = new Array<string>();
+	protected fExtHandlers: Array<string> = new Array;
 	
 	constructor (target: any) {
 		this.fTarget 		= target;
@@ -18,19 +19,19 @@ class dropLoader {
 	}
 	
     setHandlers(): void {
-        this.fExtHandlers["txt"] 		= "txt";
-        this.fExtHandlers["text"] 		= "txt";
-        this.fExtHandlers["svg"]		= "svg";
-        this.fExtHandlers["html"] 		= "html";
-		this.fExtHandlers["htm"] 		= "html";
-		this.fExtHandlers["gmn"] 		= "gmn";
-		this.fExtHandlers["jpg"] 		= "img";
-		this.fExtHandlers["jpeg"] 		= "img";
-		this.fExtHandlers["gif"] 		= "img";
-		this.fExtHandlers["png"] 		= "img";
-		this.fExtHandlers["bmp"] 		= "img";
-		this.fExtHandlers["tiff"] 		= "img";
-		this.fExtHandlers["inscore"] 	= "inscore";		
+        this.fExtHandlers["txt"] 		= kTxtFile;
+        this.fExtHandlers["text"] 		= kTxtFile;
+        this.fExtHandlers["svg"]		= kSvgFile;
+        this.fExtHandlers["html"] 		= kHtmlFile;
+		this.fExtHandlers["htm"] 		= kHtmlFile;
+		this.fExtHandlers["gmn"] 		= kGmnFile;
+		this.fExtHandlers["jpg"] 		= kImgFile;
+		this.fExtHandlers["jpeg"] 		= kImgFile;
+		this.fExtHandlers["gif"] 		= kImgFile;
+		this.fExtHandlers["png"] 		= kImgFile;
+		this.fExtHandlers["bmp"] 		= kImgFile;
+		this.fExtHandlers["tiff"] 		= kImgFile;
+		this.fExtHandlers["inscore"] 	= kInscoreFile;		
     }
 		
 	processLoader (e: any) {
@@ -59,25 +60,24 @@ class dropLoader {
 					let file = <Blob>filelist[i]
 					let reader: FileReader = new FileReader();				
 					
-					if (this.fExtHandlers[ext] == "img") {
-						INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", "img", fileName]);
+					if (this.fExtHandlers[ext] == kImgFile) {
+						INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", kImgFile, fileName]);
 					}
 					
-					else if (this.fExtHandlers[ext] == "inscore") {
+					else if (this.fExtHandlers[ext] == kInscoreFile) {
 						let loader = new TILoader;
 						loader.load(filelist[i], INScore.getRoot());							
 					}
 					
 					else {
 						reader.readAsText(file);
-						if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = "txt"; }
+						if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTxtFile; }
 						reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
 					}	
 					// to do : xml, pianoroll, vidéo, faust		
 				}
 			}
 		}	
-
 	}
 
 	// take target scene
