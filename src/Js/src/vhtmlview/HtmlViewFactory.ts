@@ -9,6 +9,7 @@
 ///<reference path="VHtmlSceneView.ts"/>
 ///<reference path="VHtmlTextView.ts"/>
 ///<reference path="VHtmlGMNView.ts"/>
+///<reference path="VHtmlSvgView.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
 class HtmlViewFactory implements ViewFactory {
@@ -42,7 +43,10 @@ class HtmlViewFactory implements ViewFactory {
                 
             case kGuidoCodeType:
                     return new VHtmlGMNView (parent);
-                
+
+            case kSvgType:
+                    return new VHtmlSvgView (parent);
+                                    
             default:
                 return null;
         }

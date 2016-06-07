@@ -11,6 +11,7 @@ const kTextType     : string	= "txt";
 const kTextfType    : string	= "txtf";
 const kHtmlType     : string	= "html";
 const kImgType      : string	= "img";
+const kSvgType      : string	= "svg";
 
 const kObjType      : string	= "obj";
 

@@ -13,8 +13,16 @@ gray = 200;
 
 ceci est 1;
 
+/ITL/scene/svg set svg '<rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)">';
+
+/ITL/scene/svg2 set svg '  <ellipse cx="240" cy="50" rx="220" ry="30" style="fill:yellow" />
+  <ellipse cx="220" cy="50" rx="190" ry="20" style="fill:white" />';
+
+/ITL/scene/svg x 0;
+/ITL/scene/svg y 1;
+
 /ITL/toto/score set gmn "[a g e f ]";
-/ITL/scene/score set gmn "[a g e f ]";
+/ITL/scene/score set gmn "gmnFile.gmn";
 /ITL/scene/score get width height;
 /ITL/scene/score scale 2.6;
 /ITL/scene/score blue 0;
@@ -24,7 +32,7 @@ ceci est 1;
 /ITL/scene penWidth 6;
 /ITL/scene penColor 250 130 40;
 /ITL/scene penStyle dot;
-/ITL/scene penAlpha 1;
+/ITL/scene penAlpha 0.5;
 
 /ITL/scene/grame scale 2;
 /ITL/scene/textFile y 1;
