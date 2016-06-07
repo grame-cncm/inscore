@@ -10,6 +10,7 @@
 ///<reference path="VHtmlTextView.ts"/>
 ///<reference path="VHtmlGMNView.ts"/>
 ///<reference path="VHtmlSvgView.ts"/>
+///<reference path="VHtmlVideoView.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
 class HtmlViewFactory implements ViewFactory {
@@ -41,6 +42,9 @@ class HtmlViewFactory implements ViewFactory {
             case kImgType:
                 return new VHtmlImageView (parent);
                 
+            case kVideoType:
+                return new VHtmlVideoView (parent);    
+                            
             case kGuidoCodeType:
                     return new VHtmlGMNView (parent);
 

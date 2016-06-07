@@ -31,6 +31,14 @@ class dropLoader {
 		this.fExtHandlers["png"] 		= kImgFile;
 		this.fExtHandlers["bmp"] 		= kImgFile;
 		this.fExtHandlers["tiff"] 		= kImgFile;
+		this.fExtHandlers["wmv"] 		= kVideoFile;
+		this.fExtHandlers["avi"] 		= kVideoFile;
+		this.fExtHandlers["mpg"] 		= kVideoFile;
+		this.fExtHandlers["mpeg"] 		= kVideoFile;
+		this.fExtHandlers["mp4"] 		= kVideoFile;
+		this.fExtHandlers["m4v"] 		= kVideoFile;
+		this.fExtHandlers["mov"] 		= kVideoFile;
+		this.fExtHandlers["vob"] 		= kVideoFile;		
 		this.fExtHandlers["inscore"] 	= kInscoreFile;		
     }
 		

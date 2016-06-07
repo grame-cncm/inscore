@@ -82,7 +82,12 @@ class IObjectFactory {
                 obj = new IImage(name, parent);
                 this.createView(obj, parent.getView());  
                 break;  
-                  
+
+            case kVideoType:
+                obj = new IVideo(name, parent);
+                this.createView(obj, parent.getView());  
+                break;    
+                                  
             case kSvgType:
                 obj = new ISVG(name, parent);
                 this.createView(obj, parent.getView());  

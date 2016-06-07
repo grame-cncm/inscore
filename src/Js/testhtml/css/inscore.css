@@ -36,6 +36,11 @@
 	border: 0px blue solid;
 }
 
+.inscore-video {
+	position: absolute;
+	border: 0px blue solid;
+}
+
 .inscore-ellipse { position: absolute; }
 .inscore-txt 	{  position: absolute; border: 0px blue solid;}
 
