@@ -177,12 +177,12 @@ abstract class IObject implements Tree<IObject> {
     penControlAble() {
         this.fMsgHandlerMap[kpenWidth_GetSetMethod]     = new TMsgHandlerNum(this.fPenControl._setPenWidth());
         this.fMsgHandlerMap[kpenColor_GetSetMethod] 	= new TMsgHandlerColor(this.fPenControl.fPenColor._setRGB());
-        this.fMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TMsgHandlerNum(this.fPenControl._setPenStyle());
+        this.fMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TMsgHandlerText(this.fPenControl._setPenStyle());
         this.fMsgHandlerMap[kpenAlpha_GetSetMethod] 	= new TMsgHandlerNum(this.fPenControl._setPenAlpha());
 
         this.fGetMsgHandlerMap[kpenWidth_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPenControl._getPenWidth());
         this.fGetMsgHandlerMap[kpenColor_GetSetMethod] 	= new TGetMsgHandlerArray(this.fPenControl.fPenColor._getRGB());
-        this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPenControl._getPenStyle());
+        this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerText(this.fPenControl._getPenStyle());
         this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum(this.fPenControl._getPenAlpha());
     }
     

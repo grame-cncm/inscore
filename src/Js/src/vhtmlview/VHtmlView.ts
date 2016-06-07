@@ -43,13 +43,13 @@ class VHtmlView extends VObjectView {
 		let penWidth = obj.fPenControl.getPenWidth();
 		let penColor = obj.fPenControl.fPenColor.getRGBString();
 		let penStyle = obj.fPenControl.getPenStyle();
-		let penAlpha = obj.fPenControl.getPenAlpha();
+		let penAlpha = obj.fPenControl.getAlphaString();
     	
 		let elt = this.getHtml();
 		elt.style.borderWidth = penWidth + 'px'; 
 		elt.style.borderColor = penColor;
-		elt.style.borderStyle = penStyle + '';
-		//elt.style.border = penAlpha;
+		elt.style.borderStyle = penStyle;
+		elt.style.borderColor = penAlpha;
 		
 	}
 

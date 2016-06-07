@@ -18,11 +18,15 @@ ceci est 1;
 /ITL/scene/score get width height;
 /ITL/scene/score scale 2.6;
 /ITL/scene/score blue 0;
-/ITL/scene/score penWidth 1;
+/ITL/scene penStyle dash;
 /ITL/scene/score penColor 255 0 0;
 
+/ITL/scene penWidth 6;
+/ITL/scene penColor 250 130 40;
+/ITL/scene penStyle dot;
+/ITL/scene penAlpha 1;
 
-/ITL/scene/textFile scale 2;
+/ITL/scene/grame scale 2;
 /ITL/scene/textFile y 1;
 
 
@@ -46,6 +50,7 @@ ceci est 1;
 /ITL/scene/* del;
 
 
+
 /ITL/scene new;
 /ITL/scene/gmn set gmn '[ c d e f g a b c d ]';
 /ITL/scene/gmn z 2;
@@ -54,7 +59,10 @@ ceci est 1;
 /ITL/scene/gmn2 set gmn '[ f f e f]';
 
 
-/ITL/scene/rect set rect 1 1 ;
+/ITL/scene/rect set ellipse 1 1 ;
+/ITL/scene/rect red 200;
+/ITL/scene/rect penWidth 2;
+
 /ITL/scene/rect y 1;
 /ITL/scene/rect scale 1;
 /ITL/scene/rect width 0.2;
