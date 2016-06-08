@@ -42,8 +42,10 @@ class ILine extends IObject {
                 this.fWAMode = true;
                 this.fLWidth = a.value;
                 this.fLAngle = b.value;
-                let x = a.value * Math.cos(Math.PI * b.value / 180);
-                let y = a.value * Math.sin(Math.PI * b.value / 180);
+                 
+                if ( 180 <= Math.abs(this.fLAngle) && Math.abs(this.fLAngle) <= 360) { this.fLAngle -= 180; }                 
+                let x = Math.round(a.value * Math.cos(Math.PI * this.fLAngle / 180) * 1000) / 1000;
+                let y = Math.round(a.value * Math.sin(Math.PI * this.fLAngle / 180) * 1000) / 1000;
                 this.setPoint( new TPoint(x, y) );
             }
             else return msgStatus.kBadParameters;

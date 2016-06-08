@@ -21,6 +21,11 @@ ceci est 1;
 /ITL/scene/svg x 0;
 /ITL/scene/svg y 1;
 
+
+/ITL/scene/test set video "videoTest.mov";
+/ITL/scene/test x 1;
+/ITL/scene/test y 1;
+
 /ITL/toto/score set gmn "[a g e f ]";
 /ITL/scene/score set gmn "gmnFile.gmn";
 /ITL/scene/score get width height;
@@ -93,7 +98,19 @@ ceci est 1;
 /ITL/scene/text color 200 150 150;
 /ITL/scene scale 0.5;
 
-/ITL/scene/line set line wa 1 160;
+/ITL/scene/line set line wa 1 90;
+/ITL/scene/line x 0;
+/ITL/scene/line y 0;
+/ITL/scene/welcome y -0.3;
+
+
+/ITL/scene/line2 set line wa 2 0;
+/ITL/scene/line2 x 0;
+
+/ITL/scene/line3 set line xy 1 0;
+
+/ITL/scene/line3 set polygon 11 22 33; 
+
 /ITL/scene/* scale 0.5;
 /ITL/scene/* xorigin 1;
 /ITL/scene/* xorigin 1;
