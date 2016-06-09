@@ -28,6 +28,9 @@ class HtmlViewFactory implements ViewFactory {
                 
             case kLineType:
                 return new VHtmlLineView (parent);
+                
+            case kPolygonType:
+                return new VHtmlPolygonView (parent);                
 
             case kTextType:
             case kTextfType:

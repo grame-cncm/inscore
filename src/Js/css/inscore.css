@@ -22,6 +22,11 @@
 	border: 0px blue solid;
 }
 
+.inscore-polygon {
+	position: absolute;
+	border: 0px blue solid;
+}
+
 .inscore-img {
 	position: absolute;
 	border: 0px blue solid;
