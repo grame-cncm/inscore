@@ -68,8 +68,8 @@ class dropLoader {
 					let file = <Blob>filelist[i]
 					let reader: FileReader = new FileReader();				
 					
-					if (this.fExtHandlers[ext] == kImgFile) {
-						INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", kImgFile, fileName]);
+					if (this.fExtHandlers[ext] == kImgFile || this.fExtHandlers[ext] == kVideoFile ) {
+						INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
 					}
 					
 					else if (this.fExtHandlers[ext] == kInscoreFile) {
