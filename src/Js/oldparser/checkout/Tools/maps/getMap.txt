@@ -1,0 +1,5 @@
+expr script:  
+	Date.now = function() { return new Date().getTime(); };
+	"/ITL/log write " + new Date().getTime() + ";";
+
+expr ENDSCRIPT 

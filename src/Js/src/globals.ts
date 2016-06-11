@@ -1,0 +1,2 @@
+
+var gCreateView : boolean = false;

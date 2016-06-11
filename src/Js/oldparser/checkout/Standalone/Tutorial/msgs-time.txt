@@ -1,0 +1,18 @@
+/ITL/scene/*  del
+/ITL/tutorial  watch
+/ITL/scene/title  set,html,<h1>The message details</h1>
+/ITL/scene/title  y,-0.7
+/ITL/scene/title  scale,1.8
+/ITL/scene/msgsd3  set,htmlf,rsrc/msgsd3.html
+/ITL/scene/msgsd3  scale,2
+/ITL/scene/msgsd3  y,0
+/ITL/scene/msgsd3  xorigin,-1
+/ITL/scene/msgsd3  x,-0.75
+/ITL/scene  load,previous.inscore
+/ITL/scene  load,msgs-graph.inscore
+/ITL/scene/previous  watch,mouseDown,/ITL/scene  load,msgs-graph.inscore
+/ITL/scene  load,next.inscore
+/ITL/scene  load,components.inscore
+/ITL/scene/next  watch,mouseDown,/ITL/scene  load,components.inscore
+/ITL/scene  load,summary.inscore
+expr ENDSCRIPT 

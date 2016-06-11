@@ -1,0 +1,2 @@
+/ITL/scene  save,__tmp__.inscore
+expr ENDSCRIPT 

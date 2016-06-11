@@ -1,0 +1,11 @@
+/ITL/scene/b2  show,0
+/ITL/$scene/b1  set,ellipse,0.02,0.02
+/ITL/$scene/b1  color,255,0,0
+/ITL/$scene/b1  x,$sx
+/ITL/$scene/b1  y,$sy
+/ITL/$scene/b1  z,10
+localhost:7100/ty  $absy
+localhost:7100/tx  $absx
+/ITL/scene/score  watch,mouseDown,/ITL/$scene/b1  set,ellipse,0.02,0.02,/ITL/$scene/b1  color,255,0,0,/ITL/$scene/b1  x,$sx,/ITL/$scene/b1  y,$sy,/ITL/$scene/b1  z,10,localhost:7100/ty  $absy,localhost:7100/tx  $absx
+/ITL/scene/score  watch,mouseUp
+expr ENDSCRIPT 

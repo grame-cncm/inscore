@@ -1,0 +1,3 @@
+/ITL  get,version
+/ITL/scene/out  set,txt,INScore version is,/ITL  get,version
+expr ENDSCRIPT 

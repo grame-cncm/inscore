@@ -1,0 +1,5 @@
+expr script:  sinus("sig '[2]'", 50, 0.2); 
+/ITL/scene/scriptcomment  set,txt,Values have been sent to the 'h' (hue) signal using a projection string
+/ITL/scene/scriptcomment  scale,1.3
+/ITL/scene/scriptcomment  y,0.7
+expr ENDSCRIPT 

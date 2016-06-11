@@ -1,0 +1,38 @@
+/ITL/scene/*  del
+expr script:  
+	function grid(size, color1, color2) {
+		var out = new Array;
+		var n = 0;
+		var border = 0.0;
+		var w = 1.9 / size - border;
+		for (i=1; i <= size; i++) {
+			var x = (i-(size/2)-0.5) * (w + border);
+			 for (j=1; j <= size; j++) {
+				var y = (j-(size/2)-0.5) * (w + border);
+				var index = i+"_"+j;
+				out[n++]="/ITL/scene/r_"+index+" set 'rect' " + w + " " + w +";"; 
+				out[n++]="/ITL/scene/r_"+index+" x " + x +" ;" ;
+				out[n++]="/ITL/scene/r_"+index+" y " + y +" ;" ;
+				var color;
+				if (i & 1) {
+					if (j & 1) color = color1;
+					else color = color2;
+				}
+				else {
+					if (j & 1) color = color2;
+					else color = color1;
+				}
+				out[n++]="/ITL/scene/r_"+index+" color " + color[0] + " " + color[1] + " " + color[2] + ";";
+			}
+		}
+		return out;
+	}
+
+expr script:  grid ( 5, [106, 128, 206], [200, 200, 200]) 
+/ITL/scene/title  set,txt,Shadow and movement phenomena
+/ITL/scene/title  scale,2.7
+/ITL/scene/title  y,-0.84
+variabledecl: size = 0.6
+/ITL/scene/rect  set,rect,0.6,0.6
+/ITL/scene/rect  color,106,186,96
+expr ENDSCRIPT 

@@ -22,10 +22,9 @@ html, body {
 }
 
 .inputelement *{
-	display : table;
+	display : block; 
 	margin: auto;
 	margin-top : 0.5em;
-	padding : 0;
 }
 
 h1 {

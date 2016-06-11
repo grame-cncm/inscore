@@ -101,6 +101,9 @@ class IText : public IGraphicBasedObject
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+		/// \brief object \c 'write' message handler.
+		virtual MsgHandler::msgStatus writeMsg (const IMessage* msg);
 };
 
 /*! @} */

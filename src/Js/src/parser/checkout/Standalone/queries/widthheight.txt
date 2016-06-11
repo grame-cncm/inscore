@@ -1,0 +1,3 @@
+/ITL/scene/rect  get,width,height
+/ITL/scene/out  set,txt,The rectangle width and height are,/ITL/scene/rect  get,width,height
+expr ENDSCRIPT 

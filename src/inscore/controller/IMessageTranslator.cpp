@@ -24,6 +24,8 @@
 */
 
 #include <iostream>
+#include <string>
+#include <locale>
 
 #include "IMessageTranslator.h"
 #include "IMessage.h"
@@ -69,6 +71,15 @@ IMessageTranslator::IMessageTranslator()
 }
 
 //--------------------------------------------------------------------------
+static string tolower (const string& str) {
+	std::locale loc;
+	string outstr;
+	for (string::size_type i=0; i<str.length(); ++i)
+		outstr += std::tolower(str[i],loc);
+	return outstr;
+}
+
+//--------------------------------------------------------------------------
 SIMessage IMessageTranslator::translateFileType(const IMessage* msg)
 {
 	SIMessage translated;
@@ -76,7 +87,7 @@ SIMessage IMessageTranslator::translateFileType(const IMessage* msg)
 	if (msg->param(1, file)) {
 		size_t dotpos = file.find_last_of ('.');
 		if (dotpos != string::npos) {
-			string extension = file.substr(dotpos + 1);
+			string extension = tolower(file.substr(dotpos + 1));
 			map<string, string>::const_iterator t = fFileTypeTranslationTable.find(extension);
 			if (t != fFileTypeTranslationTable.end()) {
 				string type = t->second;

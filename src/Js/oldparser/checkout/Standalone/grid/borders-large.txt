@@ -1,0 +1,4 @@
+variabledecl: border = 0.15
+/ITL/scene/grid  xborder,0.15
+/ITL/scene/grid  yborder,0.15
+expr ENDSCRIPT 

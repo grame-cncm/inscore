@@ -1,0 +1,24 @@
+/ITL/scene/*  del
+/ITL/scene/title  set,txt,This script illustrates the 'frameless' option
+/ITL/scene/title  y,-0.9
+/ITL/scene/title  scale,2
+/ITL/scene/click  set,txt,Set frameless 1
+/ITL/scene/click  scale,2.5
+/ITL/scene/click  red,240
+/ITL/scene/click  watch,mouseEnter,/ITL/scene/click  red,240
+/ITL/scene/click  red,0
+/ITL/scene/click  watch,mouseLeave,/ITL/scene/click  red,0
+/ITL/scene/click  push
+/ITL/scene  frameless,1
+/ITL/scene/click  set,txt,Set frameless 0
+/ITL/scene/click  red,0
+/ITL/scene  frameless,0
+/ITL/scene/click  set,txt,Set frameless 1
+/ITL/scene/click  red,0
+/ITL/scene/click  pop
+/ITL/scene/click  watch,mouseDown,/ITL/scene  frameless,0,/ITL/scene/click  set,txt,Set frameless 1,/ITL/scene/click  red,0,/ITL/scene/click  pop
+/ITL/scene/click  watch,mouseDown,/ITL/scene/click  push,/ITL/scene  frameless,1,/ITL/scene/click  set,txt,Set frameless 0,/ITL/scene/click  red,0,/ITL/scene/click  watch,mouseDown,/ITL/scene  frameless,0,/ITL/scene/click  set,txt,Set frameless 1,/ITL/scene/click  red,0,/ITL/scene/click  pop
+/ITL/scene/comment  set,txt,With Qt version 5.3, a new click on the window seems 
+necessary for a correct distribution of events to objects.
+/ITL/scene/comment  y,0.8
+expr ENDSCRIPT 

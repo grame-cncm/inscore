@@ -1,0 +1,58 @@
+/ITL/scene/*  del
+/ITL/scene  width,1
+/ITL/scene  height,1.1
+/ITL/scene/score  set,gmnf,rsrc/bach.gmn
+/ITL/scene/score  columns,1
+/ITL/scene/score  scale,0.33
+/ITL/scene/score  map,system
+variabledecl: size = 4
+variabledecl: transp = 200
+/ITL/scene/rect  set,rect,4,4
+/ITL/scene/rect  color,180,180,240,200
+variabledecl: size = 0.8
+/ITL/scene/rect/r1  set,rect,0.8,0.8
+/ITL/scene/rect/r1  color,180,240,240,200
+/ITL/scene/rect/r1  x,-1
+/ITL/scene/rect/r1  y,-1
+variabledecl: size = 1
+/ITL/scene/rect/o1  set,ellipse,1,1
+/ITL/scene/rect/o1  color,240,180,240,200
+/ITL/scene/rect/o1  x,1
+/ITL/scene/rect/o1  y,1
+/ITL/scene/rect  scale,0.1
+/ITL/scene/sync  rect,score:system
+/ITL/scene/title  set,txt,Sync,object,with,childrens
+/ITL/scene/title  y,-0.9
+/ITL/scene/title  scale,3
+/ITL/scene/legend1  set,txt,The synchronized object is an object with 2 childrens.
+/ITL/scene/legend2  set,txt,Click - or + to move it in time and the childrens in space.
+/ITL/scene/legend1  y,0.87
+/ITL/scene/legend2  y,0.92
+/ITL/scene/legend1  scale,1.3
+/ITL/scene/legend2  scale,1.1
+/ITL/scene/mleft  set,txt,-
+/ITL/scene/mright  set,txt,+
+/ITL/scene/mleft  x,-0.7
+/ITL/scene/mright  x,0.7
+variabledecl: scale = 3
+/ITL/scene/m*  scale,3
+/ITL/scene/m*  y,0.9
+variabledecl: down = 0.1
+variabledecl: up = -0.1
+/ITL/scene/$self  red,200
+/ITL/scene/$self  scale,4
+/ITL/scene/m*  watch,mouseEnter,/ITL/scene/$self  red,200,/ITL/scene/$self  scale,4
+/ITL/scene/$self  red,0
+/ITL/scene/$self  scale,3
+/ITL/scene/m*  watch,mouseLeave,/ITL/scene/$self  red,0,/ITL/scene/$self  scale,3
+/ITL/scene/rect  ddate,-1,16
+/ITL/scene/rect/r1  dy,-0.1
+/ITL/scene/rect/o1  dy,0.1
+/ITL/scene/mleft  watch,mouseDown,/ITL/scene/rect  ddate,-1,16,/ITL/scene/rect/r1  dy,-0.1,/ITL/scene/rect/o1  dy,0.1
+/ITL/scene/rect  ddate,1,16
+/ITL/scene/rect/r1  dy,0.1
+/ITL/scene/rect/o1  dy,-0.1
+/ITL/scene/mright  watch,mouseDown,/ITL/scene/rect  ddate,1,16,/ITL/scene/rect/r1  dy,0.1,/ITL/scene/rect/o1  dy,-0.1
+/ITL/scene/rect  date,0
+/ITL/scene/rect  watch,timeEnter,-200,0,/ITL/scene/rect  date,0
+expr ENDSCRIPT 

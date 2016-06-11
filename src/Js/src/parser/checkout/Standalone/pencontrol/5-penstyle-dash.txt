@@ -1,0 +1,2 @@
+/ITL/scene/rect  penStyle,dash
+expr ENDSCRIPT 
