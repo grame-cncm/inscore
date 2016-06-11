@@ -140,7 +140,7 @@ void VVideoView::updateView( IVideo * video  )
 		fVideoItem->media()->seek( pos );
 #else
 		if (pos < 0 ) pos = 0;
-		if (pos > fMediaPlayer.duration()) pos = fMediaPlayer.duration();
+		if (pos > fMediaPlayer.duration()) pos = fMediaPlayer.duration()-1;
 		if (size != fVideoItem->size()) fVideoItem->setSize( size );
 		fMediaPlayer.play ();
 		fMediaPlayer.setPosition( pos );
