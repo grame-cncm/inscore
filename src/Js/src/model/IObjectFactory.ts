@@ -11,6 +11,7 @@
 ///<reference path="IText.ts"/>
 ///<reference path="ITextf.ts"/>
 ///<reference path="IGuidoCode.ts"/>
+///<reference path="IGuidoPianoRoll.ts"/>
 ///<reference path="ISVG.ts"/>
 ///<reference path="Methods.ts"/>
 
@@ -49,9 +50,14 @@ class IObjectFactory {
                 break;
                 
             case kGuidoCodeType:
-                obj = new IGuidoCode(name, parent);                
+                obj = new IGuidoCode(name, parent); 
                 this.createView(obj, parent.getView());    
-                break;                
+                break;   
+                
+            case kGuidoPianoRollType:
+                obj = new IGuidoPianoRoll(name, parent); 
+                this.createView(obj, parent.getView());    
+                break;                              
                    
             case kSceneType:
                 obj = new IScene(name, parent);

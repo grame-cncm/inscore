@@ -9,7 +9,10 @@
 ///<reference path="VHtmlSceneView.ts"/>
 ///<reference path="VHtmlTextView.ts"/>
 ///<reference path="VHtmlGMNView.ts"/>
+///<reference path="VHtmlGMNView.ts"/>
+///<reference path="VHtmlPianoRollView.ts"/>
 ///<reference path="VHtmlSvgView.ts"/>
+///<reference path="VHtmlPolygonView.ts"/>
 ///<reference path="VHtmlVideoView.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
@@ -50,6 +53,9 @@ class HtmlViewFactory implements ViewFactory {
                             
             case kGuidoCodeType:
                     return new VHtmlGMNView (parent);
+                    
+            case kGuidoPianoRollType:
+                    return new VHtmlPianoRollView (parent);                    
 
             case kSvgType:
                     return new VHtmlSvgView (parent);

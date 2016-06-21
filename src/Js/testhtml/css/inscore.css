@@ -79,6 +79,11 @@
 	border: 0px blue solid;
 }
 
+.inscore-pianoroll {
+	position: absolute;
+	border: 0px blue solid;
+}
+
 .inscore-svg {
 	position: absolute;
 	border: 0px blue solid;
