@@ -31,6 +31,10 @@ ceci est 1;
 /ITL/scene/score blue 0;
 /ITL/scene/score penColor 255 0 0;
 
+/ITL/scene/score set pianoroll "[f g b/8 d f/4 e]";
+/ITL/scene/score set pianoroll "[a]";
+
+
 /ITL/scene penWidth 6;
 /ITL/scene penColor 250 130 40;
 /ITL/scene penStyle dot;
