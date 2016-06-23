@@ -12,6 +12,7 @@
 ///<reference path="ITextf.ts"/>
 ///<reference path="IGuidoCode.ts"/>
 ///<reference path="IGuidoPianoRoll.ts"/>
+///<reference path="IWebSocket.ts"/>
 ///<reference path="ISVG.ts"/>
 ///<reference path="Methods.ts"/>
 
@@ -97,7 +98,12 @@ class IObjectFactory {
             case kSvgType:
                 obj = new ISVG(name, parent);
                 this.createView(obj, parent.getView());  
-                break;       
+                break;  
+
+            case kWebSocketType:
+                obj = new IWebSocket(name, parent);
+                this.createView(obj, parent.getView());  
+                break;                        
                           
             default:
                 break;

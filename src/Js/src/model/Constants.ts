@@ -14,6 +14,7 @@ const kHtmlType             : string	= "html";
 const kImgType              : string	= "img";
 const kVideoType            : string	= "video";
 const kSvgType              : string	= "svg";
+const kWebSocketType       : string	= "websocket";
 
 const kObjType              : string	= "obj";
 
