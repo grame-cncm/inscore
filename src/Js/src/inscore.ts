@@ -81,7 +81,7 @@ class INScore {
 	// ------------------------------------------------------------
 	// static methods
 	// ------------------------------------------------------------
-	static version () : number { return INScore.fVersion; }
+	static getVersion () : number { return INScore.fVersion; }
 
 	static start (scene?: string) : void {
 		if (!INScore.fGlue) {
@@ -89,7 +89,7 @@ class INScore {
 			INScore.fGlue.initEventHandlers();
 		}
 		INScore.fGlue.start(scene);
-		ITLOut.write ("INScore version " + INScore.version());
+		ITLOut.write ("INScore version " + INScore.getVersion());
 	}
 
 	static getRoot() : IAppl		{ return this.fAppl; }
