@@ -7,6 +7,53 @@
 ///<reference path="lib/TEnums.ts"/>
 ///<reference path="model/IAppl.ts"/>
 
+///<reference path="model/IObject.ts"/>
+//<reference path="parser/INScoreParser.js"/>
+
+declare var INScoreParser: any;
+
+interface TLoadEndHandler 		{ (): void; }
+
+
+class TILoader {
+        
+    protected parse(msg: string): Array<any> {
+        try {
+	        INScoreParser.parse(msg);
+        	return INScoreParser.get();  
+	    }
+	    catch (e) {
+//	    	console.log("parse exception");
+	    }
+        return [];  
+    }
+
+   process(buffer: string, root: IObject) {
+        let msgs = this.parse(buffer);
+        if (!msgs) return;
+        for (let i = 0; i < msgs.length; i++) {
+            let address = msgs[i].address.osc;
+            let params = msgs[i].params;
+            let msg = new IMessage(msgs[i].address.osc, msgs[i].params);         
+            INScore.checkStatus (root.process( msg), msg);
+        }    
+    }
+
+   protected _process(reader : FileReader, client: IObject) : TLoadEndHandler { 
+   		return () => {
+       		let data: string = reader.result;
+   			this.process(data, client); 
+   		}
+   	}
+
+    load (file: Blob, client: IObject): void {
+        let reader: FileReader = new FileReader();
+        reader.readAsText(file);
+        reader.onloadend = this._process(reader, client);
+    }    
+}
+
+//*******************************
 
 class INScore {
 	private static fVersion: number = 0.5;
@@ -53,6 +100,12 @@ class INScore {
 	static postMessage (address: string, params: Array<any>) : void {
     	let msg = new IMessage (address, params);
     	INScore.checkStatus (this.fAppl.process (msg), msg);
+	}
+
+	static load (data: any): void {
+		let loader = new TILoader;
+		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
+		else 							{ loader.load (data, this.getRoot()); }
 	}
 }
 

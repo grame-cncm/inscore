@@ -1,6 +1,5 @@
 
 ///<reference path="../inscore.ts"/>
-///<reference path="../model/TILoader.ts"/>
 ///<reference path="../model/Constants.ts"/>
 ///<reference path="../vhtmlview/VHtmlTools.ts"/>
 
@@ -15,10 +14,10 @@ class dropLoader {
 		this.fTarget 		= target;
 		this.fTargetType 	= target.getAttribute("class");	
 		
-		this.setHandlers();	
+		this.buildObjectExtensions();	
 	}
 	
-    setHandlers(): void {
+    buildObjectExtensions(): void {
         this.fExtHandlers["txt"] 		= kTxtFile;
         this.fExtHandlers["text"] 		= kTxtFile;
         this.fExtHandlers["svg"]		= kSvgFile;
@@ -47,10 +46,7 @@ class dropLoader {
 
 		// check if text has been dropped
 		let data = e.dataTransfer.getData("Text");
-		if (data) {			
-			let loader = new TILoader;
-			loader.process (data, INScore.getRoot());
-		}
+		if (data) { INScore.load(data); }
 
 		// check if files have been dropped
 		else {	
@@ -72,17 +68,14 @@ class dropLoader {
 						INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
 					}
 					
-					else if (this.fExtHandlers[ext] == kInscoreFile) {
-						let loader = new TILoader;
-						loader.load(filelist[i], INScore.getRoot());							
-					}
+					else if (this.fExtHandlers[ext] == kInscoreFile) { INScore.load(filelist[i]); }
 					
 					else {
 						reader.readAsText(file);
 						if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTxtFile; }
 						reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
 					}	
-					// to do : xml, pianoroll, vidéo, faust		
+					// to do : xml, faust		
 				}
 			}
 		}	
