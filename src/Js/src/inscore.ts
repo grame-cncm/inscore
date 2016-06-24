@@ -60,6 +60,7 @@ class INScore {
 	private static fAppl: IAppl;
 	private static fGlue: IGlue;
 	private static fErrStrings = new Array<string>();
+	private static fStack: Array<any>;
 
 	protected static status2string (err: msgStatus) : string {
 		let str = this.fErrStrings[err];
@@ -69,6 +70,7 @@ class INScore {
 	// ------------------------------------------------------------
 	constructor (root: IAppl)		{ 
 		INScore.fAppl = root; 
+		INScore.fStack = new Array<any>(); 
 		INScore.fErrStrings[msgStatus.kBadAddress] = "bad OSC address";
 		INScore.fErrStrings[msgStatus.kProcessed] = "processed";
 		INScore.fErrStrings[msgStatus.kProcessedNoChange] = "processed without change";
@@ -102,10 +104,17 @@ class INScore {
     	INScore.checkStatus (this.fAppl.process (msg), msg);
 	}
 
-	static load (data: any): void {
+	static getStack(): Array<any> 	{ return this.fStack; }
+	static stackPop(): void 		{ this.fStack.pop(); }
+
+	static processData(data: any) {
 		let loader = new TILoader;
 		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
 		else 							{ loader.load (data, this.getRoot()); }
+	}
+
+	static load (data: any): void {
+		INScore.fStack.push(data);
 	}
 }
 

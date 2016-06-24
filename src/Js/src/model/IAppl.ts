@@ -1,6 +1,7 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="IObject.ts"/>
+///<reference path="Constants.ts"/>
 ///<reference path="IProxy.ts"/>
 ///<reference path="IApplStaticNodes.ts"/>
 
@@ -8,14 +9,16 @@ class IAppl extends IObject {
  
     protected kApplType: string;
     protected fReceivedMsgs: number;
-    protected fRate: number;
+    protected fViewRate: number;
+    protected fModelRate: number;
     
     constructor() {
         super('ITL');
-        this.kApplType = 'IAppl';
-        this.fTypeString = 'IAppl';
+        this.kApplType = kApplType;
+        this.fTypeString = kApplType;
         this.fReceivedMsgs = 0;
-        this.fRate = 100;
+        this.fViewRate = 100;
+        this.fModelRate = 1000;
     } 
 
     createStaticNodes() : void {
@@ -26,8 +29,10 @@ class IAppl extends IObject {
     getAppl() : IObject					{ return this; }
     getSet(): IMessage					{ let msg : IMessage; return msg; }
     getOSCAddress(): string 			{ return "/ITL"; }
-    getRate(): number 					{ return this.fRate; }
-    setRate(rate: number): void 		{ this.fRate = rate; }
+    getViewRate(): number 					{ return this.fViewRate; }
+    setViewRate(rate: number): void 		{ this.fViewRate = rate; }
+    getModelRate(): number 					{ return this.fModelRate; }
+    setModelRate(rate: number): void 		{ this.fModelRate = rate; }
 
 	// prevent the output of color, position and time data at application level
 	colorAble(): void		{}	

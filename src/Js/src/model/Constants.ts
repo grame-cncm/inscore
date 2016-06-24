@@ -17,6 +17,7 @@ const kSvgType              : string	= "svg";
 const kWebSocketType       : string	= "websocket";
 
 const kObjType              : string	= "obj";
+const kApplType             : string	= "IAppl";
 
 
 // extensions types
