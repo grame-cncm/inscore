@@ -105,7 +105,7 @@ class INScore {
 	}
 
 	static getStack(): Array<any> 	{ return this.fStack; }
-	static stackPop(): void 		{ this.fStack.pop(); }
+	static stackPop(): void 		{ return this.fStack.pop(); }
 
 	static processData(data: any) {
 		let loader = new TILoader;
