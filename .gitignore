@@ -41,3 +41,4 @@ tmp-rsc
 doc/webAPI/build
 Debug
 Release
+.DS_Store
