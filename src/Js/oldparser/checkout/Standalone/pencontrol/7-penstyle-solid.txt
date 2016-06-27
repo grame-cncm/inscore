@@ -1,2 +1,0 @@
-/ITL/scene/rect  penStyle,solid
-expr ENDSCRIPT 
