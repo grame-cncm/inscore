@@ -31,7 +31,17 @@
 	border: 0px blue solid;
 }
 
+.inscore-polygon {
+	position: absolute;
+	border: 0px blue solid;
+}
+
 .inscore-img {
+	position: absolute;
+	border: 0px blue solid;
+}
+
+.inscore-video {
 	position: absolute;
 	border: 0px blue solid;
 }
@@ -65,6 +75,16 @@
 }
 
 .inscore-gmn {
+	position: absolute;
+	border: 0px blue solid;
+}
+
+.inscore-pianoroll {
+	position: absolute;
+	border: 0px blue solid;
+}
+
+.inscore-svg {
 	position: absolute;
 	border: 0px blue solid;
 }

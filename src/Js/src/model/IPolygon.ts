@@ -28,8 +28,8 @@ class IPolygon extends IObject {
 
             //Build the vector of points reading the message.
             let points = new Array<TPoint>();
-            for (let i = 1 ; i < msg.size() ; i+=2 ) {
-                let a = msg.paramNum(2), b = msg.paramNum(3);
+            for (let i = 2 ; i < msg.size() ; i+=2 ) {
+                let a = msg.paramNum(i), b = msg.paramNum(i+1);
                 if (!a.correct || !b.correct) { return msgStatus.kBadParameters; }
                 points.push( new TPoint(a.value, b.value) );
             }

@@ -13,22 +13,35 @@ gray = 200;
 
 ceci est 1;
 
+/ITL/scene/svg set svg '<rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)">';
+/ITL/scene/svg2 set svg '  <ellipse cx="240" cy="50" rx="220" ry="30" style="fill:yellow" />
+  <ellipse cx="220" cy="50" rx="190" ry="20" style="fill:white" />';
+/ITL/scene/svg x 0;
+/ITL/scene/svg y 1;
+
+
+/ITL/scene/test set video "videoTest.mov";
+/ITL/scene/test x 1;
+/ITL/scene/test y 1;
+
 /ITL/toto/score set gmn "[a g e f ]";
 /ITL/scene/score set gmn "[a g e f ]";
 /ITL/scene/score get width height;
 /ITL/scene/score scale 2.6;
 /ITL/scene/score blue 0;
-/ITL/scene/score penWidth 1;
 /ITL/scene/score penColor 255 0 0;
 
+/ITL/scene/score set pianoroll "[f g b/8 d f/4 e]";
+/ITL/scene/score set pianoroll "[a]";
 
-/ITL/scene/textFile scale 2;
-/ITL/scene/textFile y 1;
 
+/ITL/scene penWidth 6;
+/ITL/scene penColor 250 130 40;
+/ITL/scene penStyle dot;
+/ITL/scene penAlpha 0.5;
 
 /ITL/scene/grame scale 2;
 /ITL/scene/logo scale 1;
-
 
 /ITL/scene x 0.5 ;
 /ITL/scene z 1 ;
@@ -45,16 +58,15 @@ ceci est 1;
 
 /ITL/scene/* del;
 
-
 /ITL/scene new;
 /ITL/scene/gmn set gmn '[ c d e f g a b c d ]';
 /ITL/scene/gmn z 2;
 /ITL/scene/gmn x 1;
 
-/ITL/scene/gmn2 set gmn '[ f f e f]';
-
-
 /ITL/scene/rect set rect 1 1 ;
+/ITL/scene/rect red 200;
+/ITL/scene/rect penWidth 2;
+
 /ITL/scene/rect y 1;
 /ITL/scene/rect scale 1;
 /ITL/scene/rect width 0.2;
@@ -67,8 +79,6 @@ ceci est 1;
 /ITL/scene/rect/text set txt "another text" ;
 /ITL/scene/rect get angle;
 
-/ITL/scene/text set txtf "main.ts";
-/ITL/scene/img set img grame.png;
 /ITL/scene/img get width height;
 
 /ITL/scene/text set html "hello world";
@@ -77,7 +87,36 @@ ceci est 1;
 /ITL/scene/text color 200 150 150;
 /ITL/scene scale 0.5;
 
-/ITL/scene/line set line wa 1 160;
+/ITL/scene/line2 set line wa 2 -110;
+/ITL/scene/line set line wa 2 300;
+/ITL/scene/line x 0;
+/ITL/scene/line y 0;
+
+/ITL/scene/line2 set line wa 2 0;
+/ITL/scene/line2 x 0;
+/ITL/scene/line3 set line xy 1 0;
+
+/ITL/scene/ell set ellipse 0.05 0.05;
+/ITL/scene/ell x -0.5;
+/ITL/scene/ell y -0.5;
+/ITL/scene/ell2 set ellipse 0.05 0.05;
+/ITL/scene/ell2 x 0;
+/ITL/scene/ell2 y 0;
+/ITL/scene/ell3 set ellipse 0.05 0.05;
+/ITL/scene/ell3 x 0;
+/ITL/scene/ell3 y 1;
+
+/ITL/scene/line3 set polygon -0.5 0 0 -0.5 0.5 0; 
+/ITL/scene/line3 set polygon -1 1 0 0 1 1; 
+/ITL/scene/line3 set polygon -1 -1 0 0 1 -1; 
+
+
+/ITL/scene/line3 red 200; 
+/ITL/scene/line3 x 1; 
+
+/ITL/scene/svgFile x 0.5; 
+/ITL/scene/svgFile y 0.5; 
+
 /ITL/scene/* scale 0.5;
 /ITL/scene/* xorigin 1;
 /ITL/scene/* xorigin 1;

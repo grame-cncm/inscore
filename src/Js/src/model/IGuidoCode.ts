@@ -56,9 +56,17 @@ class IGuidoCode extends IObject {
                     fExprHandler.clearExpr();
             */
             if (gmn.value != this.getGMNsvg()) {
-                let gr = guidoEngine.ar2gr(ar);
-                this.setGMNsvg(guidoEngine.gr2SVG(gr, 1, false, 0));
-                guidoEngine.freeGR(gr);
+                if (this.fTypeString == kGuidoCodeType) {
+                    let gr = guidoEngine.ar2gr(ar);
+                    this.setGMNsvg(guidoEngine.gr2SVG(gr, 1, false, 0));
+                    guidoEngine.freeGR(gr);                   
+                }
+                if (this.fTypeString == kGuidoPianoRollType) {
+                    let guidoPianoRoll  = new Module.GUIDOPianoRollAdapter;
+                    let pr = guidoPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
+                    this.setGMNsvg(guidoPianoRoll.svgExport(pr, -1, -1));
+                    guidoPianoRoll.destroyPianoRoll(pr);                                     
+                }
                 
                 status = msgStatus.kProcessed;
                 this.newData(true);

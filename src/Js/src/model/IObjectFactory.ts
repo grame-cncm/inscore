@@ -10,6 +10,10 @@
 ///<reference path="IScene.ts"/>
 ///<reference path="IText.ts"/>
 ///<reference path="ITextf.ts"/>
+///<reference path="IGuidoCode.ts"/>
+///<reference path="IGuidoPianoRoll.ts"/>
+///<reference path="IWebSocket.ts"/>
+///<reference path="ISVG.ts"/>
 ///<reference path="Methods.ts"/>
 
 
@@ -47,9 +51,14 @@ class IObjectFactory {
                 break;
                 
             case kGuidoCodeType:
-                obj = new IGuidoCode(name, parent);                
+                obj = new IGuidoCode(name, parent); 
                 this.createView(obj, parent.getView());    
-                break;                
+                break;   
+                
+            case kGuidoPianoRollType:
+                obj = new IGuidoPianoRoll(name, parent); 
+                this.createView(obj, parent.getView());    
+                break;                              
                    
             case kSceneType:
                 obj = new IScene(name, parent);
@@ -79,8 +88,23 @@ class IObjectFactory {
             case kImgType:
                 obj = new IImage(name, parent);
                 this.createView(obj, parent.getView());  
+                break;  
+
+            case kVideoType:
+                obj = new IVideo(name, parent);
+                this.createView(obj, parent.getView());  
                 break;    
-                
+                                  
+            case kSvgType:
+                obj = new ISVG(name, parent);
+                this.createView(obj, parent.getView());  
+                break;  
+
+            case kWebSocketType:
+                obj = new IWebSocket(name, parent);
+                this.createView(obj, parent.getView());  
+                break;                        
+                          
             default:
                 break;
         }

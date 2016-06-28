@@ -24,8 +24,9 @@ class VHtmlView extends VObjectView {
 	remove() : void 					{ this.fHtmlElt.parentNode.removeChild(this.fHtmlElt); }
 
 	updateView	( obj: IObject) : void {
-		this.updatePos (obj);
-		this.updateColor (obj);
+		this.updatePos	(obj);
+		this.updateColor(obj);
+		this.updatePenControl (obj);
 	}
 
 	updateColor (obj: IObject): void {
@@ -37,6 +38,20 @@ class VHtmlView extends VObjectView {
 	getScale (obj: IObject): number 	{ return obj.fPosition.getScale();  }
 	// getScale is intended to divs using auto height and width (like text, html...)
 	autoScale (obj: IObject): number 	{ return obj.getRScale() * obj.getParent().getRSizeAsScale() * this.nominalScale(); }
+
+	updatePenControl (obj: IObject) {
+		let penWidth = obj.fPenControl.getPenWidth();
+		let penColor = obj.fPenControl.fPenColor.getRGBString();
+		let penStyle = obj.fPenControl.getPenStyle();
+		let penAlpha = obj.fPenControl.getAlphaString();
+    	
+		let elt = this.getHtml();
+		elt.style.borderWidth = penWidth + 'px'; 
+		elt.style.borderColor = penColor;
+		elt.style.borderStyle = penStyle;
+		elt.style.borderColor = penAlpha;
+		
+	}
 
 	updatePos (obj: IObject): void {
 		let pos 	= obj.getPosition();

@@ -7,12 +7,60 @@
 ///<reference path="lib/TEnums.ts"/>
 ///<reference path="model/IAppl.ts"/>
 
+///<reference path="model/IObject.ts"/>
+//<reference path="parser/INScoreParser.js"/>
+
+declare var INScoreParser: any;
+
+interface TLoadEndHandler 		{ (): void; }
+
+
+class TILoader {
+        
+    protected parse(msg: string): Array<any> {
+        try {
+	        INScoreParser.parse(msg);
+        	return INScoreParser.get();  
+	    }
+	    catch (e) {
+//	    	console.log("parse exception");
+	    }
+        return [];  
+    }
+
+   process(buffer: string, root: IObject) {
+        let msgs = this.parse(buffer);
+        if (!msgs) return;
+        for (let i = 0; i < msgs.length; i++) {
+            let address = msgs[i].address.osc;
+            let params = msgs[i].params;
+            let msg = new IMessage(msgs[i].address.osc, msgs[i].params);         
+            INScore.checkStatus (root.process( msg), msg);
+        }    
+    }
+
+   protected _process(reader : FileReader, client: IObject) : TLoadEndHandler { 
+   		return () => {
+       		let data: string = reader.result;
+   			this.process(data, client); 
+   		}
+   	}
+
+    load (file: Blob, client: IObject): void {
+        let reader: FileReader = new FileReader();
+        reader.readAsText(file);
+        reader.onloadend = this._process(reader, client);
+    }    
+}
+
+//*******************************
 
 class INScore {
 	private static fVersion: number = 0.5;
 	private static fAppl: IAppl;
 	private static fGlue: IGlue;
 	private static fErrStrings = new Array<string>();
+	private static fStack: Array<any>;
 
 	protected static status2string (err: msgStatus) : string {
 		let str = this.fErrStrings[err];
@@ -22,6 +70,7 @@ class INScore {
 	// ------------------------------------------------------------
 	constructor (root: IAppl)		{ 
 		INScore.fAppl = root; 
+		INScore.fStack = new Array<any>(); 
 		INScore.fErrStrings[msgStatus.kBadAddress] = "bad OSC address";
 		INScore.fErrStrings[msgStatus.kProcessed] = "processed";
 		INScore.fErrStrings[msgStatus.kProcessedNoChange] = "processed without change";
@@ -32,7 +81,7 @@ class INScore {
 	// ------------------------------------------------------------
 	// static methods
 	// ------------------------------------------------------------
-	static version () : number { return INScore.fVersion; }
+	static getVersion () : number { return INScore.fVersion; }
 
 	static start (scene?: string) : void {
 		if (!INScore.fGlue) {
@@ -40,7 +89,7 @@ class INScore {
 			INScore.fGlue.initEventHandlers();
 		}
 		INScore.fGlue.start(scene);
-		ITLOut.write ("INScore version " + INScore.version());
+		ITLOut.write ("INScore version " + INScore.getVersion());
 	}
 
 	static getRoot() : IAppl		{ return this.fAppl; }
@@ -53,6 +102,19 @@ class INScore {
 	static postMessage (address: string, params: Array<any>) : void {
     	let msg = new IMessage (address, params);
     	INScore.checkStatus (this.fAppl.process (msg), msg);
+	}
+
+	static getStack(): Array<any> 	{ return this.fStack; }
+	static stackPop(): void 		{ return this.fStack.pop(); }
+
+	static processData(data: any) {
+		let loader = new TILoader;
+		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
+		else 							{ loader.load (data, this.getRoot()); }
+	}
+
+	static load (data: any): void {
+		INScore.fStack.push(data);
 	}
 }
 
