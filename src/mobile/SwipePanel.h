@@ -135,6 +135,8 @@ public:
 
 	bool event(QEvent *);
 
+	SwipeEventFilter* swipeEventFilter() {return fSwipeFilter;}
+
 signals:
 	/*!
 	 * \brief panelListChanged is emitted when panels are added or removed from the panel list

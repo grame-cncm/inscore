@@ -84,7 +84,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.18}
+\title{INScore \\ OSC Messages Reference \\v.1.19}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -1486,10 +1486,11 @@ arrowStyle : 'none' | 'triangle' | 'diamond' | 'disk'
 The arrow style default value is \OSC{none}.
 
 %-------------------------------
-%:  Font control
-\sublevel{Font control}
+%:  Textual objects
+\sublevel{Textual objects}
+\subsublevel{Font control}
 \label{fontctrl}
-Specific font messages are accepted by \OSC{txt} components.
+Specific font messages are accepted by \OSC{txt} \OSC{html} \OSC{txtf} and  \OSC{htmlf} components.
 \begin{rail}
 fontMsg : 	  'fontSize' int32 
 			| 'fontFamily' string
@@ -1529,6 +1530,23 @@ Setting a text object with a font family Times and bold weight:
 \sample{/ITL/scene/text set txt "text sample";\\
 /ITL/scene/text fontFamily Times;\\
 /ITL/scene/text fontWeight bold;  
+}
+
+\subsublevel{Writing}
+\label{txtwrite}
+Textual objects support writing in a stream-like way.
+\begin{rail}
+txtwrite :  'write' (arg +)
+\end{rail}
+\index{Specific messages! write}
+
+\begin{itemize}
+\item \OSC{write}: append the \OSC{arg} list formatted as a string to the textual content.
+\end{itemize}
+
+\example \\
+\sample{/ITL/scene/text set txt "Hello";\\
+/ITL/scene/text write "world!";
 }
 
 

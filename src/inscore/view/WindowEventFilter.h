@@ -107,6 +107,7 @@ class TouchEventFilter : public WindowEventFilter
 		virtual bool isStartTimer(const QEvent *event);
 
         bool fIsRunning;
+		bool fDoubleTap = false;
 };
 /*!@} */
 

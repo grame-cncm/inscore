@@ -16,7 +16,7 @@ color = 20 0 150;
 
 # create the score
 /ITL/scene/score set gmn '[ \meter<"4/4"> \key<-1> \noteFormat<color="red">a \noteFormat<color="black">f g c c g a f ]';
-/ITL/scene/score scale 0.6;
+/ITL/scene/score scale 0.7;
 
 # create a cursor
 /ITL/scene/cursor set ellipse 0.06 0.06;

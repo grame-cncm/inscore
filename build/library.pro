@@ -6,7 +6,7 @@ TARGET = INScore
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = 1.18
+VERSION = 1.19
 CONFIG += c++11
 
 ############################## 

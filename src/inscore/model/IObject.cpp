@@ -269,6 +269,13 @@ void IObject::shapeAble()
 }
 
 //--------------------------------------------------------------------------
+void IObject::setMouseEventSensibility(bool mouseSensible)
+{
+	if(fView)
+		fView->setMouseEventSensibility(mouseSensible);
+}
+
+//--------------------------------------------------------------------------
 void IObject::setdyMsgHandler ()
 { 
 	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYPos);

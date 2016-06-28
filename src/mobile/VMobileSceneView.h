@@ -63,52 +63,44 @@ class VMobileSceneView : public VSceneView
 
 /*! @} */
 
-//class MobileZoomingGraphicsView : public ZoomingGraphicsView {
-//	Q_OBJECT
-//
+//class MobileZoomingGraphicsView: public ZoomingGraphicsView
+//{
+////	Q_OBJECT
+
 //	private:
-//		int fIndexCurrentTab;					///< current tab index used for animation
-//		int fIndexNextTab;						///< next tab index used for animation
-//		QPoint fInitialPos;						///< initial position of the current tab.
-//        static bool sAnimationActive;			///< only one tab change animation can be fired at same time
-//		QParallelAnimationGroup *fAnimgroup;	///< An animation group used for change tab
-//
+//		bool fFocus = false;
+//		bool fDoubleTap = false;
+
+//		qreal fViewScale = 1;
+//		qreal fIniViewScale = 1;
+//		QPointF fViewTranslate = QPointF(0,0);
+//		QPointF fIniViewTranslate = QPointF(0,0);
+
 //	public:
-//        MobileZoomingGraphicsView(QGraphicsScene * s) : ZoomingGraphicsView(s) {}
-//
-//	signals:
-//		//! this is used for internal purposes in the class engine at the end of an animation
-//		void animationFinished(void);
-//
+//		MobileZoomingGraphicsView(QGraphicsScene * s);
+//		virtual ~MobileZoomingGraphicsView(){}
+
+//		void resetViewZoomTranslate();
+//		virtual void doZoomTranslate();
+
 //	protected:
 //		/*!
 //		 * \brief viewportEvent Gesture event are fired on viewport.
 //		 * \param event the event
 //		 * \return
 //		 */
-//		bool viewportEvent(QEvent *event);
+//		virtual bool viewportEvent(QEvent *event);
 //		/*!
 //		 * \brief gestureEvent process gesture event
 //		 * \param event
 //		 * \return
 //		 */
-//		bool gestureEvent(QGestureEvent *event);
+//		virtual bool gestureEvent(QGestureEvent *event);
 //		/*!
 //		 * \brief pinchTriggered process pinch gesture (with two fingers) to zoom and move in the scene.
 //		 * \param event
 //		 */
 //		void pinchTriggered(QPinchGesture *event);
-//		/*!
-//		 * \brief swipeTriggered swipe gesture (with three fingers!) to change selected tab.
-//		 * \param event
-//		 */
-//		void swipeTriggered(QSwipeGesture *event);
-//
-//	protected slots:
-//		/*!
-//		 * \brief animationDoneSlot slot called at the end of the animation to change tab.
-//		 */
-//		void animationDoneSlot(void);
 //};
 
 } // end namespoace

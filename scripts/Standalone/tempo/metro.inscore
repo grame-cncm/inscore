@@ -85,3 +85,4 @@ msg = (
 
 /ITL/scene/control watch  mouseDown  ( /ITL/scene/metro tempo 0 );
 /ITL/scene/slider  event  mouseDown  200 0;
+/ITL/scene/slider  event  mouseDown  200 0;

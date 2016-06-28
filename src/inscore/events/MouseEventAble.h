@@ -29,7 +29,10 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include <QTouchEvent>
+#include <QDebug>
+
 #include "EventsAble.h"
+
 
 namespace inscore
 {
@@ -55,32 +58,49 @@ class _MouseEventAble
 //----------------------------------------------------------------------
 template <typename T> class MouseEventAble : public T
 {
-	bool fClicked;
+	int fTouchID;
 	public:
-					 MouseEventAble(const IObject* h) : fClicked(false), fEventsHandler(h)
-										{ T::setAcceptHoverEvents(true); T::setAcceptTouchEvents(true); }
+					 MouseEventAble(const IObject* h) :  fTouchID(-1), fEventsHandler(h)
+										{}
 			virtual ~MouseEventAble()	{}
 
 	protected:
 		const IObject * fEventsHandler;
 		
-		void handleEvent (QPointF pos,  EventsAble::eventype type) const	{ _MouseEventAble::handleEvent(fEventsHandler, pos, type); }
+		void handleEvent (QPointF pos,  EventsAble::eventype type) const	{_MouseEventAble::handleEvent(fEventsHandler, pos, type); }
 
-		bool sceneEvent			(QEvent * event) {
-			switch (event->type()) {
-				case QEvent::TouchBegin:
-					touchBegin (static_cast<QTouchEvent *>(event));
-					return true;
-				case QEvent::TouchEnd:
-					touchEnd (static_cast<QTouchEvent *>(event));
-					return true;
-				case QEvent::TouchUpdate:
-					touchUpdate (static_cast<QTouchEvent *>(event));
-					return true;
-				default:
-					return T::sceneEvent(event);
+		bool sceneEvent			(QEvent * event){
+			if(event->type()==QEvent::TouchBegin || event->type() == QEvent::TouchUpdate || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel){
+				QTouchEvent* e = static_cast<QTouchEvent*>(event);
+				if(e->type() == QEvent::TouchBegin){
+					if(!e->touchPoints().size() || e->touchPoints().size()>1)
+						return false;
+					fTouchID = e->touchPoints().first().id();
+					handleEvent (e->touchPoints().first().pos(), EventsAble::kTouchBegin);
+				}else if(e->type() == QEvent::TouchEnd || e->type() == QEvent::TouchCancel){
+					fTouchID = -1;
+					touchEnd(e);
+				}else{
+					for(int i=0; i<e->touchPoints().size(); i++){
+						const QTouchEvent::TouchPoint& p = e->touchPoints().at(i);
+						if(p.id() == fTouchID){
+							if(p.state() == Qt::TouchPointMoved)
+								handleEvent(p.pos(), EventsAble::kTouchUpdate);
+							else if(p.state() == Qt::TouchPointReleased){
+								handleEvent(p.pos(), EventsAble::kTouchEnd);
+								fTouchID = -1;
+							}
+							break;
+						}
+					}
+				}
+				event->accept();
+				return true;
 			}
+
+			return T::sceneEvent(event);
 		}
+
 		void touchBegin		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchBegin); }
 		void touchEnd		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchEnd); }
 		void touchUpdate	( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchUpdate); }

@@ -33,125 +33,129 @@
 
 namespace inscore {
 
-//bool MobileZoomingGraphicsView::sAnimationActive = false;
-//
 ////------------------------------------------------------------------------------------------------------------------------
+//MobileZoomingGraphicsView::MobileZoomingGraphicsView(QGraphicsScene *s)
+//	: ZoomingGraphicsView(s)
+//{
+//	viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+//	setAttribute(Qt::WA_AcceptTouchEvents);
+//}
+
 //bool MobileZoomingGraphicsView::viewportEvent(QEvent *event)
 //{
-//	if (event->type() == QEvent::Gesture) {
-//		return gestureEvent(static_cast<QGestureEvent*>(event));
+
+//	// Intercept gestures
+//	if(event->type() == QEvent::Gesture ){
+//		if(fFocus)
+//			return gestureEvent(static_cast<QGestureEvent*>(event));
+//		return true;
 //	}
-//	return QGraphicsView::viewportEvent(event);
+
+//	if(! (fFocus && (event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchUpdate) )){
+//		// Dispatch event to the graphics scene, if the event is consumed then a graphics item is owning the focus
+//		if(QGraphicsView::viewportEvent(event) && event->isAccepted())
+//			return true;
+//	}
+//	// If the event is not consumed by the graphics scene on a touch begin, the view own the focus
+//	if(event->type() == QEvent::TouchBegin)
+//		fFocus = true;
+//	else if(event->type() == QEvent::TouchEnd)		//release the focus on touch end
+//		fFocus = false;
+
+//	// Detect if a swipe movement has been executed
+//	if(VMobileQtInit::getMainPanel()->swipeEventFilter()->eventFilter(viewport(), event))
+//		return true;
+
+//	// TouchBegin events should always be accepted, otherwise no touch events will be sended to this object
+//	if( event->type() == QEvent::TouchBegin)
+//		return true;
+
+//	return false;
 //}
-//
+
 ////------------------------------------------------------------------------------------------------------------------------
 //bool MobileZoomingGraphicsView::gestureEvent(QGestureEvent *event)
 //{
-//	if (QGesture *pinch = event->gesture(Qt::SwipeGesture))
-//		swipeTriggered(static_cast<QSwipeGesture *>(pinch));
-//	else if (QGesture *pinch = event->gesture(Qt::PinchGesture))
+//	if (QGesture *pinch = event->gesture(Qt::PinchGesture))
 //		pinchTriggered(static_cast<QPinchGesture *>(pinch));
+//	else{
+//		event->ignore();
+//		return false;
+//	}
+
+//	event->accept();
 //	return true;
 //}
-//
+
 ////------------------------------------------------------------------------------------------------------------------------
 //void MobileZoomingGraphicsView::pinchTriggered(QPinchGesture *event)
 //{
-//	// New Zoom factor
-//	fScaleFactor = event->totalScaleFactor() * fTotalScaleFactor;
-//
-//	QPointF p0 = event->lastCenterPoint();
-//	QPointF p1 = event->centerPoint();
-//	// Verify horizontal limits to avoid scrolling when no scale factor.
-//	qreal h = fHorizontalOffset - (p1.x() - p0.x());
-//
-//	// limit translation gesture if the zoom is too small
-//	qreal max = fScaleFactor * 400 - 400;
-//	if(max > abs(h))
-//		fHorizontalOffset = h;
-//	else {
-//		if(h > 0)
-//			fHorizontalOffset = max;
-//		else fHorizontalOffset = -max;
+
+//	if(event->state() == Qt::GestureFinished || event->state() == Qt::GestureCanceled){
+//		//Cleanup
+//		fViewTranslate = QPointF( transform().dx(), transform().dy());
+//		return;
+//	}else if(event->state() == Qt::GestureStarted){
+//		//Init
+//		fIniViewScale = fViewScale;
+//		fIniViewTranslate = fViewTranslate;
+//		return;
+//	}else if(event->state() == Qt::GestureCanceled){
+//		//Undo
+//		fViewScale = fIniViewScale;
+//		fViewTranslate = fIniViewTranslate;
+//	}else{
+//		//Update
+
+//		qreal newScale = qMax(event->totalScaleFactor() * fIniViewScale, 1.);
+//		//QPointF deltaCenter = event->centerPoint() -  event->lastCenterPoint();
+
+//		qDebug()<<fViewScale<<fViewTranslate;
+//		QTransform t = transform();
+//		t.translate(-event->lastCenterPoint().x()/fViewScale, -event->lastCenterPoint().y()/fViewScale);
+//		t.scale(newScale/fViewScale, newScale/fViewScale);
+//		t.translate(event->centerPoint().x()/newScale, event->centerPoint().y()/newScale);
+
+//		setTransform(t);
+
+//		fViewScale = newScale;
+//		return;
 //	}
-//
-//	// Verify vertical limits to avoid scrolling when no scale factor.
-//	qreal v = fVerticalOffset - (p1.y() - p0.y());
-//	if(max > abs(v))
-//		fVerticalOffset = v;
-//	else {
-//		if(v > 0)
-//			fVerticalOffset = max;
-//		else fVerticalOffset = -max;
-//	}
-//
+
 //	// Zoom and translate
-//	fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fScaleFactor, (-400 + fVerticalOffset) / fScaleFactor), QPoint((400 + fHorizontalOffset) / fScaleFactor, (400 + fVerticalOffset) / fScaleFactor));
-//	fitInView( fSceneRect , Qt::KeepAspectRatio );
+//	int l = 400/fViewScale;
+//	QRect viewRect(-l+fViewTranslate.x(),-l+fViewTranslate.y(), 2*l, 2*l);
+
+//	//fSceneRect = QRect(QPoint((-400 + fHorizontalOffset) / fScaleFactor, (-400 + fVerticalOffset) / fScaleFactor), QPoint((400 + fHorizontalOffset) / fScaleFactor, (400 + fVerticalOffset) / fScaleFactor));
+//	fitInView( viewRect , Qt::KeepAspectRatio );
+
 //}
-//
+
+
 ////------------------------------------------------------------------------------------------------------------------------
-//void MobileZoomingGraphicsView::swipeTriggered(QSwipeGesture *event) {
-//	// Only one animation at same time.
-//    if(sAnimationActive)
-//		return;
-//    sAnimationActive=true;
-//	// Get gesture direction to change for next or previous tab.
-//	QSwipeGesture::SwipeDirection direction = event->horizontalDirection();
-//
-//	QTabWidget* tw = VMobileQtInit::getTabWidget();
-//	int currentIndex = tw->currentIndex();
-//	int offsetx = tw->width();
-//	int nextIndex;
-//	if(direction == QSwipeGesture::Right) {
-//		//offsetx=offsetx;
-//		nextIndex = currentIndex - 1;
-//	} else if(direction == QSwipeGesture::Left) {
-//		offsetx=-offsetx;
-//		nextIndex = currentIndex + 1;
-//	} else return;
-//
-//	int nbTab = tw->count();
-//	if(nextIndex >= nbTab || nextIndex < 0)
-//		return;
-//	QWidget *nextWidget = tw->widget(nextIndex);
-//	QWidget *currentWidget = tw->widget(currentIndex);
-//	nextWidget->setGeometry ( 0,  0, currentWidget->width(), currentWidget->height() );
-//
-//	//re-position the next widget outside/aside of the display area
-//	QPoint pnext = nextWidget->pos();
-//	QPoint pnow = currentWidget->pos();
-//	fInitialPos = pnow;
-//
-//	// Move the next window at the border of the current window.
-//	nextWidget->move(pnext.x() - offsetx, pnext.y());
-//	//make it visible/show
-//	nextWidget->show();
-//	nextWidget->raise();
-//
-//	// Animate both, the now and next widget to the side, using animation framework
-//	QPropertyAnimation *animnow = new QPropertyAnimation(currentWidget, "pos");
-//    animnow->setDuration(1000);
-//	animnow->setEasingCurve(QEasingCurve::OutBack); // Change this to change animation mouvement
-//	animnow->setStartValue(QPoint(pnow.x(), pnow.y()));
-//	animnow->setEndValue(QPoint(offsetx + pnow.x(), pnow.y()));
-//	QPropertyAnimation *animnext = new QPropertyAnimation(nextWidget, "pos");
-//    animnext->setDuration(1000);
-//	animnext->setEasingCurve(QEasingCurve::OutBack);
-//	animnext->setStartValue(QPoint(-offsetx + pnext.x(), pnext.y()));
-//	animnext->setEndValue(QPoint(pnext.x(), pnext.y()));
-//
-//	// Execute the two animations at same time
-//	fAnimgroup = new QParallelAnimationGroup;
-//	fAnimgroup->addAnimation(animnow);
-//	fAnimgroup->addAnimation(animnext);
-//	QObject::connect(fAnimgroup, SIGNAL(finished()),this,SLOT(animationDoneSlot()));
-//	fIndexNextTab=nextIndex;
-//	fIndexCurrentTab=currentIndex;
-//	fAnimgroup->start();
+//void MobileZoomingGraphicsView::resetViewZoomTranslate()
+//{
+//	fTotalScaleFactor = fViewScale;
+//	doZoomTranslate();
+//	fViewScale = 1;
+//	fViewTranslate = QPointF(0,0);
 //}
-//
+
 ////------------------------------------------------------------------------------------------------------------------------
+//void MobileZoomingGraphicsView::doZoomTranslate()
+//{
+//	QRect r = fSceneRect;
+//	//Execute doZoomTranslate()
+//	ZoomingGraphicsView::doZoomTranslate();
+
+//	if(r!=fSceneRect){
+//		// Reset view scale and translate
+//		fViewScale = 1;
+//		fViewTranslate = QPointF(0,0);
+//	}
+//}
+
+//------------------------------------------------------------------------------------------------------------------------
 //void MobileZoomingGraphicsView::animationDoneSlot(void) {
 //	QTabWidget* tw = VMobileQtInit::getTabWidget();
 //	// when ready, set next tab index as current index
@@ -160,9 +164,9 @@ namespace inscore {
 //	tw->widget(fIndexCurrentTab)->hide();
 //	//then set the position of the outshifted widget now back to its original
 //	tw->widget(fIndexCurrentTab)->move(fInitialPos);
-//
+
 //	// No animation is running
-//    sAnimationActive=false;
+//	sAnimationActive=false;
 //	delete fAnimgroup;
 //	emit animationFinished();
 //}

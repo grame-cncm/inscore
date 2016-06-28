@@ -76,8 +76,37 @@ map<string, EventsAble::eventype>		EventsAble::fTypeStr;
 map<EventsAble::eventype, const char*>	EventsAble::fTypeNum;
 
 //----------------------------------------------------------------------
-EventsAble::EventsAble ()	{}
+EventsAble::EventsAble ():	fMouseSensible(false){}
 EventsAble::~EventsAble ()	{}
+
+//----------------------------------------------------------------------
+void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
+{
+	fMsgMap.set(t, msgs);
+
+	if(isMouseEventType(t)){
+		if(fMouseSensible){
+			if(!msgs->list().size() && !checkMouseSensibility()){
+				fMouseSensible = false;
+				setMouseEventSensibility(false);
+			}
+		}else if(!msgs->list().empty()){
+			fMouseSensible = true;
+			setMouseEventSensibility(true);
+		}
+	}
+}
+
+//----------------------------------------------------------------------
+void EventsAble::addMsg(EventsAble::eventype t, SIMessageList msgs)
+{
+	fMsgMap.add(t, msgs);
+
+	if(!fMouseSensible && isMouseEventType(t)){
+		fMouseSensible = true;
+		setMouseEventSensibility(true);
+	}
+}
 
 
 //----------------------------------------------------------------------
@@ -90,6 +119,11 @@ void EventsAble::reset ()
 	fDurLeaveMsgMap.clear();
 	while (fWatchStack.size())
 		fWatchStack.pop();
+
+	if(fMouseSensible){
+		setMouseEventSensibility(false);
+		fMouseSensible = false;
+	}
 }
 
 //----------------------------------------------------------------------
@@ -116,6 +150,8 @@ bool EventsAble::popWatch ()
 
 		fDurLeaveMsgMap	= m.fDurLeaveMsg;
 		fWatchStack.pop();
+
+		fMouseSensible = checkMouseSensibility();
 		return true;
 	}
 	reset();
@@ -262,6 +298,35 @@ const char* EventsAble::type2string (eventype type)
 {
 	const char* typestr = fTypeNum[type];
 	return typestr ? typestr : "";
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::isMouseEventType(EventsAble::eventype type)
+{
+	switch(type){
+		case kMouseMove:
+		case kMouseDown:
+		case kMouseUp:
+		case kMouseEnter:
+		case kMouseLeave:
+		case kMouseDoubleClick:
+		case kTouchBegin:
+		case kTouchEnd:
+		case kTouchUpdate:
+			return true;
+		default: ;
+			}
+	return false;
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::checkMouseSensibility() const
+{
+	for(auto it = fMsgMap.begin(); it != fMsgMap.end(); it++){
+		if(isMouseEventType(it->first))
+			return true;
+	}
+	return false;
 }
 
 //----------------------------------------------------------------------

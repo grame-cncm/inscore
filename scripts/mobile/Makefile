@@ -1,5 +1,5 @@
 
-BUNDLES = Score.ibundle Welcome.ibundle Clock.ibundle Mixed-Resources.ibundle
+BUNDLES = Score.ibundle Welcome.ibundle Clock.ibundle Mixed-Resources.ibundle metro.ibundle
 IBUNDLE = ../../tools/IBundle/IBundle
 
 all: $(BUNDLES)

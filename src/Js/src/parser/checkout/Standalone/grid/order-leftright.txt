@@ -1,2 +1,0 @@
-/ITL/scene/grid  order,leftright
-expr ENDSCRIPT 

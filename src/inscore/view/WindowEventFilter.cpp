@@ -113,17 +113,28 @@ void ResizeMoveEventFilter::updateModel()
 
 //--------------------------------------------------------------------------
 TouchEventFilter::TouchEventFilter(const std::string& address, ZoomingGraphicsView* parent)
-    : WindowEventFilter(address, parent), fIsRunning(false) {}
+	: WindowEventFilter(address, parent), fIsRunning(false), fDoubleTap(false) {}
 
 bool TouchEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
-    fIsRunning = isStartTimer(event);
-    if(event->type() == QEvent::TouchEnd){
+	fIsRunning = isStartTimer(event);
+	if(event->type()==QEvent::TouchBegin){
+		if(fDoubleTap){
+			fDoubleTap = false;
+			//If double tap undo zoom and translate
+			fGraphicsView->resetViewZoomTranslate();
+			updateModel();
+		}else{
+			fDoubleTap = true;
+			QTimer::singleShot(400, [this]{fDoubleTap = false;});
+		}
+		return false;
+	}else if(event->type() == QEvent::TouchEnd){
         // At end of a gesture, send messages and update model
         updateModel();
         fIsRunning = false;
         return false;
-    }
+	}
     return QObject::eventFilter(obj, event);
 }
 
@@ -139,8 +150,8 @@ void TouchEventFilter::updateModel()
 {
     // Send Message for scene zoom (scale) and position (xorigin and yorigin)
     sendMessage(fOSCAddress.c_str(), kscale_GetSetMethod, fGraphicsView->getScaleFactor());
-    sendMessage(fOSCAddress.c_str(), kxorigin_GetSetMethod, fGraphicsView->getXOrigin());
-    sendMessage(fOSCAddress.c_str(), kyorigin_GetSetMethod, fGraphicsView->getYOrigin());
+	sendMessage(fOSCAddress.c_str(), kxorigin_GetSetMethod, fGraphicsView->getXOrigin());
+	sendMessage(fOSCAddress.c_str(), kyorigin_GetSetMethod, fGraphicsView->getYOrigin());
 }
 
 

@@ -171,7 +171,12 @@ class ZoomingGraphicsView : public QGraphicsView
 		/*!
          * \brief doZoom zoom on the scene and translate the scene in the view. It use scene scale as zoom factor and xorigin / yorigin to translate the scene.
 		 */
-        void doZoomTranslate();
+		virtual void doZoomTranslate();
+
+		/*!
+		 * \brief resetViewZoomTranslate Reset the zoom and translation of the view to their default value.
+		 */
+		void resetViewZoomTranslate();
 
 		/*!
 		 * \brief getScaleFactor Get the scale factor of the scene. This value is updated after a zoom with touch gesture.
@@ -209,8 +214,31 @@ class ZoomingGraphicsView : public QGraphicsView
 
 		QRect fSceneRect;
 
+		// Touch Event flags
+		bool fFocus;
+
+
 		virtual void	closeEvent	(QCloseEvent *);
 		virtual void	paintEvent  (QPaintEvent * );
+
+		/*!
+		 * \brief viewportEvent Gesture event are fired on viewport.
+		 * \param event the event
+		 * \return
+		 */
+		virtual bool viewportEvent(QEvent *event);
+		/*!
+		 * \brief gestureEvent process gesture event
+		 * \param event
+		 * \return
+		 */
+		virtual bool gestureEvent(QGestureEvent *event);
+		/*!
+		 * \brief pinchTriggered process pinch gesture (with two fingers) to zoom and move in the scene.
+		 * \param event
+		 */
+		void pinchTriggered(QPinchGesture *event);
+
 
 		void resizeEvent ( QResizeEvent * );
 
