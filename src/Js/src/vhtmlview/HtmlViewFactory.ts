@@ -9,7 +9,6 @@
 ///<reference path="VHtmlSceneView.ts"/>
 ///<reference path="VHtmlTextView.ts"/>
 ///<reference path="VHtmlGMNView.ts"/>
-///<reference path="VHtmlGMNView.ts"/>
 ///<reference path="VHtmlPianoRollView.ts"/>
 ///<reference path="VHtmlSvgView.ts"/>
 ///<reference path="VHtmlPolygonView.ts"/>
