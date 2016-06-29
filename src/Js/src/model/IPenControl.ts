@@ -1,6 +1,7 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
-///<reference path="IColor.ts"/>
 ///<reference path="../lib/TEnums.ts"/>
+///<reference path="../lib/ITLError.ts"/>
+///<reference path="IColor.ts"/>
 
 class IPenControl {
     fPenWidth: number;
@@ -8,8 +9,8 @@ class IPenControl {
     fPenStyle: penStyle;
     fPenAlpha: number;
     
-    fPenStylesList_set: Array<any> = new Array;
-    fPenStylesList_get: Array<any> = new Array;
+    fPenStylesList_set: { [id: string] : penStyle; } = {};
+    fPenStylesList_get: { [id: number] : string; } = {};
     
     constructor(type: string) {
         this.fPenWidth = 0;
