@@ -46,8 +46,9 @@
 	border: 0px blue solid;
 }
 
-.inscore-ellipse { position: absolute; }
-.inscore-txt 	{  position: absolute; border: 0px blue solid;}
+.inscore-ellipse 	{ position: absolute; }
+.inscore-curve 		{ position: absolute; }
+.inscore-txt 		{  position: absolute; border: 0px blue solid;}
 
 .inscore-txt > pre	{ 
 	font-family: 'CarlitoRegular'; 

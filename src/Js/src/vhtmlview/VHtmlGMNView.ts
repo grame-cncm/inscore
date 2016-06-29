@@ -22,13 +22,41 @@ class VHtmlGMNView extends VHtmlSvg {
         
         // update de la couleur et de la position => on récupère dans le modèle pour
         // pour changer les propriétés de la div
-		super.updateView(obj);
+		super.updatePos(obj);
+		super.updatePenControl(obj);
 
+        let color = obj.fColor.getRGBString();
+        this.updateCol(obj, color, this.fSVG)
+
+/*
+        let g = this.fSVG.getElementsByTagName('g');
+        let txt = this.fSVG.getElementsByTagName('text');
+        let color = obj.fColor.getRGBString();
+        for (let i = 0; i < g.length; i++) {
+            g[i].style.stroke = color; 
+            g[i].style.fill = color; 
+        }
+        for (let i = 0; i < txt.length; i++) {
+            txt[i].style.fill = color; 
+            txt[i].style.stroke = color; 
+        }
+*/
         // mis à jour de fSVG        
         let elt = this.getHtml(); 
         this.updateSvgSize (elt.clientWidth, elt.clientHeight);
 	}
-       
+
+    updateCol(obj: IObject, color: string, elt: any) {
+        let childs = elt.childNodes;
+        for (let i = 0; i < childs.length; i++) {
+            if (childs[i].nodeName != "#text" && childs[i].nodeName != "#comment") {
+                childs[i].style.stroke = color; 
+                childs[i].style.fill = color; 
+            }
+            this.updateCol(obj, color, childs[i]);
+        }
+    }
+
     updateGMN(obj: IObject) : { gmnCode: string, modif: boolean } {
         if (obj.isNewData()) {
             let gmn = <IGuidoCode>obj;
