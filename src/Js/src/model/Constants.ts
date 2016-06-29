@@ -14,18 +14,10 @@ const kHtmlType             : string	= "html";
 const kImgType              : string	= "img";
 const kVideoType            : string	= "video";
 const kSvgType              : string	= "svg";
-const kWebSocketType       : string	= "websocket";
+const kWebSocketType        : string	= "websocket";
 
 const kObjType              : string	= "obj";
 const kApplType             : string	= "IAppl";
 
-
-// extensions types
-
-const kTxtFile      : string	= "txt";
-const kSvgFile      : string	= "svg";
-const kHtmlFile     : string	= "html";
-const kGmnFile      : string	= "gmn";
-const kImgFile      : string	= "img";
-const kVideoFile    : string	= "video";
+// inscore type for inscore scripts
 const kInscoreFile  : string	= "inscore";
