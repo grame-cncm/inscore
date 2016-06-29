@@ -8,7 +8,7 @@ class dropLoader {
 	protected fTargetType	: string;
 	protected fTargetScene	: string;
 
-	protected fExtHandlers: Array<string> = new Array;
+	protected fExtHandlers: { [id: string] : string; } = {};
 	
 	constructor (target: any) {
 		this.fTarget 		= target;
@@ -18,27 +18,26 @@ class dropLoader {
 	}
 	
     buildObjectExtensions(): void {
-        this.fExtHandlers["txt"] 		= kTxtFile;
-        this.fExtHandlers["text"] 		= kTxtFile;
-        this.fExtHandlers["svg"]		= kSvgFile;
-        this.fExtHandlers["html"] 		= kHtmlFile;
-		this.fExtHandlers["htm"] 		= kHtmlFile;
-		this.fExtHandlers["gmn"] 		= kGmnFile;
-		this.fExtHandlers["jpg"] 		= kImgFile;
-		this.fExtHandlers["jpeg"] 		= kImgFile;
-		this.fExtHandlers["gif"] 		= kImgFile;
-		this.fExtHandlers["png"] 		= kImgFile;
-		this.fExtHandlers["bmp"] 		= kImgFile;
-		this.fExtHandlers["tiff"] 		= kImgFile;
-		this.fExtHandlers["wmv"] 		= kVideoFile;
-		this.fExtHandlers["avi"] 		= kVideoFile;
-		this.fExtHandlers["mpg"] 		= kVideoFile;
-		this.fExtHandlers["mpeg"] 		= kVideoFile;
-		this.fExtHandlers["mp4"] 		= kVideoFile;
-		this.fExtHandlers["m4v"] 		= kVideoFile;
-		this.fExtHandlers["mov"] 		= kVideoFile;
-		this.fExtHandlers["vob"] 		= kVideoFile;		
-		this.fExtHandlers["inscore"] 	= kInscoreFile;		
+        this.fExtHandlers["txt"] 		= kTextType;
+        this.fExtHandlers["text"] 		= kTextType;
+        this.fExtHandlers["svg"]		= kSvgType;
+        this.fExtHandlers["html"] 		= kHtmlType;
+		this.fExtHandlers["htm"] 		= kHtmlType;
+		this.fExtHandlers["gmn"] 		= kGuidoCodeType;
+		this.fExtHandlers["jpg"] 		= kImgType;
+		this.fExtHandlers["jpeg"] 		= kImgType;
+		this.fExtHandlers["gif"] 		= kImgType;
+		this.fExtHandlers["png"] 		= kImgType;
+		this.fExtHandlers["bmp"] 		= kImgType;
+		this.fExtHandlers["tiff"] 		= kImgType;
+		this.fExtHandlers["wmv"] 		= kVideoType;
+		this.fExtHandlers["avi"] 		= kVideoType;
+		this.fExtHandlers["mpg"] 		= kVideoType;
+		this.fExtHandlers["mpeg"] 		= kVideoType;
+		this.fExtHandlers["mp4"] 		= kVideoType;
+		this.fExtHandlers["m4v"] 		= kVideoType;
+		this.fExtHandlers["mov"] 		= kVideoType;
+		this.fExtHandlers["vob"] 		= kVideoType;		
     }
 		
 	processLoader (e: any) {
@@ -63,16 +62,15 @@ class dropLoader {
 					
 					let file = <Blob>filelist[i]
 					let reader: FileReader = new FileReader();				
+					if (ext == kInscoreFile) { INScore.load(filelist[i]); }
 					
-					if (this.fExtHandlers[ext] == kImgFile || this.fExtHandlers[ext] == kVideoFile ) {
+					else if (this.fExtHandlers[ext] == kImgType || this.fExtHandlers[ext] == kVideoType ) {
 						INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
 					}
 					
-					else if (this.fExtHandlers[ext] == kInscoreFile) { INScore.load(filelist[i]); }
-					
 					else {
 						reader.readAsText(file);
-						if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTxtFile; }
+						if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTextType; }
 						reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
 					}	
 					// to do : xml, faust		
