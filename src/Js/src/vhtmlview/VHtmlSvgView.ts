@@ -15,12 +15,30 @@ class VHtmlSvgView extends VHtmlSvg {
         
         // update de la couleur et de la position => on récupère dans le modèle pour
         // pour changer les propriétés de la div
-		super.updateView(obj);
+		super.updatePos(obj);
+        super.updatePenControl(obj);
+        
+        let color = obj.fColor.getRGBString();
+        this.updateCol(obj, color, this.fSVG)
 
         // mis à jour de fSVG        
         let elt = this.getHtml(); 
         this.updateSvgSize (elt.clientWidth, elt.clientHeight);
+
+        this.fSVG.style.fill = obj.fColor.getRGBString();
+
 	}   
+
+    updateCol(obj: IObject, color: string, elt: any) {
+        let childs = elt.childNodes;
+        for (let i = 0; i < childs.length; i++) {
+            if (childs[i].nodeName != "#text" && childs[i].nodeName != "#comment") {
+                childs[i].style.stroke = color; 
+                childs[i].style.fill = color; 
+            }
+            this.updateCol(obj, color, childs[i]);
+        }
+    }
     
     updateSVG(obj: IObject) : { svgCode: string, modif: boolean } {
         if (obj.isNewData()) {

@@ -48,6 +48,7 @@ class VHtmlHtmlView extends VHtmlView {
 		this.updateObjectSize (obj);
 		if (t.fontModified()) this.setFont (t);
 		super.updateView(obj);
+		elt.style.color = t.fColor.getRGBAString();
 	}
 
 	getTransform (obj: IObject): string {
