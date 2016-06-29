@@ -1,3 +1,7 @@
+
+///<reference path="VHtmlView.ts"/>
+///<reference path="VHtmlGMNView.ts"/>
+
 class VHtmlPianoRollView extends VHtmlGMNView {
     
     constructor(parent: VHtmlView) {

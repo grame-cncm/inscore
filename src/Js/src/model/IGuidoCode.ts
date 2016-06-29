@@ -1,5 +1,6 @@
 ///<reference path="IObject.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
+///<reference path="../externals/libGUIDOEngine.ts"/>
 
 
 class IGuidoCode extends IObject { 

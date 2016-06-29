@@ -1,3 +1,7 @@
+
+///<reference path="VHtmlView.ts"/>
+///<reference path="VHtmlSvg.ts"/>
+
 class VHtmlSvgView extends VHtmlSvg {
 
     constructor(parent: VHtmlView) {
