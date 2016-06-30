@@ -3,10 +3,13 @@
 
 class ModelUpdater {
 
-	static update (stack: Array<any>) : void {
+	static update (stack: Array<IMessage>) : void {
         let elt = stack.length;
-        for (let i = elt; i > 0; i--) {
-            INScore.processData(INScore.stackPop());            
-        }
+        if (elt != 0) {
+            for (let i = elt; i > 0; i--) {
+                let msg = INScore.getGlue().popStack();
+                INScore.checkStatus (INScore.getRoot().process(msg), msg)
+            }
+        } 
 	}	
 }

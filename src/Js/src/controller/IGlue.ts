@@ -12,13 +12,18 @@ interface TTimerTask  	{ (): void; }
 class IGlue { 
 	protected fAppl: IAppl;
 //	protected fTimer: number;		// this is to catch multiple defs in nodes and in browser contexts
-	protected fTimerView: any;			// should find a typed solution
-	protected fTimerModel: any;
+	protected fTimerTask: any;			// should find a typed solution
+	private   fStack: Array<IMessage>;
 
     constructor() 			{ 
     	this.fAppl = new IAppl(); 
     	let inscore = new INScore(this.fAppl);
+		this.fStack = new Array<IMessage>();
     }
+
+	getStack(): Array<IMessage> 	{ return this.fStack; }
+	popStack(): IMessage 			{ return this.fStack.shift(); }
+	setStack(msg: IMessage): void 	{ this.fStack.push(msg); }
 
     initEventHandlers(): void {
 		document.addEventListener("dragover", inscore_dragOverEvent, false);
@@ -31,27 +36,21 @@ class IGlue {
     		target = "/ITL/" + scene;
     	INScore.postMessage (target, ["new"]);
 		
-		this.fTimerModel = setTimeout (this._timetaskModel(), this.fAppl.getModelRate()) ;
 		if (gCreateView)
-	    	this.fTimerView = setTimeout (this._timetaskView(), this.fAppl.getViewRate()) ;		
+	    	this.fTimerTask = setTimeout (this._timetask(), this.fAppl.getTaskRate()) ;		
     }
 
     stop(): void {
     	INScore.postMessage ("/ITL", ["quit"]);
-    	clearTimeout (this.fTimerView) ;		
+    	clearTimeout (this.fTimerTask) ;		
     }
 
-	timetaskModel() : void {
-		ModelUpdater.update(INScore.getStack());    	
-		this.fTimerModel = setTimeout (this._timetaskModel(), this.fAppl.getModelRate()) ;				
-	}
-
-	timetaskView() : void {
+	timetask() : void {
+		ModelUpdater.update(this.getStack());		
 		ViewUpdater.update (this.fAppl);		
 		let a = new IObjectTreeApply();
 		a.applyCleanup (this.fAppl);
-    	this.fTimerView = setTimeout (this._timetaskView(), this.fAppl.getViewRate()) ;		
+    	this.fTimerTask = setTimeout (this._timetask(), this.fAppl.getTaskRate()) ;		
 	}
-    _timetaskView()	: TTimerTask 		{ return () => this.timetaskView(); };
-    _timetaskModel(): TTimerTask 		{ return () => this.timetaskModel(); };
+    _timetask()	: TTimerTask 			{ return () => this.timetask(); };
 }

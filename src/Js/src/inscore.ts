@@ -35,7 +35,8 @@ class TILoader {
             let address = msgs[i].address.osc;
             let params = msgs[i].params;
             let msg = new IMessage(msgs[i].address.osc, msgs[i].params);         
-            INScore.checkStatus (root.process( msg), msg);
+            INScore.getGlue().setStack(msg);			
+			//INScore.checkStatus (root.process( msg), msg);
         }    
     }
 
@@ -93,6 +94,7 @@ class INScore {
 	}
 
 	static getRoot() : IAppl		{ return this.fAppl; }
+	static getGlue() : IGlue		{ return this.fGlue; }
 
 	static checkStatus (status: msgStatus, msg: IMessage) : void {
     	if (!(status & msgStatus.kProcessed + msgStatus.kProcessedNoChange))
@@ -101,20 +103,13 @@ class INScore {
 
 	static postMessage (address: string, params: Array<any>) : void {
     	let msg = new IMessage (address, params);
-    	INScore.checkStatus (this.fAppl.process (msg), msg);
-	}
-
-	static getStack(): Array<any> 	{ return this.fStack; }
-	static stackPop(): void 		{ return this.fStack.pop(); }
-
-	static processData(data: any) {
-		let loader = new TILoader;
-		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
-		else 							{ loader.load (data, this.getRoot()); }
+    	INScore.getGlue().setStack(msg);
 	}
 
 	static load (data: any): void {
-		INScore.fStack.push(data);
+		let loader = new TILoader;
+		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
+		else 							{ loader.load (data, this.getRoot()); }		
 	}
 }
 

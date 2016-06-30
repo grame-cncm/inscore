@@ -9,16 +9,14 @@ class IAppl extends IObject {
  
     protected kApplType: string;
     protected fReceivedMsgs: number;
-    protected fViewRate: number;
-    protected fModelRate: number;
+    protected fTaskRate: number;
     
     constructor() {
         super('ITL');
         this.kApplType = kApplType;
         this.fTypeString = kApplType;
         this.fReceivedMsgs = 0;
-        this.fViewRate = 100;
-        this.fModelRate = 1000;
+        this.fTaskRate = 100;
     } 
 
     createStaticNodes() : void {
@@ -29,10 +27,8 @@ class IAppl extends IObject {
     getAppl() : IObject					{ return this; }
     getSet(): IMessage					{ let msg : IMessage; return msg; }
     getOSCAddress(): string 			{ return "/ITL"; }
-    getViewRate(): number 					{ return this.fViewRate; }
-    setViewRate(rate: number): void 		{ this.fViewRate = rate; }
-    getModelRate(): number 					{ return this.fModelRate; }
-    setModelRate(rate: number): void 		{ this.fModelRate = rate; }
+    getTaskRate(): number 				{ return this.fTaskRate; }
+    setTaskRate(rate: number): void 	{ this.fTaskRate = rate; }
 
 	// prevent the output of color, position and time data at application level
 	colorAble(): void		{}	
