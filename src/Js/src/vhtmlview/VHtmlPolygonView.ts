@@ -26,34 +26,26 @@ class VHtmlPolygonView extends VHtmlSvg {
                 if (!y) y = 1;    
                 strPoints += x + ',' + y + ' ';
             }
+             
             console.log(strPoints)
             this.fPolygon.setAttribute('points', strPoints);
-            this.fPolygon.style.fill = obj.fColor.getRGBString();
-            
+
             let polygonSize = this.fPolygon.getBBox();
-            this.updateSvgSize (polygonSize.width, polygonSize.height);
             this.updateSvgPos (polygonSize.x, polygonSize.y);  
-            //this.updateObjectSize (obj);      
+            this.updateSvgSize (polygonSize.width, polygonSize.height);
+            
+            for (let i = 0; i < points.length; i++) {
+                let x = this.relative2SceneX( points[i].getX() - polygonSize.x );
+                let y = this.relative2SceneY( points[i].getY() - polygonSize.y );
+                if (!x) x = 1;
+                if (!y) y = 1;    
+                strPoints += x + ',' + y + ' ';
+            }
+            
+            this.fPolygon.setAttribute('points', strPoints);
+            this.updateObjectSize (obj);
+            this.fPolygon.style.fill = obj.fColor.getRGBString();   
         }
-               
-
-
-		
-        //this.updatePos(obj);
-        
-        //super.updateView(obj);
-
-        //let elt = this.getHtml(); 
-                
-        /*
-		let scale = obj.fPosition.getScale();        
-        let w = this.relative2SceneWidth( obj.fPosition.getWidth() ) * scale;
-		let h = this.relative2SceneHeight( obj.fPosition.getHeight() ) * scale;
-     	this.updateSvgSize (w, h);   
-        console.log(w + ' ' + h)     
-        
-    	this.updatePos(obj);	
-	*/
 	}         
        
 	updateObjectSize ( obj: IObject) : void {
@@ -65,9 +57,7 @@ class VHtmlPolygonView extends VHtmlSvg {
 		obj.fPosition.setHeight (h);
 		obj.fPosition.setXPos (x);
 		obj.fPosition.setYPos (y);
-
-    }	    
-    
+    }	
     	
 	getTransform (obj: IObject): string {
 		let hw = this.fPixWidth/2;
@@ -78,7 +68,6 @@ class VHtmlPolygonView extends VHtmlSvg {
 	}
     
 	updateSvgPos (x: number, y: number): void { 
-        console.log(x+ ' '+y)
     	let elt = this.getHtml();		
 		elt.style.left = x +"px";
         elt.style.top  = y +"px";
