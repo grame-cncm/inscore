@@ -594,7 +594,9 @@ int IObject::execute (const IMessage* msg)
 	SMsgHandler handler = messageHandler(msg->message());
 	if ( handler ) return (*handler)(msg);
 
-#warning qui utilise le match true dans IObject::execute ?
+#ifndef WIN32
+	#warning qui utilise le match true dans IObject::execute ?
+#endif
 	// no basic handler , try to find if there is a match
 	handler = messageHandler(msg->message(), true);
 	if ( handler ) return (*handler)(msg);
@@ -697,7 +699,9 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 	}
 	if (result & MsgHandler::kProcessed)
     {
+#ifndef WIN32
 #warning verifier pourquoi on force l'etat des enfants
+#endif
 		size_t n = elements().size();
 		for (size_t i = 0; i < n; i++)
         {
