@@ -109,7 +109,7 @@ class EventsAble
 	static std::map<eventype, const char*>	fTypeNum;
 
 	protected:
-		 virtual void setMouseEventSensibility(bool mouseSensible) {}
+		 virtual void setMouseEventSensibility(bool) {}
 	private:
 		bool fMouseSensible;
 };
