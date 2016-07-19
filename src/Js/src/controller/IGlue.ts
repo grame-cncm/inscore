@@ -26,7 +26,7 @@ class IGlue {
 	setStack(msg: IMessage): void 	{ this.fStack.push(msg); }
 
     initEventHandlers(): void {
-		document.addEventListener("dragover", inscore_dragOverEvent, false);
+		//document.addEventListener("dragover", inscore_dragOverEvent, false);
 		window.addEventListener("resize", inscore_resizeDocument);
     }
     
