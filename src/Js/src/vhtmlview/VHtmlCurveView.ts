@@ -53,8 +53,9 @@ class VHtmlCurveView extends VHtmlSvg {
                                         + 't' + d1 + ',' + d2);
         }        
             this.updateObjectSize (obj);
-            this.fCurve.style.fill = obj.fColor.getRGBString();        
-            
+            this.fCurve.style.fill = 'rgba(0, 0, 0, 0)';        
+            this.fCurve.style.stroke = obj.fColor.getRGBString(); 
+
       /*  
         let scale = obj.fPosition.getScale();
 		let w = this.relative2SceneWidth( obj.fPosition.getWidth() ) * scale;
