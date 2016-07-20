@@ -1,0 +1,111 @@
+/ITL/scene penWidth 1;
+
+**** Exemples fonctionnalités de base sur un rectangle ****
+/ITL/scene/* del;
+/ITL/scene/rect set rect 1 1;
+/ITL/scene/rect color 200 100 200;
+/ITL/scene/rect red 0;
+/ITL/scene/rect height 1.5 ;
+/ITL/scene/rect width 0.7 ;
+/ITL/scene/rect x 1;
+/ITL/scene/rect y -0.5;
+/ITL/scene/rect x 0;
+/ITL/scene/rect y 0;
+/ITL/scene/rect angle 45;
+/ITL/scene/rect scale 1.3;
+/ITL/scene/rect scale 0.5;
+
+**** Différents objets ****
+/ITL/scene/* del;
+/ITL/scene/ellipse set ellipse 1 1;
+/ITL/scene/ellipse scale 0.65;
+/ITL/scene/ellipse red 150;
+/ITL/scene/ellipse x 0.5;
+/ITL/scene/ellipse y -0.6;
+/ITL/scene/poly set polygon -1 -1 -0.5 0 0 -1;
+/ITL/scene/poly green 170;
+/ITL/scene/line set line wa 1 45;
+/ITL/scene/line y 0.5;
+/ITL/scene/line x -0.5;
+/ITL/scene/curve set curve -0.2 -0.5 -1.33 0.5 0 -0.5 -0.5 0;
+
+/ITL/scene/score set gmn '[ \meter<"4/4"> \key<-1> a f g c c g a f ]';
+/ITL/scene/score y 0.5;
+/ITL/scene/score color 100 10 200;
+/ITL/scene/piano set pianoroll "[f g b/8 d f/4 e]";
+
+/ITL/scene/title set txt "Représentation musicale !";
+/ITL/scene/title scale 3;
+/ITL/scene/title y -0.8;
+/ITL/scene/title fontFamily Zapfino;
+/ITL/scene/title red 200;
+
+/ITL/scene/html set html "<!DOCTYPE html>
+<html>
+<body>
+<strong>Blabla</strong>
+<p>Hello.</p>
+<div>INScore</div>
+</body>
+</html>";
+/ITL/scene/html scale 3;
+
+/ITL/scene/svg set svg '<rect width="200" height="100" style="fill:rgb(50,100,255);stroke-width:2;stroke:rgb(0,0,0)">';
+/ITL/scene/svg x 1;
+
+/ITL/scene/* del;
+/ITL/scene/vid set video "videoTest.mov";
+/ITL/scene/image set img "grame.PNG";
+/ITL/scene/image2 set img "aaa.jpeg";
+/ITL/scene/image z 2;
+/ITL/scene/image scale 2;
+/ITL/scene/image x -0.5;
+/ITL/scene/image y -0.5;
+/ITL/scene/image2 scale 0.75;
+/ITL/scene/image2 x 0.5;
+/ITL/scene/vid x -0.5;
+/ITL/scene/vid y 0.5;
+
+**** Remplacer un objet ****
+/ITL/scene/* del;
+/ITL/scene/rect set rect 0.5 1;
+/ITL/scene/rect red 200;
+/ITL/scene/rect x -0.5;
+/ITL/scene/rect angle 40;
+
+/ITL/scene/rect set ellipse 1 0.5;
+
+
+/ITL/scene/* del;
+**** Messages pour plusieurs objets ****
+=> fichier Welcome
+/ITL/scene/* angle 30;
+/ITL/scene/* scale 0.7;
+
+**** Messages scenes ****
+=> fichier Welcome
+/ITL/scene scale 0.7;
+/ITL/scene angle 60;
+// scaling
+
+**** Drop de fichiers ****
+/ITL/scene/eye x 1;
+/ITL/scene/aaa x 1;
+
+**** Templates ****
+
+
+
+
+
+
+
+/ITL/scene/line3 set polygon -1 -1 1 -1 0 0; 
+/ITL/scene/line3 set polygon 0 0 1 1 0 1; 
+/ITL/scene/line3 set polygon -1 -1 0 0 -1 1; 
+/ITL/scene/line3 red 200; 
+/ITL/scene/line3 green 125;
+/ITL/scene/line3 x 2; 
+
+
+__END__
