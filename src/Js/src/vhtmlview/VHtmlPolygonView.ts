@@ -35,8 +35,8 @@ class VHtmlPolygonView extends VHtmlSvg {
             this.updateSvgSize (polygonSize.width, polygonSize.height);
             
             for (let i = 0; i < points.length; i++) {
-                let x = this.relative2SceneX( points[i].getX() - polygonSize.x );
-                let y = this.relative2SceneY( points[i].getY() - polygonSize.y );
+                let x = this.relative2SceneX( points[i].getX()) - polygonSize.x;
+                let y = this.relative2SceneY( points[i].getY()) - polygonSize.y;
                 if (!x) x = 1;
                 if (!y) y = 1;    
                 strPoints += x + ',' + y + ' ';
