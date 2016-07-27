@@ -11,13 +11,12 @@
 	<script src="inscore-code.js"></script>
 </head>
 
-<body style="margin: 20px">
+<body style="margin: 40px">
+	<script> StartINScore(); </script>
 
-	<h4> Welcome to INScore </h4>
-	<p> quelques explications </p>
+	<h4  style="font-size: 18pt"> Welcome to INScore</h4>
 	
 	<div>
-	<script> StartINScore(); </script>
 	<inscore-code>
 		color = 20 0 150;
 
@@ -27,13 +26,7 @@
 		/ITL/scene/welcome fontSize 40;
 		/ITL/scene/welcome fontWeight bold;
 
-		#/ITL/scene/welcome effect $shadow;
 		/ITL/scene/welcome y -0.5;
-
-		#/ITL/scene/version set txt "Version" $(/ITL get version);
-		#/ITL/scene/version fontSize 14;
-		#/ITL/scene/version y -0.41;
-
 		/ITL/scene/what1 set txt "An environment for the design of";
 		/ITL/scene/what2 set txt "interactive, augmented music scores.";
 		/ITL/scene/what1 y -0.34;
@@ -57,12 +50,9 @@
 		/ITL/scene/c4 fontWeight bold;
 		/ITL/scene/c4 fontSize 18;
 		/ITL/scene/c4 color $color;
-		#/ITL/scene/c4 effect $shadow;
 
 		/ITL/scene/logo set img 'grame.png';
-		/ITL/scene/logo y 0.7;
-		#/ITL/scene/logo effect $shadow;
-
+		/ITL/scene/logo y 0.8;
 
 		/ITL/scene/* dy -0.12;
 		/ITL/scene width 1.7;
@@ -70,8 +60,7 @@
 	</inscore-code>
 	</div>
 
-	<p> encore des  explications </p>
-
+<!--
 	<div>
 	</div>
 	<br />
@@ -87,10 +76,7 @@
 		/ITL/toto height 1.5;
 	</inscore-code>
 	</div>
-
-
-	<p> toujours des  explications </p>
-
+-->
 	<script> start_inscore_code(); </script>
 </body>
 </html>
