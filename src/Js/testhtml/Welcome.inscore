@@ -2,6 +2,7 @@
 color = 20 0 150;
 
 /ITL/scene/* del;
+/ITL/scene scale 0.9;
 /ITL/scene/welcome set txt "Welcome to INScore";
 /ITL/scene/welcome color $color;
 /ITL/scene/welcome fontSize 40;
