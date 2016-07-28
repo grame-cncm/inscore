@@ -19,7 +19,7 @@ class VHtmlVideoView extends VHtmlView {
 	updateView	( obj: IObject) : void {
 		let video = <IVideo>obj;
     	let elt = this.getHtml();
-        elt.setAttribute("controls","");
+        //elt.setAttribute("controls","");
         
         this.fVideo.src  = video.getFile();
         elt.style.height = "auto";
