@@ -60,7 +60,7 @@ class VHtmlPolygonView extends VHtmlSvg {
 	    } 
 
         this.fPolygon.style.fill = obj.fColor.getRGBString();  
-        //this.updatePos(polygon); 
+        this.updatePos(polygon); 
     }        
 
     // cette fonction permet de déterminer si le polygon est centré au milieu de la scene
