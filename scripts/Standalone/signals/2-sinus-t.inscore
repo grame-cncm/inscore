@@ -1,9 +1,9 @@
 
 
-! reset all the signals
+# reset all the signals
 /ITL/scene/signal/* reset;
 
-! send sinus data to t using a projection string
+# send sinus data to t using a projection string
 <? javascript sinus("sig '[1]'", 50, 0.2); ?>
 
 

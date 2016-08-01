@@ -1,10 +1,10 @@
 
 # comment 1
 # ---------------------------------------------
-!---------------------------------------------
-! another commented line
-! followed by another one
-!---------------------------------------------
+#---------------------------------------------
+# another commented line
+# followed by another one
+#---------------------------------------------
 
 <?javascript	a javascript section ?>
 a = toto;
@@ -29,7 +29,7 @@ msg = (/A p1 p2, /B 0.1 500);
 
 __END__
 
-! un commentaire après la fin
+# un commentaire après la fin
 /une/adresse/qui/devrait/etre/ignoree ;
 
 

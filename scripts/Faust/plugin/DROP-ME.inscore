@@ -24,7 +24,7 @@
 /ITL/scene/graph set graph sig;
 /ITL/scene/graph width 1.0;
 
-! aliases designed to support touch osc
+# aliases designed to support touch osc
 /ITL/scene/signal/stack alias "/accxyz";
 /ITL/scene/signal/pitchcolor alias "/1/fader1";
 /ITL/scene/signal/rollcolor alias "/1/fader2";

@@ -58,7 +58,7 @@
 /ITL/scene/rect color 0 0 0;
 
 color = $(/ITL/scene/rect get color);
-!/ITL/log write color is $color;
+#/ITL/log write color is $color;
 
 /ITL/scene/* watch mouseDown 
 	( /ITL/scene/javascript run 'clicked("$address")' );

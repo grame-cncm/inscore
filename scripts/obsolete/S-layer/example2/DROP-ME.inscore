@@ -1,18 +1,18 @@
 /ITL/scene/*  del;
 
-!!!!!!!!!!!!!!! first layer, with first page !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#  first layer, with first page 
 
 /ITL/scene/lay1 set layer;
 /ITL/scene/lay1 color 250 250 250;
 /ITL/scene/lay1 brushStyle solid;
 /ITL/scene/lay1 z 1.;
 
-	! title
+	# title
 /ITL/scene/lay1/title  set  txt "This script illustrates how to manipulate several layers, brush styles and synchronisation";
 /ITL/scene/lay1/title  y -0.93;
 /ITL/scene/lay1/title scale 1.2;
 
-	! score, page 1
+	# score, page 1
 /ITL/scene/lay1/score set gmnf "846_2f.gmn";
 /ITL/scene/lay1/score columns 1;
 /ITL/scene/lay1/score page 1;
@@ -21,7 +21,7 @@
 /ITL/scene/lay1/score map staff1;
 /ITL/scene/lay1/score map staff2;
 
-	! cursor sync on score
+	# cursor sync on score
 /ITL/scene/lay1/cursor set rect 0.01 0.06;
 /ITL/scene/lay1/cursor color 200 50 100;
 /ITL/scene/lay1/cursor brushStyle dense4;
@@ -30,14 +30,14 @@
 /ITL/scene/lay1/sync cursor score;
 
 
-	! clickme button to move cursor 1/4
+	# clickme button to move cursor 1/4
 /ITL/scene/lay1/clickme1 set txt "click me";
 /ITL/scene/lay1/clickme1 x 0.75;
 /ITL/scene/lay1/clickme1 watch mouseEnter (/ITL/scene/lay1/clickme1 color 200 0 120);
 /ITL/scene/lay1/clickme1 watch mouseLeave (/ITL/scene/lay1/clickme1 color 0 0 0);
 /ITL/scene/lay1/clickme1 watch mouseDown ( /ITL/scene/lay1/cursor ddate 1 4 );
 
-	! reset button to set the cursor to its initial position
+	# reset button to set the cursor to its initial position
 /ITL/scene/lay1/reset1 set txt "reset";
 /ITL/scene/lay1/reset1 x 0.75;
 /ITL/scene/lay1/reset1 y 0.1;
@@ -45,7 +45,7 @@
 /ITL/scene/lay1/reset1 watch mouseLeave (/ITL/scene/lay1/reset1 color 0 0 0);
 /ITL/scene/lay1/reset1 watch mouseDown ( /ITL/scene/lay1/cursor date 0 4 );
 
-	! duration button to change cursor's duration
+	# duration button to change cursor's duration
 /ITL/scene/lay1/duration1 set txt "change to 8/4";
 /ITL/scene/lay1/duration1 x 0.75;
 /ITL/scene/lay1/duration1 y 0.2;
@@ -62,7 +62,7 @@
 	)
 );
 
-	! stretch button to change the synchronization mode
+	# stretch button to change the synchronization mode
 /ITL/scene/lay1/stretch1 set txt "sync h";
 /ITL/scene/lay1/stretch1 x 0.75;
 /ITL/scene/lay1/stretch1 y 0.3;
@@ -79,7 +79,7 @@
 	)
 );
 
-	! next button to go to the next page
+	# next button to go to the next page
 /ITL/scene/lay1/next set txt "NEXT";
 /ITL/scene/lay1/next x 0.75;
 /ITL/scene/lay1/next y 0.85;
@@ -88,25 +88,25 @@
 	/ITL/scene/lay1 z 0.);
 
 
-!!!!!!!!!!!!!!! second layer, with second page !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#  second layer, with second page 
 
 /ITL/scene/lay2 set layer;
 /ITL/scene/lay2 color 250 250 250;
 /ITL/scene/lay2 brushStyle solid;
 /ITL/scene/lay2 z 0;
 
-	! title
+	# title
 /ITL/scene/lay2/title  set  txt "This script illustrates how to manipulate several layers, brush styles and synchronisation";
 /ITL/scene/lay2/title  y -0.93;
 /ITL/scene/lay2/title scale 1.2;
 
-	! score, page 2
+	# score, page 2
 /ITL/scene/lay2/score2 set gmnf "846_2f.gmn";
 /ITL/scene/lay2/score2 columns 1;
 /ITL/scene/lay2/score2 page 2;
 /ITL/scene/lay2/score2 scale 2.2;
 
-	! cursor sync on score, page 2
+	# cursor sync on score, page 2
 /ITL/scene/lay2/cursor2 set rect 0.01 0.06;
 /ITL/scene/lay2/cursor2 color 40 200 80;
 /ITL/scene/lay2/cursor2 brushStyle dense4;
@@ -114,14 +114,14 @@
 /ITL/scene/lay2/cursor2 duration 4 4;
 /ITL/scene/lay2/sync cursor2 score2;
 
-	! clickme button to move cursor 1/4
+	# clickme button to move cursor 1/4
 /ITL/scene/lay2/clickme2 set txt "click me";
 /ITL/scene/lay2/clickme2 x 0.75;
 /ITL/scene/lay2/clickme2 watch mouseEnter (/ITL/scene/lay2/clickme2 color 200 0 120);
 /ITL/scene/lay2/clickme2 watch mouseLeave (/ITL/scene/lay2/clickme2 color 0 0 0);
 /ITL/scene/lay2/clickme2 watch mouseDown ( /ITL/scene/lay2/cursor2 ddate 1 4 );
 
-	! reset button to set the cursor to its initial position
+	# reset button to set the cursor to its initial position
 /ITL/scene/lay2/reset2 set txt "reset";
 /ITL/scene/lay2/reset2 x 0.75;
 /ITL/scene/lay2/reset2 y 0.1;
@@ -129,7 +129,7 @@
 /ITL/scene/lay2/reset2 watch mouseLeave (/ITL/scene/lay2/reset2 color 0 0 0);
 /ITL/scene/lay2/reset2 watch mouseDown ( /ITL/scene/lay2/cursor2 date 48 4 );
 
-	! duration button to change the cursor's duration
+	# duration button to change the cursor's duration
 /ITL/scene/lay2/duration2 set txt "change to 8/4";
 /ITL/scene/lay2/duration2 x 0.75;
 /ITL/scene/lay2/duration2 y 0.2;
@@ -146,7 +146,7 @@
 	)
 );
 
-	! stretch button to change the synchronization mode
+	# stretch button to change the synchronization mode
 /ITL/scene/lay2/stretch2 set txt "sync h";
 /ITL/scene/lay2/stretch2 x 0.75;
 /ITL/scene/lay2/stretch2 y 0.3;
@@ -163,7 +163,7 @@
 	)
 );
 
-	! previous button to go to the previous page
+	# previous button to go to the previous page
 /ITL/scene/lay2/previous set txt "PREVIOUS";
 /ITL/scene/lay2/previous x -0.75;
 /ITL/scene/lay2/previous y 0.85;

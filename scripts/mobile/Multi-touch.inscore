@@ -1,6 +1,6 @@
-! this script illustrates multi touch events
-! you need to run INScore on a device that is multi-touch capable
-! typically an Android or iOS device
+# this script illustrates multi touch events
+# you need to run INScore on a device that is multi-touch capable
+# typically an Android or iOS device
 
 <? javascript
 	var os = osname();

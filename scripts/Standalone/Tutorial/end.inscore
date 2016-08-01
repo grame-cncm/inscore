@@ -6,7 +6,7 @@
 /ITL/scene/title scale 2.00000;
 /ITL/scene/end set htmlf "rsrc/end.html";
 /ITL/scene/end scale 2.00000;
-!/ITL/scene/end y -0.1
+#/ITL/scene/end y -0.1
 /ITL/scene/end xorigin -1.00000;
 /ITL/scene/end x -0.750000;
 /ITL/scene/icon set img "rsrc/INScore.png";

@@ -1,12 +1,12 @@
 
-width = 0.18;	! the rotating lines width
+width = 0.18;	# the rotating lines width
 
 /ITL/scene/* del;
 /ITL/scene/title set txt "Muller-Lyer illusions";
 /ITL/scene/title scale 2.70;
 /ITL/scene/title y -0.9;
-!/ITL/scene/line1 set line xy -1.0 0.0;
-!/ITL/scene/line2 set line xy -1.0 0.0;
+#/ITL/scene/line1 set line xy -1.0 0.0;
+#/ITL/scene/line2 set line xy -1.0 0.0;
 /ITL/scene/line1 set line wa 1.0 0.0;
 /ITL/scene/line2 set line wa 1.0 0.0;
 /ITL/scene/line1 y -0.2;
@@ -44,8 +44,8 @@ width = 0.18;	! the rotating lines width
 /ITL/scene/a* y -0.2;
 /ITL/scene/b* y 0.2;
 
-h =0.05;		! the slider height
-y =0.9;			! the slider y position
+h =0.05;		# the slider height
+y =0.9;			# the slider y position
 /ITL/scene/slider set rect 1.0 $h ;
 /ITL/scene/slider penWidth 1.0;
 /ITL/scene/slider penColor 0 0 0;

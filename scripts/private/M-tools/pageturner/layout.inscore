@@ -1,15 +1,15 @@
-!-------------------------------------------------------
-! required version
-!-------------------------------------------------------
+#-------------------------------------------------------
+# required version
+#-------------------------------------------------------
 /ITL require 76 (
 	/ITL/scene/warning set txt "WARNING: this scene requires version 0.76" );
 /ITL require 76 (
 	/ITL/scene/warning scale 2.0 );
 /ITL require 76 (
 	/ITL/scene/warning color 200 200 200 200 );
-!-------------------------------------------------------
-! zoom slider
-!-------------------------------------------------------
+#-------------------------------------------------------
+# zoom slider
+#-------------------------------------------------------
 /ITL/scene/zoom set txt Zoom;
 /ITL/scene/zoom y -0.97;
 /ITL/scene/zoom scale 1.2;
@@ -35,9 +35,9 @@
 	/ITL/scene/score scale "$x[0.3,5]" ,
 	/ITL/scene/zoompos date "$date" );
 
-!-------------------------------------------------------
-! pages slider
-!-------------------------------------------------------
+#-------------------------------------------------------
+# pages slider
+#-------------------------------------------------------
 /ITL/scene/pagerect set rect 1.2 0.03;
 /ITL/scene/pagerect x -0.6;
 /ITL/scene/pagerect y 0.88;
@@ -65,18 +65,18 @@
 	/ITL/scene/score page "$x[1,20]" ,
 	/ITL/scene/pagepos date "$date" );
 
-!-------------------------------------------------------
-! score cursor
-!-------------------------------------------------------
+#-------------------------------------------------------
+# score cursor
+#-------------------------------------------------------
 /ITL/scene/_cursor set rect 0.002 0.2;
 /ITL/scene/_cursor color 255 0 0 150;
 /ITL/scene/_cursor duration 1 32;
 /ITL/scene/_cursor z 5.0;
 /ITL/scene/_cursor show 0;
 
-!-------------------------------------------------------
-! buttons setup
-!-------------------------------------------------------
+#-------------------------------------------------------
+# buttons setup
+#-------------------------------------------------------
 /ITL/scene/leftbutton set txt " ";
 /ITL/scene/centerbutton set txt " ";
 /ITL/scene/rightbutton set txt " ";
@@ -87,9 +87,9 @@
 /ITL/scene/*button z 2.5;
 /ITL/scene/*button scale 1.4;
 
-!-------------------------------------------------------
-! current mode display and mode switchs
-!-------------------------------------------------------
+#-------------------------------------------------------
+# current mode display and mode switchs
+#-------------------------------------------------------
 /ITL/scene/mode set txt " ";
 /ITL/scene/mode color 80 80 80;
 /ITL/scene/mode y 0.81;
@@ -106,13 +106,13 @@
 /ITL/scene/anext watch mouseDown 		( /ITL/$scene load "tempomap.inscore" );
 /ITL/scene/aprevious watch mouseDown 	( /ITL/$scene load "pageturn.inscore" );
 
-!-------------------------------------------------------
-! at this step, the score should be loaded
-!-------------------------------------------------------
+#-------------------------------------------------------
+# at this step, the score should be loaded
+#-------------------------------------------------------
 /ITL/scene/score map system;
 /ITL/scene/sync _cursor "score:system" v;
 
-!-------------------------------------------------------
-! default mode is page turn
-!-------------------------------------------------------
+#-------------------------------------------------------
+# default mode is page turn
+#-------------------------------------------------------
 /ITL/scene load "pageturn.inscore";

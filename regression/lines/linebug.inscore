@@ -13,7 +13,7 @@
 
 /ITL/scene/lw1 set line wa 1. 142.;
 /ITL/scene/lw2 set line wa 1. 100.;
-!/ITL/scene/lw* y 0.7;
+#/ITL/scene/lw* y 0.7;
 
 /ITL/scene/comment set txt "This script illustrates a bug with lines initialization:
 all the lines should be centred on the scene origin.";

@@ -1,8 +1,8 @@
 
-! reset all the signals
+# reset all the signals
 /ITL/scene/signal/* reset;
 
-! send sinus data to y
+# send sinus data to y
 <? javascript sinus("y", 50, 0.2) ?>
 
 /ITL/scene/scriptcomment  set  txt "Values have been sent directly to the 'y' signal";

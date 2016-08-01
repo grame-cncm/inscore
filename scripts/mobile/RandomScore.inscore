@@ -12,8 +12,8 @@
 	"eventdown = " + eventdown + "; eventup = " + eventup +";";
 ?>
 
-!eventdown 	= touchBegin;
-!eventup 	= touchEnd;
+#eventdown 	= touchBegin;
+#eventup 	= touchEnd;
 
 <? javascript
 	function randomdur () { 

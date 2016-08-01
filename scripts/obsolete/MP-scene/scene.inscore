@@ -26,7 +26,7 @@
 /ITL/scene/myGSig y 0.46;
 /ITL/scene/myGSig scale 0.45;
 
-!ITL/scene/myGSig angle 4.
+#ITL/scene/myGSig angle 4.
 
 /ITL/scene/comment set html "<h2>more...</h2>";
 /ITL/scene/comment x -0.36;
