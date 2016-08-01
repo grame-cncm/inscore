@@ -10,7 +10,7 @@ ITLparse.cpp : ITL.y
 ITLparse.hpp : ITL.y
 	$(YACC) -d -o ITLparse.cpp  -p $(PREFIX) ITL.y
 
-ITLlex.cpp : ITL.l ITLparse.hpp
+ITLlex.cpp : ITL.l ITLparse.hpp 
 	$(LEX)  -oITLlex.cpp -I -P$(PREFIX) ITL.l
 	
 doc :

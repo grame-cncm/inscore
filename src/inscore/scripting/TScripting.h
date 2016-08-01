@@ -73,6 +73,8 @@ class TScripting
 	TLua*				fLua;
 	SIMessageList		fMessages;
 
+	bool checkVar	(IMessage::argslist& val, const char* var, const char * defaultVal=0) const;
+
 	protected:
 		STEnv			fEnv;
 		// add the 'env' environment to the object
@@ -96,12 +98,13 @@ class TScripting
 		void			error(int line, int col, const char* s) const;
 
 		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0) const;
+		IMessage::argslist		resolveinc	(const char* var, bool post, const char * defaultVal=0);
+		IMessage::argslist		resolvedec	(const char* var, bool post, const char * defaultVal=0);
 		IMessage::argslist		resolve	(const IMessage* var) const;
 		const SIMessageList&	messages() const { return fMessages; }
 
 
 		Sbaseparam* parseExpr(std::string definition, int lineOffset = 0, int columnOffset = 0) const;
-
 };
 
 

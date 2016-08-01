@@ -29,6 +29,7 @@
 #include <locale.h>
 
 #include "TScripting.h"
+#include "TMaths.h"
 
 namespace inscore 
 {
@@ -38,6 +39,8 @@ class TParseEnv;
 */
 class ITLparser {	
 		
+	TMaths	fMath;
+
 	void initScanner();
 	void destroyScanner();
 
@@ -65,6 +68,7 @@ class ITLparser {
 		virtual ~ITLparser();
 		
 		SIMessageList parse();
+		const TMaths& math() const	{ return fMath; }
 };
 
 } // end namespace

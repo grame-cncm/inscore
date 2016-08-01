@@ -54,16 +54,36 @@
      ENDEXPR = 270,
      ENDSCRIPT = 271,
      VARSTART = 272,
-     LEFTPAR = 273,
-     RIGHTPAR = 274,
-     COLON = 275,
-     COMMA = 276,
-     POINT = 277,
-     HOSTNAME = 278,
-     IPNUM = 279,
-     EXPRESSION = 280,
-     LUASCRIPT = 281,
-     JSCRIPT = 282
+     VARIABLE = 273,
+     LEFTPAR = 274,
+     RIGHTPAR = 275,
+     COLON = 276,
+     COMMA = 277,
+     POINT = 278,
+     HOSTNAME = 279,
+     IPNUM = 280,
+     EXPRESSION = 281,
+     LUASCRIPT = 282,
+     JSCRIPT = 283,
+     ADD = 284,
+     SUB = 285,
+     DIV = 286,
+     MULT = 287,
+     QUEST = 288,
+     MIN = 289,
+     MAX = 290,
+     GREATER = 291,
+     GREATEREQ = 292,
+     LESS = 293,
+     LESSEQ = 294,
+     EQ = 295,
+     MINUS = 296,
+     NEG = 297,
+     MODULO = 298,
+     PREINC = 299,
+     PREDEC = 300,
+     POSTINC = 301,
+     POSTDEC = 302
    };
 #endif
 /* Tokens.  */
@@ -82,16 +102,36 @@
 #define ENDEXPR 270
 #define ENDSCRIPT 271
 #define VARSTART 272
-#define LEFTPAR 273
-#define RIGHTPAR 274
-#define COLON 275
-#define COMMA 276
-#define POINT 277
-#define HOSTNAME 278
-#define IPNUM 279
-#define EXPRESSION 280
-#define LUASCRIPT 281
-#define JSCRIPT 282
+#define VARIABLE 273
+#define LEFTPAR 274
+#define RIGHTPAR 275
+#define COLON 276
+#define COMMA 277
+#define POINT 278
+#define HOSTNAME 279
+#define IPNUM 280
+#define EXPRESSION 281
+#define LUASCRIPT 282
+#define JSCRIPT 283
+#define ADD 284
+#define SUB 285
+#define DIV 286
+#define MULT 287
+#define QUEST 288
+#define MIN 289
+#define MAX 290
+#define GREATER 291
+#define GREATEREQ 292
+#define LESS 293
+#define LESSEQ 294
+#define EQ 295
+#define MINUS 296
+#define NEG 297
+#define MODULO 298
+#define PREINC 299
+#define PREDEC 300
+#define POSTINC 301
+#define POSTDEC 302
 
 
 
@@ -111,7 +151,7 @@ typedef union YYSTYPE
     inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 115 "ITLparse.hpp"
+#line 155 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

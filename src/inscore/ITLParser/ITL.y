@@ -46,7 +46,7 @@
 %token ERR
 %token ENDEXPR ENDSCRIPT
 
-%token VARSTART LEFTPAR RIGHTPAR
+%token VARSTART VARIABLE LEFTPAR RIGHTPAR
 %token COLON COMMA POINT HOSTNAME IPNUM
 
 %token EXPRESSION
@@ -54,17 +54,27 @@
 %token LUASCRIPT
 %token JSCRIPT
 
+%token ADD SUB DIV MULT QUEST MIN MAX GREATER GREATEREQ LESS LESSEQ EQ MINUS NEG MODULO ;
+%token PREINC PREDEC POSTINC POSTDEC;
+
+%left GREATER GREATEREQ LESS LESSEQ EQ
+%left NEG PREINC PREDEC POSTINC POSTDEC MINUS ADD SUB
+%left MULT DIV MODULO
+
+ /*%expect 2					/expected shift reduce conflicts, currently from  mathexpr in line 230, 231 (SUB) */
+
 /*------------------------------   types  ------------------------------*/
-%type <num> 	number
+%type <num> 	number mathbool
 %type <real>	FLOAT
 %type <str>		STRING FILEPATH PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
 %type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param expression
-%type <plist>	params variable eval
+%type <p>		param expression 
+%type <plist>	params variable eval mathexpr mathmax mathmin
 %type <url>		urlprefix
 %type <addr>	address
+
 
 %{
 
@@ -186,10 +196,15 @@ eval		: EVAL				{ $$ = new inscore::IMessage::argslist;
 								  inscore::Sbaseparam * p = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));
 								  $$->push_back(*p); delete p; }
 
-params		: param					{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
+ /* params		: param					{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; }
 			| variable				{ $$ = $1; }
 			| params variable		{ $1->push_back($2);  $$ = $1; delete $2; }
 			| params param			{ $1->push_back(*$2); $$ = $1; delete $2; }
+			;
+ */
+
+params		: mathexpr				{ $$ = $1; }
+			| params mathexpr		{ $1->push_back($2);  $$ = $1; delete $2; }
 			;
 
 variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
@@ -197,21 +212,75 @@ variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
 								  $$->push_back (context->fReader.resolve($2->c_str(), var.c_str()));
 								  delete $2;
 								}
+			| VARSTART varname POSTINC		{ $$ = new inscore::IMessage::argslist; 
+								  			  std::string var = "$" + *$2;
+								  			  $$->push_back (context->fReader.resolveinc($2->c_str(), true, var.c_str()));
+								  			  delete $2;
+								  			}
+			| VARSTART varname POSTDEC		{ $$ = new inscore::IMessage::argslist; 
+								  			  std::string var = "$" + *$2;
+								  			  $$->push_back (context->fReader.resolvedec($2->c_str(), true, var.c_str()));
+								  			  delete $2;
+								  			}
+			| PREINC VARSTART varname		{ $$ = new inscore::IMessage::argslist; 
+								  			  std::string var = "$" + *$3;
+								  			  $$->push_back (context->fReader.resolveinc($3->c_str(), false, var.c_str()));
+								  			  delete $3;
+								  			}
+			| PREDEC VARSTART varname		{ $$ = new inscore::IMessage::argslist; 
+								  			  std::string var = "$" + *$3;
+								  			  $$->push_back (context->fReader.resolvedec($3->c_str(), false, var.c_str()));
+								  			  delete $3;
+								  			}
 			| VARSTART LEFTPAR message RIGHTPAR { $$ = new inscore::IMessage::argslist;
 								  $$->push_back (context->fReader.resolve(*$3));
 								  delete $3;
 								}
 			;
 
-param		: number			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
-		| FLOAT				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
+param	: number				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
+		| FLOAT					{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
 		| identifier			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
-		| STRING			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
+		| STRING				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
 		| expression			{ $$ = $1;}
 		| LEFTPAR messagelist RIGHTPAR	{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$2)); delete $2; }
 		| script			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$1)); delete $1; }
 		;
 
+//_______________________________________________
+// math expressions
+mathexpr	: param							{ $$ = new inscore::IMessage::argslist; $$->push_back (*$1); delete $1 }
+			| variable						{ $$ = $1; }
+			| mathexpr ADD mathexpr			{ $$ = context->math().add($1, $3); delete $1; delete $3; }
+			| mathexpr SUB mathexpr			{ $$ = context->math().sub($1, $3); delete $1; delete $3;  }
+			| MINUS mathexpr				{ $$ = $$ = context->math().minus($2);   delete $2; }
+			/* | mathexpr INC					{ $$ = context->math().inc($1); delete $1;} */
+			/* | mathexpr DEC					{ $$ = context->math().dec($1); delete $1; } */
+			| mathexpr MULT mathexpr		{ $$ = context->math().mult($1, $3); delete $1; delete $3; }
+			| mathexpr DIV mathexpr			{ $$ = context->math().div($1, $3);  delete $1; delete $3; }
+			| mathexpr MODULO mathexpr		{ $$ = context->math().mod($1, $3);  delete $1; delete $3; }
+			| LEFTPAR mathexpr RIGHTPAR 	{ $$ = $2; }
+			| MIN LEFTPAR mathmin RIGHTPAR	{ $$ = $3; }
+			| MAX LEFTPAR mathmax RIGHTPAR	{ $$ = $3; }
+			| LEFTPAR mathbool QUEST mathexpr COLON mathexpr RIGHTPAR { $$ = $2 ? (delete $6, $4) : (delete $4, $6); } 
+			;
+
+mathmin 	: mathexpr	mathexpr			{ $$ = context->math().less(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
+			| mathmin mathexpr				{ $$ = context->math().less(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
+			;
+
+mathmax 	: mathexpr	mathexpr			{ $$ = context->math().greater(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
+			| mathmax mathexpr				{ $$ = context->math().greater(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
+			;
+
+mathbool 	: mathexpr						{ $$ = context->math().tobool(*$1); 		delete $1;}
+			| NEG mathexpr					{ $$ = (context->math().tobool(*$2) ? 0 : 1); delete $2; }
+			| mathexpr EQ mathexpr 			{ $$ = context->math().equal(*$1, *$3);     delete $1; delete $3; }
+			| mathexpr GREATER mathexpr 	{ $$ = context->math().greater(*$1, *$3);   delete $1; delete $3; }
+			| mathexpr GREATEREQ mathexpr 	{ $$ = context->math().greatereq(*$1, *$3); delete $1; delete $3; }
+			| mathexpr LESS mathexpr 		{ $$ = context->math().less(*$1, *$3); 	  	delete $1; delete $3; }
+			| mathexpr LESSEQ mathexpr 		{ $$ = context->math().lesseq(*$1, *$3); 	delete $1; delete $3; }
+			;
 
 //_______________________________________________
 // variable declaration
@@ -256,7 +325,7 @@ int lineno (ITLparser* context)
 
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line" << loc->last_line + context->fLine << "col" << loc->first_column << ":" << s << endl;
+	cerr << "error line " << loc->last_line + context->fLine << " col " << loc->first_column << ":" << s << endl;
 #else
 	context->fReader.error (loc->last_line + context->fLine, loc->first_column, s);
 #endif

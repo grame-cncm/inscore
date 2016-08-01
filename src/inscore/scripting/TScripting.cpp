@@ -35,6 +35,8 @@
 #include "ITLparser.h"
 #include "ITLError.h"
 
+#include "TMaths.h"
+
 using namespace std;
 extern inscore::TScripting* gScripter;
 
@@ -200,13 +202,50 @@ IMessage::argslist TScripting::resolve (const IMessage* msg) const
 }
 
 
+//--------------------------------------------------------------------------------------------
+bool TScripting::checkVar (IMessage::argslist& val, const char* var, const char * defaultVal) const
+{
+	if (val.empty()) {
+		ITLErr << "warning ! variable " <<  var << " is not defined." << ITLEndl;
+		if (defaultVal)
+			val.push_back(new IMsgParam<string>(defaultVal));
+		return false;
+	}
+	return true;
+}
 
 //--------------------------------------------------------------------------------------------
 IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal) const
 {
 	IMessage::argslist val = fEnv->value (var);
-	if (val.empty() && defaultVal)
-		val.push_back(new IMsgParam<string>(defaultVal));
+	checkVar (val, var, defaultVal);
+//	if (val.empty()) {
+//		ITLErr << "warning ! variable " <<  var << " is not defined." << ITLEndl;
+//		if (defaultVal)
+//			val.push_back(new IMsgParam<string>(defaultVal));
+//	}
+	return val;
+}
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolveinc (const char* var, bool post, const char * defaultVal)
+{
+	IMessage::argslist val = fEnv->value (var);
+	if (checkVar (val, var, defaultVal)) {
+		TMaths m;
+		IMessage::argslist* val1 = m.inc(val);
+		variable (var, val1);
+		if (!post) val = *val1;
+		delete val1;
+	}
+	return val;
+}
+
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolvedec (const char* var, bool post, const char * defaultVal)
+{
+	IMessage::argslist val = fEnv->value (var);
+	if (checkVar (val, var, defaultVal)) {
+	}
 	return val;
 }
 

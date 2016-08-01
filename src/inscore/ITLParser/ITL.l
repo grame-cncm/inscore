@@ -114,6 +114,30 @@ EOL		[\x0a\x0d]
 [+-]*{DIGIT}+"."{DIGIT}+e[-+]?{DIGIT}+ 	yyextra->fFloat = atof(yytext); return FLOAT;
 [+-]*{DIGIT}+e[-+]?{DIGIT}+ 			yyextra->fFloat = atof(yytext); return FLOAT;
 
+
+ /* ----------------------------------------- */
+ /*	math operators */
+ /* ----------------------------------------- */
+"+"				return ADD;
+{SPACE}"++"		return PREINC;
+"++"			return POSTINC;
+"-"				return MINUS;
+{SPACE}"--"		return PREDEC;
+"--"{SPACE}		return POSTDEC;
+"-"{SPACE}		return SUB;
+" /"			return DIV;
+"*"				return MULT;
+"%"				return MODULO;
+{SPACE}"?"{SPACE} return QUEST;
+"!"				return NEG;
+"=="			return EQ;
+">"				return GREATER;
+">="			return GREATEREQ;
+"<"				return LESS;
+"<="			return LESSEQ;
+"@min"		return MIN;
+"@max"		return MAX;
+
  /* ----------------------------------------- */
  /*	method requiring messages as argument */
  /* ----------------------------------------- */
@@ -124,7 +148,6 @@ EOL		[\x0a\x0d]
  /*	comments */
  /* ----------------------------------------- */
 {SPACE}*"#"			BEGIN CMNTLN;
-{SPACE}*"!"			BEGIN CMNTLN;
 <CMNTLN>.*	
 <CMNTLN>{EOL}+		if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
@@ -149,6 +172,11 @@ EOL		[\x0a\x0d]
  /*	identifiers */
  /* ----------------------------------------- */
 {STARTID}{IDCHAR}*				yyextra->fText = yytext; return IDENTIFIER;
+
+ /* ----------------------------------------- */
+ /*	variables */
+"$"{STARTID}{IDCHAR}*			yyextra->fText = yytext; return VARIABLE;
+"$"{HOSTCHAR}+					yyextra->fText = yytext; return VARIABLE;
 
  /* ----------------------------------------- */
  /*	quoted strings */
