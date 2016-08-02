@@ -1737,7 +1737,6 @@ using namespace inscore;
 
 int lineno (IExprParser* context)
 {
-	YYLTYPE* loc = (YYLTYPE*)context->fScanner;
 	return context->fLine + context->fLineOffset;
 }
 
