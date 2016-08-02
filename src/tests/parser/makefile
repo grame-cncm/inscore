@@ -1,4 +1,7 @@
 
+files 	= $(shell grep -v '^\#' testfiles.txt)
+out    := $(patsubst ../../../%.inscore, checkout/%.inscore, $(files))
+
 #ARCH = -arch x86_64
 
 LIB := ../../inscore
@@ -26,5 +29,18 @@ check: testparser
 
 clean:
 	rm -f $(OBJ)  testparser
+
+###################
+# no script options
+check: testparser $(out)
+
+test:
+	echo $(out)
+
+checkout/%.inscore: ../../../%.inscore
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	@echo "== checking $<"
+	./testparser $< > $@
+
 
 $(PARSER)/ITLparser.o : $(PARSER)/ITL.l $(PARSER)/ITL.y
