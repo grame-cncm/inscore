@@ -207,30 +207,19 @@ params		: mathexpr				{ $$ = $1; }
 			| params mathexpr		{ $1->push_back($2);  $$ = $1; delete $2; }
 			;
 
-variable	: VARSTART varname	{ $$ = new inscore::IMessage::argslist;
-								  std::string var = "$" + *$2;
-								  $$->push_back (context->fReader.resolve($2->c_str(), var.c_str()));
-								  delete $2;
-								}
-			| VARSTART varname POSTINC		{ $$ = new inscore::IMessage::argslist; 
-								  			  std::string var = "$" + *$2;
-								  			  $$->push_back (context->fReader.resolveinc($2->c_str(), true, var.c_str()));
-								  			  delete $2;
+variable	: VARIABLE				{ $$ = new inscore::IMessage::argslist; 
+									  $$->push_back (context->fReader.resolve(context->fText.c_str(), lineno(context))); }
+			| VARIABLE POSTINC		{ $$ = new inscore::IMessage::argslist; 
+								  			  $$->push_back (context->fReader.resolveinc(context->fText.c_str(), true, lineno(context)));
 								  			}
-			| VARSTART varname POSTDEC		{ $$ = new inscore::IMessage::argslist; 
-								  			  std::string var = "$" + *$2;
-								  			  $$->push_back (context->fReader.resolvedec($2->c_str(), true, var.c_str()));
-								  			  delete $2;
+			| VARIABLE POSTDEC		{ $$ = new inscore::IMessage::argslist; 
+								  			  $$->push_back (context->fReader.resolvedec(context->fText.c_str(), true, lineno(context)));
 								  			}
-			| PREINC VARSTART varname		{ $$ = new inscore::IMessage::argslist; 
-								  			  std::string var = "$" + *$3;
-								  			  $$->push_back (context->fReader.resolveinc($3->c_str(), false, var.c_str()));
-								  			  delete $3;
+			| PREINC VARIABLE		{ $$ = new inscore::IMessage::argslist; 
+								  			  $$->push_back (context->fReader.resolveinc(context->fText.c_str(), false, lineno(context)));
 								  			}
-			| PREDEC VARSTART varname		{ $$ = new inscore::IMessage::argslist; 
-								  			  std::string var = "$" + *$3;
-								  			  $$->push_back (context->fReader.resolvedec($3->c_str(), false, var.c_str()));
-								  			  delete $3;
+			| PREDEC VARIABLE		{ $$ = new inscore::IMessage::argslist; 
+								  			  $$->push_back (context->fReader.resolvedec(context->fText.c_str(), false, lineno(context)));
 								  			}
 			| VARSTART LEFTPAR message RIGHTPAR { $$ = new inscore::IMessage::argslist;
 								  $$->push_back (context->fReader.resolve(*$3));
@@ -254,8 +243,6 @@ mathexpr	: param							{ $$ = new inscore::IMessage::argslist; $$->push_back (*$
 			| mathexpr ADD mathexpr			{ $$ = context->math().add($1, $3); delete $1; delete $3; }
 			| mathexpr SUB mathexpr			{ $$ = context->math().sub($1, $3); delete $1; delete $3;  }
 			| MINUS mathexpr				{ $$ = $$ = context->math().minus($2);   delete $2; }
-			/* | mathexpr INC					{ $$ = context->math().inc($1); delete $1;} */
-			/* | mathexpr DEC					{ $$ = context->math().dec($1); delete $1; } */
 			| mathexpr MULT mathexpr		{ $$ = context->math().mult($1, $3); delete $1; delete $3; }
 			| mathexpr DIV mathexpr			{ $$ = context->math().div($1, $3);  delete $1; delete $3; }
 			| mathexpr MODULO mathexpr		{ $$ = context->math().mod($1, $3);  delete $1; delete $3; }
@@ -319,15 +306,14 @@ using namespace inscore;
 
 int lineno (ITLparser* context)	
 { 
-	YYLTYPE* loc = (YYLTYPE*)context->fScanner;
-	return loc->last_line + context->fLine; 
+	return context->fLine + context->fLineOffset; 
 }
 
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line " << loc->last_line + context->fLine << " col " << loc->first_column << ":" << s << endl;
+	cerr << "error line " << loc->last_line + context->fLineOffset << " col " << loc->first_column << ":" << s << endl;
 #else
-	context->fReader.error (loc->last_line + context->fLine, loc->first_column, s);
+	context->fReader.error (loc->last_line + context->fLineOffset, loc->first_column, s);
 #endif
 	return 0;
 }

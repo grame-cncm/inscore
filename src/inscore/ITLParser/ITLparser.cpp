@@ -33,10 +33,11 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 ITLparser::ITLparser(std::istream* stream, int line, TParseEnv* penv)
-	: fReader(penv), fStream(stream), fLine(line), fParseSucceed(false)
+	: fReader(penv), fStream(stream), fLineOffset(line), fParseSucceed(false)
 {
 	setlocale(LC_NUMERIC, "C");
 	initScanner();
+	fLine = 0;
 }
 
 //--------------------------------------------------------------------------

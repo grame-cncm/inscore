@@ -60,7 +60,8 @@ class ITLparser {
 		std::string		fText;		// the current text
 		int				fInt;		// the current int
 		float			fFloat;		// the current float
-		int				fLine;		// line offset
+		int				fLineOffset;// line offset
+		int				fLine;		// current line
 		int				fExprStartLine;
 		bool			fParseSucceed;
 

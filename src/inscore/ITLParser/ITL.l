@@ -22,7 +22,7 @@ using namespace std;
 
 #define YY_NO_INPUT
 #define YY_EXTRA_TYPE inscore::ITLparser*
-#define YY_USER_ACTION yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
+#define YY_USER_ACTION  yyextra->fLine = yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
 
 #define YY_INPUT(buf,result,max_size)   \
    {                                       \
@@ -123,7 +123,7 @@ EOL		[\x0a\x0d]
 "++"			return POSTINC;
 "-"				return MINUS;
 {SPACE}"--"		return PREDEC;
-"--"{SPACE}		return POSTDEC;
+"--"			return POSTDEC;
 "-"{SPACE}		return SUB;
 " /"			return DIV;
 "*"				return MULT;
@@ -175,8 +175,8 @@ EOL		[\x0a\x0d]
 
  /* ----------------------------------------- */
  /*	variables */
-"$"{STARTID}{IDCHAR}*			yyextra->fText = yytext; return VARIABLE;
-"$"{HOSTCHAR}+					yyextra->fText = yytext; return VARIABLE;
+"$"{STARTID}{IDCHAR}*			yyextra->fText = &yytext[1]; return VARIABLE;
+"$"{HOSTCHAR}+					yyextra->fText = &yytext[1]; return VARIABLE;
 
  /* ----------------------------------------- */
  /*	quoted strings */
