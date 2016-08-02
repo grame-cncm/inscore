@@ -20,6 +20,10 @@ OBJ := $(OBJ) $(EXPR)/parser/IExprParse.o $(EXPR)/parser/IExprParser.o $(EXPR)/p
 #TEST PARSER
 OBJ := $(OBJ) testparser.o
 
+all:
+	make -C ../../inscore/ITLParser/
+	make testparser
+	
 testparser: $(OBJ) 
 	g++  -g $(CXXFLAGS)  $(OBJ) -o testparser
 
