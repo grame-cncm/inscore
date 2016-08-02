@@ -48,7 +48,7 @@ int main (int argc, char * argv[])
 		ITLparser p(&in, 0, &env);
 		SIMessageList outMsgs;
 		outMsgs = p.parse ();
-		if (outMsgs) {
+		if (outMsgs && p.fParseSucceed && outMsgs->list().size()) {
 			outMsgs->list().set("", "\n");
 			cout << outMsgs->list() << endl;
 		}
