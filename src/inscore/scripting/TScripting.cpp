@@ -203,34 +203,30 @@ IMessage::argslist TScripting::resolve (const IMessage* msg) const
 
 
 //--------------------------------------------------------------------------------------------
-bool TScripting::checkVar (IMessage::argslist& val, const char* var, const char * defaultVal) const
+bool TScripting::checkVar (IMessage::argslist& val, const char* var, int line) const
 {
 	if (val.empty()) {
-		ITLErr << "warning ! variable " <<  var << " is not defined." << ITLEndl;
-		if (defaultVal)
-			val.push_back(new IMsgParam<string>(defaultVal));
+		string pvar("$");
+		pvar += var;
+		ITLErr << "line " << line <<": warning! variable " <<  pvar << " is not defined." << ITLEndl;
+		val.push_back(new IMsgParam<string>(pvar));
 		return false;
 	}
 	return true;
 }
 
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal) const
+IMessage::argslist TScripting::resolve (const char* var, int line) const
 {
 	IMessage::argslist val = fEnv->value (var);
-	checkVar (val, var, defaultVal);
-//	if (val.empty()) {
-//		ITLErr << "warning ! variable " <<  var << " is not defined." << ITLEndl;
-//		if (defaultVal)
-//			val.push_back(new IMsgParam<string>(defaultVal));
-//	}
+	checkVar (val, var, line);
 	return val;
 }
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolveinc (const char* var, bool post, const char * defaultVal)
+IMessage::argslist TScripting::resolveinc (const char* var, bool post, int line)
 {
 	IMessage::argslist val = fEnv->value (var);
-	if (checkVar (val, var, defaultVal)) {
+	if (checkVar (val, var, line)) {
 		TMaths m;
 		IMessage::argslist* val1 = m.inc(val);
 		variable (var, val1);
@@ -241,10 +237,15 @@ IMessage::argslist TScripting::resolveinc (const char* var, bool post, const cha
 }
 
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolvedec (const char* var, bool post, const char * defaultVal)
+IMessage::argslist TScripting::resolvedec (const char* var, bool post, int line)
 {
 	IMessage::argslist val = fEnv->value (var);
-	if (checkVar (val, var, defaultVal)) {
+	if (checkVar (val, var, line)) {
+		TMaths m;
+		IMessage::argslist* val1 = m.dec(val);
+		variable (var, val1);
+		if (!post) val = *val1;
+		delete val1;
 	}
 	return val;
 }

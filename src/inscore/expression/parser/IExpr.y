@@ -96,7 +96,7 @@ string		: identifier
 			| QUOTEDSTRING			{ $$ = new string(context->fText);}
 			;
 
-variable	: VARSTART identifier	{ $$ = context->readVar($2);}
+variable	: VARSTART identifier	{ $$ = context->readVar($2, lineno(context));}
 			;
 
 
@@ -151,7 +151,7 @@ using namespace inscore;
 int lineno (IExprParser* context)
 {
 	YYLTYPE* loc = (YYLTYPE*)context->fScanner;
-	return loc->last_line + context->fLineOffset;
+	return context->fLine + context->fLineOffset;
 }
 
 int yyerror(const YYLTYPE* loc, IExprParser* context, const char*s) {

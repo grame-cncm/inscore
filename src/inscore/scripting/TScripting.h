@@ -73,7 +73,7 @@ class TScripting
 	TLua*				fLua;
 	SIMessageList		fMessages;
 
-	bool checkVar	(IMessage::argslist& val, const char* var, const char * defaultVal=0) const;
+	bool checkVar	(IMessage::argslist& val, const char* var, int line) const;
 
 	protected:
 		STEnv			fEnv;
@@ -97,9 +97,9 @@ class TScripting
 		bool			checkJavascript () const;
 		void			error(int line, int col, const char* s) const;
 
-		IMessage::argslist		resolve	(const char* var, const char * defaultVal=0) const;
-		IMessage::argslist		resolveinc	(const char* var, bool post, const char * defaultVal=0);
-		IMessage::argslist		resolvedec	(const char* var, bool post, const char * defaultVal=0);
+		IMessage::argslist		resolve	(const char* var, int line) const;
+		IMessage::argslist		resolveinc	(const char* var, bool post, int line);
+		IMessage::argslist		resolvedec	(const char* var, bool post, int line);
 		IMessage::argslist		resolve	(const IMessage* var) const;
 		const SIMessageList&	messages() const { return fMessages; }
 

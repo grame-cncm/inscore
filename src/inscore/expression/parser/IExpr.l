@@ -21,7 +21,7 @@
 using namespace std;
 
 #define YY_EXTRA_TYPE inscore::IExprParser*
-#define YY_USER_ACTION yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
+#define YY_USER_ACTION yyextra->fLine = yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
 
 #define YY_INPUT(buf,result,max_size)   \
    {                                       \
