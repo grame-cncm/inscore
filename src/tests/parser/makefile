@@ -27,7 +27,7 @@ all:
 testparser: $(OBJ) 
 	g++  -g $(CXXFLAGS)  $(OBJ) -o testparser
 
-check: testparser
+checkmem: testparser
 	valgrind -v --dsymutil=yes --leak-check=full --show-reachable=yes ./testparser $(FILE) 2> memcheck.txt
 	open memcheck.txt
 
@@ -43,8 +43,7 @@ test:
 
 checkout/%.inscore: ../../../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	@echo "== checking $<"
-	./testparser $< > $@
+	./testparser $< > $@ || rm -f $@
 
 
 $(PARSER)/ITLparser.o : $(PARSER)/ITL.l $(PARSER)/ITL.y
