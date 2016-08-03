@@ -36,17 +36,16 @@
 }
 
 %token INT UINT FLOAT
-%token IDENTIFIER
+%token IDENTIFIER OSCADDRESS
 %token EQUAL
 %token REGEXP
-%token PATHSEP BACKPATH
 %token FILEPATH
 %token STRING
 %token EVAL
 %token ERR
 %token ENDEXPR ENDSCRIPT
 
-%token VARSTART VARIABLE LEFTPAR RIGHTPAR
+%token VARSTART VARIABLE VARIABLEPOSTINC VARIABLEPOSTDEC VARIABLEPREINC VARIABLEPREDEC LEFTPAR RIGHTPAR
 %token COLON COMMA POINT HOSTNAME IPNUM
 
 %token EXPRESSION
@@ -55,7 +54,7 @@
 %token JSCRIPT
 
 %token ADD SUB DIV MULT QUEST MIN MAX GREATER GREATEREQ LESS LESSEQ EQ MINUS NEG MODULO ;
-%token PREINC PREDEC POSTINC POSTDEC;
+ /*%token PREINC PREDEC POSTINC POSTDEC;*/
 
 %left GREATER GREATEREQ LESS LESSEQ EQ
 %left NEG PREINC PREDEC POSTINC POSTDEC MINUS ADD SUB
@@ -66,12 +65,12 @@
 /*------------------------------   types  ------------------------------*/
 %type <num> 	number mathbool
 %type <real>	FLOAT
-%type <str>		STRING FILEPATH PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
-%type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname
+%type <str>		STRING FILEPATH IDENTIFIER REGEXP LUASCRIPT JSCRIPT
+%type <str>		oscaddress identifier relativeaddress varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
-%type <p>		param expression 
-%type <plist>	params variable eval mathexpr mathmax mathmin
+%type <p>		param expression sparam
+%type <plist>	params variable msgvariable eval mathexpr mathmax mathmin
 %type <url>		urlprefix
 %type <addr>	address
 
@@ -95,10 +94,21 @@ typedef void * yyscan_t;
 int yyerror (const YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
+char *ITLget_text (yyscan_t yyscanner );
 
 #define scanner context->fScanner
 
 using namespace std;
+// ----------------------------------------------------------------------------------------
+// debug utility
+#define YDEBUG	0
+#if YDEBUG
+static  void debug (const char * str, string context) {
+	cout << "YACC " << str << " : " << context << endl;
+}
+#else 
+#define debug(a, b)
+#endif
 
 %}
 
@@ -114,15 +124,15 @@ start		: expr
 //_______________________________________________
 // expression of the script language
 //_______________________________________________
-expr		: message  ENDEXPR		{ context->fReader.add(*$1); delete $1; }
+expr		: message  ENDEXPR		{ context->fReader.add(*$1); debug("===> message", (*$1)->toString()); delete $1; }
 			| variabledecl ENDEXPR	{ delete $1; }
-			| script			{	if (*$1) {
+			| script				{	if (*$1) {
 										for (unsigned int i=0; i < (*$1)->list().size(); i++)
 											context->fReader.add((*$1)->list()[i]);
+										}
+										delete $1;
 									}
-									delete $1;
-								}
-			| ENDSCRIPT			{ YYACCEPT; }
+			| ENDSCRIPT				{ YYACCEPT; }
 			;
 
 //_______________________________________________
@@ -140,8 +150,8 @@ script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::
 // messages specification (extends osc spec.)
 //____________________________________expArg expression___________
 
-message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; }
-			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
+message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; debug ("message address", "");}
+			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; debug ("message address params", "sep");}
 			| address eval LEFTPAR messagelist RIGHTPAR
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											(*$$)->add(*$4); delete $1; delete $2; delete $4; }
@@ -151,41 +161,34 @@ message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($
 
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*$$)->list().push_back(*$1);
-											delete $1; }
-			| messagelist messagelistseparator message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; }
+											debug ("messagelist single", (*$1)->toString()); delete $1; }
+			| messagelist messagelistseparator message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; debug ("messagelist", "sep"); }
 			;
-messagelistseparator	: COMMA
+messagelistseparator	: COMMA			{ debug ("messagelistseparator", ","); }
 						| COLON
 						;
 
 //_______________________________________________
 // address specification (extends osc spec.)
-address		: oscaddress				{ $$ = new inscore::ITLparser::address (*$1); delete $1;}
+address		: oscaddress				{ $$ = new inscore::ITLparser::address (context->fText); }
 			| relativeaddress			{ $$ = new inscore::ITLparser::address (*$1); delete $1;}
-			| urlprefix oscaddress		{ $$ = new inscore::ITLparser::address (*$2, *$1); delete $1; delete $2; }
+			| urlprefix oscaddress		{ $$ = new inscore::ITLparser::address (*$2, *$1); debug("urladdress", *$2); delete $1; delete $2; }
 			;
 
-oscaddress	: oscpath					{ $$ = $1; }
-			| oscaddress oscpath		{ *$1 += *$2; $$ = $1; delete $2; }
+oscaddress  : OSCADDRESS				{ $$ = new string(context->fText); debug("oscaddress", *$$);}
 			;
 
-relativeaddress	: POINT oscaddress		{ $$ = new string("." + *$2); delete $2; }
+relativeaddress	: POINT oscaddress		{ $$ = new string("." +*$2);  delete $2; }
 			;
 
-oscpath		: PATHSEP identifier		{ $$ = new string("/" + *$2); delete $2; }
-			| PATHSEP VARSTART varname	{ $$ = new string("/$" + *$3); delete $3; }
+urlprefix	: hostname UINT				{ $$ = new inscore::IMessage::TUrl($1->c_str(), context->fInt); delete $1; debug("urlprefix name", *$$); }
+			| IPNUM COLON UINT			{ $$ = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); debug("urlprefix ip", *$$); }
 			;
 
-urlprefix	: hostname COLON UINT		{ $$ = new inscore::IMessage::TUrl($1->c_str(), context->fInt); delete $1; }
-			| IPNUM COLON UINT			{ $$ = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); }
-			;
-
-hostname	: HOSTNAME					{ $$ = new string(context->fText); }
-			| hostname POINT HOSTNAME	{ *$1 += '.' + context->fText; $$=$1; }
+hostname	: HOSTNAME					{ $$ = new string(context->fText); debug("hostname", *$$); }
 			;
 
 identifier	: IDENTIFIER				{ $$ = new string(context->fText); }
-			| HOSTNAME					{ $$ = new string(context->fText); }
 			| REGEXP					{ $$ = new string(context->fText); }
 			;
 
@@ -203,53 +206,60 @@ eval		: EVAL				{ $$ = new inscore::IMessage::argslist;
 			;
  */
 
-params		: mathexpr				{ $$ = $1; }
-			| params mathexpr		{ $1->push_back($2);  $$ = $1; delete $2; }
+params		: sparam				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); delete $1; debug("params: sparam", "");}
+			| params sparam			{ $1->push_back(*$2);  $$ = $1; delete $2; debug("params: params sparam", "");}
+			| mathexpr				{ $$ = $1;  debug("params: mathexpr", ""); }
+			| params mathexpr		{ $1->push_back($2);  $$ = $1; delete $2; debug("params: params mathexpr", "");}
 			;
 
-variable	: VARIABLE				{ $$ = new inscore::IMessage::argslist; 
+variable	: VARIABLE				{ $$ = new inscore::IMessage::argslist; debug("variable", context->fText.c_str()); 
 									  $$->push_back (context->fReader.resolve(context->fText.c_str(), lineno(context))); }
-			| VARIABLE POSTINC		{ $$ = new inscore::IMessage::argslist; 
+			| VARIABLEPOSTINC		{ $$ = new inscore::IMessage::argslist; debug("variable postinc", context->fText);
 								  			  $$->push_back (context->fReader.resolveinc(context->fText.c_str(), true, lineno(context)));
-								  			}
-			| VARIABLE POSTDEC		{ $$ = new inscore::IMessage::argslist; 
+								  	}
+			| VARIABLEPOSTDEC		{ $$ = new inscore::IMessage::argslist; debug("variable postdec", context->fText);
 								  			  $$->push_back (context->fReader.resolvedec(context->fText.c_str(), true, lineno(context)));
-								  			}
-			| PREINC VARIABLE		{ $$ = new inscore::IMessage::argslist; 
+								  	}
+			| VARIABLEPREINC		{ $$ = new inscore::IMessage::argslist; debug("variable preinc", context->fText);
 								  			  $$->push_back (context->fReader.resolveinc(context->fText.c_str(), false, lineno(context)));
-								  			}
-			| PREDEC VARIABLE		{ $$ = new inscore::IMessage::argslist; 
+								  	}
+			| VARIABLEPREDEC		{ $$ = new inscore::IMessage::argslist; debug("variable predec", context->fText);
 								  			  $$->push_back (context->fReader.resolvedec(context->fText.c_str(), false, lineno(context)));
-								  			}
-			| VARSTART LEFTPAR message RIGHTPAR { $$ = new inscore::IMessage::argslist;
+								  	}
+			;
+
+msgvariable	: VARSTART LEFTPAR message RIGHTPAR { $$ = new inscore::IMessage::argslist; debug("variable msg", "");
 								  $$->push_back (context->fReader.resolve(*$3));
 								  delete $3;
 								}
 			;
 
-param	: number				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1)); }
-		| FLOAT					{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat)); }
-		| identifier			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); delete $1; }
-		| STRING				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText)); }
-		| expression			{ $$ = $1;}
-		| LEFTPAR messagelist RIGHTPAR	{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$2)); delete $2; }
-		| script			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$1)); delete $1; }
+param	: number				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<int>($1));  debug("int param", ""); }
+		| FLOAT					{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<float>(context->fFloat));  debug("float param", ""); }
+		| identifier			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));  debug("identifier param", context->fText); delete $1; }
+		| STRING				{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<std::string>(context->fText));  debug("string param", context->fText); }
+		;
+
+sparam	: expression			{ $$ = $1;}			/* params excluded from math expression */
+		| LEFTPAR messagelist RIGHTPAR	{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$2)); delete $2; debug("messagelist param", ""); }
+		| script			{ $$ = new inscore::Sbaseparam(new inscore::IMsgParam<inscore::SIMessageList>(*$1)); debug("script param", ""); delete $1; }
 		;
 
 //_______________________________________________
 // math expressions
-mathexpr	: param							{ $$ = new inscore::IMessage::argslist; $$->push_back (*$1); delete $1 }
-			| variable						{ $$ = $1; }
-			| mathexpr ADD mathexpr			{ $$ = context->math().add($1, $3); delete $1; delete $3; }
-			| mathexpr SUB mathexpr			{ $$ = context->math().sub($1, $3); delete $1; delete $3;  }
-			| MINUS mathexpr				{ $$ = $$ = context->math().minus($2);   delete $2; }
-			| mathexpr MULT mathexpr		{ $$ = context->math().mult($1, $3); delete $1; delete $3; }
-			| mathexpr DIV mathexpr			{ $$ = context->math().div($1, $3);  delete $1; delete $3; }
-			| mathexpr MODULO mathexpr		{ $$ = context->math().mod($1, $3);  delete $1; delete $3; }
+mathexpr	: param							{ $$ = new inscore::IMessage::argslist; $$->push_back (*$1); delete $1; debug("mathexpr param", ""); }
+			| variable						{ $$ = $1; debug("mathexpr variable", ""); }
+			| msgvariable					{ $$ = $1; debug("mathexpr msgvariable", ""); }
+			| mathexpr ADD mathexpr			{ $$ = context->math().add($1, $3); delete $1; delete $3; debug("mathexpr", "ADD"); }
+			| mathexpr SUB mathexpr			{ $$ = context->math().sub($1, $3); delete $1; delete $3; debug("mathexpr", "SUB"); }
+			| MINUS mathexpr				{ $$ = $$ = context->math().minus($2);   delete $2; debug("mathexpr", "MINUS"); }
+			| mathexpr MULT mathexpr		{ $$ = context->math().mult($1, $3); delete $1; delete $3; debug("mathexpr", "MULT");  }
+			| mathexpr DIV mathexpr			{ $$ = context->math().div($1, $3);  delete $1; delete $3; debug("mathexpr", "DIV"); }
+			| mathexpr MODULO mathexpr		{ $$ = context->math().mod($1, $3);  delete $1; delete $3; debug("mathexpr", "MOD"); }
 			| LEFTPAR mathexpr RIGHTPAR 	{ $$ = $2; }
-			| MIN LEFTPAR mathmin RIGHTPAR	{ $$ = $3; }
-			| MAX LEFTPAR mathmax RIGHTPAR	{ $$ = $3; }
-			| LEFTPAR mathbool QUEST mathexpr COLON mathexpr RIGHTPAR { $$ = $2 ? (delete $6, $4) : (delete $4, $6); } 
+			| MIN LEFTPAR mathmin RIGHTPAR	{ $$ = $3; debug("mathexpr", "MIN"); }
+			| MAX LEFTPAR mathmax RIGHTPAR	{ $$ = $3; debug("mathexpr", "MAX"); }
+			| LEFTPAR mathbool QUEST mathexpr COLON mathexpr RIGHTPAR { $$ = $2 ? (delete $6, $4) : (delete $4, $6); debug("mathexpr", "?"); } 
 			;
 
 mathmin 	: mathexpr	mathexpr			{ $$ = context->math().less(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
@@ -275,7 +285,6 @@ variabledecl : varname EQUAL params	{ $$=$1; context->fReader.variable($1->c_str
 			;
 
 varname		: IDENTIFIER			{ $$ = new string(context->fText); }
-			| HOSTNAME				{ $$ = new string(context->fText); }
 			;
 
 //_______________________________________________
@@ -287,7 +296,7 @@ number		: UINT					{ $$ = context->fInt; }
 //_______________________________________________
 // expression declaration
 
-expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText, context->fExprStartLine, yyloc.first_column + 1 - context->fText.length());}
+expression	: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText, context->fExprStartLine, yyloc.first_column + 1 - context->fText.length());}
 			;
 
 %%
@@ -311,7 +320,7 @@ int lineno (ITLparser* context)
 
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
 #ifdef NO_OSCSTREAM
-	cerr << "error line " << loc->last_line + context->fLineOffset << " col " << loc->first_column << ":" << s << endl;
+	cerr << "error line " << loc->last_line + context->fLineOffset << " col " << loc->first_column << ": " << s << endl;
 #else
 	context->fReader.error (loc->last_line + context->fLineOffset, loc->first_column, s);
 #endif

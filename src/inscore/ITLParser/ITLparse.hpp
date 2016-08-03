@@ -43,47 +43,50 @@
      UINT = 259,
      FLOAT = 260,
      IDENTIFIER = 261,
-     EQUAL = 262,
-     REGEXP = 263,
-     PATHSEP = 264,
-     BACKPATH = 265,
-     FILEPATH = 266,
-     STRING = 267,
-     EVAL = 268,
-     ERR = 269,
-     ENDEXPR = 270,
-     ENDSCRIPT = 271,
-     VARSTART = 272,
-     VARIABLE = 273,
-     LEFTPAR = 274,
-     RIGHTPAR = 275,
-     COLON = 276,
-     COMMA = 277,
-     POINT = 278,
-     HOSTNAME = 279,
-     IPNUM = 280,
-     EXPRESSION = 281,
-     LUASCRIPT = 282,
-     JSCRIPT = 283,
-     ADD = 284,
-     SUB = 285,
-     DIV = 286,
-     MULT = 287,
-     QUEST = 288,
-     MIN = 289,
-     MAX = 290,
-     GREATER = 291,
-     GREATEREQ = 292,
-     LESS = 293,
-     LESSEQ = 294,
-     EQ = 295,
-     MINUS = 296,
-     NEG = 297,
-     MODULO = 298,
-     PREINC = 299,
-     PREDEC = 300,
-     POSTINC = 301,
-     POSTDEC = 302
+     OSCADDRESS = 262,
+     EQUAL = 263,
+     REGEXP = 264,
+     FILEPATH = 265,
+     STRING = 266,
+     EVAL = 267,
+     ERR = 268,
+     ENDEXPR = 269,
+     ENDSCRIPT = 270,
+     VARSTART = 271,
+     VARIABLE = 272,
+     VARIABLEPOSTINC = 273,
+     VARIABLEPOSTDEC = 274,
+     VARIABLEPREINC = 275,
+     VARIABLEPREDEC = 276,
+     LEFTPAR = 277,
+     RIGHTPAR = 278,
+     COLON = 279,
+     COMMA = 280,
+     POINT = 281,
+     HOSTNAME = 282,
+     IPNUM = 283,
+     EXPRESSION = 284,
+     LUASCRIPT = 285,
+     JSCRIPT = 286,
+     ADD = 287,
+     SUB = 288,
+     DIV = 289,
+     MULT = 290,
+     QUEST = 291,
+     MIN = 292,
+     MAX = 293,
+     GREATER = 294,
+     GREATEREQ = 295,
+     LESS = 296,
+     LESSEQ = 297,
+     EQ = 298,
+     MINUS = 299,
+     NEG = 300,
+     MODULO = 301,
+     POSTDEC = 302,
+     POSTINC = 303,
+     PREDEC = 304,
+     PREINC = 305
    };
 #endif
 /* Tokens.  */
@@ -91,47 +94,50 @@
 #define UINT 259
 #define FLOAT 260
 #define IDENTIFIER 261
-#define EQUAL 262
-#define REGEXP 263
-#define PATHSEP 264
-#define BACKPATH 265
-#define FILEPATH 266
-#define STRING 267
-#define EVAL 268
-#define ERR 269
-#define ENDEXPR 270
-#define ENDSCRIPT 271
-#define VARSTART 272
-#define VARIABLE 273
-#define LEFTPAR 274
-#define RIGHTPAR 275
-#define COLON 276
-#define COMMA 277
-#define POINT 278
-#define HOSTNAME 279
-#define IPNUM 280
-#define EXPRESSION 281
-#define LUASCRIPT 282
-#define JSCRIPT 283
-#define ADD 284
-#define SUB 285
-#define DIV 286
-#define MULT 287
-#define QUEST 288
-#define MIN 289
-#define MAX 290
-#define GREATER 291
-#define GREATEREQ 292
-#define LESS 293
-#define LESSEQ 294
-#define EQ 295
-#define MINUS 296
-#define NEG 297
-#define MODULO 298
-#define PREINC 299
-#define PREDEC 300
-#define POSTINC 301
+#define OSCADDRESS 262
+#define EQUAL 263
+#define REGEXP 264
+#define FILEPATH 265
+#define STRING 266
+#define EVAL 267
+#define ERR 268
+#define ENDEXPR 269
+#define ENDSCRIPT 270
+#define VARSTART 271
+#define VARIABLE 272
+#define VARIABLEPOSTINC 273
+#define VARIABLEPOSTDEC 274
+#define VARIABLEPREINC 275
+#define VARIABLEPREDEC 276
+#define LEFTPAR 277
+#define RIGHTPAR 278
+#define COLON 279
+#define COMMA 280
+#define POINT 281
+#define HOSTNAME 282
+#define IPNUM 283
+#define EXPRESSION 284
+#define LUASCRIPT 285
+#define JSCRIPT 286
+#define ADD 287
+#define SUB 288
+#define DIV 289
+#define MULT 290
+#define QUEST 291
+#define MIN 292
+#define MAX 293
+#define GREATER 294
+#define GREATEREQ 295
+#define LESS 296
+#define LESSEQ 297
+#define EQ 298
+#define MINUS 299
+#define NEG 300
+#define MODULO 301
 #define POSTDEC 302
+#define POSTINC 303
+#define PREDEC 304
+#define PREINC 305
 
 
 
@@ -151,7 +157,7 @@ typedef union YYSTYPE
     inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 155 "ITLparse.hpp"
+#line 161 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
