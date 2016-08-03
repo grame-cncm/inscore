@@ -329,6 +329,16 @@ void IMessageList::sendWebMsg() const
 //--------------------------------------------------------------------------
 // print a single parameter
 //--------------------------------------------------------------------------
+string IMessage::toString() const
+{
+	stringstream sstr;
+	print (sstr);
+	return sstr.str();
+}
+
+//--------------------------------------------------------------------------
+// print a single parameter
+//--------------------------------------------------------------------------
 void IMessage::print(std::ostream& out, int i, int nested, const char* sep) const
 {
     string str; int val; float fval;
