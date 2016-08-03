@@ -48,13 +48,17 @@ int main (int argc, char * argv[])
 		ITLparser p(&in, 0, &env);
 		SIMessageList outMsgs;
 		outMsgs = p.parse ();
-		if (outMsgs && p.fParseSucceed && outMsgs->list().size()) {
+		if (p.fParseSucceed && outMsgs && outMsgs->list().size()) {
 			outMsgs->list().set("", "\n");
 			cout << outMsgs->list() << endl;
+			return 0;
 		}
-		else
+		else {
 			cout << "error reading " << argv[1] << endl;
+			if (!outMsgs) cout << "outMsgs null" << endl;
+			else if (!outMsgs->list().size()) cout << "outMsgs empty" << endl;
+		}
 	}
- 	return 0;
+ 	return 1;
 }
 
