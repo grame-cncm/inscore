@@ -315,13 +315,5 @@ bool TMaths::lesseq	(const IMessage::argslist& arg1, const IMessage::argslist& a
 									{ return apply (&TMaths::lesseq, arg1, arg2); }
 
 
-//IMessage::argslist*	TMaths::cond (IMessage::argslist* arg1, IMessage::argslist* arg2, IMessage::argslist* arg3) const
-//{
-//	IMessage::argslist* ret = new IMessage::argslist();
-//	ret->push_back( tobool(*arg1) ? arg2 : arg3);
-//	return ret;
-//}
-
-
 } // namespace
 

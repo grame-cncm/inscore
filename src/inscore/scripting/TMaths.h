@@ -100,8 +100,6 @@ class TMaths
 		bool	greatereq	(const IMessage::argslist& arg1, const IMessage::argslist& arg2) const;
 		bool	less		(const IMessage::argslist& arg1, const IMessage::argslist& arg2) const;
 		bool	lesseq		(const IMessage::argslist& arg1, const IMessage::argslist& arg2) const;
-
-//		IMessage::argslist*	cond	(IMessage::argslist* arg1, IMessage::argslist* arg2, IMessage::argslist* arg3) const;
 };
 
 
