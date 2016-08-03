@@ -225,11 +225,13 @@ IMessage::argslist TScripting::resolve (const char* var, int line) const
 //--------------------------------------------------------------------------------------------
 IMessage::argslist TScripting::resolveinc (const char* var, bool post, int line)
 {
-	IMessage::argslist val = fEnv->value (var);
-	if (checkVar (val, var, line)) {
+	string svar (var);
+	svar = post ? svar.substr(0, svar.size()-2) : svar.substr(2, string::npos);
+	IMessage::argslist val = fEnv->value (svar);
+	if (checkVar (val, svar.c_str(), line)) {
 		TMaths m;
 		IMessage::argslist* val1 = m.inc(val);
-		variable (var, val1);
+		variable (svar.c_str(), val1);
 		if (!post) val = *val1;
 		delete val1;
 	}
@@ -239,11 +241,13 @@ IMessage::argslist TScripting::resolveinc (const char* var, bool post, int line)
 //--------------------------------------------------------------------------------------------
 IMessage::argslist TScripting::resolvedec (const char* var, bool post, int line)
 {
-	IMessage::argslist val = fEnv->value (var);
-	if (checkVar (val, var, line)) {
+	string svar (var);
+	svar = post ? svar.substr(0, svar.size()-2) : svar.substr(2, string::npos);
+	IMessage::argslist val = fEnv->value (svar);
+	if (checkVar (val, svar.c_str(), line)) {
 		TMaths m;
 		IMessage::argslist* val1 = m.dec(val);
-		variable (var, val1);
+		variable (svar.c_str(), val1);
 		if (!post) val = *val1;
 		delete val1;
 	}
