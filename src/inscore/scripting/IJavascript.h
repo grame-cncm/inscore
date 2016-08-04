@@ -65,6 +65,7 @@ class IJavascript: public IVNode
 		virtual void colorAble ()		{}
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
+		virtual	SIMessageList getAll () const	{ return IMessageList::create(); }
     
         /// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);

@@ -70,7 +70,9 @@ class IApplDebug : public IObjectDebug
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual SIMessageList getSetMsg () const;
 
-		void		setOSCDebug(bool state)		{ fOSCDebug = state; }
+		void		setOSCDebug(bool state)			{ fOSCDebug = state; }
+		virtual		SIMessageList getAll () const	{ return IMessageList::create(); }
+
 };
 std::ostream&	operator << (std::ostream& out, const SIApplDebug& o);
 
@@ -105,6 +107,7 @@ class IApplStat : public IVNode
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual SIMessageList getSetMsg () const;
 		void		reset();
+		virtual		SIMessageList getAll () const	{ return IMessageList::create(); }
 };
 
 
@@ -150,6 +153,7 @@ class IApplLog : public IVNode
 		virtual void	setHeight	(float h);
 		virtual void	setVisible (bool vis);
 		virtual void	foreground ();
+		virtual	SIMessageList getAll () const	{ return IMessageList::create(); }
 
 
 		/// \brief object \c 'write' message handler.
@@ -178,6 +182,8 @@ class IApplPlugin : public IVNode
 	protected:	
 				 IApplPlugin(IObject * parent);
 		virtual ~IApplPlugin()	{}
+
+		virtual	SIMessageList getAll () const	{ return IMessageList::create(); }
 
 		/// \brief object \c 'addPath' message handler.
 		virtual MsgHandler::msgStatus addPath (const IMessage* msg) const;
