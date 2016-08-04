@@ -1,6 +1,0 @@
-/ITL/scene/* del;
-/ITL/scene/proll set pianorollstream '[ \meter<"2/4"> a g _ f a f/8 d ';
-/ITL/scene/proll measureBars 1;
-/ITL/scene/proll* scale 0.5;
-
-/ITL/scene/proll voiceColor 1 255 0 0 255;
