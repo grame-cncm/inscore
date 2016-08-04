@@ -56,18 +56,21 @@ class IPolygon : public IShapeMap
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
+		virtual float	getXOffset () const		{ return fXMin; }
+		virtual float	getYOffset () const		{ return fYMin; }
 
 	protected:
 				 IPolygon( const std::string& name, IObject* parent );
 		virtual ~IPolygon() {}
 
-		void			setPoints(const std::vector< std::pair<float,float> >& points)		{ fPoints = points; }
+		void	setPoints(const std::vector< std::pair<float,float> >& points);
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
 	private:
 		PolygonData fPoints;
+		float		fXMin, fYMin;
 };
 
 OSCStream& operator <<(OSCStream& s, const IPolygon::PolygonData& val);
