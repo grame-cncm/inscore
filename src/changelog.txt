@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.20
+- save msg output changed: a scene emit the 'new' message, static info nodes (log, stat, javascript...)
 - crash bug corrected: occured when lauching inscore from a secondary screen
 
 ----------------------------------------------------
