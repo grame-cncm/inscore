@@ -224,29 +224,6 @@ void VGraphicsItemView::setQBrushStyle(const std::string& brushStyle , QBrush& b
         brush.setStyle( Qt::SolidPattern );
 }
 
-//----------------------------------------------------------------------
-//void VGraphicsItemView::updateBoundingBox( IObject * object  )
-//{
-//	QColor color(object->getR(), object->getG(), object->getB() , object->getA());
-//	QPen pen = Qt::NoPen;
-//	if ( object->getPenWidth() > 0 )
-//	{
-//		pen = QPen( QColor(object->getPenColor().getR(), object->getPenColor().getG(), object->getPenColor().getB() , object->getPenColor().getA()) , object->getPenWidth() );
-//		setQPenStyle( object->getPenStyle() , pen );
-//        pen.setCapStyle( Qt::RoundCap );
-//		pen.setJoinStyle( Qt::RoundJoin );
-//	}
-//    
-//    
-//	if ( pen != fItem->pen() )
-//		fItem->setPen( pen );
-//	
-//	QBrush brush = QBrush(color);
-//	setQBrushStyle( object->getBrushStyle() , brush );
-//	fItem->setBrush( brush );
-//	itemChanged();
-//}
-
 //------------------------------------------------------------------------------------------------------------
 // Debug graphic feedback : displays the bounding rectangle and the object name for all the items
 //------------------------------------------------------------------------------------------------------------
@@ -284,6 +261,7 @@ void VGraphicsItemView::drawName(IObject* o, QGraphicsItem* item)
         QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , item );
         textItem->setDefaultTextColor( Qt::red );
 		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
+		fDebugItems << textItem;
 }
 
 
