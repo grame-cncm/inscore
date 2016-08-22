@@ -1,0 +1,33 @@
+/ITL/scene/* del;
+
+#---------------------------------------------
+# comments
+#---------------------------------------------
+/ITL/scene/comment1 set txt "The video moves from key frame to key frame (Mac OS).";
+/ITL/scene/comment1 y -0.6;
+/ITL/scene/comment1 scale 1.6;
+
+#/ITL/scene/v set video 'miroirs-distants.mp4';
+#/ITL/scene/v scale 0.5;
+/ITL/scene/v set video 'countdown.mov';
+/ITL/scene/v duration 11 4;
+/ITL/scene/v scale 1;
+
+
+__END__
+/ITL/scene/v tempo 60;
+/ITL/scene/v tempo 0;
+
+/ITL/scene/v play 1;
+/ITL/scene/v play 0;
+/ITL/scene/v get play;
+
+
+/ITL/scene/v date 0;
+/ITL/scene/v date 1 16;
+/ITL/scene/v date 1 8;
+/ITL/scene/v date 1 4;
+/ITL/scene/v date 2 4;
+/ITL/scene/v date 3 4;
+/ITL/scene/v date 4;
+/ITL/scene/v date 6;

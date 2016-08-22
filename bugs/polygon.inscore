@@ -1,0 +1,25 @@
+/ITL/scene/* del;
+
+#---------------------------------------------
+# comments
+#---------------------------------------------
+/ITL/scene/comment1 set txt "The default polygon position is not centered.";
+/ITL/scene/comment1 y -0.6;
+/ITL/scene/comment1 scale 1.6;
+
+/ITL/scene/polygon set polygon -0.5 0 0.5 0 0 0.5;
+/ITL/scene/polygon alpha 50;
+
+r = 0.03;
+/ITL/scene/p set ellipse $r $r;
+/ITL/scene/p red 255;
+
+__END__
+/ITL compatibility 1.17;
+/ITL/scene/polygon set polygon -1 0 0 0 -0.5 0.5;
+/ITL/scene/polygon set polygon -1 0 0 0 0 1 -1 1;
+
+/ITL/log show 1;
+/ITL/log write width $(/ITL/scene/polygon get width);
+/ITL/log write height $(/ITL/scene/polygon get height);
+/ITL/log write get $(/ITL/scene/polygon get );
