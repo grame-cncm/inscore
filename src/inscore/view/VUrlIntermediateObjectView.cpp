@@ -45,7 +45,7 @@ VUrlIntermediateObjectView::~VUrlIntermediateObjectView() { delete fText; delete
 //----------------------------------------------------------------------
 void VUrlIntermediateObjectView::updateView( IUrlIntermediateObject * obj  )
 {
-	if (!fUrl)	fUrl = new QGraphicsTextItem (obj->getFile().c_str(), item());
+	if (!fUrl)	fUrl = new QGraphicsTextItem (obj->getPath().c_str(), item());
 
     obj->cleanupSync();
     QRectF newRect( 0,0,  relative2SceneWidth(obj->getWidth()), relative2SceneHeight(obj->getHeight()) );
