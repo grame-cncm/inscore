@@ -146,6 +146,7 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
 		{
             std::string completePath = fScene ? fScene->absolutePath(path) : IAppl::absolutePath(path);
 			setFile( completePath );
+			fFile = path;
 			return MsgHandler::kProcessed;
 		}
 	}

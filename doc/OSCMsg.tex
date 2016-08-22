@@ -1,8 +1,10 @@
 
 \documentclass[a4paper,twoside]{report}
 \usepackage{INScore}
-\usepackage{pslatex}
 \usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+\usepackage{pslatex}
+\usepackage{times}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{amssymb}
@@ -84,7 +86,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.19}
+\title{INScore \\ OSC Messages Reference \\v.1.20}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -477,7 +479,7 @@ colorvalue :    int32 | float32
 The value may be specified as integer or float. The data range is given in table \ref{colorrange}.
 When the alpha component is not specified, the color is assumed to be opaque. 
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \begin{center}
 \begin{tabular}{|r|c|c|}
 \hline
@@ -1110,7 +1112,7 @@ setFile :
 
 \seealso the application \OSC{rootPath} message (section \fullref{ITL}) for file based objects.
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{File extensions supported by the \OSC{file} translation scheme.}
 \begin{center}
 \begin{tabular}{|r|c|}
@@ -2114,7 +2116,7 @@ The specified \OSC{map} can be named with an optional \OSC{mapName} string; this
 The \OSC{del} command deletes the mapping specified with \OSC{mapName}, or the \emph{'empty name'} mapping if no map name is specified.
 
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{Local segmentation type for each component}
 \begin{center}
 \begin{tabular}{|r|l|}
@@ -2609,7 +2611,7 @@ A graphic signal is the graphic representation of a set of parallel signals. It 
 \end{figure}
 
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{HSBA color values.}
 \begin{center}
 \begin{tabular}{|r|cl|}
@@ -2670,7 +2672,7 @@ Creating a signal and its graphic representation:
 \subsublevel{Graphic signal default values.}
 As mentionned above, a graphic signal expects to be connected to parallel signals having at least an \values{y} component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the \OSC{signalIdentifier} dimension is less than 6, the graphic signal will use the default values defined in table \ref{gsigdefault}.
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{Graphic signal default values.}
 \begin{center}
 \begin{tabular}{|r|cl|}

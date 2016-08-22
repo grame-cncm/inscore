@@ -132,6 +132,7 @@ extern const char* kpenStyle_GetSetMethod;
 extern const char* kbrushStyle_GetSetMethod;
 extern const char* kpenWidth_GetSetMethod;
 extern const char* kpendAlpha_SetMethod;
+extern const char* kplay_GetSetMethod;
 extern const char* kpop_SetMethod;
 extern const char* kport_GetSetMethod;
 extern const char* kcompatibility_GetSetMethod;

@@ -12,7 +12,15 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
-Version 1.9
+Version 1.20
+- bug in debug name corrected (was not removed)
+- bug in polygon position corrected (was not centered on 0 0) - use /ITL compatibility 
+  to preserve previous behaviour
+- save msg output changed: a scene emit the 'new' message, static info nodes (log, stat, javascript...)
+- crash bug corrected: occured when lauching inscore from a secondary screen
+
+----------------------------------------------------
+Version 1.19
 - new 'write' message supported by text based objects
 - embed new guido engine (corrects a crash bug in beaming strategy)
 

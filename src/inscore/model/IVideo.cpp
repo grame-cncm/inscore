@@ -54,15 +54,21 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 	fTypeString = kVideoType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
 	
+	fMsgHandlerMap[kplay_GetSetMethod]			= TSetMethodMsgHandler<IVideo,bool>::create(this, &IVideo::setPlay);
 	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
 	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
 	
 	fGetMsgHandlerMap[kvideoMap_GetSetMethod]	= GetVideoMapMsgHandler::create(this);
+	fGetMsgHandlerMap[kplay_GetSetMethod]		= TGetParamMsgHandler<bool>::create(fPlaying);
 	
 	fTempo = 60.0f;
+	fPlaying = false;
 	fStartSecond = 0.0f;
 	fConverter = Date2SecondTempoConverter::create( fTempo , fStartSecond );
 }
+
+//--------------------------------------------------------------------------
+void IVideo::setPlay (bool state)		{ fPlaying = state; IPosition::fModified = true; }
 
 //--------------------------------------------------------------------------
 void IVideo::accept (Updater* u)

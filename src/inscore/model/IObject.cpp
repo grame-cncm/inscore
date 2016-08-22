@@ -1472,25 +1472,6 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 		return MsgHandler::kProcessedNoChange;
 	}
 	return MsgHandler::kBadParameters;
-/*
-	if ((msg->size() > 0) && (msg->size() < 3)) {
-		string destfile = msg->param(0)->value<string>("");
-		if (destfile.size()) {
-			ios_base::openmode mode = ios_base::out;
-			if (msg->size() == 2) {
-				string mstr = msg->param(1)->value<string>("");
-				if (mstr == "+")
-					mode |= ios_base::app;
-				else return MsgHandler::kBadParameters;
-			}
-			string path = getScene() ? getScene()->absolutePath(destfile) : IAppl::absolutePath(destfile);
-			ofstream out (path.c_str(), mode);
-			save (out);
-			return MsgHandler::kProcessedNoChange;
-		}
-	}
-	return MsgHandler::kBadParameters;
-*/
 }
 
 //--------------------------------------------------------------------------

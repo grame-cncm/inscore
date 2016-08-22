@@ -70,6 +70,26 @@ void IPolygon::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
+void IPolygon::setPoints(const std::vector< std::pair<float,float> >& points)
+{
+	const float initmax = -1000000.f;
+	const float initmin = -initmax;
+	float xmin=initmin, xmax=initmax, ymin=initmin, ymax=initmax;
+	for (unsigned int i = 0 ; i < points.size() ; i++ ) {
+		if (points[i].first < xmin)		xmin = points[i].first;
+		if (points[i].first > xmax)		xmax = points[i].first;
+		if (points[i].second < ymin)	ymin = points[i].second;
+		if (points[i].second > ymax)	ymax = points[i].second;
+	}
+	setWidth (xmax - xmin);
+	setHeight(ymax - ymin);
+	fXMin = -xmin;
+	fYMin = -ymin;
+	fPoints = points;
+}
+
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IPolygon::set (const IMessage* msg)	
 {
 	MsgHandler::msgStatus status = IObject::set(msg);

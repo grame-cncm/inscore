@@ -135,6 +135,16 @@ void IScene::reset ()
 }
 
 //--------------------------------------------------------------------------
+SIMessageList IScene::getAll () const
+{
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create( getOSCAddress(), "new");
+	outMsgs->list().push_back (IMessage::create( getOSCAddress(), "new"));
+	outMsgs->list().push_back (IObject::getAll()->list());
+	return outMsgs;
+}
+
+//--------------------------------------------------------------------------
 void IScene::createVirtualNodes()
 {
 	IRectShape::createVirtualNodes();
