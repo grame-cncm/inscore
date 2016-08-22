@@ -61,15 +61,21 @@ class IVideo : public IRectShape,  public TFile
 		void			setFile(const std::string& path);
 		
 		/// \brief Returns the current video time in seconds, according to the object's date and videoMap.
-		float currentTime() const;
+		float	currentTime() const;
+		bool	playing() const			{ return fPlaying; }
 
 	protected:
+		bool fPlaying;			// the video playing state
+	
 				 IVideo( const std::string& name, IObject * parent);
 		virtual ~IVideo() {}
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
-		
+
+		/// \brief the \c 'play' message handler
+		virtual void setPlay (bool state);
+	
 		/// \brief the \c 'videoMapf' message handler
 		virtual MsgHandler::msgStatus videoMapFileMsg (const IMessage* msg );
 
