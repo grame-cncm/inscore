@@ -71,7 +71,7 @@ void BundlePackager::mapNames()
 //	}
 }
 
-bool BundlePackager::setupArchive(qarchive::QArchive* archive)
+bool BundlePackager::setupArchive(qarchive::QArchive* )
 {
 	//Create hierarchy
 //	archive->changeDir("/");
