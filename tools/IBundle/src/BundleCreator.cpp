@@ -20,14 +20,22 @@
   Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
   research@grame.fr
 */
+
+#include <stdio.h>
+#include <stdlib.h>
 #include "ScriptsParser.h"
 #include "ParsedData.h"
 #include "INScore.h"
 
 #include "BundleCreator.h"
 
+using namespace std;
 
-
+#ifdef WIN32
+#define HOME	"USERPROFILE"
+#else
+#define HOME	"HOME"
+#endif
 
 namespace ibundle{
 
@@ -37,8 +45,9 @@ BundleCreator::BundleCreator()
 {
 	fShowHierarchy = false;
 	fParseJS = false;
-	fDefaultRootPath = std::string(getenv("HOME")) + "/";
+	fDefaultRootPath = std::string(getenv(HOME)) + "/";
 }
+
 //____________________________________________
 bool BundleCreator::bundle(std::string inputFile, std::string outputFile)
 {
