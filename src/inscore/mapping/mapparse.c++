@@ -109,6 +109,10 @@
 #include "TRect.h"
 #include "rational.h"
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4100)
+#endif
+
 class YYSTYPE {         
 	public:
 	long int	num;
@@ -178,7 +182,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 182 "mapparse.c++"
+#line 186 "mapparse.c++"
 
 #ifdef short
 # undef short
@@ -470,9 +474,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    82,    82,    83,    84,    85,    91,    96,    97,    99,
-     100,   102,   107,   108,   110,   111,   116,   117,   119,   120,
-     122,   127,   128,   130,   131,   136,   138,   140
+       0,    86,    86,    87,    88,    89,    95,   100,   101,   103,
+     104,   106,   111,   112,   114,   115,   120,   121,   123,   124,
+     126,   131,   132,   134,   135,   140,   142,   144
 };
 #endif
 
@@ -1409,98 +1413,98 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 82 "mapping.y"
+#line 86 "mapping.y"
     { debug("_2Dint2timemap"); ;}
     break;
 
   case 3:
-#line 83 "mapping.y"
+#line 87 "mapping.y"
     { debug("_2Dfloat2timemap"); ;}
     break;
 
   case 4:
-#line 84 "mapping.y"
+#line 88 "mapping.y"
     { debug("_1Dint2timemap"); ;}
     break;
 
   case 5:
-#line 85 "mapping.y"
+#line 89 "mapping.y"
     { debug("_1Dfloat2timemap"); ;}
     break;
 
   case 6:
-#line 91 "mapping.y"
+#line 95 "mapping.y"
     { debug("timeSegment"); (yyval.rseg) = RelativeTimeSegment((yyvsp[(3) - (7)].rat),(yyvsp[(5) - (7)].rat)); ;}
     break;
 
   case 9:
-#line 99 "mapping.y"
+#line 103 "mapping.y"
     { debug("map _2DintSegment timeSegment"); if (!gReader->map((yyvsp[(1) - (2)].ipseg),(yyvsp[(2) - (2)].rseg))) YYERROR;;}
     break;
 
   case 10:
-#line 100 "mapping.y"
+#line 104 "mapping.y"
     { debug("_2DintSegment"); (yyval.ipseg) = IntPointSegment((yyvsp[(2) - (4)].longInterv),(yyvsp[(3) - (4)].longInterv)); ;}
     break;
 
   case 11:
-#line 102 "mapping.y"
+#line 106 "mapping.y"
     { debug("intInterval"); (yyval.longInterv) = LongInterval((yyvsp[(2) - (5)].num),(yyvsp[(4) - (5)].num)); ;}
     break;
 
   case 14:
-#line 110 "mapping.y"
+#line 114 "mapping.y"
     { debug("map intSegment timeSegment"); if (!gReader->map((yyvsp[(1) - (2)].intseg),(yyvsp[(2) - (2)].rseg))) YYERROR;;}
     break;
 
   case 15:
-#line 111 "mapping.y"
+#line 115 "mapping.y"
     { debug("intSegment"); (yyval.intseg) = FrameSegment((yyvsp[(2) - (3)].longInterv)); ;}
     break;
 
   case 18:
-#line 119 "mapping.y"
+#line 123 "mapping.y"
     { debug("map _1DfloatSegment timeSegment"); if (!gReader->map((yyvsp[(1) - (2)].flseg),(yyvsp[(2) - (2)].rseg))) YYERROR;;}
     break;
 
   case 19:
-#line 120 "mapping.y"
+#line 124 "mapping.y"
     { debug("_1DfloatSegment"); (yyval.flseg) = FloatSegment((yyvsp[(2) - (3)].floatInterv)); ;}
     break;
 
   case 20:
-#line 122 "mapping.y"
+#line 126 "mapping.y"
     { debug("floatInterval"); (yyval.floatInterv) = FloatInterval((yyvsp[(2) - (5)].real),(yyvsp[(4) - (5)].real)); ;}
     break;
 
   case 23:
-#line 130 "mapping.y"
+#line 134 "mapping.y"
     { debug("map _2DfloatSegment timeSegment"); if (!gReader->map((yyvsp[(1) - (2)].grseg),(yyvsp[(2) - (2)].rseg))) YYERROR;;}
     break;
 
   case 24:
-#line 131 "mapping.y"
+#line 135 "mapping.y"
     { debug("_2DfloatSegment"); (yyval.grseg) = GraphicSegment((yyvsp[(2) - (4)].floatInterv),(yyvsp[(3) - (4)].floatInterv)); ;}
     break;
 
   case 25:
-#line 136 "mapping.y"
+#line 140 "mapping.y"
     { debug("rational"); (yyval.rat) = rational((yyvsp[(1) - (3)].num),(yyvsp[(3) - (3)].num)); ;}
     break;
 
   case 26:
-#line 138 "mapping.y"
+#line 142 "mapping.y"
     { debug("NUMBER"); (yyval.num) = atol(itlmaptext); ;}
     break;
 
   case 27:
-#line 140 "mapping.y"
+#line 144 "mapping.y"
     { debug("FLOAT"); (yyval.real) = atof(itlmaptext); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1504 "mapparse.c++"
+#line 1508 "mapparse.c++"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1714,7 +1718,7 @@ yyreturn:
 }
 
 
-#line 143 "mapping.y"
+#line 147 "mapping.y"
 
 
 } // end namespace

@@ -5,6 +5,10 @@
 #define YY_NO_UNISTD_H
 static int nested;
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4100 4244)
+#endif
+
 %}
 
 %option yylineno
