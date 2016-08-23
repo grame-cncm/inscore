@@ -715,7 +715,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[56] =
 #line 10 "ITL.l"
 
 #ifdef WIN32
-#pragma warning (disable : 4267 4100)
+#pragma warning (disable : 4267 4100 4244)
 #endif
 
 //#include <stdio.h>

@@ -483,7 +483,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[18] =
 #line 11 "IExpr.l"
 
 #ifdef WIN32
-#pragma warning (disable : 4267 4100)
+#pragma warning (disable : 4267 4100 4244)
 #endif
 
 //#include <stdio.h>
