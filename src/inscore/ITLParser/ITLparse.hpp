@@ -98,7 +98,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 26 "ITL.y"
+#line 29 "ITL.y"
 {
 	int		num;
 	float	real;
