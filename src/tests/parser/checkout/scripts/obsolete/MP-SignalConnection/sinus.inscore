@@ -1,0 +1,18 @@
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+/ITL/scene/title set txt "This script illustrates a sinus signal connected to :
+- the attributes \"blue\" and \"date\" of the cursor
+- the attributes \"rotatex\" and \"angle\" of the score
+You can modify the connection via Max";
+/ITL/scene/title scale 1.5;
+/ITL/scene/title y 0.8;
+/ITL/scene/cursor set rect 0.01 0.03;
+/ITL/scene/cursor color 0 100 0 150;
+/ITL/scene/cursor duration 0.5;
+/ITL/scene/score set gmnf "846_2f.gmn";
+/ITL/scene/score columns 1;
+/ITL/scene/score scale 2.0;
+/ITL/scene/score y -0.15;
+/ITL/scene/sync cursor score h;
+/ITL/scene/signal/sig size 100;
+/ITL/scene/signal connect sig "cursor:date[0,12]:blue[-1.,0.5]" "score:rotatex[0,380]:angle[0,380]";

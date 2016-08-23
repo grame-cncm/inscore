@@ -1,0 +1,69 @@
+/ITL/tutorial new;
+/ITL/scene/* del;
+/ITL/tutorial/* del;
+/ITL/tutorial/signal/* del;
+/ITL/tutorial watch;
+/ITL/scene x -0.51;
+/ITL/tutorial x 0.51;
+/ITL/scene/title set html "<h1>Signals</h1>";
+/ITL/scene/title y -0.7;
+/ITL/scene/title scale 2.0;
+/ITL/scene/sig2 set htmlf "rsrc/sig2.html";
+/ITL/scene/sig2 scale 2.0;
+/ITL/scene/sig2 y -0.43;
+/ITL/scene/sig2 xorigin -1.0;
+/ITL/scene/sig2 yorigin -1.0;
+/ITL/scene/sig2 x -0.75;
+/ITL/tutorial/signal/s1 size 100;
+/ITL/tutorial/signal/s1  0.0 0.0993347 0.194709 0.282321 0.358678 0.420735 0.46602 0.492725 0.499787 0.486924 0.454649 0.404248 0.337732 0.257751 0.167494 0.07056 -0.0291871 -0.127771 -0.22126 -0.305929 -0.378401 -0.435788 -0.475801 -0.496845 -0.498082 -0.479462 -0.441727 -0.386382 -0.315633 -0.232301 -0.139708 -0.0415448 0.0582746 0.155771 0.247057 0.328493 0.396834 0.449354 0.48396 0.499272 0.494679 0.470365 0.4273 0.367198 0.292459 0.206059 0.111445 0.0123879 -0.0871636 -0.18324 -0.272011 -0.349937 -0.413913 -0.461388 -0.490468 -0.499995 -0.489589 -0.459664 -0.411414 -0.346762 -0.268286 -0.179115 -0.0828023 0.0168117 0.115755 0.210084 0.296037 0.370188 0.429581 0.471848 0.495304 0.499013 0.482829 0.447396 0.394126 0.325144 0.243199 0.151559 0.0538766 -0.0459535 -0.143952 -0.236211 -0.319053 -0.389176 -0.443783 -0.480699 -0.49845 -0.49633 -0.474422 -0.433601 -0.375494 -0.302416 -0.217283 -0.123487 -0.0247682 0.0749386 0.171658 0.261533 0.340982 0.406837;
+/ITL/tutorial/signal/gs set s1 0.1 0.0 1.0 1.0 1.0;
+/ITL/tutorial/siggraph set graph gs;
+/ITL/tutorial/siggraph height 0.3;
+/ITL/tutorial/score set gmn "[a f/8 g/16 e f/2 d/4 c]";
+/ITL/tutorial/siggraph y 0.3;
+/ITL/tutorial/score scale 0.69;
+/ITL/tutorial/score y -0.3;
+/ITL/scene/m1 set txt "/ITL/tutorial/sync siggraph score h syncBottom";
+/ITL/scene/m2 set txt "/ITL/tutorial/sync siggraph";
+/ITL/scene/m3 set txt "/ITL/tutorial/siggraph date 0 1";
+/ITL/scene/m4 set txt "/ITL/tutorial/siggraph date 6 16";
+/ITL/scene/m5 set txt "/ITL/tutorial/siggraph duration 2 4";
+/ITL/scene/m6 set txt "/ITL/tutorial/siggraph duration 3 4";
+/ITL/scene/m1 y 0.0;
+/ITL/scene/m2 y 0.08;
+/ITL/scene/m3 y 0.19;
+/ITL/scene/m4 y 0.27;
+/ITL/scene/m5 y 0.35;
+/ITL/scene/m6 y 0.43;
+/ITL/scene/m* xorigin -1.0;
+/ITL/scene/m* yorigin -1.0;
+/ITL/scene/m* x -0.7;
+/ITL/scene/m* scale 1.7;
+/ITL/scene/m* alpha 160;
+/ITL/scene/m* watch mouseEnter (
+		/ITL/$scene/$self alpha 255,
+		/ITL/$scene/$self red 200 );
+/ITL/scene/m* watch mouseLeave (
+		/ITL/$scene/$self alpha 160,
+		/ITL/$scene/$self red 0 );
+/ITL/scene/m1 watch mouseDown (
+		/ITL/tutorial/sync siggraph score h syncBottom,
+		/ITL/tutorial/siggraph scale 0.5 );
+/ITL/scene/m2 watch mouseDown (
+		/ITL/tutorial/sync siggraph,
+		/ITL/tutorial/siggraph scale 1.0 );
+/ITL/scene/m3 watch mouseDown (
+	/ITL/tutorial/siggraph date 0 1 );
+/ITL/scene/m4 watch mouseDown (
+	/ITL/tutorial/siggraph date 6 16 );
+/ITL/scene/m5 watch mouseDown (
+	/ITL/tutorial/siggraph duration 2 4 );
+/ITL/scene/m6 watch mouseDown (
+	/ITL/tutorial/siggraph duration 3 4 );
+/ITL/scene load "previous.inscore";
+/ITL/scene/previous watch mouseDown (
+	/ITL/scene load "signals.inscore" );
+/ITL/scene load "next.inscore";
+/ITL/scene/next watch mouseDown (
+	/ITL/scene load "interaction.inscore" );
+/ITL/scene load "summary.inscore";

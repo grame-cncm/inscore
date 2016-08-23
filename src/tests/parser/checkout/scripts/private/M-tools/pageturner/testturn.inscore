@@ -1,0 +1,14 @@
+/ITL/scene/_cursor show 1;
+/ITL/scene/pagenum show 0;
+/ITL/scene/_cursor date 0 1;
+/ITL/scene/pagepos date 0 1;
+/ITL/scene/score page 1;
+/ITL/scene/centerbutton dblue 255;
+/ITL/scene/leftbutton watch;
+/ITL/scene/rightbutton watch;
+/ITL/scene/score watch mouseDown (
+		/ITL/scene/_* date "$date:system",
+		/ITL/scene/pagepos date "$date:system" );
+/ITL/scene/centerbutton watch mouseDown (
+	localhost:7100/test  0,
+		/ITL/scene/pagenum set txt "$(/ITL/scene/score get page;)" );

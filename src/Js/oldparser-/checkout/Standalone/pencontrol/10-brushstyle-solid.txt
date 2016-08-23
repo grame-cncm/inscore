@@ -1,0 +1,2 @@
+/ITL/scene/rect  brushStyle,solid
+expr ENDSCRIPT 

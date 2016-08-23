@@ -1,0 +1,9 @@
+/ITL/scene/*  del
+/ITL/scene/comment  set,txt,This script illustrates the application 'require' method.
+/ITL/scene/comment  y,-0.8
+/ITL/scene/comment  scale,2
+/ITL  require,40
+/ITL/scene/msg  set,txt,Current version is,$version
+/ITL/scene/msg  scale,4
+/ITL  require,50,/ITL/scene/msg  set,txt,Current version is,$version,/ITL/scene/msg  scale,4
+expr ENDSCRIPT 

@@ -1,0 +1,7 @@
+/ITL/log show 1;
+/ITL/scene/* watch mouseDown (
+	/ITL/scene/javascript run "start('$scene', $absx, $absy, $sx, $sy)" );
+/ITL/scene/* watch mouseMove (
+	/ITL/scene/javascript run "move($sx, $sy)" );
+/ITL/scene/* watch mouseUp (
+	/ITL/scene/javascript run "stop($absx, $absy, $sx, $sy)" );

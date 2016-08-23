@@ -51,7 +51,7 @@ template <typename T> class extvector : public std::vector<T>
 		// specific method to print messages list
 		// could be called with different type provided it supports the print interface
 		void  printMsgs (std::ostream& out) const {
-			int n = this->size()-1;
+			int n = int(this->size()-1);
 			if (n >= 0) {
 				for (int i=0; i < n; i++) {
 					out << fPrefix;

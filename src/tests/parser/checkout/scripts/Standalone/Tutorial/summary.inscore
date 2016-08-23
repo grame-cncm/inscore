@@ -1,0 +1,11 @@
+/ITL/scene/summary set img "rsrc/summary.png";
+/ITL/scene/summary scale 0.25;
+/ITL/scene/summary x -0.85;
+/ITL/scene/summary y 0.85;
+/ITL/scene/summary alpha 160;
+/ITL/scene/summary watch mouseEnter (
+		/ITL/$scene/$self alpha 255 );
+/ITL/scene/summary watch mouseLeave (
+		/ITL/$scene/$self alpha 160 );
+/ITL/scene/summary watch mouseDown (
+		/ITL/scene load "menu.inscore" );

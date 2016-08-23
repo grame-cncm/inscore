@@ -1,0 +1,5 @@
+/ITL require 1.0 (
+		/ITL/scene/warning set txt "Warning: this script requires INScore version" 1.0,
+		/ITL/scene/warning scale 3.0,
+		/ITL/scene/warning color 100 100 100,
+		/ITL/scene/warning z 1.0 );

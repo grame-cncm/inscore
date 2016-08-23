@@ -1,0 +1,12 @@
+/ITL/scene/* del;
+/ITL/scene/rect set rect 1.3 1.5;
+/ITL/scene/rect color 200 200 200;
+/ITL/scene/rect/sr set rect 0.5 0.5;
+/ITL/scene/rect/sr color 255 200 200;
+/ITL/scene/rect/sr scale 3.0;
+/ITL/scene/rect/sr/ssr set rect 0.5 0.5;
+/ITL/scene/rect/sr/ssr color 200 200 255;
+/ITL/scene/rect/sr/ssr scale 2.0;
+/ITL/scene/comment set txt "No scaling for the exported object";
+/ITL/scene/comment scale 2.0;
+/ITL/scene/comment y 0.8;

@@ -1,0 +1,74 @@
+/ITL/scene/*  del
+/ITL/scene  height,1
+/ITL/scene  width,1.4
+/ITL/scene/title  set,txt,Layers
+/ITL/scene/title  y,-0.8
+/ITL/scene/title  scale,3
+variabledecl: duration = 8
+/ITL/scene/layer  set,layer
+/ITL/scene/layer  height,1
+/ITL/scene/layer  width,2.4
+/ITL/scene/layer  color,220,220,220
+/ITL/scene/layer  duration,8
+expr script: 
+	function makemsg (msg, index, dur, date) {
+		msg = msg.replace(/\?/g, index) ;
+		msg = msg.replace("DUR", dur) ;
+		return msg.replace("DAT", date) ;
+	}
+
+	function rand (max) { return Math.random() * max; }
+	function bars (n, maxdate) {
+		var msg = "/ITL/scene/r? set rect 0.01 1.; \
+			/ITL/scene/r? duration DUR; \
+			/ITL/scene/r? date DAT;";
+		var out = "";
+		for (i=0; i<n; i++) {
+			out += makemsg (msg, i, rand(0.08), rand(maxdate));
+		}
+		return out;
+	}	
+
+expr script:  bars(50, duration); 
+/ITL/scene/sync  r*,layer,h
+variabledecl: d = 0.7
+variabledecl: alpha = 140
+/ITL/scene/layer/o  set,ellipse,0.7,0.7
+/ITL/scene/layer/o  color,250,220,220,140
+/ITL/scene/layer/o  z,1
+/ITL/scene/layer/o  alpha,100
+/ITL/scene/layer/o  watch,mouseEnter,/ITL/scene/layer/o  alpha,100
+/ITL/scene/layer/o  alpha,140
+/ITL/scene/layer/o  watch,mouseLeave,/ITL/scene/layer/o  alpha,140
+/ITL/scene/javascript  run,bars(50, duration);
+/ITL/scene/layer/o  alpha,140
+/ITL/scene/layer/o  watch,mouseDown,/ITL/scene/javascript  run,bars(50, duration);,/ITL/scene/layer/o  alpha,140
+/ITL/scene/l  set,rect,2,0.01
+/ITL/scene/l  y,0.7
+/ITL/scene/l  x,-1
+/ITL/scene/l  xorigin,-1
+/ITL/scene/l  alpha,100
+/ITL/scene/l  watch,mouseEnter,/ITL/scene/l  alpha,100
+/ITL/scene/l  alpha,255
+/ITL/scene/l  watch,mouseLeave,/ITL/scene/l  alpha,255
+/ITL/scene/b  date,
+/ITL/scene/layer  duration,$x[8.,32.]
+variabledecl: msg = /ITL/scene/b  date,,/ITL/scene/layer  duration,$x[8.,32.]
+/ITL/scene/l  watch,mouseDown,/ITL/scene/b  date,,/ITL/scene/layer  duration,$x[8.,32.]
+/ITL/scene/l  watch,mouseMove,/ITL/scene/b  date,,/ITL/scene/layer  duration,$x[8.,32.]
+variabledecl: d = 0.05
+/ITL/scene/b  set,ellipse,0.05,0.05
+/ITL/scene/b  red,255
+/ITL/scene/b  z,1.1
+/ITL/scene/sync  b,l
+/ITL/scene/comments  set,layer
+/ITL/scene/comments  width,2
+/ITL/scene/comments  height,0.15
+/ITL/scene/comments  y,0.85
+/ITL/scene/comments/c1  set,txt,This script illustrates layers.
+/ITL/scene/comments/c2  set,txt,A layer is used to organise the time space: lines are synchronized to the layer.
+/ITL/scene/comments/c3  set,txt,Move the cursor above to change the layer duration
+/ITL/scene/comments/c1  y,-0.6
+/ITL/scene/comments/c2  y,0
+/ITL/scene/comments/c3  y,0.6
+expr ENDSCRIPT 

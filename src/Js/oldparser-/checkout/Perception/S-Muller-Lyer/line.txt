@@ -1,0 +1,63 @@
+variabledecl: width = 0.18
+/ITL/scene/*  del
+/ITL/scene/title  set,txt,Muller-Lyer illusions
+/ITL/scene/title  scale,2.7
+/ITL/scene/title  y,-0.9
+/ITL/scene/line1  set,line,wa,1,0
+/ITL/scene/line2  set,line,wa,1,0
+/ITL/scene/line1  y,-0.2
+/ITL/scene/line2  y,0.2
+/ITL/scene/al1  set,line,wa,0.18,0
+/ITL/scene/al2  set,line,wa,0.18,0
+/ITL/scene/ar1  set,line,wa,0.18,0
+/ITL/scene/ar2  set,line,wa,0.18,0
+/ITL/scene/br1  set,line,wa,0.18,0
+/ITL/scene/br2  set,line,wa,0.18,0
+/ITL/scene/bl1  set,line,wa,0.18,0
+/ITL/scene/bl2  set,line,wa,0.18,0
+/ITL/scene/al*  xorigin,1
+/ITL/scene/ar*  xorigin,-1
+/ITL/scene/bl*  xorigin,-1
+/ITL/scene/br*  xorigin,1
+/ITL/scene/??1  yorigin,1
+/ITL/scene/??2  yorigin,-1
+/ITL/scene/al1  angle,45
+/ITL/scene/al2  angle,-45
+/ITL/scene/ar1  angle,-45
+/ITL/scene/ar2  angle,45
+/ITL/scene/br1  angle,45
+/ITL/scene/br2  angle,-45
+/ITL/scene/bl1  angle,-45
+/ITL/scene/bl2  angle,45
+/ITL/scene/[ab]*/debug  name,0
+/ITL/scene/?l*  x,-0.5
+/ITL/scene/?r*  x,0.5
+/ITL/scene/a*  y,-0.2
+/ITL/scene/b*  y,0.2
+variabledecl: h = 0.05
+variabledecl: y = 0.9
+/ITL/scene/slider  set,rect,1,0.05
+/ITL/scene/slider  penWidth,1
+/ITL/scene/slider  penColor,0,0,0
+/ITL/scene/slider  z,1
+/ITL/scene/slider  color,255,255,255,0
+/ITL/scene/sliderloc  set,ellipse,0.05,0.05
+/ITL/scene/sliderloc  color,0,0,0
+/ITL/scene/slider*  xorigin,-1
+/ITL/scene/slider*  x,-0.5
+/ITL/scene/slider*  y,0.9
+/ITL/scene/sync  sliderloc,slider,v
+/ITL/scene/sliderloc  date,0.5
+/ITL/scene/sliderloc  date,$x
+/ITL/scene/br2  angle,$x[-90.,0.]
+/ITL/scene/bl1  angle,$x[-90.,0.]
+/ITL/scene/br1  angle,$x[90.,0.]
+/ITL/scene/bl2  angle,$x[90.,0.]
+/ITL/scene/ar1  angle,$x[-90.,0.]
+/ITL/scene/al2  angle,$x[-90.,0.]
+/ITL/scene/ar2  angle,$x[90.,0.]
+/ITL/scene/al1  angle,$x[90.,0.]
+variabledecl: msg = /ITL/scene/sliderloc  date,$x,/ITL/scene/br2  angle,$x[-90.,0.],/ITL/scene/bl1  angle,$x[-90.,0.],/ITL/scene/br1  angle,$x[90.,0.],/ITL/scene/bl2  angle,$x[90.,0.],/ITL/scene/ar1  angle,$x[-90.,0.],/ITL/scene/al2  angle,$x[-90.,0.],/ITL/scene/ar2  angle,$x[90.,0.],/ITL/scene/al1  angle,$x[90.,0.]
+/ITL/scene/slider  watch,mouseDown,/ITL/scene/sliderloc  date,$x,/ITL/scene/br2  angle,$x[-90.,0.],/ITL/scene/bl1  angle,$x[-90.,0.],/ITL/scene/br1  angle,$x[90.,0.],/ITL/scene/bl2  angle,$x[90.,0.],/ITL/scene/ar1  angle,$x[-90.,0.],/ITL/scene/al2  angle,$x[-90.,0.],/ITL/scene/ar2  angle,$x[90.,0.],/ITL/scene/al1  angle,$x[90.,0.]
+/ITL/scene/slider  watch,mouseMove,/ITL/scene/sliderloc  date,$x,/ITL/scene/br2  angle,$x[-90.,0.],/ITL/scene/bl1  angle,$x[-90.,0.],/ITL/scene/br1  angle,$x[90.,0.],/ITL/scene/bl2  angle,$x[90.,0.],/ITL/scene/ar1  angle,$x[-90.,0.],/ITL/scene/al2  angle,$x[-90.,0.],/ITL/scene/ar2  angle,$x[90.,0.],/ITL/scene/al1  angle,$x[90.,0.]
+expr ENDSCRIPT 

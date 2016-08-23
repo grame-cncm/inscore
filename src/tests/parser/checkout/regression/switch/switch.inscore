@@ -1,0 +1,33 @@
+/ITL/scene/* del;
+/ITL/scene/obj1 set ellipse 0.1 0.1;
+/ITL/scene/obj2 set ellipse 0.1 0.1;
+/ITL/scene/obj1 color 255 0 0;
+/ITL/scene/obj2 color 0 0 255;
+/ITL/scene/obj1 show 1;
+/ITL/scene/obj2 show 0;
+/ITL/scene/obj3 set ellipse 0.1 0.1;
+/ITL/scene/obj4 set ellipse 0.1 0.1;
+/ITL/scene/obj3 color 0 255 0;
+/ITL/scene/obj4 color 255 225 0;
+/ITL/scene/obj[13] x -0.2;
+/ITL/scene/obj[24] x 0.2;
+/ITL/scene/obj[12] y -0.2;
+/ITL/scene/obj[34] y 0.2;
+/ITL/scene/comment1 set txt "This script illustrates message based variables.";
+/ITL/scene/comment1 y -0.8;
+/ITL/scene/comment2 set txt "Click on the objects : objects on the same line exchange their states.";
+/ITL/scene/comment2 y 0.8;
+/ITL/scene/comment1 scale 1.7;
+/ITL/scene/comment2 scale 1.2;
+/ITL/scene/obj1 watch mouseDown (
+		/ITL/scene/obj1 show "$(/ITL/scene/obj2 get show;)",
+		/ITL/scene/obj2 show "$(/ITL/scene/obj1 get show;)" );
+/ITL/scene/obj2 watch mouseDown (
+		/ITL/scene/obj1 show "$(/ITL/scene/obj2 get show;)",
+		/ITL/scene/obj2 show "$(/ITL/scene/obj1 get show;)" );
+/ITL/scene/obj3 watch mouseDown (
+		/ITL/scene/obj3 color "$(/ITL/scene/obj4 get color;)",
+		/ITL/scene/obj4 color "$(/ITL/scene/obj3 get color;)" );
+/ITL/scene/obj4 watch mouseDown (
+		/ITL/scene/obj4 color "$(/ITL/scene/obj3 get color;)",
+		/ITL/scene/obj3 color "$(/ITL/scene/obj4 get color;)" );

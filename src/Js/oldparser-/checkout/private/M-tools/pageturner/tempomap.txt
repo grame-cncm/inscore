@@ -1,0 +1,25 @@
+/ITL/scene/_cursor  show,1
+/ITL/scene/pagenum  show,0
+/ITL/scene/_cursor  date,0,1
+/ITL/scene/pagepos  date,0,1
+/ITL/scene/mode  set,txt,Tempo map collection
+/ITL/scene/leftbutton  set,txt,Collect
+/ITL/scene/centerbutton  set,txt,Play
+/ITL/scene/*button  color,0,0,0
+/ITL/$scene/$self  red,255
+/ITL/scene/*button  watch,mouseEnter,/ITL/$scene/$self  red,255
+/ITL/$scene/$self  red,0
+/ITL/scene/*button  watch,mouseLeave,/ITL/$scene/$self  red,0
+/ITL/$scene/b[12]  del
+/ITL/scene/*button  watch,mouseDown,/ITL/$scene/b[12]  del
+localhost:7101/collect  1
+/ITL/scene/leftbutton  watch,mouseDown,localhost:7101/collect  1
+localhost:7101/play  1
+/ITL/scene/centerbutton  watch,mouseDown,localhost:7101/play  1
+localhost:7101/open  1
+/ITL/scene/rightbutton  watch,mouseDown,localhost:7101/open  1
+/ITL/scene/a*  color,180,180,180
+/ITL/scene/anext  show,0
+/ITL/scene/aprevious  show,1
+/ITL/scene/score  watch
+expr ENDSCRIPT 

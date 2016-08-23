@@ -1,0 +1,33 @@
+/ITL/scene/* del;
+/ITL/scene load "require.inscore";
+/ITL/scene/title set html "<h1>INScore Tutorial</h1>";
+/ITL/scene/title y -0.7;
+/ITL/scene/title scale 2.0;
+/ITL/scene/menu1 set html "The message system";
+/ITL/scene/menu2 set html "The score components";
+/ITL/scene/menu3 set html Synchronization;
+/ITL/scene/menu4 set html Signals;
+/ITL/scene/menu5 set html Interaction;
+/ITL/scene/menu1 y -0.4;
+/ITL/scene/menu2 y -0.2;
+/ITL/scene/menu3 y 0.0;
+/ITL/scene/menu4 y 0.2;
+/ITL/scene/menu5 y 0.4;
+/ITL/scene/menu* scale 2.5;
+/ITL/scene/menu* z 1.0;
+/ITL/scene/icon set img "rsrc/INScore.png";
+/ITL/scene/icon alpha 50;
+/ITL/scene/menu1 watch mouseDown (
+		/ITL load "msgs.inscore" );
+/ITL/scene/menu2 watch mouseDown (
+		/ITL load "components.inscore" );
+/ITL/scene/menu3 watch mouseDown (
+		/ITL load "synchronization.inscore" );
+/ITL/scene/menu4 watch mouseDown (
+		/ITL load "signals.inscore" );
+/ITL/scene/menu5 watch mouseDown (
+		/ITL load "interaction.inscore" );
+/ITL/scene/menu* watch mouseEnter (
+		/ITL/scene/$self red 255 );
+/ITL/scene/menu* watch mouseLeave (
+		/ITL/scene/$self red 0 );

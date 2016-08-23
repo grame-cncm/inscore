@@ -1,0 +1,101 @@
+/ITL/scene/* del;
+/ITL/scene width 1.5;
+/ITL require 1.17 (
+	 /ITL/scene/warning set txt "WARNING: score expressions require version" 1.17 "or greater",
+							/ITL/scene/warning color 100 100 100,
+							/ITL/scene/warning y 0.9,
+							/ITL/scene/warning scale 1.5 );
+/ITL/scene/score set gmnstream "[ \clef<\"g\"> \meter<\"4/4\">  \pageFormat<18cm, 18cm, 5,5,5,5>";
+/ITL/scene/score scale 0.8;
+/ITL/scene/score effect shadow 5 5 0 0 0 75 20;
+/ITL/scene/randomize set txt "Generate score";
+/ITL/scene/randomize y -0.2;
+/ITL/scene/randomize scale 3;
+/ITL/scene/randomize color 154 23 23;
+/ITL/scene/randomize effect shadow 5 5 154 23 23 100 20;
+/ITL/scene/randomize watch mouseEnter (
+	/ITL/scene/randomize color 245 11 11 );
+/ITL/scene/randomize watch mouseLeave (
+	/ITL/scene/randomize color 154 23 23 );
+/ITL/scene/randomize watch mouseDown (
+	    /ITL/scene/score clear,
+	    /ITL/scene/score write "[\meter<\"4/4\">  \pageFormat<18cm, 18cm, 5,5,5,5>",
+	    /ITL/scene/javascript run "randomscore()" );
+/ITL/scene/echo_piano set pianoroll expr(&score);
+/ITL/scene/echo_piano x -0.7;
+/ITL/scene/echo_piano y -0.7;
+/ITL/scene/echo_piano scale 0.6;
+/ITL/scene/label_piano set txt "piano roll echo";
+/ITL/scene/label_piano x -0.7;
+/ITL/scene/label_piano y -0.52;
+/ITL/scene/label_piano scale 1.35;
+/ITL/scene/echo_transposed set gmn expr(par
+		(tail
+		    (transpose
+			(seq "[c]" &score)
+			"[g]"
+		    )
+		    "[c]"
+		)
+		&score
+	    );
+/ITL/scene/echo_transposed x 0.7;
+/ITL/scene/echo_transposed y -0.7;
+/ITL/scene/echo_transposed scale 0.48;
+/ITL/scene/label_transposed set txt "transposed echo";
+/ITL/scene/label_transposed x 0.7;
+/ITL/scene/label_transposed y -0.52;
+/ITL/scene/label_transposed scale 1.35;
+/ITL/scene/echo_stretch set gmn expr(duration &score [a/1]);
+/ITL/scene/echo_stretch x -0.7;
+/ITL/scene/echo_stretch y 0.7;
+/ITL/scene/echo_stretch scale 0.55;
+/ITL/scene/label_stretch set txt "stretched echo";
+/ITL/scene/label_stretch x -0.7;
+/ITL/scene/label_stretch y 0.57;
+/ITL/scene/label_stretch scale 1.35;
+/ITL/scene/echo_quiet set gmn expr(pitch &score "[_]");
+/ITL/scene/echo_quiet x 0.7;
+/ITL/scene/echo_quiet y 0.7;
+/ITL/scene/echo_quiet scale 0.55;
+/ITL/scene/label_quiet set txt "quiet echo";
+/ITL/scene/label_quiet x 0.7;
+/ITL/scene/label_quiet y 0.57;
+/ITL/scene/label_quiet scale 1.35;
+/ITL/scene/labelecho1 set txt echo;
+/ITL/scene/labelecho2 set txt echoes;
+/ITL/scene/labelecho3 set txt echoes;
+/ITL/scene/labelecho4 set txt echo;
+/ITL/scene/labelecho5 set txt echoes;
+/ITL/scene/labelecho1 color 113 117 195;
+/ITL/scene/labelecho2 color 87 107 144;
+/ITL/scene/labelecho3 color 37 88 114;
+/ITL/scene/labelecho4 color 133 157 158;
+/ITL/scene/labelecho5 color 127 47 169;
+/ITL/scene/labelecho1 scale 5;
+/ITL/scene/labelecho2 scale 2.8;
+/ITL/scene/labelecho3 scale 3;
+/ITL/scene/labelecho4 scale 4;
+/ITL/scene/labelecho5 scale 3.7;
+/ITL/scene/labelecho1 y 0.5;
+/ITL/scene/labelecho2 y 0.4;
+/ITL/scene/labelecho3 y -0.27;
+/ITL/scene/labelecho4 y -0.4;
+/ITL/scene/labelecho5 y 0.2;
+/ITL/scene/labelecho1 x 1;
+/ITL/scene/labelecho2 x -0.7;
+/ITL/scene/labelecho3 x 0.7;
+/ITL/scene/labelecho4 x -0.4;
+/ITL/scene/labelecho1 rotatez -25;
+/ITL/scene/labelecho2 rotatez 12;
+/ITL/scene/labelecho3 rotatez -45;
+/ITL/scene/labelecho4 rotatez 30;
+/ITL/scene/labelecho5 rotatez -3;
+/ITL/scene/labelecho* alpha 40;
+/ITL/scene/score watch newData (
+	/ITL/scene/echo_* expr reeval );
+/ITL/scene/echo_* color 4 22 69 230;
+/ITL/scene/echo_* effect shadow 0 0 4 22 69 150 35;
+/ITL/scene/label_* color 4 22 69 230;
+/ITL/scene width 1.2;
+/ITL/scene/randomize event mouseDown 0 0;

@@ -1,0 +1,70 @@
+/ITL/scene/*  del
+/ITL/log  show,1
+/ITL/scene/xml  set,musicxml,<?xml version="1.0" standalone="no"?>
+	<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 1.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+	<score-partwise>
+		<part-list>
+			<score-part id="P1">
+				<part-name>Clarinet in Bb</part-name>
+				<score-instrument id="P1-I1">
+					<instrument-name>Clarinet</instrument-name>
+				</score-instrument>
+			</score-part>
+		</part-list>
+		<part id="P1">
+			<measure number="1">
+				<attributes>
+					<divisions>2</divisions>
+					<key>
+						<fifths>0</fifths>
+						<mode>major</mode>
+					</key>
+					<time>
+						<beats>2</beats>
+						<beat-type>4</beat-type>
+					</time>
+					<clef>
+						<sign>G</sign>
+						<line>2</line>
+					</clef>
+					<transpose>
+						<diatonic>-1</diatonic>
+						<chromatic>-2</chromatic>
+					</transpose>
+				</attributes>
+				<note>
+					<pitch>
+						<step>C</step>
+						<octave>4</octave>
+					</pitch>
+					<duration>2</duration>
+					<voice>1</voice>
+					<type>quarter</type>
+					<stem>up</stem>
+				</note>
+				<note>
+					<pitch>
+						<step>C</step>
+						<octave>4</octave>
+					</pitch>
+					<duration>1</duration>
+					<voice>1</voice>
+					<type>eighth</type>
+					<stem>up</stem>
+					<beam number="1">begin</beam>
+				</note>
+				<note>
+					<pitch>
+						<step>D</step>
+						<octave>4</octave>
+					</pitch>
+					<duration>1</duration>
+					<voice>1</voice>
+					<type>eighth</type>
+					<stem>up</stem>
+					<beam number="1">end</beam>
+				</note>
+			</measure>
+		</part>
+	</score-partwise>
+expr ENDSCRIPT 

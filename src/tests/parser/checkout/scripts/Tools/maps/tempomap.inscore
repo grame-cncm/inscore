@@ -1,0 +1,28 @@
+/ITL/scene/* watch;
+/ITL/scene/rect set rect 0.5 0.5;
+/ITL/scene/rect color 0 0 0 180;
+/ITL/scene/rect watch mouseDown (
+	 /ITL/scene/javascript run "time()",
+		  /ITL/scene/rect red 200 );
+/ITL/scene/rect watch mouseUp (
+	 /ITL/scene/rect red 0 );
+/ITL/log show 1;
+/ITL/scene/_ui_reset set txt Reset;
+/ITL/scene/_ui_print set txt Print;
+/ITL/scene/_ui_* scale 1.2;
+/ITL/scene/_ui_* color 130 130 130;
+/ITL/scene/_ui_* xorigin -1;
+/ITL/scene/_ui_* yorigin -1;
+/ITL/scene/_ui_* x -0.995;
+/ITL/scene/_ui_print y -0.95;
+/ITL/scene/_ui_reset y -0.87;
+/ITL/scene/_ui_* scale 1.8;
+/ITL/scene/_ui_* watch;
+/ITL/scene/_ui_* watch mouseEnter (
+	/ITL/scene/$self color 240 50 50 );
+/ITL/scene/_ui_* watch mouseLeave (
+	/ITL/scene/$self color 130 130 130 );
+/ITL/scene/_ui_print watch mouseDown (
+	/ITL/scene/javascript run "printMap()" );
+/ITL/scene/_ui_reset watch mouseUp (
+	/ITL/scene/javascript run "reset()" );

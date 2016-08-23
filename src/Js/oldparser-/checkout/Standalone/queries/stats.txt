@@ -1,0 +1,3 @@
+/ITL/stats  get
+/ITL/scene/out  set,txt,INScore stats - received messages:,/ITL/stats  get
+expr ENDSCRIPT 
