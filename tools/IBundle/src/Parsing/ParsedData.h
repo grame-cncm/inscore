@@ -181,7 +181,7 @@ protected:
 	RessourceMap fRessources;
 	TStringMap fFilesMap;
 
-	void simplifyPaths(int charToDelete);
+	void simplifyPaths(size_t charToDelete);
 
 	std::string fMainPath="";
 };

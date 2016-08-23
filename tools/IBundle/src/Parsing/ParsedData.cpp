@@ -198,7 +198,7 @@ std::string ParsedData::generateScript(std::string name) const
 	return script.str();
 }
 
-void ParsedData::simplifyPaths(int charToDelete)
+void ParsedData::simplifyPaths(size_t charToDelete)
 {
 	if(mainScript.empty() && fScripts.empty() && fRessources.empty())
 		return;
@@ -248,7 +248,7 @@ void ParsedData::simplifyPaths()
 
 	//  -- search for common path trunk --
 	std::vector<std::string> trunk = splitPath(fRessources.size()? fRessources.begin()->first: fScripts.begin()->first);
-	int commonPath = trunk.size()-1;
+	size_t commonPath = trunk.size()-1;
 
 	for(auto it = fRessources.cbegin(); it != fRessources.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
