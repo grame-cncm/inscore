@@ -42,7 +42,7 @@ void BundleLog::section(std::string sectionName)
 	fTab = 0;
 	printLog("⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n");
 	size_t space = sectionName.length()>50? 0 : 50 - sectionName.length();
-	sectionName.insert(0,0>floor(space/2.)?0:floor(space/2.), ' ');
+	sectionName.insert(0, 0 > floor(space/2.) ? 0 : floor(space/2.), ' ');
 	printLog(sectionName);
 	printLog("\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n");
 	fTab = 1;
