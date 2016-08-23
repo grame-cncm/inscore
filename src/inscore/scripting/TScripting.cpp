@@ -184,7 +184,11 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 #endif
 
 //--------------------------------------------------------------------------------------------
+#ifdef PARSERTEST
+IMessage::argslist TScripting::resolve (const IMessage* ) const
+#else
 IMessage::argslist TScripting::resolve (const IMessage* msg) const
+#endif
 {
 #ifdef PARSERTEST
 	IMessage::argslist out;

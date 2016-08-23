@@ -285,7 +285,11 @@ SIMessageList IMessage::_watchMsg2Msgs(int& startIndex) const
 //--------------------------------------------------------------------------
 // sending messages
 //--------------------------------------------------------------------------
+#ifndef PARSERTEST
 void IMessage::send(const bool& delay) const
+#else
+void IMessage::send(const bool& ) const
+#endif
 {
 	if (extendedAddress()) {
 #ifndef NO_OSCSTREAM
