@@ -13,6 +13,8 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.20
+- new video specific messages and management: the video time is now independent from the 
+  inscore object time. 
 - bug in debug name corrected (was not removed)
 - bug in polygon position corrected (was not centered on 0 0) - use /ITL compatibility 
   to preserve previous behaviour
