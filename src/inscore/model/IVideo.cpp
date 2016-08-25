@@ -90,7 +90,6 @@ void IVideo::setIDate (long date)		{ fCDate = int(date); }
 
 void IVideo::cleanup ()
 {
-cout << "IVideo::cleanup" << endl;
 	fRateModified = fDateModified = false;
 	IObject::cleanup();
 }

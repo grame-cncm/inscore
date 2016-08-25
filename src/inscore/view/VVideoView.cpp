@@ -62,7 +62,7 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 #ifndef USEPHONON
 void VVideoView::error(QMediaPlayer::Error )
 {
-	ITLErr << (fVideo ? fVideo->getOSCAddress().c_str() : "no video address") << fMediaPlayer.errorString().toStdString() << ITLEndl;
+	ITLErr << (fVideo ? fVideo->getOSCAddress().c_str() : "no video OSC address") << fMediaPlayer.errorString().toStdString() << ITLEndl;
 }
 
 //----------------------------------------------------------------------
@@ -78,12 +78,12 @@ void VVideoView::nativeSizeChanged(const QSizeF & size)
 void VVideoView::seekableChanged(bool /*seekable*/)		{ /* qDebug() << "VVideoView::seekableChanged :" <<  seekable;*/ }
 void VVideoView::positionChanged(qint64 pos)			{ fVideo->setIDate(pos); }
 void VVideoView::durationChanged(qint64 duration)		{ fVideo->setVideoDuration (duration); }
-void VVideoView::stateChanged (QMediaPlayer::State state)	{ qDebug() << "VVideoView::stateChanged :" <<  state; }
+void VVideoView::stateChanged (QMediaPlayer::State /*state*/)	{ /*qDebug() << "VVideoView::stateChanged :" <<  state;*/ }
 
 //----------------------------------------------------------------------
 void VVideoView::mediaStatusChanged (QMediaPlayer::MediaStatus status)
 {
-qDebug() << "VVideoView::mediaStatusChanged" << status;
+//qDebug() << "VVideoView::mediaStatusChanged" << status;
 	switch (status) {
 		case QMediaPlayer::LoadedMedia:			// this is necessary to trigger the nativeSizeChanged slot
 			fMediaPlayer.play();
@@ -93,7 +93,9 @@ qDebug() << "VVideoView::mediaStatusChanged" << status;
 			
 		case QMediaPlayer::BufferedMedia:
 		case QMediaPlayer::UnknownMediaStatus:
+			break;
 		case QMediaPlayer::InvalidMedia:
+			ITLErr << (fVideo ? fVideo->getOSCAddress().c_str() : "no video OSC address") << "invalid media" << ITLEndl;
 			break;
 
 		case QMediaPlayer::EndOfMedia:
@@ -140,7 +142,6 @@ void VVideoView::initialize( IVideo * video  )
 void VVideoView::updateView( IVideo * video  )
 {
     video->cleanupSync();
-qDebug() << "VVideoView::updateView" << fMediaPlayer.state();
 	fVideoItem->setOpacity (video->getA() / 255.f);
 	QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
 //		qint64 pos = video->currentTime() * 1000;
@@ -158,7 +159,6 @@ qDebug() << "VVideoView::updateView" << fMediaPlayer.state();
 	if (video->rateModified()) fMediaPlayer.setPlaybackRate( video->rate() );
 	if (video->playing()) {
 		if (fMediaPlayer.state() !=  QMediaPlayer::PlayingState) {
-qDebug() << "VVideoView::updateView play";
 			fMediaPlayer.play ();
 		}
 	}
