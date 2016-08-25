@@ -4,30 +4,69 @@
 # comments
 #---------------------------------------------
 /ITL/scene/comment1 set txt "The video moves from key frame to key frame (Mac OS).";
-/ITL/scene/comment1 y -0.6;
+/ITL/scene/comment1 y -0.65;
 /ITL/scene/comment1 scale 1.6;
 
-#/ITL/scene/v set video 'miroirs-distants.mp4';
-#/ITL/scene/v scale 0.5;
-/ITL/scene/v set video 'countdown.mov';
-/ITL/scene/v duration 11 4;
+/ITL/scene/v set video 'time.mp4';
+/ITL/scene/v duration 21 4;
 /ITL/scene/v scale 1;
+
+/ITL/scene/v watch end (
+	/ITL/scene/v vdate 0,
+	/ITL/scene/v play
+);
+
+/ITL/scene/control set txt "Play";
+/ITL/scene/control y 0.7;
+/ITL/scene/control scale 1.7;
+/ITL/scene/control watch mouseEnter (/ITL/scene/control red 240);
+/ITL/scene/control watch mouseLeave (/ITL/scene/control red 0);
+
+/ITL/scene/control watch mouseDown (
+	/ITL/scene/control push,
+	/ITL/scene/v play 1,
+	/ITL/scene/control set txt "Stop",
+	/ITL/scene/control watch mouseDown (
+		/ITL/scene/v play 0,
+		/ITL/scene/control set txt "Play",
+		/ITL/scene/control pop
+	)
+);
 
 
 __END__
+/ITL/scene/v tempo 120;
 /ITL/scene/v tempo 60;
+/ITL/scene/v tempo -60;
+/ITL/scene/v tempo 30;
 /ITL/scene/v tempo 0;
 
 /ITL/scene/v play 1;
 /ITL/scene/v play 0;
 /ITL/scene/v get play;
 
+/ITL/scene/v volume 1;
+/ITL/scene/v volume 0.5;
+/ITL/scene/v volume 0;
+/ITL/scene/v get width height show;
+/ITL/scene/v get x y;
+/ITL/scene/v get mls vduration;
+/ITL/scene/v get vdate;
 
-/ITL/scene/v date 0;
-/ITL/scene/v date 1 16;
-/ITL/scene/v date 1 8;
-/ITL/scene/v date 1 4;
-/ITL/scene/v date 2 4;
-/ITL/scene/v date 3 4;
-/ITL/scene/v date 4;
-/ITL/scene/v date 6;
+/ITL/scene/v show 1;
+/ITL/scene/v rate 2;
+/ITL/scene/v rate 1;
+/ITL/scene/v rate 0.5;
+/ITL/scene/v rate -1;
+/ITL/scene/v get rate;
+
+
+/ITL/scene/v vdate 0;
+/ITL/scene/v vdate 1000;
+/ITL/scene/v vdate 1500;
+/ITL/scene/v vdate 2000;
+/ITL/scene/v vdate 3000;
+/ITL/scene/v vdate 3400;
+/ITL/scene/v vdate 1;
+/ITL/scene/v vdate 4;
+/ITL/scene/v vdate 2;
