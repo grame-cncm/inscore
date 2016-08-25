@@ -13,7 +13,7 @@
 
 /ITL/scene/v watch end (
 	/ITL/scene/v vdate 0,
-	/ITL/scene/v play
+	/ITL/scene/v play 1
 );
 
 /ITL/scene/control set txt "Play";
@@ -32,6 +32,7 @@
 		/ITL/scene/control pop
 	)
 );
+/ITL/log show 1;
 
 
 __END__
@@ -50,8 +51,9 @@ __END__
 /ITL/scene/v volume 0;
 /ITL/scene/v get width height show;
 /ITL/scene/v get x y;
-/ITL/scene/v get mls vduration;
-/ITL/scene/v get vdate;
+/ITL/log write mls  $(/ITL/scene/v get mls )
+		dur $(/ITL/scene/v get vduration);
+/ITL/log write vdate $(/ITL/scene/v get vdate);
 
 /ITL/scene/v show 1;
 /ITL/scene/v rate 2;
