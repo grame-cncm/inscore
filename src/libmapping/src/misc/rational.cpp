@@ -208,7 +208,7 @@ rational& rational::operator /=(long int num) {
 bool rational::operator >(const rational &dur) const
 {
 	// a/b > c/d if and only if a * d > b * c.
-    return ((fNumerator * dur.fDenominator) > (fDenominator * dur.fNumerator));
+	return ((fNumerator * dur.fDenominator) > (fDenominator * dur.fNumerator));
 }
 
 bool rational::operator <(const rational &dur) const
@@ -219,8 +219,9 @@ bool rational::operator <(const rational &dur) const
 
 bool rational::operator ==(const rational &dur) const
 {
-    // a/b < c/d if and only if a * d < b * c.
-    return ((fNumerator * dur.fDenominator) == (fDenominator * dur.fNumerator));
+    // a/b == c/d if a * d == b * c.
+	// doesn't work when one of the rational is 0/0
+	return ((fNumerator * dur.fDenominator) == (fDenominator * dur.fNumerator));
 }
 
 bool rational::operator >(double num) const		{ return (double(*this) > num); }
