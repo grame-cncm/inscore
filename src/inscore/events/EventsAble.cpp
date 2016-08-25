@@ -69,6 +69,9 @@ static const char* kNewElementStr	= "newElement";
 // score specific events
 static const char* kPageCountStr	= "pageCount";
 
+// video specific events
+static const char* kVideoEndStr		= "end";
+
 namespace inscore
 {
 
@@ -365,6 +368,7 @@ void EventsAble::init ()
 		fTypeStr[kCancelStr]	= kCancel;
 
 		fTypeStr[kPageCountStr]	= kPageCount;
+		fTypeStr[kVideoEndStr]	= kVideoEnd;
 	}
 	
 	if (!fTypeNum.size()) {
@@ -401,6 +405,7 @@ void EventsAble::init ()
 		fTypeNum[kCancel]		= kCancelStr;
 
 		fTypeNum[kPageCount]	= kPageCountStr;
+		fTypeNum[kVideoEnd]		= kVideoEndStr;
 	}
 }
 

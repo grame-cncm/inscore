@@ -52,7 +52,7 @@ typedef class libmapping::SMARTP<IVideo>	SIVideo;
 */
 class IVideo : public IRectShape,  public TFile
 {
-	public:		
+	public:
 		static const std::string kVideoType;
 		static SIVideo create(const std::string& name, IObject * parent)	{ return new IVideo(name, parent); }
 		virtual void	accept (Updater* u);
@@ -63,25 +63,60 @@ class IVideo : public IRectShape,  public TFile
 		/// \brief Returns the current video time in seconds, according to the object's date and videoMap.
 		float	currentTime() const;
 		bool	playing() const			{ return fPlaying; }
+		bool	vdateModified() const	{ return fDateModified; }
+		bool	rateModified() const	{ return fRateModified; }
+		float	volume() const			{ return fVolume; }
+
+		/// \brief set the object duration according to the video duration (tempo assumed to be 60).
+		void	setVideoDuration( long mls);
+		float	rate() const			{ return fRate; }
+		int		vDate () const			{ return fCDate; }
+
+		void	setIDate (long date);	// for internal update of the current date
+		void	videoEnd ();			// called from view when the video reaches the end
 
 	protected:
-		bool fPlaying;			// the video playing state
+		bool  fPlaying;			// the video playing state
+		float fVolume;			// the video sound volume. Range: 0-1
+		float fRate;			// the video playing rate. Nominal rate is 1.0
+		int	  fVDuration;		// the video duration in mls
+		int   fCDate;			// the video current date
+		int   fVDate;			// the video requested date
+		bool  fDateModified;	// to handle changes of the video date
+		bool  fRateModified;	// to handle changes of the video rate
 	
 				 IVideo( const std::string& name, IObject * parent);
 		virtual ~IVideo() {}
+
+		virtual void	cleanup ();
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
 		/// \brief the \c 'play' message handler
 		virtual void setPlay (bool state);
+
+		/// \brief the \c 'vdate' message handler
+		virtual void setVDate (long date);
+
+		/// \brief the \c 'volume' message handler
+		virtual void setVolume (float volume);
+
+		/// \brief the \c 'volume' message handler
+		virtual void setRate (float rate);
+
+		/// \brief the \c 'get vduration' message handler
+		virtual libmapping::rational getVDuration () const;
 	
 		/// \brief the \c 'videoMapf' message handler
 		virtual MsgHandler::msgStatus videoMapFileMsg (const IMessage* msg );
 
 		/// \brief the \c 'videoMap' message handler
 		virtual MsgHandler::msgStatus videoMapMsg (const IMessage* msg );
-				
+
+		/// \brief the \c 'watch' message handler
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
+	
 		class Date2SecondConverter: public smartable
 		{ 
 			public:

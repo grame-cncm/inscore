@@ -43,7 +43,7 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
  :	VGraphicsItemView( scene , new IQGraphicsVideoItem(video) )
 #ifndef USEPHONON
 	, fMediaPlayer(0, QMediaPlayer::VideoSurface)
-	, fVideo(0), fPlaying(false)
+	, fVideo(0)
 #endif
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);
@@ -52,6 +52,8 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
     connect(&fMediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
     connect(&fMediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(stateChanged(QMediaPlayer::State)));
     connect(&fMediaPlayer, SIGNAL(seekableChanged(bool)), this, SLOT(seekableChanged(bool)));
+    connect(&fMediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(&fMediaPlayer, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
 #endif
 
 }
@@ -69,45 +71,34 @@ void VVideoView::nativeSizeChanged(const QSizeF & size)
 	fVideoItem->setSize (size);
 	fVideo->setWidth ( scene2RelativeWidth(size.width()) );
 	fVideo->setHeight( scene2RelativeHeight(size.height()) );
-	INScore::postMessage (fVideo->getOSCAddress().c_str(), kshow_GetSetMethod, 1);
+	INScore::postMessage (fVideo->getOSCAddress().c_str(), kx_GetSetMethod, fVideo->getXPos());
 }
 
 //----------------------------------------------------------------------
-void VVideoView::seekableChanged(bool seekable)
-{
-qDebug() << "VVideoView::seekableChanged :" <<  seekable;
-}
-
-//----------------------------------------------------------------------
-void VVideoView::stateChanged (QMediaPlayer::State state)
-{
-	if (state == QMediaPlayer::PlayingState) {
-//		if (!fPlaying)
-//qDebug() << "VVideoView::stateChanged : playing -> pause" ;
-//			fMediaPlayer.pause ();
-	}
-}
+void VVideoView::seekableChanged(bool /*seekable*/)		{ /* qDebug() << "VVideoView::seekableChanged :" <<  seekable;*/ }
+void VVideoView::positionChanged(qint64 pos)			{ fVideo->setIDate(pos); }
+void VVideoView::durationChanged(qint64 duration)		{ fVideo->setVideoDuration (duration); }
+void VVideoView::stateChanged (QMediaPlayer::State state)	{ qDebug() << "VVideoView::stateChanged :" <<  state; }
 
 //----------------------------------------------------------------------
 void VVideoView::mediaStatusChanged (QMediaPlayer::MediaStatus status)
 {
 qDebug() << "VVideoView::mediaStatusChanged" << status;
 	switch (status) {
-		case QMediaPlayer::BufferedMedia:
-			break;
-
-		case QMediaPlayer::LoadingMedia:
-//			fMediaPlayer.play();
-//			fMediaPlayer.pause();
-//			fMediaPlayer.setPosition(0);
-//			fMediaPlayer.stop();
+		case QMediaPlayer::LoadedMedia:			// this is necessary to trigger the nativeSizeChanged slot
+			fMediaPlayer.play();
+			fMediaPlayer.setPosition(0);
+			fMediaPlayer.pause();
 			break;
 			
+		case QMediaPlayer::BufferedMedia:
 		case QMediaPlayer::UnknownMediaStatus:
 		case QMediaPlayer::InvalidMedia:
 			break;
+
 		case QMediaPlayer::EndOfMedia:
-			INScore::postMessage (fVideo->getOSCAddress().c_str(), kplay_GetSetMethod, 0);
+			fMediaPlayer.setPosition( fMediaPlayer.duration()-1 );
+			fVideo->videoEnd();
 			break;
 		default:
 			break;
@@ -127,15 +118,13 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 	fVideo = video;
 	fMediaPlayer.setMedia(QUrl::fromLocalFile(videoFile));
 	fMediaPlayer.setVideoOutput (fVideoItem);
+	fMediaPlayer.setNotifyInterval(10);
 
 	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
 
-//qDebug() << "VVideoView::initFile isSeekable" << fMediaPlayer.isSeekable() ;
-	video->setWidth(0.01f);			// default width
-	video->setHeight(0.01f);		// and height
-	video->setVisible (true);
+	video->setWidth(0.f);		// unknown width
+	video->setHeight(0.f);		// unknown height
     connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
-	fMediaPlayer.pause ();
 #endif
 }
 
@@ -151,62 +140,34 @@ void VVideoView::initialize( IVideo * video  )
 void VVideoView::updateView( IVideo * video  )
 {
     video->cleanupSync();
-    QString file = VApplView::toQString( video->getPath().c_str() );
-	if ( QFile::exists(  file  ) )
-	{
-		fVideoItem->setOpacity (video->getA() / 255.f);
-		QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
-		qint64 pos = video->currentTime() * 1000;
+qDebug() << "VVideoView::updateView" << fMediaPlayer.state();
+	fVideoItem->setOpacity (video->getA() / 255.f);
+	QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
+//		qint64 pos = video->currentTime() * 1000;
+	qint64 pos = video->vDate();
+		
 #ifdef USEPHONON
-		fVideoItem->resize( size );
-		fVideoItem->media()->seek( pos );
+	fVideoItem->resize( size );
+	fVideoItem->media()->seek( pos );
 #else
-		if (pos < 0 ) pos = 0;
-		if (pos > fMediaPlayer.duration()) pos = fMediaPlayer.duration()-1;
-		if (size != fVideoItem->size()) fVideoItem->setSize( size );
-		if (video->playing()) {
-			fPlaying = true;
-			if (fMediaPlayer.state() !=  QMediaPlayer::PlayingState) {
-				qDebug() << "VVideoView::updateView start playing";
-				fMediaPlayer.play ();
-			}
-			if (video->dateModified()) {
-				qDebug() << "VVideoView::updateView playing to pos " << pos;
-				fMediaPlayer.setPosition( pos );
-			}
-		}
-		else {
-			fPlaying = false;
-			if (fMediaPlayer.state() ==  QMediaPlayer::PlayingState) {
-				if (video->dateModified()) {
-					qDebug() << "VVideoView::updateView playing and pause to pos " << pos;
-					fMediaPlayer.setPosition( pos );
-				}
-				fMediaPlayer.pause ();
-			}
-			else if (video->dateModified()) {
-//				fMediaPlayer.play ();
-				qDebug() << "VVideoView::updateView not playing to pos " << pos;
-				fMediaPlayer.setPosition( pos );
-//				fMediaPlayer.pause ();
-			}
-		}
+	if (pos < 0 ) pos = 0;
+	if (pos > fMediaPlayer.duration()) pos = fMediaPlayer.duration()-1;
+	if (size != fVideoItem->size()) fVideoItem->setSize( size );
 
-//		if ((fMediaPlayer.state() !=  QMediaPlayer::PlayingState) && video->playing()) {
-//			fMediaPlayer.play ();
-//			
-//		}
-//		else if(fMediaPlayer.state() ==  QMediaPlayer::PlayingState) fMediaPlayer.pause ();
+	fMediaPlayer.setVolume( video->volume() * 100);
+	if (video->rateModified()) fMediaPlayer.setPlaybackRate( video->rate() );
+	if (video->playing()) {
+		if (fMediaPlayer.state() !=  QMediaPlayer::PlayingState) {
+qDebug() << "VVideoView::updateView play";
+			fMediaPlayer.play ();
+		}
+	}
+	else if (fMediaPlayer.state() ==  QMediaPlayer::PlayingState)
+		fMediaPlayer.pause ();
 
-//qDebug() << "VVideoView::updateView to pos " << pos;
-//		fMediaPlayer.setPosition( pos );
-//		fMediaPlayer.pause ();
+	if (video->vdateModified())
+		fMediaPlayer.setPosition( pos );
 #endif
-	}
-	else
-	{
-		// File not found. Do nothing. (Error msg is handled by the model.)
-	}
 	itemChanged();
 	VGraphicsItemView::updateView( video );
 }
