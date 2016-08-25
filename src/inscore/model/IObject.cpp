@@ -478,8 +478,7 @@ void IObject::cleanup ()
 	fNewData = false;
 	localMapModified (false);
 	fExportFlag.clear();
-	fState= kClean;
-// 	if (getState() & kSubModified) {     todo: could be optimised - to be checked
+ 	if (getState() & kSubModified) {     // todo: could be optimised - to be checked
 		subnodes::iterator i = elements().begin();
 		while (i!=elements().end()) {
 			if ((*i)->fDelete) {
@@ -490,7 +489,8 @@ void IObject::cleanup ()
 				i++;
 			}
 		}
-//	}
+	}
+	fState= kClean;
 }
 
 //--------------------------------------------------------------------------
