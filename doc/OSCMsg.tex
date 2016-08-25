@@ -1287,8 +1287,8 @@ Querying the \OSC{width} and \OSC{height} of any object is always supported, pro
 
 
 %-------------------------------
-%:  Symbolic score management
-\sublevel{Symbolic score management}
+%:  Symbolic score 
+\sublevel{Symbolic score}
 \label{gmnpage}
 
 The following messages are accepted by the components types \OSC{gmn | gmnstream | gmnf}. 
@@ -1349,8 +1349,8 @@ Writing a score in 3 steps:
 
 
 %-------------------------------
-%:  piano roll management
-\sublevel{Piano roll management}
+%:  piano roll 
+\sublevel{Piano roll}
 \label{pianoroll}
 
 The following messages are accepted by the components types \OSC{pianoroll | pianorollstream | pianorollf}.
@@ -1413,6 +1413,60 @@ Writing a pianoroll in 3 steps:
 /ITL/scene/myPianoroll write " d e";\\
 /ITL/scene/myPianoroll write " f]";
 }
+
+%-------------------------------
+%:  Video
+\sublevel{Video}
+\label{video}
+
+A video object has an own internal time and duration that is independant from the INScore time and duration. 
+This video time is controlled using specific messages.
+
+\begin{rail}
+video :	'play' int32
+		| volume float32
+		| rate   float32
+		| vdate  int32
+\end{rail}
+\index{Specific messages! video! play}
+\index{Specific messages! video! volume}
+\index{Specific messages! video! rate}
+\index{Specific messages! video! vdate}
+
+\begin{itemize}
+\item \OSC{play} start or stop playing the video. Default value is 0. 
+\item \OSC{volume} sets the audio volume of the video. Default and maximum value is 1.
+\item \OSC{rate} sets the video playing rate. Default value is 1.
+\item \OSC{vdate} sets the current frame. Default value is 0. This value is updated while the video is playing.
+\end{itemize}
+
+A video object supports also specific queries: 
+\begin{rail}
+videoget :	'mls'
+			| 'vduration'
+\end{rail}
+\index{Specific messages! video! vduration}
+
+\begin{itemize}
+\item \OSC{mls} gives the video absolute duration in milliseconds.
+\item \OSC{vduration} gives the video duration in musical time. The returned value is a rational computed using the current rate, according to a tempo value of 60.
+\end{itemize}
+
+A video object supports specific events (see section \fullref{typespecevents} for more details). 
+\\
+
+\example \\
+Playing a video at half speed:
+\sample{/ITL/scene/video set video "Video.mp4"; \\
+/ITL/scene/video rate 0.5;\\
+/ITL/scene/video play 1";
+}
+
+\note \\
+Depending on the video encoding and on the platform renderer, setting the video current position using the \OSC{vdate} message may be aligned to key frames.
+\\
+Supported video formats are highly dependent on the platform, as well as the video specific features (e.g. setting the playing rate that may or may not be supported, or may behave differently).  
+
 
 %-------------------------------
 %:  svg
@@ -1940,8 +1994,8 @@ and to \OSC{host4.adomain.org} on port number 5100.
 \sample{/ITL/scene1 forward host1.adomain.org host2.adomain.org:5100;}
 
 %===============================
-%:  Filtering messages forwarding
-\sublevel{Filtering messages forwarding}
+%:  Filters
+\sublevel{Filters}
 \label{ITLFilteringForward}
 
 The messages forwarded to arbitrary remote hosts using the \OSC{forward} message can be filtered to send only wanted messages. The static \OSC{filter} node is use manage the filter. A static \OSC{filter} node is created for each scene and one at application level. The filter can be construct with OSC address and messages. 
@@ -2912,11 +2966,13 @@ what : 	  'pageCount'
 		| 'newElement'
 		| 'endPaint'
 		| 'error'
+		| 'end'
 \end{rail}
 \index{Interaction!Events!pageCount}
 \index{Interaction!Events!newElement}
 \index{Interaction!Events!endPaint}
 \index{Interaction!Events!error}
+\index{Interaction!Events!end}
 
 \begin{itemize}
 \item the \OSC{pageCount} event is supported by all the symbolic score components (\OSC{gmn(f)}, \OSC{gmnstream}, \OSC{musicxml(f)}). It is triggered when the page count of the score changes. It is mainly intended to manage variable scores like \OSC{gmnstream}.
@@ -2927,6 +2983,7 @@ what : 	  'pageCount'
 \OSC{ /ITL/scene incorrect syntax}\\
 won't trigger the error the first time it is loaded. \\
 Typically you can use of this event to open the log window (\OSC{/ITL/log show 1}) 
+\item the \OSC{end} event is supported by \OSC{video} objects. It is triggered when a video is playing and reaches the end of the media. In this case, the object \OSC{play} status is automatically switched to 0 to reflect the actual player state.
 \end{itemize}
 
 \example \\
