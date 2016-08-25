@@ -131,9 +131,9 @@ class IPosition
 		virtual void	print(std::ostream& out) const;
 
 		/// \brief Sets the width
-		void			setWidth(float width)		{ fWidth = width; }
+		void			setWidth(float width)		{ fWidth = width; fModified = true; }
 		/// \brief Sets the height
-		void			setHeight(float height)		{ fHeight = height; }
+		void			setHeight(float height)		{ fHeight = height; fModified = true; }
 
 		/*!
 			\brief sets an object \c x position in its scene			
