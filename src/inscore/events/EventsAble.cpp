@@ -71,6 +71,7 @@ static const char* kPageCountStr	= "pageCount";
 
 // video specific events
 static const char* kVideoEndStr		= "end";
+static const char* kVideoReadyStr	= "ready";
 
 namespace inscore
 {
@@ -369,6 +370,7 @@ void EventsAble::init ()
 
 		fTypeStr[kPageCountStr]	= kPageCount;
 		fTypeStr[kVideoEndStr]	= kVideoEnd;
+		fTypeStr[kVideoReadyStr]= kVideoReady;
 	}
 	
 	if (!fTypeNum.size()) {
@@ -406,6 +408,7 @@ void EventsAble::init ()
 
 		fTypeNum[kPageCount]	= kPageCountStr;
 		fTypeNum[kVideoEnd]		= kVideoEndStr;
+		fTypeNum[kVideoReady]	= kVideoReadyStr;
 	}
 }
 

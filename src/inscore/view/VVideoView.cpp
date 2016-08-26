@@ -72,6 +72,7 @@ void VVideoView::nativeSizeChanged(const QSizeF & size)
 	fVideo->setWidth ( scene2RelativeWidth(size.width()) );
 	fVideo->setHeight( scene2RelativeHeight(size.height()) );
 	INScore::postMessage (fVideo->getOSCAddress().c_str(), kx_GetSetMethod, fVideo->getXPos());
+	fVideo->videoReady();
 }
 
 //----------------------------------------------------------------------

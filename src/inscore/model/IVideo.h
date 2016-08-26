@@ -74,6 +74,7 @@ class IVideo : public IRectShape,  public TFile
 
 		void	setIDate (long date);	// for internal update of the current date
 		void	videoEnd ();			// called from view when the video reaches the end
+		void	videoReady ();			// called from view when the video data are available
 
 	protected:
 		bool  fPlaying;			// the video playing state

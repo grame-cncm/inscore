@@ -95,15 +95,31 @@ void IVideo::cleanup ()
 }
 
 //--------------------------------------------------------------------------
+void IVideo::videoReady ()
+{
+	fPlaying = false;
+
+	const IMessageList*	msgs = getMessages (EventsAble::kVideoReady);	// look for watch end messages
+	if (msgs && msgs->list().size()) {
+		MouseLocation mouse (0, 0, 0, 0, 0, 0);
+		EventContext env(mouse, libmapping::rational(0,1), this);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env);
+		if (outmsgs && outmsgs->list().size())
+			outmsgs->send();
+	}
+
+}
+
+//--------------------------------------------------------------------------
 void IVideo::videoEnd ()
 {
-cout << "IVideo::videoEnd" << endl;
 	fPlaying = false;
 
 	const IMessageList*	msgs = getMessages (EventsAble::kVideoEnd);	// look for watch end messages
 	if (msgs && msgs->list().size()) {
 		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), 0);
+		EventContext env(mouse, libmapping::rational(0,1), this);
 		TMessageEvaluator me;
 		SIMessageList outmsgs = me.eval (msgs, env);
 		if (outmsgs && outmsgs->list().size())
@@ -121,6 +137,7 @@ MsgHandler::msgStatus IVideo::_watchMsg(const IMessage* msg, bool add)
 			EventsAble::eventype t = EventsAble::string2type (what);
 			switch (t) {
 				case EventsAble::kVideoEnd:
+				case EventsAble::kVideoReady:
 					if (msg->size() > 1)
 						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
 						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
