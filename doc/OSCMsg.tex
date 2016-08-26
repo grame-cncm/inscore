@@ -2966,12 +2966,14 @@ what : 	  'pageCount'
 		| 'newElement'
 		| 'endPaint'
 		| 'error'
+		| 'ready'
 		| 'end'
 \end{rail}
 \index{Interaction!Events!pageCount}
 \index{Interaction!Events!newElement}
 \index{Interaction!Events!endPaint}
 \index{Interaction!Events!error}
+\index{Interaction!Events!ready}
 \index{Interaction!Events!end}
 
 \begin{itemize}
@@ -2983,6 +2985,7 @@ what : 	  'pageCount'
 \OSC{ /ITL/scene incorrect syntax}\\
 won't trigger the error the first time it is loaded. \\
 Typically you can use of this event to open the log window (\OSC{/ITL/log show 1}) 
+\item the \OSC{ready} event is supported by \OSC{video} objects. It is triggered when a video data (duration, graphic dimensions) are available.
 \item the \OSC{end} event is supported by \OSC{video} objects. It is triggered when a video is playing and reaches the end of the media. In this case, the object \OSC{play} status is automatically switched to 0 to reflect the actual player state.
 \end{itemize}
 

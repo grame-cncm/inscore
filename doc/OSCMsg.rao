@@ -1952,10 +1952,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {108}{ what : 'pageCount' | 'newElement' | 'endPaint' | 'error' | 'end' }
+\rail@i {108}{ what : 'pageCount' | 'newElement' | 'endPaint' | 'error' | 'ready' | 'end' }
 \rail@o {108}{
 \rail@index{what}
-\rail@begin{5}{what}
+\rail@begin{6}{what}
 \rail@bar
 \rail@term{pageCount}[]
 \rail@nextbar{1}
@@ -1965,6 +1965,8 @@
 \rail@nextbar{3}
 \rail@term{error}[]
 \rail@nextbar{4}
+\rail@term{ready}[]
+\rail@nextbar{5}
 \rail@term{end}[]
 \rail@endbar
 \rail@end
