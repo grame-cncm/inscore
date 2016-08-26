@@ -265,7 +265,7 @@ MsgHandler::msgStatus IGuidoPianoRoll::setPitchLinesDisplayMode(const IMessage* 
 		fPitchLines = kAutoLines;
 	} else {
 		int allLines = 0;
-		int line;
+		int line = kAutoLines;
 		string str;
 
 		for (int i = 0; i < size; i++) {
