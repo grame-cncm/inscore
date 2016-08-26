@@ -84,6 +84,7 @@ class VVideoView: public QObject, public VGraphicsItemView
 	QMediaPlayer				fMediaPlayer;
 	QMediaPlayer::MediaStatus	fStatus;
 	IVideo*						fVideo;
+	int							fReady;
 #endif
 
 	void initFile( IVideo * video, const QString&  videoFile );

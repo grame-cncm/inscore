@@ -43,7 +43,7 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
  :	VGraphicsItemView( scene , new IQGraphicsVideoItem(video) )
 #ifndef USEPHONON
 	, fMediaPlayer(0, QMediaPlayer::VideoSurface)
-	, fVideo(0)
+	, fVideo(0), fReady(0)
 #endif
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);
@@ -72,13 +72,13 @@ void VVideoView::nativeSizeChanged(const QSizeF & size)
 	fVideo->setWidth ( scene2RelativeWidth(size.width()) );
 	fVideo->setHeight( scene2RelativeHeight(size.height()) );
 	INScore::postMessage (fVideo->getOSCAddress().c_str(), kx_GetSetMethod, fVideo->getXPos());
-	fVideo->videoReady();
+	if (++fReady == 2) fVideo->videoReady();
 }
 
 //----------------------------------------------------------------------
 void VVideoView::seekableChanged(bool /*seekable*/)		{ /* qDebug() << "VVideoView::seekableChanged :" <<  seekable;*/ }
 void VVideoView::positionChanged(qint64 pos)			{ fVideo->setIDate(pos); }
-void VVideoView::durationChanged(qint64 duration)		{ fVideo->setVideoDuration (duration); }
+void VVideoView::durationChanged(qint64 duration)		{ fVideo->setVideoDuration (duration); if (++fReady == 2) fVideo->videoReady();}
 void VVideoView::stateChanged (QMediaPlayer::State /*state*/)	{ /*qDebug() << "VVideoView::stateChanged :" <<  state;*/ }
 
 //----------------------------------------------------------------------
@@ -118,6 +118,7 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 	fVideoItem->media()->pause();	
 	updateObjectSize (video);
 #else
+	fReady = 0;
 	fVideo = video;
 	fMediaPlayer.setMedia(QUrl::fromLocalFile(videoFile));
 	fMediaPlayer.setVideoOutput (fVideoItem);
