@@ -88,7 +88,7 @@ void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 {
 	fMsgMap.set(t, msgs);
 
-	if(isMouseEventType(t)){
+	if(msgs && isMouseEventType(t)){
 		if(fMouseSensible){
 			if(!msgs->list().size() && !checkMouseSensibility()){
 				fMouseSensible = false;
