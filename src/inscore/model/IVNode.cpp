@@ -41,6 +41,9 @@ IVNode::IVNode(const std::string& name, IObject * parent) : IObject(name, parent
 	fMsgHandlerMap[klock_GetSetMethod]	= (void*)0;		// reject the lock message (can't be deleted anyway)
 
 	fGetMsgHandlerMap[klock_GetSetMethod] = (void*)0;	// reject the lock message
+	fAutoMap = false;
+	localMapModified (false);
+	newData (false);
 }
 
 }

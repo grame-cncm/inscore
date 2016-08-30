@@ -68,6 +68,8 @@ class IVNode : public IObject
 			A virtual node can't be deleted.
 		*/
 		virtual void	del ()	{}
+		/// \brief returns the object status regarding the mapping
+		virtual bool	mapable() const				{ return false; }
 };
 
 
