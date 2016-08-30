@@ -81,6 +81,7 @@ extern const char* kdxorigin_SetMethod;
 extern const char* kdy_SetMethod;
 extern const char* kdyorigin_SetMethod;
 extern const char* kdz_SetMethod;
+extern const char* kedit_SetMethod;
 extern const char* keffect_GetSetMethod;
 extern const char* kerror_SetMethod;
 extern const char* kerrport_GetSetMethod;

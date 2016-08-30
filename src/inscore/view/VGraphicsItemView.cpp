@@ -27,6 +27,7 @@
 
 #include "TComposition.h"
 #include "VGraphicsItemView.h"
+#include "VSceneView.h"
 #include "maptypes.h"
 #include "TSegment.h"
 
@@ -388,7 +389,7 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
     
     double x = relative2SceneX( o->getSyncPos(mapName).x(), item );
     double y = relative2SceneY( o->getSyncPos(mapName).y(), item );
-    
+ 
     item->setRect(QRectF(0,0,width,height));
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
@@ -427,7 +428,7 @@ void VGraphicsItemView::updateItem(QGraphicsItem* item, IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {
-    setSlave(o);
+	setSlave(o);
 
 	// firt update the object shape
 	drawBoundingBox (o);
@@ -490,7 +491,13 @@ void VGraphicsItemView::updateView(IObject* o)
 	// ----------------------------------------------------------------------------------------------
 	// Debug graphic feedback : displays the bounding rectangle and the object name
 	if ( o->nameDebug() ) drawName (o);
-    
+	
+	// ----------------------------------------------------------------------------------------------
+	// and eventually check if an 'edit' request is pending
+	if (o->getEdit()) {
+		VSceneView* scene = o->getScene()->getSceneView();
+		if (scene) scene->edit(o);
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------

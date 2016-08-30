@@ -82,6 +82,7 @@ const char* kdxorigin_SetMethod		= "dxorigin";		// Set
 const char* kdy_SetMethod			= "dy";				// Set
 const char* kdyorigin_SetMethod		= "dyorigin";		// Set
 const char* kdz_SetMethod			= "dz";				// Set
+const char* kedit_SetMethod			= "edit";			// Set
 const char* keffect_GetSetMethod	= "effect";			// Get Set
 const char* kerror_SetMethod		= "error";			// Set
 const char* kerrport_GetSetMethod	= "errport";		// Get Set
