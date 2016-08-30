@@ -57,6 +57,7 @@ class IVNode : public IObject
 			\return the type of the object as a string
 		*/
 		virtual const std::string&	getTypeString() const	{ return fTypeString; }
+		virtual	SIMessageList		getAll () const			{ return IMessageList::create(); }
 
 	protected:	
 				 IVNode(const std::string& name, IObject * parent);
