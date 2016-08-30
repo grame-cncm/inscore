@@ -55,6 +55,7 @@ void Updater::update (IObject* object)
 //--------------------------------------------------------------------------
 bool ViewUpdater::needupdate (IObject* o)
 {
+	if (o->getDeleted()) return false;
 	int state = o->getState();
 	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
 }
@@ -62,18 +63,19 @@ bool ViewUpdater::needupdate (IObject* o)
 //--------------------------------------------------------------------------
 bool LocalMapUpdater::needupdate (IObject* o)
 {
-	return ( o->fAutoMap && o->durationModified()) || o->localMapModified() || o->newData();
+	if (o->getDeleted()) return false;
+	bool need = ( o->fAutoMap && o->durationModified()) || o->localMapModified() || o->newData();
+	return need;
 }
 
 //--------------------------------------------------------------------------
-bool SlaveMapUpdater::needupdate (IObject*)
+bool SlaveMapUpdater::needupdate (IObject* o)
 {
-	return true;
-
-//	return o->localMapModified() || o->dateModified(); // || master->getMaster()->localMapModified() || master->modified();
-
-//	int state = o->getState();
-//	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
+	if (o->getDeleted() || !o->mapable()) return false;
+	int state = o->getState();
+	bool need = o->localMapModified() || o->dateModified() || (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
+	//if (need) cout << "SlaveMapUpdater::needupdate: " << o->name() << endl;
+	return need;
 }
 
 //--------------------------------------------------------------------------
