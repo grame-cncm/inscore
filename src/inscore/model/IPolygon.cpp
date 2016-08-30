@@ -107,19 +107,13 @@ MsgHandler::msgStatus IPolygon::set (const IMessage* msg)
 		}
 
 		//Compares the points vector with the current one.
-		if ( points.size() != getPoints().size() ) {
+		bool set = points.size() != getPoints().size();
+		for (unsigned int i = 0 ; !set && (i < points.size()) ; i++ )
+			set = (points[i] != getPoints()[i]);
+		if ( set ) {
 			setPoints(points);
 			newData(true);
 			return MsgHandler::kProcessed;
-		}
-		for (unsigned int i = 0 ; i < points.size() ; i++ )
-		{
-			if (points[i] != getPoints()[i])
-			{
-				setPoints(points);
-				newData(true);
-				return MsgHandler::kProcessed;
-			}
 		}
 		return MsgHandler::kProcessedNoChange;
 	}
