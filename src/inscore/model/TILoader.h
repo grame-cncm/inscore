@@ -56,10 +56,12 @@ class TILoader
 
 		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath);
 		virtual MsgHandler::msgStatus	loadBundle(const std::string& file, const std::string& rootpath);
+
 		bool	isBundle(const std::string& file);
 
 	public:
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
+		static bool				loadString(const std::string& str, IObject* o);
 };
 
 } // end namespoace

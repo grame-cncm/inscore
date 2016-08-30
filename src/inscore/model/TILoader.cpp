@@ -161,6 +161,28 @@ MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std
 }
 
 //--------------------------------------------------------------------------
+bool TILoader::loadString(const std::string& str, IObject* client)
+{
+	stringstream sstr (str);
+	ITLparser p (&sstr, 0, client->getAppl());
+	SIMessageList msgs = p.parse();
+	if (msgs) {
+		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
+			string addr;
+			if ((*i)->extendedAddress())
+				addr = string((*i)->url()) + (*i)->address();
+			else if ((*i)->relativeAddress())
+				addr = (*i)->relative2absoluteAddress( client->getOSCAddress());
+			else
+				addr = (*i)->address();
+			INScore::postMessage (addr.c_str(), *i);
+		}
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const std::string& rootpath)
 {
 	if (msg->size() == 1) {
