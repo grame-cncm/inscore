@@ -113,7 +113,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		///< the object export flag and the object childexport option flag (if the children should be exported as well)
 		std::deque<std::pair<std::string, bool> >	fExportFlag;
 
-		bool	fNewData;
+		bool		fNewData;		///< a flag for the object data change
+		bool		fEdit;			///< a flag to open the object editor
+		std::string	fEditString;	///< the object editor current content
 
 		/*!
 			\brief find a named object in the application hierarchy
@@ -150,6 +152,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief state query handlers map
 		std::map<std::string, SGetParamMsgHandler>	fGetMsgHandlerMap;
+	
+		/// \brief state query handlers alternate map for redundant attributes (e.g. red green blue vs color
+		std::map<std::string, SGetParamMsgHandler>	fAltGetMsgHandlerMap;
 
 		/// \brief state query handlers map (handlers returning a message list).
 		std::map<std::string, SGetParamMultiMsgHandler>	fGetMultiMsgHandlerMap;
@@ -177,11 +182,22 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void setName(const std::string& name)	{ fName = name; }
 		/// \brief returns the \e deleted state object
 		virtual bool	getDeleted() const			{ return fDelete; }
+		/// \brief returns the object status regarding the mapping
+		virtual bool	mapable() const				{ return true; }
 
 		/// \brief returns the object display start location
 		virtual float	getDispStart() const			{ return fDispStart; }
-		/// \brief returns the object display end lo	cation
+		/// \brief returns the object display end location
 		virtual float	getDispEnd() const				{ return fDispEnd; }
+
+		/// \brief clear the 'edit' flag of the object
+		virtual void	clearEdit()							{ fEdit = false; }
+		/// \brief returns the object edit flag
+		virtual bool	getEdit() const						{ return fEdit; }
+		/// \brief returns the current content of the object editor
+		virtual const std::string&	getEditString() const	{ return fEditString; }
+		/// \brief returns the current content of the object editor
+		virtual void	setEditString(const std::string& str) { fEditString = str; }
 
 		/*!
 		 * \brief returns the next object export-flag with file path and draw children flag to draw or not object children.
@@ -402,6 +418,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief recursively get all objects state
 		virtual SIMessageList getAll () const;
 
+		/// \brief get an object state
+		virtual SIMessageList nonRecursiveGetAll () const;
+
 		/// \brief recursively get the specified attributes from all objects
 		virtual SIMessageList getAttributes (const std::vector<std::string>& attributes) const;
 		
@@ -610,6 +629,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief object \c 'event' message handler (provided for events simulation).
 		virtual MsgHandler::msgStatus eventMsg (const IMessage* msg);
+
+		/// \brief object \c 'edit' message handler.
+		virtual MsgHandler::msgStatus editMsg (const IMessage* msg);
 
 };
 

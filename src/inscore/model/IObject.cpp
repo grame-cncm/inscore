@@ -87,7 +87,7 @@ OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 //--------------------------------------------------------------------------
 IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 					fName(name), fDispStart(0), fDispEnd(1),
-					fDelete (false), fLock(false), fState(kNewObject), fNewData(true), fView(0), fParent(parent)
+					fDelete (false), fLock(false), fState(kNewObject), fNewData(true), fEdit(false), fView(0), fParent(parent)
 {
 	fTypeString = "obj";
 
@@ -105,6 +105,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	
 	fMsgHandlerMap[kwatchplus_SetMethod]= TMethodMsgHandler<IObject>::create(this, &IObject::watchMsgAdd);
 	fMsgHandlerMap[kevent_SetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::eventMsg);
+	fMsgHandlerMap[kedit_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::editMsg);
 
 	fMsgHandlerMap[kpush_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
 	fMsgHandlerMap[kpop_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
@@ -155,15 +156,15 @@ void IObject::colorAble()
 	fMsgHandlerMap[kdsaturation_SetMethod]	= IColor::SetColorMsgHandler::create(this, &IObject::dS, &IObject::dS);
 	fMsgHandlerMap[kdbrightness_SetMethod]	= IColor::SetColorMsgHandler::create(this, &IObject::dV, &IObject::dV);
 
-	fGetMsgHandlerMap[kcolor_GetSetMethod]		= TGetParamMsgHandler<IColor>::create(*(IColor*)this);
-	fGetMsgHandlerMap[kred_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getR);
-	fGetMsgHandlerMap[kgreen_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getG);
-	fGetMsgHandlerMap[kblue_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getB);
-	fGetMsgHandlerMap[kalpha_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getA);
-	fGetMsgHandlerMap[khue_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getH);
-	fGetMsgHandlerMap[ksaturation_GetSetMethod] = TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getS);
-	fGetMsgHandlerMap[kbrightness_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getV);
-    
+	fGetMsgHandlerMap[kcolor_GetSetMethod]			= TGetParamMsgHandler<IColor>::create(*(IColor*)this);
+	fAltGetMsgHandlerMap[kred_GetSetMethod]			= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getR);
+	fAltGetMsgHandlerMap[kgreen_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getG);
+	fAltGetMsgHandlerMap[kblue_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getB);
+	fAltGetMsgHandlerMap[kalpha_GetSetMethod]		= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getA);
+	fAltGetMsgHandlerMap[khue_GetSetMethod]			= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getH);
+	fAltGetMsgHandlerMap[ksaturation_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getS);
+	fAltGetMsgHandlerMap[kbrightness_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(this, &IColor::getV);
+	
     fSigHandlerMap[kred_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setR, &IObject::setR);
 	fSigHandlerMap[kgreen_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setG, &IObject::setG);
 	fSigHandlerMap[kblue_GetSetMethod]		= IColor::SetColorSigHandler::create(this, &IObject::setB, &IObject::setB);
@@ -189,7 +190,7 @@ void IObject::positionAble()
 	fGetMsgHandlerMap[kxorigin_GetSetMethod]= TGetParamMsgHandler<float>::create(fXOrigin);
 	fGetMsgHandlerMap[kyorigin_GetSetMethod]= TGetParamMsgHandler<float>::create(fYOrigin);
 	fGetMsgHandlerMap[kz_GetSetMethod]		= TGetParamMsgHandler<float>::create(fZOrder);
-	fGetMsgHandlerMap[kangle_GetSetMethod]	= TGetParamMsgHandler<float>::create(fZAngle);
+	fAltGetMsgHandlerMap[kangle_GetSetMethod]	= TGetParamMsgHandler<float>::create(fZAngle);
 	fGetMsgHandlerMap[kscale_GetSetMethod]	= TGetParamMsgHandler<float>::create(fScale);
 	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
 	fGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fWidth);
@@ -259,7 +260,7 @@ void IObject::shapeAble()
 	
 	fGetMsgHandlerMap[kpenWidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fPenWidth);
 	fGetMsgHandlerMap[kpenColor_GetSetMethod]	= TGetParamMsgHandler<IColor>::create(fPenColor);
-	fGetMsgHandlerMap[kpenAlpha_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(&fPenColor, &IColor::getA);
+	fAltGetMsgHandlerMap[kpenAlpha_GetSetMethod]	= TGetParamMethodHandler<IColor, int (IColor::*)() const>::create(&fPenColor, &IColor::getA);
 	fGetMsgHandlerMap[kpenStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fPenStyle);
 	fGetMsgHandlerMap[kbrushStyle_GetSetMethod]	= TGetParamMsgHandler<std::string>::create(fBrushStyle);
 
@@ -700,7 +701,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 	if (result & MsgHandler::kProcessed)
     {
 #ifndef WIN32
-#warning verifier pourquoi on force l'etat des enfants
+#warning check why childrens state is forced to modified
 #endif
 		size_t n = elements().size();
 		for (size_t i = 0; i < n; i++)
@@ -753,15 +754,22 @@ SIMessageList IObject::getParams(const std::vector<std::string>& attributes) con
 	
 	for (unsigned int i=0; i<attributes.size(); i++) {
 		map<std::string, SGetParamMsgHandler>::const_iterator e = fGetMsgHandlerMap.find(attributes[i]);
-		if (e != fGetMsgHandlerMap.end()) {					// attribute found in msg map
+		if (e != fGetMsgHandlerMap.end()) {							// attribute found in msg map
 			SIMessage msg = getParam(e->first, e->second);
 			outMsgs->list().push_back (msg);
 		}
-		else {			// attribute not found: look in MultiMsgHandlerMap
-			map<std::string, SGetParamMultiMsgHandler>::const_iterator e = fGetMultiMsgHandlerMap.find(attributes[i]);
-			if (e != fGetMultiMsgHandlerMap.end()) {					// attribute found in msg map
-				SIMessageList mlist = IMessageList::create();
-				outMsgs->list().push_back(e->second->print(mlist)->list());
+		else {			// attribute not found: look in alternate get message handlers map
+			map<std::string, SGetParamMsgHandler>::const_iterator e = fAltGetMsgHandlerMap.find(attributes[i]);
+			if (e != fAltGetMsgHandlerMap.end()) {					// attribute found in msg map
+				SIMessage msg = getParam(e->first, e->second);
+				outMsgs->list().push_back (msg);
+			}
+			else {		// attribute not found: look in MultiMsgHandlerMap
+				map<std::string, SGetParamMultiMsgHandler>::const_iterator e = fGetMultiMsgHandlerMap.find(attributes[i]);
+				if (e != fGetMultiMsgHandlerMap.end()) {			// attribute found in msg map
+					SIMessageList mlist = IMessageList::create();
+					outMsgs->list().push_back(e->second->print(mlist)->list());
+				}
 			}
 		}
 	}
@@ -836,6 +844,18 @@ SIMessageList IObject::getAttributes(const vector<string>& attributes) const
 {
 	SIMessageList outMsgs = IMessageList::create();
 	outMsgs->list().push_back (getAllParams(attributes)->list());		// next get the objects parameters
+	return outMsgs;
+}
+
+
+//--------------------------------------------------------------------------
+// the 'get' to retrieve an object full state
+SIMessageList IObject::nonRecursiveGetAll () const
+{
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessageList setMsgs = getSetMsg();
+	outMsgs->list().push_back(setMsgs->list()[0]);		// getSetMsg is recursive: push only the first msg
+	outMsgs->list().push_back(getParams()->list());
 	return outMsgs;
 }
 
@@ -1011,7 +1031,11 @@ SSigHandler IObject::signalHandler(const string& method, bool match) const
 SGetParamMsgHandler IObject::getMessageHandler(const std::string& param) const
 {
 	map<string, SGetParamMsgHandler>::const_iterator h = fGetMsgHandlerMap.find(param);
-	return h == fGetMsgHandlerMap.end() ? 0 : h->second;
+	if ( h == fGetMsgHandlerMap.end()) {
+		h = fAltGetMsgHandlerMap.find(param);
+		return h == fAltGetMsgHandlerMap.end() ? 0 : h->second;
+	}
+	else return h->second;
 }
 
 //--------------------------------------------------------------------------
@@ -1446,7 +1470,9 @@ void IObject::save(ostream& out, const vector<string>& attributes) const
 {
 	SIMessageList msgs = attributes.size() ? getAttributes(attributes) : getAll();
 	msgs->list().set("", "\n");
-	out <<  msgs->list();
+	if (msgs->list().size())
+		out <<  msgs->list();
+	else cout << "IObject::save : empty msg list" << endl;
 }
 
 //--------------------------------------------------------------------------
@@ -1489,6 +1515,35 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
+{
+	if (getEditString().empty()) {		// check first if there is a previous edition, in case yes, preserves the content
+		size_t n = msg->size();
+		if (n) {							// check if there is a set of attributes to be edited from the msg
+			vector<string> attributes;
+			for (size_t i=0; i<n; i++) {	// in case yes, retrieve these attributes
+				string str;
+				if (!msg->param(i, str))
+					return MsgHandler::kBadParameters;
+				attributes.push_back(str);
+			}
+			stringstream sstr;
+			save(sstr, attributes);			// and ask the object to save them to a string stream
+			setEditString(sstr.str());		// finally fill the edit string (will appear in the dialog box)
+		}
+		else {								// otherwise get all the attributes (including the set msg)
+			SIMessageList msgs = nonRecursiveGetAll();
+			msgs->list().set("", "\n");
+			stringstream sstr;
+			sstr <<  msgs->list();			// and print it to the string stream
+			setEditString(sstr.str());		// finally fill the edit string (will appear in the dialog box)
+		}
+	}
+	fEdit = true;						// a flag to trigger the edit dialog from the view
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
