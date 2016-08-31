@@ -166,7 +166,7 @@ OSCStream& operator <<(OSCStream& s, const OSCEnd )			{ return s.end(); }
 //--------------------------------------------------------------------------
 OSCErrorStream&	OSCErrorStream::end()
 {
-	if (fLogWindow) {
+	if (fLogWindow && fLogWindow->acceptErrors()) {
 		fAddress+=fSStream.str();
 		fLogWindow->print(fAddress.c_str());
 	}

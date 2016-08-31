@@ -31,6 +31,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#ifdef WIN32
+#pragma warning (disable : 4244)
+#endif
+
 #include "qrencode.h"
 #include "qrinput.h"
 #include "qrspec.h"

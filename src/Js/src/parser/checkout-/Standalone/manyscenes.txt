@@ -1,0 +1,39 @@
+variabledecl: left = -0.5
+variabledecl: right = 0.5
+variabledecl: top = -0.5
+variabledecl: bott = 0.5
+expr script:  
+	function scenes (n)
+	{
+		var j=0;
+		var out = new Array;
+		for (i=0; i < n; i++) {
+			out[j++] = "/ITL/scene"+ i + " new ;";
+			out[j++] = "/ITL/scene"+ i + "/num set txt " + i + ";";
+		}
+		return out;
+	}
+
+expr script:   scenes(4); 
+/ITL/scene  del
+/ITL/scene0  x,-0.5
+/ITL/scene0  y,-0.5
+/ITL/scene1  x,0.5
+/ITL/scene1  y,-0.5
+/ITL/scene2  x,-0.5
+/ITL/scene2  y,0.5
+/ITL/scene3  x,0.5
+/ITL/scene3  y,0.5
+/ITL/scene0  color,255,0,0
+/ITL/scene1  color,0,255,0
+/ITL/scene2  color,0,0,255
+/ITL/scene3  color,120,120,120
+/ITL/*  alpha,180
+/ITL/*/num  scale,10
+/ITL/$scene/num  color,255,255,0
+/ITL/$scene  alpha,255
+/ITL/scene*/num  watch,mouseDown,/ITL/$scene/num  color,255,255,0,/ITL/$scene  alpha,255
+/ITL/$scene/num  color,0,0,0
+/ITL/$scene  alpha,180
+/ITL/scene*/num  watch,mouseUp,/ITL/$scene/num  color,0,0,0,/ITL/$scene  alpha,180
+expr ENDSCRIPT 

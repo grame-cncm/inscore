@@ -105,7 +105,7 @@ void VTextView::updateLocalMapping (IHtml* text)
 {
 	QString path;
 	if (fHtmlFile) {
-		path = fHtmlFile->getFile().c_str();
+		path = fHtmlFile->getPath().c_str();
 	}
 	else {
 		const IScene* scene = text->getScene();

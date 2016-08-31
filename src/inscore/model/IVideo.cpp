@@ -30,6 +30,7 @@
 #include "IScene.h"
 #include "VObjectView.h"
 #include "TMapMsgHandler.h"
+#include "TMessageEvaluator.h"
 #include "TVariety.h"
 
 #include "imapreader.h"
@@ -54,15 +55,108 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 	fTypeString = kVideoType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
 	
+	fMsgHandlerMap[kplay_GetSetMethod]			= TSetMethodMsgHandler<IVideo,bool>::create(this, &IVideo::setPlay);
+	fMsgHandlerMap[kvolume_GetSetMethod]		= TSetMethodMsgHandler<IVideo,float>::create(this, &IVideo::setVolume);
+	fMsgHandlerMap[krate_GetSetMethod]			= TSetMethodMsgHandler<IVideo,float>::create(this, &IVideo::setRate);
+	fMsgHandlerMap[kvdate_GetSetMethod]			= TSetMethodMsgHandler<IVideo,long>::create(this, &IVideo::setVDate);
 	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
 	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
 	
 	fGetMsgHandlerMap[kvideoMap_GetSetMethod]	= GetVideoMapMsgHandler::create(this);
+	fGetMsgHandlerMap[kplay_GetSetMethod]		= TGetParamMsgHandler<bool>::create(fPlaying);
+	fGetMsgHandlerMap[kvolume_GetSetMethod]		= TGetParamMsgHandler<float>::create(fVolume);
+	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMsgHandler<float>::create(fRate);
+	fGetMsgHandlerMap[kvdate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fCDate);
+	fGetMsgHandlerMap[kmls_GetMethod]			= TGetParamMsgHandler<int>::create(fVDuration);
+	fGetMsgHandlerMap[kvduration_GetMethod]		= TGetParamMethodHandler<IVideo, rational (IVideo::*)() const>::create(this, &IVideo::getVDuration);
 	
 	fTempo = 60.0f;
+	fPlaying = false;
+	fVolume = 1.f;						// QMediaPlayer max value
+	fRate = 1.f;						// QMediaPlayer default value
+	fVDate = 0;							// the video current date
+	fVDuration = 0;						// unknown at object initialisation
 	fStartSecond = 0.0f;
+	fRateModified = fDateModified = false;
 	fConverter = Date2SecondTempoConverter::create( fTempo , fStartSecond );
 }
+
+//--------------------------------------------------------------------------
+void IVideo::setPlay (bool state)		{ fPlaying = state;  }
+void IVideo::setVolume (float vol)		{ fVolume = vol;  }
+void IVideo::setRate (float rate)		{ fRate = rate; fRateModified = true;  }
+void IVideo::setVDate (long date)		{ fCDate = fVDate = int(date); fDateModified=true;  }
+void IVideo::setIDate (long date)		{ fCDate = int(date); }
+
+void IVideo::cleanup ()
+{
+	fRateModified = fDateModified = false;
+	IObject::cleanup();
+}
+
+//--------------------------------------------------------------------------
+void IVideo::videoReady ()
+{
+	fPlaying = false;
+
+	const IMessageList*	msgs = getMessages (EventsAble::kVideoReady);	// look for watch end messages
+	if (msgs && msgs->list().size()) {
+		MouseLocation mouse (0, 0, 0, 0, 0, 0);
+		EventContext env(mouse, libmapping::rational(0,1), this);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env);
+		if (outmsgs && outmsgs->list().size())
+			outmsgs->send();
+	}
+
+}
+
+//--------------------------------------------------------------------------
+void IVideo::videoEnd ()
+{
+	fPlaying = false;
+
+	const IMessageList*	msgs = getMessages (EventsAble::kVideoEnd);	// look for watch end messages
+	if (msgs && msgs->list().size()) {
+		MouseLocation mouse (0, 0, 0, 0, 0, 0);
+		EventContext env(mouse, libmapping::rational(0,1), this);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env);
+		if (outmsgs && outmsgs->list().size())
+			outmsgs->send();
+	}
+
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IVideo::_watchMsg(const IMessage* msg, bool add)
+{
+	if (msg->size()) {
+		string what;
+		if (msg->param (0, what)) {
+			EventsAble::eventype t = EventsAble::string2type (what);
+			switch (t) {
+				case EventsAble::kVideoEnd:
+				case EventsAble::kVideoReady:
+					if (msg->size() > 1)
+						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
+						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
+					else if (!add) eventsHandler()->setMsg (t, 0);
+					return MsgHandler::kProcessed;
+
+				default:
+					break;
+			}
+		}
+	}
+	return IObject::_watchMsg(msg, add);
+
+}
+
+//--------------------------------------------------------------------------
+// set the object duration
+void IVideo::setVideoDuration( long mls)	{ fVDuration = int(mls); }
+rational IVideo::getVDuration () const		{ return rational((fVDuration * fRate) / 4000.f); }
 
 //--------------------------------------------------------------------------
 void IVideo::accept (Updater* u)

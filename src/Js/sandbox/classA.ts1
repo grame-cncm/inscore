@@ -1,0 +1,53 @@
+
+interface AMethod  	{ (n: number): void; }
+interface AMethod2  { (n: number, m: number): void; }
+
+interface Tree<T>				{ getSubNodes() : Array<Tree<T> >; } 
+interface TApplyFunction<T> 	{ (arg: Tree<T>) : void; }
+
+
+class tree implements Tree<tree> {
+	fName : string;
+	fSubTree: Array<tree>;
+	
+	constructor (name: string)	{ this.fName = name; this.fSubTree = new Array<tree>(); }
+	put (node: tree)			{ this.fSubTree.push(node); }
+	toString() : string {
+		return `${this.fName} [ ${this.fSubTree} ]`;
+	}
+	getSubNodes() : Array<tree>	{ return this.fSubTree; } 
+	applyf() : void { console.log("applied to " + this.fName); }
+}	
+
+class applier<T> {
+	apply (f: TApplyFunction<T>, t: Tree<T>) {
+		f (t);
+		let sub = t.getSubNodes();
+		for (let i=0; i<sub.length; i++)
+			this.apply (f, sub[i]);
+	}
+}
+
+
+class A {
+	fN1: number;
+	fN2: number;
+	setfXX 	: AMethod;
+
+	constructor() { this.fN1 = 0; this.fN2 = 1; this.setfXX = this.getfX(); }
+	static square(n: number) : number { return n*n; }
+
+	call (f: AMethod, n: number): void 	{ f(n); }
+
+	fA (): string 			{ return "Class A"; }
+	fX (n: number) : void 	{ this.fN1 = n; };
+	fX2 (n: number, m: number) : void 	{ this.fN1 = n; this.fN2 = m; };
+	getfX () 	: AMethod 		{ return (n) 	=> 
+		{ console.log( "getfX called");
+		this.fX(n); }
+	};
+	getfX2 () 	: AMethod2 		{ return (n, m) => this.fX2(n, m); };
+
+	setfX (n : number) : void 	{ (n) => this.fN1 = n; };
+//	   => { return (n) => this.fX(n); };
+}

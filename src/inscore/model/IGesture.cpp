@@ -98,10 +98,10 @@ MsgHandler::msgStatus IGesture::_watchMsg(const IMessage* msg, bool add)
 int IGesture::getSize () const						{ return fGF->getPhraseSize(fIndex); }
 const float* IGesture::data () const				{ return fGF->getPhraseData(fIndex); }
 float IGesture::getLikelihoodThreshold () const		{ return fLikelihoodThreshold; }
-void IGesture::setLikelihoodThreshold (float value)	{ fParent->setState(kModified); fLikelihoodThreshold = value; }
+void IGesture::setLikelihoodThreshold (float value)	{ fParent->setModified(); fLikelihoodThreshold = value; }
 
 //--------------------------------------------------------------------------
-void IGesture::clearGesture ()						{ fParent->setState(kModified); fGF->clear (fIndex); }
+void IGesture::clearGesture ()						{ fParent->setModified(); fGF->clear (fIndex); }
 void IGesture::startLearn ()						{ fGF->stop(); fGF->startLearn (fIndex); }
 void IGesture::stopLearn ()							{ fGF->stopLearn(); }
 void IGesture::observe (float* values, int size)	{
@@ -188,7 +188,7 @@ void IGesture::learn (float* values, int size)
 	startLearn	();
 	if ( size ) observe (values, size);
 	stopLearn();
-	fParent->setState(kModified);
+	fParent->setModified();
 }
 
 }

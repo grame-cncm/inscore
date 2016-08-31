@@ -9,7 +9,7 @@
 %{
 
 #ifdef WIN32
-#pragma warning (disable : 4267 4100)
+#pragma warning (disable : 4267 4100 4244)
 #endif
 
 //#include <stdio.h>

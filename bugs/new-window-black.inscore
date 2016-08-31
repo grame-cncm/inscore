@@ -1,9 +1,0 @@
-
-/ITL/fl new;
-/ITL/fl x 0.4;
-/ITL/fl y 0.2;
-/ITL/fl color 0 0 0 ;
-
-/ITL/fl/comment set txt "The window color should be black !!!" ;
-/ITL/fl/comment red 255;
-/ITL/fl/comment scale 2.;

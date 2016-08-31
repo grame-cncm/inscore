@@ -1,0 +1,11 @@
+/ITL/scene/ch1  set,gmn,[ c ]
+/ITL/scene/ch2  set,gmn,[ c ]
+/ITL/scene/ch3  set,gmn,[ c ]
+/ITL/scene/ch4  set,gmn,[ c ]
+/ITL/scene/ch5  set,gmn,[ c ]
+/ITL/scene/ch6  set,gmn,[ c ]
+/ITL/scene/ch7  set,gmn,[ c ]
+/ITL/scene/ch8  set,gmn,[ c ]
+/ITL/scene/ch9  set,gmn,[ c ]
+/ITL/scene/ch*  scale,4
+expr ENDSCRIPT 

@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "target": "es3",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "out": "main.js"
+    }
+}

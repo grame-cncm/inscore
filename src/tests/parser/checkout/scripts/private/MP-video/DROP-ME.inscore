@@ -1,0 +1,5 @@
+/ITL/scene/* del;
+/ITL/scene/video set file "countdown.mov";
+/ITL/scene/_comment set txt "You can drop any of the accompanying scripts to the scene";
+/ITL/scene/_comment y 0.9;
+/ITL/scene/_comment z 0.9;

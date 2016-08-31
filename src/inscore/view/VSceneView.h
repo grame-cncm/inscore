@@ -31,6 +31,7 @@
 
 #include <string>
 #include "VDummyObjectView.h"
+#include "VEditBox.h"
 
 class QGraphicsScene;
 class QImage;
@@ -48,6 +49,7 @@ namespace inscore
 \addtogroup ITLView
 @{
 */
+class IObject;
 class IScene;
 class Master;
 class ResizeMoveEventFilter;
@@ -79,6 +81,10 @@ class VSceneView : public VDummyObjectView
 	unsigned long		fNewVersion;
 
 	std::string			fScreenshotFormat;
+
+	// Version of the screen updated on each redraw of the screen.
+	VEditBox*			fEditBox;
+	
 
 	void				updateOnScreen( IScene * scene );
 	void				updateOffScreen( IScene * scene );
@@ -130,12 +136,17 @@ class VSceneView : public VDummyObjectView
 		const AbstractData		getImage(const char *format);
 
 		/*!
-		 * \brief getVersion get the score version
-		 * \return
+		 * \brief provides the score current version
+		 * \return the current score version
 		 */
-		unsigned long		getVersion() const {
-			return fNewVersion;
-		}
+		unsigned long		getVersion() const  { return fNewVersion; }
+	
+		/*!
+		 * \brief gives the scene level edit box
+		 * \return the scene edit box
+		 */
+		void				edit(IObject* o);
+
 
 	protected:
 		ZoomingGraphicsView * fGraphicsView;
@@ -149,8 +160,10 @@ class VSceneView : public VDummyObjectView
 		virtual ZoomingGraphicsView* createGraphicsView(QGraphicsScene * scene, const char * address);
 };
 
-/*!@} */
-
+//--------------------------------------------------------------------------
+/**
+*	\brief the actual view on Qt side
+*/
 class ZoomingGraphicsView : public QGraphicsView
 {
 	std::string		fSceneAddress;
@@ -246,6 +259,9 @@ class ZoomingGraphicsView : public QGraphicsView
 		virtual void changeEvent(QEvent *e);
 #endif
 };
+
+
+/*!@} */
 
 } // end namespoace
 

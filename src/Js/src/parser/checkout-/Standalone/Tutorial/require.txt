@@ -1,0 +1,9 @@
+/ITL/scene/warning  set,txt,Warning: this tutorial requires version 0.77
+/ITL  require,0.77,/ITL/scene/warning  set,txt,Warning: this tutorial requires version 0.77
+/ITL/scene/warning  scale,2
+/ITL  require,0.77,/ITL/scene/warning  scale,2
+/ITL/scene/warning  color,200,0,0
+/ITL  require,0.77,/ITL/scene/warning  color,200,0,0
+/ITL/scene/warning  y,0.8
+/ITL  require,0.77,/ITL/scene/warning  y,0.8
+expr ENDSCRIPT 

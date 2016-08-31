@@ -34,4 +34,3 @@
 ../scripts/MP-Turenas/turenas.inscore
 
 ../scripts/Standalone/GuidoExpression/guidoEchoes.inscore
-../scripts/mobile/Multi-touch.inscore

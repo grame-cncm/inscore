@@ -126,7 +126,7 @@ void ZoomingGraphicsView::resizeEvent ( QResizeEvent * )
 void ZoomingGraphicsView::changeEvent(QEvent *e)
 {
 	if(e->type() == QEvent::ActivationChange){
-		if(isActiveWindow() && e->spontaneous()){
+		if(isActiveWindow() && e->spontaneous() && fScene){
 			INScore::postMessage(fScene->getOSCAddress().c_str(), "foreground");
 			e->accept();
 			return;
@@ -270,6 +270,7 @@ VSceneView::VSceneView()
 	fDataScreenShotSize = 0;
 	fUpdateScreenShot = false;
 	fNewVersion = 0;
+	fEditBox = 0;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -295,6 +296,8 @@ void VSceneView::initializeView(const std::string& address, QGraphicsScene * sce
 		QColor white(255, 255, 255, 255);
 		fGraphicsView->setBackgroundBrush( QBrush(white));
 		fScene->setBackgroundBrush (white);
+
+		fEditBox = new VEditBox (fGraphicsView);
 	}
 	else {		// no scene is for offscreen rendering
 		fScene = new QGraphicsScene;
@@ -307,11 +310,21 @@ VSceneView::~VSceneView()
 {
 	delete fImage;
 	delete fScene;
+	delete fEditBox;
 	delete fGraphicsView;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::edit(IObject* o)
+{
+	if (fEditBox) {
+		fEditBox->edit (o);
+		o->clearEdit();
+	}
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::foreground()

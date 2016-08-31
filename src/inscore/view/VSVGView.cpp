@@ -100,7 +100,7 @@ void VSVGView::updateView( ISVGFile * svg  )
         if(svg->hasData())
             item()->setText(svg->data());
         else
-            item()->setFile (svg->getFile().c_str());
+            item()->setFile (svg->getPath().c_str());
 		svg->changed(false);
 	}
 	float alpha = svg->getA() / 255.f;
@@ -139,7 +139,7 @@ void VSVGView::updateLocalMapping (ISVGFile* svg)
         if(svg->hasData())
             item()->setText(svg->data());
         else
-            item()->setFile (svg->getFile().c_str());
+            item()->setFile (svg->getPath().c_str());
 	}
     VIntPointObjectView::updateLocalMapping( svg );
 }

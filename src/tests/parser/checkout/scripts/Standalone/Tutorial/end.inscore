@@ -1,0 +1,16 @@
+/ITL/tutorial del;
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+/ITL/scene/title set html "<h1>INScore</h1>";
+/ITL/scene/title y -0.7;
+/ITL/scene/title scale 2.0;
+/ITL/scene/end set htmlf "rsrc/end.html";
+/ITL/scene/end scale 2.0;
+/ITL/scene/end xorigin -1.0;
+/ITL/scene/end x -0.75;
+/ITL/scene/icon set img "rsrc/INScore.png";
+/ITL/scene/icon alpha 50;
+/ITL/scene load "previous.inscore";
+/ITL/scene/previous watch mouseDown (
+		/ITL/scene load "interact2.inscore" );
+/ITL/scene load "summary.inscore";

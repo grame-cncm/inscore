@@ -1,0 +1,10 @@
+/ITL/scene/r1  set,gmnf,rythmes/r1.gmn
+/ITL/scene/r2  set,gmnf,rythmes/r1.gmn
+/ITL/scene/r3  set,gmnf,rythmes/r2.gmn
+/ITL/scene/r4  set,gmnf,rythmes/r2.gmn
+/ITL/scene/r5  set,gmnf,rythmes/r2.gmn
+/ITL/scene/r6  set,gmnf,rythmes/r3.gmn
+/ITL/scene/r7  set,gmnf,rythmes/r3.gmn
+/ITL/scene/r?  color,0,0,0,0
+/ITL/scene/r?  scale,4
+expr ENDSCRIPT 

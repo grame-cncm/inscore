@@ -1,0 +1,15 @@
+/ITL/scene/* del;
+/ITL/scene/score1 set gmn "[a]";
+/ITL/scene/score2 set pianoroll "[a]";
+/ITL/scene/score3 set gmn "[a]";
+/ITL/scene/score1 y -0.7;
+/ITL/scene/score1 scale 0.8;
+/ITL/scene/score3 y 0.7;
+/ITL/scene/score3 scale 0.8;
+/ITL/scene/score1 watch newData (
+	/ITL/scene/score2 set pianoroll expr(seq (tail score1 [a]) (head score1 [a])) );
+/ITL/scene/score2 watch newData (
+	/ITL/scene/score3 set gmn expr(seq (tail score2 [a]) (head score2 [a])) );
+/ITL/scene/score3 watch newData (
+	/ITL/scene/score1 set gmn expr(seq (tail score3 [a]) (head score3 [a])) );
+/ITL/scene/score1 set gmn "[g0 a b c1 d e f g a b c2 d e f g a b c3 d]";

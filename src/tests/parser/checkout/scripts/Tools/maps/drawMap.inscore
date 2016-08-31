@@ -1,0 +1,33 @@
+/ITL/log show 1;
+/ITL/scene/* watch mouseDown (
+	/ITL/scene/javascript run "start('$scene', $absx, $absy, $sx, $sy)" );
+/ITL/scene/* watch mouseMove (
+	/ITL/scene/javascript run "move($sx, $sy)" );
+/ITL/scene/* watch mouseUp (
+	/ITL/scene/javascript run "stop($absx, $absy, $sx, $sy)" );
+/ITL/scene/_ui_reset set txt Reset;
+/ITL/scene/_ui_undo set txt Undo;
+/ITL/scene/_ui_print set txt Print;
+/ITL/scene/_ui_* scale 1.2;
+/ITL/scene/_ui_* color 130 130 130;
+/ITL/scene/_ui_* xorigin -1;
+/ITL/scene/_ui_* yorigin -1;
+/ITL/scene/_ui_* x -0.995;
+/ITL/scene/_ui_print y -0.99;
+/ITL/scene/_ui_reset y -0.87;
+/ITL/scene/_ui_undo y -0.75;
+/ITL/scene/_ui_* watch;
+/ITL/scene/_ui_* watch mouseEnter (
+	/ITL/scene/$self color 240 50 50 );
+/ITL/scene/_ui_* watch mouseLeave (
+	/ITL/scene/$self color 130 130 130 );
+/ITL/scene/_ui_print watch mouseDown (
+	/ITL/scene/javascript run "getMap()" );
+/ITL/scene/_ui_reset watch mouseUp (
+	/ITL/scene/javascript run "reset()" );
+/ITL/scene/_ui_undo watch mouseUp (
+	/ITL/scene/javascript run "undo()" );
+/ITL require 1.07 (
+		/ITL/scene/msg set txt "This script requires INScore version" 1.07 "current version is" "$version",
+		/ITL/scene/msg angle 45,
+		/ITL/scene/msg scale 2.0 );

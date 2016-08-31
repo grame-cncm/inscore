@@ -10,6 +10,9 @@
 #include "IExprParse.hpp"
 #include "ExprFactory.h"
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4065 4100)
+#endif
 
 %}
 

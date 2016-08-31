@@ -26,6 +26,10 @@
 #include <string.h>
 #include <errno.h>
 
+#ifdef WIN32
+#pragma warning (disable : 4267)
+#endif
+
 #include "qrencode.h"
 #include "qrspec.h"
 #include "mqrspec.h"

@@ -423,15 +423,15 @@ QString QGuidoPainter::gmnCode() const
 //-------------------------------------------------------------------------
 QString QGuidoPainter::getLastErrorMessage() const
 {
-	QString result = QString( GuidoGetErrorString(mLastErr) );
 	if ( mLastErr == guidoErrParse )
 	{
 		int line;
         int col;
-        GuidoParserGetErrorCode(fParser, line, col, 0);
-		result += " (line " + QVariant(line).toString() + ", col " + QVariant(col).toString() + ")";
+		const char *msg;
+        GuidoParserGetErrorCode(fParser, line, col, &msg);
+		return " line " + QVariant(line).toString() + ", col " + QVariant(col).toString() + ": " + msg;
 	}
-	return result;
+	return QString( GuidoGetErrorString(mLastErr) );
 }
 
 //-------------------------------------------------------------------------

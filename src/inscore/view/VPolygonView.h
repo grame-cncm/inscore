@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2016  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -56,7 +56,6 @@ class VPolygonView: public VMappedShapeView
 		virtual ~VPolygonView() {}
 		
 		virtual void updateView( IPolygon * Polygon );
-        virtual void updateObjectSize( IObject * o );
 };
 
 /*!@} */

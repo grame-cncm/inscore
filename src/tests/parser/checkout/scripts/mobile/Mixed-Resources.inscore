@@ -1,0 +1,13 @@
+/ITL/scene/* del;
+/ITL/scene/title set txt "Mixed score and image";
+/ITL/scene/title y -0.9;
+/ITL/scene/title scale 1.7;
+/ITL/scene/title fontSize 28;
+/ITL/scene/title effect shadow 5 5 0 0 0 75 20;
+/ITL/scene/title color 20 0 150;
+/ITL/scene/score set gmnf "rsrc/score1.gmn";
+/ITL/scene/score scale 0.29;
+/ITL/scene/score z 1;
+/ITL/scene/img set img "rsrc/MozartVeronadallaRosa.jpg";
+/ITL/scene/img alpha 60;
+/ITL/scene foreground;

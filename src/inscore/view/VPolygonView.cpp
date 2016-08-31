@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2016  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -50,8 +50,13 @@ void VPolygonView::updateView( IPolygon * polygon)
 {
     polygon->cleanupSync();
     QPolygon p;
+
+	float xoffset = polygon->getXOffset();
+	float yoffset = polygon->getYOffset();
+	if (IAppl::compatibilityVersion() < 1.20)
+		xoffset = yoffset = 0.f;
 	for ( unsigned int i = 0 ; i < polygon->getPoints().size() ; i++ )
-		p << QPoint( relative2SceneWidth(polygon->getPoints()[i].first) , relative2SceneHeight(polygon->getPoints()[i].second) );
+		p << QPoint( relative2SceneX(polygon->getPoints()[i].first+xoffset) , relative2SceneY(polygon->getPoints()[i].second+yoffset) );
 	if ( !equals(p, item()->polygon()) )
 	{
 		item()->setPolygon( p );
@@ -60,13 +65,4 @@ void VPolygonView::updateView( IPolygon * polygon)
 	VShapeView::updateView( polygon );
 }
 
-//----------------------------------------------------------------------
-void VPolygonView::updateObjectSize(IObject* o)
-{
-    IPolygon * p = dynamic_cast<IPolygon*>(o);
-    if(p)
-        updateView(p);
-    VGraphicsItemView::updateObjectSize(o);
-}
-
-} // end namespoace
+} // end namespace

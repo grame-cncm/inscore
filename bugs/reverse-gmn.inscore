@@ -22,8 +22,8 @@ gray = 200;
 /ITL/scene/comment5 set txt " ";
 /ITL/scene/comment* scale 1.3;
 /ITL/scene/comment1 y 0.75;
-/ITL/scene/comment2 y 0.80;
-/ITL/scene/comment3 y 0.90;
+/ITL/scene/comment3 y 0.80;
+/ITL/scene/comment4 y 0.90;
 
 /ITL/scene/comment4 xorigin 1.;
 /ITL/scene/comment5 xorigin -1.;

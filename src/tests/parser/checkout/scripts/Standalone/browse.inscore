@@ -1,0 +1,29 @@
+/ITL/scene/* del;
+/ITL/scene/title set txt "This script illustrates the use 'browse' message addressed to /ITL.";
+/ITL/scene/title y -0.8;
+/ITL/scene/title scale 1.7;
+/ITL/scene/uinscore set txt "inscore.sf.net";
+/ITL/scene/uinscore fontSize 40;
+/ITL/scene/uinscore color 20 0 150;
+/ITL/scene/uinscore effect shadow 5 5 0 0 0 75 20;
+/ITL/scene/uinscore fontWeight light;
+/ITL/scene/uinscore fontWeight bold;
+/ITL/scene/uinscore fontWeight normal;
+/ITL/scene/uinscore fontStyle normal;
+/ITL/scene/ubrowse set txt "browse.html";
+/ITL/scene/ubrowse fontSize 40;
+/ITL/scene/ubrowse color 0 40 200;
+/ITL/scene/ubrowse effect shadow 5 5 0 0 0 75 20;
+/ITL/scene/uinscore y -0.2;
+/ITL/scene/ubrowse y 0.2;
+/ITL/scene/comment set txt "Click the objects above to open the corresponding documents in your default web browser.";
+/ITL/scene/comment fontSize 18;
+/ITL/scene/comment y 0.8;
+/ITL/scene/u* watch mouseEnter (
+	 /ITL/scene/$self fontSize 42 );
+/ITL/scene/u* watch mouseLeave (
+	 /ITL/scene/$self fontSize 40 );
+/ITL/scene/uinscore watch mouseDown (
+	 /ITL browse "http://inscore.sf.net" );
+/ITL/scene/ubrowse watch mouseDown (
+	 /ITL browse "browse.html" );

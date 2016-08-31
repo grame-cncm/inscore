@@ -70,6 +70,26 @@ void IPolygon::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
+void IPolygon::setPoints(const std::vector< std::pair<float,float> >& points)
+{
+	const float initmax = -1000000.f;
+	const float initmin = -initmax;
+	float xmin=initmin, xmax=initmax, ymin=initmin, ymax=initmax;
+	for (unsigned int i = 0 ; i < points.size() ; i++ ) {
+		if (points[i].first < xmin)		xmin = points[i].first;
+		if (points[i].first > xmax)		xmax = points[i].first;
+		if (points[i].second < ymin)	ymin = points[i].second;
+		if (points[i].second > ymax)	ymax = points[i].second;
+	}
+	setWidth (xmax - xmin);
+	setHeight(ymax - ymin);
+	fXMin = -xmin;
+	fYMin = -ymin;
+	fPoints = points;
+}
+
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IPolygon::set (const IMessage* msg)	
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
@@ -87,19 +107,13 @@ MsgHandler::msgStatus IPolygon::set (const IMessage* msg)
 		}
 
 		//Compares the points vector with the current one.
-		if ( points.size() != getPoints().size() ) {
+		bool set = points.size() != getPoints().size();
+		for (unsigned int i = 0 ; !set && (i < points.size()) ; i++ )
+			set = (points[i] != getPoints()[i]);
+		if ( set ) {
 			setPoints(points);
 			newData(true);
 			return MsgHandler::kProcessed;
-		}
-		for (unsigned int i = 0 ; i < points.size() ; i++ )
-		{
-			if (points[i] != getPoints()[i])
-			{
-				setPoints(points);
-				newData(true);
-				return MsgHandler::kProcessed;
-			}
 		}
 		return MsgHandler::kProcessedNoChange;
 	}

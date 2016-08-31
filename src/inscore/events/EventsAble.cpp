@@ -69,6 +69,10 @@ static const char* kNewElementStr	= "newElement";
 // score specific events
 static const char* kPageCountStr	= "pageCount";
 
+// video specific events
+static const char* kVideoEndStr		= "end";
+static const char* kVideoReadyStr	= "ready";
+
 namespace inscore
 {
 
@@ -84,7 +88,7 @@ void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 {
 	fMsgMap.set(t, msgs);
 
-	if(isMouseEventType(t)){
+	if(msgs && isMouseEventType(t)){
 		if(fMouseSensible){
 			if(!msgs->list().size() && !checkMouseSensibility()){
 				fMouseSensible = false;
@@ -365,6 +369,8 @@ void EventsAble::init ()
 		fTypeStr[kCancelStr]	= kCancel;
 
 		fTypeStr[kPageCountStr]	= kPageCount;
+		fTypeStr[kVideoEndStr]	= kVideoEnd;
+		fTypeStr[kVideoReadyStr]= kVideoReady;
 	}
 	
 	if (!fTypeNum.size()) {
@@ -401,6 +407,8 @@ void EventsAble::init ()
 		fTypeNum[kCancel]		= kCancelStr;
 
 		fTypeNum[kPageCount]	= kPageCountStr;
+		fTypeNum[kVideoEnd]		= kVideoEndStr;
+		fTypeNum[kVideoReady]	= kVideoReadyStr;
 	}
 }
 

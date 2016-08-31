@@ -110,6 +110,9 @@
 #include "IExprParse.hpp"
 #include "ExprFactory.h"
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4065 4100)
+#endif
 
 
 
@@ -133,7 +136,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 26 "IExpr.y"
+#line 29 "IExpr.y"
 {
 	int	num;
 	float	real;
@@ -142,7 +145,7 @@ typedef union YYSTYPE
 	inscore::SIExprArg* argbase;
 }
 /* Line 193 of yacc.c.  */
-#line 146 "IExprParse.cpp"
+#line 149 "IExprParse.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -164,7 +167,7 @@ typedef struct YYLTYPE
 
 
 /* Copy the second part of user declarations.  */
-#line 49 "IExpr.y"
+#line 52 "IExpr.y"
 
 
 #include <iostream>
@@ -197,7 +200,7 @@ using namespace std;
 
 
 /* Line 216 of yacc.c.  */
-#line 201 "IExprParse.cpp"
+#line 204 "IExprParse.cpp"
 
 #ifdef short
 # undef short
@@ -486,8 +489,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    85,    85,    91,    94,    95,    96,    99,   108,   109,
-     110,   117,   118,   121,   122,   123,   124,   128,   129
+       0,    88,    88,    94,    97,    98,    99,   102,   111,   112,
+     113,   120,   121,   124,   125,   126,   127,   131,   132
 };
 #endif
 
@@ -1427,42 +1430,42 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 85 "IExpr.y"
+#line 88 "IExpr.y"
     {context->fRootNode = inscore::SIExprArg(*(yyvsp[(1) - (1)].argbase)); delete (yyvsp[(1) - (1)].argbase);;}
     break;
 
   case 3:
-#line 91 "IExpr.y"
+#line 94 "IExpr.y"
     { (yyval.str) = new string(context->fText); ;}
     break;
 
   case 5:
-#line 95 "IExpr.y"
+#line 98 "IExpr.y"
     { (yyval.str) = new string(context->fText);;}
     break;
 
   case 6:
-#line 96 "IExpr.y"
+#line 99 "IExpr.y"
     { (yyval.str) = new string(context->fText);;}
     break;
 
   case 7:
-#line 99 "IExpr.y"
+#line 102 "IExpr.y"
     { (yyval.strList) = context->readVar((yyvsp[(2) - (2)].str), lineno(context));;}
     break;
 
   case 8:
-#line 108 "IExpr.y"
+#line 111 "IExpr.y"
     { (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createExpr(*(yyvsp[(2) - (5)].str),*(yyvsp[(3) - (5)].argbase),*(yyvsp[(4) - (5)].argbase))); delete (yyvsp[(2) - (5)].str); delete (yyvsp[(3) - (5)].argbase); delete (yyvsp[(4) - (5)].argbase);;}
     break;
 
   case 9:
-#line 109 "IExpr.y"
+#line 112 "IExpr.y"
     { (yyval.argbase) = (yyvsp[(2) - (3)].argbase); ;}
     break;
 
   case 10:
-#line 110 "IExpr.y"
+#line 113 "IExpr.y"
     { CHECKVAR((yyvsp[(3) - (4)].strList), 2) (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createExpr(*(yyvsp[(2) - (4)].str),
 																																			 inscore::ExprFactory::createArg((yyvsp[(3) - (4)].strList)->at(0)) ,
 																																			 inscore::ExprFactory::createArg((yyvsp[(3) - (4)].strList)->at(1))
@@ -1470,33 +1473,33 @@ yyreduce:
     break;
 
   case 12:
-#line 118 "IExpr.y"
+#line 121 "IExpr.y"
     { CHECKVAR((yyvsp[(1) - (1)].strList), 1) (yyval.str) = new string((yyvsp[(1) - (1)].strList)->at(0)); delete (yyvsp[(1) - (1)].strList); ;}
     break;
 
   case 14:
-#line 122 "IExpr.y"
+#line 125 "IExpr.y"
     { (yyval.argbase) = (yyvsp[(2) - (2)].argbase); (*(yyval.argbase))->switchToDynamic(); ;}
     break;
 
   case 15:
-#line 123 "IExpr.y"
+#line 126 "IExpr.y"
     { (yyval.argbase) = (yyvsp[(2) - (2)].argbase); (*(yyval.argbase))->switchToCopy(); ;}
     break;
 
   case 17:
-#line 128 "IExpr.y"
+#line 131 "IExpr.y"
     { (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createArg(*(yyvsp[(1) - (1)].str)) ); delete (yyvsp[(1) - (1)].str); ;}
     break;
 
   case 18:
-#line 129 "IExpr.y"
+#line 132 "IExpr.y"
     { CHECKVAR((yyvsp[(1) - (1)].strList), 1) (yyval.argbase) = new inscore::SIExprArg( inscore::ExprFactory::createArg((yyvsp[(1) - (1)].strList)->at(0)) ); delete (yyvsp[(1) - (1)].strList); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1500 "IExprParse.cpp"
+#line 1503 "IExprParse.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1716,7 +1719,7 @@ yyreturn:
 }
 
 
-#line 133 "IExpr.y"
+#line 136 "IExpr.y"
 
 
 //} // end namespace

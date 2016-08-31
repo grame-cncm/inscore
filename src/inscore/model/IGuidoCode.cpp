@@ -61,8 +61,8 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fMsgHandlerMap[kmap_GetSetMethod]			= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::mapMsg);
 
 	fGetMsgHandlerMap[kpage_GetSetMethod]		= TGetParamMsgHandler<int>::create(fPage);
-	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMethodHandler<IGuidoCode, int (IGuidoCode::*)() const>::create(this, &IGuidoCode::getPageCount);
-	fGetMsgHandlerMap[ksystemCount_GetMethod]	= TGetParamMethodHandler<IGuidoCode, vector<int> (IGuidoCode::*)() const>::create(this, &IGuidoCode::getSystemsCount);
+	fAltGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMethodHandler<IGuidoCode, int (IGuidoCode::*)() const>::create(this, &IGuidoCode::getPageCount);
+	fAltGetMsgHandlerMap[ksystemCount_GetMethod]	= TGetParamMethodHandler<IGuidoCode, vector<int> (IGuidoCode::*)() const>::create(this, &IGuidoCode::getSystemsCount);
 	fGetMsgHandlerMap[kpageFormat_GetSetMethod]	= TGetParamMsgHandler<TFloatSize>::create(fPageFormat);
 	fGetMsgHandlerMap[kcolumns_GetSetMethod]	= TGetParamMsgHandler<int>::create(fNbOfPageColumns);
 	fGetMsgHandlerMap[krows_GetSetMethod]		= TGetParamMsgHandler<int>::create(fNbOfPageRows);

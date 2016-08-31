@@ -84,6 +84,7 @@ class VVideoView: public QObject, public VGraphicsItemView
 	QMediaPlayer				fMediaPlayer;
 	QMediaPlayer::MediaStatus	fStatus;
 	IVideo*						fVideo;
+	int							fReady;
 #endif
 
 	void initFile( IVideo * video, const QString&  videoFile );
@@ -93,7 +94,11 @@ class VVideoView: public QObject, public VGraphicsItemView
 protected slots:
 	void	error (QMediaPlayer::Error error);
 	void	mediaStatusChanged (QMediaPlayer::MediaStatus status);
+	void	stateChanged (QMediaPlayer::State state);
+	void	seekableChanged(bool seekable);
 	void	nativeSizeChanged(const QSizeF & size);
+	void	durationChanged(qint64 duration);
+	void	positionChanged(qint64 position);
 #endif
 };
 

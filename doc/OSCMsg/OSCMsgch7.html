@@ -7,7 +7,6 @@
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2016-03-29 10:00:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
@@ -542,63 +541,67 @@ src="OSCMsg52x.png" alt="PICT" >
 class="pcrr8tn-">none</span>.
 <!--l. 1490--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">7.8    </span> <a 
- id="x11-460007.8"></a>Font control</h3>
-<!--l. 1492--><p class="noindent" >Specific font messages are accepted by <span 
-class="pcrr8tn-">txt </span>components.
+ id="x11-460007.8"></a>Textual objects</h3>
+<!--l. 1491--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">7.8.1    </span> <a 
+ id="x11-470007.8.1"></a>Font control</h4>
+<!--l. 1493--><p class="noindent" >Specific font messages are accepted by <span 
+class="pcrr8tn-">txthtmltxtf </span>and <span 
+class="pcrr8tn-">htmlf </span>components.
 <a 
- id="dx11-46001"></a>
+ id="dx11-47001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1498--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1499--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">fontMsg</span> <img 
 src="OSCMsg53x.png" alt="PICT" >
 </div></dd></dl>
-<a 
- id="dx11-46002"></a>
-<a 
- id="dx11-46003"></a>
-<a 
- id="dx11-46004"></a>
                                                                                  
 
                                                                                  
 <a 
- id="dx11-46005"></a>
+ id="dx11-47002"></a>
 <a 
- id="dx11-46006"></a>
+ id="dx11-47003"></a>
+<a 
+ id="dx11-47004"></a>
+<a 
+ id="dx11-47005"></a>
+<a 
+ id="dx11-47006"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1506--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1507--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">fontStyle</span> <img 
 src="OSCMsg54x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx11-46007"></a>
+ id="dx11-47007"></a>
 <a 
- id="dx11-46008"></a>
+ id="dx11-47008"></a>
 <a 
- id="dx11-46009"></a>
+ id="dx11-47009"></a>
 <a 
- id="dx11-46010"></a>
+ id="dx11-47010"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1513--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1514--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">fontWeight</span> <img 
 src="OSCMsg55x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx11-46011"></a>
+ id="dx11-47011"></a>
 <a 
- id="dx11-46012"></a>
+ id="dx11-47012"></a>
 <a 
- id="dx11-46013"></a>
+ id="dx11-47013"></a>
 <a 
- id="dx11-46014"></a>
+ id="dx11-47014"></a>
 <a 
- id="dx11-46015"></a>
+ id="dx11-47015"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">fontSize </span>controls the font size in pixel. The default value is 13px.
@@ -607,6 +610,9 @@ class="pcrr8tn-">fontSize </span>controls the font size in pixel. The default va
 class="pcrr8tn-">fontFamily </span>controls the font family. The default value is &#8217;Arial&#8217;. If a non existing value is used,
      system default font is used.
      </li>
+                                                                                 
+
+                                                                                 
      <li class="itemize"><span 
 class="pcrr8tn-">fontStyle </span>controls the pen style. The font style default value is <span 
 class="pcrr8tn-">normal</span>.<br 
@@ -615,10 +621,7 @@ class="newline" />
      <li class="itemize"><span 
 class="pcrr8tn-">weightValue </span>controls the font weight. The font weight default value is <span 
 class="pcrr8tn-">normal</span>.</li></ul>
-                                                                                 
-
-                                                                                 
-<!--l. 1527--><p class="noindent" ><span 
+<!--l. 1528--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -629,7 +632,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Setting a text object with a font family Times and bold weight:
 <div class="center" 
 >
-<!--l. 1532--><p class="noindent" >
+<!--l. 1533--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox46"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/text set txt "text sample";</span><br 
@@ -638,24 +641,64 @@ class="pcrr8tn-x-x-90">/ITL/scene/text fontFamily Times;</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/text fontWeight bold;</span></div></div>
 </div>
-<!--l. 1537--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">7.9    </span> <a 
- id="x11-470007.9"></a>The &#8217;debug&#8217; nodes</h3>
-<!--l. 1540--><p class="noindent" >Each component includes a static <span 
-class="pcrr8tn-">debug </span>nodes provided to give information about components.
+<!--l. 1535--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">7.8.2    </span> <a 
+ id="x11-480007.8.2"></a>Writing</h4>
+<!--l. 1537--><p class="noindent" >Textual objects support writing in a stream-like way.
 <a 
- id="dx11-47001"></a>
+ id="dx11-48001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1544--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">debugMsg</span> <img 
+<!--l. 1540--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">txtwrite</span> <img 
 src="OSCMsg56x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx11-47002"></a>
+ id="dx11-48002"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">write</span>: append the <span 
+class="pcrr8tn-">arg </span>list formatted as a string to the textual content.</li></ul>
+<!--l. 1547--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />
+<div class="center" 
+>
+<!--l. 1550--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox47"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/text set txt "Hello";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/text write "world!";</span></div></div>
+</div>
+<!--l. 1555--><p class="noindent" >
+                                                                                 
+
+                                                                                 
+<h3 class="sectionHead"><span class="titlemark">7.9    </span> <a 
+ id="x11-490007.9"></a>The &#8217;debug&#8217; nodes</h3>
+<!--l. 1558--><p class="noindent" >Each component includes a static <span 
+class="pcrr8tn-">debug </span>nodes provided to give information about components.
 <a 
- id="dx11-47003"></a>
+ id="dx11-49001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1562--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">debugMsg</span> <img 
+src="OSCMsg57x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-49002"></a>
+<a 
+ id="dx11-49003"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">map </span>is used to display the time to graphic mapping. The parameter is a int value: 0 prevents mapping
@@ -668,12 +711,12 @@ class="pcrr8tn-">name </span>is used to display both the object name and boundin
                                                                                  
 
                                                                                  
-<!--l. 1556--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1574--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch8.html" >next</a>] [<a 
 href="OSCMsgch6.html" >prev</a>] [<a 
 href="OSCMsgch6.html#tailOSCMsgch6.html" >prev-tail</a>] [<a 
 href="OSCMsgch7.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch7.html" >up</a>] </p></div>
-<!--l. 1556--><p class="noindent" ><a 
+<!--l. 1574--><p class="noindent" ><a 
  id="tailOSCMsgch7.html"></a>  
 </body></html> 

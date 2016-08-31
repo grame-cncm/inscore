@@ -8,6 +8,10 @@
 #include "TRect.h"
 #include "rational.h"
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4100)
+#endif
+
 class YYSTYPE {         
 	public:
 	long int	num;

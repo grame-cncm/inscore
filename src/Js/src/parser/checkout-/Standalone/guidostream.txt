@@ -1,0 +1,37 @@
+/ITL/scene/*  del
+/ITL/scene/text  set,txt,This script illustrates the use of Guido Stream object
+/ITL/scene/text  scale,2
+/ITL/scene/text  y,-0.8
+/ITL/scene/clickme  set,txt,CLICK ME !
+/ITL/scene/clickme  scale,1.5
+/ITL/scene/clickme  y,0.85
+/ITL/scene/clickme  red,240
+/ITL/scene/clickme  watch,mouseEnter,/ITL/scene/clickme  red,240
+/ITL/scene/clickme  red,0
+/ITL/scene/clickme  watch,mouseLeave,/ITL/scene/clickme  red,0
+/ITL/scene/clickme  push
+/ITL/scene/score  set,gmnstream,{[ \meter<\"4/4\"> a
+/ITL/scene/score  scale,0.8
+/ITL/scene/score  write,{c
+/ITL/scene/score  write,,e
+/ITL/scene/score  write,,g}
+/ITL/scene/score  write,\fBeam(e/32 f
+/ITL/scene/score  write, d/16 
+/ITL/scene/score  write, g/8) 
+/ITL/scene/score  write,a/4 d/2]
+/ITL/scene/score  write,,[\meter<\"4/4\"> e d
+/ITL/scene/score  write, f/2
+/ITL/scene/score  write, h]
+/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, g/8) ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, d/16 ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, g/8) ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,\fBeam(e/32 f,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, d/16 ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, g/8) ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,g},/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,\fBeam(e/32 f,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, d/16 ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, g/8) ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,e,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,g},/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,\fBeam(e/32 f,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, d/16 ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, g/8) ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,{c,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,e,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,g},/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,\fBeam(e/32 f,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, d/16 ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, g/8) ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/clickme  push,/ITL/scene/score  set,gmnstream,{[ \meter<\"4/4\"> a,/ITL/scene/score  scale,0.8,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,{c,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,e,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,g},/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,\fBeam(e/32 f,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, d/16 ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, g/8) ,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,a/4 d/2],/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write,,[\meter<\"4/4\"> e d,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, f/2,/ITL/scene/clickme  watch,mouseDown,/ITL/scene/score  write, h],/ITL/scene/clickme  pop
+expr ENDSCRIPT 

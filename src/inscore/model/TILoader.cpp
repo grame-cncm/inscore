@@ -81,12 +81,111 @@ bool TILoader::process (const SIMessageList& msgs, IObject* root, const string& 
 }
 
 //--------------------------------------------------------------------------
+bool TILoader::isBundle(const std::string& file)
+{
+	const string bundleExtension = ".ibundle";
+	size_t len = bundleExtension.size();
+	return (file.size() > len) && (file.substr(file.size()-len) == bundleExtension);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std::string& rootpath)
+{
+	// ---- Load a bundle ----
+	qarchive::QArchive* a = 0;
+	QFileDownloader downloader;
+	qarchive::QArchiveError error;
+
+	if (Tools::isurl(srcfile)) {
+		if (downloader.get (srcfile.c_str()) && downloader.dataSize()) {
+#ifdef __MOBILE__
+			//On mobile devices bundle should be stored
+			QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last();
+			path += QString("/bundles") + srcfile.substr(srcfile.find_last_of('/')).c_str();
+			QFile f(path);
+			if(f.open(QIODevice::WriteOnly)){
+				f.write(downloader->byteArray());
+				f.close();
+			}
+#endif
+			a = qarchive::QArchive::readArchiveFromData(& (downloader.byteArray()), error);
+		}
+		else return MsgHandler::kBadParameters;
+	}
+	else {
+		a = qarchive::QArchive::readArchiveFromFile(makeAbsolutePath(rootpath, srcfile).c_str(), error);
+	}
+
+	if(!error){
+		float itlBundleVersion;
+		if(a->header().readNbrProperty(0,itlBundleVersion) && itlBundleVersion>INScore::version())
+			ITLErr << srcfile << "has been bundled for INScore " << itlBundleVersion << ": error might happened with version " << INScore::version() << ITLEndl;
+
+		size_t id = srcfile.rfind("/");
+		if(id==string::npos)
+			id=0;
+		else
+			id++;
+		std::string bundleName =  srcfile.substr(id, srcfile.size()-id-11);
+		QString bundleRootPath = QDir::temp().absolutePath() + QDir::separator() + "INScore" + QDir::separator();
+		bundleRootPath += QString("bundle") + QDir::separator() + QString::fromStdString(bundleName);
+		error = a->extract(bundleRootPath, true);
+		if(!error){
+			INScore::postMessage("/ITL", "rootPath", bundleRootPath.toStdString().c_str());
+			INScore::postMessage("/ITL/scene", "rootPath", bundleRootPath.toStdString().c_str());
+			INScore::postMessage("/ITL", "load", "main.inscore");
+		}
+	}
+
+	if(a){
+		delete a;
+		a=0;
+	}
+
+	switch (error) {
+		case 0:
+			return MsgHandler::kProcessed;
+		case qarchive::FILE_NOT_FOUND:
+			ITLErr << "The file \"" << srcfile<<"\" is not reachable." << ITLEndl;
+			break;
+		case qarchive::FILE_CORRUPTED:
+			ITLErr << "The bundle \"" << srcfile<<"\" is corrupted." << ITLEndl;
+			break;
+		case qarchive::WRONG_PERMISSIONS:
+			ITLErr << "Impossible to write in the temporary folder." << ITLEndl;
+			break;
+		default:
+			ITLErr << "Unknown error" << error << ITLEndl;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+bool TILoader::loadString(const std::string& str, IObject* client)
+{
+	stringstream sstr (str);
+	ITLparser p (&sstr, 0, client->getAppl());
+	SIMessageList msgs = p.parse();
+	if (msgs) {
+		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
+			string addr;
+			if ((*i)->extendedAddress())
+				addr = string((*i)->url()) + (*i)->address();
+			else if ((*i)->relativeAddress())
+				addr = (*i)->relative2absoluteAddress( client->getOSCAddress());
+			else
+				addr = (*i)->address();
+			INScore::postMessage (addr.c_str(), *i);
+		}
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const std::string& rootpath)
 {
 	if (msg->size() == 1) {
-		const string bundleExtension = ".ibundle";
-		size_t elen = bundleExtension.size();
-
 		string srcfile;
 		if (!msg->param(0, srcfile)) return MsgHandler::kBadParameters;
 		if (srcfile.size()) {
@@ -94,98 +193,37 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 			if (Tools::isurl(rootpath) && !Tools::isurl(srcfile))
 				srcfile = makeAbsolutePath(rootpath, srcfile);
 
-			if(srcfile.size() < elen || srcfile.substr(srcfile.size()-elen,elen) != bundleExtension){
-				// ---- Load a script ----
-
-				stringstream buff;
-				ifstream file;
-				if (Tools::isurl(srcfile)) {
-					QFileDownloader * downloader = new QFileDownloader();
-					if (!downloader) return MsgHandler::kCreateFailure;
-					if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
-						buff.write (downloader->data(), downloader->dataSize());
-					}
-					else return MsgHandler::kBadParameters;
-					delete downloader;
-				}
-				else {
-					file.open(makeAbsolutePath(rootpath, srcfile).c_str(), fstream::in);
-				}
-
-				istream * stream;
-				if (file.is_open()) stream = &file;
-				else stream = &buff;
-				ITLparser p (stream, 0, client->getAppl());
-				SIMessageList msgs = p.parse();
-				bool error = false;
-				if (msgs)
-					error = !process (msgs, client->getRoot(), client->getOSCAddress());
-				if(error) ITLErr << "while parsing file" << srcfile << ITLEndl;
-
-				if(msgs) return MsgHandler::kProcessed;
-			}else{
-				// ---- Load a bundle ----
-				qarchive::QArchive* a = 0;
+			if(isBundle (srcfile))
+				return loadBundle(srcfile, rootpath);			// load a bundle
+			
+			// not a bundle : load a script
+			stringstream buff;
+			ifstream file;
+			if (Tools::isurl(srcfile)) {
 				QFileDownloader * downloader = new QFileDownloader();
-				qarchive::QArchiveError error;
-				if (Tools::isurl(srcfile)) {
-					if (!downloader) return MsgHandler::kCreateFailure;
-					if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
-#ifdef __MOBILE__
-						//On mobile devices bundle should be stored
-						QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last();
-						path += QString("/bundles") + srcfile.substr(srcfile.find_last_of('/')).c_str();
-						QFile f(path);
-						if(f.open(QIODevice::WriteOnly)){
-							f.write(downloader->byteArray());
-							f.close();
-						}
-
-#endif
-						a = qarchive::QArchive::readArchiveFromData(& (downloader->byteArray()), error);
-					}
-					else return MsgHandler::kBadParameters;
+				if (!downloader) return MsgHandler::kCreateFailure;
+				if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
+					buff.write (downloader->data(), downloader->dataSize());
 				}
-				else {
-					a = qarchive::QArchive::readArchiveFromFile(makeAbsolutePath(rootpath, srcfile).c_str(), error);
-				}
-
-				if(!error){
-					float itlBundleVersion;
-					if(a->header().readNbrProperty(0,itlBundleVersion) && itlBundleVersion>INScore::version())
-						ITLErr<<srcfile<<" have been bundle for INScore "<<itlBundleVersion<<", error might happened with version "<<INScore::version()<<ITLEndl;
-
-					size_t id = srcfile.rfind("/");
-					if(id==string::npos)
-						id=0;
-					else
-						id++;
-					std::string bundleName =  srcfile.substr(id, srcfile.size()-id-11);
-					QString bundleRootPath = QDir::temp().absolutePath()+QDir::separator()+"INScore"+QDir::separator();
-					bundleRootPath += QString("bundle")+QDir::separator()+QString::fromStdString(bundleName);
-					error = a->extract(bundleRootPath, true);
-					if(!error){
-						INScore::postMessage("/ITL", "rootPath",bundleRootPath.toStdString().c_str());
-						INScore::postMessage("/ITL/scene", "rootPath",bundleRootPath.toStdString().c_str());
-						INScore::postMessage("/ITL", "load", "main.inscore");
-					}
-				}
-
-				if(a){
-					delete a;
-					a=0;
-				}
-
+				else return MsgHandler::kBadParameters;
 				delete downloader;
-				if(!error)
-					return MsgHandler::kProcessed;
-				else if(error==qarchive::FILE_NOT_FOUND)
-					ITLErr<<"The file \""<<srcfile<<"\" is not reachable."<<ITLEndl;
-				else if(error==qarchive::FILE_CORRUPTED)
-					ITLErr<<"The bundle \""<<srcfile<<"\" is corrupted."<<ITLEndl;
-				else if(error==qarchive::WRONG_PERMISSIONS)
-					ITLErr<<"Impossible to write in the temporary folder."<<ITLEndl;
 			}
+			else {
+				file.open(makeAbsolutePath(rootpath, srcfile).c_str(), fstream::in);
+			}
+
+			istream * stream;
+			if (file.is_open()) stream = &file;
+			else stream = &buff;
+
+			ITLparser p (stream, 0, client->getAppl());
+			SIMessageList msgs = p.parse();
+			bool error = false;
+			if (msgs)
+				error = !process (msgs, client->getRoot(), client->getOSCAddress());
+			if(error) ITLErr << "while parsing file" << srcfile << ITLEndl;
+
+			if(msgs) return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;

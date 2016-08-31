@@ -27,6 +27,7 @@
 
 #include "TComposition.h"
 #include "VGraphicsItemView.h"
+#include "VSceneView.h"
 #include "maptypes.h"
 #include "TSegment.h"
 
@@ -224,29 +225,6 @@ void VGraphicsItemView::setQBrushStyle(const std::string& brushStyle , QBrush& b
         brush.setStyle( Qt::SolidPattern );
 }
 
-//----------------------------------------------------------------------
-//void VGraphicsItemView::updateBoundingBox( IObject * object  )
-//{
-//	QColor color(object->getR(), object->getG(), object->getB() , object->getA());
-//	QPen pen = Qt::NoPen;
-//	if ( object->getPenWidth() > 0 )
-//	{
-//		pen = QPen( QColor(object->getPenColor().getR(), object->getPenColor().getG(), object->getPenColor().getB() , object->getPenColor().getA()) , object->getPenWidth() );
-//		setQPenStyle( object->getPenStyle() , pen );
-//        pen.setCapStyle( Qt::RoundCap );
-//		pen.setJoinStyle( Qt::RoundJoin );
-//	}
-//    
-//    
-//	if ( pen != fItem->pen() )
-//		fItem->setPen( pen );
-//	
-//	QBrush brush = QBrush(color);
-//	setQBrushStyle( object->getBrushStyle() , brush );
-//	fItem->setBrush( brush );
-//	itemChanged();
-//}
-
 //------------------------------------------------------------------------------------------------------------
 // Debug graphic feedback : displays the bounding rectangle and the object name for all the items
 //------------------------------------------------------------------------------------------------------------
@@ -284,6 +262,7 @@ void VGraphicsItemView::drawName(IObject* o, QGraphicsItem* item)
         QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , item );
         textItem->setDefaultTextColor( Qt::red );
 		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
+		fDebugItems << textItem;
 }
 
 
@@ -410,7 +389,7 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
     
     double x = relative2SceneX( o->getSyncPos(mapName).x(), item );
     double y = relative2SceneY( o->getSyncPos(mapName).y(), item );
-    
+ 
     item->setRect(QRectF(0,0,width,height));
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
@@ -449,7 +428,7 @@ void VGraphicsItemView::updateItem(QGraphicsItem* item, IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {
-    setSlave(o);
+	setSlave(o);
 
 	// firt update the object shape
 	drawBoundingBox (o);
@@ -512,7 +491,13 @@ void VGraphicsItemView::updateView(IObject* o)
 	// ----------------------------------------------------------------------------------------------
 	// Debug graphic feedback : displays the bounding rectangle and the object name
 	if ( o->nameDebug() ) drawName (o);
-    
+	
+	// ----------------------------------------------------------------------------------------------
+	// and eventually check if an 'edit' request is pending
+	if (o->getEdit()) {
+		VSceneView* scene = o->getScene()->getSceneView();
+		if (scene) scene->edit(o);
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------

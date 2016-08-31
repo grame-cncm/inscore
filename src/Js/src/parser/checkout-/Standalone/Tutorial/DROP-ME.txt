@@ -1,0 +1,20 @@
+/ITL/scene/*  del
+/ITL/scene/signal/*  del
+/ITL/scene/title  set,html,<h1>Welcome to INScore</h1>
+/ITL/scene/title  y,-0.7
+/ITL/scene/title  scale,2.6
+/ITL/scene/subtitle  set,html,<h2>An environment for the design of live music scores</h2>
+/ITL/scene/subtitle  y,-0.55
+/ITL/scene/subtitle  scale,1.3
+/ITL/scene/icon  set,img,rsrc/INScore.png
+/ITL/scene/start  set,html,<h3>Start</h3>
+/ITL/scene/start  y,0.55
+/ITL/scene/start  scale,1.5
+/ITL/scene  load,require.inscore
+/ITL/$scene  load,menu.inscore
+/ITL/scene/start  watch,mouseDown,/ITL/$scene  load,menu.inscore
+/ITL/$scene/start  red,255
+/ITL/scene/start  watch,mouseEnter,/ITL/$scene/start  red,255
+/ITL/$scene/start  red,0
+/ITL/scene/start  watch,mouseLeave,/ITL/$scene/start  red,0
+expr ENDSCRIPT 

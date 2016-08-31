@@ -153,6 +153,7 @@ class IScene : public IRectShape, public TILoader
 		void		newScene ();
 		std::string address2scene (const char* addr) const;
 		void		del ();
+		virtual		SIMessageList getAll () const;
 
 		/*!
 		 * \brief forward The scene accept forward message.

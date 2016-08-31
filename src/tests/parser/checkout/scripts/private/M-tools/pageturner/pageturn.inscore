@@ -1,0 +1,35 @@
+/ITL/scene/_cursor show 0;
+/ITL/scene/pagenum show 1;
+/ITL/scene/mode set txt "Page turn collection";
+/ITL/scene/leftbutton set txt Clear;
+/ITL/scene/centerbutton set txt Test;
+/ITL/scene/rightbutton set txt Open;
+/ITL/scene/*button color 0 0 0;
+/ITL/scene/*button watch mouseEnter (
+	 /ITL/$scene/$self red 255 );
+/ITL/scene/*button watch mouseLeave (
+	 /ITL/$scene/$self red 0 );
+/ITL/scene/*button watch mouseDown (
+	 /ITL/$scene/b[12] del );
+/ITL/scene/leftbutton watch mouseDown (
+		/ITL/scene/score page 1,
+		/ITL/scene/pagepos date 0 1,
+		/ITL/scene/pagenum set txt 1,
+		/ITL/scene/pagenum set txt 1 );
+/ITL/scene/a* color 180 180 180;
+/ITL/scene/anext show 1;
+/ITL/scene/aprevious show 0;
+/ITL/scene/score watch mouseDown (
+	localhost:7100/date "$date:system[1/32]" "$(/ITL/scene/score get page;)" );
+/ITL/scene/centerbutton watch+ mouseDown (
+	localhost:7100/test  1 );
+/ITL/scene/leftbutton watch+ mouseDown (
+	localhost:7100/reset  1 );
+/ITL/scene/rightbutton watch+ mouseDown (
+	localhost:7100/open  1 );
+/ITL/scene/score watch+ mouseDown (
+		/ITL/scene/score dpage 1,
+		/ITL/scene/pagerect duration "$(/ITL/scene/score get duration;)",
+		/ITL/scene/pagepos date "$date:system" );
+/ITL/scene/score watch mouseUp (
+	 /ITL/scene/pagenum set page "$(/ITL/scene/score get page;)" );

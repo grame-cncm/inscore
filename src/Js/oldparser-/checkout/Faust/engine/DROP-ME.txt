@@ -1,0 +1,52 @@
+/ITL/scene/*  del
+/ITL/scene/signal/*  del
+/ITL/scene/*  watch,mouseDown
+/ITL/scene  color,1,1,1
+/ITL/scene/title1  set,txt,This script illustrates FAUST DSP usage.
+/ITL/scene/title2  set,txt,Faust DSPs are compiled with libfaust.
+/ITL/scene/title1  y,-0.98
+/ITL/scene/title2  y,-0.9
+/ITL/scene/title1  scale,1.7
+/ITL/scene/title2  scale,1.4
+expr script: 
+	function randomValues (size, coef) 
+	{
+		var out = new String;
+		
+    	for (i=0; i < size; i++) {
+    		var r = (Math.random() * 2) - 1;
+    		out += (r * coef) + " ";
+		}
+		return out;
+	}
+	function sinus (dest, size, coef) 
+	{
+		return "/ITL/scene/signal/" + dest + " " + randomValues(size, coef) + ";";
+	}
+
+variabledecl: size = 100
+/ITL/scene/signal/plus  set,faustdsp,process=+;
+/ITL/scene/signal/plus  size,100
+/ITL/scene/signal/fois  set,faustdspf,product.dsp
+/ITL/scene/signal/fois  size,100
+/ITL/scene/signal/moins  set,faustdsp,process=-;
+/ITL/scene/signal/moins  size,100
+/ITL/scene/clickme  set,txt,CLICK ME !
+/ITL/scene/clickme  z,1
+/ITL/scene/clickme  scale,2
+/ITL/scene/clickme  y,0.9
+/ITL/scene/javascript  run,sinus("moins", 10, 0.3)
+/ITL/scene/javascript  run,sinus("plus", 10, 0.2)
+/ITL/scene/javascript  run,sinus("fois", 10, 1.5)
+/ITL/scene/clickme  watch,mouseDown,/ITL/scene/javascript  run,sinus("moins", 10, 0.3),/ITL/scene/javascript  run,sinus("plus", 10, 0.2),/ITL/scene/javascript  run,sinus("fois", 10, 1.5)
+expr script:  sinus("fois", 200, 2.0) 
+expr script:  sinus("moins", 200, 0.3) 
+/ITL/scene/signal/pitch  set,plus/0
+/ITL/scene/signal/roll  set,moins/0
+/ITL/scene/signal/yaw  set,fois/0
+/ITL/scene/signal/sig  set,pitch,roll,yaw,1,1,1
+/ITL/scene/graph  set,graph,sig
+/ITL/scene/graph  width,1.5
+/ITL/scene/graph  height,3
+/ITL/log  show,1
+expr ENDSCRIPT 

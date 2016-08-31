@@ -1,0 +1,13 @@
+/ITL/scene/* del;
+/ITL require 0.96 (
+		/ITL/scene/warning set txt "WARNING: javascript requires version" 0.96 "or greater",
+		/ITL/scene/warning color 180 180 180,
+		/ITL/scene/warning y 0.9,
+		/ITL/scene/warning scale 1.5 );
+/ITL/scene/title set txt "Welcome to JavaScript";
+/ITL/scene/title y -0.3;
+/ITL/scene/title scale 3.0;
+/ITL/scene/rect* y 0.15;
+/ITL/scene color 240 240 240;
+/ITL/scene/title watch del (
+	/ITL/scene color 255 255 255 );

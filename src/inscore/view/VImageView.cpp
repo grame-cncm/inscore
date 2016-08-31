@@ -52,7 +52,7 @@ VImageView::VImageView(QGraphicsScene * scene, const IImage* h)
 void VImageView::updateLocalMapping (IImage* img)
 {
 	// 1. Update image
-	QString file = VApplView::toQString( img->getFile().c_str() );
+	QString file = VApplView::toQString( img->getPath().c_str() );
 	if ( QFile::exists(  file  ) )
 	{
 		if ( !QImageReader( file ).canRead() )

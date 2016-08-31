@@ -1,0 +1,38 @@
+/ITL/scene/* del;
+/ITL/scene/title set txt "This is a dynamic score !";
+/ITL/scene/title y -0.6;
+/ITL/scene/title fontFamily Zapfino;
+/ITL/scene/title fontSize 44;
+/ITL/scene/title effect shadow 5 5 0 0 0 75 20;
+/ITL/scene/frame set rect 1.7 0.6;
+/ITL/scene/frame color 230 230 230;
+/ITL/scene/score set gmnstream "[ \meter<\"4/4\"> \key<-1> a f g c c g a f ";
+/ITL/scene/score scale 0.6;
+/ITL/scene/cursor set ellipse 0.06 0.06;
+/ITL/scene/cursor color 100 100 250;
+/ITL/scene/sync cursor score syncTop;
+/ITL/scene/cursor dy -0.1;
+/ITL/scene/ctrl set txt Stop;
+/ITL/scene/ctrl y 0.5;
+/ITL/scene/ctrl fontSize 36;
+/ITL/scene/ctrl watch mouseEnter (
+	/ITL/scene/ctrl red 240 );
+/ITL/scene/ctrl watch mouseLeave (
+	/ITL/scene/ctrl red 0 );
+/ITL/scene/ctrl watch mouseDown (
+			/ITL/scene/ctrl push,
+			/ITL/scene/cursor tempo 0,
+			/ITL/scene/ctrl set txt Start,
+			/ITL/scene/ctrl watch mouseDown (
+					/ITL/scene/cursor tempo 120,
+					/ITL/scene/ctrl set txt Stop,
+					/ITL/scene/ctrl pop ) );
+/ITL/scene/cursor watch timeEnter -1 0 (
+		/ITL/scene/cursor tempo 120,
+		/ITL/scene/javascript run "note()" );
+/ITL/scene/cursor watch timeEnter 8 4 9999 4 (
+		/ITL/scene/cursor tempo -120,
+		/ITL/scene/javascript run "note()" );
+/ITL/scene/cursor watch timeEnter 7 8 (
+	 /ITL/scene load "sample4.inscore" );
+/ITL/scene/cursor tempo 120;

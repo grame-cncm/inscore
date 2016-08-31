@@ -57,6 +57,7 @@ class IVNode : public IObject
 			\return the type of the object as a string
 		*/
 		virtual const std::string&	getTypeString() const	{ return fTypeString; }
+		virtual	SIMessageList		getAll () const			{ return IMessageList::create(); }
 
 	protected:	
 				 IVNode(const std::string& name, IObject * parent);
@@ -67,6 +68,8 @@ class IVNode : public IObject
 			A virtual node can't be deleted.
 		*/
 		virtual void	del ()	{}
+		/// \brief returns the object status regarding the mapping
+		virtual bool	mapable() const				{ return false; }
 };
 
 

@@ -1,0 +1,9 @@
+/ITL/scene/* watch;
+/ITL/scene/a set rect 0.2 0.2;
+/ITL/scene/rect set rect 1.0 1.0;
+/ITL/scene/rect x 0.0;
+/ITL/scene/rect y 0.0;
+/ITL/scene/rect color 0 0 0;
+/ITL/scene/* watch mouseDown (
+	 /ITL/scene/javascript run "clicked(\"$address\")" );
+/ITL/log show 1;

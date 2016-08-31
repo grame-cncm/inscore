@@ -75,6 +75,7 @@ class IObjectDebug : public IVNode
 		virtual void colorAble ()		{}
 		virtual void positionAble ()	{}
 		virtual void timeAble ()		{}
+		virtual	SIMessageList getAll () const	{ return IMessageList::create(); }
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual SIMessageList getSetMsg () const;
