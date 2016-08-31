@@ -1241,10 +1241,10 @@
 \rail@nont{int23}[]
 \rail@end
 }
-\rail@i {66}{ ITLLog : 'show' int32 | 'clear' | 'foreground' | 'wrap' int32 | 'write' (arg +) | 'save' string }
+\rail@i {66}{ ITLLog : 'show' int32 | 'clear' | 'foreground' | 'wrap' int32 | 'write' (arg +) | 'save' string | 'level' int32 }
 \rail@o {66}{
 \rail@index{ITLLog}
-\rail@begin{7}{ITLLog}
+\rail@begin{8}{ITLLog}
 \rail@bar
 \rail@term{show}[]
 \rail@token{int32}[]
@@ -1264,6 +1264,9 @@
 \rail@nextbar{6}
 \rail@term{save}[]
 \rail@token{string}[]
+\rail@nextbar{7}
+\rail@term{level}[]
+\rail@token{int32}[]
 \rail@endbar
 \rail@end
 }

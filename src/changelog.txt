@@ -14,6 +14,7 @@ It has been supported by the ANR
 ----------------------------------------------------
 Version 1.20
 - new 'edit' message supported by all objects: opens a small editor.
+- new 'level' message supported by the log window and extended debugging support.
 - new video specific messages and management: the video time is now independent from the 
   inscore object time. 
 - gmn objects set: output correct error message in case of syntax error

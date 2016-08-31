@@ -1861,11 +1861,13 @@ ITLLog : 'show'  int32
 		| 'wrap' int32
 		| 'write' (arg +)
 		| 'save' string
+		| 'level' int32
 \end{rail}
 \index{ITL log!show}
 \index{ITL log!clear}
 \index{ITL log!wrap}
 \index{ITL log!save}
+\index{ITL log!level}
 
 \begin{itemize}
 \item \OSC{show} show or hides the console. The parameter is a boolean value.
@@ -1874,6 +1876,12 @@ ITLLog : 'show'  int32
 \item \OSC{wrap} control line wrapping of the console. The parameter is a boolean value.
 \item \OSC{write} write the \OSC{arg} list formatted as a string to the log window.
 \item \OSC{save} save the current log content to a file. The parameter is a file name. When expressed as a relative path, the file is saved under the current application root path.
+\item \OSC{level} set the log level. Expected values are: 
+\begin{itemize}
+\item 0 : no log
+\item 1 : log errors (default value)
+\item 2 : log errors and output of \OSC{get} messages
+\end{itemize}
 \end{itemize}
 
 
