@@ -35,6 +35,7 @@
 
 #include "EventsAble.h"
 #include "IAppl.h"
+#include "IApplVNodes.h"
 #include "IGlue.h"
 #include "IMessage.h"
 #include "IMessageTranslator.h"
@@ -956,6 +957,16 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 	if (msgs->list().size()) {
 		try {
 			oscout << msgs;
+			IAppl* appl = (IAppl*) getAppl();
+			if (appl) {
+				IApplLog* log = appl->getLogWindow();
+				if (log && log->acceptMsgs()) {
+					msgs->list().set ("", "\n");
+					stringstream sstr;
+					sstr <<  msgs->list();			// and print it to the string stream
+					log->print (sstr.str().c_str());
+				}
+			}
 		}
 		catch (exception& e) {
 			ITLErr << "while sending osc msg: " << e.what() << ITLEndl;
