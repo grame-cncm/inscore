@@ -84,7 +84,7 @@ bool SlaveMapUpdater::needupdate (IObject* o)
 void SigModified::updateTo (IGraphicSignal* gs)
 {
 	if (gs->getSignal()->getState()) {
-		gs->setState (IObject::kModified);
+		gs->setModified();
 	}
 }
 

@@ -133,6 +133,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		 */
 		MsgHandler::msgStatus genericExport(const IMessage* msg, bool drawChildren);
 
+		/// \brief propagates modification state up to parents
+		virtual void	propagateSubModified ();
+
+
 	protected:
 		std::string fTypeString;		///< the type string
 
@@ -251,6 +255,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 				
 		/// \brief sets the object global modification state \see getState
 		virtual	void	setState (state s);
+		/// \brief sets the object modification state and propagate \c kSubModified up
+		virtual	void	setModified ();
 
 		/// \brief returns the object data modification state
 				bool			newData () const			{ return fNewData; }

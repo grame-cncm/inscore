@@ -107,7 +107,7 @@ void IUrlIntermediateObject::updateFileSucceded()
         // We pass all  the informations to the new object
         fParent->add(obj);
         transferAttributes(obj);
-        obj->setState(IObject::kModified);
+        obj->setModified();
         
         TFile * file = dynamic_cast<TFile*>((IObject*)obj);
         if (file)

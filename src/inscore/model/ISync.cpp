@@ -222,7 +222,7 @@ void ISync::sync(const SIObject& slave, SMaster master)
             fMasters2Slaves.insert(std::pair<SIObject, std::vector<SIObject> >(master->getMaster(), slaves));
         }
 		slave->modify();
-		slave->setState(IObject::kModified);
+		slave->setModified();
 		slave->setdyMsgHandler(master);
 		fModified = true;
 	}
@@ -268,7 +268,7 @@ void ISync::remove(SIObject slave, SMaster m)
     
     slave->setdyMsgHandler();
     slave->modify();
-    slave->setState(IObject::kModified);
+    slave->setModified();
     fModified = true;
 }
 

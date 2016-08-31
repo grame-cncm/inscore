@@ -53,7 +53,7 @@ int IObjectDebug::execute (const IMessage* msg)
 {
 	int status = IObject::execute(msg);
 	if (status & MsgHandler::kProcessed)
-		fParent->setState (kModified);
+		fParent->setModified();
 	return status;
 }
 

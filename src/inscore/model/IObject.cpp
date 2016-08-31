@@ -315,10 +315,9 @@ void IObject::timeAble()
 //--------------------------------------------------------------------------
 void IObject::delsubnodes()
 {
-	setState(kSubModified);
 	for (unsigned int i=0; i < elements().size(); i++) {
 		elements()[i]->del();
-		elements()[i]->setState(kModified);
+		elements()[i]->setModified();
 	}
 }
 
@@ -465,10 +464,16 @@ const IObject * IObject::getRoot()	const	{ return fParent ? fParent->getRoot() :
 IObject * IObject::getRoot()				{ return fParent ? fParent->getRoot() : this; }
 
 //--------------------------------------------------------------------------
-void IObject::setState (state s)
-{
-	fState |= s;
-}
+void IObject::setState (state s)			{ fState |= s; }
+void IObject::setModified ()				{ setState(kModified); propagateSubModified(); }
+
+//--------------------------------------------------------------------------
+void IObject::propagateSubModified ()	{
+	if (fParent) {
+		fParent->setState(kSubModified);
+		fParent->propagateSubModified();
+	}
+};
 
 //--------------------------------------------------------------------------
 void IObject::cleanup ()
@@ -688,7 +693,7 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 					IObject * target = targets[i];
 					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
 					if (result & MsgHandler::kProcessed) {
-						target->setState(IObject::kModified);		// sets the modified state of the subnode
+						target->setModified();									// sets the modified state of the subnode
 					}
 				}
 			}
@@ -698,18 +703,18 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 			else result = IProxy::execute (translated ? translated : msg, beg, this);
 		}
 	}
-	if (result & MsgHandler::kProcessed)
-    {
-#ifndef WIN32
-#warning check why childrens state is forced to modified
-#endif
-		size_t n = elements().size();
-		for (size_t i = 0; i < n; i++)
-        {
-            elements()[i]->setState(kModified);
-        }
-		setState(IObject::kSubModified);
-	}
+//	if (result & MsgHandler::kProcessed)
+//    {
+//#ifndef WIN32
+//#warning check why childrens state is forced to modified
+//#endif
+//		size_t n = elements().size();
+//		for (size_t i = 0; i < n; i++)
+//        {
+//            elements()[i]->setState(kModified);
+//        }
+//		setState(IObject::kSubModified);
+//	}
     return result;
 }
 

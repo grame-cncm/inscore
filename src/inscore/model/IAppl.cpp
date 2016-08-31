@@ -364,13 +364,14 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 		tail = OSCAddress::addressTail(i->second.first);
 	}
 
-	if (tail.size()) 		// application is not the final destination of the message
+	if (tail.size()) {		// application is not the final destination of the message
 		status = IObject::processMsg(head, tail, msg);
+	}
 	
 	else if (match(head)) {			// the message is for the application itself
 		status = execute(msg);
 		if (status & MsgHandler::kProcessed)
-			setState(IObject::kModified);
+			setModified();
 	}
 	if ((status == MsgHandler::kProcessed) || (status == MsgHandler::kProcessedNoChange))
 		return status;
