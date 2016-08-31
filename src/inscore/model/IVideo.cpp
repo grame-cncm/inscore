@@ -82,10 +82,10 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 }
 
 //--------------------------------------------------------------------------
-void IVideo::setPlay (bool state)		{ fPlaying = state; setState(kModified); }
-void IVideo::setVolume (float vol)		{ fVolume = vol; setState(kModified); }
-void IVideo::setRate (float rate)		{ fRate = rate; fRateModified = true; setState(kModified); }
-void IVideo::setVDate (long date)		{ fCDate = fVDate = int(date); fDateModified=true; setState(kModified); }
+void IVideo::setPlay (bool state)		{ fPlaying = state;  }
+void IVideo::setVolume (float vol)		{ fVolume = vol;  }
+void IVideo::setRate (float rate)		{ fRate = rate; fRateModified = true;  }
+void IVideo::setVDate (long date)		{ fCDate = fVDate = int(date); fDateModified=true;  }
 void IVideo::setIDate (long date)		{ fCDate = int(date); }
 
 void IVideo::cleanup ()
