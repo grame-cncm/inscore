@@ -1,2 +1,0 @@
-/ITL/scene  export
-expr ENDSCRIPT 
