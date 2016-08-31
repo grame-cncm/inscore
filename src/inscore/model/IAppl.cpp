@@ -200,8 +200,8 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fAltGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
 
 	fAltGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
-	fAltGetMsgHandlerMap["guido-version"]			= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
-	fAltGetMsgHandlerMap["musicxml-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
+	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
+	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 	fMsgHandlerMap[kstartBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
