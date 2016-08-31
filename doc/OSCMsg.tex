@@ -435,7 +435,7 @@ Rotating an object graphic on the \OSC{z} axis.
 \note{} \OSC{angle} and \OSC{rotatez} are equivalent. \OSC{angle} has been introduced before the transformation messages and is maintained for compatibility reasons.
 
 %-------------------------------
-%:Color messages
+%:    Color messages
 \sublevel{Color messages}
 \label{colormsg}
 
@@ -571,7 +571,7 @@ Moving a color in the RGBA space:
 
 
 %-------------------------------
-%:  Pen control
+%:    Pen control
 \sublevel{Pen control}
 
 Pen messages accepted by all the components and result in 2 different behaviors:
@@ -620,7 +620,7 @@ Setting a rectangle border width and color:
 }
 
 %-------------------------------
-%:  'effect' messages
+%:    The 'effect' messages
 \sublevel{The 'effect' messages}
 \label{effectmsg}
 
@@ -689,6 +689,37 @@ The blur radius should be given as an int32 value. By default, the blur radius i
 Setting a shadow effect on \OSC{myObject}. \\
 The shadow offset is (10,10) pixels, the color is a transparent grey (100,100,100, 50) and the blur is 8 pixels.
 \sample{/ITL/scene/myObject effect shadow 10 10 100 100 100 50 8;}
+
+%-------------------------------
+%:    The 'edit' message
+\sublevel{The 'edit' message}
+\label{editmsg}
+
+The \OSC{edit} message opens a small editor that allows to edit the target object attributes.
+
+\begin{rail}
+effectMsg : 'edit' ( [1] | 
+					 [2] ( attributes +) )
+\end{rail}
+\index{Common messages!edit}
+
+\begin{itemize}
+\item \textbf{1}: without argument, the editor is initalized with all the target object attributes only.
+\item \textbf{2}: using a list of attributes, the editor is initalized with the target object corresponding attributes.
+\end{itemize}
+
+Each object maintains the current content of the editor, that is initialized at first \OSC{edit} message or when this content is cleared. Successive call to \OSC{edit} will preserve the editor content unless it is cleared.
+
+\note Since the editor preserves its content, it doesn't take account of changes that may result from received messages and thus may not reflect the target object changes. To synchronize the editor content with the current attributes values, you can clear the editor content, which will refresh the attributes to their current values.
+
+\note Although initialized with the target object attributes, the editor supports arbitrary INScore messages, i.e. addressed to any other object or even making use of extended OSC addresses.
+
+\example \\
+Editing an object on double click:
+\sample{/ITL/scene/myObject watch doubleClick (/ITL/scene/myObject edit);}
+Editing some specific attributes:
+\sample{/ITL/scene/myObject watch doubleClick (/ITL/scene/myObject edit x y);}
+
 
 
 %===============================
