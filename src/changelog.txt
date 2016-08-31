@@ -18,10 +18,10 @@ Version 1.20
 - new video specific messages and management: the video time is now independent from the 
   inscore object time. 
 - gmn objects set: output correct error message in case of syntax error
-- bug in debug name corrected (was not removed)
+- save msg output changed: a scene emit the 'new' message, static info nodes (log, stat, javascript...)
+- bug in debug name corrected (was not removed from graphic space)
 - bug in polygon position corrected (was not centered on 0 0) - use /ITL compatibility 
   to preserve previous behaviour
-- save msg output changed: a scene emit the 'new' message, static info nodes (log, stat, javascript...)
 - crash bug corrected: occured when lauching inscore from a secondary screen
 
 ----------------------------------------------------
