@@ -703,18 +703,6 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 			else result = IProxy::execute (translated ? translated : msg, beg, this);
 		}
 	}
-//	if (result & MsgHandler::kProcessed)
-//    {
-//#ifndef WIN32
-//#warning check why childrens state is forced to modified
-//#endif
-//		size_t n = elements().size();
-//		for (size_t i = 0; i < n; i++)
-//        {
-//            elements()[i]->setState(kModified);
-//        }
-//		setState(IObject::kSubModified);
-//	}
     return result;
 }
 
