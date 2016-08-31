@@ -16,6 +16,7 @@ Version 1.20
 - new 'edit' message supported by all objects: opens a small editor.
 - new video specific messages and management: the video time is now independent from the 
   inscore object time. 
+- gmn objects set: output correct error message in case of syntax error
 - bug in debug name corrected (was not removed)
 - bug in polygon position corrected (was not centered on 0 0) - use /ITL compatibility 
   to preserve previous behaviour

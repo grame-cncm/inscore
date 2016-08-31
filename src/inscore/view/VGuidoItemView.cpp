@@ -176,7 +176,6 @@ bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
 			guidoCode->setGRHandler (fGuidoItem->getGRHandler());
 			ret = true;
 		}
-		else ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
     }
     else
     {
@@ -192,9 +191,9 @@ bool VGuidoItemView::gmnUpdate (IGuidoCode* guidoCode)
                 if ( fGuidoItem->setGMNCode( VApplView::toQString( converted.str().c_str() ) ) )
                     ret = true;
         }
-        else ITLErr << guidoCode->getOSCAddress() << "invalid gmn code:" << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
     }
 	if (ret) guidoCode->setPageCount(GuidoGetPageCount (fGuidoItem->getGRHandler()));
+	else ITLErr << guidoCode->getOSCAddress() << "invalid gmn code " << fGuidoItem->getLastErrorMessage().toUtf8().data() << ITLEndl;
 	return ret;
 }
 

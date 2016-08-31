@@ -365,10 +365,11 @@ void IGuidoPianoRoll::updatePianoRoll()
 	if(!fArHandler){
 		int line;
 		int col;
-		GuidoParserGetErrorCode(parser, line, col, 0);
+		const char * msg;
+		GuidoParserGetErrorCode(parser, line, col, &msg);
 		stringstream sstr;
-		sstr << " (line " << line << ", col " << col << ")";
-		ITLErr << getOSCAddress() << "invalid gmn code at" << sstr.str()<< ": \""<< fGMN <<'"'<< ITLEndl;
+		sstr << "line " << line << ", col " << col << ": " << msg;
+		ITLErr << getOSCAddress() << "invalid gmn code " << sstr.str() << ITLEndl;
 		return ;
 	}
 	GuidoCloseParser(parser);
