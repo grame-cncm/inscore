@@ -107,6 +107,7 @@ extern const char* khsb_SetMethod;
 extern const char* khue_GetSetMethod;
 extern const char* kin_GetMethod;
 extern const char* kkeyboard_GetSetMethod;
+extern const char* klevel_GetSetMethod;
 extern const char* kload_SetMethod;
 extern const char* klock_GetSetMethod;
 extern const char* kmap_GetSetMethod;
@@ -172,7 +173,11 @@ extern const char* ktempo_GetSetMethod;
 extern const char* kticks_GetSetMethod;
 extern const char* kvdate_GetSetMethod;
 extern const char* kvduration_GetMethod;
+
 extern const char* kversion_GetMethod;
+extern const char* kguidoVersion_GetMethod;
+extern const char* kmusicxmlVersion_GetMethod ;
+
 extern const char* kvideoMap_GetSetMethod;
 extern const char* kvideoMapf_SetMethod;
 extern const char* kvoiceColor_GetSetMethod;
