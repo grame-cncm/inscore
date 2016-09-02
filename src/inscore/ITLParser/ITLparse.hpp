@@ -54,12 +54,12 @@
      ENDSCRIPT = 270,
      VARSTART = 271,
      VARIABLE = 272,
-     VARIABLEPOSTINC = 273,
-     VARIABLEPOSTDEC = 274,
-     VARIABLEPREINC = 275,
-     VARIABLEPREDEC = 276,
-     LEFTPAR = 277,
-     RIGHTPAR = 278,
+     LEFTPAR = 273,
+     RIGHTPAR = 274,
+     VARIABLEPOSTINC = 275,
+     VARIABLEPOSTDEC = 276,
+     VARIABLEPREINC = 277,
+     VARIABLEPREDEC = 278,
      COLON = 279,
      COMMA = 280,
      POINT = 281,
@@ -83,10 +83,11 @@
      MINUS = 299,
      NEG = 300,
      MODULO = 301,
-     POSTDEC = 302,
-     POSTINC = 303,
-     PREDEC = 304,
-     PREINC = 305
+     NEQ = 302,
+     POSTDEC = 303,
+     POSTINC = 304,
+     PREDEC = 305,
+     PREINC = 306
    };
 #endif
 /* Tokens.  */
@@ -105,12 +106,12 @@
 #define ENDSCRIPT 270
 #define VARSTART 271
 #define VARIABLE 272
-#define VARIABLEPOSTINC 273
-#define VARIABLEPOSTDEC 274
-#define VARIABLEPREINC 275
-#define VARIABLEPREDEC 276
-#define LEFTPAR 277
-#define RIGHTPAR 278
+#define LEFTPAR 273
+#define RIGHTPAR 274
+#define VARIABLEPOSTINC 275
+#define VARIABLEPOSTDEC 276
+#define VARIABLEPREINC 277
+#define VARIABLEPREDEC 278
 #define COLON 279
 #define COMMA 280
 #define POINT 281
@@ -134,10 +135,11 @@
 #define MINUS 299
 #define NEG 300
 #define MODULO 301
-#define POSTDEC 302
-#define POSTINC 303
-#define PREDEC 304
-#define PREINC 305
+#define NEQ 302
+#define POSTDEC 303
+#define POSTINC 304
+#define PREDEC 305
+#define PREINC 306
 
 
 
@@ -157,7 +159,7 @@ typedef union YYSTYPE
     inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 161 "ITLparse.hpp"
+#line 163 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

@@ -38,6 +38,7 @@ HEADERS +=  $$PARSER/ITLparser.h \
 	    $$ITL/controller/IMessage.h \
 	    $$MAP/src/misc/rational.h \
 	    $$ITL/scripting/TScripting.h \
+	    $$ITL/scripting/TMaths.h \
 	    $$ITL/lib/Tools.h
 
 SOURCES +=  $$PARSER/ITLparser.cpp \
@@ -46,6 +47,7 @@ SOURCES +=  $$PARSER/ITLparser.cpp \
 	    $$ITL/controller/IMessage.cpp\
 	    $$MAP/src/misc/rational.cpp \
 	    $$ITL/scripting/TScripting.cpp \
+	    $$ITL/scripting/TMaths.cpp \
 	    $$ITL/lib/Tools.cpp
 
 ##############################

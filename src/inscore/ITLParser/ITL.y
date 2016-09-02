@@ -48,7 +48,8 @@
 %token ERR
 %token ENDEXPR ENDSCRIPT
 
-%token VARSTART VARIABLE VARIABLEPOSTINC VARIABLEPOSTDEC VARIABLEPREINC VARIABLEPREDEC LEFTPAR RIGHTPAR
+%token VARSTART VARIABLE LEFTPAR RIGHTPAR
+%token VARIABLEPOSTINC VARIABLEPOSTDEC VARIABLEPREINC VARIABLEPREDEC
 %token COLON COMMA POINT HOSTNAME IPNUM
 
 %token EXPRESSION
@@ -57,9 +58,8 @@
 %token JSCRIPT
 
 %token ADD SUB DIV MULT QUEST MIN MAX GREATER GREATEREQ LESS LESSEQ EQ MINUS NEG MODULO ;
- /*%token PREINC PREDEC POSTINC POSTDEC;*/
 
-%left GREATER GREATEREQ LESS LESSEQ EQ
+%left GREATER GREATEREQ LESS LESSEQ EQ NEQ
 %left NEG PREINC PREDEC POSTINC POSTDEC MINUS ADD SUB
 %left MULT DIV MODULO
 
@@ -264,18 +264,21 @@ mathexpr	: param							{ $$ = new inscore::IMessage::argslist; $$->push_back (*$
 			| MAX LEFTPAR mathmax RIGHTPAR	{ $$ = $3; debug("mathexpr", "MAX"); }
 			| LEFTPAR mathbool QUEST mathexpr COLON mathexpr RIGHTPAR { $$ = $2 ? (delete $6, $4) : (delete $4, $6); debug("mathexpr", "?"); } 
 			;
-
-mathmin 	: mathexpr	mathexpr			{ $$ = context->math().less(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
-			| mathmin mathexpr				{ $$ = context->math().less(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
+				
+mathmin 	: mathexpr						{ $$ = context->math().min(*$1); delete $1; }
+			| mathmin mathexpr				{ inscore::IMessage::argslist* min = context->math().min(*$2);
+											  $$ = context->math().less(*$1, *min) ? (delete min, $1) :  (delete $1, min); delete $2; }
 			;
 
-mathmax 	: mathexpr	mathexpr			{ $$ = context->math().greater(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
-			| mathmax mathexpr				{ $$ = context->math().greater(*$1, *$2) ? (delete $2, $1) : (delete $1, $2); }
+mathmax 	: mathexpr						{ $$ = context->math().max(*$1); delete $1; }
+			| mathmax mathexpr				{ inscore::IMessage::argslist* max = context->math().max(*$2);
+											  $$ = context->math().greater(*$1, *max) ? (delete max, $1) :  (delete $1, max); delete $2; }
 			;
 
 mathbool 	: mathexpr						{ $$ = context->math().tobool(*$1); 		delete $1;}
 			| NEG mathexpr					{ $$ = (context->math().tobool(*$2) ? 0 : 1); delete $2; }
 			| mathexpr EQ mathexpr 			{ $$ = context->math().equal(*$1, *$3);     delete $1; delete $3; }
+			| mathexpr NEQ mathexpr 		{ $$ = !context->math().equal(*$1, *$3);     delete $1; delete $3; }
 			| mathexpr GREATER mathexpr 	{ $$ = context->math().greater(*$1, *$3);   delete $1; delete $3; }
 			| mathexpr GREATEREQ mathexpr 	{ $$ = context->math().greatereq(*$1, *$3); delete $1; delete $3; }
 			| mathexpr LESS mathexpr 		{ $$ = context->math().less(*$1, *$3); 	  	delete $1; delete $3; }

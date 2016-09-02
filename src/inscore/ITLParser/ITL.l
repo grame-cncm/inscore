@@ -139,18 +139,15 @@ EOL		[\x0a\x0d]
  /*	math operators */
  /* ----------------------------------------- */
 "+"				return ADD;
- /*{SPACE}"++"		return PREINC;*/
- /*"++"			return POSTINC;*/
 "-"				return MINUS;
- /*{SPACE}"--"		return PREDEC;*/
- /*"--"			return POSTDEC;*/
 "-"{SPACE}		return SUB;
-{SPACE}"/"		return DIV;
+"/"				return DIV;
 "*"				return MULT;
 "%"				return MODULO;
 {SPACE}"?"{SPACE} return QUEST;
 "!"				return NEG;
 "=="			return EQ;
+"!="			return NEQ;
 ">"				return GREATER;
 ">="			return GREATEREQ;
 "<"				return LESS;
@@ -179,7 +176,7 @@ EOL		[\x0a\x0d]
 "$"{STARTID}{IDCHAR}*"++"		yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPOSTINC;
 "$"{STARTID}{IDCHAR}*"--"		yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPOSTDEC;
 "++$"{STARTID}{IDCHAR}*			yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPREINC;
-"--$"{STARTID}{IDCHAR}*			yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPREDEC;
+"--$"{STARTID}{IDCHAR}*			yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPREDEC; 
 
  /* ----------------------------------------- */
  /*	quoted strings */
@@ -230,7 +227,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	OSC address */
  /* ----------------------------------------- */
-{SPACE}*"/"{IDCHAR}+								{ yyextra->fText = yytext; BEGIN OSCSECTION; }
+"/"{IDCHAR}+										{ yyextra->fText = yytext; BEGIN OSCSECTION; }
 <OSCSECTION>"/"										{ yyextra->fText += yytext; }
 <OSCSECTION>"$"?{STARTID}{IDCHAR}*					{ yyextra->fText += yytext; }
 <OSCSECTION>{RECHAR}+								{ yyextra->fText += yytext; }

@@ -46,6 +46,7 @@ class TMaths
 //	bool check (const IMessage::argslist& args) const;
 
 	float		tofloat (const IMessage::argPtr& arg) const;
+	int			toint (const IMessage::argPtr& arg) const;
 	std::string tostring (const IMessage::argPtr& args) const;
 	
 	typedef bool (TMaths::*booloperation) (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
@@ -72,7 +73,7 @@ class TMaths
 	bool	tobool		(const IMessage::argPtr& arg) const;
 	bool	equal		(const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
 	bool	greater		(const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
-	bool	greatereq		(const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
+	bool	greatereq	(const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
 	bool	less		(const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
 	bool	lesseq		(const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
 
@@ -88,6 +89,8 @@ class TMaths
 		IMessage::argslist* dec		(const IMessage::argslist& arg) const;
 		IMessage::argslist*	add		(IMessage::argslist* arg1, IMessage::argslist* arg2) const;
 		IMessage::argslist*	minus	(IMessage::argslist* arg) const;
+		IMessage::argslist*	max	    (const IMessage::argslist& arg) const;
+		IMessage::argslist*	min	    (const IMessage::argslist& arg) const;
 		IMessage::argslist*	sub		(IMessage::argslist* arg1, IMessage::argslist* arg2) const;
 		IMessage::argslist*	mult	(IMessage::argslist* arg1, IMessage::argslist* arg2) const;
 		IMessage::argslist*	div		(IMessage::argslist* arg1, IMessage::argslist* arg2) const;

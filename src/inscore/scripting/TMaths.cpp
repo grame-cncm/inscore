@@ -25,6 +25,7 @@
 
 
 #include <string>
+#include <iostream>
 #include <sstream>
 
 #include "TMaths.h"
@@ -50,6 +51,15 @@ float TMaths::tofloat (const IMessage::argPtr& arg) const {
 	string empty("");
 	if (arg->isType<string>())	return float(arg->value(empty).size());
 	return 0.f;
+}
+
+int TMaths::toint (const IMessage::argPtr& arg) const {
+	if (arg->isType<int>())	return arg->value(0);
+	if (arg->isType<float>())	return int(arg->value(0.f));
+	
+	string empty("");
+	if (arg->isType<string>())	return int(arg->value(empty).size());
+	return 0;
 }
 
 std::string TMaths::tostring (const IMessage::argPtr& arg) const {
@@ -102,15 +112,41 @@ IMessage::argslist*	TMaths::apply (operation op, const IMessage::argslist& arg1,
 		ret->push_back (new IMsgParam<string>("TMaths: unexpected empty args"));
 		return ret;
 	}
-
-	bool loop1 = true, loop2 = true;
-	for (size_t i=0, j=0; loop1 || loop2; ) {
-		ret->push_back( (this->*op) (arg1[i], arg2[j]) );
-		if (i < (n1 - 1)) i++;
-		else loop1 = false;
-		if (j < (n2 - 1)) j++;
-		else loop2 = false;
+	
+	if (n1 == 1) {
+		for (size_t i=0; i < n2; i++)
+			ret->push_back( (this->*op) (arg1[0], arg2[i]) );
+		return ret;
 	}
+	
+	if (n2 == 1) {
+		for (size_t i=0; i < n1; i++)
+			ret->push_back( (this->*op) (arg1[i], arg2[0]) );
+		return ret;
+	}
+
+	size_t min=n1, max=n2;
+	const IMessage::argslist* larger = &arg2;
+	if ( n1 > n2) {						// find the largest list
+		min = n2;
+		max = n1;
+		larger = &arg1;
+	}
+	for (size_t i=0; i < min; i++) {
+		ret->push_back( (this->*op) (arg1[i], arg2[i]) );
+	}
+	for (size_t i=min; i < max; i++) {
+		ret->push_back( (*larger)[i] );
+	}
+
+//	bool loop1 = true, loop2 = true;
+//	for (size_t i=0, j=0; loop1 || loop2; ) {
+//		ret->push_back( (this->*op) (arg1[i], arg2[j]) );
+//		if (i < (n1 - 1)) i++;
+//		else loop1 = false;
+//		if (j < (n2 - 1)) j++;
+//		else loop2 = false;
+//	}
 	return ret;
 }
 IMessage::argslist*	TMaths::apply (unaryoperation op, const IMessage::argslist& args) const
@@ -140,18 +176,63 @@ IMessage::argPtr TMaths::inc (const IMessage::argPtr& arg) const
 {
 	if (arg->isType<int>()) return new IMsgParam<int>(arg->value(0) + 1);
 	if (arg->isType<float>()) return new IMsgParam<float>(-arg->value(0.f) + 1);
-	return new IMsgParam<string>("TMaths: unsupported type for ++");
+//	if (arg->isType<string>()) return arg;
+	return arg;
 }
 IMessage::argPtr TMaths::dec (const IMessage::argPtr& arg) const
 {
 	if (arg->isType<int>()) return new IMsgParam<int>(arg->value(0) - 1);
 	if (arg->isType<float>()) return new IMsgParam<float>(-arg->value(0.f) - 1);
-	return new IMsgParam<string>("TMaths: unsupported type for ++");
+//	if (arg->isType<string>()) return arg;
+	return arg;
 }
 IMessage::argslist* TMaths::inc (const IMessage::argslist& arg) const
 				{ return apply (&TMaths::inc, arg); }
 IMessage::argslist* TMaths::dec (const IMessage::argslist& arg) const
 				{ return apply (&TMaths::dec, arg); }
+
+//--------------------------------------------------------------------------------------------
+// max and min
+//--------------------------------------------------------------------------------------------
+IMessage::argslist*	TMaths::max	(const IMessage::argslist& arg) const
+{
+	IMessage::argslist* ret = new IMessage::argslist();
+	size_t n = arg.size();
+	if (!n) return ret;
+
+	
+	IMessage::argPtr max = arg[0];
+	float val = tofloat(max);
+	for (size_t i = 1; i < n; i++) {
+		float vali = tofloat(arg[i]);
+		if (vali > val) {
+			max = arg[i];
+			val = vali;
+		}
+	}
+	ret->push_back (max);
+	return ret;
+}
+
+IMessage::argslist*	TMaths::min	(const IMessage::argslist& arg) const
+{
+	IMessage::argslist* ret = new IMessage::argslist();
+	size_t n = arg.size();
+	if (!n) return ret;
+
+	
+	IMessage::argPtr min = arg[0];
+	float val = tofloat(min);
+	for (size_t i = 1; i < n; i++) {
+		float vali = tofloat(arg[i]);
+		if (vali < val) {
+			min = arg[i];
+			val = vali;
+		}
+	}
+	ret->push_back (min);
+	return ret;
+}
 
 //--------------------------------------------------------------------------------------------
 // addition
@@ -179,6 +260,7 @@ IMessage::argPtr TMaths::sub (const IMessage::argPtr& arg1, const IMessage::argP
 	switch (t) {
 		case kInt:		return new IMsgParam<int>(arg1->value(0) - arg2->value(0));
 		case kFloat:	return new IMsgParam<float>(tofloat(arg1) - tofloat(arg2));
+		case kString:	return new IMsgParam<int>(toint(arg1) - toint(arg2));
 		default:		return new IMsgParam<string>("TMaths: unsupported type for sub");
 	}
 }
@@ -186,6 +268,7 @@ IMessage::argPtr TMaths::minus (const IMessage::argPtr& arg) const
 {
 	if (arg->isType<int>()) return new IMsgParam<int>(-arg->value(0));
 	if (arg->isType<float>()) return new IMsgParam<float>(-arg->value(0.f));
+	if (arg->isType<string>()) return arg;
 	return new IMsgParam<string>("TMaths: unsupported type for -");
 }
 IMessage::argslist*	TMaths::sub	(IMessage::argslist* arg1, IMessage::argslist* arg2) const
@@ -202,6 +285,7 @@ IMessage::argPtr TMaths::mult (const IMessage::argPtr& arg1, const IMessage::arg
 	switch (t) {
 		case kInt:		return new IMsgParam<int>(arg1->value(0) * arg2->value(0));
 		case kFloat:	return new IMsgParam<float>(tofloat(arg1) * tofloat(arg2));
+		case kString:	return new IMsgParam<int>(toint(arg1) * toint(arg2));
 		default:		return new IMsgParam<string>("TMaths: unsupported type for sub");
 	}
 }
@@ -226,8 +310,22 @@ IMessage::argPtr TMaths::div (const IMessage::argPtr& arg1, const IMessage::argP
 			if (val) return new IMsgParam<float>(tofloat(arg1) / val);
 		}
 		break;
+		case kString: {
+			bool performfloat = arg1->isType<float>() || arg2->isType<float>();
+			if (performfloat) {
+				float val = tofloat(arg2);
+				if (val)
+					return new IMsgParam<float>(tofloat(arg1) / val);
+			}
+			else {
+				int val = toint(arg2);
+				if (val)
+					return new IMsgParam<int>(toint(arg1) / val);
+			}
+		}
+		break;
 		default:
-			return new IMsgParam<string>("TMaths: unsupported type for sub");
+			cerr << "TMaths::div: unknown arguments type" << endl;
 	}
 	return new IMsgParam<string>("TMaths exception: division by 0");
 }
@@ -240,21 +338,8 @@ IMessage::argslist*	TMaths::div	(IMessage::argslist* arg1, IMessage::argslist* a
 //--------------------------------------------------------------------------------------------
 IMessage::argPtr TMaths::mod (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
 {
-	TType t = type (arg1, arg2);
-	switch (t) {
-		case kInt: {
-			int val = arg2->value(0);
-			if (val) return new IMsgParam<int>(arg1->value(0) % val);
-		}
-		break;
-		case kFloat: {
-			float val = tofloat(arg2);
-			if (val) new IMsgParam<string>("TMaths: invalid operand to '%' expression");
-		}
-		break;
-		default:
-			return new IMsgParam<string>("TMaths: unsupported type for sub");
-	}
+	int val2 = toint(arg2);
+	if (val2) return new IMsgParam<int>(toint(arg1) % val2);
 	return new IMsgParam<string>("TMaths exception: division by 0");
 }
 
@@ -284,6 +369,7 @@ bool TMaths::tobool (const IMessage::argPtr& arg) const
 //--------------------------------------------------------------------------------------------
 bool TMaths::tobool (const IMessage::argslist& args) const
 {
+	if (!args.size()) return false;				// an empty array is false
 	for (size_t i = 0; i < args.size(); i++) {
 		if (!tobool(args[i])) return false;
 	}
@@ -292,7 +378,21 @@ bool TMaths::tobool (const IMessage::argslist& args) const
 
 bool TMaths::equal (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
 {
-	return false;
+	TType t = type (arg1, arg2);
+	switch (t) {
+		case kInt:		return arg1->value(0) == arg2->value(0);
+		case kFloat:	return tofloat(arg1) == tofloat(arg2);
+		case kString:
+			if (arg1->isType<string>() && arg2->isType<string>()) {
+				string empty;
+				return arg1->value(empty) == arg2->value(empty);
+			}
+			else {
+				return toint(arg1) == toint(arg2);
+			}
+//		default:		return new IMsgParam<string>("TMaths: unsupported type for sub");
+		default:		return false;
+	}
 }
 bool TMaths::greater (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
 									{ return tofloat(arg1) > tofloat(arg2); }
