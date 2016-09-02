@@ -1500,11 +1500,11 @@ Supported video formats are highly dependent on the platform, as well as the vid
 
 
 %-------------------------------
-%:  svg
+%:  SVG Objects
 \sublevel{SVG Objects}
 \label{svgobjects}
 
-The following message is accepted by the components types \OSC{svg | svgf}.
+The following message is accepted by the SVG components (types \OSC{svg | svgf}).
 
 \begin{rail}
 svgMsg :		'animate' int32
@@ -1520,6 +1520,23 @@ svgMsg :		'animate' int32
 
 \note\\
 SVG objects are rendered using the Qt SVG Renderer and suffer the Qt limitations. For example and with Qt 5.5, xlinks are not supported.
+
+
+%-------------------------------
+%:  Rectangles
+\sublevel{Rectangles}
+\label{rectobjects}
+
+Rectangles (type \OSC{rect}) accept a \OSC{radius} message that can be used to draw rounded rectangles.
+\begin{rail}
+radiusMsg :		'radius' float32 float32
+\end{rail}
+\index{Specific messages! rect! radius}
+
+\begin{itemize}
+\item \OSC{radius}: followed by 2 values that specify the radius on the x and y axis (default is 0 0). The values express a percentage of the object dimensions, thus the value's range is [0, 100].
+\end{itemize} 
+
 
 %-------------------------------
 \sublevel{The 'grid' object}
