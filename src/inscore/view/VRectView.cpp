@@ -23,15 +23,27 @@
 
 */
 
+#include <QDebug>
 #include "VRectView.h"
 #include "IRect.h"
+#include "TRect.h"
 
 namespace inscore
 {
 
 //----------------------------------------------------------------------
-VRectView::VRectView(QGraphicsScene * scene, const IRect* h) 
-	: VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(h) )
+void GraphicsRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem * , QWidget *)
+{
+//	qDebug() << "GraphicsRoundedRectItem::paint using brush" << brush();
+	QRectF r = boundingRect();
+	painter->setBrush (brush());
+	painter->setPen (pen());
+	painter->drawRoundedRect(r, fXRadius, fYRadius, Qt::RelativeSize);
+}
+
+//----------------------------------------------------------------------
+VRectView::VRectView(QGraphicsScene * scene, const IRect* h)
+	: VMappedShapeView( scene , new MouseEventAble<GraphicsRoundedRectItem>(h) )
     {}
 
 //----------------------------------------------------------------------
@@ -42,6 +54,12 @@ void VRectView::updateView( IRect * rect  )
 	if ( newRect != item()->rect() )
 	{
 		item()->setRect( newRect );
+		itemChanged();
+	}
+	TFloatSize radius = rect->getRadius();
+	if (radius.width() != item()->getXRadius() || radius.height() != item()->getYRadius()) {
+		item()->setXRadius( radius.width() );
+		item()->setYRadius( radius.height() );
 		itemChanged();
 	}
 	VShapeView::updateView( rect );

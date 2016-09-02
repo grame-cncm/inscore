@@ -141,6 +141,7 @@ const char* kplay_GetSetMethod		= "play";			// Get Set
 const char* kport_GetSetMethod		= "port";			// Get Set
 const char* kpush_SetMethod			= "push";			// Set
 const char* kquit_SetMethod			= "quit";			// Set
+const char* kradius_GetSetMethod	= "radius";			// Get Set
 const char* krate_GetSetMethod		= "rate";			// Get Set
 const char* krcount_GetMethod		= "rcount";			// Get
 const char* kred_GetSetMethod		= "red";			// Get Set

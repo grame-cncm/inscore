@@ -142,6 +142,7 @@ extern const char* kcompatibility_GetSetMethod;
 extern const char* kpush_SetMethod;
 extern const char* kquit_SetMethod;
 extern const char* krate_GetSetMethod;
+extern const char* kradius_GetSetMethod;
 extern const char* krcount_GetMethod;
 extern const char* kred_GetSetMethod;
 extern const char* kread_SetMethod;

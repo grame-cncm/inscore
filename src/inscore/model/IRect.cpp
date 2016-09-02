@@ -25,6 +25,7 @@
 
 #include "IRect.h"
 #include "IMessage.h"
+#include "Methods.h"
 #include "Updater.h"
 
 using namespace std;
@@ -35,9 +36,11 @@ namespace inscore
 const string IRect::kRectType("rect");
 
 //--------------------------------------------------------------------------
-IRect::IRect( const std::string& name, IObject* parent ) : IRectShape(name, parent)
+IRect::IRect( const std::string& name, IObject* parent ) : IRectShape(name, parent), fRadius(0.f,0.f)
 { 
 	fTypeString = kRectType;
+	fMsgHandlerMap[kradius_GetSetMethod]		= TSetMethodMsgHandler<IRect, TFloatSize>::create(this, &IRect::setRadius);
+	fGetMsgHandlerMap[kradius_GetSetMethod]		= TGetParamMsgHandler<TFloatSize>::create(fRadius);
 }
 
 //--------------------------------------------------------------------------
