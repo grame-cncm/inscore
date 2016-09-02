@@ -1,0 +1,148 @@
+
+% !TEX root = MathRef.tex
+
+\newcommand{\inscoremathversion}{1.20}
+\newcommand{\mathstring}[1]		{\textit{string}(\OSC{#1})}
+\newcommand{\mathstrnum}[1]		{\textit{length}(\OSC{#1})}
+\newcommand{\mathsize}[1]		{\textit{size}(\OSC{#1})}
+\newcommand{\op}				{$op$}
+\newcommand{\todo}	[1]			{{\big [\texttt{\textbf{#1}}]}}
+
+%===============================
+%:Mathematical expressions
+\toplevel{Mathematical expressions}
+\label{mathExpr}
+
+Since INScore version \inscoremathversion , mathematical expressions have been introduced as messages arguments. These expressions allows to compute values at parsing time.
+
+%===============================
+%:    Operators
+\sublevel{Operators}
+
+Basic mathematical expressions are supported. They are listed below.
+\begin{rail}
+mathexpr:     [1] matharg '+' matharg
+			| [2] matharg '-' matharg
+			| [3] '-' matharg
+			| [4] matharg '*' matharg
+			| [5] matharg '/' matharg
+			| [6] matharg '\%' matharg
+			| [7] '(' mathexpr ')'
+			| [8] 'max' '(' mathargslist ')'
+			| [9] 'min' '(' mathargslist ')'
+			| [10]'(' mathbool '?' matharg ':' matharg ')'
+\end{rail}
+\index{Math expression!operators}
+
+\begin{itemize}
+\item \textbf{1}: addition.
+\item \textbf{2}: substraction.
+\item \textbf{3}: negation.
+\item \textbf{4}: multiplication.
+\item \textbf{5}: division.
+\item \textbf{6}: modulo.
+\item \textbf{7}: parenthesis, to be used for evaluation order.
+\item \textbf{8}: gives the maximum value.
+\item \textbf{9}: gives the minimum value.
+\item \textbf{10}: conditional form: returns the first \OSC{matharg} if \OSC{mathbool} is true, otherwise returns the second one.
+\end{itemize}
+
+\example\\
+Some simple mathematical expressions used as message parameters:
+\sample{/ITL/scene/myObject x 0.5 * 0.2;\\
+/ITL/scene/myObject y (\$var ? 1 : -1);
+}
+
+Boolean operations are the following:
+\begin{rail}
+mathbool:     [1] arg
+			| [2] '!' arg
+			| [3] arg '==' arg
+			| [4] arg '>' arg
+			| [5] arg '>=' arg
+			| [6] arg '<' arg
+			| [7] arg '<=' arg
+\end{rail}
+\index{Math expression!booleans}
+
+\begin{itemize}
+\item \textbf{1}: evaluate the argument as a boolean value.
+\item \textbf{2}: evaluate the argument as a boolean value and negates the result.
+\item \textbf{3}: check if the arguments are equal.
+\item \textbf{4}: check if the first argument is greater than the second one.
+\item \textbf{5}: check if the first argument is greater or equel to the second one.
+\item \textbf{6}: check if the first argument is less than the second one.
+\item \textbf{7}: check if the first argument is less or equal to the second one.
+\end{itemize}
+
+\example\\
+Compare two variables:
+\sample{/ITL/scene/myObject x (\$var1 > \$var2 ? 1 : -1);
+}
+
+
+%===============================
+%:    Arguments
+\sublevel{Arguments}
+\label{mathargs}
+
+Arguments of mathematical operations are the following:
+
+\begin{rail}
+matharg:      [1] 'param'
+			| [2] 'variable'
+			| [3] 'variable' ('++' | '--')
+			| [4] ('++' | '--') 'variable' 
+			| [5] 'msgvariable'
+			| [6] mathexpr
+\end{rail}
+\index{Math expression!arguments}
+\begin{itemize}
+\item \textbf{1}: any message parameter.
+\item \textbf{2}: a variable value.
+\item \textbf{3}: a variable that is post incremented or post decremented.
+\item \textbf{4}: a variable that is pre incremented or pre decremented.
+\item \textbf{5}: a message based variable.
+\item \textbf{6}: a mathematical expression.
+\end{itemize}
+
+
+
+%===============================
+%:    Polymorphism
+\sublevel{Polymorphism}
+\label{mathpoly}
+
+Since INScore's parameters are polymorphic, the semantic of the operations are to be defined notably when applied to non numeric arguments. Actually, a basic OSC message parameter type is between \OSC{int32}, \OSC{float32} and \OSC{string}. However, due to the extension of the scripting language, parameters could also be arrays of any type, including mixed types (e.g. resulting from variable declarations). 
+
+%===============================
+\subsublevel{Numeric values}
+
+For numeric arguments, automatic type conversion is applied with a precedence of \OSC{float32} i.e. when one of the argument's type is  \OSC{float32}, the result is also  \OSC{float32} (see Table \ref{table:mathopnum}).
+\begin{table}[htbp]  \centering  \begin{tabular}{@{} rlc @{}}    \hline    arg1 & arg2 & output\\     \hline    \OSC{int32}		&  	\OSC{int32}		& \OSC{int32} \\     \OSC{float32}	&  	\OSC{int32}		& \OSC{float32} \\     \OSC{int32}		&  	\OSC{float32}	& \OSC{float32} \\     \OSC{float32}	&  	\OSC{float32}	& \OSC{float32} \\     \hline  \end{tabular}  \caption{Numeric operations output}  \label{table:mathopnum}\end{table} 
+
+%===============================
+\subsublevel{Strings}
+For \OSC{string} parameters, we introduce a conversion operation \mathstrnum{string} that evaluates to \OSC{int32}, and that is applied depending on the operation type (see Tables \ref{table:mathopstr} and \ref{table:mathopstrnum}). Note that we'll refer to numeric values as \OSC{num} to represent \OSC{int32} or \OSC{float32} that are handled similarly in this context.
+
+\begin{table}[htbp]  \centering  \begin{tabular}{@{} rlc @{}}    \hline    operation & evaluates to & comment\\     \hline    \OSC{string} + \OSC{string} 		& \OSC{string} 						& concatenate the two strings \\     \OSC{string} \op\ \OSC{string} 		& \mathstrnum{string} \op\ \mathstrnum{string}& operates on strings length \\     									& where \op\ is in [- * / \%] 		& \\     -\OSC{string}  						& \OSC{string} 						& gives the string unchanged \\     @max(\OSC{string} \OSC{string})		& \OSC{string} 						& select the largest string \\     @min(\OSC{string} \OSC{string})		& \OSC{string} 						& select the smallest string \\     prefixed or postfixed \OSC{string}  & \OSC{string} 						& gives the string unchanged \\     \hline  \end{tabular}  \caption{Operations on strings}  \label{table:mathopstr}\end{table} 
+
+\begin{table}[htbp]  \centering  \begin{tabular}{@{} rlc @{}}    \hline    operation & evaluates to & comment\\     \hline    \OSC{string} + \OSC{num} 			& \OSC{string} + \mathstring{num} 	& \OSC{num} is converted to string \\     \OSC{num} + \OSC{string} 			& \mathstring{num} + \OSC{string} 	& " \\     \OSC{string} \op\ \OSC{num} 		& \mathstrnum{string} \op\ \OSC{num} & operates on numeric values \\     \OSC{num} \op\ \OSC{string} 		& \OSC{num} \op\ \mathstrnum{string} & " \\     									& where \op\ is in [- * / \%] 		& \\  	@max(\OSC{string} \OSC{num})		& @max(\mathstrnum{string} \OSC{num}) 	& " \\  	@min(\OSC{string} \OSC{num})		& @min(\mathstrnum{string} \OSC{num}) 	& " \\     \hline  \end{tabular}  \caption{Operations on strings and numeric values: 
+apart the '+' operator, strings are converted to numeric values using their length.}  \label{table:mathopstrnum}\end{table} 
+
+And finally, a boolean operation on \OSC{string} is evaluates as a boolean operation on \mathstrnum{string}.
+
+
+%===============================
+\subsublevel{Arrays}
+For arrays, the operation is distributed inside the array elements:
+$$ arg\ op\ [v_1\ ...\ v_n]  := [arg\ op\ v_1\ ...\ arg\ op\ v_n] $$
+or
+$$ [v_1\ ...\ v_n]\ op\ arg  := [v_1\ op\ arg\ ...\ v_n\ op\ arg] $$
+
+When both parameters are arrays, the operation is distributed from one array elements to the other array elements, up to the smaller array size:
+$$ i < j\quad \land \quad [a_1\ ...\ a_i]\ op\ [b_1\ ...\ b_j]  := [a_1\ op\ b_1\ ...\ v_i\ op\ b_i\ b_{i+1}\ ... \ b_j] $$
+$$ i > j\quad \land \quad [a_1\ ...\ a_i]\ op\ [b_1\ ...\ b_j]  := [a_1\ op\ b_1\ ...\ v_i\ op\ b_j\ a_{j+1}\ ... \ a_i] $$
+
+Boolean operations on arrays are evaluated as the logical $and$ of it's element's boolean values and returns false when the arrays sizes differ.
+
