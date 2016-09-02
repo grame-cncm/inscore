@@ -251,8 +251,6 @@
 ../../../regression/S-brushStyles/brushStyles2.inscore
 ../../../regression/S-complex-cursor/DROP-ME.inscore
 ../../../regression/S-complex-cursor/events.inscore
-../../../regression/S-faustDSP/noCompilerError.inscore
-../../../regression/S-faustDSP/syntaxError.inscore
 ../../../regression/S-graphsig-sinus/essai.inscore
 ../../../regression/S-graphsig-sinus/essaitha.inscore
 ../../../regression/S-graphsig-sinus/essaiythhsb.inscore
@@ -269,9 +267,6 @@
 ../../../regression/S-guidoStream/4.inscore
 ../../../regression/S-guidoStream/clear.inscore
 ../../../regression/S-guidoStream/DROP-ME.inscore
-../../../regression/S-log/errorScript.inscore
-../../../regression/S-log/errorScript2.inscore
-../../../regression/S-log/errorScript3.inscore
 ../../../regression/S-mouseEvent/mouse1.inscore
 ../../../regression/S-mouseEvent/mouse2.inscore
 ../../../regression/S-mouseEvent/mouse3.inscore

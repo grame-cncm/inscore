@@ -2,13 +2,15 @@
 /tata 2;
 /ITL/scene/* del;
 
-toto = 0;
+toto = 1;
 titi = 2;
 
 tata = @max( 3 5 2 0 8 9 1);
 a = (!$tata ? "false" : "true");
 c1 = 0 0 0;
-c2 = 100 100 100;
+c2 = 100 100 110;
+var = ( /ITL log write toto);
+
 /ITL/scene/toto1 set rect 1 1;
 /ITL/scene/toto1 x $toto - 2  "-> expecting" $toto " - 2";
 /ITL/scene/toto1 x2 ($toto ? -1 : 2); # 	"-> expecting" $toto "? -1 : 2";
@@ -36,7 +38,27 @@ c1 = $c1 + 1;
 /ITL/scene/toto1 totomoinsmoins $toto--;
 /ITL/scene/toto1 toto $toto;
 /ITL/scene/toto1 toto $x;
+/ITL/scene/o? max @max( 10*50 $c2 );
+/ITL/scene/o? min @min( $c1 $c2 );
+/ITL/scene/text min @min( toto oizeroiu );
+/ITL/scene/text max @max ( toto oizeroiu );
+/ITL/scene/text cond ( toto < 5 ?  inf5 : sup5 );
+/ITL/scene/par nopar 10 + 2 * 3;
+/ITL/scene/par par ( 10 + 2 ) * 3;
+/ITL/scene/text math text + 1;
+/ITL/scene/text math text + $c2;
+/ITL/scene/text math text + 0.1;
+/ITL/scene/text math text - 1;
 
+a = 10 20 ;
+/ITL/scene/array  $a '*' $c2 "->" $a * $c2;
+/ITL/scene/array  $a '/' $c2 "->" $a / $c2;
+/ITL/scene/array  $a '%' $c2 "->" $a % $c2;
+/ITL/scene/array  $a '+' $c2 "->" $a + $c2;
+/ITL/scene/array  $a '-' $c2 "->" $a - $c2;
+/ITL/scene/array '--' --$c2;
+/ITL/scene/myObject x 0.5 * 0.2;
+/ITL/scene/myObject x 1 + 2.;
 
 __END__
 
