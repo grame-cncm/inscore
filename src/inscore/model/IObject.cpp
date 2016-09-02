@@ -354,7 +354,7 @@ void IObject::_del(bool delsigcnx)
         return;		// nothing to do, no associated message
 
     MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), 0);
+	EventContext env(mouse, libmapping::rational(0,1), this);
 	TMessageEvaluator me;
 	SIMessageList outmsgs = me.eval (msgs, env);
 	if (outmsgs && outmsgs->list().size())

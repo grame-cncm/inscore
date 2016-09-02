@@ -387,7 +387,7 @@ void IAppl::error () const
 	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
 	if (msgs && msgs->list().size()) {
 		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), 0);
+		EventContext env(mouse, libmapping::rational(0,1), this);
 		TMessageEvaluator me;
 		SIMessageList outmsgs = me.eval (msgs, env);
 		if (outmsgs && outmsgs->list().size())
