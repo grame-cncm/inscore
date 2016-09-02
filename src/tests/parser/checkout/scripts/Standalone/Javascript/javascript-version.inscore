@@ -1,8 +1,0 @@
-/ITL/scene/* del;
-/ITL/scene color 220 220 220;
-/ITL/scene/version scale 2.0;
-/ITL/scene/engine set txt "Based on the Qt Javascript engine";
-/ITL/scene/engine y 0.1;
-/ITL/scene/engine scale 1.4;
-/ITL/scene/version watch del (
-	/ITL/scene color 255 255 255 );

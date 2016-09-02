@@ -1,8 +1,0 @@
-/ITL/scene/turenas xorigin 0.0;
-/ITL/scene/turenas x 0.0;
-/ITL/scene/_cursor del;
-/ITL/scene/sync cursor turenas v;
-/ITL/scene/sync cursorsmall;
-/ITL/scene/cursorsmall show 0;
-/ITL/scene/_smallturenas show 0;
-/ITL load "scripts/watch.inscore";

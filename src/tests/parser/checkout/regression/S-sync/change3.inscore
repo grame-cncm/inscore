@@ -1,8 +1,0 @@
-/ITL/scene/sync slave;
-/ITL/scene/m*/text* del;
-/ITL/scene/cursor set rect 0.005 0.12;
-/ITL/scene/cursor y -0.5;
-/ITL/scene/sync slave cursor;
-/ITL/scene/subtitle set txt "/ITL/scene/sync slave;";
-/ITL/scene/cursor/text set txt "/ITL/scene/sync slave cursor";
-/ITL/scene/cursor/text y 80;

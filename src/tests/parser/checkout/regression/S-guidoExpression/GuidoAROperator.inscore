@@ -1,8 +1,0 @@
-/ITL/scene/* del;
-/ITL/scene/score set gmn "[a/1]";
-/ITL/scene/score set gmn expr(tail
-    &score
-    "[a/8]"
-    );
-/ITL/scene/score expr reeval;
-/ITL/scene/score expr reeval;
