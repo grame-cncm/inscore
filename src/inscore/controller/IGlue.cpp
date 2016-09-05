@@ -369,6 +369,8 @@ void IGlue::timerEvent ( QTimerEvent *)
 
 		timebench ("model", modelUpdate());
 		if (fTimeTask) fTimeTask->ptask();
+	}
+	if (fModel->getState() & IObject::kModified + IObject::kSubModified) {
 		timebench ("lmap", localMapUpdate());
 		timebench ("smap", slaveMapUpdate());
 		timebench ("view", viewUpdate());
