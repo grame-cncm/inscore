@@ -23,10 +23,10 @@
 
 */
 
-#include "VApplView.h"
-
-#include "IAppl.h"
 #include <QApplication>
+
+#include "VApplView.h"
+#include "IAppl.h"
 
 namespace inscore
 {
