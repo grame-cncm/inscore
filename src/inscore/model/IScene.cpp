@@ -66,7 +66,7 @@ IScene::~IScene()
 
 IScene::IScene(const std::string& name, IObject * parent)
 		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false),
-		fWindowOpacity(false), fUpdateVersion(false), fJavascript(parent->getJSEngine())
+		fWindowOpacity(false), fUpdateVersion(false), fJavascript(getAppl()->getJSEngine())
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
@@ -81,7 +81,6 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
 	fMsgHandlerMap[kwindowOpacity_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setWindowOpacity);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
-//	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::setRootPath);
 	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::forward);
 
