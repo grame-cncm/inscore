@@ -291,8 +291,11 @@ IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const Even
 	}
 
 	stringstream stream (var);
-	ITLparser p(&stream, 0, o->getAppl());					// create a parser with the app as parser environment
-	SIMessageList outmsgs = p.parse ();						// parses the string
+	ITLparser p(&stream, 0, o->getAppl(), false);			// create a parser with the app as parser environment and without exec flag
+	bool ret = p.parse ();						// parses the string
+	if (!ret) return outval;							// parsing failed : return an empty list
+
+	SIMessageList outmsgs = p.messages ();						// parses the string
 	if (!outmsgs) return outval;							// parsing failed : return an empty list
 	
 	for (unsigned int i=0; i < outmsgs->list().size(); i++) {
