@@ -23,13 +23,13 @@
 
 */
 
+#include <iostream>
 
 #include "Updater.h"
 #include "IObject.h"
 #include "ISync.h"
 #include "IGraphicSignal.h"
 
-#include <iostream>
 using namespace std;
 
 namespace inscore
@@ -51,6 +51,13 @@ void Updater::update (IObject* object)
 		}
 	}
 }
+
+//--------------------------------------------------------------------------
+//void ViewUpdater::update (IObject* object)
+//{
+//	cout << "ViewUpdater::update " << object->name() << " " << needupdate (object) << endl;
+//	Updater::update(object);
+//}
 
 //--------------------------------------------------------------------------
 bool ViewUpdater::needupdate (IObject* o)

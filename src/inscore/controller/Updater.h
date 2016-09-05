@@ -91,6 +91,7 @@ typedef class libmapping::SMARTP<Updater>	SUpdater;
 
 class inscore_export ViewUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
+//			virtual void update (IObject*);
 };
 
 class inscore_export LocalMapUpdater : public Updater {
