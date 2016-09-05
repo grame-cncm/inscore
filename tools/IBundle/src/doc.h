@@ -23,9 +23,6 @@
 #ifndef DOC_H
 #define DOC_H
 
-#ifndef VERSION
-#define VERSION "1.0"
-#endif
 
 const char* DOC=
 "Bundle creator use:       IBundle INPUT_SCRIPT [OPTIONS] \n"
@@ -34,15 +31,13 @@ const char* DOC=
 "Bundle extractor use:     IBundle INPUT_BUNDLE -e [OPTIONS] \n"
 "Extract the content of an ibundle archive. \n\n"
 
-"Version: "
-VERSION
-"\n\n"
 " --- OPTIONS ---\n"
 "  -o --output   OUTPUT_FILE Specify the output file\n"
 "  -f --force-overwrite      If the file exist, overwrites it without asking\n"
 "  -h  --help                Print this message and quit\n"
+"  -v  --version             Print version and quit\n"
 "Bundle creator specific:\n"
-"  -v --verbose  OPTION      Print processing logs\n"
+"  -vv --verbose OPTION      Print processing logs\n"
 "                hierarchy   Details dependencies for each scripts\n"
 "  -l --rootpath PATH        Set default root path to PATH\n"
 "  -js --parse-javascript    Javascript sections are parsed to detect ressources\n"

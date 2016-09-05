@@ -33,8 +33,24 @@
 #include "BundleExtractor.h"
 #include "BundleCreator.h"
 
+const char* kIBundleVersionStr	= "1.0";
+const float kIBundleVersion		= 1.0f;
+
 using namespace std;
 
+//----------------------------------------------------------------
+static void version() {
+	cout<< "IBundle v." << kIBundleVersionStr << endl;
+	exit(0);
+}
+
+//----------------------------------------------------------------
+static void usage() {
+	cout<< DOC;
+	exit(0);
+}
+
+//----------------------------------------------------------------
 int main(int argc, char* argv[])
 {
 	if(argc<2){
@@ -42,10 +58,8 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 	string inputFile = argv[1];
-	if(inputFile == "-h" || inputFile == "--help"){
-		std::cout<<DOC;
-		return 0;
-	}
+	if(inputFile == "-h" || inputFile == "--help")		usage();
+	if(inputFile == "-v" || inputFile == "--version")	version();
 
 	//Setup input file
 	char buffer[2048];
@@ -83,15 +97,16 @@ int main(int argc, char* argv[])
 
 		if(arg == "-o" || arg == "--output"){
 			output = param;
-		}else if(arg == "-h" || arg=="--help"){
-				std::cout<<DOC;
-			return 0;
-		}else if(arg == "-f" || arg=="--force-overwrite"){
+		}
+		else if(arg == "-h" || arg=="--help")		usage();
+		else if(arg== "-v" || arg == "--version")	version();
+
+		else if(arg == "-f" || arg=="--force-overwrite"){
 			bExt.setForceOverwrite();
 			bCreator.setForceOverwrite();
 		}else
 		    // Options Specific Creator
-		    if(arg == "-v" || arg == "--verbose"){
+		    if(arg == "-vv" || arg == "--verbose"){
 		    bCreator.setVerbose();
 		    if(param=="hierarchy")
 			    bCreator.setShowHierarchy();
