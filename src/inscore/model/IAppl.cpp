@@ -340,6 +340,19 @@ SIMessageList IAppl::getAll() const
 }
 
 //--------------------------------------------------------------------------
+bool IAppl::processMsg (const IMessage* msg)
+{
+	if (!msg) return false;
+
+	string address = msg->address();
+	string beg  = OSCAddress::addressFirst(address);
+	string tail = OSCAddress::addressTail(address);
+	int ret = processMsg(beg, tail, msg);
+	IGlue::trace(msg, ret);
+	return ret & MsgHandler::kProcessed + MsgHandler::kProcessedNoChange;
+}
+
+//--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
@@ -366,7 +379,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 
 	if (tail.size()) {		// application is not the final destination of the message
 		status = IObject::processMsg(head, tail, msg);
-	}
+ 	}
 	
 	else if (match(head)) {			// the message is for the application itself
 		status = execute(msg);
@@ -387,7 +400,7 @@ void IAppl::error () const
 	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
 	if (msgs && msgs->list().size()) {
 		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), 0);
+		EventContext env(mouse, libmapping::rational(0,1), this);
 		TMessageEvaluator me;
 		SIMessageList outmsgs = me.eval (msgs, env);
 		if (outmsgs && outmsgs->list().size())
@@ -583,7 +596,6 @@ MsgHandler::msgStatus IAppl::_watchMsg(const IMessage* msg, bool add)
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
-//bool IAppl::loadBuffer (const char* buffer)
 {
 	stringstream s;
 	for (int i=0; i<msg->size(); i++ ) {
@@ -595,16 +607,7 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 	if (!s.str().size()) return MsgHandler::kBadParameters;
 
 	ITLparser p (&s, 0, this);
-	SIMessageList msgs = p.parse();
-	if (msgs) {
-		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-			string beg  = OSCAddress::addressFirst((*i)->address());
-			string tail = OSCAddress::addressTail((*i)->address());
-			int ret = processMsg(beg, tail, *i);
-			if (oscDebug()) IGlue::trace(*i, ret);
-		}
-		return MsgHandler::kProcessed;
-	}
+	if (p.parse()) return MsgHandler::kProcessed;
 	return MsgHandler::kBadParameters;
 }
 

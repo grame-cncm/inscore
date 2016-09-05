@@ -37,7 +37,6 @@
 #include "udpinfo.h"
 #include "benchtools.h"
 #include "Forwarder.h"
-#include "TParseEnv.h"
 
 class QApplication;
 namespace inscore
@@ -64,7 +63,7 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public TILoader, public TParseEnv
+class IAppl : public IObject, public TILoader
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
@@ -156,7 +155,16 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 			\return true when the message has been successfully processed i.e. when the model is modified
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
-		
+
+		/*!
+			\brief processing of a message
+			
+			Process a single message.
+			\param msg the message to be processed
+			\return true when the message has been successfully processed
+		*/
+		virtual bool processMsg (const IMessage* msg);
+	
 		static int		getRate()					{ return fRate; }
 		static float	getRealRate()				{ return fRealRate; }
 		static void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
