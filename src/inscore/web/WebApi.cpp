@@ -50,7 +50,7 @@ namespace inscore
 	const char * WebApi::kFileMsg = "file";
 
 	extern QWaitCondition gModelUpdateWaitCondition;	///< a wait condition to wait for model update.
-    QMutex WebApi::fPostCommandMutex;
+//    QMutex WebApi::fPostCommandMutex;
 
 //------------------------------------kHoverMsg-------------------------------------------.
 unsigned long WebApi::getVersion()
@@ -77,26 +77,27 @@ std::string WebApi::postScript(const std::string &inscoreScript)
 {
     stringstream stream;
     stream.str(inscoreScript);
-    ITLparser p (&stream, 0, fParseEnv);
+    ITLparser p (&stream, 0, fRoot);
 
     // wait for other network users
-	fPostCommandMutex.lock();
+//	fPostCommandMutex.lock();
 
 	oscerr.activeConcatError(true);
-	SIMessageList msgs = p.parse();
+	p.parse();
+//	SIMessageList msgs = p.parse();
 	oscerr.activeConcatError(false);
 
 	string logParse = oscerr.streamConcat().str();
 
-	if(msgs->list().size()) {
-		// Add messages to network stack
-		msgs->sendWebMsg();
-		// Wait for a model update from time task
-		gModelUpdateWaitCondition.wait(&fPostCommandMutex);
-	}
+//	if(msgs->list().size()) {
+//		// Add messages to network stack
+//		msgs->sendWebMsg();
+//		// Wait for a model update from time task
+//		gModelUpdateWaitCondition.wait(&fPostCommandMutex);
+//	}
     // Get back log and unlock
 	string logExec = oscerr.streamConcat().str();
-	fPostCommandMutex.unlock();
+//	fPostCommandMutex.unlock();
 	return logParse + logExec;
 }
 

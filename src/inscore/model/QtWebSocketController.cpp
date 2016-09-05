@@ -24,6 +24,8 @@
 */
 
 #include "QtWebSocketController.h"
+#include "IWebSocket.h"
+#include "IAppl.h"
 #include "ITLError.h"
 
 using namespace std;
@@ -31,7 +33,7 @@ namespace inscore
 {
 
 //-------------------------------------------------------------------------------
-QtWebSocketController::QtWebSocketController(WebSocketInformer* infos)
+QtWebSocketController::QtWebSocketController(IWebSocket* infos)
 	: fInfos(infos), fServer (0)
 {}
 
@@ -72,7 +74,7 @@ int QtWebSocketController::clients() const
 //-------------------------------------------------------------------------------
 void QtWebSocketController::run()
 {
-	WebApi api(fInfos->getView(), fInfos->getParseEnv());
+	WebApi api(fInfos->getView(), fInfos->getAppl());
 	fServer = new QtWebSocketServer (fInfos->getFrequency(), &api);
 	if (fServer) {
 		if (fServer->start(fInfos->getPort()))

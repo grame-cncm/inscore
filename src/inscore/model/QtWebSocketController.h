@@ -34,17 +34,18 @@
 namespace inscore
 {
 
+class IWebSocket;
 
 /*!
  * \brief The QtWebSocketController class. A Qt implementation of IWebSocket. It create and start the websocket server in a new thread.
  */
 class QtWebSocketController : public QThread, public WebSocketController
 {
-		WebSocketInformer *	fInfos;
-		QtWebSocketServer*			fServer;
+		IWebSocket *		fInfos;
+		QtWebSocketServer*	fServer;
 
 	public:
-				 QtWebSocketController(WebSocketInformer* infos);
+				 QtWebSocketController(IWebSocket* infos);
 		virtual ~QtWebSocketController();
 
 		//------------------------------------------------------------
