@@ -38,7 +38,8 @@ HEADERS +=  $$PARSER/ITLparser.h \
 	    $$ITL/controller/IMessage.h \
 	    $$MAP/src/misc/rational.h \
 	    $$ITL/scripting/TScripting.h \
-	    $$ITL/lib/Tools.h
+	    $$ITL/lib/Tools.h \
+	    $$ITL/signal/TSignal.h
 
 SOURCES +=  $$PARSER/ITLparser.cpp \
 	    $$PARSER/ITLparse.cpp \
@@ -54,6 +55,7 @@ SOURCES +=  $$PARSER/ITLparser.cpp \
 
 HEADERS +=  $$EXPR/parser/IExprParser.h \
 	    $$EXPR/parser/IExprParse.hpp \
+		$$EXPR/ExprInfo.h \
 	    $$EXPR/IExpression.h \
 	    $$EXPR/ExprFactory.h
 
