@@ -47,6 +47,7 @@
 #include "TSegmentation.h"
 #include "TRelation.h"
 #include "TMapable.h"
+#include "TParseEnv.h"
 #include "PeriodicTask.h"
 #include "smartpointer.h"
 
@@ -495,7 +496,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		*/
 		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
  
-		virtual TQtJs*	getJSEngine()		{ return 0; }	///< gives the associated javascript engine, defaults to 0
+		virtual TJSEngine*	getJSEngine()		{ return 0; }	///< gives the associated javascript engine, defaults to 0
 	
 	protected:	
 		VObjectView* fView;		///< the object view
