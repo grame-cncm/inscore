@@ -253,8 +253,8 @@ void ParsedData::simplifyPaths()
 	for(auto it = fRessources.cbegin(); it != fRessources.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
-		int i=0;
-		while ( i < commonPath && i < (int)path.size()-1 ) {
+		size_t i=0;
+		while ( i < commonPath && i < path.size()-1 ) {
 			if(path.at(i)!=trunk.at(i)){
 				break;
 			}
@@ -266,8 +266,8 @@ void ParsedData::simplifyPaths()
 	for(auto it = fScripts.cbegin(); it != fScripts.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
-		int i=0;
-		while ( i < commonPath && i < (int)path.size()-1 ) {
+		size_t i=0;
+		while ( i < commonPath && i < path.size()-1 ) {
 			if(path.at(i)!=trunk.at(i))
 				break;
 			i++;
@@ -280,7 +280,7 @@ void ParsedData::simplifyPaths()
 
 	std::string trunkPath = "/";
 
-	for (int i = 0; i < commonPath; ++i)
+	for (size_t i = 0; i < commonPath; ++i)
 		trunkPath += trunk.at(i)+"/";
 
 	size_t removable = trunkPath.size();
