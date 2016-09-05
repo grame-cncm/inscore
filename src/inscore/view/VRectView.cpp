@@ -36,8 +36,15 @@ void GraphicsRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
 {
 //	qDebug() << "GraphicsRoundedRectItem::paint using brush" << brush();
 	QRectF r = boundingRect();
+	QPen p = pen();
+	qreal w = p.width();
+	if (w) {
+		r.setWidth (r.width() - w);
+		r.setHeight (r.height() - w);
+		r.translate (w/2, w/2);
+	}
 	painter->setBrush (brush());
-	painter->setPen (pen());
+	painter->setPen (p);
 	painter->drawRoundedRect(r, fXRadius, fYRadius, Qt::RelativeSize);
 }
 
