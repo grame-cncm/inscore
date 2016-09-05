@@ -29,9 +29,9 @@
 #include "TScripting.h"
 #include "TMessageEvaluator.h"
 #include "IExprParser.h"
+#include "IAppl.h"
 
 #include "TEnv.h"
-#include "TParseEnv.h"
 #include "ITLparser.h"
 #include "ITLError.h"
 
@@ -47,11 +47,18 @@ class IMessage;
 class TEnv;
 
 //--------------------------------------------------------------------------------------------
-TScripting::TScripting(TParseEnv* penv)
-	: 	fParseEnv(penv)
+TScripting::TScripting(IAppl* root, bool execute)
+	: fRoot(root), fExecute(execute)
 {
-	fJavascript = fParseEnv ? fParseEnv->getJSEngine() : 0;
-	fLua		= fParseEnv ? fParseEnv->getLUAEngine() : 0;
+#ifdef IBUNDLE
+	fJavascriptEngine.Initialize();
+	fJavascript = &fJavascriptEngine;
+	fLua		= 0;
+	fExecute = false;				// never execute a message in bundle environment
+#else
+	fJavascript = root->getJSEngine();
+	fLua		= root->getLUAEngine();
+#endif
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
 }
@@ -74,15 +81,23 @@ void TScripting::variable (const char* ident, const SIMessageList* msgs)
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (SIMessage& msg)
+void TScripting::process (SIMessage& msg)
 {
-	fMessages->list().push_back (msg);
+	if (fExecute)
+		fRoot->processMsg(msg);
+	else
+		fMessages->list().push_back (msg);
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (SIMessageList& msgs)
+void TScripting::process (SIMessageList& msgs)
 {
-	fMessages->list().push_back (msgs->list());
+	if (fExecute) {
+		for (size_t i=0; i<msgs->list().size(); i++)
+			fRoot->processMsg(msgs->list()[i]);
+	}
+	else
+		fMessages->list().push_back (msgs->list());
 }
 
 //--------------------------------------------------------------------------------------------
@@ -99,7 +114,9 @@ void TScripting::addEnv (const TScripting& sc)
 void TScripting::error(int line, int col, const char* s) const
 {
 	ITLErr << "line" << line << "col" << col << ":" << s << ITLEndl;
-	if (fParseEnv) fParseEnv->error();
+#ifndef IBUNDLE			// no appl instance for the bundle tool
+	if (fRoot) fRoot->error();
+#endif
 }
 
 
@@ -110,7 +127,7 @@ void TScripting::error(int line, int col, const char* s) const
 #ifdef LUA
 bool TScripting::checkLua () const							{ return fLua != 0; }
 
-SIMessageList TScripting::luaEval (const char* script)
+bool TScripting::luaEval (const char* script)
 {
 	if (fLua) {
 		fLua->bindEnv (fEnv);
@@ -124,7 +141,7 @@ SIMessageList TScripting::luaEval (const char* script)
 		}
 	}
 	else ITLErr << "lua is not available!" << ITLEndl;
-	return 0;
+	return false;
 }
 #else
 bool TScripting::checkLua () const							{ return false; }
@@ -164,10 +181,10 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 		if (fJavascript->eval(lineno - countlines(script), script, jsout)) {
 			if (jsout.size()) {
 				istringstream stream(jsout);
-				ITLparser p (&stream, 0, fParseEnv);
-				SIMessageList msgs = p.parse();
+				ITLparser p (&stream, 0, fRoot, false);
+				p.parse();
 				addEnv( p.fReader );
-				return msgs;
+				return p.messages();
 			}
 		}
 	}
