@@ -33,7 +33,8 @@
 namespace inscore 
 {
 
-class TParseEnv;
+class IAppl;
+
 /* \brief a class for reading ITL streams
 */
 class ITLparser {	
@@ -59,12 +60,12 @@ class ITLparser {
 		float			fFloat;		// the current float
 		int				fLine;		// line offset
 		int				fExprStartLine;
-		bool			fParseSucceed;
 
-				 ITLparser(std::istream* stream, int line, TParseEnv* penv);
+				 ITLparser(std::istream* stream, int line, IAppl* root, bool execute=true);
 		virtual ~ITLparser();
 		
-		SIMessageList parse();
+		bool parse();
+		SIMessageList messages()	{ return fReader.messages(); }
 };
 
 } // end namespace

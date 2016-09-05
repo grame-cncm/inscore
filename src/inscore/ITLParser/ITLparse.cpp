@@ -1530,7 +1530,7 @@ yyreduce:
     {
         case 4:
 #line 110 "ITL.y"
-    { context->fReader.add(*(yyvsp[(1) - (2)].msg)); delete (yyvsp[(1) - (2)].msg); ;}
+    { context->fReader.process(*(yyvsp[(1) - (2)].msg)); delete (yyvsp[(1) - (2)].msg); ;}
     break;
 
   case 5:
@@ -1542,7 +1542,7 @@ yyreduce:
 #line 112 "ITL.y"
     {	if (*(yyvsp[(1) - (1)].msgList)) {
 										for (unsigned int i=0; i < (*(yyvsp[(1) - (1)].msgList))->list().size(); i++)
-											context->fReader.add((*(yyvsp[(1) - (1)].msgList))->list()[i]);
+											context->fReader.process((*(yyvsp[(1) - (1)].msgList))->list()[i]);
 									}
 									delete (yyvsp[(1) - (1)].msgList);
 								;}
@@ -2013,10 +2013,10 @@ yyreturn:
 namespace inscore 
 {
 
-SIMessageList ITLparser::parse()
+bool ITLparser::parse()
 {
-	fParseSucceed = !yyparse (this);
-	return fReader.messages();
+	return !yyparse (this);
+//	return fReader.messages();
 }
 }
 
@@ -2029,7 +2029,7 @@ int lineno (ITLparser* context)
 }
 
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
-#ifdef NO_OSCSTREAM
+#if defined(NO_OSCSTREAM) || defined(IBUNDLE)
 	cerr << "error line" << loc->last_line + context->fLine << "col" << loc->first_column << ":" << s << endl;
 #else
 	context->fReader.error (loc->last_line + context->fLine, loc->first_column, s);

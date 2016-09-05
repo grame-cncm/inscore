@@ -107,11 +107,11 @@ start		: expr
 //_______________________________________________
 // expression of the script language
 //_______________________________________________
-expr		: message  ENDEXPR		{ context->fReader.add(*$1); delete $1; }
+expr		: message  ENDEXPR		{ context->fReader.process(*$1); delete $1; }
 			| variabledecl ENDEXPR	{ delete $1; }
 			| script			{	if (*$1) {
 										for (unsigned int i=0; i < (*$1)->list().size(); i++)
-											context->fReader.add((*$1)->list()[i]);
+											context->fReader.process((*$1)->list()[i]);
 									}
 									delete $1;
 								}
@@ -242,10 +242,10 @@ expression		: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText, conte
 namespace inscore 
 {
 
-SIMessageList ITLparser::parse()
+bool ITLparser::parse()
 {
-	fParseSucceed = !yyparse (this);
-	return fReader.messages();
+	return !yyparse (this);
+//	return fReader.messages();
 }
 }
 
@@ -258,7 +258,7 @@ int lineno (ITLparser* context)
 }
 
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
-#ifdef NO_OSCSTREAM
+#if defined(NO_OSCSTREAM) || defined(IBUNDLE)
 	cerr << "error line" << loc->last_line + context->fLine << "col" << loc->first_column << ":" << s << endl;
 #else
 	context->fReader.error (loc->last_line + context->fLine, loc->first_column, s);
