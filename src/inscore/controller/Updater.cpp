@@ -29,6 +29,7 @@
 #include "IObject.h"
 #include "ISync.h"
 #include "IGraphicSignal.h"
+#include "ISignalNode.h"
 
 using namespace std;
 
@@ -92,6 +93,20 @@ void SigModified::updateTo (IGraphicSignal* gs)
 {
 	if (gs->getSignal()->getState()) {
 		gs->setModified();
+	}
+}
+
+void SigModified::updateTo (ISignalNode* gs)
+{
+	if (gs->getState()) {
+		vector<ISignalConnection* >& cnx = gs->getConnections();		// propagate signal modification to connected objects
+		for (size_t i=0; i<cnx.size(); i++) {
+			IObject::subnodes outlist;
+			if (gs->getParent()->exactfind(cnx[i]->getObject(), outlist)) {
+				outlist[0]->setModified();
+				outlist.clear();
+			}
+		}
 	}
 }
 
