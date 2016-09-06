@@ -1,6 +1,7 @@
 win32 { TEMPLATE = vcapp }
 else  { TEMPLATE = app }
 CONFIG += console
+CONFIG += warn_off
 CONFIG -= app_bundle
 
 TARGET = IBundle
@@ -21,6 +22,9 @@ ITLROOT		= $$ROOT/../../
 ITLSRC		= $$ITLROOT/src/inscore/
 
 win32 { DEFINES += NOHOSTNAME }
+!win32 {
+    QMAKE_CFLAGS_WARN_OFF += -Wno-deprecated-register -Wno-unused-parameter
+}
 
 ##############################
 # source and headers
@@ -39,4 +43,3 @@ include($$ITLROOT/src/QArchive/qarchive.pri)
 # import inscore parser
 ##############################
 include ($$ITLROOT/src/inscore/ITLParser/ITLParser.pri)
-

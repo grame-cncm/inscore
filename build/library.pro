@@ -8,6 +8,7 @@ MOC_DIR = tmp
 
 VERSION = 1.20
 CONFIG += c++11
+CONFIG += warn_off
 
 ############################## 
 # locations
@@ -107,14 +108,14 @@ win32 {
 	}
 }
 !win32 {
-    QMAKE_CXXFLAGS += -Wno-deprecated-register -Wno-unused-parameter
+    QMAKE_CFLAGS_WARN_OFF = -Wno-deprecated-register -Wno-unused-parameter
 }
 
 ############################## 
 # macos x support
 ############################## 
 macx {
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -Wno-deprecated-register
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
 	CONFIG += lib_bundle explicitlib
 	QMAKE_INFO_PLIST = $$PWD/libInfo.plist
