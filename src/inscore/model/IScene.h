@@ -73,7 +73,6 @@ class IScene : public IRectShape, public TILoader
 	std::string		fRootPath;
 
 	TJSEngine*		fJavascript;
-	TLua			fLua;
 	SIFilterForward	fFilterForward;
 	Forwarder		fForwarder;
 

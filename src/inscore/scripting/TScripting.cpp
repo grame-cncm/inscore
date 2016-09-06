@@ -53,11 +53,9 @@ TScripting::TScripting(IAppl* root, bool execute)
 #ifdef IBUNDLE
 	fJavascriptEngine.Initialize();
 	fJavascript = &fJavascriptEngine;
-	fLua		= 0;
 	fExecute = false;				// never execute a message in bundle environment
 #else
 	fJavascript = root->getJSEngine();
-	fLua		= root->getLUAEngine();
 #endif
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
@@ -120,43 +118,10 @@ void TScripting::error(int line, int col, const char* s) const
 }
 
 
-
-//--------------------------------------------------------------------------------------------
-// lua support
-//--------------------------------------------------------------------------------------------
-#ifdef LUA
-bool TScripting::checkLua () const							{ return fLua != 0; }
-
-bool TScripting::luaEval (const char* script)
-{
-	if (fLua) {
-		fLua->bindEnv (fEnv);
-		string luaout;
-		if (fLua->eval(script, luaout)) {
-			if (luaout.size()) {
-				istringstream stream(luaout);
-				ITLparser p (&stream, 0, fJavascript, fLua);
-				return p.parse();
-			}
-		}
-	}
-	else ITLErr << "lua is not available!" << ITLEndl;
-	return false;
-}
-#else
-bool TScripting::checkLua () const							{ return false; }
-SIMessageList TScripting::luaEval (const char* /*script*/)
-{
-	ITLErr << "lua is not available!" << ITLEndl;
-	return 0;
-}
-#endif
-
-
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
-#if defined V8ENGINE || defined QTJSENGINE || IBUNDLE
+#if defined QTJSENGINE || IBUNDLE
 bool TScripting::checkJavascript () const						{ return fJavascript != 0; }
 
 static int countlines (const char* script)

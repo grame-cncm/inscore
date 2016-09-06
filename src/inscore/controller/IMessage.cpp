@@ -336,7 +336,7 @@ void IMessageList::sendWebMsg() const
 void IMessage::print(std::ostream& out, int i, int nested, const char* sep) const
 {
     string str; int val; float fval;
-	SIMessageList msgs; TJavaScript js; TLuaScript lua; SIExpression expr;
+	SIMessageList msgs; TJavaScript js; SIExpression expr;
 
 	if (param(i, str)) {
 		const char * q = needQuotes (str) ? "\"" : "";
@@ -363,8 +363,6 @@ void IMessage::print(std::ostream& out, int i, int nested, const char* sep) cons
 	}
 	else if (param(i, js))
 		out << "<? javascript " << js << " ?>";
-	else if (param(i, lua))
-		out << "<? lua " << js << " ?>";
     else if(param(i, expr))
         out << expr;
 }

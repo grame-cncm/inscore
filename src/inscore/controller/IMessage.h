@@ -142,13 +142,6 @@ class TJavaScript : public std::string	{
 				 TJavaScript() {}
 		virtual ~TJavaScript() {}
 };
-/// a lua type definition to handle javascript as message argument
-class TLuaScript : public std::string	{
-	public:
-				 TLuaScript(const char* v) : std::string(v) {}
-				 TLuaScript() {}
-		virtual ~TLuaScript() {}
-};
 
 //--------------------------------------------------------------------------
 /*!
@@ -272,12 +265,6 @@ class IMessage : public Message, public libmapping::smartable
 		\param val the parameter
 	*/
 	void	add(const TJavaScript& val )	{ fArguments.push_back( new IMsgParam<TJavaScript>(val) ); }
-	
-	/*!
-		\brief adds a parameter to the message
-		\param val the parameter
-	*/
-	void	add(const TLuaScript& val )	{ fArguments.push_back( new IMsgParam<TLuaScript>(val) ); }
 	
 	/*!
 		\brief adds a set of parameter to the message
@@ -445,14 +432,6 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when types don't match
 	*/
 	bool	param(int i, TJavaScript& val) const { val = param(i)->value<TJavaScript>(val); return param(i)->isType<TJavaScript>(); }
-	/*!
-		\brief gives a message messages parameters
-		\param i the parameters start index (0 <= i < size()-1)
-		\param val on output: the parameter value when the parameter type matches
-		\return false when types don't match
-	*/
-	bool	param(int i, TLuaScript& val) const { val = param(i)->value<TLuaScript>(val); return param(i)->isType<TLuaScript>(); }
-
     /*!
         \brief gives a message messages parameters
         \param i the parameters start index (0 <= i < size()-1)

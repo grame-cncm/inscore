@@ -38,7 +38,6 @@ namespace inscore
     class TParseEnv;
 	class TQtJs;
 	typedef TQtJs		TJSEngine;
-    class TLua;
     class IAppl;
 
 /*!

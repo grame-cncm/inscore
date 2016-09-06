@@ -54,13 +54,12 @@
 
 %token EXPRESSION
 
-%token LUASCRIPT
 %token JSCRIPT
 
 /*------------------------------   types  ------------------------------*/
 %type <num> 	number
 %type <real>	FLOAT
-%type <str>		STRING FILEPATH PATHSEP IDENTIFIER REGEXP LUASCRIPT JSCRIPT
+%type <str>		STRING FILEPATH PATHSEP IDENTIFIER REGEXP JSCRIPT
 %type <str>		identifier oscaddress relativeaddress oscpath varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
@@ -121,10 +120,7 @@ expr		: message  ENDEXPR		{ context->fReader.process(*$1); delete $1; }
 //_______________________________________________
 // javascript and lua support
 //_______________________________________________
-script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
-									*$$ = context->fReader.luaEval(context->fText.c_str());
-								}
-			| JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
+script		: JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 									*$$ = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
 								}
 			;

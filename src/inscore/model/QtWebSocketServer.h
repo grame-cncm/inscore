@@ -41,7 +41,6 @@ class json_object;
 namespace inscore {
 
 class VObjectView;
-class TLua;
 
 /*!
  * \brief The QtWebSocketServer class. A Qt websocket server implementation.

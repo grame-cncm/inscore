@@ -129,8 +129,6 @@ void IScene::reset ()
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
-//	fJavascript.Initialize();
-	fLua.Initialize();
 }
 
 //--------------------------------------------------------------------------

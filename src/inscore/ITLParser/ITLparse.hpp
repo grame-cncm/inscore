@@ -62,8 +62,7 @@
      HOSTNAME = 278,
      IPNUM = 279,
      EXPRESSION = 280,
-     LUASCRIPT = 281,
-     JSCRIPT = 282
+     JSCRIPT = 281
    };
 #endif
 /* Tokens.  */
@@ -90,8 +89,7 @@
 #define HOSTNAME 278
 #define IPNUM 279
 #define EXPRESSION 280
-#define LUASCRIPT 281
-#define JSCRIPT 282
+#define JSCRIPT 281
 
 
 
@@ -111,7 +109,7 @@ typedef union YYSTYPE
     inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 115 "ITLparse.hpp"
+#line 113 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

@@ -91,7 +91,6 @@ class IAppl : public IObject, public TILoader
 		QMutex		fTimeMutex;
 
 		TJSEngine		fJavascript;
-		TLua			fLua;
 
 	public:
 		static unsigned long kUPDPort;	// Default listening port
@@ -183,7 +182,6 @@ class IAppl : public IObject, public TILoader
 		void		error () const;					//< trigger the error event, error must be checked before
 
 		TJSEngine*	getJSEngine()					{ return &fJavascript; }
-		TLua*		getLUAEngine()					{ return &fLua; }
 
 		/// \brief gives the application node
 		virtual SIAppl			getAppl()			{ return this; }

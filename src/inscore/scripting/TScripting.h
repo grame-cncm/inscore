@@ -28,10 +28,8 @@
 
 #include <stack>
 #include <functional>
-#include <TLua.h>
-#ifdef V8ENGINE
-#include <TV8Js.h>
-#elif defined QTJSENGINE
+
+#ifdef QTJSENGINE
 #include <TQtJs.h>
 #elif defined IBUNDLE
 #include "TDummyJs.h"
@@ -55,9 +53,7 @@ typedef libmapping::SMARTP<baseparam> Sbaseparam;
 
 class TEnv;
 typedef libmapping::SMARTP<TEnv> STEnv;
-#ifdef V8ENGINE
-typedef TV8Js				TJSEngine;
-#elif defined QTJSENGINE
+#ifdef QTJSENGINE
 typedef TQtJs				TJSEngine;
 #elif defined IBUNDLE
 typedef ibundle::TDummyJs	TJSEngine;
@@ -73,7 +69,6 @@ class TScripting
 #endif
 	IAppl*				fRoot;
 	TJSEngine*			fJavascript;
-	TLua*				fLua;
 	SIMessageList		fMessages;
 	bool				fExecute;
 
@@ -93,9 +88,7 @@ class TScripting
 		void	variable	(const char* ident, const IMessage::argslist* values);
 		void	variable	(const char* ident, const SIMessageList* resolvemsgs);
 
-		SIMessageList	luaEval		(const char* script);
 		SIMessageList	jsEval		(const char* script, int lineno);
-		bool		checkLua () const;
 		bool		checkJavascript () const;
 		void		error(int line, int col, const char* s) const;
 

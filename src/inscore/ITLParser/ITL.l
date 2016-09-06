@@ -67,8 +67,6 @@ static  char* unescape (char * str) {
 %x DQSTR
 		/* for quoted strings */
 %x QSTR
-		/* lua section */
-%x LUASECTION
 		/* javascript section */
 %x JSECTION
 		/* evaluable expression section */
@@ -168,12 +166,8 @@ EOL		[\x0a\x0d]
 ("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."{IDCHAR}+			yyextra->fText = yytext; return STRING;	/*file path without space*/
 
  /* ----------------------------------------- */
- /*	lang sections */
+ /*	javascript section */
  /* ----------------------------------------- */
-"<?"{SPACE}*"lua"			BEGIN LUASECTION;
-<LUASECTION>"?>"			if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
-<LUASECTION>({EOL}|"?"[^>]|[^?])*	yyextra->fText = unescape(yytext); return LUASCRIPT;
-
 "<?"{SPACE}*"javascript"	BEGIN JSECTION;
 <JSECTION>"?>"				if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 <JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;
