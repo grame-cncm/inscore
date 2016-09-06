@@ -28,6 +28,8 @@
 #define __VSceneView__
 
 #include <QGraphicsView>
+#include <QStack>
+#include <QPair>
 
 #include <string>
 #include "VDummyObjectView.h"
@@ -76,6 +78,9 @@ class VSceneView : public VDummyObjectView
 
 	// Ask for a screenshot
 	bool				fUpdateScreenShot;
+	
+	// a stack to handle events from other threads
+	QStack<QPair<QGraphicsItem*, QEvent::Type> > fEvents;
 
 	// Version of the screen updated on each redraw of the screen.
 	unsigned long		fNewVersion;
@@ -114,6 +119,10 @@ class VSceneView : public VDummyObjectView
 		bool				copy(unsigned int* dest, int w, int h, bool smooth=false );
 		void				setSceneRect(int w, int h)	{ fScene->setSceneRect(0, 0, w, h); }
 		void				updateView( IScene * scene );
+	
+		// this is to handle events posted from another thread
+		void				postEvent( QGraphicsItem* item, QEvent::Type e );
+		void				execEvents();
 
 		/*!
 		 * \brief foreground Set the scene in front of other window.
@@ -175,6 +184,7 @@ class ZoomingGraphicsView : public QGraphicsView
 
 		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
 		void setScene		(IScene* scene)		{ fScene = scene; }
+		IScene* getScene	()					{ return fScene; }
 
 		/*!
          * \brief should be called on fullscreen change triggered by the UI.

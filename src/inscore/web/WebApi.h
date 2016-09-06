@@ -125,7 +125,7 @@ class WebApi
 		/*!
 		 * \brief fPostCommandMutex A mutex for script post
 		 */
-//		static QMutex	fPostCommandMutex;		///< Mutex for all web clients using different websocket servers.
+		static QMutex	fPostCommandMutex;		///< Mutex for all web clients using different websocket servers.
 
         /*!
          * \brief getItem Get a item from the coordinate in pixel.

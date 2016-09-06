@@ -36,6 +36,7 @@
 #include <QResizeEvent>
 #include <QGestureEvent>
 #include <QPinchGesture>
+#include <QGraphicsSceneMouseEvent>
 
 #ifdef WIN32
 #include <windows.h>
@@ -318,6 +319,30 @@ VSceneView::~VSceneView()
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
 
 //------------------------------------------------------------------------------------------------------------------------
+void VSceneView::postEvent( QGraphicsItem* item, QEvent::Type e )
+{
+	fEvents.push(QPair<QGraphicsItem*, QEvent::Type>(item, e));
+	IScene* scene = fGraphicsView->getScene();
+	if (scene) scene->setModified();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::execEvents()
+{
+	int n = fEvents.size();
+	while (n--) {
+		QPair<QGraphicsItem*, QEvent::Type> p = fEvents.pop();
+        QGraphicsSceneMouseEvent event(p.second);
+        // Coordinate of the click in item coordinate
+        QPointF point(0, 0);
+        event.setPos(point);
+        event.setButton(Qt::LeftButton);
+        event.setButtons(Qt::LeftButton);
+		fScene->sendEvent(p.first, &event);
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------------------
 void VSceneView::edit(IObject* o)
 {
 	if (fEditBox) {
@@ -353,6 +378,8 @@ QPoint VSceneView::scenePos(const IScene * scene) const
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )
 {
+	execEvents();
+	
 	// Color
 	int r,g,b,a;
 	fGraphicsView->backgroundBrush().color().getRgb(&r,&g,&b,&a);
