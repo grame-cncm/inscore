@@ -13,6 +13,9 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.20
+- parser strategy changed: now each message is processed one by one to ensure the system
+  consistency, especially for message based variables: an object state remains consistent 
+  from one message to another.
 - new 'radius' message supported by rectangles.
 - new 'edit' message supported by all objects: opens a small editor.
 - new 'level' message supported by the log window and extended debugging support.
