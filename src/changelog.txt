@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.20
+- lua support has been dropped (compilation was optional, never embedded into a distribution)
 - parser strategy changed: now each message is processed one by one to ensure the system
   consistency, especially for message based variables: an object state remains consistent 
   from one message to another.
