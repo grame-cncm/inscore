@@ -40,7 +40,6 @@
 #include "OSCAddress.h"
 #include "QFileWatcher.h"
 #include "rational.h"
-#include "TMessageEvaluator.h"
 #include "Updater.h"
 #include "IJavascript.h"
 #include "IFilterForward.h"
@@ -58,8 +57,6 @@ const string IScene::kSceneType("scene");
 //--------------------------------------------------------------------------
 IScene::~IScene() 
 {
-    for(int i=0; i<size(); i++)
-        elements()[i]->del();
     fSync->cleanup();
     elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
 }
@@ -109,7 +106,12 @@ void IScene::setHandlers ()
 void IScene::newScene ()						{}
 void IScene::foreground()						{ getSceneView()->foreground(); }
 void IScene::setRootPath(const std::string& s)  { fRootPath = IAppl::checkRootPath(s);}
-void IScene::del()								{ _del(false); }
+void IScene::del()
+{
+	for(int i=0; i<size(); i++)
+        elements()[i]->del();
+	_del(false);
+}
 VSceneView*	IScene::getSceneView() const		{ return static_cast<VSceneView *>(fView); }
 
 //--------------------------------------------------------------------------
@@ -212,29 +214,14 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 void IScene::endPaint () const
 {
-	const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kEndPaint);
-	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
-
-	MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), 0);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (msgs, env);
-	if (outmsgs && outmsgs->list().size()) outmsgs->send();
+	checkEvent (EventsAble::kEndPaint, libmapping::rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
 {
 	IObject::add (node);
-
-	const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kNewElement);
-	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
-
-	MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), node);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (msgs, env);
-	if (outmsgs && outmsgs->list().size()) outmsgs->send();
+	checkEvent (EventsAble::kNewElement, libmapping::rational(0,1), node);
 }
 
 //--------------------------------------------------------------------------
