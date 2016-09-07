@@ -391,6 +391,18 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 
 		/*!
+			\brief check and process an event
+			
+			Check if an event has an associated list of message. In this case, the messages are evaluated and sent.
+			
+			\param event the event that occured
+			\param date a date  for the event context
+			\param obj an object for the event processing
+			\return true when associated messages have been processed
+		*/
+		virtual bool checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const;
+
+		/*!
 			\brief process a signal
 			
 			\return the signal processing status

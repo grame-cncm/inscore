@@ -349,16 +349,7 @@ void IObject::_del(bool delsigcnx)
 		getParent()->signalsNode()->cleanupTarget(name());
 
     // ... and we send the message that the event "del" occured
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
-	if (!msgs || msgs->list().empty())
-        return;		// nothing to do, no associated message
-
-    MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), 0);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (msgs, env);
-	if (outmsgs && outmsgs->list().size())
-        outmsgs->send();
+	checkEvent(EventsAble::kDelete, getDate(), getScene());
 }
 
 //--------------------------------------------------------------------------
@@ -667,6 +658,21 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 	}
 }
 
+//--------------------------------------------------------------------------
+// events processing
+//--------------------------------------------------------------------------
+bool IObject::checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const
+{
+	const IMessageList*	msgs = getMessages(event);
+	if (msgs) {
+		EventContext env(date, obj);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env);
+		if (outmsgs && outmsgs->list().size()) outmsgs->send();
+		return true;
+	}
+	return false;
+}
 
 //--------------------------------------------------------------------------
 // messages processing
