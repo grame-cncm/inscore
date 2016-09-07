@@ -177,9 +177,7 @@ IMessage::argslist TScripting::resolve (const IMessage* msg) const
 	out.push_back (new inscore::IMsgParam<std::string>("unresolved"));
 	return out;
 #else
-	MouseLocation ml;
-	libmapping::rational date (0,1);
-	EventContext env (ml, date, 0);
+	EventContext env (0);
 	TMessageEvaluator me;
 	return me.evalMessage(msg, env);
 #endif

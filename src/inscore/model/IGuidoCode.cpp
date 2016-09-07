@@ -83,17 +83,9 @@ bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
 void IGuidoCode::setPageCount(int count)
 {
 	if (count != fCurrentPagesCount) {
-		const IMessageList*	msgs = getMessages (EventsAble::kPageCount);	// look for watch error messages
-		if (msgs && msgs->list().size()) {
-			MouseLocation mouse (0, 0, 0, 0, 0, 0);
-			EventContext env(mouse, libmapping::rational(0,1), 0);
-			TMessageEvaluator me;
-			SIMessageList outmsgs = me.eval (msgs, env);
-			if (outmsgs && outmsgs->list().size())
-				outmsgs->send();
-		}
+		fCurrentPagesCount = count;
+		checkEvent(EventsAble::kPageCount, rational(0,1), this);
 	}
-	fCurrentPagesCount = count;
 }
 
 //--------------------------------------------------------------------------

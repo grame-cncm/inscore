@@ -129,8 +129,7 @@ void IGesture::likelihood (float likelihood, float pos, float speed)
 	if (tmp) msgs->list().push_back(tmp->list());
 
 	if (msgs->list().size()) {
-		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, getDate(), this);
+		EventContext env(getDate(), this);
 		GestureContext g (likelihood, pos, speed);
 		env.set(g);
 		TMessageEvaluator me;

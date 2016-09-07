@@ -23,8 +23,6 @@
 
 */
 
-#include "VSceneView.h"
-
 #include <QImage>
 #include <QDebug>
 #include <QScreen>
@@ -44,16 +42,16 @@
 #include <unistd.h>
 #endif // win32
 
+#include "VSceneView.h"
+
 #ifdef __MOBILE__
 #include "VMobileQtInit.h"
 #endif
 
 #include "IScene.h"
 #include "IColor.h"
-#include "TMessageEvaluator.h"
 #include "VExport.h"
 #include "INScore.h"
-#include "ISignalProfiler.h"
 #include "WindowEventFilter.h"
 
 
@@ -506,14 +504,7 @@ void VSceneView::updateView( IScene * scene )
 	std::pair<std::string, bool> myExport = scene->getNextExportFlag();
     while ( myExport.first.length() ) {
         VExport::exportScene( fGraphicsView , myExport.first.c_str() );
-		const IMessageList*	msgs = scene->getMessages(EventsAble::kExport);
-        if (msgs) {
-			MouseLocation mouse (0, 0, 0, 0, 0, 0);
-			EventContext env(mouse, scene->getDate(), scene);
-			TMessageEvaluator me;
-			SIMessageList outmsgs = me.eval (msgs, env);
-			if (outmsgs && outmsgs->list().size()) outmsgs->send();
-		}
+		scene->checkEvent(EventsAble::kExport, scene->getDate(), scene);
 		myExport = scene->getNextExportFlag();
 	}
 }

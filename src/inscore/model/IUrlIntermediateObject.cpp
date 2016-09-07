@@ -30,7 +30,6 @@
 #include "TFile.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "TMessageEvaluator.h"
 
 #include "QFileDownloader.h"
 
@@ -122,11 +121,7 @@ void IUrlIntermediateObject::updateFileSucceded()
         del();
         fParent->cleanupSync();
     }
-    
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kSuccess);
-	if (msgs && !msgs->list().empty())
-        evalEventMsg(msgs);
-    
+	checkEvent(EventsAble::kSuccess, rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
@@ -138,10 +133,7 @@ void IUrlIntermediateObject::updateFileCanceled()
 		fDownloaderThread = 0;
     }
     
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kCancel);
-	if (msgs && !msgs->list().empty())
-        evalEventMsg(msgs);
-    
+	checkEvent(EventsAble::kCancel, rational(0,1), this);
     ITLErr << "URL download canceled" << ITLEndl;
 }
 
@@ -150,10 +142,7 @@ MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* m
 {
     setR(200);
     
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kError);
-	if (msgs && !msgs->list().empty())
-        evalEventMsg(msgs);
-    
+	checkEvent(EventsAble::kError, rational(0,1), this);
     if(msg->size() == 1)
     {
         std::string error;
@@ -161,17 +150,6 @@ MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* m
         ITLErr << error << ITLEndl;
     }
     return MsgHandler::kProcessed;
-}
-
-//--------------------------------------------------------------------------
-void IUrlIntermediateObject::evalEventMsg(const IMessageList* list)
-{
-    MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), this);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (list, env);
-	if (outmsgs && outmsgs->list().size())
-        outmsgs->send();
 }
 
 //--------------------------------------------------------------------------

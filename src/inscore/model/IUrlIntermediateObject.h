@@ -71,10 +71,7 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
 		virtual MsgHandler::msgStatus updateFileFailed(const IMessage* msg );
     
 		/// \brief the \c 'watch' message handler
-		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
-    
-        virtual void evalEventMsg(const IMessageList * list);
-    
+		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);    
     
         std::string fUrlPath;
         std::string fType; // the type of the object to be created once the data is ready

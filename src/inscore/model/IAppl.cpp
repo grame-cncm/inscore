@@ -397,15 +397,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 //--------------------------------------------------------------------------
 void IAppl::error () const
 {
-	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
-	if (msgs && msgs->list().size()) {
-		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), this);
-		TMessageEvaluator me;
-		SIMessageList outmsgs = me.eval (msgs, env);
-		if (outmsgs && outmsgs->list().size())
-			outmsgs->send();
-	}
+	checkEvent(EventsAble::kError, libmapping::rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
@@ -460,8 +452,7 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 					const IMessageList* msgs = msg->watchMsg2Msgs(1);
 					if (!msgs || msgs->list().empty()) return MsgHandler::kBadParameters;
 
-					MouseLocation mouse (0, 0, 0, 0, 0, 0);
-					EventContext env(mouse, libmapping::rational(0,1), this);
+					EventContext env(this);
 					TMessageEvaluator me;
 					SIMessageList outmsgs = me.eval (msgs, env);
 					if (outmsgs && outmsgs->list().size()) outmsgs->send();

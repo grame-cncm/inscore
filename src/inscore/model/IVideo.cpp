@@ -30,7 +30,6 @@
 #include "IScene.h"
 #include "VObjectView.h"
 #include "TMapMsgHandler.h"
-#include "TMessageEvaluator.h"
 #include "TVariety.h"
 
 #include "imapreader.h"
@@ -98,34 +97,14 @@ void IVideo::cleanup ()
 void IVideo::videoReady ()
 {
 	fPlaying = false;
-
-	const IMessageList*	msgs = getMessages (EventsAble::kVideoReady);	// look for watch end messages
-	if (msgs && msgs->list().size()) {
-		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), this);
-		TMessageEvaluator me;
-		SIMessageList outmsgs = me.eval (msgs, env);
-		if (outmsgs && outmsgs->list().size())
-			outmsgs->send();
-	}
-
+	checkEvent (EventsAble::kVideoReady, rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
 void IVideo::videoEnd ()
 {
 	fPlaying = false;
-
-	const IMessageList*	msgs = getMessages (EventsAble::kVideoEnd);	// look for watch end messages
-	if (msgs && msgs->list().size()) {
-		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), this);
-		TMessageEvaluator me;
-		SIMessageList outmsgs = me.eval (msgs, env);
-		if (outmsgs && outmsgs->list().size())
-			outmsgs->send();
-	}
-
+	checkEvent (EventsAble::kVideoEnd, rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
