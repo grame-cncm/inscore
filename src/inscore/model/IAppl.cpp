@@ -54,6 +54,7 @@
 #include "Tools.h"
 #include "QFileDownloader.h"
 #include "QGuidoImporter.h"
+#include "Events.h"
 
 #include "INScore.h"
 
@@ -397,7 +398,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 //--------------------------------------------------------------------------
 void IAppl::error () const
 {
-	checkEvent(EventsAble::kError, libmapping::rational(0,1), this);
+	checkEvent(kErrorEvent, libmapping::rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
@@ -563,26 +564,10 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IAppl::_watchMsg(const IMessage* msg, bool add)
-{ 
-	if (msg->size()) {
-		string what;
-		if (msg->param (0, what)) {
-			EventsAble::eventype t = EventsAble::string2type (what);
-			switch (t) {
-				case EventsAble::kError:
-					if (msg->size() > 1)
-						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
-						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
-					return MsgHandler::kProcessed;
-
-				default:
-					break;
-			}
-		}
-	}
-	return IObject::_watchMsg(msg, add);
+bool IAppl::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	if ( string(t) == kErrorEvent) return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------

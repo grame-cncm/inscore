@@ -31,6 +31,7 @@
 #include "VObjectView.h"
 #include "TMapMsgHandler.h"
 #include "TVariety.h"
+#include "Events.h"
 
 #include "imapreader.h"
 #include "long_to_rational_reader.h"
@@ -97,39 +98,23 @@ void IVideo::cleanup ()
 void IVideo::videoReady ()
 {
 	fPlaying = false;
-	checkEvent (EventsAble::kVideoReady, rational(0,1), this);
+	checkEvent (kVideoReadyEvent, rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
 void IVideo::videoEnd ()
 {
 	fPlaying = false;
-	checkEvent (EventsAble::kVideoEnd, rational(0,1), this);
+	checkEvent (kVideoEndEvent, rational(0,1), this);
 }
 
+
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IVideo::_watchMsg(const IMessage* msg, bool add)
+bool IVideo::acceptSimpleEvent(EventsAble::eventype t) const
 {
-	if (msg->size()) {
-		string what;
-		if (msg->param (0, what)) {
-			EventsAble::eventype t = EventsAble::string2type (what);
-			switch (t) {
-				case EventsAble::kVideoEnd:
-				case EventsAble::kVideoReady:
-					if (msg->size() > 1)
-						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
-						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
-					return MsgHandler::kProcessed;
-
-				default:
-					break;
-			}
-		}
-	}
-	return IObject::_watchMsg(msg, add);
-
+	string ev(t);
+	if ( (ev == kVideoEndEvent) || (ev == kVideoReadyEvent)) return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------

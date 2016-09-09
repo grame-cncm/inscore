@@ -43,6 +43,7 @@
 #include "Updater.h"
 #include "IJavascript.h"
 #include "IFilterForward.h"
+#include "Events.h"
 
 #include "VSceneView.h"
 
@@ -214,14 +215,14 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 void IScene::endPaint () const
 {
-	checkEvent (EventsAble::kEndPaint, libmapping::rational(0,1), this);
+	checkEvent (kEndPaintEvent, libmapping::rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
 {
 	IObject::add (node);
-	checkEvent (EventsAble::kNewElement, libmapping::rational(0,1), node);
+	checkEvent (kNewElementEvent, libmapping::rational(0,1), node);
 }
 
 //--------------------------------------------------------------------------
@@ -233,27 +234,11 @@ void IScene::setState (state s)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
-{ 
-	if (msg->size()) {
-		string what;
-		if (msg->param (0, what)) {
-			EventsAble::eventype t = EventsAble::string2type (what);
-			switch (t) {
-				case EventsAble::kNewElement:
-				case EventsAble::kEndPaint:
-					if (msg->size() > 1)
-						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
-						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
-					return MsgHandler::kProcessed;
-
-				default:
-					break;
-			}
-		}
-	}
-	return IObject::_watchMsg(msg, add);
+bool IScene::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	string ev(t);
+	if ( (ev == kNewElementEvent) || (ev == kEndPaintEvent)) return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------

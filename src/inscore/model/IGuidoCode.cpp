@@ -30,7 +30,7 @@
 #include "GUIDOEngine.h"
 #include "GmnEvaluator.h"
 #include "IExpressionHandler.h"
-#include "TMessageEvaluator.h"
+#include "Events.h"
 
 using namespace std;
 using namespace libmapping;
@@ -75,7 +75,7 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 //--------------------------------------------------------------------------
 bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
 {
-	if (t == EventsAble::kPageCount) return true;
+	if (t == kPageCountEvent) return true;
 	return IObject::acceptSimpleEvent(t);
 }
 
@@ -84,7 +84,7 @@ void IGuidoCode::setPageCount(int count)
 {
 	if (count != fCurrentPagesCount) {
 		fCurrentPagesCount = count;
-		checkEvent(EventsAble::kPageCount, rational(0,1), this);
+		checkEvent(kPageCountEvent, rational(0,1), this);
 	}
 }
 

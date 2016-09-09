@@ -210,6 +210,9 @@ class IAppl : public IObject, public TILoader
 		std::string	guidoversion() const;
 		std::string	musicxmlversion() const;
 
+		/// \brief override IObject method
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
+
 		/// \brief application \c 'require' message handler. Provided to check for version number.
 		virtual MsgHandler::msgStatus requireMsg(const IMessage* msg);
 
@@ -236,9 +239,6 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'clear' message handler.
 		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
-
-		/// \brief the \c 'watch' message handler
-		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 		void	startBench()			{ bench::start(); }
