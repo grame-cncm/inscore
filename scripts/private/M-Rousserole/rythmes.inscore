@@ -1,3 +1,5 @@
+/ITL compatibility 1.00;
+
 /ITL/scene/r1 set gmnf "rythmes/r1.gmn";
 /ITL/scene/r2 set gmnf "rythmes/r1.gmn";
 /ITL/scene/r3 set gmnf "rythmes/r2.gmn";
