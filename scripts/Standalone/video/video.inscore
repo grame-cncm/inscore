@@ -84,6 +84,18 @@ w = 0.05;
 /ITL/scene/progress dy 0.2;
 
 #---------------------------------------------
+# position control
+#---------------------------------------------
+/ITL/scene/v1 penColor 240 0 0;
+/ITL/scene/v1 watch mouseEnter ( /ITL/scene/v1 penWidth 2);
+/ITL/scene/v1 watch mouseLeave ( /ITL/scene/v1 penWidth 0);
+/ITL/scene/v1 watch mouseDown ( 
+	/ITL/log write date "$date%f",
+	/ITL/scene/progress date "$date"
+ );
+
+
+#---------------------------------------------
 # a simple control (play / stop)
 #---------------------------------------------
 /ITL/scene/control set txt "Play";
