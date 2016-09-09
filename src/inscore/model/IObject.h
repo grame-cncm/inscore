@@ -611,6 +611,12 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual MsgHandler::msgStatus evalMsg(const IMessage* msg);
 
 		/// \brief utility to delegate events acceptability
+//		virtual bool acceptMouseEvent(EventsAble::eventype t) const;
+
+		/// \brief utility to delegate events acceptability
+//		virtual bool acceptCommonEvent(const std::string& ev) const;
+
+		/// \brief utility to delegate events acceptability
 		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
 
 		/// \brief the \c 'watch' message handler
