@@ -13,7 +13,10 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.20
-- 'events' system has been extended to any object attribute and supports user defined events.
+- the 'events' system has been extended to any object attribute and supports user defined events.
+  This change comes also with a one tick delay introduced to handle all the events (i.e. the 
+  event associated messages are processed by the next time task): this is intended to avoid
+  freezing the system in case of loops.
 - lua support has been dropped (compilation was optional, never embedded into a distribution)
 - parser strategy changed: now each message is processed one by one to ensure the system
   consistency, especially for message based variables: an object state remains now consistent 
