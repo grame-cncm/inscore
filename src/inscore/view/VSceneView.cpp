@@ -42,6 +42,7 @@
 #include <unistd.h>
 #endif // win32
 
+#include "Events.h"
 #include "VSceneView.h"
 
 #ifdef __MOBILE__
@@ -504,7 +505,7 @@ void VSceneView::updateView( IScene * scene )
 	std::pair<std::string, bool> myExport = scene->getNextExportFlag();
     while ( myExport.first.length() ) {
         VExport::exportScene( fGraphicsView , myExport.first.c_str() );
-		scene->checkEvent(EventsAble::kExport, scene->getDate(), scene);
+		scene->checkEvent(kExportEvent, scene->getDate(), scene);
 		myExport = scene->getNextExportFlag();
 	}
 }

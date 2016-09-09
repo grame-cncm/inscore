@@ -37,6 +37,7 @@
 #include "QStretchTilerItem.h"
 
 #include "IObject.h"
+#include "Events.h"
 #include "VExport.h"
 
 #include "MouseEventAble.h"
@@ -468,7 +469,7 @@ void VGraphicsItemView::updateView(IObject* o)
 
 	while ( myExport.first.length() ) {
 		VExport::exportItem( item() , myExport.first.c_str() ,  o->getScale() ,  o->getScale(), myExport.second);
-		o->checkEvent(EventsAble::kExport, rational(0,1), o);
+		o->checkEvent(kExportEvent, rational(0,1), o);
 		myExport = o->getNextExportFlag();
 	}
 
