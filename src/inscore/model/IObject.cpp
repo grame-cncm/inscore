@@ -663,7 +663,7 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 			for (size_t i = 0; i < n; i++)
 				elements()[i]->getObjects(tail, outv);
 		}
-		else outv.push_back(this);
+		else if (!getDeleted()) outv.push_back(this);
 	}
 }
 
