@@ -52,7 +52,7 @@ IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 
 	fGetMsgHandlerMap[kmap_GetSetMethod]	= SGetParamMsgHandler(0);
 	fGetMsgHandlerMap[kname_GetSetMethod]	= SGetParamMsgHandler(0);
-	fGetMsgHandlerMap[ksignal_GetMethod]	= SGetParamMsgHandler(0);
+//	fGetMsgHandlerMap[ksignal_GetMethod]	= SGetParamMsgHandler(0);
 }
 
 //--------------------------------------------------------------------------
