@@ -401,6 +401,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return true when associated messages have been processed
 		*/
 		virtual bool checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const;
+		virtual bool checkEvent (EventsAble::eventype event, EventContext& context) const;
 
 		/*!
 			\brief process a signal

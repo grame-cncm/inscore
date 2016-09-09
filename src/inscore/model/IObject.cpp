@@ -593,7 +593,9 @@ int IObject::execute (const IMessage* msg)
 		if (ret == MsgHandler::msgStatus::kProcessed) {
 			// check if there is any associated event
 			const string method = msg->message();
-			checkEvent(method.c_str(), getDate(), this);
+			MouseLocation pos (getXPos(), getYPos(), 0, 0, 0, 0);	// object position and
+			EventContext env (pos, getDate(), this);				// date are available from the environment
+			checkEvent(method.c_str(), env);
 		}
 		return ret;
 	}
@@ -670,17 +672,22 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 //--------------------------------------------------------------------------
 // events processing
 //--------------------------------------------------------------------------
-bool IObject::checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const
+bool IObject::checkEvent (EventsAble::eventype event, EventContext& context) const
 {
 	const IMessageList*	msgs = getMessages(event);
 	if (msgs) {
-		EventContext env(date, obj);
 		TMessageEvaluator me;
-		SIMessageList outmsgs = me.eval (msgs, env);
+		SIMessageList outmsgs = me.eval (msgs, context);
 		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
 		return true;
 	}
 	return false;
+}
+
+bool IObject::checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const
+{
+	EventContext env(date, obj);
+	return checkEvent( event, env);
 }
 
 //--------------------------------------------------------------------------
