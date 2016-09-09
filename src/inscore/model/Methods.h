@@ -162,7 +162,7 @@ extern const char* kscale_GetSetMethod;
 extern const char* kset_SetMethod;
 extern const char* kshear_GetSetMethod;
 extern const char* kshow_GetSetMethod;
-extern const char* ksignal_GetMethod;
+//extern const char* ksignal_GetMethod;
 extern const char* ksize_GetSetMethod;
 extern const char* kstack_GetMethod;
 extern const char* kstatus_GetMethod;
