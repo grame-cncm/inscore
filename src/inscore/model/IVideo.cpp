@@ -58,9 +58,10 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kplay_GetSetMethod]			= TSetMethodMsgHandler<IVideo,bool>::create(this, &IVideo::setPlay);
 	fMsgHandlerMap[kvolume_GetSetMethod]		= TSetMethodMsgHandler<IVideo,float>::create(this, &IVideo::setVolume);
 	fMsgHandlerMap[krate_GetSetMethod]			= TSetMethodMsgHandler<IVideo,float>::create(this, &IVideo::setRate);
-	fMsgHandlerMap[kvdate_GetSetMethod]			= TSetMethodMsgHandler<IVideo,long>::create(this, &IVideo::setVDate);
 	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
 	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
+//	fMsgHandlerMap[kvdate_GetSetMethod]			= TSetMethodMsgHandler<IVideo,long>::create(this, &IVideo::setVDate);
+	fMsgHandlerMap[kvdate_GetSetMethod]			= TMethodMsgHandler<IVideo, MsgHandler::msgStatus (IVideo::*)(const IMessage*)>::create(this, &IVideo::vdateMsg);
 	
 	fGetMsgHandlerMap[kvideoMap_GetSetMethod]	= GetVideoMapMsgHandler::create(this);
 	fGetMsgHandlerMap[kplay_GetSetMethod]		= TGetParamMsgHandler<bool>::create(fPlaying);
@@ -159,6 +160,42 @@ MsgHandler::msgStatus IVideo::set (const IMessage* msg )
 	return status;
 }
 
+//--------------------------------------------------------------------------
+int IVideo::musicalTime2mls (float date) const
+{
+	// converts the date in float and in quarter notes count
+	// assumes the tempo is 60 and converts the quarter notes count in milliseconds
+	return int(date * 4000);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IVideo::vdateMsg (const IMessage* msg )
+{
+	MsgHandler::msgStatus ret = MsgHandler::kBadParameters;
+	size_t n = msg->size();
+	if (n == 1) {
+		int mlsdate;
+		float floatdate;
+		if (msg->param(0, mlsdate)) {
+			setVDate (mlsdate);
+			ret = MsgHandler::kProcessed;
+		}
+		else if (msg->param(0, floatdate)) {
+			setVDate (musicalTime2mls(floatdate));
+			ret = MsgHandler::kProcessed;
+		}
+	}
+	else if (n == 2) {
+		int num, denum;
+		if (msg->param(0, num) && msg->param(1, denum)) {
+			int vdate = musicalTime2mls(rational(num, denum));
+			setVDate (vdate);
+			ret = MsgHandler::kProcessed;
+		}
+	}
+	return ret;
+}
+
 //----------------------------------------------------------------------
 float IVideo::currentTime() const
 {
@@ -226,29 +263,11 @@ MsgHandler::msgStatus IVideo::videoMapFileMsg (const IMessage* msg )
 IVideo::Date2SecondMappingConverter::Date2SecondMappingConverter( SFloat2RelativeTimeMapping map )
 {
 	fMapping = map;
-
-//	fMapping = TVirtualRelation<FloatSegment,RelativeTimeSegment>::create();
-//	Float2RelativeTimeRelation::const_directIterator i;
-//		
-//	for ( i = map->begin() ; i != map->end() ; i++ )
-//	{
-//		for ( unsigned int j = 0 ; j < i->second.size() ; j++ )
-//		{
-//			fMapping->addRelation( i->first , i->second[j] );
-//		}
-//	}
 }
 
 //----------------------------------------------------------------------
 float IVideo::Date2SecondMappingConverter::convert(const rational& r) const
 {
-//	RelativeTimeSegment timeSeg(r,r + rational(1,1));
-//	std::vector<FloatSegment> list;
-//	fMapping->reverseRelation( timeSeg , list );
-//	if ( list.size() )
-//		return list[0].start();
-//	else return 0;
-
 	RelativeTimeSegment t = MapTools::find (r, fMapping->reverse());// get the time segment containing the date r
 	std::set<FloatSegment> dates = fMapping->reverse().get(t);
 	float date = -1;
@@ -257,11 +276,6 @@ float IVideo::Date2SecondMappingConverter::convert(const rational& r) const
 		TAXBFunction<rational> f(t.interval(), pos);		// computes the linear interpolation function that goes from t to pos
 		TSegmentVariety<float,1> v (*dates.begin(), &f);	// create a variety of this segment using the previous linear interpolation function
 		date = v.get( f(r) );								// x is now the variety x pos et date relative pos regarding f
-
-
-//		float ratio = MapTools::relativepos(r, t.interval());		// get the relative position of date within the time segment
-//		const FloatInterval& i = dates.begin()->interval();
-//		date = i.first() + i.size() * ratio;
 	}
 	return date;
 }

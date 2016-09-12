@@ -52,6 +52,8 @@ typedef class libmapping::SMARTP<IVideo>	SIVideo;
 */
 class IVideo : public IRectShape,  public TFile
 {
+	int musicalTime2mls (float date) const;
+
 	public:
 		static const std::string kVideoType;
 		static SIVideo create(const std::string& name, IObject * parent)	{ return new IVideo(name, parent); }
@@ -111,6 +113,9 @@ class IVideo : public IRectShape,  public TFile
 
 		/// \brief the \c 'get vduration' message handler
 		virtual libmapping::rational getVDuration () const;
+
+		/// \brief the \c 'vdate' message handler
+		virtual MsgHandler::msgStatus vdateMsg (const IMessage* msg );
 	
 		/// \brief the \c 'videoMapf' message handler
 		virtual MsgHandler::msgStatus videoMapFileMsg (const IMessage* msg );
