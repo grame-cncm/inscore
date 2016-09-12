@@ -972,10 +972,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {49}{ video : 'play' int32 | volume float32 | rate float32 | vdate int32 }
+\rail@i {49}{ video : 'play' int32 | volume float32 | rate float32 | vdate ( [1] int32 | [2] (int32 int32) | [3] float) }
 \rail@o {49}{
 \rail@index{video}
-\rail@begin{4}{video}
+\rail@begin{6}{video}
 \rail@bar
 \rail@term{play}[]
 \rail@token{int32}[]
@@ -987,7 +987,17 @@
 \rail@token{float32}[]
 \rail@nextbar{3}
 \rail@nont{vdate}[]
+\rail@bar
+\rail@annote[1]
 \rail@token{int32}[]
+\rail@nextbar{4}
+\rail@annote[2]
+\rail@token{int32}[]
+\rail@token{int32}[]
+\rail@nextbar{5}
+\rail@annote[3]
+\rail@nont{float}[]
+\rail@endbar
 \rail@endbar
 \rail@end
 }
