@@ -1,3 +1,6 @@
+
+/ITL compatibility 1.00;
+
 /ITL/scene/ch1 set gmn "[ c ]";
 /ITL/scene/ch2 set gmn "[ c ]";
 /ITL/scene/ch3 set gmn "[ c ]";

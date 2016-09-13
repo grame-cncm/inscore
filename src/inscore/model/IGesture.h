@@ -81,6 +81,9 @@ class IGesture : public IVNode
 				 IGesture( const std::string& name, IObject* parent, int index, TGestureFollowerPlugin * gf);
 		virtual ~IGesture();	
 
+		/// \brief override IObject method
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
+
 		void	setLikelihoodThreshold (float value);
 		void	learn (float* values, int size);
 
@@ -89,9 +92,6 @@ class IGesture : public IVNode
 
 		/// \brief the \c 'learn' message handler
 		virtual MsgHandler::msgStatus learn (const IMessage* msg);
-
-		/// \brief the \c 'watch' message handler
-		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 };
 
 /*! @} */

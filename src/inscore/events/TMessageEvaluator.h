@@ -46,7 +46,6 @@ typedef libmapping::SMARTP<IObject>			SIObject;
 * \brief current mouse location in various coordinate spaces
 */
 typedef struct MouseLocation {
-	enum { noloc = -999999 };
 	float fx, fy;			///< coordinates relative to the object, as in internal representation
 	float fabsx, fabsy;		///< absolute coordinates relative to the object
 	float fsx, fsy;			///< coordinates relative to the scene
@@ -54,7 +53,7 @@ typedef struct MouseLocation {
 	MouseLocation (float x, float y, float ax, float ay, float sx, float sy)
 		: fx(x), fy(y), fabsx(ax), fabsy(ay), fsx(sx), fsy(sy) {}
 	MouseLocation ()
-		: fx(noloc), fy(noloc), fabsx(noloc), fabsy(noloc), fsx(noloc), fsy(noloc) {}
+		: fx(0), fy(0), fabsx(0), fabsy(0), fsx(0), fsy(0) {}
 } MouseLocation;
 
 //----------------------------------------------------------------------
@@ -76,9 +75,11 @@ typedef struct EventContext {
 	void set (const GestureContext& g) { gesture = g; }
 
 	EventContext (const MouseLocation& ml, const libmapping::rational& d, const IObject* o)
-		: mouse(ml), date(d), object(o) {} //, varmsg(0) {}
+		: mouse(ml), date(d), object(o) {}
+	EventContext (const libmapping::rational& d, const IObject* o)
+		: date(d), object(o) {}
 	EventContext (const IObject* o)
-		: object(o) {} //, varmsg(0) {}
+		: object(o) { date.set(0, 1); }
 
 } EventContext;
 

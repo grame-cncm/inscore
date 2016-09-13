@@ -23,7 +23,6 @@
 
 */
 
-
 #include "EventsAble.h"
 #include "IMessageStream.h"
 #include "TInterval.h"
@@ -32,63 +31,64 @@
 
 using namespace std;
 
-static const char* kMouseMoveStr	= "mouseMove";
-static const char* kMouseDownStr	= "mouseDown";
-static const char* kMouseUpStr		= "mouseUp";
-static const char* kMouseEnterStr	= "mouseEnter";
-static const char* kMouseLeaveStr	= "mouseLeave";
-static const char* kMouseDoubleClickStr = "doubleClick";
-
-static const char* kTouchBeginStr	= "touchBegin";
-static const char* kTouchEndStr		= "touchEnd";
-static const char* kTouchUpdateStr	= "touchUpdate";
-
-static const char* kTimeEnterStr	= "timeEnter";
-static const char* kTimeLeaveStr	= "timeLeave";
-static const char* kDurEnterStr		= "durEnter";
-static const char* kDurLeaveStr		= "durLeave";
-static const char* kExportStr		= "export";
-static const char* kDeleteStr		= "del";
-static const char* kNewDataStr		= "newData";
-
-// gesture specific events
-static const char* kGFEnterStr		= "gfEnter";
-static const char* kGFLeaveStr		= "gfLeave";
-static const char* kGFActiveStr		= "gfActive";
-static const char* kGFIdleStr		= "gfIdle";
-
-// URL specific events
-static const char* kSuccessStr		= "success";
-static const char* kErrorStr		= "error";
-static const char* kCancelStr		= "cancel";
-
-// scene specific events
-static const char* kEndPaintStr		= "endPaint";
-static const char* kNewElementStr	= "newElement";
-
-// score specific events
-static const char* kPageCountStr	= "pageCount";
-
-// video specific events
-static const char* kVideoEndStr		= "end";
-static const char* kVideoReadyStr	= "ready";
 
 namespace inscore
 {
 
-map<string, EventsAble::eventype>		EventsAble::fTypeStr;
-map<EventsAble::eventype, const char*>	EventsAble::fTypeNum;
+const char* kMouseMoveEvent			= "mouseMove";
+const char* kMouseDownEvent			= "mouseDown";
+const char* kMouseUpEvent			= "mouseUp";
+const char* kMouseEnterEvent		= "mouseEnter";
+const char* kMouseLeaveEvent		= "mouseLeave";
+const char* kMouseDoubleClickEvent	= "doubleClick";
+
+const char* kTouchBeginEvent		= "touchBegin";
+const char* kTouchEndEvent			= "touchEnd";
+const char* kTouchUpdateEvent		= "touchUpdate";
+
+const char* kTimeEnterEvent			= "timeEnter";
+const char* kTimeLeaveEvent			= "timeLeave";
+const char* kDurEnterEvent			= "durEnter";
+const char* kDurLeaveEvent			= "durLeave";
+const char* kExportEvent			= "export";
+//const char* kDeleteEvent			= "del";		'del' is now part of the common set of accepted events
+const char* kNewDataEvent			= "newData";
+
+// gesture specific events
+const char* kGFEnterEvent			= "gfEnter";
+const char* kGFLeaveEvent			= "gfLeave";
+const char* kGFActiveEvent			= "gfActive";
+const char* kGFIdleEvent			= "gfIdle";
+
+// URL specific events
+const char* kSuccessEvent			= "success";
+const char* kErrorEvent				= "error";
+const char* kCancelEvent			= "cancel";
+
+// scene specific events
+const char* kEndPaintEvent			= "endPaint";
+const char* kNewElementEvent		= "newElement";
+
+// score specific events
+const char* kPageCountEvent			= "pageCount";
+
+// video specific events
+const char* kVideoEndEvent			= "end";
+const char* kVideoReadyEvent		= "ready";
+
+map<size_t, std::string>	EventsAble::fHashCodes;
+std::hash<string>			EventsAble::fHash;
 
 //----------------------------------------------------------------------
-EventsAble::EventsAble ():	fMouseSensible(false){}
+EventsAble::EventsAble ():	fMouseSensible(false) { init(); }
 EventsAble::~EventsAble ()	{}
 
 //----------------------------------------------------------------------
 void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 {
-	fMsgMap.set(t, msgs);
+	fMsgMap.set(fHash(t), msgs);
 
-	if(msgs && isMouseEventType(t)){
+	if(msgs && isMouseEvent(t)){
 		if(fMouseSensible){
 			if(!msgs->list().size() && !checkMouseSensibility()){
 				fMouseSensible = false;
@@ -104,9 +104,9 @@ void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 //----------------------------------------------------------------------
 void EventsAble::addMsg(EventsAble::eventype t, SIMessageList msgs)
 {
-	fMsgMap.add(t, msgs);
+	fMsgMap.add(fHash(t), msgs);
 
-	if(!fMouseSensible && isMouseEventType(t)){
+	if(!fMouseSensible && isMouseEvent(t)) {
 		fMouseSensible = true;
 		setMouseEventSensibility(true);
 	}
@@ -165,51 +165,43 @@ bool EventsAble::popWatch ()
 //----------------------------------------------------------------------
 void EventsAble::clearTimeMsg (eventype t)
 {
-	switch (t) {
-		case kTimeEnter:	fTimeEnterMsgMap.clear(); break;
-		case kTimeLeave:	fTimeLeaveMsgMap.clear(); break;
-		case kDurEnter:		fDurLeaveMsgMap.clear(); break;
-		case kDurLeave:		fDurLeaveMsgMap.clear(); break;
-		default:	;
-	}
+	size_t ht = fHash(t);
+	if (ht == fHash(kTimeEnterEvent))			fTimeEnterMsgMap.clear();
+	else if (ht == fHash(kTimeLeaveEvent))		fTimeLeaveMsgMap.clear();
+	else if (ht == fHash(kDurEnterEvent))		fDurEnterMsgMap.clear();
+	else if (ht == fHash(kDurLeaveEvent))		fDurLeaveMsgMap.clear();
 }
 
 //----------------------------------------------------------------------
 void EventsAble::setTimeMsg (eventype t, const RationalInterval& time, SIMessageList msgs)
 {
-	switch (t) {
-		case kTimeEnter:	fTimeEnterMsgMap.set(time, msgs); break;
-		case kTimeLeave:	fTimeLeaveMsgMap.set(time, msgs); break;
-		case kDurEnter:		fDurLeaveMsgMap.set(time, msgs); break;
-		case kDurLeave:		fDurLeaveMsgMap.set(time, msgs); break;
-		default:	;
-	}
+	size_t ht = fHash(t);
+	if (ht == fHash(kTimeEnterEvent))			fTimeEnterMsgMap.set(time, msgs);
+	else if (ht == fHash(kTimeLeaveEvent))		fTimeLeaveMsgMap.set(time, msgs);
+	else if (ht == fHash(kDurEnterEvent))		fDurEnterMsgMap.set (time, msgs);
+	else if (ht == fHash(kDurLeaveEvent))		fDurLeaveMsgMap.set (time, msgs);
 }
 
 //----------------------------------------------------------------------
 void EventsAble::addTimeMsg (eventype t, const RationalInterval& time, SIMessageList msgs)
 {
-	switch (t) {
-		case kTimeEnter:	fTimeEnterMsgMap.add(time, msgs); break;
-		case kTimeLeave:	fTimeLeaveMsgMap.add(time, msgs); break;
-		case kDurEnter:		fDurLeaveMsgMap.add(time, msgs); break;
-		case kDurLeave:		fDurLeaveMsgMap.add(time, msgs); break;
-		default:	;
-	}
+	size_t ht = fHash(t);
+	if (ht == fHash(kTimeEnterEvent))			fTimeEnterMsgMap.add(time, msgs);
+	else if (ht == fHash(kTimeLeaveEvent))		fTimeLeaveMsgMap.add(time, msgs);
+	else if (ht == fHash(kDurEnterEvent))		fDurEnterMsgMap.add (time, msgs);
+	else if (ht == fHash(kDurLeaveEvent))		fDurLeaveMsgMap.add (time, msgs);
 }
 
 //----------------------------------------------------------------------
 const IMessageList* EventsAble::getTimeMsgs (eventype t, const RationalInterval& time) const
 {
-	switch (t) {
-		case kTimeEnter:	return fTimeEnterMsgMap.get(time);
-		case kTimeLeave:	return fTimeLeaveMsgMap.get(time);
-		case kDurEnter:		return fDurEnterMsgMap.get(time);
-		case kDurLeave:		return fDurLeaveMsgMap.get(time);
-		default:
-			;
-	}
-	return 0;
+	const IMessageList* msgs = 0;
+	size_t ht = fHash(t);
+	if (ht == fHash(kTimeEnterEvent))			msgs = fTimeEnterMsgMap.get(time);
+	else if (ht == fHash(kTimeLeaveEvent))		msgs = fTimeLeaveMsgMap.get(time);
+	else if (ht == fHash(kDurEnterEvent))		msgs = fDurEnterMsgMap.get(time);
+	else if (ht == fHash(kDurLeaveEvent))		msgs = fDurLeaveMsgMap.get(time);
+	return msgs;
 }
 
 //----------------------------------------------------------------------
@@ -237,20 +229,20 @@ SIMessage EventsAble::buildGetMsg (const char * address, const string& what, con
 SIMessageList EventsAble::getWatch (const char* address) const
 {
 	SIMessageList list = IMessageList::create();
-	for (_TMsgMap::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, type2string (i->first), i->second));
+	for (TWatcher<size_t>::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, fHashCodes[i->first], i->second));
 
-	for (_TimeMsgMap::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kTimeEnterStr, i->first, i->second));
+	for (TWatcher<RationalInterval>::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kTimeEnterEvent, i->first, i->second));
 
-	for (_TimeMsgMap::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kTimeLeaveStr, i->first, i->second));
+	for (TWatcher<RationalInterval>::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kTimeLeaveEvent, i->first, i->second));
 
-	for (_TimeMsgMap::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kDurEnterStr, i->first, i->second));
+	for (TWatcher<RationalInterval>::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kDurEnterEvent, i->first, i->second));
 
-	for (_TimeMsgMap::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kDurLeaveStr, i->first, i->second));
+	for (TWatcher<RationalInterval>::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
+		list->list().push_back( buildGetMsg (address, kDurLeaveEvent, i->first, i->second));
 
 	if (list->list().empty()) list->list().push_back(IMessage::create (address, kwatch_GetSetMethod));
 	return list;
@@ -273,20 +265,20 @@ SIMessageList EventsAble::getStack (const char* address) const
     while(tempInverted.size())
     {
         EventsMaps m = tempInverted.top();
-        for (_TMsgMap::const_iterator i = m.fMsg.begin(); i != m.fMsg.end(); i++)
-            list->list().push_back( buildGetMsg (address, type2string (i->first), i->second));
+        for (TWatcher<size_t>::const_iterator i = m.fMsg.begin(); i != m.fMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, fHashCodes[i->first], i->second));
 
-        for (_TimeMsgMap::const_iterator i = m.fTimeEnterMsg.begin(); i != m.fTimeEnterMsg.end(); i++)
-            list->list().push_back( buildGetMsg (address, kTimeEnterStr, i->first, i->second));
+        for (TWatcher<RationalInterval>::const_iterator i = m.fTimeEnterMsg.begin(); i != m.fTimeEnterMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kTimeEnterEvent, i->first, i->second));
 
-        for (_TimeMsgMap::const_iterator i = m.fTimeLeaveMsg.begin(); i != m.fTimeLeaveMsg.end(); i++)
-            list->list().push_back( buildGetMsg (address, kTimeLeaveStr, i->first, i->second));
+        for (TWatcher<RationalInterval>::const_iterator i = m.fTimeLeaveMsg.begin(); i != m.fTimeLeaveMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kTimeLeaveEvent, i->first, i->second));
 
-        for (_TimeMsgMap::const_iterator i = m.fDurEnterMsg.begin(); i != m.fDurEnterMsg.end(); i++)
-            list->list().push_back( buildGetMsg (address, kDurEnterStr, i->first, i->second));
+        for (TWatcher<RationalInterval>::const_iterator i = m.fDurEnterMsg.begin(); i != m.fDurEnterMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kDurEnterEvent, i->first, i->second));
 
-        for (_TimeMsgMap::const_iterator i = m.fDurLeaveMsg.begin(); i != m.fDurLeaveMsg.end(); i++)
-            list->list().push_back( buildGetMsg (address, kDurLeaveStr, i->first, i->second));
+        for (TWatcher<RationalInterval>::const_iterator i = m.fDurLeaveMsg.begin(); i != m.fDurLeaveMsg.end(); i++)
+            list->list().push_back( buildGetMsg (address, kDurLeaveEvent, i->first, i->second));
         
         SIMessage msg = IMessage::create(address, kpush_SetMethod);
         list->list().push_back(msg);
@@ -298,117 +290,98 @@ SIMessageList EventsAble::getStack (const char* address) const
 }
 
 //----------------------------------------------------------------------
-const char* EventsAble::type2string (eventype type)
+bool EventsAble::isTimeEvent(size_t type)
 {
-	const char* typestr = fTypeNum[type];
-	return typestr ? typestr : "";
+	return	(type == fHash(kTimeEnterEvent))	||
+			(type == fHash(kTimeLeaveEvent))	||
+			(type == fHash(kDurEnterEvent))		||
+			(type == fHash(kDurLeaveEvent));
 }
 
 //----------------------------------------------------------------------
-bool EventsAble::isMouseEventType(EventsAble::eventype type)
+bool EventsAble::isDurEvent(size_t type)
 {
-	switch(type){
-		case kMouseMove:
-		case kMouseDown:
-		case kMouseUp:
-		case kMouseEnter:
-		case kMouseLeave:
-		case kMouseDoubleClick:
-		case kTouchBegin:
-		case kTouchEnd:
-		case kTouchUpdate:
-			return true;
-		default: ;
-			}
-	return false;
+	return	(type == fHash(kDurEnterEvent))		||
+			(type == fHash(kDurLeaveEvent));
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::isMouseEvent(size_t type)
+{
+	return	(type == fHash(kMouseMoveEvent))		||
+			(type == fHash(kMouseDownEvent))		||
+			(type == fHash(kMouseUpEvent))			||
+			(type == fHash(kMouseEnterEvent))		||
+			(type == fHash(kMouseLeaveEvent))		||
+			(type == fHash(kMouseDoubleClickEvent)) ||
+			(type == fHash(kTouchBeginEvent))		||
+			(type == fHash(kTouchEndEvent))			||
+			(type == fHash(kTouchUpdateEvent));
 }
 
 //----------------------------------------------------------------------
 bool EventsAble::checkMouseSensibility() const
 {
 	for(auto it = fMsgMap.begin(); it != fMsgMap.end(); it++){
-		if(isMouseEventType(it->first))
+		if(isMouseEvent(it->first))
 			return true;
 	}
 	return false;
 }
 
 //----------------------------------------------------------------------
+bool EventsAble::hash(eventype t)
+{
+	size_t h = fHash(t);
+	map<size_t, std::string>::const_iterator i = fHashCodes.find(h);
+	if (i != fHashCodes.end()) {	// hash code is already in the table
+		bool collision = (i->second != t);
+		if (collision)
+			ITLErr << "Warning: hash code collision in events management" << t << "vs" << i->second << ITLEndl;
+		return !collision;		// compare with the existing value
+	}
+	// hash code is not in the table
+//cout << "EventsAble::hash " << t << " -> " << h << endl;
+	fHashCodes[h] = t;
+	return true;
+}
+
+//----------------------------------------------------------------------
 void EventsAble::init ()
 {
-	if (!fTypeStr.size()) {
-		fTypeStr[kMouseMoveStr]	= kMouseMove;
-		fTypeStr[kMouseDownStr]	= kMouseDown;
-		fTypeStr[kMouseUpStr]	= kMouseUp;
-		fTypeStr[kMouseEnterStr]= kMouseEnter;
-		fTypeStr[kMouseLeaveStr]= kMouseLeave;
-		fTypeStr[kMouseDoubleClickStr]	= kMouseDoubleClick;
+	if (!fHashCodes.size()) {
+		hash (kMouseMoveEvent);
+		hash (kMouseDownEvent);
+		hash (kMouseUpEvent);
+		hash (kMouseEnterEvent);
+		hash (kMouseLeaveEvent);
+		hash (kMouseDoubleClickEvent);
 
-		fTypeStr[kTouchBeginStr]= kTouchBegin;
-		fTypeStr[kTouchEndStr]	= kTouchEnd;
-		fTypeStr[kTouchUpdateStr]= kTouchUpdate;
+		hash (kTouchBeginEvent);
+		hash (kTouchEndEvent);
+		hash (kTouchUpdateEvent);
 
-		fTypeStr[kTimeEnterStr]	= kTimeEnter;
-		fTypeStr[kTimeLeaveStr]	= kTimeLeave;
-		fTypeStr[kDurEnterStr]	= kDurEnter;
-		fTypeStr[kDurLeaveStr]	= kDurLeave;
+		hash (kTimeEnterEvent);
+		hash (kTimeLeaveEvent);
+		hash (kDurEnterEvent);
+		hash (kDurLeaveEvent);
 
-		fTypeStr[kExportStr]	= kExport;
-		fTypeStr[kNewElementStr]= kNewElement;
-		fTypeStr[kEndPaintStr]	= kEndPaint;
+		hash (kNewElementEvent);
+		hash (kEndPaintEvent);
 
-		fTypeStr[kGFEnterStr]	= kGFEnter;
-		fTypeStr[kGFLeaveStr]	= kGFLeave;
-		fTypeStr[kGFActiveStr]	= kGFActive;
-		fTypeStr[kGFIdleStr]	= kGFIdle;
+		hash (kGFEnterEvent);
+		hash (kGFLeaveEvent);
+		hash (kGFActiveEvent);
+		hash (kGFIdleEvent);
 
-		fTypeStr[kDeleteStr]	= kDelete;
-		fTypeStr[kNewDataStr]	= kNewData;
-		fTypeStr[kSuccessStr]	= kSuccess;
-		fTypeStr[kErrorStr]     = kError;
-		fTypeStr[kCancelStr]	= kCancel;
+		hash (kNewDataEvent);
+		hash (kSuccessEvent);
+		hash (kErrorEvent);
+		hash (kCancelEvent);
 
-		fTypeStr[kPageCountStr]	= kPageCount;
-		fTypeStr[kVideoEndStr]	= kVideoEnd;
-		fTypeStr[kVideoReadyStr]= kVideoReady;
-	}
-	
-	if (!fTypeNum.size()) {
-		fTypeNum[kMouseMove]	= kMouseMoveStr;
-		fTypeNum[kMouseDown]	= kMouseDownStr;
-		fTypeNum[kMouseUp]		= kMouseUpStr;
-		fTypeNum[kMouseEnter]	= kMouseEnterStr;
-		fTypeNum[kMouseLeave]	= kMouseLeaveStr;
-		fTypeNum[kMouseDoubleClick]	= kMouseDoubleClickStr;
-
-		fTypeNum[kTouchBegin]	= kTouchBeginStr;
-		fTypeNum[kTouchEnd]		= kTouchEndStr;
-		fTypeNum[kTouchUpdate]	= kTouchUpdateStr;
-
-		fTypeNum[kTimeEnter]	= kTimeEnterStr;
-		fTypeNum[kTimeLeave]	= kTimeLeaveStr;
-		fTypeNum[kDurEnter]		= kDurEnterStr;
-		fTypeNum[kDurLeave]		= kDurLeaveStr;
-
-		fTypeNum[kExport]		= kExportStr;
-		fTypeNum[kNewElement]	= kNewElementStr;
-		fTypeNum[kNewData]		= kNewDataStr;
-		fTypeNum[kEndPaint]		= kEndPaintStr;
-
-		fTypeNum[kGFEnter]		= kGFEnterStr;
-		fTypeNum[kGFLeave]		= kGFLeaveStr;
-		fTypeNum[kGFActive]		= kGFActiveStr;
-		fTypeNum[kGFIdle]		= kGFIdleStr;
-
-		fTypeNum[kDelete]		= kDeleteStr;
-
-		fTypeNum[kSuccess]		= kSuccessStr;
-		fTypeNum[kError]		= kErrorStr;
-		fTypeNum[kCancel]		= kCancelStr;
-
-		fTypeNum[kPageCount]	= kPageCountStr;
-		fTypeNum[kVideoEnd]		= kVideoEndStr;
-		fTypeNum[kVideoReady]	= kVideoReadyStr;
+		hash (kPageCountEvent);
+		hash (kVideoEndEvent);
+		hash (kVideoReadyEvent);
 	}
 }
 

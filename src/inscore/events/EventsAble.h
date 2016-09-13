@@ -27,6 +27,7 @@
 #ifndef __EventsAble__
 #define __EventsAble__
 
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
@@ -43,13 +44,8 @@ namespace inscore
 class EventsAble
 {
 	public:
-		enum eventype { kUnknownEvent=0, 
-			kMouseDown, kMouseUp, kMouseDoubleClick, kMouseEnter, kMouseLeave, kMouseMove,
-			kTouchBegin, kTouchEnd, kTouchUpdate,
-			kTimeEnter, kTimeLeave, kDurEnter, kDurLeave, kNewElement, kExport, kEndPaint,
-			kGFEnter, kGFLeave, kGFActive, kGFIdle, kDelete, kNewData, kSuccess, kError, kCancel, kPageCount,
-			kVideoReady, kVideoEnd };
-			
+		typedef const char* eventype;
+	
 				 EventsAble();
 		virtual ~EventsAble();
 		
@@ -68,46 +64,52 @@ class EventsAble
 		virtual void		pushWatch ();		///< push the current watched events and associated msgs on a stack
 		virtual bool		popWatch ();		///< restore watched events and associated messages from the stack
 
-		const IMessageList*	getMessages (eventype t) const			{ return fMsgMap.get(t); }
-		const IMessageList*	getMouseMsgs (eventype t) const			{ return fMsgMap.get(t); }
+		const IMessageList*	getMessages (eventype t) const					{ return fMsgMap.get(fHash(t)); }
+		const IMessageList*	getMouseMsgs (eventype t) const					{ return fMsgMap.get(fHash(t)); }
 		const IMessageList*	getTimeMsgs (eventype t, const RationalInterval& time) const;
 
-		void triggerEvent(eventype t, const bool& delay=false) const {fMsgMap.trigger(t,delay);}
+		void triggerEvent(eventype t, const bool& delay=false) const		{fMsgMap.trigger(fHash(t), delay);}
 
 		SIMessageList	getWatch (const char* address) const;	///< returns a list of 'watch' messages
         SIMessageList	getStack (const char* address) const;	///< returns a list of the states in the fWatchStack
 		void			reset();								///< clear all the messages maps
 
 		static void	init ();
-		static eventype	string2type (const std::string& str)		{ return fTypeStr[str]; }
-		static const char* type2string (eventype type);
-		static bool		isMouseEventType(eventype type);
+		static bool		isMouseEvent(size_t hashtype);
+		static bool		isMouseEvent(eventype t)				{ return isMouseEvent(fHash(t)); }
+		static bool		isTimeEvent(size_t hashtype);
+		static bool		isTimeEvent(eventype t)					{ return isTimeEvent(fHash(t)); }
+		static bool		isDurEvent(size_t hashtype);
+		static bool		isDurEvent(eventype t)					{ return isDurEvent(fHash(t)); }
+
+		// store the event hash code to the hash codes map
+		// check for potential collision
+		// in case of collision, return false and leave the map unchanged
+		static bool		hash(eventype t);
 
 	private:
-		typedef TWatcher<eventype>			_TMsgMap;
-		typedef TWatcher<RationalInterval>	_TimeMsgMap;
 		typedef struct EventsMaps {
-			_TMsgMap	fMsg;
-			_TimeMsgMap	fTimeEnterMsg;
-			_TimeMsgMap	fTimeLeaveMsg;
-			_TimeMsgMap	fDurEnterMsg;
-			_TimeMsgMap	fDurLeaveMsg;
+			TWatcher<size_t>			fMsg;
+			TWatcher<RationalInterval>	fTimeEnterMsg;
+			TWatcher<RationalInterval>	fTimeLeaveMsg;
+			TWatcher<RationalInterval>	fDurEnterMsg;
+			TWatcher<RationalInterval>	fDurLeaveMsg;
 		} EventsMaps;
 		std::stack<EventsMaps>	fWatchStack;
 		
-		_TMsgMap	fMsgMap;
-		_TimeMsgMap	fTimeEnterMsgMap;
-		_TimeMsgMap	fTimeLeaveMsgMap;
-		_TimeMsgMap	fDurEnterMsgMap;
-		_TimeMsgMap	fDurLeaveMsgMap;
-		
+		TWatcher<size_t>			fMsgMap;
+		TWatcher<RationalInterval>	fTimeEnterMsgMap;
+		TWatcher<RationalInterval>	fTimeLeaveMsgMap;
+		TWatcher<RationalInterval>	fDurEnterMsgMap;
+		TWatcher<RationalInterval>	fDurLeaveMsgMap;
+
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const SIMessageList&) const;
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const RationalInterval&, const IMessageList*) const;
 
 		bool checkMouseSensibility() const;
 
-	static std::map<std::string, eventype>	fTypeStr;
-	static std::map<eventype, const char*>	fTypeNum;
+	static std::hash<std::string> fHash;
+	static std::map<size_t, std::string>	fHashCodes;
 
 	protected:
 		 virtual void setMouseEventSensibility(bool) {}

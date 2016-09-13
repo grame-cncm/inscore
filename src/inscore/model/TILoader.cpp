@@ -165,21 +165,7 @@ bool TILoader::loadString(const std::string& str, IObject* client)
 {
 	stringstream sstr (str);
 	ITLparser p (&sstr, 0, client->getAppl());
-	SIMessageList msgs = p.parse();
-	if (msgs) {
-		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-			string addr;
-			if ((*i)->extendedAddress())
-				addr = string((*i)->url()) + (*i)->address();
-			else if ((*i)->relativeAddress())
-				addr = (*i)->relative2absoluteAddress( client->getOSCAddress());
-			else
-				addr = (*i)->address();
-			INScore::postMessage (addr.c_str(), *i);
-		}
-		return true;
-	}
-	return false;
+	return p.parse();
 }
 
 //--------------------------------------------------------------------------
@@ -217,13 +203,10 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 			else stream = &buff;
 
 			ITLparser p (stream, 0, client->getAppl());
-			SIMessageList msgs = p.parse();
-			bool error = false;
-			if (msgs)
-				error = !process (msgs, client->getRoot(), client->getOSCAddress());
-			if(error) ITLErr << "while parsing file" << srcfile << ITLEndl;
-
-			if(msgs) return MsgHandler::kProcessed;
+			if (!p.parse()) {
+				ITLErr << "while parsing file" << srcfile << ITLEndl;
+			}
+			else return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;

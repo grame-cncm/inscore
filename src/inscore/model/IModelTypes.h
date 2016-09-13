@@ -136,6 +136,9 @@ typedef class libmapping::SMARTP<IScene>		SIScene;
 class ISceneSync;
 typedef class libmapping::SMARTP<ISceneSync>	SISceneSync;
 
+class ISignalNode;
+typedef class libmapping::SMARTP<ISignalNode>	SISignalNode;
+
 class IShape;
 typedef class libmapping::SMARTP<IShape>		SIShape;
 

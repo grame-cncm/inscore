@@ -54,6 +54,7 @@
 #include "Tools.h"
 #include "QFileDownloader.h"
 #include "QGuidoImporter.h"
+#include "Events.h"
 
 #include "INScore.h"
 
@@ -340,6 +341,19 @@ SIMessageList IAppl::getAll() const
 }
 
 //--------------------------------------------------------------------------
+bool IAppl::processMsg (const IMessage* msg)
+{
+	if (!msg) return false;
+
+	string address = msg->address();
+	string beg  = OSCAddress::addressFirst(address);
+	string tail = OSCAddress::addressTail(address);
+	int ret = processMsg(beg, tail, msg);
+	IGlue::trace(msg, ret);
+	return ret & MsgHandler::kProcessed + MsgHandler::kProcessedNoChange;
+}
+
+//--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
@@ -366,7 +380,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 
 	if (tail.size()) {		// application is not the final destination of the message
 		status = IObject::processMsg(head, tail, msg);
-	}
+ 	}
 	
 	else if (match(head)) {			// the message is for the application itself
 		status = execute(msg);
@@ -384,15 +398,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 //--------------------------------------------------------------------------
 void IAppl::error () const
 {
-	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
-	if (msgs && msgs->list().size()) {
-		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), this);
-		TMessageEvaluator me;
-		SIMessageList outmsgs = me.eval (msgs, env);
-		if (outmsgs && outmsgs->list().size())
-			outmsgs->send();
-	}
+	checkEvent(kErrorEvent, libmapping::rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
@@ -447,8 +453,7 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 					const IMessageList* msgs = msg->watchMsg2Msgs(1);
 					if (!msgs || msgs->list().empty()) return MsgHandler::kBadParameters;
 
-					MouseLocation mouse (0, 0, 0, 0, 0, 0);
-					EventContext env(mouse, libmapping::rational(0,1), this);
+					EventContext env(this);
 					TMessageEvaluator me;
 					SIMessageList outmsgs = me.eval (msgs, env);
 					if (outmsgs && outmsgs->list().size()) outmsgs->send();
@@ -559,31 +564,14 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IAppl::_watchMsg(const IMessage* msg, bool add)
-{ 
-	if (msg->size()) {
-		string what;
-		if (msg->param (0, what)) {
-			EventsAble::eventype t = EventsAble::string2type (what);
-			switch (t) {
-				case EventsAble::kError:
-					if (msg->size() > 1)
-						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
-						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
-					return MsgHandler::kProcessed;
-
-				default:
-					break;
-			}
-		}
-	}
-	return IObject::_watchMsg(msg, add);
+bool IAppl::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	if ( string(t) == kErrorEvent) return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
-//bool IAppl::loadBuffer (const char* buffer)
 {
 	stringstream s;
 	for (int i=0; i<msg->size(); i++ ) {
@@ -595,16 +583,7 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 	if (!s.str().size()) return MsgHandler::kBadParameters;
 
 	ITLparser p (&s, 0, this);
-	SIMessageList msgs = p.parse();
-	if (msgs) {
-		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-			string beg  = OSCAddress::addressFirst((*i)->address());
-			string tail = OSCAddress::addressTail((*i)->address());
-			int ret = processMsg(beg, tail, *i);
-			if (oscDebug()) IGlue::trace(*i, ret);
-		}
-		return MsgHandler::kProcessed;
-	}
+	if (p.parse()) return MsgHandler::kProcessed;
 	return MsgHandler::kBadParameters;
 }
 

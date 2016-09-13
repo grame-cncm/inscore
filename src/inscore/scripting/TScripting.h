@@ -28,10 +28,8 @@
 
 #include <stack>
 #include <functional>
-#include <TLua.h>
-#ifdef V8ENGINE
-#include <TV8Js.h>
-#elif defined QTJSENGINE
+
+#ifdef QTJSENGINE
 #include <TQtJs.h>
 #elif defined IBUNDLE
 #include "TDummyJs.h"
@@ -47,7 +45,7 @@ typedef void* yyscan_t;
 namespace inscore 
 {
 
-class TParseEnv;
+class IAppl;
 class IMessageList;
 class IMessage;
 class baseparam;
@@ -55,9 +53,7 @@ typedef libmapping::SMARTP<baseparam> Sbaseparam;
 
 class TEnv;
 typedef libmapping::SMARTP<TEnv> STEnv;
-#ifdef V8ENGINE
-typedef TV8Js				TJSEngine;
-#elif defined QTJSENGINE
+#ifdef QTJSENGINE
 typedef TQtJs				TJSEngine;
 #elif defined IBUNDLE
 typedef ibundle::TDummyJs	TJSEngine;
@@ -68,10 +64,13 @@ typedef void*		TJSEngine;
 //--------------------------------------------------------------------------------------------
 class TScripting 
 {
-	TParseEnv*			fParseEnv;
+#ifdef IBUNDLE
+	inscore::TJSEngine fJavascriptEngine;		// a javscript engine for the bundle tool
+#endif
+	IAppl*				fRoot;
 	TJSEngine*			fJavascript;
-	TLua*				fLua;
 	SIMessageList		fMessages;
+	bool				fExecute;
 
 	bool checkVar	(IMessage::argslist& val, const char* var, int line) const;
 
@@ -83,19 +82,17 @@ class TScripting
 	public:
 		yyscan_t fScanner;
 
-				 TScripting(TParseEnv* penv);
+				 TScripting(IAppl* root, bool execute=true);
 		virtual ~TScripting();
 
-		void	add			(SIMessage& msg);
-		void	add			(SIMessageList& msg);
+		void	process		(SIMessage& msg);
+		void	process		(SIMessageList& msg);
 		void	variable	(const char* ident, const IMessage::argslist* values);
 		void	variable	(const char* ident, const SIMessageList* resolvemsgs);
 
-		SIMessageList	luaEval		(const char* script);
 		SIMessageList	jsEval		(const char* script, int lineno);
-		bool			checkLua () const;
-		bool			checkJavascript () const;
-		void			error(int line, int col, const char* s) const;
+		bool		checkJavascript () const;
+		void		error(int line, int col, const char* s) const;
 
 		IMessage::argslist		resolve	(const char* var, int line) const;
 		IMessage::argslist		resolveinc	(const char* var, bool post, int line);

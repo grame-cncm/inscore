@@ -30,6 +30,7 @@
 #include "TMessageEvaluator.h"
 #include "TInterval.h"
 #include "IObject.h"
+#include "Events.h"
 
 using namespace std;
 using namespace libmapping;
@@ -51,15 +52,13 @@ void TimeEventAble::eval (const IMessageList* msgs, const EventContext& env) con
 void TimeEventAble::handleTimeChange (rational from, rational to) const
 {
 	TMessageEvaluator me;
-	EventContext env (dynamic_cast<const IObject*>(this));
-	env.mouse = MouseLocation (0,0,0,0,0,0);
-	env.date = to;
+	EventContext env (to, dynamic_cast<const IObject*>(this));
 	for (std::set<RationalInterval>::const_iterator i=fWatchTimeList.begin(); i != fWatchTimeList.end(); i++) {
 		if (i->include(from) && !i->include(to)) {			// leaving the time interval
-			eval (fEventsHandler->getTimeMsgs (EventsAble::kTimeLeave, *i), env);
+			eval (fEventsHandler->getTimeMsgs (kTimeLeaveEvent, *i), env);
 		}
 		else if (!i->include(from) && i->include(to)) {		// entering the time interval
-			eval (fEventsHandler->getTimeMsgs (EventsAble::kTimeEnter, *i), env);
+			eval (fEventsHandler->getTimeMsgs (kTimeEnterEvent, *i), env);
 		}
 	}
 }
@@ -68,60 +67,40 @@ void TimeEventAble::handleTimeChange (rational from, rational to) const
 void TimeEventAble::handleDurChange (rational from, rational to) const
 {
 	TMessageEvaluator me;
-	EventContext env (dynamic_cast<const IObject*>(this));
-	env.mouse = MouseLocation (0,0,0,0,0,0);
-	env.date = to;
+	EventContext env (to, dynamic_cast<const IObject*>(this));
 	for (std::set<RationalInterval>::const_iterator i=fWatchDurList.begin(); i != fWatchDurList.end(); i++) {
 		if (i->include(from) && !i->include(to)) {			// leaving the duration interval
-			eval (fEventsHandler->getTimeMsgs (EventsAble::kDurLeave, *i), env);
+			eval (fEventsHandler->getTimeMsgs (kDurLeaveEvent, *i), env);
 		}
 		else if (!i->include(from) && i->include(to)) {		// entering the duration interval
-			eval (fEventsHandler->getTimeMsgs (EventsAble::kDurEnter, *i), env);
+			eval (fEventsHandler->getTimeMsgs (kDurEnterEvent, *i), env);
 		}
 	}
 }
 
 //----------------------------------------------------------------------
-void TimeEventAble::watchInterval (int type, const RationalInterval& interval)
+void TimeEventAble::watchInterval (eventype type, const RationalInterval& interval)
 {
-	switch (type) {
-		case EventsAble::kTimeEnter:
-		case EventsAble::kTimeLeave:
-			watchTime (interval);
-			break;
-		case EventsAble::kDurEnter:
-		case EventsAble::kDurLeave:
-			watchDur (interval);
-			break;
-	}
+	if (EventsAble::isDurEvent (type))
+		watchDur (interval);
+	else
+		watchTime (interval);
 }
 
-void TimeEventAble::delInterval	(int type, const RationalInterval& interval)
+void TimeEventAble::delInterval	(eventype type, const RationalInterval& interval)
 {
-	switch (type) {
-		case EventsAble::kTimeEnter:
-		case EventsAble::kTimeLeave:
-			delTime (interval);
-			break;
-		case EventsAble::kDurEnter:
-		case EventsAble::kDurLeave:
-			delDur (interval);
-			break;
-	}
+	if (EventsAble::isDurEvent (type))
+		delDur (interval);
+	else
+		delTime (interval);
 }
 
-void TimeEventAble::clearList (int type)
+void TimeEventAble::clearList (eventype type)
 {
-	switch (type) {
-		case EventsAble::kTimeEnter:
-		case EventsAble::kTimeLeave:
-			clearTime ();
-			break;
-		case EventsAble::kDurEnter:
-		case EventsAble::kDurLeave:
-			clearDur ();
-			break;
-	}
+	if (EventsAble::isDurEvent (type))
+		clearDur ();
+	else
+		clearTime ();
 }
 
 //----------------------------------------------------------------------

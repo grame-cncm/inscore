@@ -54,6 +54,7 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
     connect(&fMediaPlayer, SIGNAL(seekableChanged(bool)), this, SLOT(seekableChanged(bool)));
     connect(&fMediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
     connect(&fMediaPlayer, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
+    connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
 #endif
 
 }
@@ -68,6 +69,8 @@ void VVideoView::error(QMediaPlayer::Error err )
 //----------------------------------------------------------------------
 void VVideoView::nativeSizeChanged(const QSizeF & size)
 {
+	if (size.isEmpty()) return;
+//qDebug() << "VVideoView::nativeSizeChanged " << size;
 	fVideoItem->setSize (size);
 	fVideo->setWidth ( scene2RelativeWidth(size.width()) );
 	fVideo->setHeight( scene2RelativeHeight(size.height()) );
@@ -120,6 +123,7 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 #else
 	fReady = 0;
 	fVideo = video;
+	fMediaPlayer.stop ();
 	fMediaPlayer.setMedia(QUrl::fromLocalFile(videoFile));
 	fMediaPlayer.setVideoOutput (fVideoItem);
 	fMediaPlayer.setNotifyInterval(10);
@@ -128,7 +132,7 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 
 	video->setWidth(0.f);		// unknown width
 	video->setHeight(0.f);		// unknown height
-    connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
+//    connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
 #endif
 }
 
@@ -143,10 +147,9 @@ void VVideoView::initialize( IVideo * video  )
 //----------------------------------------------------------------------
 void VVideoView::updateView( IVideo * video  )
 {
-    video->cleanupSync();
+	video->cleanupSync();
 	fVideoItem->setOpacity (video->getA() / 255.f);
 	QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
-//		qint64 pos = video->currentTime() * 1000;
 	qint64 pos = video->vDate();
 		
 #ifdef USEPHONON

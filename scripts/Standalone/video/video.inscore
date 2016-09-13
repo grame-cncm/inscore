@@ -84,13 +84,31 @@ w = 0.05;
 /ITL/scene/progress dy 0.2;
 
 #---------------------------------------------
-# a simple control (play / stop)
+# position control
+#---------------------------------------------
+/ITL/scene/v1 penColor 240 0 0;
+/ITL/scene/v1 watch mouseEnter ( /ITL/scene/v1 penWidth 2);
+/ITL/scene/v1 watch mouseLeave ( /ITL/scene/v1 penWidth 0);
+move = ( 
+	/ITL/scene/v1 vdate "$date",
+	/ITL/scene/progress date "$date"
+ );
+/ITL/scene/v1 watch mouseDown $move;
+/ITL/scene/v1 watch mouseMove $move;
+
+
+#---------------------------------------------
+# a simple controls (play / stop) and Next 
 #---------------------------------------------
 /ITL/scene/control set txt "Play";
 /ITL/scene/control y 0.7;
-/ITL/scene/control scale 1.7;
-/ITL/scene/control watch mouseEnter (/ITL/scene/control red 240);
-/ITL/scene/control watch mouseLeave (/ITL/scene/control red 0);
+/ITL/scene/control1 set txt "Next";
+/ITL/scene/control1 y 0.82;
+
+/ITL/scene/control* scale 1.7;
+/ITL/scene/control* watch mouseEnter (/ITL/scene/$self red 240);
+/ITL/scene/control* watch mouseLeave (/ITL/scene/$self red 0);
+/ITL/scene/control1 watch mouseDown ( /ITL/scene/v1 event end);
 
 /ITL/scene/control watch mouseDown (
 	/ITL/scene/control push,
@@ -109,5 +127,6 @@ __END__
 
 /ITL/scene/v1 vdate 135000;
 /ITL/scene/v1 get duration;
-/ITL/scene/v1 get play;
+/ITL/scene/v1 get watch;
 /ITL/scene/v1 get vdate;
+/ITL/scene/v1 event end;

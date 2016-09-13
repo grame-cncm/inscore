@@ -78,8 +78,6 @@ static  void debug (const char * str, string context) {
 %x DQSTR
 		/* for quoted strings */
 %x QSTR
-		/* lua section */
-%x LUASECTION
 		/* javascript section */
 %x JSECTION
 		/* evaluable expression section */
@@ -133,7 +131,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
 "eval"			yyextra->fText = yytext; return EVAL;
 
-{EOL}					yylloc->first_column=0; /* ignore */
+{EOL}			yylloc->first_column=0; debug("EOL", "");		/* ignore */
 
  /* ----------------------------------------- */
  /*	math operators */
@@ -204,15 +202,11 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	non quoted file path */
  /* ----------------------------------------- */
-("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."[a-zA-Z]+		yyextra->fText = yytext; debug("FSTRING", yytext); return STRING;	/*file path without space*/
+("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."[a-zA-Z]+		yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;	/*file path without space*/
 
  /* ----------------------------------------- */
- /*	lang sections */
+ /*	javascript section */
  /* ----------------------------------------- */
-"<?"{SPACE}*"lua"			BEGIN LUASECTION;
-<LUASECTION>"?>"			if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
-<LUASECTION>({EOL}|"?"[^>]|[^?])*	yyextra->fText = unescape(yytext); return LUASCRIPT;
-
 "<?"{SPACE}*"javascript"	BEGIN JSECTION;
 <JSECTION>"?>"				if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 <JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;

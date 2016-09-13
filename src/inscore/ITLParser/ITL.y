@@ -54,7 +54,6 @@
 
 %token EXPRESSION
 
-%token LUASCRIPT
 %token JSCRIPT
 
 %token ADD SUB DIV MULT QUEST MIN MAX GREATER GREATEREQ LESS LESSEQ EQ MINUS NEG MODULO ;
@@ -68,7 +67,7 @@
 /*------------------------------   types  ------------------------------*/
 %type <num> 	number mathbool
 %type <real>	FLOAT
-%type <str>		STRING FILEPATH IDENTIFIER REGEXP LUASCRIPT JSCRIPT
+%type <str>		STRING FILEPATH IDENTIFIER REGEXP JSCRIPT
 %type <str>		oscaddress identifier relativeaddress varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
@@ -127,24 +126,21 @@ start		: expr
 //_______________________________________________
 // expression of the script language
 //_______________________________________________
-expr		: message  ENDEXPR		{ context->fReader.add(*$1); debug("===> message", (*$1)->toString()); delete $1; }
+expr		: message  ENDEXPR		{ context->fReader.process(*$1); delete $1; }
 			| variabledecl ENDEXPR	{ delete $1; }
-			| script				{	if (*$1) {
+			| script			{	if (*$1) {
 										for (unsigned int i=0; i < (*$1)->list().size(); i++)
-											context->fReader.add((*$1)->list()[i]);
-										}
-										delete $1;
+											context->fReader.process((*$1)->list()[i]);
 									}
-			| ENDSCRIPT				{ YYACCEPT; }
+									delete $1;
+								}
+			| ENDSCRIPT			{ YYACCEPT; }
 			;
 
 //_______________________________________________
 // javascript and lua support
 //_______________________________________________
-script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
-									*$$ = context->fReader.luaEval(context->fText.c_str());
-								}
-			| JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
+script		: JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 									*$$ = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
 								}
 			;
@@ -153,8 +149,8 @@ script		: LUASCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::
 // messages specification (extends osc spec.)
 //____________________________________expArg expression___________
 
-message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; debug ("message address", "");}
-			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; debug ("message address params", "sep");}
+message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; }
+			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }
 			| address eval LEFTPAR messagelist RIGHTPAR
 										{	$$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl));
 											(*$$)->add(*$4); delete $1; delete $2; delete $4; }
@@ -164,34 +160,36 @@ message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($
 
 messagelist : message					{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 											(*$$)->list().push_back(*$1);
-											debug ("messagelist single", (*$1)->toString()); delete $1; }
-			| messagelist messagelistseparator message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; debug ("messagelist", "sep"); }
+											delete $1; }
+			| messagelist messagelistseparator message {	$$ = $1; (*$$)->list().push_back(*$3); delete $3; }
 			;
-messagelistseparator	: COMMA			{ debug ("messagelistseparator", ","); }
+messagelistseparator	: COMMA
 						| COLON
 						;
 
 //_______________________________________________
 // address specification (extends osc spec.)
-address		: oscaddress				{ $$ = new inscore::ITLparser::address (context->fText); }
+address		: oscaddress				{ $$ = new inscore::ITLparser::address (*$1); delete $1;}
 			| relativeaddress			{ $$ = new inscore::ITLparser::address (*$1); delete $1;}
-			| urlprefix oscaddress		{ $$ = new inscore::ITLparser::address (*$2, *$1); debug("urladdress", *$2); delete $1; delete $2; }
+			| urlprefix oscaddress		{ $$ = new inscore::ITLparser::address (*$2, *$1); delete $1; delete $2; }
 			;
 
 oscaddress  : OSCADDRESS				{ $$ = new string(context->fText); debug("oscaddress", *$$);}
 			;
 
-relativeaddress	: POINT oscaddress		{ $$ = new string("." +*$2);  delete $2; }
+relativeaddress	: POINT oscaddress		{ $$ = new string("." + *$2); delete $2; }
 			;
 
-urlprefix	: hostname UINT				{ $$ = new inscore::IMessage::TUrl($1->c_str(), context->fInt); delete $1; debug("urlprefix name", *$$); }
-			| IPNUM COLON UINT			{ $$ = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); debug("urlprefix ip", *$$); }
+urlprefix	: hostname  UINT			{ $$ = new inscore::IMessage::TUrl($1->c_str(), context->fInt); delete $1; debug("urlprefix", *$1); }
+			| STRING COLON UINT			{ $$ = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); debug("urlprefix", context->fText); }
+			| IPNUM COLON UINT			{ $$ = new inscore::IMessage::TUrl(context->fText.c_str(), context->fInt); debug("urlprefix", context->fText);}
 			;
 
-hostname	: HOSTNAME					{ $$ = new string(context->fText); debug("hostname", *$$); }
+hostname	: HOSTNAME					{ $$ = new string(context->fText); debug("HOSTNAME", context->fText); }
 			;
 
 identifier	: IDENTIFIER				{ $$ = new string(context->fText); }
+			| HOSTNAME					{ $$ = new string(context->fText); }
 			| REGEXP					{ $$ = new string(context->fText); }
 			;
 
@@ -310,10 +308,10 @@ expression	: EXPRESSION	{ $$ = context->fReader.parseExpr(context->fText, contex
 namespace inscore 
 {
 
-SIMessageList ITLparser::parse()
+bool ITLparser::parse()
 {
-	fParseSucceed = !yyparse (this);
-	return fReader.messages();
+	return !yyparse (this);
+//	return fReader.messages();
 }
 }
 
@@ -321,11 +319,12 @@ using namespace inscore;
 
 int lineno (ITLparser* context)	
 { 
-	return context->fLine + context->fLineOffset; 
+	YYLTYPE* loc = (YYLTYPE*)context->fScanner;
+	return loc->last_line + context->fLine; 
 }
 
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
-#ifdef NO_OSCSTREAM
+#if defined(NO_OSCSTREAM) || defined(IBUNDLE)
 	cerr << "error line " << loc->last_line + context->fLineOffset << " col " << loc->first_column << ": " << s << endl;
 #else
 	context->fReader.error (loc->last_line + context->fLineOffset, loc->first_column, s);

@@ -27,7 +27,9 @@
 #ifndef __IAppl__
 #define __IAppl__
 
+#ifndef PARSERTEST
 #include <QMutex>
+#endif
 
 #include "IMessageHandlers.h"
 #include "PeriodicTask.h"
@@ -37,7 +39,6 @@
 #include "udpinfo.h"
 #include "benchtools.h"
 #include "Forwarder.h"
-#include "TParseEnv.h"
 
 class QApplication;
 namespace inscore
@@ -64,7 +65,7 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public TILoader, public TParseEnv
+class IAppl : public IObject, public TILoader
 {
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
@@ -89,10 +90,10 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
 		QApplication*	fAppl;					// the Qt application
+#ifndef PARSERTEST
 		QMutex		fTimeMutex;
-
+#endif
 		TJSEngine		fJavascript;
-		TLua			fLua;
 
 	public:
 		static unsigned long kUPDPort;	// Default listening port
@@ -156,7 +157,16 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 			\return true when the message has been successfully processed i.e. when the model is modified
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
-		
+
+		/*!
+			\brief processing of a message
+			
+			Process a single message.
+			\param msg the message to be processed
+			\return true when the message has been successfully processed
+		*/
+		virtual bool processMsg (const IMessage* msg);
+	
 		static int		getRate()					{ return fRate; }
 		static float	getRealRate()				{ return fRealRate; }
 		static void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
@@ -175,7 +185,6 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		void		error () const;					//< trigger the error event, error must be checked before
 
 		TJSEngine*	getJSEngine()					{ return &fJavascript; }
-		TLua*		getLUAEngine()					{ return &fLua; }
 
 		/// \brief gives the application node
 		virtual SIAppl			getAppl()			{ return this; }
@@ -204,6 +213,9 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 		std::string	guidoversion() const;
 		std::string	musicxmlversion() const;
 
+		/// \brief override IObject method
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
+
 		/// \brief application \c 'require' message handler. Provided to check for version number.
 		virtual MsgHandler::msgStatus requireMsg(const IMessage* msg);
 
@@ -230,9 +242,6 @@ class IAppl : public IObject, public TILoader, public TParseEnv
 
 		/// \brief application \c 'clear' message handler.
 		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
-
-		/// \brief the \c 'watch' message handler
-		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 		void	startBench()			{ bench::start(); }

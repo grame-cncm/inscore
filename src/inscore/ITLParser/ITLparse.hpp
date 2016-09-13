@@ -66,28 +66,27 @@
      HOSTNAME = 282,
      IPNUM = 283,
      EXPRESSION = 284,
-     LUASCRIPT = 285,
-     JSCRIPT = 286,
-     ADD = 287,
-     SUB = 288,
-     DIV = 289,
-     MULT = 290,
-     QUEST = 291,
-     MIN = 292,
-     MAX = 293,
-     GREATER = 294,
-     GREATEREQ = 295,
-     LESS = 296,
-     LESSEQ = 297,
-     EQ = 298,
-     MINUS = 299,
-     NEG = 300,
-     MODULO = 301,
-     NEQ = 302,
-     POSTDEC = 303,
-     POSTINC = 304,
-     PREDEC = 305,
-     PREINC = 306
+     JSCRIPT = 285,
+     ADD = 286,
+     SUB = 287,
+     DIV = 288,
+     MULT = 289,
+     QUEST = 290,
+     MIN = 291,
+     MAX = 292,
+     GREATER = 293,
+     GREATEREQ = 294,
+     LESS = 295,
+     LESSEQ = 296,
+     EQ = 297,
+     MINUS = 298,
+     NEG = 299,
+     MODULO = 300,
+     NEQ = 301,
+     POSTDEC = 302,
+     POSTINC = 303,
+     PREDEC = 304,
+     PREINC = 305
    };
 #endif
 /* Tokens.  */
@@ -118,28 +117,27 @@
 #define HOSTNAME 282
 #define IPNUM 283
 #define EXPRESSION 284
-#define LUASCRIPT 285
-#define JSCRIPT 286
-#define ADD 287
-#define SUB 288
-#define DIV 289
-#define MULT 290
-#define QUEST 291
-#define MIN 292
-#define MAX 293
-#define GREATER 294
-#define GREATEREQ 295
-#define LESS 296
-#define LESSEQ 297
-#define EQ 298
-#define MINUS 299
-#define NEG 300
-#define MODULO 301
-#define NEQ 302
-#define POSTDEC 303
-#define POSTINC 304
-#define PREDEC 305
-#define PREINC 306
+#define JSCRIPT 285
+#define ADD 286
+#define SUB 287
+#define DIV 288
+#define MULT 289
+#define QUEST 290
+#define MIN 291
+#define MAX 292
+#define GREATER 293
+#define GREATEREQ 294
+#define LESS 295
+#define LESSEQ 296
+#define EQ 297
+#define MINUS 298
+#define NEG 299
+#define MODULO 300
+#define NEQ 301
+#define POSTDEC 302
+#define POSTINC 303
+#define PREDEC 304
+#define PREINC 305
 
 
 
@@ -159,7 +157,7 @@ typedef union YYSTYPE
     inscore::SIMessageList*			msgList;
 }
 /* Line 1529 of yacc.c.  */
-#line 163 "ITLparse.hpp"
+#line 161 "ITLparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

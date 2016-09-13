@@ -391,6 +391,19 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 
 		/*!
+			\brief check and process an event
+			
+			Check if an event has an associated list of message. In this case, the messages are evaluated and sent.
+			
+			\param event the event that occured
+			\param date a date  for the event context
+			\param obj an object for the event processing
+			\return true when associated messages have been processed
+		*/
+		virtual bool checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const;
+		virtual bool checkEvent (EventsAble::eventype event, EventContext& context) const;
+
+		/*!
 			\brief process a signal
 			
 			\return the signal processing status
@@ -494,8 +507,6 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return the corresponding handler if any
 		*/
 		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
- 
-		virtual TQtJs*	getJSEngine()		{ return 0; }	///< gives the associated javascript engine, defaults to 0
 	
 	protected:	
 		VObjectView* fView;		///< the object view
@@ -599,6 +610,12 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief the \c 'watch' message handler
 		virtual MsgHandler::msgStatus evalMsg(const IMessage* msg);
+
+		/// \brief utility to delegate events acceptability
+//		virtual bool acceptMouseEvent(EventsAble::eventype t) const;
+
+		/// \brief utility to delegate events acceptability
+//		virtual bool acceptCommonEvent(const std::string& ev) const;
 
 		/// \brief utility to delegate events acceptability
 		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;

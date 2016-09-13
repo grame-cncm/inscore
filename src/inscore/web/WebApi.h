@@ -38,7 +38,7 @@ namespace inscore
     class TParseEnv;
 	class TQtJs;
 	typedef TQtJs		TJSEngine;
-    class TLua;
+    class IAppl;
 
 /*!
  * \brief The WebApi class
@@ -53,7 +53,7 @@ class WebApi
 		static const char *	kHoverMsg;		///< the mouse hover message
 		static const char * kFileMsg;		///< get file message
 
-		WebApi(VObjectView *view, TParseEnv* penv) : fView(view), fParseEnv(penv), fPreviousX(-1), fPreviousY(-1) {}
+		WebApi(VObjectView *view, IAppl* root) : fView(view), fRoot(root), fPreviousX(-1), fPreviousY(-1) {}
 
         virtual ~WebApi() {}
 
@@ -116,7 +116,7 @@ class WebApi
 		 * \brief fView the object view of the scene
 		 */
 		VObjectView *	fView;
-		TParseEnv*		fParseEnv;
+		IAppl*			fRoot;
 
 		int				fPreviousX;		///< Previous x coordinate of a mouse hover item
 		int				fPreviousY;		///< Previous y coordinate of a mouse hover item

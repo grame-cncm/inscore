@@ -38,8 +38,6 @@ namespace inscore
 
 class IMessage;
 class IObject;
-//class TJSEngine;
-//class TLua;
 
 //--------------------------------------------------------------------------
 /*!

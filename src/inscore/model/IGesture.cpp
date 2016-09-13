@@ -29,6 +29,7 @@
 #include "IMessage.h"
 #include "ITLError.h"
 #include "TMessageEvaluator.h"
+#include "Events.h"
 #include "Updater.h"
 
 using namespace std;
@@ -64,34 +65,12 @@ void IGesture::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IGesture::_watchMsg(const IMessage* msg, bool add)
-{ 
-	MsgHandler::msgStatus status = IObject::_watchMsg (msg, add);
-	if (status == MsgHandler::kProcessed) return status;
-
-	string what;
-	if (!msg->param (0, what))				// can't decode event to watch when not a string
-		return MsgHandler::kBadParameters;	// exit with bad parameter
-		
-	EventsAble::eventype t = EventsAble::string2type (what);
-	switch (t) {
-		case EventsAble::kGFEnter:
-		case EventsAble::kGFLeave:
-		case EventsAble::kGFActive:
-		case EventsAble::kGFIdle:
-			if (msg->size() > 1) {
-				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
-				if (!watchMsg) return MsgHandler::kBadParameters;
-
-				if (add) eventsHandler()->addMsg (t, watchMsg);
-				else eventsHandler()->setMsg (t, watchMsg);
-			}
-			else if (!add) eventsHandler()->setMsg (t, 0);
-			status = MsgHandler::kProcessed;
-			break;
-		default: break;
-	}
-	return status;
+bool IGesture::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	string ev (t);
+	if ( (ev == kGFEnterEvent) || (ev == kGFLeaveEvent) || (ev == kGFActiveEvent) || (ev == kGFIdleEvent))
+		return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------
@@ -117,20 +96,19 @@ void IGesture::likelihood (float likelihood, float pos, float speed)
 	SIMessageList msgs = IMessageList::create();
 	const IMessageList*	tmp = 0;
 	if ((fCurrentLikelihood < fLikelihoodThreshold) && (likelihood >= fLikelihoodThreshold))		// enter gesture
-		tmp = EventsAble::getMessages (EventsAble::kGFEnter);
+		tmp = EventsAble::getMessages (kGFEnterEvent);
 	else if ((fCurrentLikelihood >= fLikelihoodThreshold) && (likelihood < fLikelihoodThreshold))	// leave gesture
-		tmp = getMessages (EventsAble::kGFLeave);
+		tmp = getMessages (kGFLeaveEvent);
 	if (tmp) msgs->list().push_back(tmp->list());
 
 	if (fCurrentLikelihood >= fLikelihoodThreshold)
-		tmp = EventsAble::getMessages (EventsAble::kGFActive);
+		tmp = EventsAble::getMessages (kGFActiveEvent);
 	else
-		tmp = EventsAble::getMessages (EventsAble::kGFIdle);
+		tmp = EventsAble::getMessages (kGFIdleEvent);
 	if (tmp) msgs->list().push_back(tmp->list());
 
 	if (msgs->list().size()) {
-		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, getDate(), this);
+		EventContext env(getDate(), this);
 		GestureContext g (likelihood, pos, speed);
 		env.set(g);
 		TMessageEvaluator me;

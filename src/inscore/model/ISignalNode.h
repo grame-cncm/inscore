@@ -73,6 +73,7 @@ class ISignalNode : public IVNode
 		virtual void debug (bool state)		{ fDebug = state; }
 	
         std::vector<ISignalConnection* > getConnectionsOf(std::string objectName);
+        std::vector<ISignalConnection* >& getConnections() 	{ return fConnections; }
         SIMessageList getAllConnections() const;
 
         void cleanupSignal(const ParallelSignal* signal);	///< removes the connections of a signal

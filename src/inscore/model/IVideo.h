@@ -52,6 +52,8 @@ typedef class libmapping::SMARTP<IVideo>	SIVideo;
 */
 class IVideo : public IRectShape,  public TFile
 {
+	int musicalTime2mls (float date) const;
+
 	public:
 		static const std::string kVideoType;
 		static SIVideo create(const std::string& name, IObject * parent)	{ return new IVideo(name, parent); }
@@ -91,6 +93,9 @@ class IVideo : public IRectShape,  public TFile
 
 		virtual void	cleanup ();
 
+		/// \brief override IObject method
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
+
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
@@ -108,15 +113,15 @@ class IVideo : public IRectShape,  public TFile
 
 		/// \brief the \c 'get vduration' message handler
 		virtual libmapping::rational getVDuration () const;
+
+		/// \brief the \c 'vdate' message handler
+		virtual MsgHandler::msgStatus vdateMsg (const IMessage* msg );
 	
 		/// \brief the \c 'videoMapf' message handler
 		virtual MsgHandler::msgStatus videoMapFileMsg (const IMessage* msg );
 
 		/// \brief the \c 'videoMap' message handler
 		virtual MsgHandler::msgStatus videoMapMsg (const IMessage* msg );
-
-		/// \brief the \c 'watch' message handler
-		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
 	
 		class Date2SecondConverter: public smartable
 		{ 

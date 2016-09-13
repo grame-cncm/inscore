@@ -137,6 +137,4 @@ SIMessageList IWebSocket::getMsgs(const IMessage* msg) const
 	return outMsgs;
 }
 
-TParseEnv* IWebSocket::getParseEnv()	{ return getAppl(); }
-
 }

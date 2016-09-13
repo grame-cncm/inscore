@@ -23,8 +23,6 @@
 
 */
 
-#include "VSceneView.h"
-
 #include <QImage>
 #include <QDebug>
 #include <QScreen>
@@ -36,6 +34,7 @@
 #include <QResizeEvent>
 #include <QGestureEvent>
 #include <QPinchGesture>
+#include <QGraphicsSceneMouseEvent>
 
 #ifdef WIN32
 #include <windows.h>
@@ -43,16 +42,17 @@
 #include <unistd.h>
 #endif // win32
 
+#include "Events.h"
+#include "VSceneView.h"
+
 #ifdef __MOBILE__
 #include "VMobileQtInit.h"
 #endif
 
 #include "IScene.h"
 #include "IColor.h"
-#include "TMessageEvaluator.h"
 #include "VExport.h"
 #include "INScore.h"
-#include "ISignalProfiler.h"
 #include "WindowEventFilter.h"
 
 
@@ -318,6 +318,30 @@ VSceneView::~VSceneView()
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
 
 //------------------------------------------------------------------------------------------------------------------------
+void VSceneView::postEvent( QGraphicsItem* item, QEvent::Type e )
+{
+	fEvents.push(QPair<QGraphicsItem*, QEvent::Type>(item, e));
+	IScene* scene = fGraphicsView->getScene();
+	if (scene) scene->setModified();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::execEvents()
+{
+	int n = fEvents.size();
+	while (n--) {
+		QPair<QGraphicsItem*, QEvent::Type> p = fEvents.pop();
+        QGraphicsSceneMouseEvent event(p.second);
+        // Coordinate of the click in item coordinate
+        QPointF point(0, 0);
+        event.setPos(point);
+        event.setButton(Qt::LeftButton);
+        event.setButtons(Qt::LeftButton);
+		fScene->sendEvent(p.first, &event);
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------------------
 void VSceneView::edit(IObject* o)
 {
 	if (fEditBox) {
@@ -353,6 +377,8 @@ QPoint VSceneView::scenePos(const IScene * scene) const
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::updateOnScreen( IScene * scene )
 {
+	execEvents();
+	
 	// Color
 	int r,g,b,a;
 	fGraphicsView->backgroundBrush().color().getRgb(&r,&g,&b,&a);
@@ -479,14 +505,7 @@ void VSceneView::updateView( IScene * scene )
 	std::pair<std::string, bool> myExport = scene->getNextExportFlag();
     while ( myExport.first.length() ) {
         VExport::exportScene( fGraphicsView , myExport.first.c_str() );
-		const IMessageList*	msgs = scene->getMessages(EventsAble::kExport);
-        if (msgs) {
-			MouseLocation mouse (0, 0, 0, 0, 0, 0);
-			EventContext env(mouse, scene->getDate(), scene);
-			TMessageEvaluator me;
-			SIMessageList outmsgs = me.eval (msgs, env);
-			if (outmsgs && outmsgs->list().size()) outmsgs->send();
-		}
+		scene->checkEvent(kExportEvent, scene->getDate(), scene);
 		myExport = scene->getNextExportFlag();
 	}
 }

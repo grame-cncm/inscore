@@ -1,0 +1,107 @@
+
+/ITL/scene/* del;
+
+#---------------------------------------------
+# required version control
+#---------------------------------------------
+rversion = 1.20;
+/ITL require $rversion ( 
+	/ITL/scene/warning set txt "WARNING: this script requires INScore version" $rversion "or greater." ,
+	/ITL/scene/warning color 100 100 100 ,
+	/ITL/scene/warning y 0.9 ,
+	/ITL/scene/warning scale 1.5
+);
+
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+
+#---------------------------------------------
+# set the title
+#---------------------------------------------
+/ITL/scene/title set txt "Watch any attribute and user defined events as well.";
+/ITL/scene/title color $color;
+/ITL/scene/title fontSize 32;
+/ITL/scene/title fontWeight bold;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.8;
+
+#---------------------------------------------
+# build 3 different squares
+#---------------------------------------------
+rect = 0.3 0.3;
+/ITL/scene/rect1 set rect $rect;
+/ITL/scene/rect1 color 200 200 0;
+/ITL/scene/rect1 y -0.4;
+/ITL/scene/rect1 penColor 250 0 0;
+
+/ITL/scene/rect2 set rect $rect;
+/ITL/scene/rect2 color 0 200 200;
+/ITL/scene/rect2 penColor 0 0 250;
+
+/ITL/scene/rect3 set rect $rect;
+/ITL/scene/rect3 color 200 0 200;
+/ITL/scene/rect3 y 0.4;
+/ITL/scene/rect3 penColor 0 0 0;
+
+#---------------------------------------------
+# build a circle
+#---------------------------------------------
+/ITL/scene/circle set ellipse 0.2 0.2;
+/ITL/scene/circle color 200 100 50;
+
+#---------------------------------------------
+# set the squares events
+# note that only 'rect1' is watching attributes
+#---------------------------------------------
+/ITL/scene/rect1 watch x (/ITL/scene/rect[23] x "$(/ITL/scene/rect1 get x)");
+# this is an alternate way to write the same thing (and more efficient)
+# $x, $y and $date are available from attributes environment
+#/ITL/scene/rect1 watch x (/ITL/scene/rect[23] x "$x");
+/ITL/scene/rect1 watch alpha (/ITL/scene/rect[23] alpha "$(/ITL/scene/rect1 get alpha)");
+
+/ITL/scene/rect* watch mouseEnter (/ITL/scene/$self penWidth 1 );
+/ITL/scene/rect* watch mouseLeave (/ITL/scene/$self penWidth 0 );
+/ITL/scene/rect1 watch mouseDown (/ITL/scene/$self x "$sx" );
+/ITL/scene/rect1 watch mouseMove (/ITL/scene/$self x "$sx" );
+
+/ITL/scene/rect2 watch mouseDown (/ITL/scene/rect1 x 0, /ITL/scene/rect1 alpha 255 );
+
+/ITL/scene/rect3 watch mouseDown (/ITL/scene/rect1 alpha "$x[50,250]" );
+/ITL/scene/rect3 watch mouseMove (/ITL/scene/rect1 alpha "$x[50,250]" );
+
+#---------------------------------------------
+# set the circle events
+# note that it's based on user events only
+#---------------------------------------------
+/ITL/scene/circle set ellipse 0.2 0.2;
+/ITL/scene/circle color 200 100 50;
+
+#---------------------------------------------
+# we use a hidden rect to store intermediate color
+#---------------------------------------------
+/ITL/scene/recthidden set rect $rect;
+/ITL/scene/recthidden color 200 200 200;
+/ITL/scene/recthidden x -0.6;
+/ITL/scene/recthidden show 0;
+
+/ITL/scene/rect* watch color (/ITL/log write color "$(/ITL/scene/$self get  x y)");
+
+/ITL/scene/circle watch A (
+	/ITL/scene/rect1 color "$(/ITL/scene/rect2 get color)",
+	/ITL/scene/rect2 color "$(/ITL/scene/rect3 get color)",
+	/ITL/scene/rect3 color "$(/ITL/scene/recthidden get color)",
+	/ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)"
+);
+/ITL/scene/circle watch mouseDown (
+	/ITL/scene/circle event A
+);
+
+#---------------------------------------------
+# set the comments
+#---------------------------------------------
+/ITL/scene/comment1  set  txt "Click any square, each one is controlling different attributes.";
+/ITL/scene/comment1 y 0.8;
+/ITL/scene/comment2  set  txt "Click the circle to trigger user defined events.";
+/ITL/scene/comment2 y 0.87;
+/ITL/scene/comment* fontSize 18;
+

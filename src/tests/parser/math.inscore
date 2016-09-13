@@ -28,7 +28,9 @@ var = ( /ITL log write toto);
 /ITL/scene/toto1 maxvar (!$tata ? "false" : "true");
 /ITL/scene/toto1 a $a;
 /ITL/scene/toto1 mod $tata 5 $tata % 5;
+
 tata = $tata + 1;
+
 localhost:8000/ITL/scene/toto1 tata $tata;
 c1 = $c1 + 1;
 /ITL/scene/toto1 plusplustoto ++$toto;

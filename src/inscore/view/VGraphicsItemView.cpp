@@ -37,7 +37,7 @@
 #include "QStretchTilerItem.h"
 
 #include "IObject.h"
-#include "TMessageEvaluator.h"
+#include "Events.h"
 #include "VExport.h"
 
 #include "MouseEventAble.h"
@@ -469,14 +469,7 @@ void VGraphicsItemView::updateView(IObject* o)
 
 	while ( myExport.first.length() ) {
 		VExport::exportItem( item() , myExport.first.c_str() ,  o->getScale() ,  o->getScale(), myExport.second);
-		const IMessageList*	msgs = o->getMessages(EventsAble::kExport);
-		if (msgs) {
-			MouseLocation mouse (0, 0, 0, 0, 0, 0);
-			EventContext env(mouse, libmapping::rational(0,1), o);
-			TMessageEvaluator me;
-			SIMessageList outmsgs = me.eval (msgs, env);
-			if (outmsgs && outmsgs->list().size()) outmsgs->send();
-		}
+		o->checkEvent(kExportEvent, rational(0,1), o);
 		myExport = o->getNextExportFlag();
 	}
 

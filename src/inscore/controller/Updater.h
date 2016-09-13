@@ -86,11 +86,13 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (ILine*) {}
 		virtual void updateTo (IVideo*) {}
 		virtual void updateTo (IUrlIntermediateObject*) {}
+		virtual void updateTo (ISignalNode*) {}
 };
 typedef class libmapping::SMARTP<Updater>	SUpdater;
 
 class inscore_export ViewUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
+//			virtual void update (IObject*);
 };
 
 class inscore_export LocalMapUpdater : public Updater {
@@ -100,6 +102,7 @@ class inscore_export LocalMapUpdater : public Updater {
 class inscore_export SlaveMapUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
 };
+
 class SigModified : public Updater
 {
 	public:
@@ -107,6 +110,7 @@ class SigModified : public Updater
 		virtual ~SigModified() {}
 		virtual bool needupdate (IObject*)		{ return true; }
 		virtual void updateTo (IGraphicSignal*);
+		virtual void updateTo (ISignalNode*);
 };
 
 /*!@} */

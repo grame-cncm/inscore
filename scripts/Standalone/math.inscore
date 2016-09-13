@@ -32,7 +32,6 @@ circles = (
 	/ITL/scene/o? color "$(/ITL/scene/rect get color)",
 	/ITL/scene watch endPaint,
 	/ITL/scene/* watch doubleClick (/ITL/scene/$self edit )
-#	/ITL/scene/o? width  @max( 0.1 0.2 0.5 )
 );
 
 /ITL/scene watch endPaint $circles;

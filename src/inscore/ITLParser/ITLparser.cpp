@@ -32,8 +32,8 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-ITLparser::ITLparser(std::istream* stream, int line, TParseEnv* penv)
-	: fReader(penv), fStream(stream), fLineOffset(line), fParseSucceed(false)
+ITLparser::ITLparser(std::istream* stream, int line, IAppl* root, bool execute)
+	: fReader(root, execute), fStream(stream), fLine(line)
 {
 	setlocale(LC_NUMERIC, "C");
 	initScanner();

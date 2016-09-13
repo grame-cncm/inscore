@@ -73,7 +73,6 @@ class IScene : public IRectShape, public TILoader
 	std::string		fRootPath;
 
 	TJSEngine*		fJavascript;
-	TLua			fLua;
 	SIFilterForward	fFilterForward;
 	Forwarder		fForwarder;
 
@@ -143,8 +142,8 @@ class IScene : public IRectShape, public TILoader
 				 IScene(const std::string& name, IObject * parent);
 		virtual ~IScene();
 
-		/// \brief the \c 'watch' message handler
-		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
+		/// \brief override IObject method
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
 
 		void		setRootPath(const std::string& s);
 		MsgHandler::msgStatus setRootPath(const IMessage* msg);

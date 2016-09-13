@@ -56,6 +56,7 @@
 #include "TMessageEvaluator.h"
 #include "ISignalNode.h"
 #include "INScore.h"
+#include "Events.h"
 
 #include "VObjectView.h"
 
@@ -347,24 +348,12 @@ void IObject::_del(bool delsigcnx)
 	// cleanup signal connections
 	if (delsigcnx)
 		getParent()->signalsNode()->cleanupTarget(name());
-
-    // ... and we send the message that the event "del" occured
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kDelete);
-	if (!msgs || msgs->list().empty())
-        return;		// nothing to do, no associated message
-
-    MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), this);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (msgs, env);
-	if (outmsgs && outmsgs->list().size())
-        outmsgs->send();
 }
 
 //--------------------------------------------------------------------------
 void IObject::newData (bool state) {
 	fNewData = state;
-	triggerEvent(kNewData, true);
+	triggerEvent(kNewDataEvent, true);
 }
 
 //--------------------------------------------------------------------------
@@ -599,14 +588,27 @@ bool IObject::exactfind(const std::string& name, subnodes& outlist) const
 int IObject::execute (const IMessage* msg)
 {
 	SMsgHandler handler = messageHandler(msg->message());
-	if ( handler ) return (*handler)(msg);
+	if ( handler ) {
+		int ret = (*handler)(msg);
+		if (ret == MsgHandler::msgStatus::kProcessed) {
+			// check if there is any associated event
+			const string method = msg->message();
+			MouseLocation pos (getXPos(), getYPos(), 0, 0, 0, 0);	// object position and
+			EventContext env (pos, getDate(), this);				// date are available from the environment
+			checkEvent(method.c_str(), env);
+		}
+		return ret;
+	}
 
 #ifndef WIN32
 	#warning qui utilise le match true dans IObject::execute ?
 #endif
 	// no basic handler , try to find if there is a match
 	handler = messageHandler(msg->message(), true);
-	if ( handler ) return (*handler)(msg);
+	if ( handler ) {
+cout << "IObject::execute regexp match for " << msg->message() << endl;
+		return (*handler)(msg);
+	}
 
 	// try to find a default handler
 	handler = messageHandler("*");
@@ -663,10 +665,30 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 			for (size_t i = 0; i < n; i++)
 				elements()[i]->getObjects(tail, outv);
 		}
-		else outv.push_back(this);
+		else if (!getDeleted()) outv.push_back(this);
 	}
 }
 
+//--------------------------------------------------------------------------
+// events processing
+//--------------------------------------------------------------------------
+bool IObject::checkEvent (EventsAble::eventype event, EventContext& context) const
+{
+	const IMessageList*	msgs = getMessages(event);
+	if (msgs) {
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, context);
+		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
+		return true;
+	}
+	return false;
+}
+
+bool IObject::checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const
+{
+	EventContext env(date, obj);
+	return checkEvent( event, env);
+}
 
 //--------------------------------------------------------------------------
 // messages processing
@@ -1317,28 +1339,26 @@ MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 	return genericExport(msg, true);
 }
 
-
 //--------------------------------------------------------------------------
 bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 {
-	switch (t) {
-		case EventsAble::kMouseMove:
-		case EventsAble::kMouseDown:
-		case EventsAble::kMouseUp:
-		case EventsAble::kMouseDoubleClick:
-		case EventsAble::kMouseEnter:
-		case EventsAble::kMouseLeave:
-		case EventsAble::kTouchBegin:
-		case EventsAble::kTouchEnd:
-		case EventsAble::kTouchUpdate:
-		case EventsAble::kExport:
-		case EventsAble::kNewData:
-        case EventsAble::kDelete:
-			return true;
-		default:
-			return false;
+	if (EventsAble::isMouseEvent(t)) return true;
+	if (string(t) == kNewDataEvent)	 return true;
+
+	// look if there is a handler for the message
+	SMsgHandler h  = messageHandler(t, true);
+	if (h) return EventsAble::hash(t);
+	
+	// check if the event is candidate for a user defined event
+	// user defined event must be all in capital letters
+	const char * ptr = t;
+	while (*ptr) {
+		bool accept =	( (isalpha(int(*ptr)) && isupper(int(*ptr))) ) ||
+						( (*ptr >= '0') && (*ptr <= '9') );
+		if (accept) ptr++;
+		else return false;
 	}
-	return false;
+	return EventsAble::hash(t);		// user defined event is accepted
 }
 
 //--------------------------------------------------------------------------
@@ -1353,31 +1373,24 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 	if (!msg->param (0, what))				// can't decode event to watch when not a string
 		return MsgHandler::kBadParameters;	// exit with bad parameter
 		
-	EventsAble::eventype t = EventsAble::string2type (what);
-	if (acceptSimpleEvent (t)) {
+	const char* event = what.c_str();
+	if (acceptSimpleEvent (event)) {
 		if (msg->size() > 1) {
 			SIMessageList watchMsg = msg->watchMsg2Msgs (1);
 			if (!watchMsg) return MsgHandler::kBadParameters;
 
 			if (add)
-				eventsHandler()->addMsg (t, watchMsg);
+				eventsHandler()->addMsg (event, watchMsg);
 			else
-				eventsHandler()->setMsg (t, watchMsg);
+				eventsHandler()->setMsg (event, watchMsg);
 		}
-		else if (!add) eventsHandler()->setMsg (t, 0);
+		else if (!add) eventsHandler()->setMsg (event, 0);
 	}
-	else switch (t) {
-		case EventsAble::kTimeEnter:
-		case EventsAble::kTimeLeave:
-		case EventsAble::kDurEnter:
-		case EventsAble::kDurLeave:
+	else if (EventsAble::isTimeEvent(event)) {
 		// time events messages can have the following forms :
-		// a) watch timevent
-		// b) watch timevent timeInterval
-		// c) watch timevent timeInterval msg
-		// with the form a), all the messages related to timevent are cleared
-		// with the form b), all the messages related to timevent and timeInterval are cleared
-		// with the form c), sets the associated messages related to timevent and timeInterval
+		// a) watch timevent					=> the messages related to timevent are cleared
+		// b) watch timevent timeInterval		=> all the messages related to timevent and timeInterval are cleared
+		// c) watch timevent timeInterval msg	=> sets the associated messages related to timevent and timeInterval
 		// note also that timeInterval can be expressed as
 		//		- 4 integer values (actually 2 rationals)
 		//		- 2 integer values (i.e. 2 rationals with an implicit 1 denominator)
@@ -1390,8 +1403,8 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		{
 			if (msg->size() == 1) {
 				if (!add) {
-					clearList(t);
-					eventsHandler()->clearTimeMsg(t);
+					clearList(event);
+					eventsHandler()->clearTimeMsg(event);
 				}
 				else return MsgHandler::kBadParameters;
 			}
@@ -1412,19 +1425,17 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			if (msg->size() > msgindex) {
 				SIMessageList watchMsg = msg->watchMsg2Msgs (msgindex);
 				if (!watchMsg) return MsgHandler::kBadParameters;
-				if (!add) eventsHandler()->setTimeMsg (t, time, watchMsg);
-				else eventsHandler()->addTimeMsg (t, time, watchMsg);
-				watchInterval(t, time);
+				if (!add) eventsHandler()->setTimeMsg (event, time, watchMsg);
+				else eventsHandler()->addTimeMsg (event, time, watchMsg);
+				watchInterval(event, time);
 			}
 			else if (!add) {
-				delInterval (t, time);
-				eventsHandler()->setTimeMsg (t, time, 0);
+				delInterval (event, time);
+				eventsHandler()->setTimeMsg (event, time, 0);
 			}
-			break;
 		}
-		default:			// unknown event to watch
-			return MsgHandler::kBadParameters;
 	}
+	else return MsgHandler::kBadParameters;
 	return MsgHandler::kProcessed;
 }
 
@@ -1507,15 +1518,22 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 {
-	if ((msg->size() == 3)) {
+	int n = msg->size();
+	if (n == 3) {			// this is a mouse related event
 		string event; int x, y;
 		if (msg->param(0, event) && msg->param(1, x) && msg->param(2, y)) {
 			VObjectView	* view = getView();
 			if (view) {
-				EventsAble::eventype type = EventsAble::string2type (event);
-				view->handleEvent (this, x, y, type);
+				view->handleEvent (this, x, y, event.c_str());
 			}
-        return MsgHandler::kProcessed;
+			return MsgHandler::kProcessed;
+		}
+	}
+	else if (n == 1) {			// this is a simple event
+		string event;
+		if (msg->param(0, event)) {
+			if (checkEvent(event.c_str(), getDate(), this))
+				return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;

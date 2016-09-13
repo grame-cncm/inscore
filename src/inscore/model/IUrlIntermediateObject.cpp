@@ -29,8 +29,8 @@
 #include "VUrlIntermediateObjectView.h"
 #include "TFile.h"
 #include "IScene.h"
+#include "Events.h"
 #include "Updater.h"
-#include "TMessageEvaluator.h"
 
 #include "QFileDownloader.h"
 
@@ -122,11 +122,7 @@ void IUrlIntermediateObject::updateFileSucceded()
         del();
         fParent->cleanupSync();
     }
-    
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kSuccess);
-	if (msgs && !msgs->list().empty())
-        evalEventMsg(msgs);
-    
+	checkEvent(kSuccessEvent, rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
@@ -138,10 +134,7 @@ void IUrlIntermediateObject::updateFileCanceled()
 		fDownloaderThread = 0;
     }
     
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kCancel);
-	if (msgs && !msgs->list().empty())
-        evalEventMsg(msgs);
-    
+	checkEvent(kCancelEvent, rational(0,1), this);
     ITLErr << "URL download canceled" << ITLEndl;
 }
 
@@ -150,10 +143,7 @@ MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* m
 {
     setR(200);
     
-    const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kError);
-	if (msgs && !msgs->list().empty())
-        evalEventMsg(msgs);
-    
+	checkEvent(kErrorEvent, rational(0,1), this);
     if(msg->size() == 1)
     {
         std::string error;
@@ -164,44 +154,11 @@ MsgHandler::msgStatus IUrlIntermediateObject::updateFileFailed(const IMessage* m
 }
 
 //--------------------------------------------------------------------------
-void IUrlIntermediateObject::evalEventMsg(const IMessageList* list)
+bool IUrlIntermediateObject::acceptSimpleEvent(EventsAble::eventype t) const
 {
-    MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), this);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (list, env);
-	if (outmsgs && outmsgs->list().size())
-        outmsgs->send();
-}
-
-//--------------------------------------------------------------------------
-MsgHandler::msgStatus IUrlIntermediateObject::_watchMsg(const IMessage* msg, bool add)
-{ 
-	MsgHandler::msgStatus status = IObject::_watchMsg (msg, add);
-	if (status == MsgHandler::kProcessed) return status;
-
-	std::string what;
-	if (!msg->param (0, what))				// can't decode event to watch when not a string
-		return MsgHandler::kBadParameters;	// exit with bad parameter
-		
-	EventsAble::eventype t = EventsAble::string2type (what);
-	switch (t) {
-		case EventsAble::kSuccess:
-		case EventsAble::kError:
-		case EventsAble::kCancel:
-			if (msg->size() > 1) {
-				SIMessageList watchMsg = msg->watchMsg2Msgs (1);
-				if (!watchMsg) return MsgHandler::kBadParameters;
-
-				if (add) eventsHandler()->addMsg (t, watchMsg);
-				else eventsHandler()->setMsg (t, watchMsg);
-			}
-			else if (!add) eventsHandler()->setMsg (t, 0);
-			status = MsgHandler::kProcessed;
-			break;
-		default: break;
-	}
-	return status;
+	std::string ev(t);
+	if ( (ev == kSuccessEvent) || (ev == kErrorEvent) || (ev == kCancelEvent)) return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------

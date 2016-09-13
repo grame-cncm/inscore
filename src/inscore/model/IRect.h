@@ -28,6 +28,7 @@
 #define __IRect__
 
 #include "IRectShape.h"
+#include "TRect.h"
 
 namespace inscore
 {
@@ -51,10 +52,14 @@ class IRect : public IRectShape
 		static SIRect create(const std::string& name, IObject* parent)	{ return new IRect(name, parent); }
 
 		virtual void	accept (Updater*);
+		virtual void		setRadius (const TFloatSize& r)	{ fRadius = r; }
+		virtual TFloatSize	getRadius () const				{ return fRadius; }
 
 	protected:
 				 IRect( const std::string& name, IObject* parent );
-		virtual ~IRect() {}	
+		virtual ~IRect() {}
+	
+		TFloatSize	fRadius;
 };
 
 /*! @} */

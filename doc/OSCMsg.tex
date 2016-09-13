@@ -246,6 +246,7 @@ commonMsg :  ('show' int32)
 			| ColorMsg
 			| TimeMsg
 			| WatchMsg
+			| EventMsg
 \end{rail}
 \index{Common messages!show}
 \index{Common messages!del}
@@ -274,6 +275,7 @@ When the destination file is not completely specified (second form or missing ex
 \item 'ColorMsg' are absolute and relative color control messages.
 \item 'TimeMsg' are time management messages. They are described in section \fullref{time}.
 \item 'WatchMsg' are described in section \fullref{interaction}.
+\item 'EventMsg' are described in section \fullref{eventMsg}.
 %\item 'clickSelectMsg' are provided to query objects relative positions.
 \end{itemize}
 
@@ -1457,7 +1459,7 @@ This video time is controlled using specific messages.
 video :	'play' int32
 		| volume float32
 		| rate   float32
-		| vdate  int32
+		| vdate  ( [1] int32 | [2] (int32 int32) | [3] float)
 \end{rail}
 \index{Specific messages! video! play}
 \index{Specific messages! video! volume}
@@ -1468,7 +1470,13 @@ video :	'play' int32
 \item \OSC{play} start or stop playing the video. Default value is 0. 
 \item \OSC{volume} sets the audio volume of the video. Default and maximum value is 1.
 \item \OSC{rate} sets the video playing rate. Default value is 1.
-\item \OSC{vdate} sets the current frame. Default value is 0. This value is updated while the video is playing.
+\item \OSC{vdate} sets the current video frame. Default value is 0. Arguments are the following:
+\begin{itemize}
+\item \textbf{1} : a value in milliseconds. 
+\item \textbf{2} : a musical time expressed as a rational. Note that musical time is converted to milliseconds using a tempo value of 60. 
+\item \textbf{3} : a musical time expressed as a float. 
+\end{itemize}
+The video position may be updated while the video is playing.
 \end{itemize}
 
 A video object supports also specific queries: 
@@ -1500,11 +1508,11 @@ Supported video formats are highly dependent on the platform, as well as the vid
 
 
 %-------------------------------
-%:  svg
+%:  SVG Objects
 \sublevel{SVG Objects}
 \label{svgobjects}
 
-The following message is accepted by the components types \OSC{svg | svgf}.
+The following message is accepted by the SVG components (types \OSC{svg | svgf}).
 
 \begin{rail}
 svgMsg :		'animate' int32
@@ -1520,6 +1528,23 @@ svgMsg :		'animate' int32
 
 \note\\
 SVG objects are rendered using the Qt SVG Renderer and suffer the Qt limitations. For example and with Qt 5.5, xlinks are not supported.
+
+
+%-------------------------------
+%:  Rectangles
+\sublevel{Rectangles}
+\label{rectobjects}
+
+Rectangles (type \OSC{rect}) accept a \OSC{radius} message that can be used to draw rounded rectangles.
+\begin{rail}
+radiusMsg :		'radius' float32 float32
+\end{rail}
+\index{Specific messages! rect! radius}
+
+\begin{itemize}
+\item \OSC{radius}: followed by 2 values that specify the radius on the x and y axis (default is 0 0). The values express a percentage of the object dimensions, thus the value's range is [0, 100].
+\end{itemize} 
+
 
 %-------------------------------
 \sublevel{The 'grid' object}
@@ -2819,9 +2844,11 @@ Using data projection may be convenient when the input signal represents interle
 \toplevel{Events and Interaction}
 \label{interaction}
 
-Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
+Interaction messages are user defined messages associated to \textit{events} and triggered when these events occur. These messages accept variables as message arguments.
 
-The general form of the message is the following:
+\textit{Events} are typical user interface events (mouse or touch events), extended in the time domain and to specific objects or engine properties. Starting from INScore version 1.20, the modification of any object attribute may be viewed as an event and user defined events have also been introduced (see section \fullref{attributeevents} for more details). 
+
+The general form of the message to \textit{watch} an event is the following:
 \begin{rail}
 interactMsg : (('watch' | 'watch+')  ([1] | 
 					what  ( [2] 
@@ -2861,10 +2888,11 @@ An extended address to send messages to \OSC{localhost} on port \OSC{12000}:
 \sample{localhost:12000/your/osc/address;}
 
 %===============================
-%:    Events
-\sublevel{Events}
+%:    Internal events
+\sublevel{Internal events}
 \label{defevents}
 
+Internal events are triggered by the user interaction (mouse or touch events) or by the engine internal functionning.
 
 %===============================
 %:       Mouse events
@@ -2873,7 +2901,7 @@ An extended address to send messages to \OSC{localhost} on port \OSC{12000}:
 
 User interface events are typical mouse events:
 \begin{rail}
-what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
+mouseEvent : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
 \end{rail}
 \index{Interaction!Events!mouseDown}
 \index{Interaction!Events!mouseUp}
@@ -2909,7 +2937,7 @@ Simulating a mouse down at position 10, 10 :
 \label{touchevents}
 Depending on the display device, multi-touch events are supported by INScore :
 \begin{rail}
-touch : 'touchBegin' | 'touchEnd' | 'touchUpdate' 
+touchEvent : 'touchBegin' | 'touchEnd' | 'touchUpdate' 
 \end{rail}
 \index{Interaction!Events!touchBegin}
 \index{Interaction!Events!touchEnd}
@@ -2924,7 +2952,7 @@ A typical sequence of generated events consists in a \OSC{touchBegin} event, fol
 
 Events are also defined on the time domain:
 \begin{rail}
-what : 	'timeEnter' time time | 'timeLeave' time time 
+timeEvent : 	'timeEnter' time time | 'timeLeave' time time 
 		| 'durEnter' time time | 'durLeave' time time 
 \end{rail}
 \index{Interaction!Events!timeEnter}
@@ -2951,7 +2979,7 @@ An object that moves a score to a given page number when it enters its time zone
 \OSC{url} objects (i.e. intermediate objects for URL based objects (see section \fullref{filebasedrsrc}) support specific events, intended to reflect the transaction state:
 
 \begin{rail}
-what : 	'success'  
+urlEvent : 	'success'  
 		| 'error'
 		| 'cancel'
 \end{rail}
@@ -2980,18 +3008,15 @@ Triggering an error message in case of failure :
 \label{miscevents}
 
 \begin{rail}
-what : 	  'export'
+miscEvent : 	  'export'
 		| 'newData'
-		| 'del'
 \end{rail}
 \index{Interaction!Events!export}
 \index{Interaction!Events!newData}
-\index{Interaction!Events!del}
 
 \begin{itemize}
 \item the \OSC{export} event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
 \item the \OSC{newData} event is supported by all the components. It is triggered when the object specific data are modified (typically using the \OSC{set} message).
-\item the \OSC{del} event is triggered when an object is being deleted.
 \end{itemize}
 
 
@@ -3001,7 +3026,7 @@ what : 	  'export'
 \label{typespecevents}
 
 \begin{rail}
-what : 	  'pageCount'
+specificEvent : 	  'pageCount'
 		| 'newElement'
 		| 'endPaint'
 		| 'error'
@@ -3032,6 +3057,61 @@ Typically you can use of this event to open the log window (\OSC{/ITL/log show 1
 Displaying a welcome message to new elements:
 \sample{/ITL/scene watch newElement (/ITL/scene/msg set txt "Welcome");}
 
+%===============================
+%:    Attribute based events
+\sublevel{Attribute based events}
+\label{attributeevents}
+
+Attribute based events includes the whole set of messages that are supported by an object: \OSC{x}, \OSC{y}, \OSC{color}, etc. but also type specific messages. These events are triggered when a message has been succesfully processed. However, you shoudln't assume that the attribute value has been changed: when a message sets an attribute to it's current value, it is succesully processed and the corresponding event - if any - is triggered. 
+
+\example \\
+Watching an object \OSC{x} coordinate change:
+\sample{/ITL/scene/myObject watch x (/ITL/scene/msg set txt "myObject moved");}
+
+\note \\
+Watching the \OSC{newData} event is equivalent to watch the \OSC{set} attribute. However, the \OSC{newData} event is triggered only when the object state is changed.
+
+With the event's generalisation to any object attribute, a one tick delay has been introduced to all events. Thus the associated messages are not processed synchronously to the event but posted to be processed by the next time task. This delay has been introduced to avoid freezing the system in case of loops.
+
+
+%===============================
+%:    User defined events
+\sublevel{User defined events}
+\label{userevents}
+
+INScore events supports user defined events. The name of user defined event must be cmposed of capital letters and of numbers only. Other characters are reserved for INScore use.
+User defined events can only be triggered using the \OSC{event} message (see section \fullref{eventMsg}) .
+
+\example \\
+Watching and triggering a user defined event:
+\sample{/ITL/scene/myObject watch MYEVENT (/ITL/scene/msg set txt "MYEVENT occured!");\\
+/ITL/scene/myObject event MYEVENT;
+}
+
+
+%===============================
+%:    The event message
+\sublevel{The \OSC{event} message}
+\label{eventMsg}
+
+The \OSC{event} message may be used to triggered events. It's the only way to trigger user defined events. 
+It may be used also to simulate user interface events (like mouse events).
+
+\begin{rail}
+eventMsg :  'event' ([1] ( (mouseEvent | touchEvent) float32 float32) | [2] eventName)
+\end{rail}
+\index{Common messages!event}
+
+
+\begin{itemize}
+\item \textbf{1}: this form is intended to simulate mouse or touch event. It must be followed by the x and y coordinates of the interaction point. Coordinates express a position in pixels (the top left corner of the object is in [0,0]).
+\item \textbf{2}: trigger any other event 
+\end{itemize}
+
+\note \\
+Time events are excluded from the \OSC{event} message supported events: to trigger a time event, you can use a \OSC{date} message.
+
+
 
 %===============================
 %:    Variables
@@ -3044,7 +3124,8 @@ Variables are values computed when an event is triggered. These values are send 
 \subsublevel{Position variables}
 \label{posvar}
 
-Position variables reflects the current mouse position for mouse events or the current touch position for touch events. They are set to \values{0} for the other events. 
+Position variables reflects the current mouse position for mouse events or the current touch position for touch events. 
+For attribute based events, the \OSC{x} and  \OSC{y} variables are set to the target object current position and the other variables are undefined. For other events, the position variables are set to \values{0}. 
 
 \begin{rail} 
 posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' 
@@ -3081,7 +3162,7 @@ An object that follows mouse move.\\
 \subsublevel{Time variables}
 \label{timevar}
 
-Time variables reflects the date corresponding to the current mouse position for mouse events. 
+Time variables reflects the date corresponding to the current mouse position for mouse events. For attribute based events, the time variables are set to the target object current time position.
 They are set to \values{0} for the other events. 
 
 \begin{rail} 
