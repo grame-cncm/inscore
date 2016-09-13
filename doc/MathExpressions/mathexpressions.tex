@@ -119,16 +119,59 @@ Since INScore's parameters are polymorphic, the semantic of the operations are t
 \subsublevel{Numeric values}
 
 For numeric arguments, automatic type conversion is applied with a precedence of \OSC{float32} i.e. when one of the argument's type is  \OSC{float32}, the result is also  \OSC{float32} (see Table \ref{table:mathopnum}).
-\begin{table}[htbp]  \centering  \begin{tabular}{@{} rlc @{}}    \hline    arg1 & arg2 & output\\     \hline    \OSC{int32}		&  	\OSC{int32}		& \OSC{int32} \\     \OSC{float32}	&  	\OSC{int32}		& \OSC{float32} \\     \OSC{int32}		&  	\OSC{float32}	& \OSC{float32} \\     \OSC{float32}	&  	\OSC{float32}	& \OSC{float32} \\     \hline  \end{tabular}  \caption{Numeric operations output}  \label{table:mathopnum}\end{table} 
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{} rlc @{}}
+    \hline
+    arg1 & arg2 & output\\ 
+    \hline
+    \OSC{int32}		&  	\OSC{int32}		& \OSC{int32} \\ 
+    \OSC{float32}	&  	\OSC{int32}		& \OSC{float32} \\ 
+    \OSC{int32}		&  	\OSC{float32}	& \OSC{float32} \\ 
+    \OSC{float32}	&  	\OSC{float32}	& \OSC{float32} \\ 
+    \hline
+  \end{tabular}
+  \caption{Numeric operations output}
+  \label{table:mathopnum}
+\end{table} 
 
 %===============================
 \subsublevel{Strings}
-For \OSC{string} parameters, we introduce a conversion operation \mathstrnum{string} that evaluates to \OSC{int32}, and that is applied depending on the operation type (see Tables \ref{table:mathopstr} and \ref{table:mathopstrnum}). Note that we'll refer to numeric values as \OSC{num} to represent \OSC{int32} or \OSC{float32} that are handled similarly in this context.
+For \OSC{string} parameters, operations that have an obvious semantic (like + applied to two strings) are defined (see Table \ref{table:mathopstr}) , the others are undefined and generate an error (see Table \ref{table:mathnoopstr}). 
 
-\begin{table}[htbp]  \centering  \begin{tabular}{@{} rlc @{}}    \hline    operation & evaluates to & comment\\     \hline    \OSC{string} + \OSC{string} 		& \OSC{string} 						& concatenate the two strings \\     \OSC{string} \op\ \OSC{string} 		& \mathstrnum{string} \op\ \mathstrnum{string}& operates on strings length \\     									& where \op\ is in [- * / \%] 		& \\     -\OSC{string}  						& \OSC{string} 						& gives the string unchanged \\     @max(\OSC{string} \OSC{string})		& \OSC{string} 						& select the largest string \\     @min(\OSC{string} \OSC{string})		& \OSC{string} 						& select the smallest string \\     prefixed or postfixed \OSC{string}  & \OSC{string} 						& gives the string unchanged \\     \hline  \end{tabular}  \caption{Operations on strings}  \label{table:mathopstr}\end{table} 
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{} rlc @{}}
+    \hline
+    operation & evaluates to & comment\\ 
+    \hline
+    \OSC{string} + \OSC{string} 		& \OSC{string} 						& concatenate the two strings \\ 
+    \OSC{string} + \OSC{num} 			& \OSC{string} + \mathstring{num} 	& \OSC{num} is converted to string \\ 
+    \OSC{num} + \OSC{string} 			& \mathstring{num} + \OSC{string} 	& " \\ 
+    @max(\OSC{string} \OSC{string})		& \OSC{string} 						& select the largest string \\ 
+    @min(\OSC{string} \OSC{string})		& \OSC{string} 						& select the smallest string \\ 
+    \hline
+  \end{tabular}
+  \caption{Supported operations on strings}
+  \label{table:mathopstr}
+\end{table} 
 
-\begin{table}[htbp]  \centering  \begin{tabular}{@{} rlc @{}}    \hline    operation & evaluates to & comment\\     \hline    \OSC{string} + \OSC{num} 			& \OSC{string} + \mathstring{num} 	& \OSC{num} is converted to string \\     \OSC{num} + \OSC{string} 			& \mathstring{num} + \OSC{string} 	& " \\     \OSC{string} \op\ \OSC{num} 		& \mathstrnum{string} \op\ \OSC{num} & operates on numeric values \\     \OSC{num} \op\ \OSC{string} 		& \OSC{num} \op\ \mathstrnum{string} & " \\     									& where \op\ is in [- * / \%] 		& \\  	@max(\OSC{string} \OSC{num})		& @max(\mathstrnum{string} \OSC{num}) 	& " \\  	@min(\OSC{string} \OSC{num})		& @min(\mathstrnum{string} \OSC{num}) 	& " \\     \hline  \end{tabular}  \caption{Operations on strings and numeric values: 
-apart the '+' operator, strings are converted to numeric values using their length.}  \label{table:mathopstrnum}\end{table} 
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{} rl @{}}
+    \hline
+    operation & comment\\ 
+    \hline
+    \OSC{string} \op\ \OSC{string} 		& where \op\ is in [- * / \%]  \\ 
+    \OSC{string} \op\ \OSC{num} 		& where \op\ is in [- * / \%]  \\ 
+    \OSC{num} \op\ \OSC{string} 		& where \op\ is in [- * / \%]  \\ 
+    -\OSC{string}  						&  \\ 
+    prefixed or postfixed \OSC{string}  &  \\ 
+    \hline
+  \end{tabular}
+  \caption{Non supported operations on strings}
+  \label{table:mathnoopstr}
+\end{table} 
 
 And finally, a boolean operation on \OSC{string} is evaluates as a boolean operation on \mathstrnum{string}.
 
@@ -140,9 +183,8 @@ $$ arg\ op\ [v_1\ ...\ v_n]  := [arg\ op\ v_1\ ...\ arg\ op\ v_n] $$
 or
 $$ [v_1\ ...\ v_n]\ op\ arg  := [v_1\ op\ arg\ ...\ v_n\ op\ arg] $$
 
-When both parameters are arrays, the operation is distributed from one array elements to the other array elements, up to the smaller array size:
-$$ i < j\quad \land \quad [a_1\ ...\ a_i]\ op\ [b_1\ ...\ b_j]  := [a_1\ op\ b_1\ ...\ v_i\ op\ b_i\ b_{i+1}\ ... \ b_j] $$
-$$ i > j\quad \land \quad [a_1\ ...\ a_i]\ op\ [b_1\ ...\ b_j]  := [a_1\ op\ b_1\ ...\ v_i\ op\ b_j\ a_{j+1}\ ... \ a_i] $$
+When both parameters are arrays, the operation is distributed from one array elements to the other array elements when the arrays have the same size and it generates an error when the sizes differ:
+$$[a_1\ ...\ a_i]\ op\ [b_1\ ...\ b_i]  := [a_1\ op\ b_1\ ...\ a_i\ op\ b_i\ ] $$
 
-Boolean operations on arrays are evaluated as the logical $and$ of it's element's boolean values and returns false when the arrays sizes differ.
+Boolean operations on arrays are evaluated as the logical $and$ of it's element's boolean values and generate an error when the arrays sizes differ.
 
