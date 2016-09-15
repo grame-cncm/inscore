@@ -63,6 +63,7 @@ class ITLparser {
 		float			fFloat;		// the current float
 		int				fLineOffset;// line offset
 		int				fLine;		// current line
+		int				fColumn;	// current column
 		int				fExprStartLine;
 
 				 ITLparser(std::istream* stream, int line, IAppl* root, bool execute=true);

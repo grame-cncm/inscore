@@ -28,11 +28,13 @@ mathexpr:     [1] matharg '+' matharg
 			| [5] matharg '/' matharg
 			| [6] matharg '\%' matharg
 			| [7] '(' mathexpr ')'
-			| [8] 'max' '(' mathargslist ')'
-			| [9] 'min' '(' mathargslist ')'
+			| [8] 'max' '(' (matharg +) ')'
+			| [9] 'min' '(' (matharg +) ')'
 			| [10]'(' mathbool '?' matharg ':' matharg ')'
 \end{rail}
 \index{Math expression!operators}
+
+Note that \textit{matharg} could be a \textit{mathexpr} as well (see section \ref{mathargs}).
 
 \begin{itemize}
 \item \textbf{1}: addition.
@@ -92,7 +94,7 @@ Arguments of mathematical operations are the following:
 matharg:      [1] 'param'
 			| [2] 'variable'
 			| [3] 'variable' ('++' | '--')
-			| [4] ('++' | '--') 'variable' 
+			| [4] ('++' | '- -') 'variable' 
 			| [5] 'msgvariable'
 			| [6] mathexpr
 \end{rail}
@@ -158,13 +160,13 @@ For \OSC{string} parameters, operations that have an obvious semantic (like + ap
 
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{@{} rl @{}}
+  \begin{tabular}{@{} rc @{}}
     \hline
     operation & comment\\ 
     \hline
     \OSC{string} \op\ \OSC{string} 		& where \op\ is in [- * / \%]  \\ 
-    \OSC{string} \op\ \OSC{num} 		& where \op\ is in [- * / \%]  \\ 
-    \OSC{num} \op\ \OSC{string} 		& where \op\ is in [- * / \%]  \\ 
+    \OSC{string} \op\ \OSC{num} 		& "  \\ 
+    \OSC{num} \op\ \OSC{string} 		& "  \\ 
     -\OSC{string}  						&  \\ 
     prefixed or postfixed \OSC{string}  &  \\ 
     \hline
@@ -173,7 +175,25 @@ For \OSC{string} parameters, operations that have an obvious semantic (like + ap
   \label{table:mathnoopstr}
 \end{table} 
 
-And finally, a boolean operation on \OSC{string} is evaluates as a boolean operation on \mathstrnum{string}.
+Boolean operations are supported on \OSC{string} only when both arguments are strings (see Table \ref{table:mathboolstr}). Other types combination generate an error.
+	
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{} rc @{}}
+    \hline
+    boolean operation & evaluated as \\ 
+    \hline
+    \OSC{string} == \OSC{string} 		& regular strings comparison \\ 
+    \OSC{string} > \OSC{string} 		& alphabetical strings comparison \\ 
+    \OSC{string} >= \OSC{string} 		& " \\ 
+    \OSC{string} < \OSC{string} 		& " \\ 
+    \OSC{string} <= \OSC{string} 		& " \\ 
+    \hline
+  \end{tabular}
+  \caption{Supported boolean operations on strings}
+  \label{table:mathboolstr}
+\end{table} 
 
 
 %===============================

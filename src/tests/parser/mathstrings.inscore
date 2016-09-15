@@ -12,10 +12,6 @@ m = 1 foo 0;
 fail = "FAILED:";
 
 /ITL/string/string plus (foo + foo == foofoo ? ok : $fail) foo + foo;
-/ITL/string/string minus (foofoo - foo == 3 ? ok : $fail) foofoo - foo;
-/ITL/string/string mult (foo * foo == 9 ? ok : $fail)  foo * foo;
-/ITL/string/string div 	(foofoo / foo == 2 ? ok : $fail)  foofoo / foo;
-/ITL/string/string mod 	(foofo % foo == 2 ? ok : $fail)  foofo % foo;
 /ITL/string/string equal (foo == foo ? ok : $fail);
 /ITL/string/string gt 	(foofoo > foo ? ok : $fail);
 /ITL/string/string geq 	(foo >= foo ? ok : $fail);
@@ -23,8 +19,21 @@ fail = "FAILED:";
 /ITL/string/string leq 	(foo <= foo ? ok : $fail);
 
 /sep ------------------------------------;
-
 /ITL/string/num plus 	(foo + 1 == foo1 ? ok : $fail) foo + 1;
+
+/sep ------------------------------------;
+/ITL/string/array plus 	foo + $a;
+
+/sep ------------------------------------;
+/ITL/array/string plus 	$a + foo;
+/ITL/array/string pluspoly 	$m + 1;
+
+__END__
+# unsupported expressions 
+/ITL/string/string minus (foofoo - foo == 3 ? ok : $fail) foofoo - foo;
+/ITL/string/string mult (foo * foo == 9 ? ok : $fail)  foo * foo;
+/ITL/string/string div 	(foofoo / foo == 2 ? ok : $fail)  foofoo / foo;
+/ITL/string/string mod 	(foofo % foo == 2 ? ok : $fail)  foofo % foo;
 /ITL/string/num minus 	(foo - 1 == 2 ? ok : $fail) foo - 1;
 /ITL/string/num mult 	(foo * 2 == 6 ? ok : $fail)  foo * 2;
 /ITL/string/num div 	(foofoo / 2 == 3 ? ok : $fail)  foofoo / 2;
@@ -34,21 +43,13 @@ fail = "FAILED:";
 /ITL/string/num geq 	(foo >= 3 ? ok : $fail);
 /ITL/string/num lt 		(foofoo < 3 ? $fail : ok);
 /ITL/string/num leq 	(foo <= 3 ? ok : $fail);
-
-/sep ------------------------------------;
-/ITL/string/array plus 	foo + $a;
 /ITL/string/array minus foo - $a;
 /ITL/string/array mult 	foo * $a;
 /ITL/string/array div 	foo / $a;
 /ITL/string/array mod 	foo % $a;
-
-/sep ------------------------------------;
-/ITL/array/string plus 	$a + foo;
 /ITL/array/string minus $a - foo;
 /ITL/array/string mult 	$a * foo;
 /ITL/array/string div 	$a / foo;
 /ITL/array/string mod 	$a % foo;
-/ITL/array/string pluspoly 	$m + 1;
 /ITL/array/string minuspoly $m - 1;
-
 

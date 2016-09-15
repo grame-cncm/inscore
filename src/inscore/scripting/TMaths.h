@@ -37,9 +37,8 @@ namespace inscore
 // simple math operations between messages arguments
 //--------------------------------------------------------------------------------------------
 /*
-	supported operators are + - * and /
-	in addition, a test form is supported ( testval ? trueval : falseval)
-	
+	supported operators are + - * / %
+	boolean operations are == < <= > >= and the negation !
 */
 class TMaths
 {
@@ -54,7 +53,7 @@ class TMaths
 	typedef IMessage::argPtr (TMaths::*unaryoperation) (const IMessage::argPtr& arg) const;
 	typedef enum	{ kUnknow, kInt, kFloat, kString } TType;
 
-	TType	type (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const;
+	TType	type (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2, bool cast2string=false) const;
 
 
 	IMessage::argPtr	add		(int, int) const;

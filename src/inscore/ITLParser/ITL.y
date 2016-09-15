@@ -19,7 +19,6 @@
 
 %pure-parser
 %locations
-%defines
 %error-verbose
 %parse-param { inscore::ITLparser* context }
 %lex-param { void* scanner  }
@@ -82,6 +81,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <stdexcept>
 
 #include "ITLparser.h"
 #include "ITLparse.hpp"
@@ -93,6 +93,7 @@
 typedef void * yyscan_t;
 
 //int VARerror(YYLTYPE* locp, inscore::ITLparser* context, const char*s, const char* var);
+void matherror (inscore::ITLparser* context, const std::invalid_argument& e);
 int yyerror (const YYLTYPE* locp, inscore::ITLparser* context, const char*s);
 int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::ITLparser* context);
@@ -216,16 +217,20 @@ params		: sparam				{ $$ = new inscore::IMessage::argslist; $$->push_back(*$1); 
 variable	: VARIABLE				{ $$ = new inscore::IMessage::argslist; debug("variable", context->fText.c_str()); 
 									  $$->push_back (context->fReader.resolve(context->fText.c_str(), lineno(context))); }
 			| VARIABLEPOSTINC		{ $$ = new inscore::IMessage::argslist; debug("variable postinc", context->fText);
-								  			  $$->push_back (context->fReader.resolveinc(context->fText.c_str(), true, lineno(context)));
+								  		try { $$->push_back (context->fReader.resolveinc(context->fText.c_str(), true, lineno(context))); }
+										catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }
 								  	}
 			| VARIABLEPOSTDEC		{ $$ = new inscore::IMessage::argslist; debug("variable postdec", context->fText);
-								  			  $$->push_back (context->fReader.resolvedec(context->fText.c_str(), true, lineno(context)));
+								  		try { $$->push_back (context->fReader.resolvedec(context->fText.c_str(), true, lineno(context))); }
+										catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }
 								  	}
 			| VARIABLEPREINC		{ $$ = new inscore::IMessage::argslist; debug("variable preinc", context->fText);
-								  			  $$->push_back (context->fReader.resolveinc(context->fText.c_str(), false, lineno(context)));
+								  		try { $$->push_back (context->fReader.resolveinc(context->fText.c_str(), false, lineno(context))); }
+										catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }
 								  	}
 			| VARIABLEPREDEC		{ $$ = new inscore::IMessage::argslist; debug("variable predec", context->fText);
-								  			  $$->push_back (context->fReader.resolvedec(context->fText.c_str(), false, lineno(context)));
+								  		try { $$->push_back (context->fReader.resolvedec(context->fText.c_str(), false, lineno(context))); }
+										catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }
 								  	}
 			;
 
@@ -251,36 +256,59 @@ sparam	: expression			{ $$ = $1;}			/* params excluded from math expression */
 mathexpr	: param							{ $$ = new inscore::IMessage::argslist; $$->push_back (*$1); delete $1; debug("mathexpr param", ""); }
 			| variable						{ $$ = $1; debug("mathexpr variable", ""); }
 			| msgvariable					{ $$ = $1; debug("mathexpr msgvariable", ""); }
-			| mathexpr ADD mathexpr			{ $$ = context->math().add($1, $3); delete $1; delete $3; debug("mathexpr", "ADD"); }
-			| mathexpr SUB mathexpr			{ $$ = context->math().sub($1, $3); delete $1; delete $3; debug("mathexpr", "SUB"); }
-			| MINUS mathexpr				{ $$ = $$ = context->math().minus($2);   delete $2; debug("mathexpr", "MINUS"); }
-			| mathexpr MULT mathexpr		{ $$ = context->math().mult($1, $3); delete $1; delete $3; debug("mathexpr", "MULT");  }
-			| mathexpr DIV mathexpr			{ $$ = context->math().div($1, $3);  delete $1; delete $3; debug("mathexpr", "DIV"); }
-			| mathexpr MODULO mathexpr		{ $$ = context->math().mod($1, $3);  delete $1; delete $3; debug("mathexpr", "MOD"); }
+			| mathexpr ADD mathexpr			{ try { $$ = context->math().add($1, $3); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }
+												delete $1; delete $3; debug("mathexpr", "ADD"); }
+			| mathexpr SUB mathexpr			{ try { $$ = context->math().sub($1, $3);  } 
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }
+											  	delete $1; delete $3; debug("mathexpr", "SUB"); }
+			| MINUS mathexpr				{ try { $$ = context->math().minus($2);  } 
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }; 
+												delete $2; debug("mathexpr", "MINUS"); }
+			| mathexpr MULT mathexpr		{ try { $$ = context->math().mult($1, $3);  } 
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; }; 
+												delete $1; delete $3; debug("mathexpr", "MULT");  }
+			| mathexpr DIV mathexpr			{ try { $$ = context->math().div($1, $3); } 
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; };  
+												delete $1; delete $3; debug("mathexpr", "DIV"); }
+			| mathexpr MODULO mathexpr		{ try { $$ = context->math().mod($1, $3); } catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; };  
+											delete $1; delete $3; debug("mathexpr", "MOD"); }
 			| LEFTPAR mathexpr RIGHTPAR 	{ $$ = $2; }
 			| MIN LEFTPAR mathmin RIGHTPAR	{ $$ = $3; debug("mathexpr", "MIN"); }
 			| MAX LEFTPAR mathmax RIGHTPAR	{ $$ = $3; debug("mathexpr", "MAX"); }
 			| LEFTPAR mathbool QUEST mathexpr COLON mathexpr RIGHTPAR { $$ = $2 ? (delete $6, $4) : (delete $4, $6); debug("mathexpr", "?"); } 
 			;
 				
-mathmin 	: mathexpr						{ $$ = context->math().min(*$1); delete $1; }
-			| mathmin mathexpr				{ inscore::IMessage::argslist* min = context->math().min(*$2);
-											  $$ = context->math().less(*$1, *min) ? (delete min, $1) :  (delete $1, min); delete $2; }
+mathmin 	: mathexpr						{ try { $$ = context->math().min(*$1); } 
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; }
+			| mathmin mathexpr				{ try { inscore::IMessage::argslist* min = context->math().min(*$2); 
+												$$ = context->math().less(*$1, *min) ? (delete min, $1) :  (delete $1, min); } 
+											  	catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $2; }
 			;
 
-mathmax 	: mathexpr						{ $$ = context->math().max(*$1); delete $1; }
-			| mathmax mathexpr				{ inscore::IMessage::argslist* max = context->math().max(*$2);
-											  $$ = context->math().greater(*$1, *max) ? (delete max, $1) :  (delete $1, max); delete $2; }
+mathmax 	: mathexpr						{ try { $$ = context->math().max(*$1); } 
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; }
+			| mathmax mathexpr				{ try { inscore::IMessage::argslist* max = context->math().max(*$2);
+												$$ = context->math().greater(*$1, *max) ? (delete max, $1) :  (delete $1, max); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $2; }
 			;
 
-mathbool 	: mathexpr						{ $$ = context->math().tobool(*$1); 		delete $1;}
-			| NEG mathexpr					{ $$ = (context->math().tobool(*$2) ? 0 : 1); delete $2; }
-			| mathexpr EQ mathexpr 			{ $$ = context->math().equal(*$1, *$3);     delete $1; delete $3; }
-			| mathexpr NEQ mathexpr 		{ $$ = !context->math().equal(*$1, *$3);     delete $1; delete $3; }
-			| mathexpr GREATER mathexpr 	{ $$ = context->math().greater(*$1, *$3);   delete $1; delete $3; }
-			| mathexpr GREATEREQ mathexpr 	{ $$ = context->math().greatereq(*$1, *$3); delete $1; delete $3; }
-			| mathexpr LESS mathexpr 		{ $$ = context->math().less(*$1, *$3); 	  	delete $1; delete $3; }
-			| mathexpr LESSEQ mathexpr 		{ $$ = context->math().lesseq(*$1, *$3); 	delete $1; delete $3; }
+mathbool 	: mathexpr						{ try { $$ = context->math().tobool(*$1); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; }
+			| NEG mathexpr					{ try { $$ = (context->math().tobool(*$2) ? 0 : 1); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $2; }
+			| mathexpr EQ mathexpr 			{ try { $$ = context->math().equal(*$1, *$3); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; delete $3; }
+			| mathexpr NEQ mathexpr 		{ try { $$ = !context->math().equal(*$1, *$3); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; delete $3; }
+			| mathexpr GREATER mathexpr 	{ try { $$ = context->math().greater(*$1, *$3); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; delete $3; }
+			| mathexpr GREATEREQ mathexpr 	{ try { $$ = context->math().greatereq(*$1, *$3); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; delete $3; }
+			| mathexpr LESS mathexpr 		{ try { $$ = context->math().less(*$1, *$3); } 
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; delete $3; }
+			| mathexpr LESSEQ mathexpr 		{ try { $$ = context->math().lesseq(*$1, *$3); }
+												catch (const std::invalid_argument& e) { matherror(context, e); YYABORT; } delete $1; delete $3; }
 			;
 
 //_______________________________________________
@@ -323,11 +351,16 @@ int lineno (ITLparser* context)
 	return loc->last_line + context->fLine; 
 }
 
+void matherror(ITLparser* context, const std::invalid_argument& e) {
+	yyerror (0, context, e.what());
+}
+
 int yyerror(const YYLTYPE* loc, ITLparser* context, const char*s) {
+	int l = context->fLine + context->fLineOffset;
 #if defined(NO_OSCSTREAM) || defined(IBUNDLE)
-	cerr << "error line " << loc->last_line + context->fLineOffset << " col " << loc->first_column << ": " << s << endl;
+	cerr << "error line " << l << " col " << context->fColumn << ": " << s << endl;
 #else
-	context->fReader.error (loc->last_line + context->fLineOffset, loc->first_column, s);
+	context->fReader.error (l, context->fColumn, s);
 #endif
 	return 0;
 }

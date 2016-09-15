@@ -33,7 +33,7 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 ITLparser::ITLparser(std::istream* stream, int line, IAppl* root, bool execute)
-	: fReader(root, execute), fStream(stream), fLine(line)
+	: fReader(root, execute), fStream(stream), fLine(line), fColumn(1)
 {
 	setlocale(LC_NUMERIC, "C");
 	initScanner();

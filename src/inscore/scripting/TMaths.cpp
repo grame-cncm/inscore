@@ -27,6 +27,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 #include "TMaths.h"
 
@@ -83,16 +84,20 @@ std::string TMaths::tostring (const IMessage::argPtr& arg) const {
 // int & int	-> int
 // int & float	-> float
 // int & float	-> float
+// string & string -> string
+// or
+// string & num -> string when cast2string is true
 //--------------------------------------------------------------------------------------------
-TMaths::TType TMaths::type (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
+TMaths::TType TMaths::type (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2, bool cast2string) const
 {
-	if (arg1->isType<string>() || arg2->isType<string>() )	return kString;
+	if (cast2string && (arg1->isType<string>() || arg2->isType<string>()))	return kString;
+
+	if (arg1->isType<string>() && arg2->isType<string>() )	return kString;
 	if (arg1->isType<int>()) {
 		if (arg2->isType<int>() )			return kInt;
 		if (arg2->isType<float>() )			return kFloat;
-		return kUnknow;
 	}
-	if (arg1->isType<float>()) {
+	else if (arg1->isType<float>()) {
 		if (arg2->isType<int>() )			return kFloat;
 		if (arg2->isType<float>() )			return kFloat;
 	}
@@ -109,8 +114,7 @@ IMessage::argslist*	TMaths::apply (operation op, const IMessage::argslist& arg1,
 	size_t n1 = arg1.size();
 	size_t n2 = arg2.size();
 	if (!n1 || !n2) {
-		ret->push_back (new IMsgParam<string>("TMaths: unexpected empty args"));
-		return ret;
+		throw std::invalid_argument( "math: unexpected empty args" );
 	}
 	
 	if (n1 == 1) {
@@ -138,17 +142,9 @@ IMessage::argslist*	TMaths::apply (operation op, const IMessage::argslist& arg1,
 	for (size_t i=min; i < max; i++) {
 		ret->push_back( (*larger)[i] );
 	}
-
-//	bool loop1 = true, loop2 = true;
-//	for (size_t i=0, j=0; loop1 || loop2; ) {
-//		ret->push_back( (this->*op) (arg1[i], arg2[j]) );
-//		if (i < (n1 - 1)) i++;
-//		else loop1 = false;
-//		if (j < (n2 - 1)) j++;
-//		else loop2 = false;
-//	}
 	return ret;
 }
+
 IMessage::argslist*	TMaths::apply (unaryoperation op, const IMessage::argslist& args) const
 {
 	IMessage::argslist* ret = new IMessage::argslist();
@@ -176,15 +172,13 @@ IMessage::argPtr TMaths::inc (const IMessage::argPtr& arg) const
 {
 	if (arg->isType<int>()) return new IMsgParam<int>(arg->value(0) + 1);
 	if (arg->isType<float>()) return new IMsgParam<float>(-arg->value(0.f) + 1);
-//	if (arg->isType<string>()) return arg;
-	return arg;
+	throw std::invalid_argument( "invalid increment on unsupported type of argument" );
 }
 IMessage::argPtr TMaths::dec (const IMessage::argPtr& arg) const
 {
 	if (arg->isType<int>()) return new IMsgParam<int>(arg->value(0) - 1);
 	if (arg->isType<float>()) return new IMsgParam<float>(-arg->value(0.f) - 1);
-//	if (arg->isType<string>()) return arg;
-	return arg;
+	throw std::invalid_argument( "invalid decrement on unsupported type of argument" );
 }
 IMessage::argslist* TMaths::inc (const IMessage::argslist& arg) const
 				{ return apply (&TMaths::inc, arg); }
@@ -239,12 +233,13 @@ IMessage::argslist*	TMaths::min	(const IMessage::argslist& arg) const
 //--------------------------------------------------------------------------------------------
 IMessage::argPtr TMaths::add (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
 {
-	TType t = type (arg1, arg2);
+	TType t = type (arg1, arg2, true);
 	switch (t) {
 		case kInt:		return new IMsgParam<int>(arg1->value(0) + arg2->value(0));
 		case kFloat:	return new IMsgParam<float>(tofloat(arg1) + tofloat(arg2));
 		case kString:	return new IMsgParam<string>(tostring(arg1) + tostring(arg2));
-		default:		return new IMsgParam<string>("TMaths: unsupported type for add");
+		default:
+			throw std::invalid_argument( "math '+': unsupported type of argument" );
 	}
 }
 
@@ -260,16 +255,15 @@ IMessage::argPtr TMaths::sub (const IMessage::argPtr& arg1, const IMessage::argP
 	switch (t) {
 		case kInt:		return new IMsgParam<int>(arg1->value(0) - arg2->value(0));
 		case kFloat:	return new IMsgParam<float>(tofloat(arg1) - tofloat(arg2));
-		case kString:	return new IMsgParam<int>(toint(arg1) - toint(arg2));
-		default:		return new IMsgParam<string>("TMaths: unsupported type for sub");
+		default:
+			throw std::invalid_argument( "math '-': unsupported type of argument" );
 	}
 }
 IMessage::argPtr TMaths::minus (const IMessage::argPtr& arg) const
 {
 	if (arg->isType<int>()) return new IMsgParam<int>(-arg->value(0));
 	if (arg->isType<float>()) return new IMsgParam<float>(-arg->value(0.f));
-	if (arg->isType<string>()) return arg;
-	return new IMsgParam<string>("TMaths: unsupported type for -");
+	throw std::invalid_argument( "math '-': unsupported type of argument" );
 }
 IMessage::argslist*	TMaths::sub	(IMessage::argslist* arg1, IMessage::argslist* arg2) const
 				{ return apply (&TMaths::sub, *arg1, *arg2); }
@@ -285,8 +279,8 @@ IMessage::argPtr TMaths::mult (const IMessage::argPtr& arg1, const IMessage::arg
 	switch (t) {
 		case kInt:		return new IMsgParam<int>(arg1->value(0) * arg2->value(0));
 		case kFloat:	return new IMsgParam<float>(tofloat(arg1) * tofloat(arg2));
-		case kString:	return new IMsgParam<int>(toint(arg1) * toint(arg2));
-		default:		return new IMsgParam<string>("TMaths: unsupported type for sub");
+		default:
+			throw std::invalid_argument( "math '*': unsupported type of argument" );
 	}
 }
 
@@ -310,24 +304,10 @@ IMessage::argPtr TMaths::div (const IMessage::argPtr& arg1, const IMessage::argP
 			if (val) return new IMsgParam<float>(tofloat(arg1) / val);
 		}
 		break;
-		case kString: {
-			bool performfloat = arg1->isType<float>() || arg2->isType<float>();
-			if (performfloat) {
-				float val = tofloat(arg2);
-				if (val)
-					return new IMsgParam<float>(tofloat(arg1) / val);
-			}
-			else {
-				int val = toint(arg2);
-				if (val)
-					return new IMsgParam<int>(toint(arg1) / val);
-			}
-		}
-		break;
 		default:
-			cerr << "TMaths::div: unknown arguments type" << endl;
+			throw std::invalid_argument( "math '/': unsupported type of argument" );
 	}
-	return new IMsgParam<string>("TMaths exception: division by 0");
+	throw std::invalid_argument( "math '/': division by 0" );
 }
 
 IMessage::argslist*	TMaths::div	(IMessage::argslist* arg1, IMessage::argslist* arg2) const
@@ -338,9 +318,18 @@ IMessage::argslist*	TMaths::div	(IMessage::argslist* arg1, IMessage::argslist* a
 //--------------------------------------------------------------------------------------------
 IMessage::argPtr TMaths::mod (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
 {
-	int val2 = toint(arg2);
-	if (val2) return new IMsgParam<int>(toint(arg1) % val2);
-	return new IMsgParam<string>("TMaths exception: division by 0");
+	TType t = type (arg1, arg2);
+	switch (t) {
+		case kInt:
+		case kFloat: {
+			int val2 = toint(arg2);
+			if (val2) return new IMsgParam<int>(toint(arg1) % val2);
+			throw std::invalid_argument( "math '%': division by 0" );
+		}
+		break;
+		default:
+			throw std::invalid_argument( "math '%': unsupported type of argument" );
+	}
 }
 
 IMessage::argslist*	TMaths::mod	(IMessage::argslist* arg1, IMessage::argslist* arg2) const
@@ -357,11 +346,9 @@ IMessage::argslist*	TMaths::mod	(IMessage::argslist* arg1, IMessage::argslist* a
 //--------------------------------------------------------------------------------------------
 bool TMaths::tobool (const IMessage::argPtr& arg) const
 {
-	string empty("");
-	if (arg->isType<std::string>())	return !arg->value(empty).empty();
 	if (arg->isType<int>())			return arg->value(0) != 0;
 	if (arg->isType<float>())		return arg->value(0.f) != 0.f;
-	return false;
+	throw std::invalid_argument( "math boolean: unsupported type of argument" );
 }
 
 //--------------------------------------------------------------------------------------------
@@ -382,26 +369,71 @@ bool TMaths::equal (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) 
 	switch (t) {
 		case kInt:		return arg1->value(0) == arg2->value(0);
 		case kFloat:	return tofloat(arg1) == tofloat(arg2);
-		case kString:
-			if (arg1->isType<string>() && arg2->isType<string>()) {
-				string empty;
-				return arg1->value(empty) == arg2->value(empty);
-			}
-			else {
-				return toint(arg1) == toint(arg2);
-			}
-//		default:		return new IMsgParam<string>("TMaths: unsupported type for sub");
-		default:		return false;
+		case kString: {
+			string empty;
+			return arg1->value(empty) == arg2->value(empty);
+		}
+		default:
+			throw std::invalid_argument( "math '==': unsupported type of argument" );
 	}
 }
 bool TMaths::greater (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
-									{ return tofloat(arg1) > tofloat(arg2); }
+{
+	TType t = type (arg1, arg2);
+	switch (t) {
+		case kInt:		return arg1->value(0) > arg2->value(0);
+		case kFloat:	return tofloat(arg1) > tofloat(arg2);
+		case kString: {
+			string empty;
+			return arg1->value(empty).compare (arg2->value(empty)) > 0;
+		}
+		default:
+			throw std::invalid_argument( "math '>': unsupported type of argument" );
+	}
+}
 bool TMaths::greatereq (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
-									{ return tofloat(arg1) >= tofloat(arg2); }
+{
+	TType t = type (arg1, arg2);
+	switch (t) {
+		case kInt:		return arg1->value(0) >= arg2->value(0);
+		case kFloat:	return tofloat(arg1) >= tofloat(arg2);
+		case kString: {
+			string empty;
+			return arg1->value(empty).compare (arg2->value(empty)) >= 0;
+		}
+		default:
+			throw std::invalid_argument( "math '>=': unsupported type of argument" );
+	}
+}
+
 bool TMaths::less (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
-									{ return tofloat(arg1) < tofloat(arg2); }
+{
+	TType t = type (arg1, arg2);
+	switch (t) {
+		case kInt:		return arg1->value(0) < arg2->value(0);
+		case kFloat:	return tofloat(arg1) < tofloat(arg2);
+		case kString: {
+			string empty;
+			return arg1->value(empty).compare (arg2->value(empty)) < 0;
+		}
+		default:
+			throw std::invalid_argument( "math '<': unsupported type of argument" );
+	}
+}
 bool TMaths::lesseq (const IMessage::argPtr& arg1, const IMessage::argPtr& arg2) const
-									{ return tofloat(arg1) <= tofloat(arg2); }
+{
+	TType t = type (arg1, arg2);
+	switch (t) {
+		case kInt:		return arg1->value(0) <= arg2->value(0);
+		case kFloat:	return tofloat(arg1) <= tofloat(arg2);
+		case kString: {
+			string empty;
+			return arg1->value(empty).compare (arg2->value(empty)) <= 0;
+		}
+		default:
+			throw std::invalid_argument( "math '<=': unsupported type of argument" );
+	}
+}
 
 bool TMaths::equal (const IMessage::argslist& arg1, const IMessage::argslist& arg2) const
 									{ return apply (&TMaths::equal, arg1, arg2); }

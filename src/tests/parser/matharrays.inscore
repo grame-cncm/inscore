@@ -14,11 +14,6 @@ fail = "FAILED:";
 
 /ITL/array/array plus 		$a + $b;
 /ITL/array/array plus1  	$a + $bb;
-/ITL/array/array minus 		$a - $a;
-/ITL/array/array minus 		$a - $bb;
-/ITL/array/array mult 	$a * $b;
-/ITL/array/array div 	$a / $b;
-/ITL/array/array mod 	$a % $c;
 
 /sep ------------------------------------;
 /ITL/array/array equal 	($a == $a ? ok : $fail);
@@ -32,10 +27,16 @@ fail = "FAILED:";
 /sep ------------------------------------;
 /ITL/array/arraynum plus 	$a + $c;
 /ITL/array/arraynum plus1  	$a + $d;
+
+
+__END__
+# unsupported arguments
+/ITL/array/array minus 		$a - $a;
+/ITL/array/array minus 		$a - $bb;
+/ITL/array/array mult 	$a * $b;
+/ITL/array/array div 	$a / $b;
+/ITL/array/array mod 	$a % $c;
 /ITL/array/arraynum minus 	$a - $c;
 /ITL/array/arraynum minus 	$a - $d;
-
-/sep ------------------------------------;
-/ITL/array bool 	($a ? ok : $fail);
 /ITL/array bool 	(!$m ? ok : $fail);
 

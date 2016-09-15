@@ -12,7 +12,6 @@
 #pragma warning (disable : 4267 4100 4244)
 #endif
 
-//#include <stdio.h>
 #include <iostream>
 #include "IMessage.h"
 #include "ITLparser.h"
@@ -22,7 +21,7 @@ using namespace std;
 
 #define YY_NO_INPUT
 #define YY_EXTRA_TYPE inscore::ITLparser*
-#define YY_USER_ACTION  yyextra->fLine = yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
+#define YY_USER_ACTION  yyextra->fLine = yylloc->last_line = yylineno; yyextra->fColumn = yylloc->first_column += strlen(yytext); //cerr << "YY_USER_ACTION " << yyextra->fLine << endl;
 
 #define YY_INPUT(buf,result,max_size)   \
    {                                       \
@@ -180,12 +179,16 @@ EOL		[\x0a\x0d]
  /*	quoted strings */
  /* ----------------------------------------- */
 "\""						BEGIN DQSTR;
+"\"\""						yyextra->fText = ""; debug("EMPTY STRING", yytext); return STRING;;
 "'"							BEGIN QSTR;
+"''"						yyextra->fText = ""; debug("EMPTY STRING", yytext); return STRING;;
 
-<DQSTR>([^\"]|"\\\"")*		if (!expressionNested){ yyextra->fText = unescape(yytext); debug("STRING", yytext); return STRING;} else yyextra->fText += string("\"") + unescape(yytext) + "\"";
+<DQSTR>([^\"]|"\\\"")*		if (!expressionNested){ yyextra->fText = unescape(yytext); debug("STRING", yytext); return STRING;} 
+							else yyextra->fText += string("\"") + unescape(yytext) + "\"";
 <DQSTR>\"					if (expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
-<QSTR>([^']|"\\'")*			if (!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += string("'") + unescape(yytext) + "'";
+<QSTR>([^']|"\\'")*			if (!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} 
+							else yyextra->fText += string("'") + unescape(yytext) + "'";
 <QSTR>'						if (expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
  /* ----------------------------------------- */
