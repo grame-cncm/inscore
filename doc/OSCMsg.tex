@@ -3079,13 +3079,26 @@ With the event's generalisation to any object attribute, a one tick delay has be
 \sublevel{User defined events}
 \label{userevents}
 
-INScore events supports user defined events. The name of user defined event must be cmposed of capital letters and of numbers only. Other characters are reserved for INScore use.
-User defined events can only be triggered using the \OSC{event} message (see section \fullref{eventMsg}) .
+INScore events supports user defined events. The name of user defined events must start with a capital letter and be composed of capital letters and/or numbers. Other characters are reserved for INScore use.
+
+Messages attached to user defined events accept regular variables (although the position variables are useless), 
+but they accept also any number of a variables which names are \$1, ... \$i and which values are taken from the event call arguments (see section \fullref{udevar}).
+
+User defined events can only be triggered using the \OSC{event} message (see section \fullref{eventMsg}).
 
 \example \\
 Watching and triggering a user defined event:
 \sample{/ITL/scene/myObject watch MYEVENT (/ITL/scene/msg set txt "MYEVENT occured!");\\
 /ITL/scene/myObject event MYEVENT;
+}
+
+Defining high level abstractions:
+\sample{/ITL/scene/myObject watch MOVEABC ( \\
+\hspace*{1cm}/ITL/scene/a x \$1,\\
+\hspace*{1cm}/ITL/scene/b x \$2,\\
+\hspace*{1cm}/ITL/scene/C x \$3\\
+); \\
+/ITL/scene/myObject event MOVEABC -0.4 0.1 0.6;
 }
 
 
@@ -3098,14 +3111,19 @@ The \OSC{event} message may be used to triggered events. It's the only way to tr
 It may be used also to simulate user interface events (like mouse events).
 
 \begin{rail}
-eventMsg :  'event' ([1] ( (mouseEvent | touchEvent) float32 float32) | [2] eventName)
+eventMsg :  'event' 
+			([1] ( (mouseEvent | touchEvent) float32 float32) 
+			| [2] userEvent ( | var +)
+			| [3] eventName
+			)
 \end{rail}
 \index{Common messages!event}
 
 
 \begin{itemize}
 \item \textbf{1}: this form is intended to simulate mouse or touch event. It must be followed by the x and y coordinates of the interaction point. Coordinates express a position in pixels (the top left corner of the object is in [0,0]).
-\item \textbf{2}: trigger any other event 
+\item \textbf{2}: triggers a user defined event. It accepts any number of arguments, that are then expanded in place of the variables \$1 ... \$i. User defined events may be viewed as functions with arbitrary parameters; however parameters count and type is not checked. 
+\item \textbf{3}: triggers any other event. 
 \end{itemize}
 
 \note \\
@@ -3224,6 +3242,15 @@ Note that all the 'get' messages attached to an event are evaluated at the same 
 An object that takes the \values{x} position of another object on mouse down:
 \sample{/ITL/scene/myObject watch mouseDown \\
 \hspace*{3cm}(/ITL/scene/myObject x '\$(/ITL/scene/obj get x)');}
+
+%===============================
+%:    Variables for user defined events
+\subsublevel{Variables for user defined events}
+\label{udevar}
+
+Messages associated to user defined events accept any number of a variables which names are \$1, ... \$i and which values are taken from the event call arguments. These events may be viewed as functions with arbitrary parameters; however parameters count and type is not checked: arguments in excess are ignored and variables without corresponding argument (e.g. \$3 when only 2 arguments are available) are left unexpanded.
+
+
 
 
 %===============================

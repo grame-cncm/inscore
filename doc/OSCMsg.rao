@@ -2009,10 +2009,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {111}{ eventMsg : 'event' ([1] ( (mouseEvent | touchEvent) float32 float32) | [2] eventName) }
+\rail@i {111}{ eventMsg : 'event' ([1] ( (mouseEvent | touchEvent) float32 float32) | [2] userEvent ( | var +) | [3] eventName ) }
 \rail@o {111}{
 \rail@index{eventMsg}
-\rail@begin{3}{eventMsg}
+\rail@begin{6}{eventMsg}
 \rail@term{event}[]
 \rail@bar
 \rail@annote[1]
@@ -2025,6 +2025,16 @@
 \rail@token{float32}[]
 \rail@nextbar{2}
 \rail@annote[2]
+\rail@nont{userEvent}[]
+\rail@bar
+\rail@nextbar{3}
+\rail@plus
+\rail@nont{var}[]
+\rail@nextplus{4}
+\rail@endplus
+\rail@endbar
+\rail@nextbar{5}
+\rail@annote[3]
 \rail@nont{eventName}[]
 \rail@endbar
 \rail@end
