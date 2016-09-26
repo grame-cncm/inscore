@@ -402,6 +402,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		*/
 		virtual bool checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const;
 		virtual bool checkEvent (EventsAble::eventype event, EventContext& context) const;
+		virtual bool checkEvent (EventsAble::eventype event, const IMessage::argslist& args) const;
+		/// check if an event name complies to user defined events naming scheme
+		virtual bool checkUserEvent(EventsAble::eventype t) const;
 
 		/*!
 			\brief process a signal

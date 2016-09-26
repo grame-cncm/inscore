@@ -684,6 +684,19 @@ bool IObject::checkEvent (EventsAble::eventype event, EventContext& context) con
 	return false;
 }
 
+bool IObject::checkEvent (EventsAble::eventype event, const IMessage::argslist& args) const
+{
+	const IMessageList*	msgs = getMessages(event);
+	if (msgs) {
+		EventContext env(getDate(), this);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env, args);
+		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
+		return true;
+	}
+	return false;
+}
+
 bool IObject::checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const
 {
 	EventContext env(date, obj);
@@ -1340,6 +1353,24 @@ MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+// user events must be in capital letters or numbers
+bool IObject::checkUserEvent(EventsAble::eventype t) const
+{
+	const char * ptr = t;
+	if (!*ptr || !(isalpha(int(*ptr)) || !isupper(int(*ptr))))
+		return false;
+	while (*++ptr) {
+		 if ( !isalpha(int(*ptr)) || !isupper(int(*ptr)) && ((*ptr < '0') || (*ptr > '9')) )
+			return false;
+//		bool accept =	( (isalpha(int(*ptr)) && isupper(int(*ptr))) ) ||
+//						( (*ptr >= '0') && (*ptr <= '9') );
+//		if (accept) ptr++;
+//		else return false;
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------
 bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	if (EventsAble::isMouseEvent(t)) return true;
@@ -1351,13 +1382,14 @@ bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 	
 	// check if the event is candidate for a user defined event
 	// user defined event must be all in capital letters
-	const char * ptr = t;
-	while (*ptr) {
-		bool accept =	( (isalpha(int(*ptr)) && isupper(int(*ptr))) ) ||
-						( (*ptr >= '0') && (*ptr <= '9') );
-		if (accept) ptr++;
-		else return false;
-	}
+	if (!checkUserEvent(t)) return false;
+//	const char * ptr = t;
+//	while (*ptr) {
+//		bool accept =	( (isalpha(int(*ptr)) && isupper(int(*ptr))) ) ||
+//						( (*ptr >= '0') && (*ptr <= '9') );
+//		if (accept) ptr++;
+//		else return false;
+//	}
 	return EventsAble::hash(t);		// user defined event is accepted
 }
 
@@ -1519,24 +1551,52 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 {
 	int n = msg->size();
-	if (n == 3) {			// this is a mouse related event
-		string event; int x, y;
-		if (msg->param(0, event) && msg->param(1, x) && msg->param(2, y)) {
-			VObjectView	* view = getView();
-			if (view) {
-				view->handleEvent (this, x, y, event.c_str());
-			}
-			return MsgHandler::kProcessed;
-		}
-	}
-	else if (n == 1) {			// this is a simple event
+	if (n >= 1) {
 		string event;
-		if (msg->param(0, event)) {
+		if (!msg->param(0, event)) return MsgHandler::kBadParameters;
+		
+		if (EventsAble::isMouseEvent(event.c_str())) {		// this is a mouse related event
+			if (n == 3) {									// x and  y parameters are expected
+				int x, y;
+				if (msg->param(1, x) && msg->param(2, y)) {
+					VObjectView	* view = getView();
+					if (view)
+						view->handleEvent (this, x, y, event.c_str());
+					return MsgHandler::kProcessed;
+				}
+			}
+		}
+		else if (checkUserEvent (event.c_str())) {			// this is a use defined event
+			IMessage::argslist args;						// supports arbitrary args count
+			for (int i=1; i<n; i++) args.push_back(msg->param(i));
+			if (checkEvent(event.c_str(), args))
+				return MsgHandler::kProcessed;
+		}
+		else if (n == 1) {									// this is a simple event
 			if (checkEvent(event.c_str(), getDate(), this))
 				return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
+
+//	if (n == 3) {			// this is a mouse related event
+//		string event; int x, y;
+//		if (msg->param(0, event) && msg->param(1, x) && msg->param(2, y)) {
+//			VObjectView	* view = getView();
+//			if (view) {
+//				view->handleEvent (this, x, y, event.c_str());
+//			}
+//			return MsgHandler::kProcessed;
+//		}
+//	}
+//	else if (n == 1) {			// this is a simple event
+//		string event;
+//		if (msg->param(0, event)) {
+//			if (checkEvent(event.c_str(), getDate(), this))
+//				return MsgHandler::kProcessed;
+//		}
+//	}
+//	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
