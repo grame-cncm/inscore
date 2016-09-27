@@ -84,14 +84,35 @@ rect = 0.3 0.3;
 /ITL/scene/recthidden x -0.6;
 /ITL/scene/recthidden show 0;
 
-/ITL/scene/rect* watch color (/ITL/log write $self color "$(/ITL/scene/$self get  x y)");
 
-/ITL/scene/circle watch A (
-	/ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)",
-	/ITL/scene/rect1 color "$(/ITL/scene/rect2 get color)",
+/ITL/scene/rect1 watch color (
 	/ITL/scene/rect2 color "$(/ITL/scene/rect3 get color)",
 	/ITL/scene/rect3 color "$(/ITL/scene/recthidden get color)"
 );
+
+/ITL/scene/circle watch A (
+	/ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)",
+	/ITL/scene/rect1 color "$(/ITL/scene/rect2 get color)"
+);
+
+#---------------------------------------------
+# note that although it looks similar to the events above, 
+# the following implementation produces a different result because
+# the messages are actually processed by the next time task while 
+# the variable messages are evaluated at the event time thus
+#  when $(/ITL/scene/recthidden get color) is evaluated
+#  the first line /ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)"
+#  has not been already processed
+#
+# the implementation above makes sure that the intermediate color is  
+# correctly set by splitting the event in 2 parts
+#
+#/ITL/scene/circle watch A (
+#	/ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)",
+#	/ITL/scene/rect1 color "$(/ITL/scene/rect2 get color)",
+#	/ITL/scene/rect2 color "$(/ITL/scene/rect3 get color)",
+#	/ITL/scene/rect3 color "$(/ITL/scene/recthidden get color)"
+#);
 
 #---------------------------------------------
 # use of the event arguments as messages variables
