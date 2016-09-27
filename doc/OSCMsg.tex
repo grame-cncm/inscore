@@ -44,7 +44,9 @@
 \newcommand{\values}[1]		{\texttt{#1}}
 \newcommand{\oldexample}	{\hspace*{1cm}}
 \newcommand{\example}		{\textbf{\hspace{-1.5cm}\textbf{\textsc{Example }}}}
-\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
+\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-0.9cm}\textbf{\textsc{Note #1}}}}
+\newcommand{\warning}[1]	{\vspace{2mm}\textbf{\hspace{-1.5cm}\textbf{\textsc{Warning #1}}}}
+
 \renewcommand{\seealso}		{\textbf{See also: }}
 
 \newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
@@ -78,7 +80,6 @@
 								\end{minipage}}\end{center}}
 \newcommand{\sampleindent}	{ \hspace{0.5cm} }
 
-\newcommand{\warning}[1]	{\textbf{\textsc{Warning:}} #1}
 
 \makeatother
 \makeindex
@@ -3062,7 +3063,7 @@ Displaying a welcome message to new elements:
 \sublevel{Attribute based events}
 \label{attributeevents}
 
-Attribute based events includes the whole set of messages that are supported by an object: \OSC{x}, \OSC{y}, \OSC{color}, etc. but also type specific messages. These events are triggered when a message has been succesfully processed. However, you shoudln't assume that the attribute value has been changed: when a message sets an attribute to it's current value, it is succesully processed and the corresponding event - if any - is triggered. 
+Attribute based events includes the whole set of messages that are supported by an object: \OSC{x}, \OSC{y}, \OSC{color}, etc. but also type specific messages. These events are triggered when a message has been succesfully processed. However, you shouldn't assume that the attribute value has been changed: when a message sets an attribute to it's current value, it is succesully processed and the corresponding event - if any - is triggered. 
 
 \example \\
 Watching an object \OSC{x} coordinate change:
@@ -3071,7 +3072,19 @@ Watching an object \OSC{x} coordinate change:
 \note \\
 Watching the \OSC{newData} event is equivalent to watch the \OSC{set} attribute. However, the \OSC{newData} event is triggered only when the object state is changed.
 
-With the event's generalisation to any object attribute, a one tick delay has been introduced to all events. Thus the associated messages are not processed synchronously to the event but posted to be processed by the next time task. This delay has been introduced to avoid freezing the system in case of loops.
+\warning \\
+With the event's generalisation to any object attribute, a one tick delay has been introduced to all events. Thus the associated messages are not processed synchronously to the event but posted to be processed by the next time task. This delay has been introduced to avoid freezing the system in case of loops. However, it introduces also a pitfall in interaction design, when message based variables are used (see section \fullref{msgvar}): message based variables are evaluated at the event time while messages are processed by the next time task, thus the following messages won't produce the expected result:
+\sample{/ITL/scene/myObject watch x ( \\
+\hspace*{1cm} /ITL/scene/A x '\$(/ITL/scene/myObject get x)', \\
+\hspace*{1cm} /ITL/scene/B x '\$(/ITL/scene/A get x)' \\
+);}
+actually, when the \OSC{\$(/ITL/scene/A get x)} variable is evaluated, the preceding message that sets the x attribute of A has not been aready processed.
+One workaround consists in splitting the interaction in several parts, making sure that the messages are processed e.g.
+\sample{/ITL/scene/myObject watch x ( /ITL/scene/A x '\$(/ITL/scene/myObject get x)'); \\
+/ITL/scene/A watch x ( /ITL/scene/B x '\$(/ITL/scene/A get x)' );
+}
+
+
 
 
 %===============================
