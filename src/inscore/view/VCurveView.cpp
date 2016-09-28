@@ -23,11 +23,13 @@
 
 */
 
+#include <QPen>
+
+#include "IAppl.h"
 #include "ICurve.h"
-#include "TComposition.h"
 #include "VCurveView.h"
 
-#include <QPen>
+static const float kCurvePosChangeVers = 1.20f;
 
 // QGraphicsPathItem derived class using the exact bounding-rect of the path.
 class QGraphicsCurveItem: public QGraphicsPathItem
@@ -42,39 +44,34 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VCurveView::VCurveView(QGraphicsScene * scene, const ICurve* h) 
-	: VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(h))
+	: VMappedShapeView( scene , new MouseEventAble<QGraphicsCurveItem>(h))
     {}
 
 //----------------------------------------------------------------------
 void VCurveView::updateView( ICurve * curve )
 {
     curve->cleanupSync();
-    QPainterPath myPath;
+    QPainterPath path;
 	for ( unsigned int i = 0 ; i < curve->getPoints().size() ; i++ )
 	{
 		QPoint startPoint	( relative2SceneWidth(curve->getPoints()[i].fPointA.first) , relative2SceneHeight(curve->getPoints()[i].fPointA.second) );
 		QPoint c1			( relative2SceneWidth(curve->getPoints()[i].fPointB.first) , relative2SceneHeight(curve->getPoints()[i].fPointB.second) );
 		QPoint c2			( relative2SceneWidth(curve->getPoints()[i].fPointC.first) , relative2SceneHeight(curve->getPoints()[i].fPointC.second) );
 		QPoint endPoint		( relative2SceneWidth(curve->getPoints()[i].fPointD.first) , relative2SceneHeight(curve->getPoints()[i].fPointD.second) );
-		myPath.moveTo(startPoint);
-		myPath.cubicTo(c1, c2, endPoint);
+		path.moveTo(startPoint);
+		path.cubicTo(c1, c2, endPoint);
 	}
-	if ( myPath != item()->path() )
+	if ( path != item()->path() )
 	{
-		item()->setPath( myPath );
+		item()->setPath( path );
 		itemChanged();
 	}
+
 	VShapeView::updateView( curve );
-}
-
-
-//----------------------------------------------------------------------
-void VCurveView::updateObjectSize(IObject* o)
-{
-    ICurve * p = dynamic_cast<ICurve*>(o);
-    if(p)
-        updateView(p);
-    VGraphicsItemView::updateObjectSize(o);
+	if (IAppl::compatibilityVersion() >= kCurvePosChangeVers) {
+		QRectF r = path.boundingRect();
+		item()->moveBy (-r.x(), -r.y());
+	}
 }
 
 
