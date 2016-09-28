@@ -18,8 +18,16 @@ __END__
 /ITL compatibility 1.17;
 /ITL/scene/polygon set polygon -1 0 0 0 -0.5 0.5;
 /ITL/scene/polygon set polygon -1 0 0 0 0 1 -1 1;
+/ITL/scene/polygon set polygon -1 0 -0.5 -0.1 0 0 0.5 0.1 0 1 -0.4 1 -0.7 0.7;
+/ITL/scene/polygon set polygon 	0 0.2 
+								0.2 -0.1 
+								-0.4 0.3
+								0.5 -0.4
+								-1 0.7
+								0.1 -0.2
+								;
+/ITL/scene/polygon brushStyle none;
+/ITL/scene/polygon penWidth 1;
 
 /ITL/log show 1;
-/ITL/log write width $(/ITL/scene/polygon get width);
-/ITL/log write height $(/ITL/scene/polygon get height);
-/ITL/log write get $(/ITL/scene/polygon get );
+/ITL/log level 2;
