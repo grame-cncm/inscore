@@ -58,6 +58,7 @@ class inscore_export VQtUpdater : public ViewUpdater
 		virtual void updateTo (IMenu*) {}
 		void updateTo (IScene*);
 
+		virtual void updateTo (IArc * curve);
 		virtual void updateTo (ICurve * curve);
 		virtual void updateTo (IEllipse * ellipse);
 		virtual void updateTo (IGestureFollower* graph);

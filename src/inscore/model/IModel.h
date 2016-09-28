@@ -29,6 +29,7 @@
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
+#include "IArc.h"
 #include "IColor.h"
 #include "ICurve.h"
 #include "IEllipse.h"

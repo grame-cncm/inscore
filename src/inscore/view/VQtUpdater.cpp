@@ -29,6 +29,7 @@
 #include "IModel.h"
 
 #include "VApplView.h"
+#include "VArcView.h"
 #include "VCurveView.h"
 #include "VEllipseView.h"
 #include "VGraphView.h"
@@ -56,6 +57,7 @@ namespace inscore
 void VQtUpdater::updateTo(IAppl * appl)			{ ((VApplView*)appl->getView())->updateView(appl); }
 void VQtUpdater::updateTo(IScene * scene)		{ ((VSceneView*)scene->getView())->updateView(scene); }
 
+void VQtUpdater::updateTo(IArc * arc)				{ update<IArc,		VArcView>		(arc); }
 void VQtUpdater::updateTo(IImage * img)				{ update<IImage,	VImageView>		(img); }
 void VQtUpdater::updateTo(IRect * rect)				{ update<IRect,		VRectView>		(rect); }
 void VQtUpdater::updateTo(IGrid * grid)				{ update<IGrid,		VGridView>		(grid); }

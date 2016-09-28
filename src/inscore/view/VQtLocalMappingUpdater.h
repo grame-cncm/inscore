@@ -49,25 +49,26 @@ class inscore_export VQtLocalMappingUpdater : public LocalMapUpdater
 	public :
 		static libmapping::SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }
 
+		void updateTo (IArc* o);
+		void updateTo (ICurve* o);
+		void updateTo (IEllipse* o);
 		void updateTo (IGraphicSignal* graph);
 		void updateTo (IGuidoCode* guidoCode);
 		void updateTo (IGuidoPianoRoll* guidoCode);
 		void updateTo (IGuidoPianoRollStream* guidoCode);
+		void updateTo (IHtml* text);
 		void updateTo (IImage* img);
-		void updateTo (IText* text);
+		void updateTo (ILine* o);
+		void updateTo (IPolygon* o);
+		void updateTo (IRect* o);
 		void updateTo (ISVG* svg);
 		void updateTo (ISVGFile* svg);
-		void updateTo (IHtml* text);
-		void updateTo (IRect* o);
+		void updateTo (IText* text);
+		void updateTo (IUrlIntermediateObject* o);
+		void updateTo (IVideo* o);
         void updateTo (IGrid* o);
         void updateTo (ILayer* o);
-		void updateTo (IEllipse* o);
-		void updateTo (IVideo* o);
-		void updateTo (IPolygon* o);
-		void updateTo (ICurve* o);
-		void updateTo (ILine* o);
-		void updateTo (IUrlIntermediateObject* o);
-				
+	
 	protected :
 				 VQtLocalMappingUpdater() {}
 		virtual ~VQtLocalMappingUpdater() {}
