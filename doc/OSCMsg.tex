@@ -981,6 +981,7 @@ setMsg : 'set' (
 	('ellipse' width height) |
 	('polygon' ( (x y) +)) |
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
+	('arc' width height startAngle endAngle) |
 	('line' ('xy' x y | 'wa' width angle)) |
 )
 \end{rail}
@@ -990,6 +991,7 @@ setMsg : 'set' (
 \index{Set type!ellipse}
 \index{Set type!polygon}
 \index{Set type!curve}
+\index{Set type!arc}
 \index{Set type!line}
 
 \begin{itemize}
@@ -999,6 +1001,7 @@ setMsg : 'set' (
 \item \OSC{ellipse}: an ellipse specified by a width and height.
 \item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. The coordinates are expressed in the \OSC{scene} coordinate space, but only the relative position of the points is taken into account (\emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \}).
 \item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled like in a \OSC{polygon}.
+\item \OSC{arc}: an arc defined by its enclosing rectangle and the start and end angles. Angles are in degrees and express counter-clockwise directions.
 \item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
 \end{itemize}
 
@@ -1545,6 +1548,36 @@ radiusMsg :		'radius' float32 float32
 \begin{itemize}
 \item \OSC{radius}: followed by 2 values that specify the radius on the x and y axis (default is 0 0). The values express a percentage of the object dimensions, thus the value's range is [0, 100].
 \end{itemize} 
+
+
+%-------------------------------
+%:  Arcs
+\sublevel{Arcs}
+\label{arcobjects}
+
+Although an arc is specified by it's \OSC{set} message, it supports additional messages to control the start and end angles individually. 
+An additional message affects the drawing of the arc.
+\begin{rail}
+arcMsg :	  'start' 	float32 
+			| 'end' 	float32 
+			| 'dstart'  float32 
+			| 'dend' 	float32 
+			| 'close'	int32
+\end{rail}
+\index{Specific messages! arc! start}
+\index{Specific messages! arc! end}
+\index{Specific messages! arc! dstart}
+\index{Specific messages! arc! dend}
+\index{Specific messages! arc! close}
+
+\begin{itemize}
+\item \OSC{start}: 	set the start angle of the arc.
+\item \OSC{end}: 	set the end angle of the arc.
+\item \OSC{dstart}: move the start angle of the arc from the value given as parameter.
+\item \OSC{dend}: 	move the end angle of the arc from the value given as parameter.
+\item \OSC{close}: 	by default, only the curve of an arc is drawn. When the \OSC{close} attribute is set, lines from the arc borders to the center of the circle are also drawn. The \OSC{close} parameter is read as a boolean value.
+\end{itemize} 
+Angles are in degrees and express counter-clockwise directions.
 
 
 %-------------------------------
