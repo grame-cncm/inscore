@@ -4,7 +4,7 @@
 GRAME - Centre national de creation musicale
 http://www.grame.fr
 ====================================================
-Copyright GRAME (c) 2009-2015
+Copyright GRAME (c) 2009-2016
 ----------------------------------------------------
 INScore originates from the Interlude project.
 It has been supported by the ANR 
@@ -21,6 +21,7 @@ Version 1.20
 - parser strategy changed: now each message is processed one by one to ensure the system
   consistency, especially for message based variables: an object state remains now consistent 
   from one message to another.
+- new 'arc' object.
 - new 'radius' message supported by rectangles.
 - new 'edit' message supported by all objects: opens a small editor.
 - new 'level' message supported by the log window and extended debugging support.
@@ -29,7 +30,7 @@ Version 1.20
 - gmn objects set: output correct error message in case of syntax error
 - save msg output changed: a scene emit the 'new' message, static info nodes (log, stat, javascript...)
 - bug in debug name corrected (was not removed from graphic space)
-- bug in polygon position corrected (was not centered on 0 0) - use /ITL compatibility 
+- bug in polygon and curve position corrected (was not centered on 0 0) - use /ITL compatibility 
   to preserve previous behaviour
 - crash bug corrected: occured when lauching inscore from a secondary screen
 
