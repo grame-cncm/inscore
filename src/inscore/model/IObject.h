@@ -487,19 +487,36 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return the object master or 0 when not found
 		*/    
         virtual SMaster getMaster(SIObject o) const;
+    
+		/*! \brief retrieve the named masters of an object
+			\param o		the object to look for in the synchronization set
+			\param master	the master name
+			\param map		the master map name
+			\return the object master or 0 when not found
+		*/    
+        virtual SMaster getMaster(SIObject o, const std::string& master, const std::string& map) const;
 
 		/*! \brief gives the masters of an object
 			\param o the object to look for in the synchronization set
 			\return a vector of all the masters or an empty vector when not found
 		*/    
         virtual std::vector<SMaster> getMasters(SIObject o) const;
-    
+	
 		/*! \brief gives the slaves of an object
 			\param o the object to look for in the synchronization set
 			\return a vector of all the slaves or an empty vector when not found
 		*/    
         virtual std::vector<SIObject> getSlaves(const SIObject o) const;
-    
+	
+		/*! \brief gives a date location on the object frame
+			\param date a date
+			\param p	on output: the corresponding point
+			\return true when the date corresponds to a point
+			
+			This method is intended to support the frame synchronization mode: 
+		*/
+        virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
+	
         /// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
     

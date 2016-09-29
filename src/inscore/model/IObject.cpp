@@ -382,25 +382,12 @@ void IObject::propagateSignalsState ()
 }
 
 //--------------------------------------------------------------------------
-SMaster IObject::getMaster(SIObject o) const
-{ 
-	return fSync ? fSync->getMaster(o) : 0;
-}
-
-//--------------------------------------------------------------------------
-std::vector<SMaster> IObject::getMasters(SIObject o) const
-{ 
-	return fSync ? fSync->getMasters(o) : std::vector<SMaster>();
-}
-
-//--------------------------------------------------------------------------
-std::vector<SIObject> IObject::getSlaves(const SIObject o) const
-{ 
-	return fSync ? fSync->getSlaves(o) : std::vector<SIObject>();
-}
-
-//--------------------------------------------------------------------------
-void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
+SMaster IObject::getMaster(SIObject o) const					{ return fSync ? fSync->getMaster(o) : 0; }
+SMaster IObject::getMaster(SIObject o, const string& master, const string& map) const
+																{ return fSync ? fSync->getMaster(o, master, map) : 0; }
+vector<SMaster>  IObject::getMasters(SIObject o) const			{ return fSync ? fSync->getMasters(o) : vector<SMaster>(); }
+vector<SIObject> IObject::getSlaves(const SIObject o) const		{ return fSync ? fSync->getSlaves(o) : vector<SIObject>(); }
+void IObject::cleanupSync ()										{ if (fSync) fSync->cleanup(); }
 
 //--------------------------------------------------------------------------
 IObject::subnodes IObject::sort ()
@@ -667,6 +654,45 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 		}
 		else if (!getDeleted()) outv.push_back(this);
 	}
+}
+ 
+//--------------------------------------------------------------------------
+// frame sync mode support
+// gives the location corresponding to a date
+// this location is expressed as a ratio on x and y axis starting from top left
+//--------------------------------------------------------------------------
+bool IObject::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const
+{
+	const libmapping::rational dur = getDuration();
+	if ((date < 0.) || (date > dur))	return false;
+
+	float w	= getWidth();
+	float h = getHeight();
+	float objlen	= (w + h) * 2;
+	float datelen	= objlen * float(date) / float(dur);
+	
+	// start from top left corner, clockwise
+	if (datelen <= w) {			// location is on the top segment
+		p.fX = datelen / w;
+		p.fY = 0;
+		return true;			// done
+	}
+	datelen -= w;
+	if (datelen <= h) {			// location is on the right segment
+		p.fX = 1;
+		p.fY = datelen / h;
+		return true;			// done
+	}
+	datelen -= h;
+	if (datelen <= w) {			// location is on the bottom segment
+		p.fX = 1- (datelen / w);
+		p.fY = 1;
+		return true;			// done
+	}
+	datelen -= w;				// location is on the left segment
+	p.fX = 0;
+	p.fY = 1 - (datelen / h);
+	return true;
 }
 
 //--------------------------------------------------------------------------
@@ -1362,10 +1388,6 @@ bool IObject::checkUserEvent(EventsAble::eventype t) const
 	while (*++ptr) {
 		 if ( !isalpha(int(*ptr)) || !isupper(int(*ptr)) && ((*ptr < '0') || (*ptr > '9')) )
 			return false;
-//		bool accept =	( (isalpha(int(*ptr)) && isupper(int(*ptr))) ) ||
-//						( (*ptr >= '0') && (*ptr <= '9') );
-//		if (accept) ptr++;
-//		else return false;
 	}
 	return true;
 }
