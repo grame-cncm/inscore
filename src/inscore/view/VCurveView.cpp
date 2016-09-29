@@ -54,10 +54,10 @@ void VCurveView::updateView( ICurve * curve )
     QPainterPath path;
 	for ( unsigned int i = 0 ; i < curve->getPoints().size() ; i++ )
 	{
-		QPoint startPoint	( relative2SceneWidth(curve->getPoints()[i].fPointA.first) , relative2SceneHeight(curve->getPoints()[i].fPointA.second) );
-		QPoint c1			( relative2SceneWidth(curve->getPoints()[i].fPointB.first) , relative2SceneHeight(curve->getPoints()[i].fPointB.second) );
-		QPoint c2			( relative2SceneWidth(curve->getPoints()[i].fPointC.first) , relative2SceneHeight(curve->getPoints()[i].fPointC.second) );
-		QPoint endPoint		( relative2SceneWidth(curve->getPoints()[i].fPointD.first) , relative2SceneHeight(curve->getPoints()[i].fPointD.second) );
+		QPointF startPoint	( relative2SceneWidth(curve->getPoints()[i].fPointA.first) , relative2SceneHeight(curve->getPoints()[i].fPointA.second) );
+		QPointF c1			( relative2SceneWidth(curve->getPoints()[i].fPointB.first) , relative2SceneHeight(curve->getPoints()[i].fPointB.second) );
+		QPointF c2			( relative2SceneWidth(curve->getPoints()[i].fPointC.first) , relative2SceneHeight(curve->getPoints()[i].fPointC.second) );
+		QPointF endPoint	( relative2SceneWidth(curve->getPoints()[i].fPointD.first) , relative2SceneHeight(curve->getPoints()[i].fPointD.second) );
 		path.moveTo(startPoint);
 		path.cubicTo(c1, c2, endPoint);
 	}
