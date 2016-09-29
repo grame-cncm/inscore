@@ -57,33 +57,19 @@ SMaster ISceneSync::getMaster(SIObject o) const
 {
     if(fSync.hasMaster(o))
         return fSync.getMasters(o).front();
-    else
-        return 0;
+	return 0;
 }
+//--------------------------------------------------------------------------
+SMaster ISceneSync::getMaster(SIObject o, const std::string& master, const std::string& map) const
+																	{ return fSync.getMaster(o, master, map); }
 
 //--------------------------------------------------------------------------
-std::vector<SMaster> ISceneSync::getMasters(SIObject o) const
-{
-    return fSync.getMasters(o);
-}
+vector<SMaster>		ISceneSync::getMasters(SIObject o) const		{ return fSync.getMasters(o); }
+vector<SIObject>	ISceneSync::getSlaves(const SIObject o) const	{ return fSync.getSlaves(o); }
 
 //--------------------------------------------------------------------------
-std::vector<SIObject> ISceneSync::getSlaves(const SIObject o) const
-{
-    return fSync.getSlaves(o);
-}
-
-//--------------------------------------------------------------------------
-IObject::subnodes ISceneSync::sort (IObject::subnodes& nodes)
-{
-    return fSync.topologicalSort (nodes);
-}
-
-//--------------------------------------------------------------------------
-IObject::subnodes ISceneSync::invertedSort (IObject::subnodes& nodes)
-{
-    return fSync.invertedTopologicalSort (nodes);
-}
+IObject::subnodes ISceneSync::sort (IObject::subnodes& nodes)			{ return fSync.topologicalSort (nodes); }
+IObject::subnodes ISceneSync::invertedSort (IObject::subnodes& nodes)	{ return fSync.invertedTopologicalSort (nodes); }
 
 //--------------------------------------------------------------------------
 static SIMessage buildSyncMsg (const string& address, SIObject o, const SMaster master)
@@ -116,8 +102,8 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 		subnodes list;
 		if (fParent->find(name, list)) {
 			for (subnodes::const_iterator i = list.begin(); i != list.end(); i++) {
-                std::vector<SMaster> masters = getMasters(*i);
-                for(std::vector<SMaster>::iterator j = masters.begin(); j != masters.end(); j++)
+                vector<SMaster> masters = getMasters(*i);
+                for(vector<SMaster>::iterator j = masters.begin(); j != masters.end(); j++)
                 {
                     SIMessage msg = buildSyncMsg (address, *i, *j);
                     outMsgs->list().push_back (msg);
@@ -126,7 +112,7 @@ SIMessageList ISceneSync::getMsgs (const IMessage* msg) const
 		}
 	}
 	else if (msg->size() == 0) {
-        std::map<SIObject, std::vector<SMaster> > s2m = fSync.getSlaves2Masters();
+        map<SIObject, vector<SMaster> > s2m = fSync.getSlaves2Masters();
         ISync::const_slave_iterator it = s2m.begin();
         while(it != s2m.end())
         {
@@ -167,99 +153,158 @@ bool ISceneSync::name2mapName (const string& str, string& name, string& map) con
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::string& master, const std::string& masterMapName)
+// removes the synchronization between objects
+// when master is empty, removes all synchronizations for slave
+// otherwise removes the slave - master sync only
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& master, const string& masterMapName)
 {
 	subnodes so;
-	if (!fParent->find(slave, so)) return MsgHandler::kBadParameters;		// no target objects to be slave
-	subnodes mso;
-    if (master.size() && fParent->find(master, mso))
-    {
+	if (!fParent->find(slave, so) )
+		return MsgHandler::kBadParameters;		// no target objects for slave
+
+	if (master.empty()) {						// this is the delete form #3 i.e. identifier with no other param
         for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
-            std::vector<SMaster> masters = fParent->getMasters((*i));
-			for(unsigned int j = 0; j < masters.size(); j++)
-            {
-                if (masters[j]->getMaster()->name() == master && masters[j]->getMasterMapName() == masterMapName)
-                    delsync((*i),masters[j]);
-            }
-        }
-    }
-    else
-    {
-        for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
-            delsync(*i);
+            delsync(*i);						// delete all the
             (*i)->setState (kMasterModified);
         }
-    }
+		return MsgHandler::kProcessed;
+	}
+
+	for (subnodes::iterator i = so.begin(); i != so.end(); i++) {	// for each slave
+		SMaster m = fParent->getMaster (*i, master, masterMapName);
+		if (m) delsync(*i, m);
+		else MsgHandler::kBadParameters;		// could be silently ignored (?)
+	}
 	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISceneSync::syncMsg (const std::string& slave, const std::string& slaveMap, 
-									const std::string& master, const std::string& masterMap,
-									Master::StretchType stretch, Master::SyncType syncmode, Master::VAlignType valign)
+// creates a synchronization between objects
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& slaveMap, const string& master, const string& masterMap,
+											Master::StretchType stretch, Master::SyncType syncmode, Master::VAlignType valign)
 {
-	subnodes so;
-	if (!fParent->find(slave, so)) return MsgHandler::kBadParameters;		// no target objects to be slave
-	subnodes mos;
-	if (!fParent->find(master, mos)) return MsgHandler::kBadParameters;
+	subnodes sobj, mobj;
+	if (!fParent->find(slave, sobj) || !fParent->find(master, mobj))
+		return MsgHandler::kBadParameters;						// no target objects for slave or for master
 
-	for (unsigned int j = 0; j < mos.size(); j++) {
-		SIObject mo = mos[j];
-		for (subnodes::iterator i = so.begin(); i != so.end(); i++) {
-			SMaster m = Master::create(mo, valign, stretch, syncmode, masterMap , slaveMap );
-			sync(*i, m);
-			(*i)->setState (kMasterModified);
+	for (unsigned int j = 0; j < mobj.size(); j++) {			// for each master
+		SIObject mo = mobj[j];
+		for (subnodes::iterator i = sobj.begin(); i != sobj.end(); i++) {
+			SIObject so = *i;
+			SMaster m = fParent->getMaster (so, master, masterMap);
+			if ( m && (m->getSlaveMapName() == slaveMap) ) {	// there is already a sync between both that are using the same maps
+				delsync(so, m);									// delete this synchronisation
+			}													// and creates a new one
+			sync(so, Master::create(mo, valign, stretch, syncmode, masterMap , slaveMap ));
+			so->setState (kMasterModified);
 		}
 	}
 	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)	
+// looks for optional parameters in a string
+// one of align, stretch or syncType may be modified on output with the corresponding option
+// returns true when the string is an option, false otherwise
+//--------------------------------------------------------------------------
+bool ISceneSync::scanOption (const string& option, Master::VAlignType& align, Master::StretchType& stretch, Master::SyncType& syncType) const
+{
+	Master::VAlignType va = Master::string2syncalign(option);
+	if (va != Master::kUnknown) {
+		align = va;
+		return true;
+	}
+
+	Master::StretchType vs = Master::string2stretchmode(option);
+	if (vs != Master::kStretchUnknown) {
+		stretch = vs;
+		return true;
+	}
+
+	Master::SyncType vt = Master::string2synctype(option);
+	if (vt != Master::kTypeUnknown)	{
+		syncType = vt;
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+// look for the slave name in a message
+// due to historical reasons: the slave name could be stored in the message string
+// or as first parameter
+// returns the index of the next parameter to scan or -1 in case of error
+//--------------------------------------------------------------------------
+int ISceneSync::scanSlave (const IMessage* msg, string& name, string& mapName) const
+{
+	// when the message string is not empty, assumes it's the slave name
+	if (msg->message().size()) {
+		name2mapName (msg->message(), name, mapName);
+		return 0;
+	}
+
+	// otherwise looks for the slave in the first parameter
+	if (msg->size()) {
+		string slave;
+		if (msg->param(0, slave)) {
+			name2mapName (slave, name, mapName);
+			return 1;
+		}
+	}
+	return -1;
+}
+
+//--------------------------------------------------------------------------
+// the main entry point for messages adressed to the sync node
+// the global form is the following:
+//   1) identifier identifier [opt. syncmode]
+//   2) identifier identifier del
+//   3) identifier
+// where identifier is an object name [opt. : mapname]
+// 1) creates a slave master synchronization with the optional synchronisation modes
+// 2) and 3) deletes a sync relation (2) or all sync relations (3) for an object
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 {
 	int n = msg->size();
 	string slave, slaveMapName;
-	int nextindex = 0;
-	if (msg->message().size()) {
-		name2mapName (msg->message(), slave, slaveMapName);
-		if (!n) return syncMsg (slave);
-	}
-	else if (n) {
-		name2mapName (msg->param(0)->value<string>(""), slave, slaveMapName);
-		if (n > 1) nextindex = 1;
-		else return syncMsg (slave);
-	}
-	else return MsgHandler::kBadParameters;
+
+	int index = scanSlave (msg, slave, slaveMapName);
+	if (index < 0) return MsgHandler::kBadParameters;
 	
+	// we've already reached the end of the parameters
+	// this is the delete form #3
+	if (index == n) return syncMsg (slave);
+
+	string str;
+	// at this point, the master name is expected
+	if (!msg->param(index++, str))	return MsgHandler::kBadParameters;
 	string master, masterMapName;
-	name2mapName (msg->param(nextindex)->value<string>(""), master, masterMapName);
+	name2mapName (str, master, masterMapName);
+
+	// sets the default values for stretch, alignment and sync type
 	Master::VAlignType align = Master::kDefaultSyncAlign;
 	Master::StretchType stretch = Master::kDefaultStretch;
 	Master::SyncType syncType = Master::kDefaultSync;
-	
-    string firstParam;
-    if((nextindex+1) < n)
-        firstParam = msg->param(nextindex+1)->value<string>("");
-    
-    if(firstParam == "del")
-        return syncMsg(slave, master, masterMapName);
-    else
-    {
-        for (int i=nextindex+1; i<n; i++) {
-            string mode = msg->param(i)->value<string>("");
-            Master::VAlignType val = Master::string2syncalign(mode);
-            if (val != Master::kUnknown) align = val;
-            else {
-                Master::StretchType sval = Master::string2stretchmode(mode);
-                if (sval != Master::kStretchUnknown) stretch = sval;
-                else {
-                    Master::SyncType mval = Master::string2synctype(mode);
-                    if (mval != Master::kTypeUnknown) syncType = mval;
-                }
-            }
-        }
+	if (index == n) 	// we've reached the end of the parameters: creates the sync using default values
         return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
-    }
+
+	if (msg->param(index++, str)) {	// look for the next parameter
+		if(str == kdel_SetMethod) 	// and check for the delete form #2
+			return syncMsg(slave, master, masterMapName);
+	}
+	else return MsgHandler::kBadParameters;		// only strings are expected as parameters
+
+	do {
+		if (!scanOption (str, align, stretch, syncType))	return MsgHandler::kBadParameters;
+		if (index < n) {
+			if (!msg->param(index++, str))					return MsgHandler::kBadParameters;
+		} else break;
+	} while (true);
+	// eventually sets the synchonization with the optional parameters
+    return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
 }
 
 //--------------------------------------------------------------------------
@@ -267,12 +312,12 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 SIMessageList ISceneSync::getAllParams() const
 {
 	SIMessageList outMsgs = 	IObject::getAllParams();
-    std::map<SIObject, std::vector<SMaster> > s2m = fSync.getSlaves2Masters();
+    map<SIObject, vector<SMaster> > s2m = fSync.getSlaves2Masters();
 	ISync::const_slave_iterator i = s2m.begin();
 	// and distribute the message to synced nodes
 	while (i != s2m.end()) {
 		const SIObject& elt = i->first;
-		SIMessage msg = IMessage::create(getOSCAddress(), "get");
+		SIMessage msg = IMessage::create(getOSCAddress(), kget_SetMethod);
 		msg->add (elt->name());
 		outMsgs->list().push_back (getMsgs(msg)->list());
 		i++;

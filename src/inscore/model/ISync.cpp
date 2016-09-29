@@ -54,7 +54,19 @@ void ISync::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-std::vector<SMaster> ISync::getMasters(SIObject slave) const
+SMaster ISync::getMaster(SIObject slave, const std::string& master, const std::string& map) const
+{
+	vector<SMaster> masters = getMasters(slave);		// get all the masters for slave
+	for(size_t i = 0; i < masters.size(); i++) {		// and for each master
+		Master* m = masters[i];							// check that it corresponds to the target
+		if ( (m->getMaster()->name() == master) && (m->getMasterMapName() == map))
+			return m;									// that's it
+	}
+	return 0;		// not found
+}
+
+//--------------------------------------------------------------------------
+vector<SMaster> ISync::getMasters(SIObject slave) const
 {
     const_slave_iterator it = fSlaves2Masters.find(slave);
     if(it != fSlaves2Masters.end())
@@ -309,6 +321,7 @@ void ISync::ptask ()
 static const char* kSyncOverStr		= "syncOver";
 static const char* kSyncTopStr		= "syncTop";
 static const char* kSyncBottomStr	= "syncBottom";
+static const char* kSyncFrameStr	= "syncFrame";
 static const char* kSyncStretchHStr	= "h";
 static const char* kSyncStretchHHStr= "H";
 static const char* kSyncStretchVStr	= "v";
@@ -325,6 +338,7 @@ std::string	Master::syncalign2string(int align)
 		case kSyncOver:		return kSyncOverStr;
 		case kSyncTop:		return kSyncTopStr;
 		case kSyncBottom:	return kSyncBottomStr;
+		case kSyncFrame:	return kSyncFrameStr;
 		default:			return "unknown";
 	}
 }
@@ -365,6 +379,7 @@ void Master::initMap()
 		fAlignStr[kSyncOverStr]			= kSyncOver;
 		fAlignStr[kSyncTopStr]			= kSyncTop;
 		fAlignStr[kSyncBottomStr]		= kSyncBottom;
+		fAlignStr[kSyncFrameStr]		= kSyncFrame;
 
 		fStretchStr[kSyncStretchHStr]	= kStretchH;
 		fStretchStr[kSyncStretchHHStr]	= kStretchHH;

@@ -49,8 +49,45 @@ class ISceneSync : public IVNode
 {	
 	ISync	fSync;
 
+	/*! \brief look for the slave name in a message
+		\param msg the input message
+		\param name on output: the slave object name
+		\param mapName on output: the slave object map name
+		\return the index of the next parameter to scan or -1 in case of error
+	*/
+	int  scanSlave (const IMessage* msg, std::string& name, std::string& mapName) const;
+
+	/*! \brief looks for optional parameters in a string
+		\param option	the input string
+		\param align	on output: the alignment type (if any)
+		\param stretch	on output: the stretch option (if any)
+		\param syncType	on output: the sync type (if any)
+		\return true when the string is an option, false otherwise
+	*/
+	bool scanOption (const std::string& option, Master::VAlignType& align, Master::StretchType& stretch, Master::SyncType& syncType) const;
+
+	/*! \brief delete synchronizations
+		\param slave	the slave object name
+		\param master	the master object name (optionnal)
+		\param masterMapName	the master map name (optionnal)
+		\return the message status
+		
+		When master is empty (by default), removes all synchronizations for slave.
+		Otherwise, removes only the specified synchronization.
+	*/
 	MsgHandler::msgStatus syncMsg (const std::string& slave, const std::string& master = "", const std::string& masterMapName = "");
-	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap, 
+
+	/*! \brief create a synchronization between objects
+		\param slave	the slave object name
+		\param slaveMap	the slave  map name
+		\param master	the master object name
+		\param masterMap	the master map name (optionnal)
+		\param stretch	stretching options
+		\param sync		synchronization mode (absolute or relative)
+		\param valign	the type of alignment
+		\return the message status
+	*/
+	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap,
 									const std::string& master, const std::string& masterMap,
 									Master::StretchType stretch, Master::SyncType sync, Master::VAlignType valign);
 	
@@ -68,6 +105,14 @@ class ISceneSync : public IVNode
 			\return the master when found
 		*/
 		virtual SMaster getMaster(SIObject o) const;
+    
+		/*! \brief retrieve the named masters of an object
+			\param o		the object to look for in the synchronization set
+			\param master	the master name
+			\param map		the master map name
+			\return the object master or 0 when not found
+		*/    
+        virtual SMaster getMaster(SIObject o, const std::string& master, const std::string& map) const;
 
         /*! \brief gives the masters of an object
 			\param o the object to look for in the synchronization set
