@@ -206,6 +206,9 @@ class VGraphicsItemView : public VObjectView
         /// \brief updates the fTilerItem when it has no stretch
         void updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master);
 
+        /// \brief updates the fTilerItem when synced in frame mode
+        void updateItemSyncFrame(QStretchTilerItem* item, IObject* o, SMaster master);
+
         /// \brief updates the geometry (position, centering, scale) of the item
         void updateGeometry(QGraphicsItem* item, IObject* o, float x, float y);
 
