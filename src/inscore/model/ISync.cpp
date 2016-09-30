@@ -25,10 +25,12 @@
 
 #include <algorithm>
 #include <iostream>
+
 #include "ISync.h"
 #include "ISceneSync.h"
 #include "ITLError.h"
 #include "VGraphicsItemView.h"
+#include "OSCRegexp.h"
 
 using namespace std;
 
@@ -54,15 +56,19 @@ void ISync::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-SMaster ISync::getMaster(SIObject slave, const std::string& master, const std::string& map) const
+vector<SMaster> ISync::getMasters(SIObject slave, const std::string& master, const std::string& map) const
 {
+	vector<SMaster> outlist;
 	vector<SMaster> masters = getMasters(slave);		// get all the masters for slave
 	for(size_t i = 0; i < masters.size(); i++) {		// and for each master
 		Master* m = masters[i];							// check that it corresponds to the target
-		if ( (m->getMaster()->name() == master) && (m->getMasterMapName() == map))
-			return m;									// that's it
+		OSCRegexp r (master.c_str());
+		if ((m->getMasterMapName() == map) && r.match(m->getMaster()->name().c_str()))
+			outlist.push_back(m);
+//		if ( (m->getMaster()->name() == master) && (m->getMasterMapName() == map))
+//			return m;									// that's it
 	}
-	return 0;		// not found
+	return outlist;		// not found
 }
 
 //--------------------------------------------------------------------------
@@ -372,6 +378,14 @@ std::map<std::string, Master::StretchType>	Master::fStretchStr;
 std::map<std::string, Master::SyncType>		Master::fTypeStr;
 
 //std::map<std::string, int> Master::fInterpolationStr;
+//--------------------------------------------------------------------------
+void Master::setSyncOptions(VAlignType align, StretchType stretch, SyncType st)
+{
+	fAlignment	= align;
+	fStretch	= stretch;
+	fSyncType	= st;
+}
+
 //--------------------------------------------------------------------------
 void Master::initMap()
 {

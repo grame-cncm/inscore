@@ -467,7 +467,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void setHandlers ();
 		virtual void setdyMsgHandler (); 
 		virtual void setdyMsgHandler (Master* m);
-    
+		virtual void setSyncDY (float dy);
+	
         virtual IObject* getParent() const {return fParent;}
 
         /*! \brief cleanup the relations set
@@ -490,11 +491,11 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
     
 		/*! \brief retrieve the named masters of an object
 			\param o		the object to look for in the synchronization set
-			\param master	the master name
+			\param master	the master name (supports regular expressions)
 			\param map		the master map name
-			\return the object master or 0 when not found
+			\return a list of master, empty when not found
 		*/    
-        virtual SMaster getMaster(SIObject o, const std::string& master, const std::string& map) const;
+        virtual std::vector<SMaster> getMasters(SIObject o, const std::string& master, const std::string& map) const;
 
 		/*! \brief gives the masters of an object
 			\param o the object to look for in the synchronization set

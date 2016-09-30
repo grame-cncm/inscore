@@ -71,6 +71,8 @@ class Master : public libmapping::smartable
 		StretchType		getStretch() const		{ return fStretch; }
 		SyncType		getMode() const			{ return fSyncType; }
 		float			getDy() const			{ return fDy; }
+		void			setSyncOptions(VAlignType align, StretchType stretch, SyncType st);
+
 		const std::string& getMasterMapName() const	{ return fMasterMapName; }
 		const std::string& getSlaveMapName() const	{ return fSlaveMapName; }
 
@@ -153,12 +155,12 @@ class ISync
 		*/
         std::vector<SMaster> getMasters(SIObject slave) const;
 
-		/*! \brief returns the master corresponding to name and map
+		/*! \brief returns the masters corresponding to name and map
 			\param slave	the slave object
-			\param master	the master name
+			\param master	the master name (supports regular expression)
 			\param map		the master map name
 		*/
-		SMaster getMaster(SIObject slave, const std::string& master, const std::string& map) const;
+		std::vector<SMaster> getMasters(SIObject slave, const std::string& master, const std::string& map) const;
 
 		/*! \brief returns the vector of slaves for a master
 			\param master the master object

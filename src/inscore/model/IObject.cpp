@@ -285,9 +285,19 @@ void IObject::setdyMsgHandler ()
 }
 
 //--------------------------------------------------------------------------
+void IObject::setSyncDY (float dy)
+{
+	vector<SMaster> mlist = getParent()->getMasters(this);
+	for (size_t i = 0; i < mlist.size(); i++) {
+		mlist[i]->setDy(dy);
+	}
+}
+
+//--------------------------------------------------------------------------
 void IObject::setdyMsgHandler (Master* m)
 { 
-	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<Master,void (Master::*)(float)>::create(this, m, &Master::setDy); 
+	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setSyncDY);
+//	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<Master,void (Master::*)(float)>::create(this, m, &Master::setDy); 
 }
 
 //--------------------------------------------------------------------------
@@ -383,8 +393,8 @@ void IObject::propagateSignalsState ()
 
 //--------------------------------------------------------------------------
 SMaster IObject::getMaster(SIObject o) const					{ return fSync ? fSync->getMaster(o) : 0; }
-SMaster IObject::getMaster(SIObject o, const string& master, const string& map) const
-																{ return fSync ? fSync->getMaster(o, master, map) : 0; }
+vector<SMaster>  IObject::getMasters(SIObject o, const string& master, const string& map) const
+																{ return fSync->getMasters(o, master, map); }
 vector<SMaster>  IObject::getMasters(SIObject o) const			{ return fSync ? fSync->getMasters(o) : vector<SMaster>(); }
 vector<SIObject> IObject::getSlaves(const SIObject o) const		{ return fSync ? fSync->getSlaves(o) : vector<SIObject>(); }
 void IObject::cleanupSync ()										{ if (fSync) fSync->cleanup(); }

@@ -60,8 +60,8 @@ SMaster ISceneSync::getMaster(SIObject o) const
 	return 0;
 }
 //--------------------------------------------------------------------------
-SMaster ISceneSync::getMaster(SIObject o, const std::string& master, const std::string& map) const
-																	{ return fSync.getMaster(o, master, map); }
+vector<SMaster> ISceneSync::getMasters(SIObject o, const std::string& master, const std::string& map) const
+																	{ return fSync.getMasters(o, master, map); }
 
 //--------------------------------------------------------------------------
 vector<SMaster>		ISceneSync::getMasters(SIObject o) const		{ return fSync.getMasters(o); }
@@ -172,9 +172,13 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& ma
 	}
 
 	for (subnodes::iterator i = so.begin(); i != so.end(); i++) {	// for each slave
-		SMaster m = fParent->getMaster (*i, master, masterMapName);
-		if (m) delsync(*i, m);
-		else MsgHandler::kBadParameters;		// could be silently ignored (?)
+		SIObject obj = *i;
+		vector<SMaster> mlist = fParent->getMasters (obj, master, masterMapName);
+		size_t n = mlist.size();
+		if (!n) return MsgHandler::kBadParameters;
+
+		for (size_t i=0; i< n; i++)
+			delsync(obj, mlist[i]);
 	}
 	return MsgHandler::kProcessed;
 }
@@ -183,23 +187,32 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& ma
 // creates a synchronization between objects
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& slaveMap, const string& master, const string& masterMap,
-											Master::StretchType stretch, Master::SyncType syncmode, Master::VAlignType valign)
+											Master::StretchType stretch, Master::SyncType syncmode, Master::VAlignType align)
 {
 	subnodes sobj, mobj;
 	if (!fParent->find(slave, sobj) || !fParent->find(master, mobj))
 		return MsgHandler::kBadParameters;						// no target objects for slave or for master
 
-	for (unsigned int j = 0; j < mobj.size(); j++) {			// for each master
-		SIObject mo = mobj[j];
-		for (subnodes::iterator i = sobj.begin(); i != sobj.end(); i++) {
-			SIObject so = *i;
-			SMaster m = fParent->getMaster (so, master, masterMap);
-			if ( m && (m->getSlaveMapName() == slaveMap) ) {	// there is already a sync between both that are using the same maps
-				delsync(so, m);									// delete this synchronisation
-			}													// and creates a new one
-			sync(so, Master::create(mo, valign, stretch, syncmode, masterMap , slaveMap ));
-			so->setState (kMasterModified);
+	for (subnodes::iterator i = sobj.begin(); i != sobj.end(); i++) {	// for each slave
+		SIObject so = *i;
+		bool exist = false;
+
+																		// look for existing sync
+		vector<SMaster> mlist = fParent->getMasters (so, master, masterMap);
+		size_t n = mlist.size();
+		for (size_t i = 0; i < n; i++) {
+			Master* m = mlist[i];
+			if ( m->getSlaveMapName() == slaveMap )  {			// there is already a sync between both that are using the same maps
+				m->setSyncOptions (align, stretch, syncmode);	// update the sync options
+				exist = true;
+			}
 		}
+		if (!exist) {											// no existing sync
+			for (size_t i = 0; i < mobj.size(); i++) {			// create the sync for each master
+				sync(so, Master::create(mobj[i], align, stretch, syncmode, masterMap , slaveMap ));
+			}
+		}
+		so->setState (kMasterModified);
 	}
 	return MsgHandler::kProcessed;
 }
