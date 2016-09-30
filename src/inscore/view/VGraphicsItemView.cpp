@@ -394,7 +394,7 @@ void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o,
 		double mh = relative2SceneHeight(m->getHeight());
 		
 		double x = p.fX * mw;
-		double y = p.fY * mh;
+		double y = p.fY * mh  + mh*(master->getDy());
 	 
 		item->setRect(QRectF(0,0,width,height));
 		item->setPos(x, y);
