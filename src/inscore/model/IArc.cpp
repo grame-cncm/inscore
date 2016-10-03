@@ -97,14 +97,6 @@ float IArc::getR (float ratio) const
 	double dx = (p.fX * getWidth()) - r1;
 	double dy = (p.fY * getHeight()) - r2;
 	return sqrt((dx*dx) + (dy*dy));
-	
-//	double a = (180 - angle) /180 * M_PI;
-//	double r1 = getWidth() / 2;
-//	double r2 = getHeight() / 2;
-//	if (r1 > r2) swap(r1, r2)
-//	double x = r2*cos(-a);
-//	double y = r1*sin(-a);
-//	return sqrt((x*x) + (y*y));
 }
 
 //--------------------------------------------------------------------------
