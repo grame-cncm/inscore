@@ -58,7 +58,7 @@ void VPolygonView::updateView( IPolygon * polygon)
 	if (IAppl::compatibilityVersion() < kPolygonPosChangeVers)
 		xoffset = yoffset = 0.f;
 	for ( unsigned int i = 0 ; i < polygon->getPoints().size() ; i++ )
-		p << QPoint( relative2SceneX(polygon->getPoints()[i].first+xoffset) , relative2SceneY(polygon->getPoints()[i].second+yoffset) );
+		p << QPoint( relative2SceneX(polygon->getPoints()[i].fX + xoffset) , relative2SceneY(polygon->getPoints()[i].fY + yoffset) );
 	if ( !equals(p, item()->polygon()) )
 	{
 		item()->setPolygon( p );
