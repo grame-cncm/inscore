@@ -1040,7 +1040,7 @@
 \rail@token{float32}[]
 \rail@end
 }
-\rail@i {53}{ arcMsg : 'start' float32 | 'end' float32 | 'dstart' float32 | 'dend' float32 | 'close' int32 }
+\rail@i {53}{ arcMsg : 'start' float32 | 'range' float32 | 'dstart' float32 | 'drange' float32 | 'close' int32 }
 \rail@o {53}{
 \rail@index{arcMsg}
 \rail@begin{5}{arcMsg}
@@ -1048,13 +1048,13 @@
 \rail@term{start}[]
 \rail@token{float32}[]
 \rail@nextbar{1}
-\rail@term{end}[]
+\rail@term{range}[]
 \rail@token{float32}[]
 \rail@nextbar{2}
 \rail@term{dstart}[]
 \rail@token{float32}[]
 \rail@nextbar{3}
-\rail@term{dend}[]
+\rail@term{drange}[]
 \rail@token{float32}[]
 \rail@nextbar{4}
 \rail@term{close}[]

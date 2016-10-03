@@ -1555,27 +1555,27 @@ radiusMsg :		'radius' float32 float32
 \sublevel{Arcs}
 \label{arcobjects}
 
-Although an arc is specified by it's \OSC{set} message, it supports additional messages to control the start and end angles individually. 
-An additional message affects the drawing of the arc.
+Arcs are portion of ellipses.
+Although an arc is specified by it's \OSC{set} message, it supports additional messages to control the start angles and the arc extension individually. An additional \OSC{close} message affects the drawing of the arc.
 \begin{rail}
 arcMsg :	  'start' 	float32 
-			| 'end' 	float32 
+			| 'range' 	float32 
 			| 'dstart'  float32 
-			| 'dend' 	float32 
+			| 'drange' 	float32 
 			| 'close'	int32
 \end{rail}
 \index{Specific messages! arc! start}
-\index{Specific messages! arc! end}
+\index{Specific messages! arc! range}
 \index{Specific messages! arc! dstart}
-\index{Specific messages! arc! dend}
+\index{Specific messages! arc! drange}
 \index{Specific messages! arc! close}
 
 \begin{itemize}
 \item \OSC{start}: 	set the start angle of the arc.
-\item \OSC{end}: 	set the end angle of the arc.
+\item \OSC{range}: 	set the arc extension in degrees counter-clockwise.
 \item \OSC{dstart}: move the start angle of the arc from the value given as parameter.
-\item \OSC{dend}: 	move the end angle of the arc from the value given as parameter.
-\item \OSC{close}: 	by default, only the curve of an arc is drawn. When the \OSC{close} attribute is set, lines from the arc borders to the center of the circle are also drawn. The \OSC{close} parameter is read as a boolean value.
+\item \OSC{drange}: move the arc range from the value given as parameter.
+\item \OSC{close}: 	by default, only the curve of an arc is drawn. When the \OSC{close} attribute is set, lines from the arc borders to the center of the ellipse are also drawn. The \OSC{close} parameter is read as a boolean value.
 \end{itemize} 
 Angles are in degrees and express counter-clockwise directions.
 
