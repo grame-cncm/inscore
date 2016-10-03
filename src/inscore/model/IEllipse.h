@@ -53,6 +53,8 @@ class IEllipse : public IRectShape
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 
+        virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
+
 	protected:
 				 IEllipse( const std::string& name, IObject* parent );
 		virtual ~IEllipse() {}

@@ -33,26 +33,29 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VArcView::VArcView(QGraphicsScene * scene, const IArc* obj)
-	: VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(obj) )
+VArcView::VArcView(QGraphicsScene * scene, const IArc* obj)	: VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(obj) )
 {}
+
+//----------------------------------------------------------------------
+QRectF VArcView::getBoundingRect( IObject * o ) const
+{
+	return QRectF(0, 0, relative2SceneWidth(o->getWidth()), relative2SceneHeight(o->getHeight()));
+}
 
 //----------------------------------------------------------------------
 void VArcView::updateView( IArc * arc )
 {
     arc->cleanupSync();
-    
+	
 	QRectF r( 0,0,  relative2SceneWidth(arc->getWidth()),relative2SceneHeight(arc->getHeight()) );
 	QPainterPath path;
 	if (!arc->closed()) path.arcMoveTo(r, arc->getStartAngle());
 	else path.moveTo(r.center());
-	path.arcTo(r, arc->getStartAngle(), arc->getEndAngle());
+	path.arcTo(r, arc->getStartAngle(), arc->getAngularRange());
 	if (arc->closed()) path.closeSubpath();
 	item()->setPath (path);
-	QRectF br = path.boundingRect();
 
 	VShapeView::updateView( arc );
-	item()->moveBy (-br.x(), -br.y());
 }
 
 } // end namespoace

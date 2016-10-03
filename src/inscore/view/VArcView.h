@@ -40,7 +40,8 @@ class EventsAble;
 @{
 */
 
-//--------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------;
 /**
 *	\brief a graphic view of a IArc.
 */
@@ -54,7 +55,8 @@ class VArcView: public VMappedShapeView
 				 VArcView(QGraphicsScene * scene, const IArc* h);
 		virtual ~VArcView() {}
 		
-		virtual void updateView( IArc * ellipse );
+		virtual void updateView( IArc * arc );
+		virtual QRectF getBoundingRect (IObject * o) const;
 		virtual void updateObjectSize( IObject * )		{}
 };
 

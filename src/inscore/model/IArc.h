@@ -46,8 +46,13 @@ typedef class libmapping::SMARTP<IArc>	SIArc;
 */
 class IArc : public IRectShape
 {
-	float	fStartAngle, fEndAngle;
+	float	fStartAngle, fAngularRange;
+	float	fArcLen, fR1, fR2;
 	bool	fCloseArc;
+
+	float   arcLength () const;			// computes an approximation of the arc length
+	float	getR(float angle) const;	// computes the radius at a given angle
+    bool	arc2FramePoint(float ratio, TFloatPoint& p) const;
 
 	public:
 		static const std::string kArcType;
@@ -56,8 +61,10 @@ class IArc : public IRectShape
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 				float	getStartAngle () const			{ return fStartAngle; }
-				float	getEndAngle () const			{ return fEndAngle; }
+				float	getAngularRange () const		{ return fAngularRange; }
 				bool	closed () const					{ return fCloseArc; }
+
+        virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
 
 	protected:
 				 IArc( const std::string& name, IObject* parent );
@@ -69,9 +76,9 @@ class IArc : public IRectShape
 		virtual SIMessageList getSetMsg() const;
 
 		virtual void setStartAngle (float angle)		{ fStartAngle = angle; }
-		virtual void setEndAngle (float angle)			{ fEndAngle = angle; }
-		virtual void dStartAngle (float angle)			{ setStartAngle(fStartAngle + angle); }
-		virtual void dEndAngle (float angle)			{ setEndAngle  (fEndAngle + angle); }
+		virtual void setAngularRange(float angle)		{ fAngularRange = angle; }
+		virtual void dStartAngle (float angle)			{ setStartAngle (fStartAngle + angle); }
+		virtual void dRange (float angle)				{ setAngularRange (fAngularRange + angle); }
 		virtual void setClosed (bool state)				{ fCloseArc = state; }
 };
 
