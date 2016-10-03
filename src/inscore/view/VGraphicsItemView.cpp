@@ -395,7 +395,7 @@ void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o,
 		
 		double x = p.fX * mw;
 		double y = p.fY * mh  + mh*(master->getDy());
-	 
+
 		item->setRect(QRectF(0,0,width,height));
 		item->setPos(x, y);
 		item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
@@ -404,6 +404,9 @@ void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o,
 		double xo = bbrect.width() / 2;
 		double yo = bbrect.height() / 2;
 		item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
+
+//qDebug() << "VGraphicsItemView::updateItemSyncFrame " << o->name().c_str() << mw << mh << bbrect << x << y;
+
 	}
 	else {
 		item->setPos(kUnknownLocation, kUnknownLocation);
@@ -440,7 +443,7 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
     updateTransform (o, item);
-    QRectF bbrect = item->boundingRect();
+    QRectF bbrect = getBoundingRect(o);
     double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
     double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
     item->setTransform(QTransform::fromTranslate(-xo, -yo), true);

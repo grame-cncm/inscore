@@ -129,7 +129,8 @@ class VGraphicsItemView : public VObjectView
 		virtual void drawBoundingBox (IObject* o);
         virtual void drawBoundingBox (IObject* o, QGraphicsItem* item);
 		virtual void updateTransform (IObject * object, QGraphicsItem* item);		// updates the object transform matrix
-		
+		virtual QRectF getBoundingRect (IObject *) const		{ return fItem->boundingRect(); }
+	
 		float getIObjectWidth() const { return scene2RelativeWidth( fItem->boundingRect().width() ); }		// Gives the object's width in interlude scene coordinates.
 		float getIObjectHeight() const { return scene2RelativeHeight( fItem->boundingRect().height() ); }	// Gives the object's height in interlude scene coordinates.
 		
