@@ -45,7 +45,9 @@ namespace inscore
 //----------------------------------------------------------------------
 VCurveView::VCurveView(QGraphicsScene * scene, const ICurve* h) 
 	: VMappedShapeView( scene , new MouseEventAble<QGraphicsCurveItem>(h))
-    {}
+{
+}
+
 
 //----------------------------------------------------------------------
 void VCurveView::updateView( ICurve * curve )
@@ -63,15 +65,14 @@ void VCurveView::updateView( ICurve * curve )
 	}
 	if ( path != item()->path() )
 	{
+		if (IAppl::compatibilityVersion() >= kCurvePosChangeVers) {
+			QRectF r = path.boundingRect();
+			path.translate(-r.x(), -r.y());
+		}
 		item()->setPath( path );
 		itemChanged();
 	}
-
 	VShapeView::updateView( curve );
-	if (IAppl::compatibilityVersion() >= kCurvePosChangeVers) {
-		QRectF r = path.boundingRect();
-		item()->moveBy (-r.x(), -r.y());
-	}
 }
 
 
