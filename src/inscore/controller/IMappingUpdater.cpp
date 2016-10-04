@@ -342,6 +342,7 @@ void IMappingUpdater::updateIObject (IObject* object)
     for(unsigned int i = 0; i<masters.size(); i++)
     {
         const IObject* mobj = masters[i]->getMaster();
+		if (!mobj->getView()) continue;		// sync on an object without view
         if (object->localMapModified() || object->getState() || object->dateModified()
             || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
             mobj->getView()->refreshSyncCache();

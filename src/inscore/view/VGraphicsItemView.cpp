@@ -392,7 +392,6 @@ void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o,
 
 		double mw = relative2SceneWidth(m->getWidth());
 		double mh = relative2SceneHeight(m->getHeight());
-		
 		double x = p.fX * mw;
 		double y = p.fY * mh  + mh*(master->getDy());
 
@@ -404,9 +403,6 @@ void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o,
 		double xo = bbrect.width() / 2;
 		double yo = bbrect.height() / 2;
 		item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
-
-//qDebug() << "VGraphicsItemView::updateItemSyncFrame " << o->name().c_str() << mw << mh << bbrect << x << y;
-
 	}
 	else {
 		item->setPos(kUnknownLocation, kUnknownLocation);
@@ -588,7 +584,7 @@ void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
             found = true;
     }
     QStretchTilerItem * fTilerItem;
-    if(!found)
+    if(!found && master->getMaster()->getView())
     {
         fTilerItem = buildTiler(slave);
         VGraphicsItemView * masterView = dynamic_cast<VGraphicsItemView*>(master->getMaster()->getView());
