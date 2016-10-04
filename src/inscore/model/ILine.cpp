@@ -87,6 +87,23 @@ SIMessageList ILine::getSetMsg() const
 }
 
 //--------------------------------------------------------------------------
+bool ILine::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const
+{
+	const libmapping::rational dur = getDuration();
+	if ((date < 0.) || (date > dur))	return false;
+	
+	TFloatPoint o(0,0);
+	float len = fPoint.distance (o);
+	float datelen = len * float(date) / float(dur);  // convert the date into a length
+	float ratio = datelen / len;					 // this is the relative position on the line
+	p.fX = fPoint.x() * ratio / getWidth();
+	p.fY = fPoint.y() * ratio / getHeight();
+	if (fPoint.x() < 0) p.fX += 1;
+	if (fPoint.y() < 0) p.fY += 1;
+	return true;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus ILine::set (const IMessage* msg)	
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
