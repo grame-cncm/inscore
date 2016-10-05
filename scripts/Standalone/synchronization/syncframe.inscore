@@ -27,6 +27,7 @@ color = 20 0 150;
 /ITL/scene/rect1 color 200 200 200 50;
 /ITL/scene/rect2 set rect 1.5 0.3;
 /ITL/scene/rect2 color 200 200 200 50;
+/ITL/scene/rect2 radius 10 50 ;
 /ITL/scene/c set ellipse 0.05 0.05;
 /ITL/scene/c red 240;
 
