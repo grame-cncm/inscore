@@ -27,6 +27,11 @@ g = 220;
 /ITL/scene/arc set arc $w $w -40 260;
 /ITL/scene/arc color $g $g $g;
 
+/ITL/scene/c set ellipse 0.05 0.05;
+/ITL/scene/c red 240;
+/ITL/scene/c watch timeEnter 1 2 (/ITL/scene/c date 0);
+/ITL/scene/c tempo 60;
+
 /ITL/scene/control1 set txt "Close";
 /ITL/scene/control2 set txt "Fill";
 /ITL/scene/control3 set txt "Play";
@@ -62,9 +67,11 @@ g = 220;
 /ITL/scene/control3 watch mouseDown (
 	/ITL/scene/$self push,
 	/ITL/scene/arc tempo 50,
+	/ITL/scene/sync c arc syncFrame,
 	/ITL/scene/$self set txt "Stop",
 	/ITL/scene/$self watch mouseDown (
 		/ITL/scene/arc tempo 0,
+		/ITL/scene/sync c,
 		/ITL/scene/$self set txt "Play",
 		/ITL/scene/$self pop
 	)
