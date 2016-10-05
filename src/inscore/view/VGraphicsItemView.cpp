@@ -386,7 +386,10 @@ void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o,
     item->setStretch(false);
 	TFloatPoint p;
 	IObject* m = master->getMaster();
-	if (m->date2FramePoint(o->getDate(), p)) {
+	rational d = o->getDate();
+	if (master->getMode() == Master::kSyncRelative)
+		d -= master->getMaster()->getDate();
+	if (m->date2FramePoint(d, p)) {
 		double width = relative2SceneWidth(o->getWidth());
 		double height = relative2SceneHeight(o->getHeight());
 
