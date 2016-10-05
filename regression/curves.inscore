@@ -20,6 +20,10 @@ __END__
 /ITL compatibility 1.17;
 /ITL get compatibility;
 
+/ITL/scene/sync p curve* syncFrame;
+/ITL/scene/p watch timeEnter 1 2 (/ITL/scene/p date 0);
+/ITL/scene/p tempo 60;
+
 /ITL/scene/*/debug map 1;
 
 /ITL/log show 1;
