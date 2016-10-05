@@ -1679,16 +1679,18 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {92}{ syncPos : 'syncOver' | 'syncTop' | 'syncBottom' }
+\rail@i {92}{ syncPos : 'syncOver' | 'syncTop' | 'syncBottom' | 'syncFrame' }
 \rail@o {92}{
 \rail@index{syncPos}
-\rail@begin{3}{syncPos}
+\rail@begin{4}{syncPos}
 \rail@bar
 \rail@term{syncOver}[]
 \rail@nextbar{1}
 \rail@term{syncTop}[]
 \rail@nextbar{2}
 \rail@term{syncBottom}[]
+\rail@nextbar{3}
+\rail@term{syncFrame}[]
 \rail@endbar
 \rail@end
 }

@@ -2507,21 +2507,23 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 \sample{/ITL/scene/sync mySlave myMaster hv ;}
 
 
-\subsublevel{Controlling the slave \OSC{y} position}
+\subsublevel{Controlling the slave position}
 
 \begin{rail}
-syncPos : 'syncOver' | 'syncTop' | 'syncBottom'
+syncPos : 'syncOver' | 'syncTop' | 'syncBottom' | 'syncFrame'
 \end{rail}
 \index{Synchronization!syncPos}
 \index{Synchronization!syncPos!syncOver}
 \index{Synchronization!syncPos!syncTop}
 \index{Synchronization!syncPos!syncBottom}
+\index{Synchronization!syncPos!syncFrame}
 
 The synchronization position mode has the following effects on the slave \values{y} position:
 \begin{itemize}
 \item \OSC{syncOver}: the center of the slave is aligned to the master center.
 \item \OSC{syncTop}: the bottom of the slave is aligned to the top of the master.
 \item \OSC{syncBottom}: the top of the slave is aligned to the bottom of the master.
+\item \OSC{syncFrame}: used to browse the master frame (see the next section).
 \end{itemize}
 The default position mode is \OSC{syncOver}. The \OSC{y} attribute of the slave remains available to displacement (\OSC{dy}). 
 
@@ -2531,6 +2533,14 @@ The \values{y} position of a synchronized object remains a free attribute. To co
 \example \\
 Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
 \sample{/ITL/scene/sync mySlave myMaster h syncBottom;}
+
+
+\subsublevel{The syncFrame mode}
+\label{syncFrame}
+
+When the \OSC{syncFrame} mode is used, the slave is placed on the frame of the master. Typically, this frame corresponds to the object bounding box that is also the object default mapping. For ellipses, arcs, lines, polygons, the frame corresponds to the border of the object. The frame duration is the object duration.  
+
+Mappings and stretch options are ignored in  \OSC{syncFrame} mode.
 
 
 %===============================
