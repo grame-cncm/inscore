@@ -591,7 +591,7 @@ int IObject::execute (const IMessage* msg)
 			// check if there is any associated event
 			const string method = msg->message();
 			MouseLocation pos (getXPos(), getYPos(), 0, 0, 0, 0);	// object position and
-			EventContext env (pos, getDate(), this);				// date are available from the environment
+			EventContext env (pos, 0, this);				// date are available from the environment
 			checkEvent(method.c_str(), env);
 		}
 		return ret;
