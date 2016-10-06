@@ -146,6 +146,7 @@ map<string, IObjectFactory::TCreateMethod> IObjectFactory::fCreateMap;
 void IObjectFactory::init()
 {
 	fCreateMap[IArc::kArcType]								= _create<IArc>;
+	fCreateMap[IAudio::kAudioType]							= _create<IAudio>;
 	fCreateMap[ICurve::kCurveType]							= _create<ICurve>;
 	fCreateMap[IEllipse::kEllipseType]						= _create<IEllipse>;
 	fCreateMap[IFaustDSP::kFaustDSPType]					= _create<IFaustDSP>;

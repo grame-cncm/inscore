@@ -26,6 +26,7 @@
 #include "VQtLocalMappingUpdater.h"
 
 #include "VArcView.h"
+#include "VAudioView.h"
 #include "VCurveView.h"
 #include "VEllipseView.h"
 #include "VGraphView.h"
@@ -46,6 +47,7 @@ namespace inscore
 {
 
 void VQtLocalMappingUpdater::updateTo(IArc* o)				{  view<VArcView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(IAudio* o)			{  view<VAudioView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(ICurve* o)			{  view<VCurveView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IEllipse* o)			{  view<VEllipseView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IGraphicSignal* o)	{  view<VGraphView>(o)->updateLocalMapping( o );  }

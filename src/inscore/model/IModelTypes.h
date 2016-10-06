@@ -43,6 +43,9 @@ typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 class IArc;
 typedef class libmapping::SMARTP<IArc>			SIArc;
 
+class IAudio;
+typedef class libmapping::SMARTP<IAudio>		SIAudio;
+
 class IColor;
 typedef class libmapping::SMARTP<IColor>		SIColor;
 

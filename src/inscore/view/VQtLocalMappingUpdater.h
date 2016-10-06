@@ -50,6 +50,7 @@ class inscore_export VQtLocalMappingUpdater : public LocalMapUpdater
 		static libmapping::SMARTP<VQtLocalMappingUpdater> create()		{ return new VQtLocalMappingUpdater(); }
 
 		void updateTo (IArc* o);
+		void updateTo (IAudio* o);
 		void updateTo (ICurve* o);
 		void updateTo (IEllipse* o);
 		void updateTo (IGraphicSignal* graph);

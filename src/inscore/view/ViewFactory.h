@@ -44,6 +44,7 @@ class ViewFactory
 	static VObjectView*		create (const IScene* object);
 
 	static VObjectView*		create (const IArc* object,			QGraphicsScene* scene);
+	static VObjectView*		create (const IAudio* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const ICurve* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const IEllipse* object,		QGraphicsScene* scene);
 	static VObjectView*		create (const IGestureFollower* object,QGraphicsScene* scene);
