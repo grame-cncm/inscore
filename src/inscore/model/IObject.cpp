@@ -1393,10 +1393,15 @@ MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 bool IObject::checkUserEvent(EventsAble::eventype t) const
 {
 	const char * ptr = t;
-	if (!*ptr || !(isalpha(int(*ptr)) || !isupper(int(*ptr))))
+	if (!*ptr)
 		return false;
-	while (*++ptr) {
-		 if ( !isalpha(int(*ptr)) || !isupper(int(*ptr)) && ((*ptr < '0') || (*ptr > '9')) )
+
+	int c = *ptr++;
+	if (!isupper(c) && !isdigit(c))
+		return false;
+	while (*ptr) {
+		c = *ptr++;
+		if ( !isupper(c) && !isdigit(c) )
 			return false;
 	}
 	return true;
@@ -1415,13 +1420,6 @@ bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 	// check if the event is candidate for a user defined event
 	// user defined event must be all in capital letters
 	if (!checkUserEvent(t)) return false;
-//	const char * ptr = t;
-//	while (*ptr) {
-//		bool accept =	( (isalpha(int(*ptr)) && isupper(int(*ptr))) ) ||
-//						( (*ptr >= '0') && (*ptr <= '9') );
-//		if (accept) ptr++;
-//		else return false;
-//	}
 	return EventsAble::hash(t);		// user defined event is accepted
 }
 
