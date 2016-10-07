@@ -44,6 +44,10 @@ IAudio::IAudio( const std::string& name, IObject * parent )
 	: IMedia (name, parent)
 {	
 	fTypeString = kAudioType;
+	setWidth(1);
+	setHeight(0.5);
+	setPenWidth (1.0);
+	setBrushStyle ("none");
 }
 
 //--------------------------------------------------------------------------
