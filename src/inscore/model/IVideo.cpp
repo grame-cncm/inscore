@@ -64,21 +64,6 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 	fConverter = Date2SecondTempoConverter::create( fTempo , fStartSecond );
 }
 
-
-//--------------------------------------------------------------------------
-void IVideo::videoReady ()
-{
-	fPlaying = false;
-	checkEvent (kVideoReadyEvent, rational(0,1), this);
-}
-
-//--------------------------------------------------------------------------
-void IVideo::videoEnd ()
-{
-	fPlaying = false;
-	checkEvent (kVideoEndEvent, rational(0,1), this);
-}
-
 //--------------------------------------------------------------------------
 void IVideo::accept (Updater* u)
 {

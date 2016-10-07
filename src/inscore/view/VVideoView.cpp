@@ -52,11 +52,11 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 void VVideoView::mediaReady()
 {
 	fVideo->setMediaDuration(player()->duration());
-	fVideo->videoReady();
+	fVideo->mediaReady();
 }
 
 //----------------------------------------------------------------------
-void VVideoView::mediaEnd()					{ fVideo->videoEnd(); }
+void VVideoView::mediaEnd()					{ fVideo->mediaEnd(); }
 void VVideoView::posChanged(qint64 pos)		{ fVideo->setIDate(pos); }
 
 //----------------------------------------------------------------------

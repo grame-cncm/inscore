@@ -63,9 +63,6 @@ class IVideo : public IMedia
 		/// \brief set the object duration according to the video duration (tempo assumed to be 60).
 		void	setVideoDuration( long mls)	{ setMediaDuration (mls); }
 
-		void	videoEnd ();			// called from view when the video reaches the end
-		void	videoReady ();			// called from view when the video data are available
-
 	protected:
 				 IVideo( const std::string& name, IObject * parent);
 		virtual ~IVideo() {}
