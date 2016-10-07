@@ -27,7 +27,7 @@
 #ifndef __VAudioView__
 #define __VAudioView__
 
-#include <string>
+#include <QAudioProbe>
 
 #include "VMediaPlayer.h"
 #include "VRectView.h"
@@ -43,6 +43,22 @@ namespace inscore
 @{
 */
 
+//----------------------------------------------------------------------
+class TAudioReader : public QAudioProbe
+{
+	Q_OBJECT
+
+	QAudioProbe * fAudioProbe;
+	public:
+				 TAudioReader();
+		virtual ~TAudioReader() { delete fAudioProbe; }
+	
+		void	setSource (QMediaPlayer* player);
+
+	protected slots:
+		void processBuffer (const QAudioBuffer &buffer);
+};
+
 class IAudio;
 //--------------------------------------------------------------------------
 /**
@@ -50,9 +66,9 @@ class IAudio;
 */
 class VAudioView: public VMediaPlayer, public VMappedShapeView
 {
-    Q_OBJECT
+	Q_OBJECT
 
-	MouseEventAble<QGraphicsRectItem>*  item() const;
+	MouseEventAble<QGraphicsPathItem>* item() const	{ return (MouseEventAble<QGraphicsPathItem>*)fItem; }
 
 	public :
 		using VGraphicsItemView::updateView;
@@ -65,14 +81,18 @@ class VAudioView: public VMediaPlayer, public VMappedShapeView
 		virtual void initialize (IObject* obj)					{ initialize(static_cast<IAudio*>(obj)); }
 		virtual void updateView ( IAudio * video );
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ VMappedShapeView::updateGraphic2GraphicMapping(shapeMap); }
+//		virtual QRectF getBoundingRect (IObject * o) const;
 
-	virtual void mediaReady();
-	virtual void mediaEnd();
-	virtual void posChanged(qint64 pos);
-	virtual void error(QString msg);
+		virtual void mediaReady();
+		virtual void mediaEnd();
+		virtual void posChanged(qint64 pos);
+		virtual void error(QString msg);
+		virtual void updateObjectSize( IObject * )		{}
 
 	private:
-		IAudio * fAudio;
+		IAudio *		fAudio;
+		TAudioReader	fReader;
+		float			fCacheW, fCacheH;
 };
 
 

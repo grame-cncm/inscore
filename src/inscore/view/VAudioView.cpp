@@ -23,10 +23,11 @@
 
 */
 
-#include <iostream>
+#include <cstdlib>
+
 #include <QFile>
 #include <QDebug>
-#include <QGraphicsRectItem>
+#include <QGraphicsPathItem>
 
 #include "INScore.h"
 #include "ITLError.h"
@@ -37,9 +38,33 @@ namespace inscore
 {
 
 //----------------------------------------------------------------------
-VAudioView::VAudioView(QGraphicsScene * scene, const IAudio* audio)
- :	VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(audio)), fAudio(0)
+TAudioReader::TAudioReader()
 {
+	fAudioProbe = new QAudioProbe();
+    connect(fAudioProbe, SIGNAL(audioBufferProbed(const QAudioBuffer&)),this, SLOT(processBuffer(const QAudioBuffer&)));
+}
+
+//----------------------------------------------------------------------
+void TAudioReader::setSource (QMediaPlayer* player)
+{
+	if (!fAudioProbe->setSource(player))
+		qDebug() << "TAudioReader::setSource FAILED: audio probe not supported";
+}
+
+//----------------------------------------------------------------------
+void TAudioReader::processBuffer (const QAudioBuffer& buffer)
+{
+qDebug() << "TAudioReader::processBuffer frames:" << buffer.frameCount();
+}
+
+
+//----------------------------------------------------------------------
+//
+//----------------------------------------------------------------------
+VAudioView::VAudioView(QGraphicsScene * scene, const IAudio* audio)
+ :	VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(audio)), fAudio(0)
+{
+	fCacheW = fCacheH = 0;
 }
 
 //----------------------------------------------------------------------
@@ -61,8 +86,10 @@ void VAudioView::initialize( IAudio * audio  )
 {
 	fAudio = audio;
 	QString file = VApplView::toQString( audio->getPath().c_str() );
-	if ( QFile::exists(  file  ) ) 
+	if ( QFile::exists(  file  ) ) {
 		setFile (file);
+		fReader.setSource(player());
+	}
 }
 
 //----------------------------------------------------------------------
@@ -71,23 +98,30 @@ void VAudioView::updateView( IAudio * audio  )
 	audio->cleanupSync();
 
 	updatePlayer (audio);
-	
-//	qint64 pos = audio->vDate();
-//	if (pos < 0 ) pos = 0;
-//	if (pos > player()->duration()) pos = player()->duration()-1;
-//
-//	player()->setVolume( audio->volume() * 100);
-//	if (audio->rateModified()) player()->setPlaybackRate( audio->rate() );
-//	if (audio->playing()) {
-//		if (player()->state() !=  QMediaPlayer::PlayingState) {
-//			player()->play ();
-//		}
-//	}
-//	else if (player()->state() ==  QMediaPlayer::PlayingState)
-//		player()->pause ();
-//
-//	if (audio->vdateModified())
-//		player()->setPosition( pos );
+
+	float w = audio->getWidth();
+	float h = audio->getHeight();
+	bool sizeChanged = (fCacheW != w) || (fCacheH != h);
+	if (item()->path().isEmpty() || sizeChanged || audio->newData()) {
+		fCacheW = w; fCacheH = h;
+		QRectF r( 0,0,  relative2SceneWidth(w),relative2SceneHeight(h) );
+		QPainterPath path;
+		int w = r.width()-1;
+		int wfade = w / 10;			// range for fade in fade out simulation
+		int x = 0;
+		int h2 = r.height()/2;
+		path.moveTo(x++, r.height()/2);
+		for (int i = 0; i<w; i+=2) {
+			int range = h2;
+			if (i < wfade)				range = h2 * i / wfade;
+			else if (i > (w - wfade))	range = h2 * (w - i) / wfade;
+			int v = range? rand() % range : 0;
+			path.lineTo(x++, h2 - v);
+			path.lineTo(x++, h2 + v);
+		}
+		path.lineTo(x, h2);
+		item()->setPath (path);
+	}
 
 	itemChanged();
 	VShapeView::updateView( audio );
