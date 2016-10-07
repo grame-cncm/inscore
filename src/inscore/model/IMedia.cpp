@@ -80,14 +80,14 @@ void IMedia::cleanup ()
 void IMedia::mediaReady ()
 {
 	fPlaying = false;
-	checkEvent (kVideoReadyEvent, rational(0,1), this);
+	checkEvent (kReadyEvent, rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
 void IMedia::mediaEnd ()
 {
 	fPlaying = false;
-	checkEvent (kVideoEndEvent, rational(0,1), this);
+	checkEvent (kEndEvent, rational(0,1), this);
 }
 
 
@@ -95,14 +95,14 @@ void IMedia::mediaEnd ()
 bool IMedia::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	string ev(t);
-	if ( (ev == kVideoEndEvent) || (ev == kVideoReadyEvent)) return true;
+	if ( (ev == kEndEvent) || (ev == kReadyEvent)) return true;
 	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------
 // set the object duration
 void IMedia::setMediaDuration( long mls)	{ fVDuration = int(mls); }
-rational IMedia::getMediaDuration () const		{ return rational((fVDuration * fRate) / 4000.f); }
+rational IMedia::getMediaDuration () const	{ return rational((fVDuration * fRate) / 4000.f); }
 
 //--------------------------------------------------------------------------
 void IMedia::setFile(const std::string& path)
