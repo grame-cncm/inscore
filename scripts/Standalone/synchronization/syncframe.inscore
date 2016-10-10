@@ -12,6 +12,7 @@ rversion = 1.20;
 	/ITL/scene/warning scale 1.5
 );
 
+click = mouseDown;
 shadow = shadow 5 5 0 0 0 75 20;
 color = 20 0 150;
 
@@ -79,11 +80,11 @@ color = 20 0 150;
 /ITL/scene/control watch mouseLeave (/ITL/scene/$self red 0);
 /ITL/scene/control y 0.80;
 
-/ITL/scene/control watch mouseDown (
+/ITL/scene/control watch $click (
 	/ITL/scene/$self push,
 	/ITL/scene/c* tempo 60,
 	/ITL/scene/$self set txt "Stop",
-	/ITL/scene/$self watch mouseDown (
+	/ITL/scene/$self watch $click (
 		/ITL/scene/c* tempo 0,
 		/ITL/scene/$self set txt "Play",
 		/ITL/scene/$self pop

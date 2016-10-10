@@ -12,6 +12,8 @@ rversion = 1.20;
 	/ITL/scene/warning scale 1.5
 );
 
+click 	= mouseDown;
+#click 	= touchBegin;
 
 
 color = 20 0 150;
@@ -42,34 +44,34 @@ g = 220;
 /ITL/scene/control* watch mouseEnter (/ITL/scene/$self red 240);
 /ITL/scene/control* watch mouseLeave (/ITL/scene/$self red 0);
 
-/ITL/scene/control1 watch mouseDown (
+/ITL/scene/control1 watch $click (
 	/ITL/scene/$self push,
 	/ITL/scene/arc close 1,
 	/ITL/scene/$self set txt "Open",
-	/ITL/scene/$self watch mouseDown (
+	/ITL/scene/$self watch $click (
 		/ITL/scene/arc close 0,
 		/ITL/scene/$self set txt "Close",
 		/ITL/scene/$self pop
 	)
 );
 
-/ITL/scene/control2 watch mouseDown (
+/ITL/scene/control2 watch $click (
 	/ITL/scene/$self push,
 	/ITL/scene/arc brushStyle solid,
 	/ITL/scene/$self set txt "Frame",
-	/ITL/scene/$self watch mouseDown (
+	/ITL/scene/$self watch $click (
 		/ITL/scene/arc brushStyle none,
 		/ITL/scene/$self set txt "Fill",
 		/ITL/scene/$self pop
 	)
 );
 
-/ITL/scene/control3 watch mouseDown (
+/ITL/scene/control3 watch $click (
 	/ITL/scene/$self push,
 	/ITL/scene/arc tempo 50,
 	/ITL/scene/sync c arc syncFrame absolute,
 	/ITL/scene/$self set txt "Stop",
-	/ITL/scene/$self watch mouseDown (
+	/ITL/scene/$self watch $click (
 		/ITL/scene/arc tempo 0,
 		/ITL/scene/sync c,
 		/ITL/scene/$self set txt "Play",
