@@ -40,14 +40,15 @@ namespace inscore
 // IDate implementation
 //--------------------------------------------------------------------------
 IDate::IDate(const EventsAble* h)
-	: TimeEventAble(h), fDate(0,1), fDuration(1,1), fTempo(0), fPendingMove(false), fDateChanged(true), fDurationChanged(true) {}
+	: TimeEventAble(h), fDate(0,1), fDuration(1,1), fTempo(0), fDateChanged(true), fDurationChanged(true) {}
 //--------------------------------------------------------------------------
 IDate::~IDate()		{}
 
 //--------------------------------------------------------------------------
 void IDate::cleanup ()
 { 
-	fDateChanged = fDurationChanged = fPendingMove = false;
+	if (fTempo) move();
+	fDateChanged = fDurationChanged = false;
 }
 
 //--------------------------------------------------------------------------
@@ -58,10 +59,6 @@ void IDate::setDate (const rational& date)
 		handleTimeChange(fDate, date);
 		fDate = date;
 		fDateChanged = true;
-	}
-	if (fTempo && !fPendingMove) {
-		fPendingMove = true;
-		move();
 	}
 }
 
@@ -80,10 +77,6 @@ void IDate::move () const
 void IDate::setTempo (int tempo)
 { 
 	fTempo = tempo;
-	if (fTempo) {
-		fPendingMove = true;
-		move();
-	}
 }
 
 //--------------------------------------------------------------------------
