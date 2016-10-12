@@ -23,24 +23,27 @@ Rectangle{
 		width: height
 	}
 
-	Text{
-		id: labelINScore
-		text: "INScore"
-		font.family: "Verdana"
-		color: "#464646"
+	Column {
+		spacing: 3
 		anchors.left: headerLogo.right
-        anchors.leftMargin: Size.toPixel(3)
-		anchors.top: parent.top
-        anchors.topMargin: Size.headerPointHeight/5
-		font.weight: Font.Bold
-        font.pixelSize: Size.toPixel(Size.headerPointHeight/2);
-	}
-	Text{
-		text: "Version " + version
-		color: labelINScore.color
-		anchors.left: labelINScore.left
-		anchors.top: labelINScore.bottom
-        font.pixelSize:  Size.toPixel(Size.headerPointHeight/4);
+		anchors.leftMargin: 10
+		anchors.verticalCenter: parent.verticalCenter
+
+		Text{
+			id: labelINScore
+			text: "INScore"
+			font.family: "Verdana"
+			color: "#464646"
+			font.weight: Font.Bold
+			font.pointSize: 16;
+	//        font.pixelSize: Size.toPixel(Size.headerPointHeight/2);
+		}
+		Text{
+			text: "Version " + version
+			color: labelINScore.color
+			font.pointSize:  12;
+	//        font.pixelSize:  Size.toPixel(Size.headerPointHeight/4);
+		}
 	}
 
     SimpleTouchArea{

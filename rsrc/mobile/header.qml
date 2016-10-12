@@ -52,7 +52,8 @@ Item{
         font.bold: true
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: root.height * 0.6
+        font.pointSize: 18
+//        font.pixelSize: root.height * 0.6
     }
 
     Image{
