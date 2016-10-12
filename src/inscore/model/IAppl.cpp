@@ -74,18 +74,13 @@ const string IAppl::kApplType("appl");
 
 #ifdef WIN32
 #define _CRT_SECURE_NO_DEPRECATE
-std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
+std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";0
 
 #elif ANDROID
 static std::string getFilePath() {
 	// Use standard location as root path (/sdcard/documents/inscore on most device)
-	QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
-	if (!path.isEmpty() && !path.endsWith("/"))
-		path += "/";
-	path += "inscore/";
-	QDir dir(path);
-	if (!dir.exists())
-		dir.mkpath(path);
+	QStringList plist = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+	QString path = plist.last();
 	return path.toStdString();
 }
 // Files are writed in sdcard only
