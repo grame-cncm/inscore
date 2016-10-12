@@ -12,6 +12,9 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
+Version 1.21
+
+----------------------------------------------------
 Version 1.20
 - new 'syncFrame' synchronisation mode.
 - the 'events' system has been extended to any object attribute and supports user defined events.
