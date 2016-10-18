@@ -39,11 +39,14 @@ namespace inscore
 //--------------------------------------------------------------------------
 // signals node
 //--------------------------------------------------------------------------
-const string ISignalNode::kName			= "signal";
+const string ISignalNode::kName				= "signal";
+const string ISignalNode::kSignalNodeType	= "signode";
 
 //--------------------------------------------------------------------------
 ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false)
 {
+	fTypeString = kSignalNodeType;
+
 	fGetMsgHandlerMap["debug"]	= TGetParamMsgHandler<bool>::create(fDebug);
 	fMsgHandlerMap["debug"]		= TSetMethodMsgHandler<ISignalNode, bool>::create(this,&ISignalNode::debug);
 	fMsgHandlerMap[kwatch_GetSetMethod]		= 0L;
@@ -70,23 +73,19 @@ void ISignalNode::print (ostream& out) const
 //--------------------------------------------------------------------------
 bool ISignalNode::find (std::string node, subnodes& outlist)
 {
-	size_t n = node.find ('/');
+	size_t n = node.find ('/');				// is it a final path ?
 	if (n == string::npos)
-		return exactfind(node, outlist);
+		return exactfind(node, outlist);	// then find the node
 
 	bool ret = false;
-	string name = node.substr(0, n);
-	int index = atoi (node.substr (n+1, node.size()).c_str());
+	string name = node.substr(0, n);				// get the node name from the path
+	string sub = node.substr (n+1, node.size());	// and the subnode name
 	subnodes sigs;
-	if (exactfind(name, sigs)) {
-		for (unsigned int n=0; n<sigs.size(); n++) {
-			ISignal* sig = dynamic_cast<ISignal*>((IObject*)sigs[n]);
-			if (sig  && (index < sig->dimension())) {
-				SISignal s = ISignal::create(node, this);
-				*s << sig->signal(index);
-				outlist.push_back(s);
+	if (exactfind(name, sigs)) {			// then find the node
+		for (unsigned int n=0; n<sigs.size(); n++) {					// for each retrieved node
+			ISignal* sig = dynamic_cast<ISignal*>((IObject*)sigs[n]);	// get it as a signal
+			if (sig && sig->findSubNode (sub, outlist))			// and ask the node to find the subnode
 				ret = true;
-			}
 		}
 	}
 	return ret;
