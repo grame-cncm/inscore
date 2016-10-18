@@ -1,3 +1,0 @@
-/ITL/scene load "scripts/cursor.inscore";
-/ITL/scene/sync cursor score;
-/ITL/scene/cursor alpha 200;

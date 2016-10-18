@@ -1,9 +1,9 @@
 /ITL/scene/* del;
 
-!---------------------------------------------
-! all the objects are in a layer in order to
-! facilitate the graphic positionning
-!---------------------------------------------
+#---------------------------------------------
+# all the objects are in a layer in order to
+# facilitate the graphic positionning
+#---------------------------------------------
 /ITL/scene/l set layer;
 /ITL/scene/l y -0.05;
 
@@ -12,9 +12,9 @@ gray = 200;
 /ITL/scene/l/background color $gray $gray $gray;
 /ITL/scene/l/background y 0.15; 
 
-!---------------------------------------------
-! here are the master objects
-!---------------------------------------------
+#---------------------------------------------
+# here are the master objects
+#---------------------------------------------
 w = 0.25;
 h = 0.4;
 /ITL/scene/l/master1 set rect $w $h;
@@ -35,9 +35,9 @@ tscale = 1.4;
 /ITL/scene/l/mtext y -0.25;
 /ITL/scene/l/mtext scale $tscale;
 
-!---------------------------------------------
-! this is the slave: an object with childrens
-!---------------------------------------------
+#---------------------------------------------
+# this is the slave: an object with childrens
+#---------------------------------------------
 d = 0.3;
 y = 0.7;
 /ITL/scene/l/slave set ellipse $d $d;
@@ -59,9 +59,9 @@ d = 0.5;
 /ITL/scene/l/stext y 0.92;
 /ITL/scene/l/stext scale $tscale;
 
-!---------------------------------------------
-! the sync operations
-!---------------------------------------------
+#---------------------------------------------
+# the sync operations
+#---------------------------------------------
 /ITL/scene/l/background/op1 set txt 
 "sync slave 1
 sync slave 2 h
@@ -86,9 +86,9 @@ sync slave 3 v";
 /ITL/scene/l/background/op2 watch mouseDown (/ITL/scene/l/sync slave);
 /ITL/scene/l/background/op3 watch mouseDown (/ITL/scene/l/sync slave master2 hv);
 
-!---------------------------------------------
-! comments
-!---------------------------------------------
+#---------------------------------------------
+# comments
+#---------------------------------------------
 /ITL/scene/title set txt "Synchronizing on several masters";
 /ITL/scene/title y -0.92;
 /ITL/scene/title scale 2.5;

@@ -50,12 +50,12 @@ class IExprParser {
 		float			fFloat;		// the current float
 		SIExprArg		fRootNode;	// the current highest
 
-		int fColumnOffset, fLineOffset;
+		int fColumnOffset, fLineOffset, fLine;
 
 #ifndef NO_EXPR_VAR_SUPPORT
 		const TScripting* fReader;
 #endif
-		std::vector<std::string>* readVar(std::string* varName);
+		std::vector<std::string>* readVar(std::string* varName, int line);
 
 		IExprParser(std::istream* stream, const TScripting *reader = 0);
 		virtual ~IExprParser();

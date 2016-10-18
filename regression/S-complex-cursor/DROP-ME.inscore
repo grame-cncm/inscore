@@ -8,9 +8,9 @@
 /ITL/scene/score scale 0.33 ;
 /ITL/scene/score map system ;
 
-!-----------------------------------------
-! building a rect with 2 childrens (r1 & o1)
-!-----------------------------------------
+#-----------------------------------------
+# building a rect with 2 childrens (r1 & o1)
+#-----------------------------------------
 size = 4;
 transp = 200;
 /ITL/scene/rect set rect $size $size;
@@ -30,9 +30,9 @@ size = 1.;
 /ITL/scene/rect scale 0.1;
 /ITL/scene/sync rect 'score:system';
 
-!-----------------------------------------
-! title and comments
-!-----------------------------------------
+#-----------------------------------------
+# title and comments
+#-----------------------------------------
 /ITL/scene/title set txt Sync object with childrens;
 /ITL/scene/title y -0.90;
 /ITL/scene/title scale 3;
@@ -53,9 +53,9 @@ scale = 3;
 /ITL/scene/m* scale $scale;
 /ITL/scene/m* y 0.9;
 
-!-----------------------------------------
-! mouse interaction
-!-----------------------------------------
+#-----------------------------------------
+# mouse interaction
+#-----------------------------------------
 down = 0.1;
 up = -0.1;
 /ITL/scene/m* watch mouseEnter (/ITL/scene/$self red 200, /ITL/scene/$self scale 4);
@@ -71,6 +71,6 @@ up = -0.1;
 	/ITL/scene/rect/o1 dy $up
 );
 
-! keep the rect at the beginning of the score
+# keep the rect at the beginning of the score
 /ITL/scene/rect watch timeEnter -200 0 (/ITL/scene/rect date 0);
 

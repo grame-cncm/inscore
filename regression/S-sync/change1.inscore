@@ -1,4 +1,4 @@
-! changing the date
+# changing the date
 /ITL/scene/slave date 2 4;
 /ITL/scene/subtitle set txt "/ITL/scene/slave date 2/4;";
 /ITL/scene/subtitle scale 2.;

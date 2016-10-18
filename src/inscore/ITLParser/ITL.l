@@ -4,7 +4,7 @@
 %option noyywrap
 %option nounput
 %option yylineno
-%option yymore
+ /*%option yymore*/
 
 %{
 
@@ -12,7 +12,6 @@
 #pragma warning (disable : 4267 4100 4244)
 #endif
 
-//#include <stdio.h>
 #include <iostream>
 #include "IMessage.h"
 #include "ITLparser.h"
@@ -22,7 +21,7 @@ using namespace std;
 
 #define YY_NO_INPUT
 #define YY_EXTRA_TYPE inscore::ITLparser*
-#define YY_USER_ACTION yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
+#define YY_USER_ACTION  yyextra->fLine = yylloc->last_line = yylineno; yyextra->fColumn = yylloc->first_column += strlen(yytext); //cerr << "YY_USER_ACTION " << yyextra->fLine << endl;
 
 #define YY_INPUT(buf,result,max_size)   \
    {                                       \
@@ -58,6 +57,17 @@ static  char* unescape (char * str) {
 }
 
 // ----------------------------------------------------------------------------------------
+// debug utility
+#define LDEBUG	0
+#if LDEBUG
+static  void debug (const char * str, string context) {
+	cout << "LEX " << str << " : " << context << endl;
+}
+#else 
+#define debug(a, b)
+#endif
+
+// ----------------------------------------------------------------------------------------
 
 %}
 
@@ -71,7 +81,8 @@ static  char* unescape (char * str) {
 %x JSECTION
 		/* evaluable expression section */
 %x EXPRSECTION
-
+		/* osc address */
+%x OSCSECTION
 
 DIGIT	[0-9]
 LETTER  [a-zA-Z]
@@ -94,7 +105,7 @@ FILECHAR [^ \t\\/?:*><|"';=]
 RECHAR  [-_a-zA-Z0-9?+*]
 RECLASS [-_a-zA-Z0-9^]
 
-ANYCHAR	[^ \t"'\x0a\x0d?+*]
+ /*ANYCHAR	[^ \t"'\x0a\x0d?+*] */
 
 SPACE	[ \t]
 EOL		[\x0a\x0d]
@@ -112,17 +123,41 @@ EOL		[\x0a\x0d]
 [+-]*{DIGIT}+"."{DIGIT}+e[-+]?{DIGIT}+ 	yyextra->fFloat = atof(yytext); return FLOAT;
 [+-]*{DIGIT}+e[-+]?{DIGIT}+ 			yyextra->fFloat = atof(yytext); return FLOAT;
 
+"__END__"			return ENDSCRIPT;
+
  /* ----------------------------------------- */
  /*	method requiring messages as argument */
  /* ----------------------------------------- */
 "eval"			yyextra->fText = yytext; return EVAL;
+
+{EOL}			yylloc->first_column=0; debug("EOL", "");		/* ignore */
+
+ /* ----------------------------------------- */
+ /*	math operators */
+ /* ----------------------------------------- */
+"+"				return ADD;
+"-"				return MINUS;
+"-"{SPACE}		return SUB;
+"/"				return DIV;
+"*"				return MULT;
+"%"				return MODULO;
+{SPACE}"?"{SPACE} return QUEST;
+"!"				return NEG;
+"=="			return EQ;
+"!="			return NEQ;
+">"				return GREATER;
+">="			return GREATEREQ;
+"<"				return LESS;
+"<="			return LESSEQ;
+"@min"		return MIN;
+"@max"		return MAX;
+
 
 
  /* ----------------------------------------- */
  /*	comments */
  /* ----------------------------------------- */
 {SPACE}*"#"			BEGIN CMNTLN;
-{SPACE}*"!"			BEGIN CMNTLN;
 <CMNTLN>.*	
 <CMNTLN>{EOL}+		if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
@@ -133,15 +168,28 @@ EOL		[\x0a\x0d]
 {SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
  /* ----------------------------------------- */
- /*	comments */
- /* ----------------------------------------- */
-"__END__"			return ENDSCRIPT;
+ /*	variables */
+"$"{STARTID}{IDCHAR}*			yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLE;
+"$"{STARTID}{IDCHAR}*"++"		yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPOSTINC;
+"$"{STARTID}{IDCHAR}*"--"		yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPOSTDEC;
+"++$"{STARTID}{IDCHAR}*			yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPREINC;
+"--$"{STARTID}{IDCHAR}*			yyextra->fText = &yytext[1]; debug("VARIABLE", yyextra->fText); return VARIABLEPREDEC; 
 
  /* ----------------------------------------- */
- /*	hostname part */
+ /*	quoted strings */
  /* ----------------------------------------- */
- {HOSTCHAR}+						yyextra->fText = yytext; return HOSTNAME;
- {DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+		yyextra->fText = yytext; return IPNUM;
+"\""						BEGIN DQSTR;
+"\"\""						yyextra->fText = ""; debug("EMPTY STRING", yytext); return STRING;;
+"'"							BEGIN QSTR;
+"''"						yyextra->fText = ""; debug("EMPTY STRING", yytext); return STRING;;
+
+<DQSTR>([^\"]|"\\\"")*		if (!expressionNested){ yyextra->fText = unescape(yytext); debug("STRING", yytext); return STRING;} 
+							else yyextra->fText += string("\"") + unescape(yytext) + "\"";
+<DQSTR>\"					if (expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
+
+<QSTR>([^']|"\\'")*			if (!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} 
+							else yyextra->fText += string("'") + unescape(yytext) + "'";
+<QSTR>'						if (expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
 
  /* ----------------------------------------- */
  /*	identifiers */
@@ -149,21 +197,15 @@ EOL		[\x0a\x0d]
 {STARTID}{IDCHAR}*				yyextra->fText = yytext; return IDENTIFIER;
 
  /* ----------------------------------------- */
- /*	quoted strings */
+ /*	hostname and IP */
  /* ----------------------------------------- */
-"\""						BEGIN DQSTR;
-"'"							BEGIN QSTR;
-
-<DQSTR>([^\"]|"\\\"")*		if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += string("\"") + unescape(yytext) + "\"";
-<QSTR>([^']|"\\'")*			if(!expressionNested){ yyextra->fText = unescape(yytext); return STRING;} else yyextra->fText += string("'") + unescape(yytext) + "'";
-<DQSTR>\"					if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
-<QSTR>'						if(expressionNested) BEGIN EXPRSECTION; else BEGIN INITIAL;
-
+({HOSTCHAR}({HOSTCHAR}*|'.'))+":"				yyextra->fText = yytext; yyextra->fText.pop_back(); debug("HOSTNAME", yytext); return HOSTNAME;
+{DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+		yyextra->fText = yytext; debug("IPNUM", yytext); return IPNUM;
 
  /* ----------------------------------------- */
  /*	non quoted file path */
  /* ----------------------------------------- */
-("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."{IDCHAR}+			yyextra->fText = yytext; return STRING;	/*file path without space*/
+("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."[a-zA-Z]+		yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;	/*file path without space*/
 
  /* ----------------------------------------- */
  /*	javascript section */
@@ -177,45 +219,47 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
 {RECHAR}+								yyextra->fText = yytext; return REGEXP;			/* regular expression */
 {RECHAR}*"["{RECLASS}+"]"{RECHAR}*		yyextra->fText = yytext; return REGEXP;			/* regular expression */
-{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	yyextra->fText = yytext; return REGEXP;			/* regular expression */
+{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	yyextra->fText = yytext; debug("RECHAR", yytext); return REGEXP;			/* regular expression */
+
+ /* ----------------------------------------- */
+ /*	OSC address */
+ /* ----------------------------------------- */
+"/"{IDCHAR}+										{ yyextra->fText = yytext; BEGIN OSCSECTION; }
+<OSCSECTION>"/"										{ yyextra->fText += yytext; }
+<OSCSECTION>"$"?{STARTID}{IDCHAR}*					{ yyextra->fText += yytext; }
+<OSCSECTION>{RECHAR}+								{ yyextra->fText += yytext; }
+<OSCSECTION>{RECHAR}*"["{RECLASS}+"]"{RECHAR}*		{ yyextra->fText += yytext; }
+<OSCSECTION>{RECHAR}*"{"[_a-zA-Z0-9,]+"}"{RECHAR}*	{ yyextra->fText += yytext; }
+<OSCSECTION>{SPACE}|{EOL}|","|";"					{ yyless(0); BEGIN INITIAL; debug("OSCADDRESS", yyextra->fText); return OSCADDRESS; }
 
 
  /* ----------------------------------------- */
  /*	evaluable expression section */
  /* ----------------------------------------- */
-
 <EXPRSECTION>"("				expressionNested++; yyextra->fText += yytext;
 <EXPRSECTION>")"				yyextra->fText += yytext; if(!--expressionNested){ BEGIN INITIAL; return EXPRESSION;}
 <EXPRSECTION>"\""				BEGIN DQSTR;
 <EXPRSECTION>"'"				BEGIN QSTR;
-<EXPRSECTION>[^()"']*				yyextra->fText += yytext;
-"expr("						expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext; yyextra->fExprStartLine = yylloc->last_line;
+<EXPRSECTION>[^()"']*			yyextra->fText += yytext;
+"expr"{SPACE}*"("				expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext; yyextra->fExprStartLine = yylloc->last_line;
 
  /* ----------------------------------------- */
  /*	basic delimiters and markers */
  /* ----------------------------------------- */
 "="					return EQUAL;
-"../"					return BACKPATH;
-"/"					return PATHSEP;			/* OSC address and path separator */
 ";"					return ENDEXPR;			/* end of expression */
 "$"					return VARSTART;
 ":"					return COLON;
-","					return COMMA;
+","					debug("COMMA", ","); return COMMA;
 "."					return POINT;
-"("					return LEFTPAR;
-")"					return RIGHTPAR;
-
-
- /*"["					return LEFTBRACKET; */
- /*"]"					return RIGHTBRACKET; */
+"("					debug("LEFTPAR", "("); return LEFTPAR;
+")"					debug("RIGHTPAR", ")"); return RIGHTPAR;
 
 {SPACE}+			;   /* eat up space */
 
-{EOL}					yylloc->first_column=0; /* ignore */
-
 <<EOF>>					return ENDSCRIPT;
 
-.						yyextra->fText = yytext; return ERR;
+.						yyextra->fText = yytext; debug("ERR", yyextra->fText); return ERR;
 
 %%
 

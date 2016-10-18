@@ -1,4 +1,4 @@
-!/ITL watch error (/ITL/log show 1);
+#/ITL watch error (/ITL/log show 1);
 
 <? javascript
 	function randomdur () 		{ return Math.pow(2, Math.floor( Math.random() * 5) ); }

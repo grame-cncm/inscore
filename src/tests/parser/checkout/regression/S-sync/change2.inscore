@@ -1,3 +1,0 @@
-/ITL/scene/sync slave m3 del;
-/ITL/scene/subtitle set txt "/ITL/scene/sync slave m3 del;";
-/ITL/scene/m3/text del;

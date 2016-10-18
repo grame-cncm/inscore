@@ -1,4 +1,0 @@
-/ITL/scene/br set ellipse 0.1 0.1;
-/ITL/scene/br color 0 255 0;
-/ITL/scene/bc set ellipse 0.1 0.1;
-/ITL/scene/bc color 255 0 0;

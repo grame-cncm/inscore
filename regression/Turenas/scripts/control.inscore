@@ -1,7 +1,7 @@
-!-------------------------------------------------------
-! user interface setup
-! buttons + associated messages
-!-------------------------------------------------------
+#-------------------------------------------------------
+# user interface setup
+# buttons + associated messages
+#-------------------------------------------------------
 
 transp = 100;
 /ITL/scene/boule set img "rsrc/boule.png";

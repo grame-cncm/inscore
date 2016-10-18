@@ -35,6 +35,8 @@
 #include "ITLparser.h"
 #include "ITLError.h"
 
+#include "TMaths.h"
+
 using namespace std;
 extern inscore::TScripting* gScripter;
 
@@ -112,7 +114,7 @@ void TScripting::addEnv (const TScripting& sc)
 void TScripting::error(int line, int col, const char* s) const
 {
 	ITLErr << "line" << line << "col" << col << ":" << s << ITLEndl;
-#ifndef IBUNDLE			// no appl instance for the bundle tool
+#if !defined(IBUNDLE) && !defined(PARSERTEST)	// no appl instance for the bundle tool nor in parser test
 	if (fRoot) fRoot->error();
 #endif
 }
@@ -184,13 +186,55 @@ IMessage::argslist TScripting::resolve (const IMessage* msg) const
 }
 
 
+//--------------------------------------------------------------------------------------------
+bool TScripting::checkVar (IMessage::argslist& val, const char* var, int line) const
+{
+	if (val.empty()) {
+		string pvar("$");
+		pvar += var;
+		ITLErr << "line " << line <<": warning! variable " <<  pvar << " is not defined." << ITLEndl;
+		val.push_back(new IMsgParam<string>(pvar));
+		return false;
+	}
+	return true;
+}
 
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal) const
+IMessage::argslist TScripting::resolve (const char* var, int line) const
 {
 	IMessage::argslist val = fEnv->value (var);
-	if (val.empty() && defaultVal)
-		val.push_back(new IMsgParam<string>(defaultVal));
+	checkVar (val, var, line);
+	return val;
+}
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolveinc (const char* var, bool post, int line)
+{
+	string svar (var);
+	svar = post ? svar.substr(0, svar.size()-2) : svar.substr(2, string::npos);
+	IMessage::argslist val = fEnv->value (svar);
+	if (checkVar (val, svar.c_str(), line)) {
+		TMaths m;
+		IMessage::argslist* val1 = m.inc(val);
+		variable (svar.c_str(), val1);
+		if (!post) val = *val1;
+		delete val1;
+	}
+	return val;
+}
+
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolvedec (const char* var, bool post, int line)
+{
+	string svar (var);
+	svar = post ? svar.substr(0, svar.size()-2) : svar.substr(2, string::npos);
+	IMessage::argslist val = fEnv->value (svar);
+	if (checkVar (val, svar.c_str(), line)) {
+		TMaths m;
+		IMessage::argslist* val1 = m.dec(val);
+		variable (svar.c_str(), val1);
+		if (!post) val = *val1;
+		delete val1;
+	}
 	return val;
 }
 

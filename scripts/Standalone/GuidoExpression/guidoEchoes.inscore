@@ -1,7 +1,7 @@
 /ITL/scene/* del;
 /ITL/scene width 1.5;
 
-rversion = 1.17; ! version required for javascript
+rversion = 1.17; # version required for javascript
 
 #### score definition #####
 <? javascript

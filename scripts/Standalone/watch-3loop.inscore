@@ -20,14 +20,14 @@ alpha=150;
 				/ITL/$scene/$self  color  254 212 76 $alpha ,
 				/ITL/$scene/$self angle 0. ,
 				/ITL/$scene/$self scale 1.,
-				/ITL/scene/rect pop					! pop the interaction state i.e. loop
+				/ITL/scene/rect pop					# pop the interaction state i.e. loop
 			)
 		)
 	)
 );
 
-/ITL/scene/rect push;		! push the object interaction state
-/ITL/scene/rect push;		! push the object interaction state a second time
+/ITL/scene/rect push;		# push the object interaction state
+/ITL/scene/rect push;		# push the object interaction state a second time
 
 /ITL/scene/comment  set  txt "This script illustrates nested 'watch' messages and fixed loops count.";
 /ITL/scene/comment scale 1.3;

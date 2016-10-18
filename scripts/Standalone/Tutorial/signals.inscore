@@ -63,7 +63,7 @@
 /ITL/scene/m4 watch mouseDown (/ITL/tutorial/signal/gs set s1 s2 s2 1. 1. 1. );
 /ITL/scene/m5 watch mouseDown (/ITL/tutorial/siggraph set graph gs );
 /ITL/scene/m6 watch mouseDown (/ITL/tutorial/signal/s1  -0.499992 -0.368462 0.255605 -0.0413499 0.0327672 -0.281041 );
-!/ITL/scene/m6 watch  "mouseDown" 	"/ITL/tutorial/signal/s*" -0.499992 -0.368462 0.255605 -0.0413499 0.0327672 -0.281041 -0.452955 0.178865 0.179296 0.434693 -0.116498 0.0194164 0.330965 -0.465428 -0.446538 0.0297002 0.171149 -0.492302 -0.116584 -0.433158 -0.082514 0.186773 0.0889766  
+#/ITL/scene/m6 watch  "mouseDown" 	"/ITL/tutorial/signal/s*" -0.499992 -0.368462 0.255605 -0.0413499 0.0327672 -0.281041 -0.452955 0.178865 0.179296 0.434693 -0.116498 0.0194164 0.330965 -0.465428 -0.446538 0.0297002 0.171149 -0.492302 -0.116584 -0.433158 -0.082514 0.186773 0.0889766  
 
 /ITL/scene load "previous.inscore";
 /ITL/scene/previous watch mouseDown (/ITL/scene load "sync4.inscore" );

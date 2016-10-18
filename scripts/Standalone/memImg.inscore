@@ -18,7 +18,7 @@
 /ITL/scene/rect y -0.2;
 
 /ITL/scene watch endPaint (
-	/ITL/scene/mi set memimg "../scene",   ! and create a memory image of the previous scene
+	/ITL/scene/mi set memimg "../scene",   # and create a memory image of the previous scene
 	/ITL/scene/mi scale 0.4,
 	/ITL/scene/mi x 0.3,
 	/ITL/scene/mi y 0.3, 

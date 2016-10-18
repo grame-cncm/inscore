@@ -2,24 +2,24 @@
 
 /ITL/scene/* del;
 /ITL/scene/signal/* del;
-!/ITL/log show 1;
-!/ITL/log clear;
+#/ITL/log show 1;
+#/ITL/log clear;
 
 /ITL/scene/signal/sig size 10; 
 
 /ITL/scene/obj set rect 0.2 0.2;
 /ITL/scene/obj color 0 0 220;
 
-!====================================================
-! this is the connection part
-! an alias is used to avoid a strong connection between
-! the generated signal and inscore
-!====================================================
+#====================================================
+# this is the connection part
+# an alias is used to avoid a strong connection between
+# the generated signal and inscore
+#====================================================
 /ITL/scene/signal connect sig "obj:dangle[-60,60]";
 /ITL/scene/signal/sig alias "/target1"; 
-!====================================================
+#====================================================
 
-! the scene dimensions 
+# the scene dimensions 
 h = 1;
 w = 1.33;
 
@@ -72,7 +72,7 @@ hlinew = 0.26;
 /ITL/scene/title scale 2.5;
 /ITL/scene/title y -0.9;
 /ITL/scene/comment set txt "karplus.maxpat should be running.";
-!/ITL/scene/comment scale 2.5;
+#/ITL/scene/comment scale 2.5;
 /ITL/scene/comment y -0.82;
 
 /ITL/scene/credit set txt "Notation taken from Jason Freeman - Piano Etudes - II - Learning to Dance";

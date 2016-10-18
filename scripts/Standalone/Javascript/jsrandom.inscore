@@ -1,4 +1,4 @@
-rversion = 0.96; ! version required for javascript
+rversion = 0.96; # version required for javascript
 gray = 100;
 
 /ITL/scene/* del;

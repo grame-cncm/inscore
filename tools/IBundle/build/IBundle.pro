@@ -30,9 +30,7 @@ win32 { DEFINES += NOHOSTNAME }
 # source and headers
 ##############################
 SOURCES  =	$$files($$SRC/*.cpp, true)
-#SOURCES +=	$$files($$SRC/Parsing/*.cpp, true)
 SOURCES +=	$$ITLROOT/src/inscore/expression/ExprInfo.cpp
-
 
 HEADERS  = $$files($$SRC/*.h, true)
 INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/

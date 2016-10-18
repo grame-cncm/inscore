@@ -16,11 +16,11 @@
 	/ITL/scene/rect2 color 200 0 0 );
 	
 /ITL/scene/rect2 watch mouseDown (
-	/ITL/scene/rect2 push,						! push the object interaction state
+	/ITL/scene/rect2 push,						# push the object interaction state
 	/ITL/scene/rect2 angle 45. ,
 	/ITL/scene/rect2 watch mouseDown (
 		/ITL/scene/rect2 angle 0. ,
-		/ITL/scene/rect2 pop						! pop the interaction state i.e. loop
+		/ITL/scene/rect2 pop						# pop the interaction state i.e. loop
 	)
 );	
 

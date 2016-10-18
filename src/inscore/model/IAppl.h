@@ -27,7 +27,9 @@
 #ifndef __IAppl__
 #define __IAppl__
 
+#ifndef PARSERTEST
 #include <QMutex>
+#endif
 
 #include "IMessageHandlers.h"
 #include "PeriodicTask.h"
@@ -88,8 +90,9 @@ class IAppl : public IObject, public TILoader
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
 		QApplication*	fAppl;					// the Qt application
+#ifndef PARSERTEST
 		QMutex		fTimeMutex;
-
+#endif
 		TJSEngine		fJavascript;
 
 	public:

@@ -1,6 +1,0 @@
-/ITL/scene/* del;
-/ITL/scene/title set txt "Shadow and movement phenomena";
-/ITL/scene/title scale 2.7;
-/ITL/scene/title y -0.84;
-/ITL/scene/rect set rect 0.6 0.6;
-/ITL/scene/rect color 106 186 96;

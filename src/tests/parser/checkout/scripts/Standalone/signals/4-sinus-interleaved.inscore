@@ -1,5 +1,0 @@
-/ITL/scene/signal/* reset;
-/ITL/scene/scriptcomment set txt "Interleaved data distributed to 't' (thickness) and 'b' (brightness)
-using a projection string.";
-/ITL/scene/scriptcomment scale 1.3;
-/ITL/scene/scriptcomment y 0.7;

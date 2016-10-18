@@ -1,7 +1,0 @@
-/ITL/scene/* del;
-/ITL/scene/tiger set file "svg/tiger.svg";
-/ITL/scene/butterfly set file "svg/butterfly.svg";
-/ITL/scene/eye set file "svg/eye.svg";
-/ITL/scene/_comment set txt "You can drop any of the accompanying scripts to the scene";
-/ITL/scene/_comment y 0.9;
-/ITL/scene/_comment z 0.9;

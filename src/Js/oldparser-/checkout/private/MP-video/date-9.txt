@@ -1,2 +1,0 @@
-/ITL/scene/video	 date,9
-expr ENDSCRIPT 

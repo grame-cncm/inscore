@@ -4,9 +4,9 @@
 /ITL/scene height 1;
 /ITL/scene width 1.3;
 
-!-------------------------------------------------------
+#-------------------------------------------------------
 /ITL/scene load "scripts/require.inscore";
-!-------------------------------------------------------
+#-------------------------------------------------------
 
 # Add the Turenas graphic analysis as an image
 /ITL/scene/turenas set img "rsrc/schemaSonagram.png";

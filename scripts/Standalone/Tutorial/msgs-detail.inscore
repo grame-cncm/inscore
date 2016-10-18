@@ -1,6 +1,6 @@
 /ITL/scene/* del;
 /ITL/tutorial watch;
-! clear the new element event
+# clear the new element event
 
 /ITL/scene/title set html "<h1>The message details</h1>";
 /ITL/scene/title y -0.700000;

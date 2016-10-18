@@ -1,0 +1,100 @@
+
+\documentclass[a4paper,twoside]{report}
+\usepackage{INScore}
+\usepackage{pslatex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{rail}
+\usepackage{makeidx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{textcomp}
+
+\definecolor{mycolor}{rgb}{0.384,0.0,0.145}
+\hypersetup{
+	colorlinks=true,
+	linkcolor= mycolor
+}
+
+
+\setlength\parskip{\medskipamount}
+
+\makeatletter
+\railparam{\addtolength{\itemsep}{-3ex}}
+
+%\newcommand{\toplevel}[1]	{\section{#1}}
+%\newcommand{\sublevel}[1]	{\subsection{#1}}
+%\newcommand{\subsublevel}[1]	{\subsubsection{#1}}
+
+\newcommand{\toplevel}[1]	{\chapter{#1}}
+\newcommand{\sublevel}[1]	{\section{#1}}
+\newcommand{\subsublevel}[1]	{\subsection{#1}}
+
+\newcommand{\fullref}[1]	{\ref{#1} p.\pageref{#1}}
+
+\providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+\newcommand{\OSC}[1]		{\texttt{#1}}
+\newcommand{\values}[1]		{\texttt{#1}}
+\newcommand{\oldexample}	{\hspace*{1cm}}
+\newcommand{\example}		{\textbf{\hspace{-1.5cm}\textbf{\textsc{Example }}}}
+\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
+\renewcommand{\seealso}		{\textbf{See also: }}
+
+\newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
+\newcommand{\oscint}		{\osctype{int32}}
+\newcommand{\oscfloat}		{\osctype{float32}}
+\newcommand{\oscstring}		{\osctype{string}}
+\newcommand{\rational}		{\osctype{rational}}
+
+\newcommand{\lowTilde} 		{\texttildelow}
+
+\let\olditemize\itemize
+\let\oldenditemize\enditemize
+\renewenvironment{itemize} 	{\olditemize \setlength{\itemsep}{1mm}}{\oldenditemize}
+
+
+\setlength\parskip{2pt}
+\setlength\railnamesep{-1mm}
+\railterm{int32, float32, string}
+\railalias{int32}{\oscint}
+\railalias{float32}{\oscfloat}
+\railalias{string}{\oscstring}
+
+
+\definecolor{mygrey}{gray}{0.93}
+\newcommand{\sample}	[1]			{\vspace{-2mm}\begin{center}\colorbox{mygrey}{
+								\begin{minipage}[t]{0.9\columnwidth} 
+								{\small \texttt{#1}}
+								\end{minipage}}\end{center}}
+\newcommand{\samplev}[1]			{\begin{center}\colorbox{mygrey}{
+								\begin{minipage}[t]{\columnwidth} 
+								{\small \texttt{#1}}
+								\end{minipage}}\end{center}}
+\newcommand{\sampleindent}	{ \hspace{0.5cm} }
+
+\newcommand{\warning}[1]	{\textbf{\textsc{Warning:}} #1}
+
+\makeatother
+\makeindex
+
+
+\begin{document}
+\title{INScore \\ Math Expressions Reference \\v.1.0}
+\author{D. Fober\\ GRAME\\ Centre national de création musicale\\
+}
+
+\maketitle
+
+\tableofcontents
+\pagestyle{plain}
+\newpage
+\setcounter{page}{1}
+
+\input{mathexpressions.tex}
+
+\printindex
+\end{document}

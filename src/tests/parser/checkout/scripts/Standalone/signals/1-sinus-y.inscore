@@ -1,4 +1,0 @@
-/ITL/scene/signal/* reset;
-/ITL/scene/scriptcomment set txt "Values have been sent directly to the 'y' signal";
-/ITL/scene/scriptcomment scale 1.3;
-/ITL/scene/scriptcomment y 0.7;

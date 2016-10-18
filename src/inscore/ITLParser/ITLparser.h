@@ -29,6 +29,7 @@
 #include <locale.h>
 
 #include "TScripting.h"
+#include "TMaths.h"
 
 namespace inscore 
 {
@@ -39,6 +40,8 @@ class IAppl;
 */
 class ITLparser {	
 		
+	TMaths	fMath;
+
 	void initScanner();
 	void destroyScanner();
 
@@ -58,7 +61,9 @@ class ITLparser {
 		std::string		fText;		// the current text
 		int				fInt;		// the current int
 		float			fFloat;		// the current float
-		int				fLine;		// line offset
+		int				fLineOffset;// line offset
+		int				fLine;		// current line
+		int				fColumn;	// current column
 		int				fExprStartLine;
 
 				 ITLparser(std::istream* stream, int line, IAppl* root, bool execute=true);
@@ -66,6 +71,7 @@ class ITLparser {
 		
 		bool parse();
 		SIMessageList messages()	{ return fReader.messages(); }
+		const TMaths& math() const	{ return fMath; }
 };
 
 } // end namespace

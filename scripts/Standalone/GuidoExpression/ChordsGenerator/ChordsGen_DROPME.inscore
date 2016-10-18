@@ -1,7 +1,7 @@
-!path = "/home/gaby/Programmation/C++/inscore-code/scripts/Standalone/GuidoExpression/ChordsGenerator";
+#path = "/home/gaby/Programmation/C++/inscore-code/scripts/Standalone/GuidoExpression/ChordsGenerator";
 
 /ITL/scene/* del;
-!/ITL/scene rootPath $path;
+#/ITL/scene rootPath $path;
 /ITL/scene load "ChordsGen_selector.inscore";
 
 /ITL/scene/sel* dy -0.5;

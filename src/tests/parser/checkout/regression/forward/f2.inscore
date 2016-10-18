@@ -1,2 +1,0 @@
-/ITL/filter accept "/ITL/scene/rect/circle/score";
-/ITL/filter reject "/ITL/scene/*/circle/*" load rootPath;

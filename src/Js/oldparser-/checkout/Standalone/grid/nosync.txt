@@ -1,2 +1,0 @@
-/ITL/scene/sync  slave
-expr ENDSCRIPT 

@@ -1,8 +1,0 @@
-/ITL/scene/signal/* reset;
-/ITL/scene/signal/y2 size 50;
-/ITL/scene/signal/sig2 set sig y2 0.02 -0.5 s b a;
-/ITL/scene/graphsig set graph sig2;
-/ITL/scene/scriptcomment set txt "Interleaved data distributed to the 'y' signals of a parallel 
-graphic signal using a projection string.";
-/ITL/scene/scriptcomment scale 1.3;
-/ITL/scene/scriptcomment y 0.7;

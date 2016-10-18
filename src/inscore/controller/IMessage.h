@@ -320,6 +320,10 @@ class IMessage : public Message, public libmapping::smartable
 		\param suffix the suffix to be used as messages separator
 	*/
 	void		print(std::ostream& out, int param, int nested, const char* suffix=0) const;
+	/*!
+		\brief convert a message to string
+	*/
+	std::string	toString() const;
 
 #ifndef NO_OSCSTREAM
 	/*!

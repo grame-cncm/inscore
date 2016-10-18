@@ -1451,7 +1451,7 @@ yyreduce:
 
   case 7:
 #line 102 "IExpr.y"
-    { (yyval.strList) = context->readVar((yyvsp[(2) - (2)].str));;}
+    { (yyval.strList) = context->readVar((yyvsp[(2) - (2)].str), lineno(context));;}
     break;
 
   case 8:
@@ -1740,8 +1740,7 @@ using namespace inscore;
 
 int lineno (IExprParser* context)
 {
-	YYLTYPE* loc = (YYLTYPE*)context->fScanner;
-	return loc->last_line + context->fLineOffset;
+	return context->fLine + context->fLineOffset;
 }
 
 int yyerror(const YYLTYPE* loc, IExprParser* context, const char*s) {

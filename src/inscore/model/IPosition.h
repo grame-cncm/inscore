@@ -70,7 +70,7 @@ class IPosition
 		float	fYAngle;				///< the object y rotation
 		float	fZAngle;				///< the object z rotation
     
-        std::map<std::string, TFloatPoint> fPositions;				///< the slaved object positions for each master
+        std::map<std::string, TFloatPoint> fPositions;			///< the slaved object positions for each master
         std::map<std::string, float> fHeights;                  ///< the slaved object heights for each master
         std::map<std::string, float> fWidths;                   ///< the slaved object widths for each master
 

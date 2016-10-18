@@ -1,2 +1,0 @@
-/ITL/scene/score  scale,0.2
-expr ENDSCRIPT 
