@@ -214,5 +214,12 @@ const char* klikelihoodthreshold_GetSetMethod= "likelihoodthreshold";	// Get Set
 const char* ktolerance_GetSetMethod			= "tolerance";				// Get Set
 const char* kclear_SetMethod				= "clear";					// Set
 
+// sensors methods
+const char* kcalibrate_SetMethod		= "calibrate";				// Set
+const char* kmode_GetSetMethod			= "mode";					// Get Set
+const char* khasZ_GetMethod				= "hasZ";					// Get
+const char* kmax_GetSetMethod			= "max";					// Get Set
+const char* ksmooth_GetSetMethod		= "smooth";					// Get Set
+
 
 } //namespace
