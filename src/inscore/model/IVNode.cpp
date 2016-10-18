@@ -34,9 +34,9 @@ namespace inscore
 //--------------------------------------------------------------------------
 // IVNode implementation
 //--------------------------------------------------------------------------
-const string IVNode::fTypeString = "vnode";
 IVNode::IVNode(const std::string& name, IObject * parent) : IObject(name, parent)
 {
+	fTypeString = "vnode";
 	fMsgHandlerMap[kset_SetMethod]		= (void*)0;	// reject the set message
 	fMsgHandlerMap[klock_GetSetMethod]	= (void*)0;		// reject the lock message (can't be deleted anyway)
 

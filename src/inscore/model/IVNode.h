@@ -49,7 +49,6 @@ typedef class libmapping::SMARTP<IVNode>	SIVNode;
 class IVNode : public IObject
 {
 	public:	
-		static const std::string fTypeString;
 		/*!
 			\brief gives the type string corresponding to an object
 			
