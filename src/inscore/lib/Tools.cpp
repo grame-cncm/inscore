@@ -121,6 +121,23 @@ string Tools::ensurefloat (float f, int precision)
 }
 
 //--------------------------------------------------------------------------
+// converts a string to a decimal number
+// check that the string contains only numbers
+// return true when the string is a number and has been converted
+//--------------------------------------------------------------------------
+bool Tools::str2num (const char* ptr, int& num)
+{
+	num = 0;
+	while (*ptr) {
+		int c = *ptr++;
+		if ((c < '0') || (c > '9')) return false;
+		num *= 10;
+		num += c - '0';
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------
 libmapping::rational Tools::readRational(const IMessage *msg, bool twoPart, int startIndex)
 {
 	libmapping::rational out(0, 0);
