@@ -184,13 +184,13 @@ void IPosition::setSyncWidth(std::string m, float width)
 }
 
 //------------------------------------------------------------------------------------------------------------
-void IPosition::setSyncPos(std::string m, QPointF pos)
+void IPosition::setSyncPos(std::string m, TFloatPoint pos)
 {
-    std::map<std::string, QPointF>::iterator it = fPositions.find(m);
+    std::map<std::string, TFloatPoint>::iterator it = fPositions.find(m);
     if(it != fPositions.end())
         it->second = pos;
     else
-        fPositions.insert(std::pair<std::string, QPointF>(m, pos));
+        fPositions.insert(std::pair<std::string, TFloatPoint>(m, pos));
 }
 
 
