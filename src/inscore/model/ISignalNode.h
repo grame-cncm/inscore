@@ -55,6 +55,8 @@ class ISignalNode : public IVNode
 		using IVNode::find;
 		
 		static const std::string kName;
+		static const std::string kSignalNodeType;
+
 		static libmapping::SMARTP<ISignalNode> create(IObject * parent)	{ return new ISignalNode(parent); }
 
 		virtual void	print(std::ostream& out) const;
