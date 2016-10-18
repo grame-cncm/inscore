@@ -30,6 +30,7 @@
 #include "VSceneView.h"
 #include "maptypes.h"
 #include "TSegment.h"
+#include "TRect.h"
 
 #include <QtDebug>
 #include <QGraphicsScene>
@@ -378,11 +379,44 @@ void VGraphicsItemView::setMouseEventSensibility(bool mouseSensible)
 	}
 }
 
+#define kUnknownLocation 999999.f
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o, SMaster master)
+{
+    item->setStretch(false);
+	TFloatPoint p;
+	IObject* m = master->getMaster();
+	rational d = o->getDate();
+	if (master->getMode() == Master::kSyncRelative)
+		d -= master->getMaster()->getDate();
+	if (m->date2FramePoint(d, p)) {
+		double width = relative2SceneWidth(o->getWidth());
+		double height = relative2SceneHeight(o->getHeight());
+
+		double mw = relative2SceneWidth(m->getWidth());
+		double mh = relative2SceneHeight(m->getHeight());
+		double x = p.fX * mw;
+		double y = p.fY * mh  + mh*(master->getDy());
+
+		item->setRect(QRectF(0,0,width,height));
+		item->setPos(x, y);
+		item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+		updateTransform (o, item);
+		QRectF bbrect = item->boundingRect();
+		double xo = bbrect.width() / 2;
+		double yo = bbrect.height() / 2;
+		item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
+	}
+	else {
+		item->setPos(kUnknownLocation, kUnknownLocation);
+	}
+}
+
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master)
 {
     item->setStretch(false);
-    
+	
     std::string mapName = master->getMaster()->name() + ":" + master->getMasterMapName();
     double width = relative2SceneWidth(o->getSyncWidth(mapName), item);
     double height = relative2SceneHeight(o->getSyncHeight(mapName), item);
@@ -408,7 +442,7 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
     updateTransform (o, item);
-    QRectF bbrect = item->boundingRect();
+    QRectF bbrect = getBoundingRect(o);
     double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
     double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
     item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
@@ -436,21 +470,24 @@ void VGraphicsItemView::updateView(IObject* o)
     for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
     {
         SMaster master = i->first;
+		
         QStretchTilerItem * fTilerItem = fTilerItems.find(master)->second;
         fTilerItem->clearSegments();
             
         fTilerItem->setOpacity (o->getA() / 255.f);
-        std::string masterMapName = master->getMaster()->name() + ":" + master->getMasterMapName();
-        const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(masterMapName);
-        bool isHStretch =  o->UseGraphic2GraphicMapping(masterMapName);
-            
-        if(slave2Master && isHStretch)
-        {
-            updateItemHStretch(fTilerItem, slave2Master);
-        }
-        else
-        {
-            updateItemNoStretch(fTilerItem, o, master);
+		
+		if (master->getAlignment() == Master::kSyncFrame) {
+			updateItemSyncFrame (fTilerItem, o, master);
+		}
+		else {
+			std::string masterMapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+			const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(masterMapName);
+			bool isHStretch =  o->UseGraphic2GraphicMapping(masterMapName);
+				
+			if(slave2Master && isHStretch)
+				updateItemHStretch(fTilerItem, slave2Master);
+			else
+				updateItemNoStretch(fTilerItem, o, master);
         }
         updateItem(fTilerItem, o);
         fTilerItem->update();
@@ -550,7 +587,7 @@ void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
             found = true;
     }
     QStretchTilerItem * fTilerItem;
-    if(!found)
+    if(!found && master->getMaster()->getView())
     {
         fTilerItem = buildTiler(slave);
         VGraphicsItemView * masterView = dynamic_cast<VGraphicsItemView*>(master->getMaster()->getView());

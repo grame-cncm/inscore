@@ -25,10 +25,12 @@
 
 #include <algorithm>
 #include <iostream>
+
 #include "ISync.h"
 #include "ISceneSync.h"
 #include "ITLError.h"
 #include "VGraphicsItemView.h"
+#include "OSCRegexp.h"
 
 using namespace std;
 
@@ -54,7 +56,23 @@ void ISync::print (ostream& out) const
 }
 
 //--------------------------------------------------------------------------
-std::vector<SMaster> ISync::getMasters(SIObject slave) const
+vector<SMaster> ISync::getMasters(SIObject slave, const std::string& master, const std::string& map) const
+{
+	vector<SMaster> outlist;
+	vector<SMaster> masters = getMasters(slave);		// get all the masters for slave
+	for(size_t i = 0; i < masters.size(); i++) {		// and for each master
+		Master* m = masters[i];							// check that it corresponds to the target
+		OSCRegexp r (master.c_str());
+		if ((m->getMasterMapName() == map) && r.match(m->getMaster()->name().c_str()))
+			outlist.push_back(m);
+//		if ( (m->getMaster()->name() == master) && (m->getMasterMapName() == map))
+//			return m;									// that's it
+	}
+	return outlist;		// not found
+}
+
+//--------------------------------------------------------------------------
+vector<SMaster> ISync::getMasters(SIObject slave) const
 {
     const_slave_iterator it = fSlaves2Masters.find(slave);
     if(it != fSlaves2Masters.end())
@@ -309,6 +327,7 @@ void ISync::ptask ()
 static const char* kSyncOverStr		= "syncOver";
 static const char* kSyncTopStr		= "syncTop";
 static const char* kSyncBottomStr	= "syncBottom";
+static const char* kSyncFrameStr	= "syncFrame";
 static const char* kSyncStretchHStr	= "h";
 static const char* kSyncStretchHHStr= "H";
 static const char* kSyncStretchVStr	= "v";
@@ -325,6 +344,7 @@ std::string	Master::syncalign2string(int align)
 		case kSyncOver:		return kSyncOverStr;
 		case kSyncTop:		return kSyncTopStr;
 		case kSyncBottom:	return kSyncBottomStr;
+		case kSyncFrame:	return kSyncFrameStr;
 		default:			return "unknown";
 	}
 }
@@ -359,12 +379,21 @@ std::map<std::string, Master::SyncType>		Master::fTypeStr;
 
 //std::map<std::string, int> Master::fInterpolationStr;
 //--------------------------------------------------------------------------
+void Master::setSyncOptions(VAlignType align, StretchType stretch, SyncType st)
+{
+	fAlignment	= align;
+	fStretch	= stretch;
+	fSyncType	= st;
+}
+
+//--------------------------------------------------------------------------
 void Master::initMap()
 {
 	if (!fAlignStr.size()) {
 		fAlignStr[kSyncOverStr]			= kSyncOver;
 		fAlignStr[kSyncTopStr]			= kSyncTop;
 		fAlignStr[kSyncBottomStr]		= kSyncBottom;
+		fAlignStr[kSyncFrameStr]		= kSyncFrame;
 
 		fStretchStr[kSyncStretchHStr]	= kStretchH;
 		fStretchStr[kSyncStretchHHStr]	= kStretchHH;

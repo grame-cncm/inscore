@@ -285,9 +285,19 @@ void IObject::setdyMsgHandler ()
 }
 
 //--------------------------------------------------------------------------
+void IObject::setSyncDY (float dy)
+{
+	vector<SMaster> mlist = getParent()->getMasters(this);
+	for (size_t i = 0; i < mlist.size(); i++) {
+		mlist[i]->setDy(dy);
+	}
+}
+
+//--------------------------------------------------------------------------
 void IObject::setdyMsgHandler (Master* m)
 { 
-	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<Master,void (Master::*)(float)>::create(this, m, &Master::setDy); 
+	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setSyncDY);
+//	fMsgHandlerMap[kdy_SetMethod] = TSetMethodMsgHandler<Master,void (Master::*)(float)>::create(this, m, &Master::setDy); 
 }
 
 //--------------------------------------------------------------------------
@@ -382,25 +392,12 @@ void IObject::propagateSignalsState ()
 }
 
 //--------------------------------------------------------------------------
-SMaster IObject::getMaster(SIObject o) const
-{ 
-	return fSync ? fSync->getMaster(o) : 0;
-}
-
-//--------------------------------------------------------------------------
-std::vector<SMaster> IObject::getMasters(SIObject o) const
-{ 
-	return fSync ? fSync->getMasters(o) : std::vector<SMaster>();
-}
-
-//--------------------------------------------------------------------------
-std::vector<SIObject> IObject::getSlaves(const SIObject o) const
-{ 
-	return fSync ? fSync->getSlaves(o) : std::vector<SIObject>();
-}
-
-//--------------------------------------------------------------------------
-void IObject::cleanupSync ()		{ if (fSync) fSync->cleanup(); }
+SMaster IObject::getMaster(SIObject o) const					{ return fSync ? fSync->getMaster(o) : 0; }
+vector<SMaster>  IObject::getMasters(SIObject o, const string& master, const string& map) const
+																{ return fSync->getMasters(o, master, map); }
+vector<SMaster>  IObject::getMasters(SIObject o) const			{ return fSync ? fSync->getMasters(o) : vector<SMaster>(); }
+vector<SIObject> IObject::getSlaves(const SIObject o) const		{ return fSync ? fSync->getSlaves(o) : vector<SIObject>(); }
+void IObject::cleanupSync ()										{ if (fSync) fSync->cleanup(); }
 
 //--------------------------------------------------------------------------
 IObject::subnodes IObject::sort ()
@@ -594,7 +591,7 @@ int IObject::execute (const IMessage* msg)
 			// check if there is any associated event
 			const string method = msg->message();
 			MouseLocation pos (getXPos(), getYPos(), 0, 0, 0, 0);	// object position and
-			EventContext env (pos, getDate(), this);				// date are available from the environment
+			EventContext env (pos, 0, this);				// date are available from the environment
 			checkEvent(method.c_str(), env);
 		}
 		return ret;
@@ -668,6 +665,45 @@ void IObject::getObjects(const string& address, vector<const IObject*>& outv) co
 		else if (!getDeleted()) outv.push_back(this);
 	}
 }
+ 
+//--------------------------------------------------------------------------
+// frame sync mode support
+// gives the location corresponding to a date
+// this location is expressed as a ratio on x and y axis starting from top left
+//--------------------------------------------------------------------------
+bool IObject::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const
+{
+	const libmapping::rational dur = getDuration();
+	if ((date < 0.) || (date > dur))	return false;
+
+	float w	= getWidth();
+	float h = getHeight();
+	float objlen	= (w + h) * 2;
+	float datelen	= objlen * float(date) / float(dur);
+	
+	// start from top left corner, clockwise
+	if (datelen <= w) {			// location is on the top segment
+		p.fX = datelen / w;
+		p.fY = 0;
+		return true;			// done
+	}
+	datelen -= w;
+	if (datelen <= h) {			// location is on the right segment
+		p.fX = 1;
+		p.fY = datelen / h;
+		return true;			// done
+	}
+	datelen -= h;
+	if (datelen <= w) {			// location is on the bottom segment
+		p.fX = 1- (datelen / w);
+		p.fY = 1;
+		return true;			// done
+	}
+	datelen -= w;				// location is on the left segment
+	p.fX = 0;
+	p.fY = 1 - (datelen / h);
+	return true;
+}
 
 //--------------------------------------------------------------------------
 // events processing
@@ -678,6 +714,19 @@ bool IObject::checkEvent (EventsAble::eventype event, EventContext& context) con
 	if (msgs) {
 		TMessageEvaluator me;
 		SIMessageList outmsgs = me.eval (msgs, context);
+		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
+		return true;
+	}
+	return false;
+}
+
+bool IObject::checkEvent (EventsAble::eventype event, const IMessage::argslist& args) const
+{
+	const IMessageList*	msgs = getMessages(event);
+	if (msgs) {
+		EventContext env(getDate(), this);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, env, args);
 		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
 		return true;
 	}
@@ -1340,6 +1389,25 @@ MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+// user events must be in capital letters or numbers
+bool IObject::checkUserEvent(EventsAble::eventype t) const
+{
+	const char * ptr = t;
+	if (!*ptr)
+		return false;
+
+	int c = *ptr++;
+	if (!isupper(c) && !isdigit(c))
+		return false;
+	while (*ptr) {
+		c = *ptr++;
+		if ( !isupper(c) && !isdigit(c) )
+			return false;
+	}
+	return true;
+}
+
+//--------------------------------------------------------------------------
 bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	if (EventsAble::isMouseEvent(t)) return true;
@@ -1351,13 +1419,7 @@ bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 	
 	// check if the event is candidate for a user defined event
 	// user defined event must be all in capital letters
-	const char * ptr = t;
-	while (*ptr) {
-		bool accept =	( (isalpha(int(*ptr)) && isupper(int(*ptr))) ) ||
-						( (*ptr >= '0') && (*ptr <= '9') );
-		if (accept) ptr++;
-		else return false;
-	}
+	if (!checkUserEvent(t)) return false;
 	return EventsAble::hash(t);		// user defined event is accepted
 }
 
@@ -1519,24 +1581,52 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 {
 	int n = msg->size();
-	if (n == 3) {			// this is a mouse related event
-		string event; int x, y;
-		if (msg->param(0, event) && msg->param(1, x) && msg->param(2, y)) {
-			VObjectView	* view = getView();
-			if (view) {
-				view->handleEvent (this, x, y, event.c_str());
-			}
-			return MsgHandler::kProcessed;
-		}
-	}
-	else if (n == 1) {			// this is a simple event
+	if (n >= 1) {
 		string event;
-		if (msg->param(0, event)) {
+		if (!msg->param(0, event)) return MsgHandler::kBadParameters;
+		
+		if (EventsAble::isMouseEvent(event.c_str())) {		// this is a mouse related event
+			if (n == 3) {									// x and  y parameters are expected
+				int x, y;
+				if (msg->param(1, x) && msg->param(2, y)) {
+					VObjectView	* view = getView();
+					if (view)
+						view->handleEvent (this, x, y, event.c_str());
+					return MsgHandler::kProcessed;
+				}
+			}
+		}
+		else if (checkUserEvent (event.c_str())) {			// this is a use defined event
+			IMessage::argslist args;						// supports arbitrary args count
+			for (int i=1; i<n; i++) args.push_back(msg->param(i));
+			if (checkEvent(event.c_str(), args))
+				return MsgHandler::kProcessed;
+		}
+		else if (n == 1) {									// this is a simple event
 			if (checkEvent(event.c_str(), getDate(), this))
 				return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
+
+//	if (n == 3) {			// this is a mouse related event
+//		string event; int x, y;
+//		if (msg->param(0, event) && msg->param(1, x) && msg->param(2, y)) {
+//			VObjectView	* view = getView();
+//			if (view) {
+//				view->handleEvent (this, x, y, event.c_str());
+//			}
+//			return MsgHandler::kProcessed;
+//		}
+//	}
+//	else if (n == 1) {			// this is a simple event
+//		string event;
+//		if (msg->param(0, event)) {
+//			if (checkEvent(event.c_str(), getDate(), this))
+//				return MsgHandler::kProcessed;
+//		}
+//	}
+//	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------

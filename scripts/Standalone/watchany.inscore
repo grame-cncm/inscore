@@ -18,7 +18,7 @@ color = 20 0 150;
 #---------------------------------------------
 # set the title
 #---------------------------------------------
-/ITL/scene/title set txt "Watch any attribute and user defined events as well.";
+/ITL/scene/title set txt "Watch any attribute and user defined events.";
 /ITL/scene/title color $color;
 /ITL/scene/title fontSize 32;
 /ITL/scene/title fontWeight bold;
@@ -80,20 +80,60 @@ rect = 0.3 0.3;
 # we use a hidden rect to store intermediate color
 #---------------------------------------------
 /ITL/scene/recthidden set rect $rect;
-/ITL/scene/recthidden color 200 200 200;
+/ITL/scene/recthidden color $(/ITL/scene/rect1 get color);
 /ITL/scene/recthidden x -0.6;
 /ITL/scene/recthidden show 0;
 
-/ITL/scene/rect* watch color (/ITL/log write color "$(/ITL/scene/$self get  x y)");
+
+/ITL/scene/rect1 watch color (
+	/ITL/scene/rect2 color "$(/ITL/scene/rect3 get color)",
+	/ITL/scene/rect3 color "$(/ITL/scene/recthidden get color)"
+);
 
 /ITL/scene/circle watch A (
-	/ITL/scene/rect1 color "$(/ITL/scene/rect2 get color)",
-	/ITL/scene/rect2 color "$(/ITL/scene/rect3 get color)",
-	/ITL/scene/rect3 color "$(/ITL/scene/recthidden get color)",
-	/ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)"
+	/ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)",
+	/ITL/scene/rect1 color "$(/ITL/scene/rect2 get color)"
 );
+
+#---------------------------------------------
+# note that although it looks similar to the events above, 
+# the following implementation produces a different result because
+# the messages are actually processed by the next time task while 
+# the variable messages are evaluated at the event time thus
+#  when $(/ITL/scene/recthidden get color) is evaluated
+#  the first line /ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)"
+#  has not been already processed
+#
+# the implementation above makes sure that the intermediate color is  
+# correctly set by splitting the event in 2 parts
+#
+#/ITL/scene/circle watch A (
+#	/ITL/scene/recthidden color "$(/ITL/scene/rect1 get color)",
+#	/ITL/scene/rect1 color "$(/ITL/scene/rect2 get color)",
+#	/ITL/scene/rect2 color "$(/ITL/scene/rect3 get color)",
+#	/ITL/scene/rect3 color "$(/ITL/scene/recthidden get color)"
+#);
+
+#---------------------------------------------
+# use of the event arguments as messages variables
+#---------------------------------------------
+/ITL/scene/circle watch B (
+	/ITL/scene/rect1 y "$1",
+	/ITL/scene/rect2 x "$2",
+	/ITL/scene/rect3 y "$3"
+);
+
 /ITL/scene/circle watch mouseDown (
 	/ITL/scene/circle event A
+);
+
+/ITL/scene/circle watch doubleClick (
+	/ITL/scene/circle push,
+	/ITL/scene/circle event B -0.6 0.5 0.6,
+	/ITL/scene/circle watch doubleClick (
+		/ITL/scene/circle event B -0.4 0.0 0.4,
+		/ITL/scene/circle pop
+	)
 );
 
 #---------------------------------------------

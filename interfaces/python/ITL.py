@@ -4,7 +4,7 @@ import OSC
 
 #####################################################
 # a simple class deriving OSCMessage 
-# to build Interlude messages
+# to build inscore messages
 #####################################################
 class ITLMessage (OSC.OSCMessage):
 	"A simple class deriving OSCMessage to build messages at once"
@@ -18,7 +18,7 @@ class ITLMessage (OSC.OSCMessage):
 # a basic function to send a message list
 #####################################################
 def sendMsgList (oscclient, msglist):
-	"A tool to send interlude messages list"
+	"A tool to send inscore messages list"
 	for msg in msglist:
 		address, method, params = msg
 		oscclient.send ( ITLMessage (address, method, params) )

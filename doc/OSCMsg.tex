@@ -44,7 +44,9 @@
 \newcommand{\values}[1]		{\texttt{#1}}
 \newcommand{\oldexample}	{\hspace*{1cm}}
 \newcommand{\example}		{\textbf{\hspace{-1.5cm}\textbf{\textsc{Example }}}}
-\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
+\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-0.9cm}\textbf{\textsc{Note #1}}}}
+\newcommand{\warning}[1]	{\vspace{2mm}\textbf{\hspace{-1.5cm}\textbf{\textsc{Warning #1}}}}
+
 \renewcommand{\seealso}		{\textbf{See also: }}
 
 \newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
@@ -78,7 +80,6 @@
 								\end{minipage}}\end{center}}
 \newcommand{\sampleindent}	{ \hspace{0.5cm} }
 
-\newcommand{\warning}[1]	{\textbf{\textsc{Warning:}} #1}
 
 \makeatother
 \makeindex
@@ -86,7 +87,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.20}
+\title{INScore \\ OSC Messages Reference \\v.1.21}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -980,6 +981,7 @@ setMsg : 'set' (
 	('ellipse' width height) |
 	('polygon' ( (x y) +)) |
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
+	('arc' width height startAngle endAngle) |
 	('line' ('xy' x y | 'wa' width angle)) |
 )
 \end{rail}
@@ -989,6 +991,7 @@ setMsg : 'set' (
 \index{Set type!ellipse}
 \index{Set type!polygon}
 \index{Set type!curve}
+\index{Set type!arc}
 \index{Set type!line}
 
 \begin{itemize}
@@ -998,6 +1001,7 @@ setMsg : 'set' (
 \item \OSC{ellipse}: an ellipse specified by a width and height.
 \item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. The coordinates are expressed in the \OSC{scene} coordinate space, but only the relative position of the points is taken into account (\emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \}).
 \item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled like in a \OSC{polygon}.
+\item \OSC{arc}: an arc defined by its enclosing rectangle and the start and end angles. Angles are in degrees and express counter-clockwise directions.
 \item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
 \end{itemize}
 
@@ -1544,6 +1548,36 @@ radiusMsg :		'radius' float32 float32
 \begin{itemize}
 \item \OSC{radius}: followed by 2 values that specify the radius on the x and y axis (default is 0 0). The values express a percentage of the object dimensions, thus the value's range is [0, 100].
 \end{itemize} 
+
+
+%-------------------------------
+%:  Arcs
+\sublevel{Arcs}
+\label{arcobjects}
+
+Arcs are portion of ellipses.
+Although an arc is specified by it's \OSC{set} message, it supports additional messages to control the start angles and the arc extension individually. An additional \OSC{close} message affects the drawing of the arc.
+\begin{rail}
+arcMsg :	  'start' 	float32 
+			| 'range' 	float32 
+			| 'dstart'  float32 
+			| 'drange' 	float32 
+			| 'close'	int32
+\end{rail}
+\index{Specific messages! arc! start}
+\index{Specific messages! arc! range}
+\index{Specific messages! arc! dstart}
+\index{Specific messages! arc! drange}
+\index{Specific messages! arc! close}
+
+\begin{itemize}
+\item \OSC{start}: 	set the start angle of the arc.
+\item \OSC{range}: 	set the arc extension in degrees counter-clockwise.
+\item \OSC{dstart}: move the start angle of the arc from the value given as parameter.
+\item \OSC{drange}: move the arc range from the value given as parameter.
+\item \OSC{close}: 	by default, only the curve of an arc is drawn. When the \OSC{close} attribute is set, lines from the arc borders to the center of the ellipse are also drawn. The \OSC{close} parameter is read as a boolean value.
+\end{itemize} 
+Angles are in degrees and express counter-clockwise directions.
 
 
 %-------------------------------
@@ -2473,21 +2507,23 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 \sample{/ITL/scene/sync mySlave myMaster hv ;}
 
 
-\subsublevel{Controlling the slave \OSC{y} position}
+\subsublevel{Controlling the slave position}
 
 \begin{rail}
-syncPos : 'syncOver' | 'syncTop' | 'syncBottom'
+syncPos : 'syncOver' | 'syncTop' | 'syncBottom' | 'syncFrame'
 \end{rail}
 \index{Synchronization!syncPos}
 \index{Synchronization!syncPos!syncOver}
 \index{Synchronization!syncPos!syncTop}
 \index{Synchronization!syncPos!syncBottom}
+\index{Synchronization!syncPos!syncFrame}
 
 The synchronization position mode has the following effects on the slave \values{y} position:
 \begin{itemize}
 \item \OSC{syncOver}: the center of the slave is aligned to the master center.
 \item \OSC{syncTop}: the bottom of the slave is aligned to the top of the master.
 \item \OSC{syncBottom}: the top of the slave is aligned to the bottom of the master.
+\item \OSC{syncFrame}: used to browse the master frame (see the next section).
 \end{itemize}
 The default position mode is \OSC{syncOver}. The \OSC{y} attribute of the slave remains available to displacement (\OSC{dy}). 
 
@@ -2497,6 +2533,14 @@ The \values{y} position of a synchronized object remains a free attribute. To co
 \example \\
 Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
 \sample{/ITL/scene/sync mySlave myMaster h syncBottom;}
+
+
+\subsublevel{The syncFrame mode}
+\label{syncFrame}
+
+When the \OSC{syncFrame} mode is used, the slave is placed on the frame of the master. Typically, this frame corresponds to the object bounding box that is also the object default mapping. For ellipses, arcs, lines, polygons, the frame corresponds to the border of the object. The frame duration is the object duration.  
+
+Mappings and stretch options are ignored in  \OSC{syncFrame} mode.
 
 
 %===============================
@@ -3062,7 +3106,7 @@ Displaying a welcome message to new elements:
 \sublevel{Attribute based events}
 \label{attributeevents}
 
-Attribute based events includes the whole set of messages that are supported by an object: \OSC{x}, \OSC{y}, \OSC{color}, etc. but also type specific messages. These events are triggered when a message has been succesfully processed. However, you shoudln't assume that the attribute value has been changed: when a message sets an attribute to it's current value, it is succesully processed and the corresponding event - if any - is triggered. 
+Attribute based events includes the whole set of messages that are supported by an object: \OSC{x}, \OSC{y}, \OSC{color}, etc. but also type specific messages. These events are triggered when a message has been succesfully processed. However, you shouldn't assume that the attribute value has been changed: when a message sets an attribute to it's current value, it is succesully processed and the corresponding event - if any - is triggered. 
 
 \example \\
 Watching an object \OSC{x} coordinate change:
@@ -3071,7 +3115,19 @@ Watching an object \OSC{x} coordinate change:
 \note \\
 Watching the \OSC{newData} event is equivalent to watch the \OSC{set} attribute. However, the \OSC{newData} event is triggered only when the object state is changed.
 
-With the event's generalisation to any object attribute, a one tick delay has been introduced to all events. Thus the associated messages are not processed synchronously to the event but posted to be processed by the next time task. This delay has been introduced to avoid freezing the system in case of loops.
+\warning \\
+With the event's generalisation to any object attribute, a one tick delay has been introduced to all events. Thus the associated messages are not processed synchronously to the event but posted to be processed by the next time task. This delay has been introduced to avoid freezing the system in case of loops. However, it introduces also a pitfall in interaction design, when message based variables are used (see section \fullref{msgvar}): message based variables are evaluated at the event time while messages are processed by the next time task, thus the following messages won't produce the expected result:
+\sample{/ITL/scene/myObject watch x ( \\
+\hspace*{1cm} /ITL/scene/A x '\$(/ITL/scene/myObject get x)', \\
+\hspace*{1cm} /ITL/scene/B x '\$(/ITL/scene/A get x)' \\
+);}
+actually, when the \OSC{\$(/ITL/scene/A get x)} variable is evaluated, the preceding message that sets the x attribute of A has not been aready processed.
+One workaround consists in splitting the interaction in several parts, making sure that the messages are processed e.g.
+\sample{/ITL/scene/myObject watch x ( /ITL/scene/A x '\$(/ITL/scene/myObject get x)'); \\
+/ITL/scene/A watch x ( /ITL/scene/B x '\$(/ITL/scene/A get x)' );
+}
+
+
 
 
 %===============================
@@ -3079,13 +3135,26 @@ With the event's generalisation to any object attribute, a one tick delay has be
 \sublevel{User defined events}
 \label{userevents}
 
-INScore events supports user defined events. The name of user defined event must be cmposed of capital letters and of numbers only. Other characters are reserved for INScore use.
-User defined events can only be triggered using the \OSC{event} message (see section \fullref{eventMsg}) .
+INScore events supports user defined events. The name of user defined events must start with a capital letter and be composed of capital letters and/or numbers. Other characters are reserved for INScore use.
+
+Messages attached to user defined events accept regular variables (although the position variables are useless), 
+but they accept also any number of a variables which names are \$1, ... \$i and which values are taken from the event call arguments (see section \fullref{udevar}).
+
+User defined events can only be triggered using the \OSC{event} message (see section \fullref{eventMsg}).
 
 \example \\
 Watching and triggering a user defined event:
 \sample{/ITL/scene/myObject watch MYEVENT (/ITL/scene/msg set txt "MYEVENT occured!");\\
 /ITL/scene/myObject event MYEVENT;
+}
+
+Defining high level abstractions:
+\sample{/ITL/scene/myObject watch MOVEABC ( \\
+\hspace*{1cm}/ITL/scene/a x \$1,\\
+\hspace*{1cm}/ITL/scene/b x \$2,\\
+\hspace*{1cm}/ITL/scene/C x \$3\\
+); \\
+/ITL/scene/myObject event MOVEABC -0.4 0.1 0.6;
 }
 
 
@@ -3098,14 +3167,19 @@ The \OSC{event} message may be used to triggered events. It's the only way to tr
 It may be used also to simulate user interface events (like mouse events).
 
 \begin{rail}
-eventMsg :  'event' ([1] ( (mouseEvent | touchEvent) float32 float32) | [2] eventName)
+eventMsg :  'event' 
+			([1] ( (mouseEvent | touchEvent) float32 float32) 
+			| [2] userEvent ( | var +)
+			| [3] eventName
+			)
 \end{rail}
 \index{Common messages!event}
 
 
 \begin{itemize}
 \item \textbf{1}: this form is intended to simulate mouse or touch event. It must be followed by the x and y coordinates of the interaction point. Coordinates express a position in pixels (the top left corner of the object is in [0,0]).
-\item \textbf{2}: trigger any other event 
+\item \textbf{2}: triggers a user defined event. It accepts any number of arguments, that are then expanded in place of the variables \$1 ... \$i. User defined events may be viewed as functions with arbitrary parameters; however parameters count and type is not checked. 
+\item \textbf{3}: triggers any other event. 
 \end{itemize}
 
 \note \\
@@ -3224,6 +3298,15 @@ Note that all the 'get' messages attached to an event are evaluated at the same 
 An object that takes the \values{x} position of another object on mouse down:
 \sample{/ITL/scene/myObject watch mouseDown \\
 \hspace*{3cm}(/ITL/scene/myObject x '\$(/ITL/scene/obj get x)');}
+
+%===============================
+%:    Variables for user defined events
+\subsublevel{Variables for user defined events}
+\label{udevar}
+
+Messages associated to user defined events accept any number of a variables which names are \$1, ... \$i and which values are taken from the event call arguments. These events may be viewed as functions with arbitrary parameters; however parameters count and type is not checked: arguments in excess are ignored and variables without corresponding argument (e.g. \$3 when only 2 arguments are available) are left unexpanded.
+
+
 
 
 %===============================

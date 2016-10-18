@@ -52,8 +52,7 @@ class IDate : public TimeEventAble
 		libmapping::rational fDate;					///< the object date
 		libmapping::rational fDuration;				///< the object duration
 		int					 fTempo;				///< the object tempo
-	protected:
-		bool	fPendingMove;
+
 		bool	fDateChanged;
 		bool	fDurationChanged;
 

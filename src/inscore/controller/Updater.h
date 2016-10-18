@@ -62,6 +62,8 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (IObjectDebug*) {}
 		virtual void updateTo (IAppl*) {}
 		virtual void updateTo (IApplLog*) {}
+		virtual void updateTo (IArc*) {}
+		virtual void updateTo (IAudio*) {}
 		virtual void updateTo (IMenu*) {}
 		virtual void updateTo (IScene*) {}
 		virtual void updateTo (IText*) {}

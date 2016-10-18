@@ -366,11 +366,12 @@ void IGlue::timerEvent ( QTimerEvent *)
 	fModel->clock();
 	if (fMsgStack->size() || fWebMsgStack->size()) {
 //		QMutexLocker locker (&fTimeViewMutex);
-
 		timebench ("model", modelUpdate());
-		if (fTimeTask) fTimeTask->ptask();
 	}
 	if (fModel->getState() & IObject::kModified + IObject::kSubModified) {
+
+		if (fTimeTask) fTimeTask->ptask();
+
 		timebench ("lmap", localMapUpdate());
 		timebench ("smap", slaveMapUpdate());
 		timebench ("view", viewUpdate());

@@ -19,6 +19,8 @@ musicamobile 	= "http://www.grame.fr/prod/musica-mobile";
 line9			= "http://www.grame.fr/prod/line-9";
 smartfaust		= "http://www.grame.fr/events/smartfaust";
 
+click = mouseDown;
+move  = mouseMove;
 
 #---------------------------------------------
 # title and info shared properties
@@ -40,7 +42,7 @@ color = 20 0 150;
 /ITL/scene/info y -0.7;
 /ITL/scene/info watch mouseEnter (/ITL/scene/info red 240);
 /ITL/scene/info watch mouseLeave (/ITL/scene/info red 20);
-/ITL/scene/info watch mouseDown ( /ITL browse $musicamobile);
+/ITL/scene/info watch $click ( /ITL browse $musicamobile);
 
 #---------------------------------------------
 # video setting
@@ -60,15 +62,15 @@ color = 20 0 150;
 	/ITL/scene/v1 push,
 	/ITL/scene/v1 set video 'smartfaust.mp4',
 	/ITL/scene/info set txt "Smart Faust",
-	/ITL/scene/info watch mouseDown ( /ITL browse $smartfaust),
+	/ITL/scene/info watch $click ( /ITL browse $smartfaust),
 	/ITL/scene/v1 watch end (
 		/ITL/scene/v1 set video 'line9.mp4',
 		/ITL/scene/info set txt "Line 9",
-		/ITL/scene/info watch mouseDown ( /ITL browse $line9),
+		/ITL/scene/info watch $click ( /ITL browse $line9),
 		/ITL/scene/v1 watch end (
 			/ITL/scene/v1 set video 'MusicaMobile.mp4',
 			/ITL/scene/info set txt "Musica Mobile",
-			/ITL/scene/info watch mouseDown ( /ITL browse $musicamobile),
+			/ITL/scene/info watch $click ( /ITL browse $musicamobile),
 			/ITL/scene/v1 pop
 		)
 	)
@@ -89,12 +91,12 @@ w = 0.05;
 /ITL/scene/v1 penColor 240 0 0;
 /ITL/scene/v1 watch mouseEnter ( /ITL/scene/v1 penWidth 2);
 /ITL/scene/v1 watch mouseLeave ( /ITL/scene/v1 penWidth 0);
-move = ( 
+videomove = ( 
 	/ITL/scene/v1 vdate "$date",
 	/ITL/scene/progress date "$date"
  );
-/ITL/scene/v1 watch mouseDown $move;
-/ITL/scene/v1 watch mouseMove $move;
+/ITL/scene/v1 watch $click $videomove;
+/ITL/scene/v1 watch $move $videomove;
 
 
 #---------------------------------------------
@@ -108,14 +110,14 @@ move = (
 /ITL/scene/control* scale 1.7;
 /ITL/scene/control* watch mouseEnter (/ITL/scene/$self red 240);
 /ITL/scene/control* watch mouseLeave (/ITL/scene/$self red 0);
-/ITL/scene/control1 watch mouseDown ( /ITL/scene/v1 event end);
+/ITL/scene/control1 watch $click ( /ITL/scene/v1 event end);
 
-/ITL/scene/control watch mouseDown (
+/ITL/scene/control watch $click (
 	/ITL/scene/control push,
 	/ITL/scene/v1 play 1,
 	/ITL/scene/progress tempo 60,
 	/ITL/scene/control set txt "Stop",
-	/ITL/scene/control watch mouseDown (
+	/ITL/scene/control watch $click (
 		/ITL/scene/v1 play 0,
 		/ITL/scene/progress tempo 0,
 		/ITL/scene/control set txt "Play",

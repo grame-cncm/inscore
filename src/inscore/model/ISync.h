@@ -51,7 +51,7 @@ class Master : public libmapping::smartable
 	public:
 		typedef std::vector< std::string > SyncOptions;
 
-		enum VAlignType { kUnknown=-1, kSyncOver=0, kSyncTop, kSyncBottom, kDefaultSyncAlign=kSyncOver};
+		enum VAlignType { kUnknown=-1, kSyncOver=0, kSyncTop, kSyncBottom, kSyncFrame, kDefaultSyncAlign=kSyncOver};
 		enum SyncType	{ kTypeUnknown=-1, kSyncRelative, kSyncAbsolute, kDefaultSync=kSyncRelative};
 		enum StretchType {	kStretchUnknown=0x8000,
 							kNoStretch=0,							///< no stretch
@@ -71,6 +71,8 @@ class Master : public libmapping::smartable
 		StretchType		getStretch() const		{ return fStretch; }
 		SyncType		getMode() const			{ return fSyncType; }
 		float			getDy() const			{ return fDy; }
+		void			setSyncOptions(VAlignType align, StretchType stretch, SyncType st);
+
 		const std::string& getMasterMapName() const	{ return fMasterMapName; }
 		const std::string& getSlaveMapName() const	{ return fSlaveMapName; }
 
@@ -130,9 +132,9 @@ class ISync
     
 	public:	
 		typedef std::map<SIObject, std::vector<SMaster> >::const_iterator	const_slave_iterator;
-		typedef std::map<SIObject, std::vector<SMaster> >::iterator	slave_iterator;
+		typedef std::map<SIObject, std::vector<SMaster> >::iterator			slave_iterator;
 		typedef std::map<SIObject, std::vector<SIObject> >::const_iterator	const_master_iterator;
-		typedef std::map<SIObject, std::vector<SIObject> >::iterator	master_iterator;
+		typedef std::map<SIObject, std::vector<SIObject> >::iterator		master_iterator;
         enum relation{ kNoRelation = 0, kSlave = 1, kMaster = 2 };
 
 				 ISync() : fModified(false) {}
@@ -152,6 +154,13 @@ class ISync
 			\param slave the slave object
 		*/
         std::vector<SMaster> getMasters(SIObject slave) const;
+
+		/*! \brief returns the masters corresponding to name and map
+			\param slave	the slave object
+			\param master	the master name (supports regular expression)
+			\param map		the master map name
+		*/
+		std::vector<SMaster> getMasters(SIObject slave, const std::string& master, const std::string& map) const;
 
 		/*! \brief returns the vector of slaves for a master
 			\param master the master object

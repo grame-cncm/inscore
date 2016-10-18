@@ -141,6 +141,15 @@ class TMessageEvaluator
 		IMessage::argslist evalVariable (const std::string& var, const EventContext& env) const;
 
 		/**
+		*	\brief evaluates a variable in user defined context
+			\param var the variable
+			\param env the context of the event
+			\param args the arguments of the event
+			\return a list or arguments to be used as parameters in place of the variable
+		*/
+		IMessage::argslist evalVariable (const std::string& var, const EventContext& env, const IMessage::argslist& args) const;
+
+		/**
 		*	\brief evaluates a string that may contain a variable
 			\param str the string
 			\param env the context of the event
@@ -153,6 +162,30 @@ class TMessageEvaluator
 		virtual ~TMessageEvaluator() {}
 
 		/**
+		*	\brief evaluates a user defined message
+			\param msg the message to be evaluated
+			\param env the event context (only the object ptr and the date are significant)
+			\param args a list of arguments
+			\return a list of evaluated message i.e. without variable part
+		
+			Evaluation of a user defined event consists in replacing the variable parameters with the values
+			taken from the \c args list. Variables are expected to be name $1, $2 etc...
+		*/
+		SIMessageList	eval (const IMessageList *msg, const EventContext& env, const IMessage::argslist& args) const;
+
+		/**
+		*	\brief evaluates a single user defined message
+			\param msg the message to be evaluated
+			\param env the event context (only the object ptr and the date are significant)
+			\param args a list of arguments
+			\return an evaluated message i.e. without variable part
+		
+			Evaluation of a message consists in replacing the variable parameters with values
+			evaluated in a given EventContext
+		*/
+		SIMessage		eval (const IMessage *msg, const EventContext& env, const IMessage::argslist& args) const;
+
+		/**
 		*	\brief evaluates a single message
 			\param msg the message to be evaluated
 			\param env the context of the event
@@ -162,6 +195,7 @@ class TMessageEvaluator
 			evaluated in a given EventContext
 		*/
 		SIMessage		eval (const IMessage *msg, const EventContext& env) const;
+
 		/**
 		*	\brief evaluates a list of messages
 			\param msgs the message list to be evaluated

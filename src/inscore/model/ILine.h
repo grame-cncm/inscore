@@ -83,12 +83,15 @@ class ILine : public IShapeMap
 
 		const TFloatPoint&	getPoint() const			{ return fPoint; }
 
+
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
 		enum ArrowHeadType getArrowLeft() const { return fArrowLeft; }
 		enum ArrowHeadType getArrowRight() const { return fArrowRight; }
 		double getArrowSizeLeft() const { return fArrowSizeLeft; }
 		double getArrowSizeRight() const { return fArrowSizeRight; }
+
+        virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
 
 	protected:
 				 ILine( const std::string& name, IObject* parent );

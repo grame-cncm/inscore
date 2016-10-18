@@ -26,6 +26,8 @@
 #include "VPolygonView.h"
 #include "IPolygon.h"
 
+static const float kPolygonPosChangeVers = 1.20f;
+
 namespace inscore
 {
 
@@ -53,10 +55,10 @@ void VPolygonView::updateView( IPolygon * polygon)
 
 	float xoffset = polygon->getXOffset();
 	float yoffset = polygon->getYOffset();
-	if (IAppl::compatibilityVersion() < 1.20)
+	if (IAppl::compatibilityVersion() < kPolygonPosChangeVers)
 		xoffset = yoffset = 0.f;
 	for ( unsigned int i = 0 ; i < polygon->getPoints().size() ; i++ )
-		p << QPoint( relative2SceneX(polygon->getPoints()[i].first+xoffset) , relative2SceneY(polygon->getPoints()[i].second+yoffset) );
+		p << QPoint( relative2SceneX(polygon->getPoints()[i].fX + xoffset) , relative2SceneY(polygon->getPoints()[i].fY + yoffset) );
 	if ( !equals(p, item()->polygon()) )
 	{
 		item()->setPolygon( p );

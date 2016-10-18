@@ -29,6 +29,8 @@
 #include "VObjectView.h"
 
 #include "VApplView.h"
+#include "VArcView.h"
+#include "VAudioView.h"
 #include "VCurveView.h"
 #include "VEllipseView.h"
 #include "VGestureFollowerView.h"
@@ -52,6 +54,8 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
+VObjectView*	ViewFactory::create (const IArc* object,		QGraphicsScene* scene)		{ return new VArcView (scene, object); }
+VObjectView*	ViewFactory::create (const IAudio* object,		QGraphicsScene* scene)		{ return new VAudioView (scene, object); }
 VObjectView*	ViewFactory::create (const ICurve* object,		QGraphicsScene* scene)		{ return new VCurveView (scene, object); }
 VObjectView*	ViewFactory::create (const IEllipse* object,	QGraphicsScene* scene)		{ return new VEllipseView (scene, object); }
 VObjectView*	ViewFactory::create (const IGestureFollower* object,  QGraphicsScene* scene){ return new VGestureFollowerView (scene, object); }

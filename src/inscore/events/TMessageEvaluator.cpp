@@ -377,6 +377,41 @@ IMessage::argslist TMessageEvaluator::evalVariableString (const string& var, con
 }
 
 //----------------------------------------------------------------------
+// converts a variable name into an index,
+// return 0 when it fails
+// differs from standard atoi or strtoul because
+//		a $ is expected at first character
+//		+ or - are not allowed
+static int var2index (const char* var)
+{
+	if (*var++ != '$') return 0;
+	int index = 0;
+	while (*var) {
+		index *= 10;
+		int v = int(*var++) - '0';
+		if ((v < 0) || (v > 9))	// not a number
+			return 0;
+		index += v;
+	}
+	return index;
+}
+
+//----------------------------------------------------------------------
+IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env, const IMessage::argslist& args) const
+{
+	IMessage::argslist outval;
+	
+	// check first for indexed variables ($1, $2, etc...)
+	size_t n = args.size();
+	int index = var2index(var.c_str());
+	if ((index > 0) && (index <= n)) {
+		outval.push_back (args[index-1]);
+		return outval;
+	}
+	return evalVariable (var, env);
+}
+
+//----------------------------------------------------------------------
 IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env) const
 {
 	IMessage::argslist outval;
@@ -469,6 +504,49 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 	return outmsg;
 }
 
+
+
+//----------------------------------------------------------------------
+SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env, const IMessage::argslist& args) const
+{
+	// create a new message with an evaluated address
+	SIMessage outmsg = IMessage::create( evalAddress (msg->address(), env.object));
+	outmsg->setUrl ( msg->url() );
+
+	// evaluate the message string
+	IMessage::argslist methodlist = evalVariable(msg->message(), env, args);
+	if (methodlist.size()) {
+		string method = methodlist[0]->value<string>("");
+		if (method.size()) outmsg->setMessage (method);
+		else outmsg->add( methodlist[0] );
+		for (unsigned int i=1; i<methodlist.size(); i++)
+			outmsg->add( methodlist[i] );
+	}
+
+	// evaluate all the parameters
+	for (int i=0; i < msg->size(); i++) {
+		string str;
+		if (msg->param( i, str)) {
+			IMessage::argslist values = evalVariable(str, env, args);
+			if (!values.size()) return 0;		// variables are expected to give at least one value
+			outmsg->add( values );
+		}
+		else outmsg->add( msg->param(i) );
+	}
+	return outmsg;
+}
+
+//----------------------------------------------------------------------
+SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, const EventContext& env, const IMessage::argslist& args) const
+{
+	SIMessageList outmsgs = IMessageList::create();
+	for (unsigned int i = 0; i <  msgs->list().size(); i++) {
+		const IMessage *msg = msgs->list()[i];
+		SIMessage emsg = eval (msg, env, args);
+		if (emsg) outmsgs->list().push_back(emsg);
+	}
+	return outmsgs;
+}
 
 //----------------------------------------------------------------------
 SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, const EventContext& env) const

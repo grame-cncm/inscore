@@ -1,0 +1,89 @@
+
+/ITL/scene/* del;
+
+#---------------------------------------------
+# required version control
+#---------------------------------------------
+rversion = 1.20;
+/ITL require $rversion ( 
+	/ITL/scene/warning set txt "WARNING: this script requires INScore version" $rversion "or greater." ,
+	/ITL/scene/warning color 100 100 100 ,
+	/ITL/scene/warning y 0.9 ,
+	/ITL/scene/warning scale 1.5
+);
+
+click 	= mouseDown;
+#click 	= touchBegin;
+
+
+color = 20 0 150;
+/ITL/scene/title set txt "Arcs";
+/ITL/scene/title color $color;
+/ITL/scene/title fontSize 32;
+/ITL/scene/title fontWeight bold;
+/ITL/scene/title effect shadow 5 5 0 0 0 75 20;
+/ITL/scene/title y -0.5;
+
+w = 0.8;
+g = 220;
+/ITL/scene/arc set arc $w $w -40 260;
+/ITL/scene/arc color 34 236 247;
+
+/ITL/scene/c set ellipse 0.05 0.05;
+/ITL/scene/c red 240;
+/ITL/scene/c watch timeEnter 1 2 (/ITL/scene/c date 0);
+/ITL/scene/c tempo 60;
+
+/ITL/scene/control1 set txt "Close";
+/ITL/scene/control2 set txt "Fill";
+/ITL/scene/control3 set txt "Play";
+/ITL/scene/control1 y 0.70;
+/ITL/scene/control2 y 0.77;
+/ITL/scene/control3 y 0.84;
+/ITL/scene/control* fontSize 18;
+/ITL/scene/control* watch mouseEnter (/ITL/scene/$self red 240);
+/ITL/scene/control* watch mouseLeave (/ITL/scene/$self red 0);
+
+/ITL/scene/control1 watch $click (
+	/ITL/scene/$self push,
+	/ITL/scene/arc close 1,
+	/ITL/scene/$self set txt "Open",
+	/ITL/scene/$self watch $click (
+		/ITL/scene/arc close 0,
+		/ITL/scene/$self set txt "Close",
+		/ITL/scene/$self pop
+	)
+);
+
+/ITL/scene/control2 watch $click (
+	/ITL/scene/$self push,
+	/ITL/scene/arc brushStyle solid,
+	/ITL/scene/$self set txt "Frame",
+	/ITL/scene/$self watch $click (
+		/ITL/scene/arc brushStyle none,
+		/ITL/scene/$self set txt "Fill",
+		/ITL/scene/$self pop
+	)
+);
+
+/ITL/scene/control3 watch $click (
+	/ITL/scene/$self push,
+	/ITL/scene/arc tempo 50,
+	/ITL/scene/sync c arc syncFrame absolute,
+	/ITL/scene/$self set txt "Stop",
+	/ITL/scene/$self watch $click (
+		/ITL/scene/arc tempo 0,
+		/ITL/scene/sync c,
+		/ITL/scene/$self set txt "Play",
+		/ITL/scene/$self pop
+	)
+);
+
+/ITL/scene/arc watch ddate ( /ITL/scene/arc dstart -1.5 );
+/ITL/scene/arc watch timeEnter 1 2 ( /ITL/scene/arc watch ddate (/ITL/scene/arc dstart 1.5) );
+/ITL/scene/arc watch timeEnter 2 3 ( 
+	/ITL/scene/arc date 0, 
+	/ITL/scene/arc watch ddate (/ITL/scene/arc dstart -1.5)
+);
+
+

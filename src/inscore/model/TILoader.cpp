@@ -104,7 +104,7 @@ MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std
 			path += QString("/bundles") + srcfile.substr(srcfile.find_last_of('/')).c_str();
 			QFile f(path);
 			if(f.open(QIODevice::WriteOnly)){
-				f.write(downloader->byteArray());
+				f.write(downloader.byteArray());
 				f.close();
 			}
 #endif

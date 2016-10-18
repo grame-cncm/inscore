@@ -44,6 +44,7 @@ const char* kcancel_SetMethod		= "cancel";			// Set
 const char* kcliptime_GetSetMethod	= "clipTime";		// Get Set
 const char* kclippitch_GetSetMethod	= "clipPitch";		// Get Set
 const char* kclock_SetMethod		= "clock";			// Set
+const char* kclose_GetSetMethod		= "close";			// Get Set
 const char* kcolor_GetSetMethod		= "color";			// Get Set
 const char* kcolumns_GetSetMethod	= "columns";		// Get Set
 const char* kcompatibility_GetSetMethod	= "compatibility";	// Get Set
@@ -68,6 +69,7 @@ const char* kdimension_GetMethod	= "dimension";		// Get
 const char* kdisconnect_SetMethod   = "disconnect";		// Set
 const char* kdpage_SetMethod		= "dpage";			// Set
 const char* kdred_SetMethod			= "dred";			// Set
+const char* kdrange_SetMethod		= "drange";			// Set
 
 const char* kdrotatex_SetMethod		= "drotatex";		// Set
 const char* kdrotatey_SetMethod		= "drotatey";		// Set
@@ -75,6 +77,7 @@ const char* kdrotatez_SetMethod		= "drotatez";		// Set
 
 const char* kdsaturation_SetMethod	= "dsaturation";	// Set
 const char* kdscale_SetMethod		= "dscale";			// Set
+const char* kdstart_SetMethod		= "dstart";			// Set
 const char* kdtempo_SetMethod		= "dtempo";			// Set
 const char* kdurClock_SetMethod		= "durClock";		// Set
 const char* kduration_GetSetMethod	= "duration";		// Get Set
@@ -85,6 +88,7 @@ const char* kdyorigin_SetMethod		= "dyorigin";		// Set
 const char* kdz_SetMethod			= "dz";				// Set
 const char* kedit_SetMethod			= "edit";			// Set
 const char* keffect_GetSetMethod	= "effect";			// Get Set
+const char* kend_GetSetMethod		= "end";			// Get Set
 const char* kerror_SetMethod		= "error";			// Set
 const char* kerrport_GetSetMethod	= "errport";		// Get Set
 const char* kexpression_GetMethod	= "expr";			// Get
@@ -142,6 +146,7 @@ const char* kport_GetSetMethod		= "port";			// Get Set
 const char* kpush_SetMethod			= "push";			// Set
 const char* kquit_SetMethod			= "quit";			// Set
 const char* kradius_GetSetMethod	= "radius";			// Get Set
+const char* krange_GetSetMethod		= "range";			// Get Set
 const char* krate_GetSetMethod		= "rate";			// Get Set
 const char* krcount_GetMethod		= "rcount";			// Get
 const char* kred_GetSetMethod		= "red";			// Get Set
@@ -165,6 +170,7 @@ const char* kshow_GetSetMethod		= "show";			// Get Set
 //const char* ksignal_GetMethod		= "signal";			// Get
 const char* ksize_GetSetMethod		= "size";			// Get Set
 const char* kstack_GetMethod		= "stack";			// Get
+const char* kstart_GetSetMethod		= "start";			// Get Set
 const char* kstatus_GetMethod		= "status";			// Get
 const char* kstartBench_SetMethod	= "startBench";		// Set
 const char* kstopBench_SetMethod	= "stopBench";		// Set
@@ -207,6 +213,13 @@ const char* klikelihoodthreshold_GetSetMethod= "likelihoodthreshold";	// Get Set
 
 const char* ktolerance_GetSetMethod			= "tolerance";				// Get Set
 const char* kclear_SetMethod				= "clear";					// Set
+
+// sensors methods
+const char* kcalibrate_SetMethod		= "calibrate";				// Set
+const char* kmode_GetSetMethod			= "mode";					// Get Set
+const char* khasZ_GetMethod				= "hasZ";					// Get
+const char* kmax_GetSetMethod			= "max";					// Get Set
+const char* ksmooth_GetSetMethod		= "smooth";					// Get Set
 
 
 } //namespace

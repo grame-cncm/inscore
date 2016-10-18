@@ -66,8 +66,8 @@ extern const char* kNewElementEvent;
 extern const char* kPageCountEvent;
 
 // video specific events
-extern const char* kVideoEndEvent;
-extern const char* kVideoReadyEvent;
+extern const char* kEndEvent;
+extern const char* kReadyEvent;
 
 } // end namespoace
 

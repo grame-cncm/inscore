@@ -16,6 +16,13 @@ color = 20 0 150;
 fsize = 40;
 osize = 42;
 
+clickStr= Click;
+#clickStr= Touch;
+click 	= mouseDown;
+#click 	= touchBegin;
+move 	= mouseMove;
+#move 	= touchUpdate;
+
 /ITL/scene/title  set  txt "Rectangles have a radius attribute.";
 /ITL/scene/title color $color;
 /ITL/scene/title fontSize 32;
@@ -29,11 +36,11 @@ osize = 42;
 
 /ITL/scene/rect	watch mouseEnter ( /ITL/scene/rect penWidth 1);
 /ITL/scene/rect	watch mouseLeave ( /ITL/scene/rect penWidth 0);
-/ITL/scene/rect	watch mouseDown ( /ITL/scene/rect radius "$x[0,200]" "$y[0,200]" );
-/ITL/scene/rect	watch mouseMove ( /ITL/scene/rect radius "$x[0,200]" "$y[0,200]" );
+/ITL/scene/rect	watch $click 	( /ITL/scene/rect radius "$x[0,200]" "$y[0,200]" );
+/ITL/scene/rect	watch $move 	( /ITL/scene/rect radius "$x[0,200]" "$y[0,200]" );
 
-/ITL/scene/comment  set  txt "Click the rectangle to change the x and y radius.";
+/ITL/scene/comment  set  txt $clickStr "the rectangle to change the x and y radius.";
 /ITL/scene/comment fontSize 18;
 /ITL/scene/comment y 0.8;
 
-/ITL/scene/rect	event mouseDown 120 120;
+/ITL/scene/rect	event $click 120 120;

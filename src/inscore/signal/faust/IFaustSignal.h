@@ -52,6 +52,9 @@ class IFaustSignal : public ISignal
 	
 		void addMsgHandler (const char* name, float* zone);
 		void addMsgHandler (const char* name, float* zone, float min, float max);
+	
+		/// \brief in faust context, provides access to output signals using an index
+		virtual bool	findSubNode (std::string node, subnodes& outlist);
 
 	protected:
 

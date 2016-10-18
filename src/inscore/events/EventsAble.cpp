@@ -72,9 +72,9 @@ const char* kNewElementEvent		= "newElement";
 // score specific events
 const char* kPageCountEvent			= "pageCount";
 
-// video specific events
-const char* kVideoEndEvent			= "end";
-const char* kVideoReadyEvent		= "ready";
+// media specific events
+const char* kEndEvent				= "end";
+const char* kReadyEvent				= "ready";
 
 map<size_t, std::string>	EventsAble::fHashCodes;
 std::hash<string>			EventsAble::fHash;
@@ -380,8 +380,8 @@ void EventsAble::init ()
 		hash (kCancelEvent);
 
 		hash (kPageCountEvent);
-		hash (kVideoEndEvent);
-		hash (kVideoReadyEvent);
+		hash (kEndEvent);
+		hash (kReadyEvent);
 	}
 }
 

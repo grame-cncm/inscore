@@ -29,13 +29,10 @@
 
 #include <string>
 
-#ifdef USEPHONON
-#include "QGraphicsVideoItem.h"
-class QGraphicsVideoItem;
-#else
+#include "VMediaPlayer.h"
+
 #include <QMediaPlayer>
 #include <QGraphicsVideoItem>
-#endif
 
 #include "VGraphicsItemView.h"
 #include "VMappedShapeView.h"
@@ -55,51 +52,33 @@ class IVideo;
 /**
 *	\brief a graphic view of a IVide.
 */
-class VVideoView: public QObject, public VGraphicsItemView
+class VVideoView: public VGraphicsItemView, public VMediaPlayer
 {
-#ifndef USEPHONON
-    Q_OBJECT
-#endif
-
 	public :
 		using VGraphicsItemView::updateView;
 		using VGraphicsItemView::updateLocalMapping;
 
 				 VVideoView(QGraphicsScene * scene, const IVideo* h);
-#ifndef USEPHONON
-		virtual ~VVideoView() { fMediaPlayer.stop(); }
-#else
 		virtual ~VVideoView() {}
-#endif
+
 				void initialize( IVideo * video );
 		virtual void initialize (IObject* obj)					{ initialize(static_cast<IVideo*>(obj)); }
 		virtual void updateView ( IVideo * video );
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ VMappedShapeView::updateGraphic2GraphicMapping(shapeMap); }
 
+	virtual void mediaReady();
+	virtual void mediaEnd();
+	virtual void posChanged(qint64 pos);
+	virtual void sizeChanged(const QSizeF & size);
+	virtual void error(QString msg);
+
 
 	private:
 	typedef MouseEventAble<QGraphicsVideoItem> IQGraphicsVideoItem;
-	QGraphicsVideoItem*			fVideoItem;
-#ifndef USEPHONON
-	QMediaPlayer				fMediaPlayer;
-	QMediaPlayer::MediaStatus	fStatus;
-	IVideo*						fVideo;
-	int							fReady;
-#endif
+	QGraphicsVideoItem*		fVideoItem;
+	IVideo *				fVideo;
 
 	void initFile( IVideo * video, const QString&  videoFile );
-	bool error() const;
-
-#ifndef USEPHONON
-protected slots:
-	void	error (QMediaPlayer::Error error);
-	void	mediaStatusChanged (QMediaPlayer::MediaStatus status);
-	void	stateChanged (QMediaPlayer::State state);
-	void	seekableChanged(bool seekable);
-	void	nativeSizeChanged(const QSizeF & size);
-	void	durationChanged(qint64 duration);
-	void	positionChanged(qint64 position);
-#endif
 };
 
 

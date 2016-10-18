@@ -87,6 +87,7 @@ all:
 #	make filter
 
 pdf:
+	./SendOSC 7000 /ITL/scene reset
 	make pdfgraphic
 	make pdfsync
 	make pdfjava

@@ -6,8 +6,8 @@
 
 /ITL/scene/title1  set  txt "This script illustrates FAUST DSP usage.";
 /ITL/scene/title2  set  txt "Faust DSPs are compiled with libfaust.";
-/ITL/scene/title1  y -0.98;
-/ITL/scene/title2  y -0.90;
+/ITL/scene/title1  y -0.93;
+/ITL/scene/title2  y -0.86;
 /ITL/scene/title1 scale 1.7;
 /ITL/scene/title2 scale 1.4;
 

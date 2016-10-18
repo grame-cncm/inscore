@@ -22,9 +22,12 @@ Item {
         if(rootPath.charAt(rootPath.length-1)==="/")
             rootPath = rootPath.substr(0, rootPath.length-1);
 
+//inscore.postMessage("192.168.1.21:7001/ITL/setRootPath", rootPath)
+
         folderView.currentView.folderModel.rootFolder = rootPath;
         folderView.hiddenView.folderModel.rootFolder = rootPath;
         folderView.currentView.folderModel.folder = rootPath;
+        folderView.hiddenView.folderModel.folder = rootPath;
         path.append({"name": rootName})
         folderView.currentView.visible = true;
 
@@ -32,14 +35,11 @@ Item {
         isQrcPath = regexp.test(rootPath);
     }
 
-    function folderModelFromPath(path){
-        return Qt.createQmlObject('import Qt.labs.folderlistmodel 2.1; FolderListModel{folder: "'+path+'"; nameFilters: ["*.inscore","*.ibundle"];}', root);
-    }
-
 
     function open(folderName, folderPath){
         path.append({"name": folderName});
         if(folderView.currentView.visible){
+//inscore.postMessage("192.168.1.21:7001/ITL/open", folderPath)
             folderView.hiddenView.folderModel.folder = folderPath;
             folderView.state = "open";
         }
@@ -154,7 +154,8 @@ Item {
                         //Folders
                         model: folderModel;
                         SlideMenuItem{
-                            text: fileIsDir?fileName:fileName.slice(0, fileName.lastIndexOf("."));
+                            //text: fileIsDir?fileName:fileName.slice(0, fileName.lastIndexOf("."));
+                            text: fileName;
                             icon: fileIsDir?"qrc:///images/folder.png":"qrc:///INScoreViewer.png";
                             first: true;
                             anchors.left: folderView_Layout.left
