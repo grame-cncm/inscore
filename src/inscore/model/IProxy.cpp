@@ -43,11 +43,19 @@
 #include "ISVGFile.h"
 #include "IImage.h"
 #include "ITextFile.h"
+#include "SensorsModel.h"
 
 using namespace std;
 
 namespace inscore
 {
+
+//--------------------------------------------------------------------------
+static string name2type (const std::string& name)
+{
+	if (name == IAccelerometer::kAccelerometerType) return name;
+	return ISignal::kSignalType;
+}
 
 //--------------------------------------------------------------------------
 int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject parent)
@@ -59,8 +67,10 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 	SIObject obj;
 	if (objType == IFaustProcessor::kFaustProcessorType || objType == IFaustDSP::kFaustDSPType || objType == IFaustDSPFile::kFaustDSPFileType)
 		obj = IObjectFactory::create(objName, objType, parent);
-	else
-        obj = IObjectFactory::create(objName, ISignal::kSignalType, parent);
+	else {
+		string sigtype = name2type (objName);
+        obj = IObjectFactory::create(objName, sigtype, parent);
+	}
     
     if (obj) {
 		int status = obj->execute(msg);
