@@ -7,3 +7,10 @@ commentaire
 *)
 *)
 /ITL/scene/toto c f;
+
+192.168.1.168:7000/ITL/scene/signal/accelerometer size 200;
+192.168.1.168:7000/ITL/scene/signal/accelerometer size 200;
+192.168.1.168:7000/ITL/scene/signal/accelerometer size 200;
+
+192.168.1.168:7000/ITL/scene/acc watch newData (/accx '$(/ITL/scene/acc get x)');
+92.168.1.168:7000/ITL/scene/acc watch newData (192.168.1.21:7000/accx '$(/ITL/scene/acc get x)');
