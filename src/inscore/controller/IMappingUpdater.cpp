@@ -302,13 +302,13 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         x = invertedVariety.getx(0.5); // the center
         y = invertedVariety.gety(0.5);
         
-		slave->setSyncPos(masterMapName, QPointF(x,y));
+		slave->setSyncPos(masterMapName, TFloatPoint(x,y));
         slave->setSyncHeight(masterMapName, extendedDestSeg.yinterval().size());
         slave->setSyncWidth(masterMapName, extendedDestSeg.xinterval().size());
         
 		return masterSeg;
 	}
-    slave->setSyncPos(masterMapName, QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
+    slave->setSyncPos(masterMapName, TFloatPoint(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
 	return masterSeg;
 }
 
