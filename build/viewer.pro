@@ -10,7 +10,7 @@ RCC_DIR		= tmp
 VERSION = 1.21
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets
-QT += quick qml quickwidgets 
+QT += quick qml quickwidgets sensors
 
 ############################## 
 # locations
