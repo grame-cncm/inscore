@@ -3526,6 +3526,26 @@ Using variables in interaction messages: \$sx is evaluated at event occurrence	a
 /ITL/scene/foo watch mouseDown (/ITL/scene/foo "\$sx" \$y);
 }
 
+%===============================
+%:    Environnement variables
+\sublevel{Environnement variables}\label{envvar}
+
+Environnement variables are predefined variables available in a script context. They provide information related to the current context. Current environment variables are:
+\begin{itemize}
+\item \textbf{\OSC{OSName}}: gives the current operating system name. The value is among \OSC{"MacOS"}, \OSC{"Windows"}, \OSC{"Linux"}, \OSC{"Android"} and \OSC{"iOS"}.
+\item \textbf{\OSC{OSId}} : gives the current operating system as a numeric identifier. Returned value is (in alphabetic order): 
+\begin{itemize}
+\item 1 for Android
+\item 2 for iOS.
+\item 3 for Linux, 
+\item 4 for MacOS, 
+\item 5 for Windows, 
+\end{itemize}
+\end{itemize}
+
+\note\\
+There is nothing to prevent overriding of an environment variable. It's the script responsibility to handle variable names collisions.
+
 
 %===============================
 %:    Message based parameters
@@ -3647,6 +3667,10 @@ The Javascript engine is based on the Qt5 Javascrip engine, extended with additi
 %/ITL load 'call-javascript.inscore';
 %}
 
+
+%===============================
+%:Math expressions
+\input{MathExpressions/mathexpressions.tex}
 
 %===============================
 %:Score expressions

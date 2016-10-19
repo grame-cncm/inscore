@@ -2270,8 +2270,150 @@
 \rail@term{code}[]
 \rail@end
 }
-\rail@i {126}{ EvaluableExpression: ('expr') '(' ( ([1] operator score score) |[2] score ) ')' }
+\rail@i {126}{ mathexpr: [1] matharg '+' matharg | [2] matharg '-' matharg | [3] '-' matharg | [4] matharg '*' matharg | [5] matharg '/' matharg | [6] matharg '\%' matharg | [7] '(' mathexpr ')' | [8] 'max' '(' (matharg +) ')' | [9] 'min' '(' (matharg +) ')' | [10]'(' mathbool '?' matharg ':' matharg ')' }
 \rail@o {126}{
+\rail@index{mathexpr}
+\rail@begin{12}{mathexpr}
+\rail@bar
+\rail@annote[1]
+\rail@nont{matharg}[]
+\rail@term{+}[]
+\rail@nont{matharg}[]
+\rail@nextbar{1}
+\rail@annote[2]
+\rail@nont{matharg}[]
+\rail@term{-}[]
+\rail@nont{matharg}[]
+\rail@nextbar{2}
+\rail@annote[3]
+\rail@term{-}[]
+\rail@nont{matharg}[]
+\rail@nextbar{3}
+\rail@annote[4]
+\rail@nont{matharg}[]
+\rail@term{*}[]
+\rail@nont{matharg}[]
+\rail@nextbar{4}
+\rail@annote[5]
+\rail@nont{matharg}[]
+\rail@term{/}[]
+\rail@nont{matharg}[]
+\rail@nextbar{5}
+\rail@annote[6]
+\rail@nont{matharg}[]
+\rail@term{\%}[]
+\rail@nont{matharg}[]
+\rail@nextbar{6}
+\rail@annote[7]
+\rail@term{(}[]
+\rail@nont{mathexpr}[]
+\rail@term{)}[]
+\rail@nextbar{7}
+\rail@annote[8]
+\rail@term{max}[]
+\rail@term{(}[]
+\rail@plus
+\rail@nont{matharg}[]
+\rail@nextplus{8}
+\rail@endplus
+\rail@term{)}[]
+\rail@nextbar{9}
+\rail@annote[9]
+\rail@term{min}[]
+\rail@term{(}[]
+\rail@plus
+\rail@nont{matharg}[]
+\rail@nextplus{10}
+\rail@endplus
+\rail@term{)}[]
+\rail@nextbar{11}
+\rail@annote[10]
+\rail@term{(}[]
+\rail@nont{mathbool}[]
+\rail@term{?}[]
+\rail@nont{matharg}[]
+\rail@term{:}[]
+\rail@nont{matharg}[]
+\rail@term{)}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {127}{ mathbool: [1] arg | [2] '!' arg | [3] arg '==' arg | [4] arg '>' arg | [5] arg '>=' arg | [6] arg '<' arg | [7] arg '<=' arg }
+\rail@o {127}{
+\rail@index{mathbool}
+\rail@begin{7}{mathbool}
+\rail@bar
+\rail@annote[1]
+\rail@nont{arg}[]
+\rail@nextbar{1}
+\rail@annote[2]
+\rail@term{!}[]
+\rail@nont{arg}[]
+\rail@nextbar{2}
+\rail@annote[3]
+\rail@nont{arg}[]
+\rail@term{==}[]
+\rail@nont{arg}[]
+\rail@nextbar{3}
+\rail@annote[4]
+\rail@nont{arg}[]
+\rail@term{>}[]
+\rail@nont{arg}[]
+\rail@nextbar{4}
+\rail@annote[5]
+\rail@nont{arg}[]
+\rail@term{>=}[]
+\rail@nont{arg}[]
+\rail@nextbar{5}
+\rail@annote[6]
+\rail@nont{arg}[]
+\rail@term{<}[]
+\rail@nont{arg}[]
+\rail@nextbar{6}
+\rail@annote[7]
+\rail@nont{arg}[]
+\rail@term{<=}[]
+\rail@nont{arg}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {128}{ matharg: [1] 'param' | [2] 'variable' | [3] 'variable' ('++' | '--') | [4] ('++' | '- -') 'variable' | [5] 'msgvariable' | [6] mathexpr }
+\rail@o {128}{
+\rail@index{matharg}
+\rail@begin{8}{matharg}
+\rail@bar
+\rail@annote[1]
+\rail@term{param}[]
+\rail@nextbar{1}
+\rail@annote[2]
+\rail@term{variable}[]
+\rail@nextbar{2}
+\rail@annote[3]
+\rail@term{variable}[]
+\rail@bar
+\rail@term{++}[]
+\rail@nextbar{3}
+\rail@term{--}[]
+\rail@endbar
+\rail@nextbar{4}
+\rail@annote[4]
+\rail@bar
+\rail@term{++}[]
+\rail@nextbar{5}
+\rail@term{- -}[]
+\rail@endbar
+\rail@term{variable}[]
+\rail@nextbar{6}
+\rail@annote[5]
+\rail@term{msgvariable}[]
+\rail@nextbar{7}
+\rail@annote[6]
+\rail@nont{mathexpr}[]
+\rail@endbar
+\rail@end
+}
+\rail@i {129}{ EvaluableExpression: ('expr') '(' ( ([1] operator score score) |[2] score ) ')' }
+\rail@o {129}{
 \rail@index{EvaluableExpression}
 \rail@begin{2}{EvaluableExpression}
 \rail@term{expr}[]
@@ -2288,8 +2430,8 @@
 \rail@term{)}[]
 \rail@end
 }
-\rail@i {127}{ Argument: GmnCode |( ( | '\&' | '$\sim $' ) ( filepath |ScoreObject ) ) | EvaluableExpression }
-\rail@o {127}{
+\rail@i {130}{ Argument: GmnCode |( ( | '\&' | '$\sim $' ) ( filepath |ScoreObject ) ) | EvaluableExpression }
+\rail@o {130}{
 \rail@index{Argument}
 \rail@begin{5}{Argument}
 \rail@bar
@@ -2311,8 +2453,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {128}{ faustprocessor : 'set' 'faust' path }
-\rail@o {128}{
+\rail@i {131}{ faustprocessor : 'set' 'faust' path }
+\rail@o {131}{
 \rail@index{faustprocessor}
 \rail@begin{1}{faustprocessor}
 \rail@term{set}[]
@@ -2320,8 +2462,8 @@
 \rail@nont{path}[]
 \rail@end
 }
-\rail@i {129}{ faustdsp : 'set' 'faustdsp' faustcode }
-\rail@o {129}{
+\rail@i {132}{ faustdsp : 'set' 'faustdsp' faustcode }
+\rail@o {132}{
 \rail@index{faustdsp}
 \rail@begin{1}{faustdsp}
 \rail@term{set}[]
@@ -2329,8 +2471,8 @@
 \rail@nont{faustcode}[]
 \rail@end
 }
-\rail@i {130}{ faustdspfile : 'set' 'faustdspf' faustfile }
-\rail@o {130}{
+\rail@i {133}{ faustdspfile : 'set' 'faustdspf' faustfile }
+\rail@o {133}{
 \rail@index{faustdspfile}
 \rail@begin{1}{faustdspfile}
 \rail@term{set}[]
@@ -2338,8 +2480,8 @@
 \rail@nont{faustfile}[]
 \rail@end
 }
-\rail@i {131}{ faustmessage : signalMsgs | [1] 'msg' float32 | [2] 'get' ('in' | 'out') }
-\rail@o {131}{
+\rail@i {134}{ faustmessage : signalMsgs | [1] 'msg' float32 | [2] 'get' ('in' | 'out') }
+\rail@o {134}{
 \rail@index{faustmessage}
 \rail@begin{4}{faustmessage}
 \rail@bar
@@ -2359,8 +2501,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {132}{ signal : identifier ( | "/" n) | float32 }
-\rail@o {132}{
+\rail@i {135}{ signal : identifier ( | "/" n) | float32 }
+\rail@o {135}{
 \rail@index{signal}
 \rail@begin{3}{signal}
 \rail@bar
@@ -2375,8 +2517,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {133}{ gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + ) }
-\rail@o {133}{
+\rail@i {136}{ gesturefollower : 'set' 'imtrgf' gesturedimension bufsize ( name + ) }
+\rail@o {136}{
 \rail@index{gesturefollower}
 \rail@begin{2}{gesturefollower}
 \rail@term{set}[]
@@ -2389,8 +2531,8 @@
 \rail@endplus
 \rail@end
 }
-\rail@i {134}{ gesturefollower : [1] ( float32 + ) | [2] ('learn' name) | [3] 'follow' | [4] 'stop' | [5] 'clear' | [6] ('likelihoodwindow' float32) | [7] ('tolerance' float32) }
-\rail@o {134}{
+\rail@i {137}{ gesturefollower : [1] ( float32 + ) | [2] ('learn' name) | [3] 'follow' | [4] 'stop' | [5] 'clear' | [6] ('likelihoodwindow' float32) | [7] ('tolerance' float32) }
+\rail@o {137}{
 \rail@index{gesturefollower}
 \rail@begin{8}{gesturefollower}
 \rail@bar
@@ -2423,8 +2565,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {135}{ gesture : 'set' ( float32 +) | 'clear' | 'learn' | 'likelihoodThreshold' float32 }
-\rail@o {135}{
+\rail@i {138}{ gesture : 'set' ( float32 +) | 'clear' | 'learn' | 'likelihoodThreshold' float32 }
+\rail@o {138}{
 \rail@index{gesture}
 \rail@begin{5}{gesture}
 \rail@bar
@@ -2443,8 +2585,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {136}{ gestureget : 'get' (| 'likelihoodThreshold' | 'size') }
-\rail@o {136}{
+\rail@i {139}{ gestureget : 'get' (| 'likelihoodThreshold' | 'size') }
+\rail@o {139}{
 \rail@index{gestureget}
 \rail@begin{3}{gestureget}
 \rail@term{get}[]
@@ -2456,8 +2598,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {137}{ gestureevents : 'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
-\rail@o {137}{
+\rail@i {140}{ gestureevents : 'watch' ( | 'gfEnter' | 'gfLeave' | 'gfActive' | 'gfIdle' ) ( | messages ) }
+\rail@o {140}{
 \rail@index{gestureevents}
 \rail@begin{5}{gestureevents}
 \rail@term{watch}[]
@@ -2477,8 +2619,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {138}{ gesturevariable : ( 'gflikelihood' | 'gfpos' | 'gfspeed') ( | '[low,high]' ) }
-\rail@o {138}{
+\rail@i {141}{ gesturevariable : ( 'gflikelihood' | 'gfpos' | 'gfspeed') ( | '[low,high]' ) }
+\rail@o {141}{
 \rail@index{gesturevariable}
 \rail@begin{3}{gesturevariable}
 \rail@bar
@@ -2494,8 +2636,8 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {139}{ httpdserver: 'set' 'httpd' port }
-\rail@o {139}{
+\rail@i {142}{ httpdserver: 'set' 'httpd' port }
+\rail@o {142}{
 \rail@index{httpdserver}
 \rail@begin{1}{httpdserver}
 \rail@term{set}[]
@@ -2503,8 +2645,8 @@
 \rail@nont{port}[]
 \rail@end
 }
-\rail@i {140}{ httpdmessage : 'get' status }
-\rail@o {140}{
+\rail@i {143}{ httpdmessage : 'get' status }
+\rail@o {143}{
 \rail@index{httpdmessage}
 \rail@begin{1}{httpdmessage}
 \rail@term{get}[]
