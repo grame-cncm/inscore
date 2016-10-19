@@ -68,7 +68,7 @@ ITLparser::ITLparser(std::istream* stream, int line, IAppl* root, bool execute)
 {
 	setlocale(LC_NUMERIC, "C");
 	initScanner();
-	fLine = 0;
+	fLineOffset = fColumn = fLine = fExprStartLine = 0;
 	setupEnv();
 }
 
