@@ -12,19 +12,19 @@ rversion = 1.20;
 	/ITL/scene/warning scale 1.5
 );
 
-click 	= mouseDown;
-#click 	= touchBegin;
-
+click 		= ($OSId < 3 ? touchBegin : mouseDown);
+ctrlSize  	= ($OSId < 3 ? 32 : 18);
+gap 		= ($OSId < 3 ? 0.17 : 0.08);
 
 color = 20 0 150;
 /ITL/scene/title set txt "Arcs";
 /ITL/scene/title color $color;
-/ITL/scene/title fontSize 32;
+/ITL/scene/title fontSize 44;
 /ITL/scene/title fontWeight bold;
 /ITL/scene/title effect shadow 5 5 0 0 0 75 20;
-/ITL/scene/title y -0.5;
+/ITL/scene/title y -0.75;
 
-w = 0.8;
+w = 1;
 g = 220;
 /ITL/scene/arc set arc $w $w -40 260;
 /ITL/scene/arc color 34 236 247;
@@ -37,10 +37,10 @@ g = 220;
 /ITL/scene/control1 set txt "Close";
 /ITL/scene/control2 set txt "Fill";
 /ITL/scene/control3 set txt "Play";
-/ITL/scene/control1 y 0.70;
-/ITL/scene/control2 y 0.77;
-/ITL/scene/control3 y 0.84;
-/ITL/scene/control* fontSize 18;
+/ITL/scene/control1 y 0.65;
+/ITL/scene/control2 y $(/ITL/scene/control1 get y) +  $(/ITL/scene/control1 get height) + $gap;
+/ITL/scene/control3 y $(/ITL/scene/control2 get y) +  $(/ITL/scene/control2 get height) + $gap ;
+/ITL/scene/control* fontSize $ctrlSize;
 /ITL/scene/control* watch mouseEnter (/ITL/scene/$self red 240);
 /ITL/scene/control* watch mouseLeave (/ITL/scene/$self red 0);
 
