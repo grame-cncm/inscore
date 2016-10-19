@@ -44,6 +44,7 @@ class ITLparser {
 
 	void initScanner();
 	void destroyScanner();
+	void setupEnv();
 
 	public:
 		class address {

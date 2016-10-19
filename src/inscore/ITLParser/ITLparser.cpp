@@ -31,6 +31,37 @@ using namespace std;
 namespace inscore 
 {
 
+static const char * kOSNameVar	= "OSName";
+static const char * kOSIDVar	= "OSId";
+
+static const char * kMacOSName		= "MacOS";
+static const char * kWindowsName	= "Windows";
+static const char * kLinuxName		= "Linux";
+static const char * kAndroidName	= "Android";
+static const char * kiOSName		= "iOS";
+
+enum { kAndroid=1, kiOS, kLinux, kMacOS, kWindows };
+
+#ifdef MACOS
+const char *	kOSName	= kMacOSName;
+const int		kOSID	= kMacOS;
+#elif defined WINDOWS
+const char *	kOSName	= kWindowsName;
+const int		kOSID	= kWindows;
+#elif defined IOS
+const char *	kOSName	= kiOSName;
+const int		kOSID	= kiOS;
+#elif defined ANDROID
+const char *	kOSName	= kAndroidName;
+const int		kOSID	= kAndroid;
+#elif defined __LINUX__
+const char *	kOSName	= kLinuxName;
+const int		kOSID	= kLinux;
+#else
+#error "undefined operating system"
+#endif
+
+
 //--------------------------------------------------------------------------
 ITLparser::ITLparser(std::istream* stream, int line, IAppl* root, bool execute)
 	: fReader(root, execute), fStream(stream), fLine(line), fColumn(1)
@@ -38,6 +69,7 @@ ITLparser::ITLparser(std::istream* stream, int line, IAppl* root, bool execute)
 	setlocale(LC_NUMERIC, "C");
 	initScanner();
 	fLine = 0;
+	setupEnv();
 }
 
 //--------------------------------------------------------------------------
@@ -47,5 +79,15 @@ ITLparser::~ITLparser()
 	destroyScanner();
 }
 
-} // end namespace
+//--------------------------------------------------------------------------
+void ITLparser::setupEnv()
+{
+	IMessage::argslist osname;
+	osname.push_back( new IMsgParam<string>(kOSName));
+	fReader.variable (kOSNameVar, &osname);
+	IMessage::argslist osid;
+	osid.push_back( new IMsgParam<int>(kOSID));
+	fReader.variable (kOSIDVar, &osid);
+}
 
+} // end namespace
