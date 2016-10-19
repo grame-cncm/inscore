@@ -13,6 +13,8 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.21
+- environement variables introduced in scripting environment (OSName and OSId)
+- new math expressions introduced in scripting context
 
 ----------------------------------------------------
 Version 1.20
