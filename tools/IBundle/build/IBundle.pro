@@ -21,7 +21,12 @@ SRC 		= $$ROOT/src
 ITLROOT		= $$ROOT/../../
 ITLSRC		= $$ITLROOT/src/inscore/
 
-win32 { DEFINES += NOHOSTNAME }
+win32 						{ DEFINES += NOHOSTNAME WINDOWS }
+android 					{ DEFINES += ANDROID }
+ios 						{ DEFINES += IOS }
+macx 						{ DEFINES += MACOS }
+unix:!macx:!ios:!android 	{ DEFINES += __LINUX__ }
+
 !win32 {
     QMAKE_CFLAGS_WARN_OFF += -Wno-deprecated-register -Wno-unused-parameter
 }
