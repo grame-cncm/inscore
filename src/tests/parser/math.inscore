@@ -40,17 +40,15 @@ c1 = $c1 + 1;
 /ITL/scene/toto1 totomoinsmoins $toto--;
 /ITL/scene/toto1 toto $toto;
 /ITL/scene/toto1 toto $x;
-/ITL/scene/o? max @max( 10*50 $c2 );
+#/ITL/scene/o? max @max( 10*50 $c2 );
 /ITL/scene/o? min @min( $c1 $c2 );
 /ITL/scene/text min @min( toto oizeroiu );
 /ITL/scene/text max @max ( toto oizeroiu );
-/ITL/scene/text cond ( toto < 5 ?  inf5 : sup5 );
 /ITL/scene/par nopar 10 + 2 * 3;
 /ITL/scene/par par ( 10 + 2 ) * 3;
 /ITL/scene/text math text + 1;
 /ITL/scene/text math text + $c2;
 /ITL/scene/text math text + 0.1;
-/ITL/scene/text math text - 1;
 
 a = 10 20 ;
 /ITL/scene/array  $a '*' $c2 "->" $a * $c2;
