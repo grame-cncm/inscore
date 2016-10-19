@@ -363,7 +363,9 @@ void IObject::_del(bool delsigcnx)
 //--------------------------------------------------------------------------
 void IObject::newData (bool state) {
 	fNewData = state;
-	triggerEvent(kNewDataEvent, true);
+//	triggerEvent(kNewDataEvent, true);
+	EventContext env(getDate(), this);
+	checkEvent(kNewDataEvent, env);
 }
 
 //--------------------------------------------------------------------------
