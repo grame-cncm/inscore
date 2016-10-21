@@ -53,6 +53,7 @@ extern IGlue* gGlue;
 
 const char* kXVar		= "$x";
 const char* kYVar		= "$y";
+const char* kZVar		= "$z";
 const char* kSceneXVar	= "$sx";
 const char* kSceneYVar	= "$sy";
 const char* kAbsXVar	= "$absx";
@@ -78,6 +79,7 @@ void TMessageEvaluator::init ()
 	if (fVarLength.size() == 0) {
 		fVarLength[kXVar]		= strlen(kXVar);
 		fVarLength[kYVar]		= strlen(kYVar);
+		fVarLength[kZVar]		= strlen(kZVar);
 		fVarLength[kSceneXVar]	= strlen(kSceneXVar);
 		fVarLength[kSceneYVar]	= strlen(kSceneYVar);
 		fVarLength[kAbsXVar]	= strlen(kAbsXVar);
@@ -421,6 +423,7 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 	if (var[0] == '$') {
 		if (posVariable (var, kXVar))			outval.push_back ( evalPosition (var.substr(fVarLength[kXVar]), env.mouse.fx));
 		else if (posVariable (var, kYVar))		outval.push_back ( evalPosition (var.substr(fVarLength[kYVar]), env.mouse.fy));
+		else if (posVariable (var, kZVar))		outval.push_back ( evalPosition (var.substr(fVarLength[kZVar]), env.mouse.fz));
 		else if (posVariable (var, kAbsXVar))	outval.push_back ( evalPosition (var.substr(fVarLength[kAbsXVar]), env.mouse.fabsx));
 		else if (posVariable (var, kAbsYVar))	outval.push_back ( evalPosition (var.substr(fVarLength[kAbsYVar]), env.mouse.fabsy));
 		else if (posVariable (var, kSceneXVar)) outval.push_back ( evalPosition (var.substr(fVarLength[kSceneXVar]), env.mouse.fsx));

@@ -46,14 +46,16 @@ typedef libmapping::SMARTP<IObject>			SIObject;
 * \brief current mouse location in various coordinate spaces
 */
 typedef struct MouseLocation {
-	float fx, fy;			///< coordinates relative to the object, as in internal representation
+	float fx, fy, fz;		///< coordinates relative to the object, as in internal representation
 	float fabsx, fabsy;		///< absolute coordinates relative to the object
 	float fsx, fsy;			///< coordinates relative to the scene
 
 	MouseLocation (float x, float y, float ax, float ay, float sx, float sy)
-		: fx(x), fy(y), fabsx(ax), fabsy(ay), fsx(sx), fsy(sy) {}
+		: fx(x), fy(y), fz(0), fabsx(ax), fabsy(ay), fsx(sx), fsy(sy) {}
+	MouseLocation (float x, float y, float z)
+		: fx(x), fy(y), fz(z), fabsx(0), fabsy(0), fsx(0), fsy(0) {}
 	MouseLocation ()
-		: fx(0), fy(0), fabsx(0), fabsy(0), fsx(0), fsy(0) {}
+		: fx(0), fy(0), fz(0), fabsx(0), fabsy(0), fsx(0), fsy(0) {}
 } MouseLocation;
 
 //----------------------------------------------------------------------
