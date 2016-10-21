@@ -31,6 +31,7 @@
 #include "IGraphicSignal.h"
 #include "ISignalNode.h"
 
+
 using namespace std;
 
 namespace inscore
@@ -96,16 +97,12 @@ void SigModified::updateTo (IGraphicSignal* gs)
 	}
 }
 
-void SigModified::updateTo (ISignalNode* gs)
+void SigModified::updateTo (ISignalNode* signode)
 {
-	if (gs->getState()) {
-		vector<ISignalConnection* >& cnx = gs->getConnections();		// propagate signal modification to connected objects
+	if (signode->getState()) {
+		vector<ISignalConnection* >& cnx = signode->getConnections();		// propagate signal modification to connected objects
 		for (size_t i=0; i<cnx.size(); i++) {
-			IObject::subnodes outlist;
-			if (gs->getParent()->exactfind(cnx[i]->getObject(), outlist)) {
-				outlist[0]->setModified();
-				outlist.clear();
-			}
+			cnx[i]->getObject()->setModified();
 		}
 	}
 }
