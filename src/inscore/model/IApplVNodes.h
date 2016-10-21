@@ -143,13 +143,13 @@ class IApplLog : public IVNode
 		void	setY		(float y)	{ fYPos = y; }
 		void	setW		(float x)	{ fWidth = x; }
 		void	setH		(float y)	{ fHeight = y; }
+		void	setWrap		(bool state);
 
 	protected:	
 				 IApplLog(IObject * parent);
 		virtual ~IApplLog();
 
 		void	clear();
-		void	setWrap(bool state);
 
 		virtual void	setXPos		(float x);
 		virtual void	setYPos		(float y);
