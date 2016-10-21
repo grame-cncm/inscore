@@ -357,15 +357,13 @@ void IObject::_del(bool delsigcnx)
 
 	// cleanup signal connections
 	if (delsigcnx)
-		getParent()->signalsNode()->cleanupTarget(name());
+		getParent()->signalsNode()->cleanupTarget(this);
 }
 
 //--------------------------------------------------------------------------
 void IObject::newData (bool state) {
 	fNewData = state;
-//	triggerEvent(kNewDataEvent, true);
-	EventContext env(getDate(), this);
-	checkEvent(kNewDataEvent, env);
+	if (state) checkEvent(kNewDataEvent, getDate(), this);
 }
 
 //--------------------------------------------------------------------------
@@ -399,7 +397,7 @@ vector<SMaster>  IObject::getMasters(SIObject o, const string& master, const str
 																{ return fSync->getMasters(o, master, map); }
 vector<SMaster>  IObject::getMasters(SIObject o) const			{ return fSync ? fSync->getMasters(o) : vector<SMaster>(); }
 vector<SIObject> IObject::getSlaves(const SIObject o) const		{ return fSync ? fSync->getSlaves(o) : vector<SIObject>(); }
-void IObject::cleanupSync ()										{ if (fSync) fSync->cleanup(); }
+void IObject::cleanupSync ()									{ if (fSync) fSync->cleanup(); }
 
 //--------------------------------------------------------------------------
 IObject::subnodes IObject::sort ()
@@ -726,7 +724,7 @@ bool IObject::checkEvent (EventsAble::eventype event, const IMessage::argslist& 
 {
 	const IMessageList*	msgs = getMessages(event);
 	if (msgs) {
-		EventContext env(getDate(), this);
+		EventContext env(MouseLocation(getXPos(), getYPos(), getZOrder()), getDate(), this);
 		TMessageEvaluator me;
 		SIMessageList outmsgs = me.eval (msgs, env, args);
 		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
@@ -737,7 +735,7 @@ bool IObject::checkEvent (EventsAble::eventype event, const IMessage::argslist& 
 
 bool IObject::checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const
 {
-	EventContext env(date, obj);
+	EventContext env(MouseLocation(getXPos(), getYPos(), getZOrder()), date, obj);
 	return checkEvent( event, env);
 }
 
@@ -791,7 +789,7 @@ int IObject::processSig ()
 		 if (elements()[i]->getDeleted()) continue;
 		// looks for the object elements()[i] in all the signal connections
         std::vector<ISignalConnection*> connections;
-        if(fSignals) connections = fSignals->getConnectionsOf(elements()[i]->name());
+        if(fSignals) connections = fSignals->getConnectionsOf(elements()[i]);
         if(!connections.empty())
         {
             // if found, we call the method executeSignal to link the attribute and the signal.
@@ -799,11 +797,11 @@ int IObject::processSig ()
             {
                 int status = 0;
                 if(connections[it]->getRangeType() == "float")
-                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getFloatRange(), connections[it]->getSignal());
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getFloatRange(), connections[it]->getPSignal());
                 else if(connections[it]->getRangeType() == "int")
-                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getIntRange(), connections[it]->getSignal());
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), connections[it]->getIntRange(), connections[it]->getPSignal());
                 else
-                    status = elements()[i]->executeSignal(connections[it]->getMethod(), std::pair<float, float>(-1.f,1.f), connections[it]->getSignal());
+                    status = elements()[i]->executeSignal(connections[it]->getMethod(), std::pair<float, float>(-1.f,1.f), connections[it]->getPSignal());
                 result |= status;
             }
         }
