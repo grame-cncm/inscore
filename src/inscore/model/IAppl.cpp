@@ -69,26 +69,24 @@ using namespace std;
 namespace inscore
 {
 
-//--------------------------------------------------------------------------
-const string IAppl::kApplType("appl");
 
 #ifdef WIN32
 #define _CRT_SECURE_NO_DEPRECATE
-std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";0
+static string getFilePath() { return string(getenv(("USERPROFILE")) + "\\"; }
 
 #elif ANDROID
-static std::string getFilePath() {
+static string getFilePath() {
 	// Use standard location as root path (/sdcard/documents/inscore on most device)
 	QStringList plist = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-	QString path = plist.last();
+	QString path = plist[0] + (path.endsWith("/") ? "inscore" : "/inscore");
+	QDir dir(path);
+	dir.mkpath(path);
+	oscerr << OSCStart("INScore") << "document path set to" << path.toStdString().c_str() << OSCEnd();
 	return path.toStdString();
 }
-// Files are writed in sdcard only
-std::string IAppl::fRootPath = getFilePath();
 
 #elif IOS
-// Files are writed in ios application sandbox only
-static std::string getFilePath() {
+static string getFilePath() {
     QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
     QDir dir(path);
     if (!dir.exists())
@@ -97,11 +95,19 @@ static std::string getFilePath() {
         path += "/";
     return path.toStdString();
 }
-std::string IAppl::fRootPath = getFilePath();
 
 #else
-std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
+static string getFilePath() { return string(getenv("HOME")) + "/"; }
 #endif
+
+
+//--------------------------------------------------------------------------
+const string IAppl::kApplType("appl");
+string IAppl::fRootPath;
+
+//--------------------------------------------------------------------------
+void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
+
 
 inscore::SIMenu getMenuNode(inscore::IObject * parent) {
 #ifdef __MOBILE__
@@ -294,6 +300,9 @@ void IAppl::createVirtualNodes()
 	fApplStat  = IApplStat::create(this);					// statistics
 	fDebug = fApplDebug;
 	fApplLog = IApplLog::create(this);
+#if __MOBILE__
+	fApplLog->setWrap (true);
+#endif
 	fFilterForward = IFilterForward::create(this);
 	add(getMenuNode(this));
 	add ( fDebug );

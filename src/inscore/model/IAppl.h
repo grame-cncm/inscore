@@ -113,6 +113,7 @@ class IAppl : public IObject, public TILoader
 		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
 		static void				delAliases( const std::string& address);
 		static void				getAliases( const std::string& address, std::vector<std::pair<std::string, std::string> >& aliases);
+		static void				setRootPath();
 
 		static bool	running() 		{ return fRunning; }
 
