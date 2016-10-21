@@ -33,6 +33,8 @@
 
 class QSensor;
 
+//#define SENSORDEBUG
+
 namespace inscore
 {
 
@@ -47,11 +49,14 @@ class ISensor : public ISignal, public QObject
 	private:
 		QSensor*	fSensor;
 		int			fTimerID;
+		int			fActive;		// ref count of clients activations
 		float		fAlpha;			// the smoothing factor
 	
 	public:
 		static const std::string kSensorType;
 		virtual		bool activate(bool val);
+		virtual		bool start(int val);	// val controls the hardware device start
+		virtual		void stop(int val);		// val controls the hardware device stop
 	
 	protected:
 		bool		fIsSignal;

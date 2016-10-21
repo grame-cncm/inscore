@@ -60,10 +60,10 @@ ISensor::ISensor(const std::string& name, IObject * parent)
 }
 
 //------------------------------------------------------------------------
-ISensor::~ISensor ()						{ activate (false);	}
+ISensor::~ISensor ()						{ stop (0);	}
 
 //------------------------------------------------------------------------
-bool ISensor::running () const				{ return fSensor->isActive(); }
+bool ISensor::running () const				{ return fTimerID != 0; }
 void ISensor::timerEvent(QTimerEvent * )	{ readData(); }
 
 //------------------------------------------------------------------------
@@ -76,6 +76,12 @@ void ISensor::setHandlers()
 	fGetMsgHandlerMap[""]					= TEmptyParamMsgHandler::create();
 	fGetMsgHandlerMap[ksmooth_GetSetMethod]	= TGetParamMethodHandler<ISensor, float(ISensor::*)() const>::create(this, &ISensor::getSmooth);
 	fAltGetMsgHandlerMap[krun_SetMethod]	= TGetParamMethodHandler<ISensor, bool(ISensor::*)() const>::create(this, &ISensor::running);
+
+	if (!fIsSignal) {
+		fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<ISensor>::create(this, &ISensor::watchMsg);
+		fMsgHandlerMap[kwatchplus_SetMethod]= TMethodMsgHandler<ISensor>::create(this, &ISensor::watchMsgAdd);
+		fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= TGetParamMultiMethodHandler<ISensor, SIMessageList (ISensor::*)() const>::create(this, &ISensor::getWatch);
+	}
 }
 
 
@@ -119,10 +125,12 @@ MsgHandler::msgStatus ISensor::set (const IMessage* msg)
 	string type;
 	if (msg->size() != 1)		return MsgHandler::kBadParameters;
 	if (!msg->param(0, type))	return MsgHandler::kBadParameters;
-//	if (! fSensor->connectToBackend()) {
-//		ITLErr << getOSCAddress() << type << "is not supported by your device." << ITLEndl;
-//		return MsgHandler::kCreateFailure;
-//	}
+#ifndef SENSORDEBUG
+	if (! fSensor->connectToBackend()) {
+		ITLErr << getOSCAddress() << type << "is not supported by your device." << ITLEndl;
+		return MsgHandler::kCreateFailure;
+	}
+#endif
 	return MsgHandler::kProcessed;
 }
 
@@ -134,13 +142,51 @@ bool ISensor::setSensor(QSensor* sensor)
 }
 
 //------------------------------------------------------------------------
+bool ISensor::start(int val)
+{
+	bool ret = true;
+	if (val == 1) {
+//		INScore::postMessage("192.168.1.21:7001/ISensor", "start");
+#ifndef SENSORDEBUG
+		fSensor->setActive(true);
+		fSensor->setAlwaysOn (true);
+		ret = fSensor->start();
+#endif
+	}
+	if (ret && !fTimerID) {
+		fTimerID = startTimer(10);		// start collecting sensor data every 10 mls
+//	INScore::postMessage("192.168.1.21:7001/ISensor", "start timer", fTimerID);
+	}
+	return ret;
+}
+
+//------------------------------------------------------------------------
+void ISensor::stop(int val)
+{
+//	INScore::postMessage("192.168.1.21:7001/ISensor", "stop timer", fTimerID);
+	if (fTimerID) {
+		killTimer(fTimerID);
+		fTimerID = 0;
+	}
+	if (val == 0) {
+//		INScore::postMessage("192.168.1.21:7001/ISensor", "stop");
+#ifndef SENSORDEBUG
+		fSensor->stop();
+		fSensor->setActive(false);
+		fSensor->setAlwaysOn (false);
+#endif
+	}
+}
+
+//------------------------------------------------------------------------
 bool ISensor::activate(bool state)
 {
 	if (!fSensor->isConnectedToBackend())	return false;		// should not happen at this stage
-	if (running() == state)					return true;		// nothing to do: already in the requested state
 
-	fSensor->setActive(state);
-	fSensor->setAlwaysOn (state);
+	if (running() != state)	{
+		fSensor->setActive(state);
+		fSensor->setAlwaysOn (state);
+	}
 	if (state) {
 //INScore::postMessage("192.168.1.21:7001/ISensor", "activate", 1);
 		if (fSensor->start()) {

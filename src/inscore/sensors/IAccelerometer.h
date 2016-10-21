@@ -46,8 +46,9 @@ typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
 //------------------------------------------------------------------------
 class IAccelerometer : public ISensor
 {
-	static QAccelerometer*	fAccelerometer;
-	static int				fAccelerometerRefCount;
+	static QAccelerometer*	fAccelerometer;				// devices is shared between different instances
+	static int				fAccelerometerRefCount;		//
+	static int				fActives;					// number of client activations
 	
 	float			fCalibration;		// the calibration value (default to g)
 	bool			fCalibrating;		// a flag to indicate a calibration in progress
@@ -60,6 +61,8 @@ class IAccelerometer : public ISensor
 	
 		/// \brief in sensor context, provides access x, y and z signals
 		virtual bool	findSubNode (std::string node, subnodes& outlist);
+		virtual	bool	activate(bool val);
+		virtual void	cleanup ();
 	
 	protected:
 				 IAccelerometer(const std::string& name, IObject * parent);

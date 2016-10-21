@@ -32,6 +32,12 @@
 #include "IAccelerometer.h"
 #include "INScore.h"
 
+
+#ifdef SENSORDEBUG
+#include <stdlib.h>
+#endif
+
+
 using namespace std;
 
 namespace inscore
@@ -42,6 +48,7 @@ const string IAccelerometer::kAccelerometerType = "accelerometer";
 
 QAccelerometer*	IAccelerometer::fAccelerometer = 0;
 int				IAccelerometer::fAccelerometerRefCount = 0;
+int				IAccelerometer::fActives = 0;
 
 //------------------------------------------------------------------------
 IAccelerometer::IAccelerometer(const std::string& name, IObject * parent)
@@ -66,13 +73,24 @@ IAccelerometer::~IAccelerometer()
 	}
 }
 
+//--------------------------------------------------------------------------
+bool IAccelerometer::activate(bool val)
+{
+	fActives += val ? 1 : -1;
+	if (val && !running())	return start(fActives);
+	else if (running())		stop(fActives);
+	return true;
+}
+
 //------------------------------------------------------------------------
 void IAccelerometer::createVirtualNodes ()
 {
 	fXSig = TSignal::create ("accelerometer/x", 1);
 	fYSig = TSignal::create ("accelerometer/y", 1);
 	fZSig = TSignal::create ("accelerometer/z", 1);
-	*this << TSignal::create( name(), 1);
+	*this << fXSig;
+	*this << fYSig;
+	*this << fZSig;
 }
 
 //--------------------------------------------------------------------------
@@ -95,17 +113,36 @@ bool IAccelerometer::findSubNode (std::string name, subnodes& outlist)
 }
 
 //------------------------------------------------------------------------
+void IAccelerometer::cleanup ()
+{
+	IObject::cleanup();
+	done();
+}
+
+//------------------------------------------------------------------------
 void IAccelerometer::setSigSize (int size)
 {
-	fXSig->size(size);
-	fYSig->size(size);
-	fZSig->size(size);
 	ParallelSignal::size( size );
 }
 
 //------------------------------------------------------------------------
 void IAccelerometer::readData ()
 {
+#ifdef SENSORDEBUG
+	float x = (rand() / (RAND_MAX * 0.5) ) - 1;
+	float y = (rand() / (RAND_MAX * 0.5) ) - 1;
+	float z = (rand() / (RAND_MAX * 0.5) ) - 1;
+	setXPos		( smooth (x, getXPos()) );
+	setYPos		( smooth (y, getYPos()) );
+	setZOrder	( smooth (z, getZOrder()) );
+	if (fIsSignal) {
+		*fXSig << getXPos();
+		*fYSig << getYPos();
+		*fZSig << getZOrder();
+	}
+	else newData (true);
+	setModified();
+#else
 	QAccelerometerReading*	reader = fAccelerometer->reading();
 	if (reader) {
 		if (fCalibrating) {
@@ -120,22 +157,11 @@ void IAccelerometer::readData ()
 				*fYSig << getYPos();
 				*fZSig << getZOrder();
 			}
+			else newData (true);
 			setModified();
-			newData (true);
-
-//INScore::MessagePtr msg = INScore::newMessage();
-//INScore::add(msg, getXPos());
-//INScore::postMessage("192.168.1.21:7000/accx", msg);
-//
-//msg = INScore::newMessage();
-//INScore::add(msg, getYPos());
-//INScore::postMessage("192.168.1.21:7000/accy", msg);
-//
-//msg = INScore::newMessage();
-//INScore::add(msg, getZOrder());
-//INScore::postMessage("192.168.1.21:7000/accz", msg);
 		}
 	}
+#endif
 }
 
 //------------------------------------------------------------------------
