@@ -104,8 +104,10 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 	QFont font ("FreeSans", 9);
 #elif defined (WIN32) || defined (ANDROID)
 	QFont font ("Helvetica", 7);
+	font.setPixelSize(7);
 #else
 	QFont font ("Helvetica", 9);
+	font.setPixelSize(9);
 #endif
 	int h = height();
 
