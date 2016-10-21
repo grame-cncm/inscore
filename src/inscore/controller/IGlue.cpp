@@ -206,6 +206,7 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	oscerr.setLogWindow (fModel->getLogWindow());
 	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
 	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
+	fModel->setRootPath ();
 
 	// check Guido version
 	if (GuidoCheckVersionNums(1, 6, 0) != guidoNoErr) {
@@ -309,7 +310,6 @@ void IGlue::modelUpdate()
 	fController->processOn(fWebMsgStack, model);
 	oscerr.activeConcatError(false);
 
-	fModel->processSig();
 	// Wake up thread wating for a model update.
 	gModelUpdateWaitCondition.wakeAll();
 }
@@ -365,9 +365,10 @@ void IGlue::timerEvent ( QTimerEvent *)
 
 	fModel->clock();
 	if (fMsgStack->size() || fWebMsgStack->size()) {
-//		QMutexLocker locker (&fTimeViewMutex);
 		timebench ("model", modelUpdate());
 	}
+
+	fModel->processSig();
 	if (fModel->getState() & IObject::kModified + IObject::kSubModified) {
 
 		if (fTimeTask) fTimeTask->ptask();
@@ -392,6 +393,7 @@ void IGlue::timerEvent ( QTimerEvent *)
 		}		
 		fModel->cleanup();
 	}
+
 #ifdef RUNBENCH
 	else {
 		bench::put ("model", 0);
