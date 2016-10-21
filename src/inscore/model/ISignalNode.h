@@ -29,6 +29,7 @@
 
 #include "IVNode.h"
 #include "ISync.h"
+#include "ISignal.h"
 
 namespace inscore
 {
@@ -40,6 +41,8 @@ class IMessage;
 @{
 */
 
+class IObject;
+typedef class libmapping::SMARTP<IObject>		SIObject;
 class ISignal;
 typedef class libmapping::SMARTP<ISignal>		SISignal;
 class ISignalNode;
@@ -63,7 +66,6 @@ class ISignalNode : public IVNode
 		virtual void	accept (Updater*);
 		
 		/// \brief find a name signal in the signals node
-//		virtual SISignal find (std::string node) const;
 		virtual bool find (std::string node, subnodes& outlist);
 
 		/// \brief overrides virtual nodes creation
@@ -74,12 +76,12 @@ class ISignalNode : public IVNode
 		virtual bool debug () const			{ return fDebug; }
 		virtual void debug (bool state)		{ fDebug = state; }
 	
-        std::vector<ISignalConnection* > getConnectionsOf(std::string objectName);
+        std::vector<ISignalConnection* > getConnectionsOf (const IObject* obj) const;
         std::vector<ISignalConnection* >& getConnections() 	{ return fConnections; }
         SIMessageList getAllConnections() const;
 
         void cleanupSignal(const ParallelSignal* signal);	///< removes the connections of a signal
-        void cleanupTarget(const std::string& obj);			///< removes the connections to an object
+        void cleanupTarget(const IObject* obj);				///< removes the connections to an object
 
 	protected:
 		bool fDebug;
@@ -92,11 +94,11 @@ class ISignalNode : public IVNode
         std::vector<ISignalConnection* > fConnections; // the connections between attributes and signals
     
         /*! \brief makes the connections between a signal and one ore more methods of an object */
-		MsgHandler::msgStatus connect(SParallelSignal signal, std::string object, std::string methods);
-    
+		MsgHandler::msgStatus connect(SISignal signal, std::string object, std::string methods);
+	
         /*! \brief breaks the connections of a signal (all of them, or only some specified) */
-		MsgHandler::msgStatus disconnect(SParallelSignal signal, std::string object = "", std::string methods = "");
-    
+		MsgHandler::msgStatus disconnect(SISignal signal, std::string object = "", std::string methods = "");
+	
         /*! \brief handles the "connect" message */
 		MsgHandler::msgStatus connectMsg (const IMessage* msg);
     
@@ -118,10 +120,10 @@ class ISignalConnection
 		virtual ~ISignalConnection() {}
     
     	/*! \brief returns the object whose attribute has been connected to the signal */
-        std::string getObject() const					{ return fObject;}
+        IObject* getObject() const						{ return fObject;}
     
     	/*! \brief sets the object */
-        void setObject(std::string o)					{ fObject = o;}
+        void setObject(IObject* o)						{ fObject = o;}
     
         /*! \brief returns the name of the method connected */
 		std::string getMethod() const					{ return fMethod;}
@@ -136,11 +138,12 @@ class ISignalConnection
 		void setObjectMethod(std::string objectmethod)	{ fKey = objectmethod;}
     
 		/*! \brief returns the signal to be connected */
-        const SParallelSignal& getSignal() const		{ return fSignal;}
-    
+        const SISignal& getSignal() const				{ return fSignal;}
+        const SParallelSignal getPSignal() const		{ return SParallelSignal(fSignal);}
+	
         /*! \brief sets the signal to be connected */
-        void setSignal(SParallelSignal sig)				{ fSignal = sig;}
-    
+        void setSignal(SISignal sig)					{ fSignal = sig;}
+	
         /*! \brief returns the float range bounds */
 		std::pair<float, float> getFloatRange() const	{return fRangeFloat;}
     
@@ -164,14 +167,19 @@ class ISignalConnection
     
         /*! \brief sets the range string */
 		void setRangeString(std::string range)			{ fRangeString = range;}
-    
+ 
+		/*! \brief check if a connexion refers to a signal */
+		bool contains(ISignal* sig) const				{ return fSignal->name() == sig->name(); }
+		/*! \brief check if a connexion refers to an object */
+		bool contains(std::string obj) const			{ return fObject->name() == obj; }
+	
 		void print(std::ostream& out) const;
 	
 	protected:
     
-        std::string		fObject;		///< the object whose attribute are connected to the signal
+        IObject*		fObject;		///< the object whose attribute are connected to the signal
  		std::string		fMethod;		///< the name of the connected attribute
-        SParallelSignal fSignal;		///< the signal to be connected
+        SISignal		fSignal;		///< the signal to be connected
         std::string		fKey;			///< the connection key name : "object:method"
     
 		std::pair<float,float>	fRangeFloat;	///< the float range bounds

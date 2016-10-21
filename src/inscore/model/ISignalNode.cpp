@@ -28,7 +28,6 @@
 
 #include "ISignalNode.h"
 #include "IMessage.h"
-#include "ISignal.h"
 #include "Updater.h"
 
 using namespace std;
@@ -158,8 +157,7 @@ MsgHandler::msgStatus ISignalNode::disconnectMsg (const IMessage* msg)
     if(!signal) return MsgHandler::kBadParameters;
     
     // If there is only one parameter, we disconnect all connections with the signal
-    if(n == 1)
-        return disconnect(signal);
+    if(n == 1) return disconnect(signal);
     
     // If we have more parameters, we distinguish each object from its list of methods and call disconnect(signal, objectStr, objectList)
     std::string objectMethodsStr, objectStr;
@@ -216,13 +214,13 @@ ISignalNode::TCnxSet ISignalNode::string2cnxset (const std::string& param) const
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string object, std::string methods)
+MsgHandler::msgStatus ISignalNode::connect(SISignal signal, std::string object, std::string methods)
 {
     // We check if the object is indeed in the elements of our parent object
     subnodes objectList;
     if(!getParent()->find(object, objectList)) return MsgHandler::kBadParameters;
     
-    SIObject o = objectList[0];
+    SIObject obj = objectList[0];
     string allMethodStr = methods;
     string methodStr;
     string range = "";
@@ -253,7 +251,7 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
             range = "";
         
         // we test that the method is available for connections
-        if(! o->signalHandler(methodStr)) return MsgHandler::kBadParameters;
+        if(! obj->signalHandler(methodStr)) return MsgHandler::kBadParameters;
         
         ISignalConnection * connection = new ISignalConnection();
         
@@ -261,7 +259,7 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
         objectMethod += ":";
         objectMethod += methodStr; // "object:method(n)"
         
-        connection->setObject(object);
+        connection->setObject(obj);
         connection->setMethod(methodStr);
         connection->setObjectMethod(objectMethod);
         connection->setSignal(signal);
@@ -331,20 +329,16 @@ MsgHandler::msgStatus ISignalNode::connect(SParallelSignal signal, std::string o
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::string object, std::string methods)
+MsgHandler::msgStatus ISignalNode::disconnect(SISignal signal, std::string object, std::string methods)
 {
     if(object.empty()) // if the object is not specified, we disconnect all connections with the signal
     {
         std::vector<ISignalConnection* >::iterator it = fConnections.begin();
         while(it != fConnections.end())
         {
-            if((*it)->getSignal() == signal) // if we find the signal, we erase the connection object
-            {
-                std::vector<ISignalConnection*>::iterator d = it;
-                fConnections.erase(d);
-            }
-            else
-                it++;
+            if((*it)->contains(signal))		// if we find the signal, we erase the connection object
+                it = fConnections.erase(it);
+            else it++;
         }
     }
     // if we only specified the signal and the object (without methods), we look for all the connections between the signal and this object
@@ -354,13 +348,9 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
         bool found = false;
         while(it != fConnections.end()  && !found)
         {
-            if((*it)->getObject() == object && (*it)->getSignal() == signal)
-            {
-                std::vector<ISignalConnection*>::iterator d = it;
-                fConnections.erase(d);
-            }
-            else
-                it++;
+            if((*it)->contains(object) && (*it)->contains(signal))
+                it = fConnections.erase(it);
+            else it++;
         }
 
     }
@@ -395,7 +385,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
             bool found = false;
             while(it != fConnections.end()  && !found)
             {
-                if((*it)->getObjectMethod() == objectMethod && (*it)->getSignal() == signal)
+                if((*it)->getObjectMethod() == objectMethod && (*it)->contains(signal))
                     found = true;
                 else
                     it++;
@@ -409,14 +399,11 @@ MsgHandler::msgStatus ISignalNode::disconnect(SParallelSignal signal, std::strin
     return MsgHandler::kProcessed;
 }
 
-//--------------------------------------------------------------------------
-std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(std::string objectName)
+std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(const IObject* obj) const
 {
     std::vector<ISignalConnection*> connections;
-	for (unsigned int i = 0; i < fConnections.size(); i++)
-    {
-        std::string object = fConnections[i]->getObject();
-        if(!object.compare(objectName))
+	for (unsigned int i = 0; i < fConnections.size(); i++) {
+		if (fConnections[i]->getObject() == obj)
             connections.push_back(fConnections[i]);
     }
     return connections;
@@ -453,7 +440,7 @@ void ISignalNode::cleanupSignal(const ParallelSignal* signal)
 }
 
 //--------------------------------------------------------------------------
-void ISignalNode::cleanupTarget(const std::string& obj)
+void ISignalNode::cleanupTarget(const IObject* obj)
 {
 	vector<ISignalConnection* >::iterator i = fConnections.begin();
 	while (i != fConnections.end()) {
@@ -463,7 +450,6 @@ void ISignalNode::cleanupTarget(const std::string& obj)
 		else i++;
 	}
 }
-
 
 void ISignalConnection::print (ostream& out) const {
 	out << "signal: " << (void*)fSignal << " -> " << fObject << ":" << fMethod << fRangeString ;
