@@ -23,45 +23,42 @@
 
 */
 
-#ifndef __ICompass__
-#define __ICompass__
+#include <iostream>
+#include <cmath>
 
-#include "I1DSensor.h"
-#include "IQSensor.h"
+#include <QOrientationSensor>
+#include <QOrientationReading>
 
-class QCompass;
+#include "IOrientation.h"
+
+using namespace std;
 
 namespace inscore
 {
 
-/*!
-\addtogroup ITLModel
-@{
-*/
+const string IOrientation::kOrientationType = "orientation";
 
-class ICompass;
-typedef class libmapping::SMARTP<ICompass>	SICompass;
 //------------------------------------------------------------------------
-class ICompass : public IQSensor<QCompass, I1DSensor>
+IOrientation::IOrientation(const std::string& name, IObject * parent)
+	: IQSensor (name, parent)
 {
-	public:
-		static const std::string kCompassType;
-		static SICompass create(const std::string& name, IObject * parent)	{ return new ICompass(name, parent); }
-	
-	protected:
-				 ICompass(const std::string& name, IObject * parent);
-		virtual ~ICompass();
+	fTypeString = kOrientationType;
+}
+IOrientation::~IOrientation() {}
 
-		/// \brief called by the time task, intended to read the sensor data
-		virtual float read ();
-		virtual float sigvalue (float value) const		{ return (value / 180); }
+//------------------------------------------------------------------------
+float IOrientation::read ()
+{
+	QOrientationReading* reader = sensor()->reading();
+	return reader ? reader->orientation() : 0;
+}
 
-		/// \brief sets the message handlers.
-		virtual void setHandlers ();
-};
+//------------------------------------------------------------------------
+void IOrientation::setHandlers()
+{
+	I1DSensor::setHandlers();
+}
 
-/*! @} */
+} // end namespace
 
-} // end namespoace
 
-#endif

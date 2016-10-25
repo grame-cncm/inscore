@@ -26,11 +26,8 @@
 #ifndef __IAccelerometer__
 #define __IAccelerometer__
 
-
-#include "ISensor.h"
-#include "IQSensor.h"
 #include "I3DSensor.h"
-
+#include "IQSensor.h"
 
 class QAccelerometer;
 class QAccelerometerReading;

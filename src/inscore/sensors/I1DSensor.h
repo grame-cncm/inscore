@@ -41,12 +41,12 @@ namespace inscore
 //------------------------------------------------------------------------
 class I1DSensor : public ISensor
 {
-	float fValue;
-	
 	public:
 		virtual void	cleanup ();
 	
 	protected:
+		float	fValue;
+
 				 I1DSensor(const std::string& name, IObject * parent);
 		virtual ~I1DSensor();
 

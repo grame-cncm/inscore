@@ -44,6 +44,7 @@ IAmbientLight::IAmbientLight(const std::string& name, IObject * parent)
 {
 	fTypeString = kAmbientLightType;
 }
+IAmbientLight::~IAmbientLight() {}
 
 //------------------------------------------------------------------------
 float IAmbientLight::read ()

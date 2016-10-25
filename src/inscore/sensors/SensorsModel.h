@@ -27,10 +27,14 @@
 #define __SensorsModel__
 
 #include "IAccelerometer.h"
-#include "IGyroscope.h"
-#include "IMagnetometer.h"
-#include "IRotation.h"
 #include "IAmbientLight.h"
 #include "ICompass.h"
+#include "IGyroscope.h"
+#include "ILight.h"
+#include "IMagnetometer.h"
+#include "IOrientation.h"
+#include "IProximity.h"
+#include "IRotation.h"
+#include "ITilt.h"
 
 #endif

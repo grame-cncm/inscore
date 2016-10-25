@@ -26,8 +26,6 @@
 #ifndef __ISensor__
 #define __ISensor__
 
-//#include <cmath>
-#include <map>
 #include <QObject>
 
 #include "ISignal.h"

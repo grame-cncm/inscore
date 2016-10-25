@@ -26,11 +26,8 @@
 #ifndef __IMagnetometer__
 #define __IMagnetometer__
 
-
-#include "ISensor.h"
-#include "IQSensor.h"
 #include "I3DSensor.h"
-
+#include "IQSensor.h"
 
 class QMagnetometer;
 class QMagnetometerReading;

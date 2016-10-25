@@ -23,45 +23,39 @@
 
 */
 
-#ifndef __ICompass__
-#define __ICompass__
+#include <iostream>
+#include <cmath>
 
-#include "I1DSensor.h"
-#include "IQSensor.h"
+#include <QProximitySensor>
+#include <QProximityReading>
 
-class QCompass;
+#include "IProximity.h"
+
+using namespace std;
 
 namespace inscore
 {
 
-/*!
-\addtogroup ITLModel
-@{
-*/
+const string IProximity::kProximityType = "proximity";
+static const float gLux = 150;
 
-class ICompass;
-typedef class libmapping::SMARTP<ICompass>	SICompass;
 //------------------------------------------------------------------------
-class ICompass : public IQSensor<QCompass, I1DSensor>
+IProximity::IProximity(const std::string& name, IObject * parent)
+	: IQSensor (name, parent)
 {
-	public:
-		static const std::string kCompassType;
-		static SICompass create(const std::string& name, IObject * parent)	{ return new ICompass(name, parent); }
-	
-	protected:
-				 ICompass(const std::string& name, IObject * parent);
-		virtual ~ICompass();
+	fTypeString = kProximityType;
+	fValue = -1;
+}
 
-		/// \brief called by the time task, intended to read the sensor data
-		virtual float read ();
-		virtual float sigvalue (float value) const		{ return (value / 180); }
+IProximity::~IProximity() {}
 
-		/// \brief sets the message handlers.
-		virtual void setHandlers ();
-};
+//------------------------------------------------------------------------
+float IProximity::read ()
+{
+	QProximityReading* reader = sensor()->reading();
+	return reader ? reader->close() : 0;
+}
 
-/*! @} */
+} // end namespace
 
-} // end namespoace
 
-#endif

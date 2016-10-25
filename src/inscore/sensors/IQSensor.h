@@ -26,10 +26,8 @@
 #ifndef __IQSensor__
 #define __IQSensor__
 
-#include <iostream>
 #include <map>
 
-#include "inscore.h"
 
 namespace inscore
 {

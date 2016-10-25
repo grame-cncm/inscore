@@ -23,13 +23,14 @@
 
 */
 
-#ifndef __ICompass__
-#define __ICompass__
+#ifndef __ILight__
+#define __ILight__
+
 
 #include "I1DSensor.h"
 #include "IQSensor.h"
 
-class QCompass;
+class QLightSensor;
 
 namespace inscore
 {
@@ -39,22 +40,30 @@ namespace inscore
 @{
 */
 
-class ICompass;
-typedef class libmapping::SMARTP<ICompass>	SICompass;
+class ILight;
+typedef class libmapping::SMARTP<ILight>	SILight;
 //------------------------------------------------------------------------
-class ICompass : public IQSensor<QCompass, I1DSensor>
+class ILight : public IQSensor<QLightSensor, I1DSensor>
 {
+	float			fCalibration;		// the calibration value (default to g)
+	bool			fCalibrating;		// a flag to indicate a calibration in progress
+	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
+
 	public:
-		static const std::string kCompassType;
-		static SICompass create(const std::string& name, IObject * parent)	{ return new ICompass(name, parent); }
+		static const std::string kLightType;
+		static SILight create(const std::string& name, IObject * parent)	{ return new ILight(name, parent); }
 	
 	protected:
-				 ICompass(const std::string& name, IObject * parent);
-		virtual ~ICompass();
+				 ILight(const std::string& name, IObject * parent);
+		virtual ~ILight();
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual float read ();
-		virtual float sigvalue (float value) const		{ return (value / 180); }
+		virtual float sigvalue (float value) const		{ return value / fCalibration; }
+
+		virtual void calibrate (bool state);
+		virtual float getMax () const		{ return fCalibration; }
+		virtual void  setMax (float max)	{ fCalibration = max; }
 
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();

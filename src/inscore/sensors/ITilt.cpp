@@ -26,37 +26,58 @@
 #include <iostream>
 #include <cmath>
 
-#include <QCompass>
-#include <QCompassReading>
+#include <QTiltSensor>
+#include <QTiltReading>
 
-#include "ICompass.h"
+#include "ITilt.h"
+#include "INScore.h"
 
 using namespace std;
 
 namespace inscore
 {
 
-const string ICompass::kCompassType = "compass";
+const string ITilt::kTiltType = "tilt";
 
 //------------------------------------------------------------------------
-ICompass::ICompass(const std::string& name, IObject * parent)
+ITilt::ITilt(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
-	fTypeString = kCompassType;
-}
-ICompass::~ICompass() {}
-
-//------------------------------------------------------------------------
-float ICompass::read ()
-{
-	QCompassReading* reader = sensor()->reading();
-	return reader ? reader->azimuth() : 0;
+	fTypeString = kTiltType;
 }
 
 //------------------------------------------------------------------------
-void ICompass::setHandlers()
+ITilt::~ITilt()
 {
-	I1DSensor::setHandlers();
+}
+
+//------------------------------------------------------------------------
+bool ITilt::read (float& x, float& y, float& z)
+{
+	QTiltReading*	reader = sensor()->reading();
+	if (reader) {
+		x = reader->xRotation() / 90;
+		y = reader->yRotation() / 90;
+		z = 0;
+		return true;
+	}
+	else return false;
+}
+
+//------------------------------------------------------------------------
+void ITilt::calibrate ()
+{
+INScore::postMessage("192.168.1.21:7001/ITilt", "calibrate");
+	sensor()->calibrate();
+}
+
+
+//------------------------------------------------------------------------
+void ITilt::setHandlers()
+{
+	ISensor::setHandlers();
+INScore::postMessage("192.168.1.21:7001/ITilt", "setHandlers", kcalibrate_SetMethod);
+	fMsgHandlerMap[kcalibrate_SetMethod]	= TMethodMsgHandler<ITilt, void (ITilt::*)(void)>::create(this, &ITilt::calibrate);
 }
 
 } // end namespace

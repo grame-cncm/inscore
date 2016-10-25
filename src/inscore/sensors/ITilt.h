@@ -23,13 +23,13 @@
 
 */
 
-#ifndef __ICompass__
-#define __ICompass__
+#ifndef __ITilt__
+#define __ITilt__
 
-#include "I1DSensor.h"
+#include "I3DSensor.h"
 #include "IQSensor.h"
 
-class QCompass;
+class QTiltSensor;
 
 namespace inscore
 {
@@ -39,23 +39,22 @@ namespace inscore
 @{
 */
 
-class ICompass;
-typedef class libmapping::SMARTP<ICompass>	SICompass;
+class ITilt;
+typedef class libmapping::SMARTP<ITilt>	SITilt;
 //------------------------------------------------------------------------
-class ICompass : public IQSensor<QCompass, I1DSensor>
+class ITilt : public IQSensor<QTiltSensor, I3DSensor>
 {
 	public:
-		static const std::string kCompassType;
-		static SICompass create(const std::string& name, IObject * parent)	{ return new ICompass(name, parent); }
+		static const std::string kTiltType;
+		static SITilt create(const std::string& name, IObject * parent)	{ return new ITilt(name, parent); }
 	
 	protected:
-				 ICompass(const std::string& name, IObject * parent);
-		virtual ~ICompass();
+				 ITilt(const std::string& name, IObject * parent);
+		virtual ~ITilt();
 
+		virtual void calibrate ();
 		/// \brief called by the time task, intended to read the sensor data
-		virtual float read ();
-		virtual float sigvalue (float value) const		{ return (value / 180); }
-
+		virtual bool read (float& x, float& y, float& z);
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();
 };

@@ -26,14 +26,10 @@
 #ifndef __IGyroscope__
 #define __IGyroscope__
 
-
-#include "ISensor.h"
-#include "IQSensor.h"
 #include "I3DSensor.h"
-
+#include "IQSensor.h"
 
 class QGyroscope;
-class QGyroscopeReading;
 
 namespace inscore
 {

@@ -26,11 +26,8 @@
 #ifndef __IRotation__
 #define __IRotation__
 
-
-#include "ISensor.h"
-#include "IQSensor.h"
 #include "I3DSensor.h"
-
+#include "IQSensor.h"
 
 class QRotationSensor;
 class QRotationReading;

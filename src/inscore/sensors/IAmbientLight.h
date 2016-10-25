@@ -26,14 +26,10 @@
 #ifndef __IAmbientLight__
 #define __IAmbientLight__
 
-
-#include "ISensor.h"
-#include "IQSensor.h"
 #include "I1DSensor.h"
-
+#include "IQSensor.h"
 
 class QAmbientLightSensor;
-class QAmbientLightReading;
 
 namespace inscore
 {
@@ -54,7 +50,7 @@ class IAmbientLight : public IQSensor<QAmbientLightSensor, I1DSensor>
 	
 	protected:
 				 IAmbientLight(const std::string& name, IObject * parent);
-		virtual ~IAmbientLight() {}
+		virtual ~IAmbientLight();
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual float read ();
