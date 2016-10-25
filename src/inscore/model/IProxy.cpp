@@ -57,7 +57,11 @@ static string name2type (const std::string& name)
 		(name == IGyroscope::kGyroscopeType)			||
 		(name == IRotation::kRotationType)				||
 		(name == IAmbientLight::kAmbientLightType)		||
+		(name == ILight::kLightType)					||
 		(name == ICompass::kCompassType)				||
+		(name == IProximity::kProximityType)			||
+		(name == IOrientation::kOrientationType)		||
+		(name == ITilt::kTiltType)						||
 		(name == IMagnetometer::kMagnetometerType))
 		return name;
 	return ISignal::kSignalType;
