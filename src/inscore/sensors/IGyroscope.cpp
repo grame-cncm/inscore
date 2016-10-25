@@ -26,30 +26,30 @@
 #include <iostream>
 #include <cmath>
 
-#include <QAccelerometer>
-#include <QAccelerometerReading>
+#include <QGyroscope>
+#include <QGyroscopeReading>
 
-#include "IAccelerometer.h"
+#include "IGyroscope.h"
 
 using namespace std;
 
 namespace inscore
 {
 
-static const double gForce = 9.81;
-const string IAccelerometer::kAccelerometerType = "accelerometer";
+const string IGyroscope::kGyroscopeType = "gyroscope";
+static const float kDefaultCalibration = 90.f;
 
 //------------------------------------------------------------------------
-IAccelerometer::IAccelerometer(const std::string& name, IObject * parent)
+IGyroscope::IGyroscope(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
-	fTypeString = kAccelerometerType;
-	fCalibration = gForce;
+	fTypeString = kGyroscopeType;
+	fCalibration = kDefaultCalibration;
 	fCalibrating = false;
 }
 
 //------------------------------------------------------------------------
-IAccelerometer::~IAccelerometer()
+IGyroscope::~IGyroscope()
 {
 }
 
@@ -58,9 +58,9 @@ static float max (double v1, double v2, double v3, double v4) {
 }
 
 //------------------------------------------------------------------------
-bool IAccelerometer::read (float& x, float& y, float& z)
+bool IGyroscope::read (float& x, float& y, float& z)
 {
-	QAccelerometerReading*	reader = sensor()->reading();
+	QGyroscopeReading*	reader = sensor()->reading();
 	if (reader) {
 		if (fCalibrating) {
 			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
@@ -81,12 +81,12 @@ bool IAccelerometer::read (float& x, float& y, float& z)
 }
 
 //------------------------------------------------------------------------
-void IAccelerometer::calibrate (bool state)
+void IGyroscope::calibrate (bool state)
 {
 	if (fCalibrating == state)	return;		// nothing to do, already in the requested mode
 	fCalibrating = state;
 	if (state) {
-		fCalibration = gForce;
+		fCalibration = kDefaultCalibration;
 		fCalRunning = running();
 		if (!fCalRunning) activate(true);
 	}
@@ -96,12 +96,12 @@ void IAccelerometer::calibrate (bool state)
 }
 
 //------------------------------------------------------------------------
-void IAccelerometer::setHandlers()
+void IGyroscope::setHandlers()
 {
 	ISensor::setHandlers();
 	
-	fMsgHandlerMap[kcalibrate_SetMethod]	= TSetMethodMsgHandler<IAccelerometer,bool>::create(this, &IAccelerometer::calibrate);
-	fMsgHandlerMap[kmax_GetSetMethod]		= TSetMethodMsgHandler<IAccelerometer,float>::create(this, &IAccelerometer::setMax);
+	fMsgHandlerMap[kcalibrate_SetMethod]	= TSetMethodMsgHandler<IGyroscope,bool>::create(this, &IGyroscope::calibrate);
+	fMsgHandlerMap[kmax_GetSetMethod]		= TSetMethodMsgHandler<IGyroscope,float>::create(this, &IGyroscope::setMax);
 
 	fGetMsgHandlerMap[kmax_GetSetMethod]		= TGetParamMsgHandler<float>::create(fCalibration);
 	fAltGetMsgHandlerMap[kcalibrate_SetMethod]	= TGetParamMsgHandler<bool>::create(fCalibrating);

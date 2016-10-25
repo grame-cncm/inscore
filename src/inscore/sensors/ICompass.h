@@ -23,17 +23,17 @@
 
 */
 
-#ifndef __IAccelerometer__
-#define __IAccelerometer__
+#ifndef __ICompass__
+#define __ICompass__
 
 
 #include "ISensor.h"
 #include "IQSensor.h"
-#include "I3DSensor.h"
+#include "I1DSensor.h"
 
 
-class QAccelerometer;
-class QAccelerometerReading;
+class QCompass;
+class QCompassReading;
 
 namespace inscore
 {
@@ -43,29 +43,22 @@ namespace inscore
 @{
 */
 
-class IAccelerometer;
-typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
+class ICompass;
+typedef class libmapping::SMARTP<ICompass>	SICompass;
 //------------------------------------------------------------------------
-class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
+class ICompass : public IQSensor<QCompass, I1DSensor>
 {
-	float			fCalibration;		// the calibration value (default to g)
-	bool			fCalibrating;		// a flag to indicate a calibration in progress
-	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
-
 	public:
-		static const std::string kAccelerometerType;
-		static SIAccelerometer create(const std::string& name, IObject * parent)	{ return new IAccelerometer(name, parent); }
+		static const std::string kCompassType;
+		static SICompass create(const std::string& name, IObject * parent)	{ return new ICompass(name, parent); }
 	
 	protected:
-				 IAccelerometer(const std::string& name, IObject * parent);
-		virtual ~IAccelerometer();
-
-		virtual void calibrate (bool state);
-		virtual float getMax () const		{ return fCalibration; }
-		virtual void  setMax (float max)	{ fCalibration = max; }
+				 ICompass(const std::string& name, IObject * parent);
+		virtual ~ICompass() {}
 
 		/// \brief called by the time task, intended to read the sensor data
-		virtual bool read (float& x, float& y, float& z);
+		virtual float read ();
+		virtual float sigvalue (float value) const		{ return (value / 180) - 1; }
 
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();

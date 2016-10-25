@@ -23,8 +23,8 @@
 
 */
 
-#ifndef __IAccelerometer__
-#define __IAccelerometer__
+#ifndef __IMagnetometer__
+#define __IMagnetometer__
 
 
 #include "ISensor.h"
@@ -32,8 +32,8 @@
 #include "I3DSensor.h"
 
 
-class QAccelerometer;
-class QAccelerometerReading;
+class QMagnetometer;
+class QMagnetometerReading;
 
 namespace inscore
 {
@@ -43,22 +43,22 @@ namespace inscore
 @{
 */
 
-class IAccelerometer;
-typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
+class IMagnetometer;
+typedef class libmapping::SMARTP<IMagnetometer>	SIMagnetometer;
 //------------------------------------------------------------------------
-class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
+class IMagnetometer : public IQSensor<QMagnetometer, I3DSensor>
 {
 	float			fCalibration;		// the calibration value (default to g)
 	bool			fCalibrating;		// a flag to indicate a calibration in progress
 	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
 
 	public:
-		static const std::string kAccelerometerType;
-		static SIAccelerometer create(const std::string& name, IObject * parent)	{ return new IAccelerometer(name, parent); }
+		static const std::string kMagnetometerType;
+		static SIMagnetometer create(const std::string& name, IObject * parent)	{ return new IMagnetometer(name, parent); }
 	
 	protected:
-				 IAccelerometer(const std::string& name, IObject * parent);
-		virtual ~IAccelerometer();
+				 IMagnetometer(const std::string& name, IObject * parent);
+		virtual ~IMagnetometer();
 
 		virtual void calibrate (bool state);
 		virtual float getMax () const		{ return fCalibration; }

@@ -53,7 +53,13 @@ namespace inscore
 //--------------------------------------------------------------------------
 static string name2type (const std::string& name)
 {
-	if (name == IAccelerometer::kAccelerometerType) return name;
+	if  ((name == IAccelerometer::kAccelerometerType)	||
+		(name == IGyroscope::kGyroscopeType)			||
+		(name == IRotation::kRotationType)				||
+		(name == IAmbientLight::kAmbientLightType)		||
+		(name == ICompass::kCompassType)				||
+		(name == IMagnetometer::kMagnetometerType))
+		return name;
 	return ISignal::kSignalType;
 }
 

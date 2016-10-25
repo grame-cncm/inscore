@@ -214,10 +214,11 @@ extern const char* klikelihoodthreshold_GetSetMethod;
 
 // sensors methods
 extern const char* kcalibrate_SetMethod;
-extern const char* kmode_GetSetMethod;
 extern const char* khasZ_GetMethod;
 extern const char* kmax_GetSetMethod;
+extern const char* kmode_GetSetMethod;
 extern const char* ksmooth_GetSetMethod;
+extern const char* kval_GetMethod;
 
 
 } //namespace

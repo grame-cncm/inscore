@@ -26,7 +26,8 @@
 #ifndef __ISensor__
 #define __ISensor__
 
-#include <cmath>
+//#include <cmath>
+#include <map>
 #include <QObject>
 
 #include "ISignal.h"
@@ -54,7 +55,8 @@ class ISensor : public ISignal, public QObject
 	
 	public:
 		static const std::string kSensorType;
-		virtual		bool activate(bool val);
+		virtual		bool activate(bool val) = 0;	// needs to handle shared sensors at higher level
+		virtual		bool isSignal() const		{ return fIsSignal; }
 		virtual		bool start(int val);	// val controls the hardware device start
 		virtual		void stop(int val);		// val controls the hardware device stop
 	
@@ -74,7 +76,6 @@ class ISensor : public ISignal, public QObject
 		virtual float getSmooth () const		{ return fAlpha; }
 		virtual void  setSmooth (float alpha)	{ fAlpha = std::max(0.f, std::min(alpha, 1.f)); }
 
-		virtual void setSigSize (int size) = 0;		///< set the signal size
 	
 		SIMessageList getSetMsg() const;
 
@@ -85,17 +86,11 @@ class ISensor : public ISignal, public QObject
 		/// \brief object \c 'set' message handler.
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
-		/// \brief osc \c 'size' message handler
-		virtual MsgHandler::msgStatus sizeMsg (const IMessage* msg);
-
 		void		print (IMessage& out) const;
 		bool		setSensor(QSensor* sensor);
 		QSensor*	getSensor() const			{ return fSensor; };
-
-		template <typename T> T max (T v1, T v2, T v3, T v4) const {
-			return std::max(v1, std::max(v2, std::max(v3, v4)));
-		}
 };
+
 
 /*! @} */
 

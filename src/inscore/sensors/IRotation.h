@@ -23,8 +23,8 @@
 
 */
 
-#ifndef __IAccelerometer__
-#define __IAccelerometer__
+#ifndef __IRotation__
+#define __IRotation__
 
 
 #include "ISensor.h"
@@ -32,8 +32,8 @@
 #include "I3DSensor.h"
 
 
-class QAccelerometer;
-class QAccelerometerReading;
+class QRotationSensor;
+class QRotationReading;
 
 namespace inscore
 {
@@ -43,29 +43,32 @@ namespace inscore
 @{
 */
 
-class IAccelerometer;
-typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
+class IRotation;
+typedef class libmapping::SMARTP<IRotation>	SIRotation;
 //------------------------------------------------------------------------
-class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
+class IRotation : public IQSensor<QRotationSensor, I3DSensor>
 {
-	float			fCalibration;		// the calibration value (default to g)
-	bool			fCalibrating;		// a flag to indicate a calibration in progress
-	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
+	bool		fHasZ;		// a flag to indicate whether the sensor has z rotation
+	float		fax, fay, faz;
+
+	void		setFromEuler (float x, float y, float z);
 
 	public:
-		static const std::string kAccelerometerType;
-		static SIAccelerometer create(const std::string& name, IObject * parent)	{ return new IAccelerometer(name, parent); }
+		static const std::string kRotationType;
+		static SIRotation create(const std::string& name, IObject * parent)	{ return new IRotation(name, parent); }
 	
 	protected:
-				 IAccelerometer(const std::string& name, IObject * parent);
-		virtual ~IAccelerometer();
-
-		virtual void calibrate (bool state);
-		virtual float getMax () const		{ return fCalibration; }
-		virtual void  setMax (float max)	{ fCalibration = max; }
+				 IRotation(const std::string& name, IObject * parent);
+		virtual ~IRotation();
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual bool read (float& x, float& y, float& z);
+
+		/// \brief the \c 'angle' message handler
+		virtual bool hasZ () const;
+
+		/// \brief the \c 'angle' message handler
+		virtual MsgHandler::msgStatus setAngles(const IMessage* msg);
 
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();

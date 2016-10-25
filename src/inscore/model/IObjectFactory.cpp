@@ -171,6 +171,11 @@ void IObjectFactory::init()
 	fCreateMap[IWebSocket::kIWebSocketType]					= _create<IWebSocket>;
 
 	fCreateMap[IAccelerometer::kAccelerometerType]			= _createNoView<IAccelerometer>;
+	fCreateMap[ICompass::kCompassType]						= _createNoView<ICompass>;
+	fCreateMap[IGyroscope::kGyroscopeType]					= _createNoView<IGyroscope>;
+	fCreateMap[IMagnetometer::kMagnetometerType]			= _createNoView<IMagnetometer>;
+	fCreateMap[IRotation::kRotationType]					= _createNoView<IRotation>;
+	fCreateMap[IAmbientLight::kAmbientLightType]			= _createNoView<IAmbientLight>;
 
 #if defined(__LINUX__) || defined(MACOS)
 	// httpd server is not yet supported on windows

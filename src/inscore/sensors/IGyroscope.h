@@ -23,8 +23,8 @@
 
 */
 
-#ifndef __IAccelerometer__
-#define __IAccelerometer__
+#ifndef __IGyroscope__
+#define __IGyroscope__
 
 
 #include "ISensor.h"
@@ -32,8 +32,8 @@
 #include "I3DSensor.h"
 
 
-class QAccelerometer;
-class QAccelerometerReading;
+class QGyroscope;
+class QGyroscopeReading;
 
 namespace inscore
 {
@@ -43,22 +43,22 @@ namespace inscore
 @{
 */
 
-class IAccelerometer;
-typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
+class IGyroscope;
+typedef class libmapping::SMARTP<IGyroscope>	SIGyroscope;
 //------------------------------------------------------------------------
-class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
+class IGyroscope : public IQSensor<QGyroscope, I3DSensor>
 {
 	float			fCalibration;		// the calibration value (default to g)
 	bool			fCalibrating;		// a flag to indicate a calibration in progress
 	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
 
 	public:
-		static const std::string kAccelerometerType;
-		static SIAccelerometer create(const std::string& name, IObject * parent)	{ return new IAccelerometer(name, parent); }
+		static const std::string kGyroscopeType;
+		static SIGyroscope create(const std::string& name, IObject * parent)	{ return new IGyroscope(name, parent); }
 	
 	protected:
-				 IAccelerometer(const std::string& name, IObject * parent);
-		virtual ~IAccelerometer();
+				 IGyroscope(const std::string& name, IObject * parent);
+		virtual ~IGyroscope();
 
 		virtual void calibrate (bool state);
 		virtual float getMax () const		{ return fCalibration; }

@@ -23,14 +23,44 @@
 
 */
 
-#ifndef __SensorsModel__
-#define __SensorsModel__
+#ifndef __I1DSensor__
+#define __I1DSensor__
 
-#include "IAccelerometer.h"
-#include "IGyroscope.h"
-#include "IMagnetometer.h"
-#include "IRotation.h"
-#include "IAmbientLight.h"
-#include "ICompass.h"
+
+#include "ISensor.h"
+
+
+namespace inscore
+{
+
+/*!
+\addtogroup ITLModel
+@{
+*/
+
+//------------------------------------------------------------------------
+class I1DSensor : public ISensor
+{
+	float fValue;
+	
+	public:
+		virtual void	cleanup ();
+	
+	protected:
+				 I1DSensor(const std::string& name, IObject * parent);
+		virtual ~I1DSensor();
+
+		/// \brief called by the time task, intended to read the sensor data
+		virtual void	readData ();
+		virtual float	read () = 0;
+		virtual float	sigvalue (float value) const = 0;
+
+		/// \brief sets the message handlers.
+		virtual void setHandlers ();
+};
+
+/*! @} */
+
+} // end namespoace
 
 #endif

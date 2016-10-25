@@ -23,17 +23,17 @@
 
 */
 
-#ifndef __IAccelerometer__
-#define __IAccelerometer__
+#ifndef __IAmbientLight__
+#define __IAmbientLight__
 
 
 #include "ISensor.h"
 #include "IQSensor.h"
-#include "I3DSensor.h"
+#include "I1DSensor.h"
 
 
-class QAccelerometer;
-class QAccelerometerReading;
+class QAmbientLightSensor;
+class QAmbientLightReading;
 
 namespace inscore
 {
@@ -43,29 +43,22 @@ namespace inscore
 @{
 */
 
-class IAccelerometer;
-typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
+class IAmbientLight;
+typedef class libmapping::SMARTP<IAmbientLight>	SIAmbientLight;
 //------------------------------------------------------------------------
-class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
+class IAmbientLight : public IQSensor<QAmbientLightSensor, I1DSensor>
 {
-	float			fCalibration;		// the calibration value (default to g)
-	bool			fCalibrating;		// a flag to indicate a calibration in progress
-	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
-
 	public:
-		static const std::string kAccelerometerType;
-		static SIAccelerometer create(const std::string& name, IObject * parent)	{ return new IAccelerometer(name, parent); }
+		static const std::string kAmbientLightType;
+		static SIAmbientLight create(const std::string& name, IObject * parent)	{ return new IAmbientLight(name, parent); }
 	
 	protected:
-				 IAccelerometer(const std::string& name, IObject * parent);
-		virtual ~IAccelerometer();
-
-		virtual void calibrate (bool state);
-		virtual float getMax () const		{ return fCalibration; }
-		virtual void  setMax (float max)	{ fCalibration = max; }
+				 IAmbientLight(const std::string& name, IObject * parent);
+		virtual ~IAmbientLight() {}
 
 		/// \brief called by the time task, intended to read the sensor data
-		virtual bool read (float& x, float& y, float& z);
+		virtual float read ();
+		virtual float sigvalue (float value) const		{ return (value + 1) / 4 - 0.75; }
 
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();

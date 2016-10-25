@@ -23,14 +23,41 @@
 
 */
 
-#ifndef __SensorsModel__
-#define __SensorsModel__
+#include <iostream>
+#include <cmath>
 
-#include "IAccelerometer.h"
-#include "IGyroscope.h"
-#include "IMagnetometer.h"
-#include "IRotation.h"
+#include <QAmbientLightSensor>
+#include <QAmbientLightReading>
+
 #include "IAmbientLight.h"
-#include "ICompass.h"
 
-#endif
+using namespace std;
+
+namespace inscore
+{
+
+const string IAmbientLight::kAmbientLightType = "ambientlight";
+
+//------------------------------------------------------------------------
+IAmbientLight::IAmbientLight(const std::string& name, IObject * parent)
+	: IQSensor (name, parent)
+{
+	fTypeString = kAmbientLightType;
+}
+
+//------------------------------------------------------------------------
+float IAmbientLight::read ()
+{
+	QAmbientLightReading* reader = sensor()->reading();
+	return reader ? reader->lightLevel() : 0;
+}
+
+//------------------------------------------------------------------------
+void IAmbientLight::setHandlers()
+{
+	I1DSensor::setHandlers();
+}
+
+} // end namespace
+
+

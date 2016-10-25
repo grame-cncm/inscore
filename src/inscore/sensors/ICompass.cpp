@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2015  Grame
+  Copyright (C) 2016  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -23,43 +23,41 @@
 
 */
 
+#include <iostream>
+#include <cmath>
 
-#ifndef __ISensor__
-#define __ISensor__
+#include <QCompass>
+#include <QCompassReading>
 
-#include "IRectShape.h"
+#include "ICompass.h"
+
+using namespace std;
 
 namespace inscore
 {
 
-/*!
-\addtogroup ITLModel
-@{
-*/
+const string ICompass::kCompassType = "compass";
 
-class Updater;
-class IEllipse;
-typedef class libmapping::SMARTP<ISensor>	SISensor;
-//--------------------------------------------------------------------------
-/*!
-	\brief an object to capture sensor values.
-*/
-class ISensor : public IRectShape
+//------------------------------------------------------------------------
+ICompass::ICompass(const std::string& name, IObject * parent)
+	: IQSensor (name, parent)
 {
-	public:
-		static const std::string kEllipseType;
-		static SISensor create(const std::string& name, IObject* parent)	{ return new ISensor(name, parent); }
+	fTypeString = kCompassType;
+}
 
-		virtual void	print(std::ostream& out) const;
-		virtual void	accept (Updater*);
+//------------------------------------------------------------------------
+float ICompass::read ()
+{
+	QCompassReading* reader = sensor()->reading();
+	return reader ? reader->azimuth() : 0;
+}
 
-	protected:
-				 ISensor( const std::string& name, IObject* parent );
-		virtual ~ISensor() {}
-};
+//------------------------------------------------------------------------
+void ICompass::setHandlers()
+{
+	I1DSensor::setHandlers();
+}
 
-/*! @} */
+} // end namespace
 
-} // end namespoace
 
-#endif

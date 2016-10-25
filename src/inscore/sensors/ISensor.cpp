@@ -33,10 +33,13 @@
 #include "ISignalNode.h"
 #include "INScore.h"
 
+class QAccelerometer;
+
 using namespace std;
 
 namespace inscore
 {
+
 
 const string ISensor::kSensorType = "sensor";
 
@@ -60,7 +63,7 @@ ISensor::ISensor(const std::string& name, IObject * parent)
 }
 
 //------------------------------------------------------------------------
-ISensor::~ISensor ()						{ stop (0);	}
+ISensor::~ISensor ()						{ /*stop (0);*/	}
 
 //------------------------------------------------------------------------
 bool ISensor::running () const				{ return fTimerID != 0; }
@@ -110,16 +113,6 @@ MsgHandler::msgStatus ISensor::run(const IMessage* msg)
 }
 
 //------------------------------------------------------------------------
-MsgHandler::msgStatus ISensor::sizeMsg (const IMessage* msg)
-{
-	if (msg->size() != 1)		return MsgHandler::kBadParameters;
-	int size;
-	if (!msg->param(0, size))	return MsgHandler::kBadParameters;
-	setSigSize (size);
-	return MsgHandler::kProcessed;
-}
-
-//------------------------------------------------------------------------
 MsgHandler::msgStatus ISensor::set (const IMessage* msg)
 {
 	string type;
@@ -138,7 +131,7 @@ MsgHandler::msgStatus ISensor::set (const IMessage* msg)
 bool ISensor::setSensor(QSensor* sensor)
 {
 	fSensor = sensor;
-	return fSensor->connectToBackend();
+	return fSensor ? fSensor->connectToBackend() : true;
 }
 
 //------------------------------------------------------------------------
@@ -169,7 +162,7 @@ void ISensor::stop(int val)
 		fTimerID = 0;
 	}
 	if (val == 0) {
-//		INScore::postMessage("192.168.1.21:7001/ISensor", "stop");
+//	INScore::postMessage("192.168.1.21:7001/ISensor", "stop", (fSensor ? "ok" : "nul"));
 #ifndef SENSORDEBUG
 		fSensor->stop();
 		fSensor->setActive(false);
@@ -178,31 +171,6 @@ void ISensor::stop(int val)
 	}
 }
 
-//------------------------------------------------------------------------
-bool ISensor::activate(bool state)
-{
-	if (!fSensor->isConnectedToBackend())	return false;		// should not happen at this stage
-
-	if (running() != state)	{
-		fSensor->setActive(state);
-		fSensor->setAlwaysOn (state);
-	}
-	if (state) {
-//INScore::postMessage("192.168.1.21:7001/ISensor", "activate", 1);
-		if (fSensor->start()) {
-			fTimerID = startTimer(10);		// start collecting sensor data every 10 mls
-//INScore::postMessage("192.168.1.21:7001/ISensor", "fTimerID", fTimerID);
-		}
-		else return false;
-	}
-	else {
-//INScore::postMessage("192.168.1.21:7001/ISensor", "activate", 0);
-		killTimer(fTimerID);
-		fTimerID = 0;
-		fSensor->stop();
-	}
-	return true;
-}
 
 } // end namespace
 

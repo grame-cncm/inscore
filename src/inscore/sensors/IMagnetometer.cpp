@@ -26,30 +26,29 @@
 #include <iostream>
 #include <cmath>
 
-#include <QAccelerometer>
-#include <QAccelerometerReading>
+#include <QMagnetometer>
+#include <QMagnetometerReading>
 
-#include "IAccelerometer.h"
+#include "IMagnetometer.h"
 
 using namespace std;
 
 namespace inscore
 {
 
-static const double gForce = 9.81;
-const string IAccelerometer::kAccelerometerType = "accelerometer";
+const string IMagnetometer::kMagnetometerType = "magnetometer";
 
 //------------------------------------------------------------------------
-IAccelerometer::IAccelerometer(const std::string& name, IObject * parent)
+IMagnetometer::IMagnetometer(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
-	fTypeString = kAccelerometerType;
-	fCalibration = gForce;
+	fTypeString = kMagnetometerType;
+	fCalibration = 10000;
 	fCalibrating = false;
 }
 
 //------------------------------------------------------------------------
-IAccelerometer::~IAccelerometer()
+IMagnetometer::~IMagnetometer()
 {
 }
 
@@ -58,22 +57,22 @@ static float max (double v1, double v2, double v3, double v4) {
 }
 
 //------------------------------------------------------------------------
-bool IAccelerometer::read (float& x, float& y, float& z)
+bool IMagnetometer::read (float& x, float& y, float& z)
 {
-	QAccelerometerReading*	reader = sensor()->reading();
+	QMagnetometerReading*	reader = sensor()->reading();
 	if (reader) {
 		if (fCalibrating) {
 			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
 			if (fCalRunning) {
-				x = reader->x() / fCalibration;
-				y = reader->y() / fCalibration;
-				z = reader->z() / fCalibration;
+				x = reader->x() * fCalibration;
+				y = reader->y() * fCalibration;
+				z = reader->z() * fCalibration;
 			}
 		}
 		else {
-			x = reader->x() / fCalibration;
-			y = reader->y() / fCalibration;
-			z = reader->z() / fCalibration;
+			x = reader->x() * fCalibration;
+			y = reader->y() * fCalibration;
+			z = reader->z() * fCalibration;
 		}
 		return true;
 	}
@@ -81,12 +80,12 @@ bool IAccelerometer::read (float& x, float& y, float& z)
 }
 
 //------------------------------------------------------------------------
-void IAccelerometer::calibrate (bool state)
+void IMagnetometer::calibrate (bool state)
 {
 	if (fCalibrating == state)	return;		// nothing to do, already in the requested mode
 	fCalibrating = state;
 	if (state) {
-		fCalibration = gForce;
+		fCalibration = 10000;
 		fCalRunning = running();
 		if (!fCalRunning) activate(true);
 	}
@@ -96,12 +95,12 @@ void IAccelerometer::calibrate (bool state)
 }
 
 //------------------------------------------------------------------------
-void IAccelerometer::setHandlers()
+void IMagnetometer::setHandlers()
 {
 	ISensor::setHandlers();
 	
-	fMsgHandlerMap[kcalibrate_SetMethod]	= TSetMethodMsgHandler<IAccelerometer,bool>::create(this, &IAccelerometer::calibrate);
-	fMsgHandlerMap[kmax_GetSetMethod]		= TSetMethodMsgHandler<IAccelerometer,float>::create(this, &IAccelerometer::setMax);
+	fMsgHandlerMap[kcalibrate_SetMethod]	= TSetMethodMsgHandler<IMagnetometer,bool>::create(this, &IMagnetometer::calibrate);
+	fMsgHandlerMap[kmax_GetSetMethod]		= TSetMethodMsgHandler<IMagnetometer,float>::create(this, &IMagnetometer::setMax);
 
 	fGetMsgHandlerMap[kmax_GetSetMethod]		= TGetParamMsgHandler<float>::create(fCalibration);
 	fAltGetMsgHandlerMap[kcalibrate_SetMethod]	= TGetParamMsgHandler<bool>::create(fCalibrating);

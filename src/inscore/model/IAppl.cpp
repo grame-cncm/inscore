@@ -79,9 +79,10 @@ static string getFilePath() {
 	// Use standard location as root path (/sdcard/documents/inscore on most device)
 	QStringList plist = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 	QString path = plist[0] + (path.endsWith("/") ? "inscore" : "/inscore");
-	QDir dir(path);
-	dir.mkpath(path);
 	oscerr << OSCStart("INScore") << "document path set to" << path.toStdString().c_str() << OSCEnd();
+	QDir dir(path);
+	if (!dir.mkpath(path))
+		oscerr << OSCStart("INScore") << "failed to set rootPath" << OSCEnd();
 	return path.toStdString();
 }
 

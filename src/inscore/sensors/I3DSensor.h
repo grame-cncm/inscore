@@ -23,17 +23,12 @@
 
 */
 
-#ifndef __IAccelerometer__
-#define __IAccelerometer__
+#ifndef __I3DSensor__
+#define __I3DSensor__
 
 
 #include "ISensor.h"
-#include "IQSensor.h"
-#include "I3DSensor.h"
 
-
-class QAccelerometer;
-class QAccelerometerReading;
 
 namespace inscore
 {
@@ -43,29 +38,28 @@ namespace inscore
 @{
 */
 
-class IAccelerometer;
-typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
 //------------------------------------------------------------------------
-class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
+class I3DSensor : public ISensor
 {
-	float			fCalibration;		// the calibration value (default to g)
-	bool			fCalibrating;		// a flag to indicate a calibration in progress
-	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
+	STSignal	fXSig, fYSig, fZSig;
 
 	public:
-		static const std::string kAccelerometerType;
-		static SIAccelerometer create(const std::string& name, IObject * parent)	{ return new IAccelerometer(name, parent); }
+		/// \brief in sensor context, provides access x, y and z signals
+		virtual bool	findSubNode (std::string node, subnodes& outlist);
+		virtual void	cleanup ();
 	
 	protected:
-				 IAccelerometer(const std::string& name, IObject * parent);
-		virtual ~IAccelerometer();
+				 I3DSensor(const std::string& name, IObject * parent);
+		virtual ~I3DSensor();
 
-		virtual void calibrate (bool state);
-		virtual float getMax () const		{ return fCalibration; }
-		virtual void  setMax (float max)	{ fCalibration = max; }
+		virtual void  createVirtualNodes ();
 
 		/// \brief called by the time task, intended to read the sensor data
-		virtual bool read (float& x, float& y, float& z);
+		virtual void	readData ();
+		virtual float	sigX () const		{ return getXPos(); }
+		virtual float	sigY () const		{ return getYPos(); }
+		virtual float	sigZ () const		{ return getZOrder(); }
+		virtual bool	read (float& x, float& y, float& z) = 0;
 
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();
