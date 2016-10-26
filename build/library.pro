@@ -78,7 +78,7 @@ NOVIEW {
 	DEFINES += NOVIEW
 	SOURCES  =  $$files($$SRC/VoidView/*.cpp)
 	HEADERS  =  $$files($$SRC/VoidView/*.h)
-	INCLUDEPATH  =  $$files($$SRC/VoidView)
+	INCLUDEPATH +=  $$files($$SRC/VoidView)
 } else {
     message ("Compiled with Qt view - add CONFIG+=NOVIEW to change to no view.")
 }
