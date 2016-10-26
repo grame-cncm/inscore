@@ -39,6 +39,7 @@ SOURCES +=	$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
 HEADERS  = $$files($$SRC/*.h, true)
 INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/
+INCLUDEPATH +=	$$ITLSRC/signal/
 
 include($$ITLROOT/src/QArchive/qarchive.pri)
 
