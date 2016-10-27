@@ -45,8 +45,6 @@ class I1DSensor : public ISensor
 		virtual void	cleanup ();
 	
 	protected:
-		float	fValue;
-
 				 I1DSensor(const std::string& name, IObject * parent);
 		virtual ~I1DSensor();
 

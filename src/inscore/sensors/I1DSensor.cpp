@@ -54,11 +54,11 @@ void I1DSensor::readData ()
 #ifdef SENSORDEBUG
 	float val = (rand() / (RAND_MAX * 0.5) ) - 1;
 #else
-	float val = smooth (read(), fValue);
+	float val = smooth (read(), getXPos());
 #endif
 	if (fIsSignal) *(signal(0)) << sigvalue(val);
-	if (val != fValue)	{
-		fValue = val;
+	if (val != getXPos())	{
+		setXPos(val);
 		if (!fIsSignal) newData (true);
 	}
 	setModified();
@@ -68,8 +68,8 @@ void I1DSensor::readData ()
 void I1DSensor::setHandlers()
 {
 	ISensor::setHandlers();
-	// z is used to store the sensor values
-	fAltGetMsgHandlerMap[kval_GetMethod] = TGetParamMsgHandler<float>::create(fValue);
+	// x is used to store the sensor values
+	fGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
 }
 
 } // end namespace
