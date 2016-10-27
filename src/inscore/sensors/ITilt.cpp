@@ -67,7 +67,6 @@ bool ITilt::read (float& x, float& y, float& z)
 //------------------------------------------------------------------------
 void ITilt::calibrate ()
 {
-INScore::postMessage("192.168.1.21:7001/ITilt", "calibrate");
 	sensor()->calibrate();
 }
 
@@ -76,7 +75,6 @@ INScore::postMessage("192.168.1.21:7001/ITilt", "calibrate");
 void ITilt::setHandlers()
 {
 	ISensor::setHandlers();
-INScore::postMessage("192.168.1.21:7001/ITilt", "setHandlers", kcalibrate_SetMethod);
 	fMsgHandlerMap[kcalibrate_SetMethod]	= TMethodMsgHandler<ITilt, void (ITilt::*)(void)>::create(this, &ITilt::calibrate);
 }
 

@@ -45,6 +45,8 @@ class I1DSensor : public ISensor
 		virtual void	cleanup ();
 	
 	protected:
+		float	fDefaultValue;
+	
 				 I1DSensor(const std::string& name, IObject * parent);
 		virtual ~I1DSensor();
 
@@ -53,7 +55,7 @@ class I1DSensor : public ISensor
 		virtual float	read () = 0;
 		virtual float	sigvalue (float value) const = 0;
 
-		/// \brief sets the message handlers.
+		virtual	bool activate(bool val);
 		virtual void setHandlers ();
 };
 

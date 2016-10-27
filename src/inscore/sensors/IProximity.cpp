@@ -37,14 +37,13 @@ namespace inscore
 {
 
 const string IProximity::kProximityType = "proximity";
-static const float gLux = 150;
 
 //------------------------------------------------------------------------
 IProximity::IProximity(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kProximityType;
-	fValue = -1;
+	fDefaultValue = -1.f;
 }
 
 IProximity::~IProximity() {}

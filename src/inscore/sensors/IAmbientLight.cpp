@@ -43,6 +43,7 @@ IAmbientLight::IAmbientLight(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kAmbientLightType;
+	fDefaultValue = 0.f;
 }
 IAmbientLight::~IAmbientLight() {}
 

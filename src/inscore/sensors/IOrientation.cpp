@@ -43,6 +43,7 @@ IOrientation::IOrientation(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kOrientationType;
+	fDefaultValue = 0.f;
 }
 IOrientation::~IOrientation() {}
 

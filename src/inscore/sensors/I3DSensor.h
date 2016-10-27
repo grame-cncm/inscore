@@ -61,7 +61,7 @@ class I3DSensor : public ISensor
 		virtual float	sigZ () const		{ return getZOrder(); }
 		virtual bool	read (float& x, float& y, float& z) = 0;
 
-		/// \brief sets the message handlers.
+		virtual	bool activate(bool val) {}
 		virtual void setHandlers ();
 };
 

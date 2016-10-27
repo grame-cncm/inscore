@@ -71,6 +71,7 @@ template<typename Q, typename S> class IQSensor : public S
 
 	public:
 		virtual	bool activate(bool val) {
+			S::activate (val);
 			fSensorsActives[fQSensor] += val ? 1 : -1;
 			if (val && !S::running())	return S::start(fSensorsActives[fQSensor]);
 			else if (S::running())		S::stop(fSensorsActives[fQSensor]);

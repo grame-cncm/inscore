@@ -43,6 +43,7 @@ ICompass::ICompass(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kCompassType;
+	fDefaultValue = 0.f;
 }
 ICompass::~ICompass() {}
 

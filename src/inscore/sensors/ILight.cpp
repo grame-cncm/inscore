@@ -46,6 +46,7 @@ ILight::ILight(const std::string& name, IObject * parent)
 	fTypeString = kLightType;
 	fCalibration = gLux;
 	fCalibrating = false;
+	fDefaultValue = 0.f;
 }
 ILight::~ILight() {}
 

@@ -36,7 +36,7 @@ namespace inscore
 
 //------------------------------------------------------------------------
 I1DSensor::I1DSensor(const std::string& name, IObject * parent)
-	: ISensor (name, parent)	{}
+	: ISensor (name, parent), fDefaultValue(0.f)	{}
 
 I1DSensor::~I1DSensor() {}
 
@@ -62,6 +62,14 @@ void I1DSensor::readData ()
 		if (!fIsSignal) newData (true);
 	}
 	setModified();
+}
+//------------------------------------------------------------------------
+bool I1DSensor::activate(bool val)
+{
+	// the sensor starts, set the value to a default value
+	// this default value should be overriden by derived class
+	// the idea is to force the newData event at activation time.
+	if (val) setXPos(fDefaultValue);
 }
 
 //------------------------------------------------------------------------
