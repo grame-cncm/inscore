@@ -129,6 +129,9 @@ class IApplLog : public IVNode
 		/// \brief print the object state \param out the output stream
 		virtual void	print(std::ostream& ) const	{}
 
+		/// \brief displays a message list
+		virtual void	write(const SIMessageList& msgs);
+
 		/// \brief accept an Update visitor
 		virtual void	accept (Updater*);
 
