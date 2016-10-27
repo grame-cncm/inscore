@@ -143,6 +143,7 @@ const char* kpendAlpha_SetMethod	= "pendAlpha";		// Set
 const char* kpop_SetMethod			= "pop";			// Set
 const char* kplay_GetSetMethod		= "play";			// Get Set
 const char* kport_GetSetMethod		= "port";			// Get Set
+const char* kpreprocess_SetMethod	= "preprocess";		// Set
 const char* kpush_SetMethod			= "push";			// Set
 const char* kquit_SetMethod			= "quit";			// Set
 const char* kradius_GetSetMethod	= "radius";			// Get Set
@@ -220,7 +221,6 @@ const char* khasZ_GetMethod				= "hasZ";					// Get
 const char* kmax_GetSetMethod			= "max";					// Get Set
 const char* kmode_GetSetMethod			= "mode";					// Get Set
 const char* ksmooth_GetSetMethod		= "smooth";					// Get Set
-const char* kval_GetMethod				= "value";					// Get
 
 
 } //namespace

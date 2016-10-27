@@ -145,6 +145,7 @@ extern const char* kpitchLines_GetSetMethod;
 extern const char* kplay_GetSetMethod;
 extern const char* kpop_SetMethod;
 extern const char* kport_GetSetMethod;
+extern const char* kpreprocess_SetMethod;
 extern const char* kpush_SetMethod;
 extern const char* kquit_SetMethod;
 extern const char* kradius_GetSetMethod;
@@ -203,6 +204,7 @@ extern const char* kyorigin_GetSetMethod;
 extern const char* kz_GetSetMethod;
 
 
+
 // gesture follower methods
 extern const char* klearn_SetMethod;
 extern const char* kfollow_SetMethod;
@@ -218,7 +220,6 @@ extern const char* khasZ_GetMethod;
 extern const char* kmax_GetSetMethod;
 extern const char* kmode_GetSetMethod;
 extern const char* ksmooth_GetSetMethod;
-extern const char* kval_GetMethod;
 
 
 } //namespace
