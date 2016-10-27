@@ -90,6 +90,16 @@ bool Tools::isurl (const std::string& path)
 }
 
 //--------------------------------------------------------------------------
+bool Tools::isAbsolutePath (const std::string& path)
+{
+#ifdef WIN32
+		return path[1] == ':';
+#else
+		return path[0] == '/';
+#endif
+}
+
+//--------------------------------------------------------------------------
 bool Tools::regexp (const string& str)
 {
 	size_t n = str.size();

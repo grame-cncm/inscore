@@ -38,6 +38,7 @@ struct Tools
 {
 	static bool					regexp (const std::string& str);
 	static bool					isurl (const std::string& str);
+	static bool					isAbsolutePath (const std::string& str);
 	static bool					str2num (const char* ptr, int& num);
 	static std::string			ensurefloat (float f, int precision=0);
 
