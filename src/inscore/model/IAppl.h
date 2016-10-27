@@ -129,8 +129,10 @@ class IAppl : public IObject, public TILoader
 		bool	defaultShow() const			{ return fDefaultShow; }
 		static const std::string&	getUDPOutAddress()		{ return fUDP.fOutDstAddress; }
 		static const std::string&	getUDPErrAddress()		{ return fUDP.fErrDstAddress; }
+	
+		void				logMsgs(const SIMessageList& msgs);
 		IApplLog*			getLogWindow()	{ return fApplLog; }
-		
+	
 		/*!
 		 * \brief getForwardList Get the list of host to which forward message.
 		 * \return
@@ -219,6 +221,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'require' message handler. Provided to check for version number.
 		virtual MsgHandler::msgStatus requireMsg(const IMessage* msg);
+
+		/// \brief application \c 'load' message handler.
+		virtual MsgHandler::msgStatus preProcessMsg (const IMessage* msg);
 
 		/// \brief application \c 'load' message handler.
 		virtual MsgHandler::msgStatus loadMsg (const IMessage* msg);

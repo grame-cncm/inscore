@@ -79,6 +79,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
 	fMsgHandlerMap[kwindowOpacity_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setWindowOpacity);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
+	fMsgHandlerMap[kpreprocess_SetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::preProcessMsg);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::setRootPath);
 	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::forward);
 
@@ -204,6 +205,11 @@ string IScene::address2scene (const char* addr) const
 	string sceneAddress (replaced);
 	regexp.ReleaseString (replaced);
 	return sceneAddress;
+}
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::preProcessMsg(const IMessage* msg)
+{
+	return preprocess (msg, getAppl(), getRootPath());
 }
 
 //--------------------------------------------------------------------------

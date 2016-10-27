@@ -173,6 +173,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
+	fMsgHandlerMap[kpreprocess_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::preProcessMsg);
 	fMsgHandlerMap[kread_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadBuffer);
 	fMsgHandlerMap[kbrowse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::browseMsg);
 	fMsgHandlerMap[krequire_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
@@ -593,10 +594,10 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
-{
-	return load (msg, this, getRootPath());
-}
+MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)		{ return load (msg, this, getRootPath()); }
+MsgHandler::msgStatus IAppl::preProcessMsg(const IMessage* msg) { return preprocess (msg, this, getRootPath()); }
+void IAppl::logMsgs(const SIMessageList& msgs)					{ fApplLog->write (msgs); }
+std::string IAppl::absolutePath( const std::string& path )		{ return TILoader::makeAbsolutePath (getRootPath(), path); }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
@@ -620,13 +621,7 @@ MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-std::string IAppl::absolutePath( const std::string& path )
-{
-	return TILoader::makeAbsolutePath (getRootPath(), path);
-}
-
-//--------------------------------------------------------------------------
-void IAppl::addAlias( const string& alias, const std::string& address, const std::string& msg )
+void IAppl::addAlias( const string& alias, const string& address, const string& msg )
 {
 	fAliases[alias] = make_pair(address, msg);
 }

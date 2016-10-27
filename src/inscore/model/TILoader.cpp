@@ -169,6 +169,41 @@ bool TILoader::loadString(const std::string& str, IObject* client)
 }
 
 //--------------------------------------------------------------------------
+MsgHandler::msgStatus TILoader::preprocess(const IMessage* msg, IAppl* appl, const std::string& rootpath)
+{
+	if (msg->size() == 1) {
+		string srcfile;
+		if (!msg->param(0, srcfile)) return MsgHandler::kBadParameters;
+		if (srcfile.size()) {
+			if ((Tools::isurl(rootpath) && !Tools::isAbsolutePath(srcfile)) || Tools::isurl(srcfile)) {
+				ITLErr << "preprocessing urls is not supported" << ITLEndl;
+				return MsgHandler::kBadParameters;		// can't preprocess urls
+			}
+			if(isBundle (srcfile)) {
+				ITLErr << "preprocessing bundles is not supported" << ITLEndl;
+				return MsgHandler::kBadParameters;		// can't preprocess bundles
+			}
+
+			stringstream buff;
+			ifstream file;
+			file.open(makeAbsolutePath(rootpath, srcfile).c_str(), fstream::in);
+			if (!file.is_open()) {
+				ITLErr << "can't open file" << srcfile << ITLEndl;
+				return MsgHandler::kBadParameters;		// can't open file
+			}
+			ITLparser p (&file, 0, appl, false);
+			if (!p.parse()) {
+				ITLErr << "while parsing file" << srcfile << ITLEndl;
+				return MsgHandler::kBadParameters;		// parse error
+			}
+			appl->logMsgs (p.messages());
+			return MsgHandler::kProcessedNoChange;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const std::string& rootpath)
 {
 	if (msg->size() == 1) {
