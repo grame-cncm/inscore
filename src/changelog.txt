@@ -13,9 +13,10 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.21
+- update to guido engine 1.63
 - new 'preprocess' message supported at application and scene level
   intended to debug javascript sections or math expressions
-  output of pre-processing is printed in log window
+  output of pre-processing is printed to the log window
 - environement variables introduced in scripting environment (OSName and OSId)
 - new math expressions introduced in scripting context
 
