@@ -39,84 +39,57 @@ namespace inscore
 static const double gForce = 9.81;
 const string IAccelerometer::kAccelerometerType = "accelerometer";
 
+static const string kCombinedMode	("combined");
+static const string kGravityMode	("gravity");
+static const string kUserMode		("user");
+
 //------------------------------------------------------------------------
 IAccelerometer::IAccelerometer(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kAccelerometerType;
-	fCalibration = gForce;
-	fCalibrating = false;
-	if (isSignal())
-		setScale ( 1 / gForce );
+	if (isSignal()) fDefaultScale =  1 / gForce;
+	setScale ( fDefaultScale );
 }
-
-//------------------------------------------------------------------------
-IAccelerometer::~IAccelerometer()
-{
-}
-
-static float max (double v1, double v2, double v3, double v4) {
-	return std::max(v1, std::max(v2, std::max(v3, v4)));
-}
+IAccelerometer::~IAccelerometer()	{}
 
 //------------------------------------------------------------------------
 bool IAccelerometer::read (float& x, float& y, float& z)
 {
 	QAccelerometerReading*	reader = sensor()->reading();
 	if (reader) {
-		if (fCalibrating) {
-			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
-			if (fCalRunning) {
-				x = reader->x();
-				y = reader->y();
-				z = reader->z();
-			}
-		}
-		else {
-			x = reader->x();
-			y = reader->y();
-			z = reader->z();
-		}
+		x = reader->x();
+		y = reader->y();
+		z = reader->z();
 		return true;
 	}
 	else return false;
 }
 
 //------------------------------------------------------------------------
-//bool IAccelerometer::read (float& x, float& y, float& z)
-//{
-//	QAccelerometerReading*	reader = sensor()->reading();
-//	if (reader) {
-//		if (fCalibrating) {
-//			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
-//			if (fCalRunning) {
-//				x = reader->x() / fCalibration;
-//				y = reader->y() / fCalibration;
-//				z = reader->z() / fCalibration;
-//			}
-//		}
-//		else {
-//			x = reader->x() / fCalibration;
-//			y = reader->y() / fCalibration;
-//			z = reader->z() / fCalibration;
-//		}
-//		return true;
-//	}
-//	else return false;
-//}
+void IAccelerometer::setMode (const std::string& mode)
+{
+	if (mode == kCombinedMode)
+		sensor()->setAccelerationMode (QAccelerometer::Combined);
+	if (mode == kGravityMode)
+		sensor()->setAccelerationMode (QAccelerometer::Gravity);
+	if (mode == kUserMode)
+		sensor()->setAccelerationMode (QAccelerometer::User);
+}
 
 //------------------------------------------------------------------------
-void IAccelerometer::calibrate (bool state)
+std::string IAccelerometer::getMode () const
 {
-	if (fCalibrating == state)	return;		// nothing to do, already in the requested mode
-	fCalibrating = state;
-	if (state) {
-		fCalibration = gForce;
-		fCalRunning = running();
-		if (!fCalRunning) activate(true);
-	}
-	else {
-		if (!fCalRunning) activate(false);
+	QAccelerometer::AccelerationMode mode = sensor()->accelerationMode();
+	switch (mode) {
+		case QAccelerometer::Combined:
+			return kCombinedMode;
+		case QAccelerometer::Gravity:
+			return kGravityMode;
+		case QAccelerometer::User:
+			return kUserMode;
+		default:
+			return "unknown";
 	}
 }
 
@@ -124,14 +97,10 @@ void IAccelerometer::calibrate (bool state)
 void IAccelerometer::setHandlers()
 {
 	ISensor::setHandlers();
-	
-	fMsgHandlerMap[kcalibrate_SetMethod]	= TSetMethodMsgHandler<IAccelerometer,bool>::create(this, &IAccelerometer::calibrate);
-	fMsgHandlerMap[kmax_GetSetMethod]		= TSetMethodMsgHandler<IAccelerometer,float>::create(this, &IAccelerometer::setMax);
+	fGetMsgHandlerMap[kmode_GetSetMethod]	= TGetParamMethodHandler<IAccelerometer, string (IAccelerometer::*)() const>::create(this, &IAccelerometer::getMode);
+	fMsgHandlerMap[kmode_GetSetMethod]		= TSetMethodMsgHandler<IAccelerometer, string>::create(this, &IAccelerometer::setMode);
 
-	fGetMsgHandlerMap[kmax_GetSetMethod]		= TGetParamMsgHandler<float>::create(fCalibration);
-	fAltGetMsgHandlerMap[kcalibrate_SetMethod]	= TGetParamMsgHandler<bool>::create(fCalibrating);
 }
 
 } // end namespace
-
 

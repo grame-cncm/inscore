@@ -26,6 +26,8 @@
 #ifndef __IAccelerometer__
 #define __IAccelerometer__
 
+#include <string>
+
 #include "I3DSensor.h"
 #include "IQSensor.h"
 
@@ -45,10 +47,6 @@ typedef class libmapping::SMARTP<IAccelerometer>	SIAccelerometer;
 //------------------------------------------------------------------------
 class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
 {
-	float			fCalibration;		// the calibration value (default to g)
-	bool			fCalibrating;		// a flag to indicate a calibration in progress
-	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
-
 	public:
 		static const std::string kAccelerometerType;
 		static SIAccelerometer create(const std::string& name, IObject * parent)	{ return new IAccelerometer(name, parent); }
@@ -57,12 +55,12 @@ class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
 				 IAccelerometer(const std::string& name, IObject * parent);
 		virtual ~IAccelerometer();
 
-		virtual void calibrate (bool state);
-		virtual float getMax () const		{ return fCalibration; }
-		virtual void  setMax (float max)	{ fCalibration = max; }
-
 		virtual bool read (float& x, float& y, float& z);
-		virtual float sigvalue (float value) const { return value; }
+		virtual float sigvalue (float value) const		{ return value; }
+
+		virtual void setMode (const std::string& mode);
+		virtual std::string getMode () const;
+
 		virtual void setHandlers ();
 };
 
