@@ -37,6 +37,7 @@ extern const char* kangle_GetSetMethod;
 extern const char* kanimate_GetSetMethod;
 extern const char* kanimated_GetMethod;
 extern const char* karrows_GetSetMethod;
+extern const char* kautoScale_SetMethod;
 extern const char* kautoVoicesColoration_GetSetMethod;
 extern const char* kblue_GetSetMethod;
 extern const char* kbrightness_GetSetMethod;

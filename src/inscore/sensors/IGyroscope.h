@@ -44,10 +44,6 @@ typedef class libmapping::SMARTP<IGyroscope>	SIGyroscope;
 //------------------------------------------------------------------------
 class IGyroscope : public IQSensor<QGyroscope, I3DSensor>
 {
-	float			fCalibration;		// the calibration value (default to g)
-	bool			fCalibrating;		// a flag to indicate a calibration in progress
-	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
-
 	public:
 		static const std::string kGyroscopeType;
 		static SIGyroscope create(const std::string& name, IObject * parent)	{ return new IGyroscope(name, parent); }
@@ -55,10 +51,6 @@ class IGyroscope : public IQSensor<QGyroscope, I3DSensor>
 	protected:
 				 IGyroscope(const std::string& name, IObject * parent);
 		virtual ~IGyroscope();
-
-		virtual void calibrate (bool state);
-		virtual float getMax () const		{ return fCalibration; }
-		virtual void  setMax (float max)	{ fCalibration = max; }
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual bool  read (float& x, float& y, float& z);

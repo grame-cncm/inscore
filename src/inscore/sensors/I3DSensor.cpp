@@ -82,6 +82,11 @@ void I3DSensor::cleanup ()
 }
 
 //------------------------------------------------------------------------
+static float getmax (float x, float y, float z) {
+	return max( max (x, y), z);
+}
+
+//------------------------------------------------------------------------
 void I3DSensor::readData ()
 {
 #ifdef SENSORDEBUG
@@ -101,6 +106,15 @@ void I3DSensor::readData ()
 #else
 	float x, y, z;
 	if (read(x, y, z)) {
+
+		if (fAutoScaling) {
+			float scale = 1/getmax(abs(x), abs(y), abs(z));
+			if (scale < getScale()) {
+//INScore::postMessage("192.168.1.21:7001/I3DSensor", "setScale", scale);
+				setScale (scale);
+			}
+		}
+
 		setXPos		( smooth (x * getScale(), getXPos()) );
 		setYPos		( smooth (y * getScale(), getYPos()) );
 		setZOrder	( smooth (z * getScale(), getZOrder()) );

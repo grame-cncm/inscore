@@ -36,6 +36,7 @@ const char* kanimate_GetSetMethod	= "animate";		// Get Set
 const char* kanimated_GetMethod		= "animated";		// Get
 const char* kangle_GetSetMethod		= "angle";			// Get Set
 const char* karrows_GetSetMethod	= "arrows";			// Get Set
+const char* kautoScale_SetMethod	= "autoscale";		// Set
 const char* kautoVoicesColoration_GetSetMethod = "autoVoicesColoration"; // Get Set
 const char* kblue_GetSetMethod		= "blue";			// Get Set
 const char* kbrightness_GetSetMethod= "brightness";		// Get Set

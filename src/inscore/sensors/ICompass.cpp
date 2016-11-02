@@ -44,8 +44,8 @@ ICompass::ICompass(const std::string& name, IObject * parent)
 {
 	fTypeString = kCompassType;
 	fDefaultValue = 0.f;
-	if (isSignal())
-		setScale ( 1 / 180.f );
+	if (isSignal()) fDefaultScale = 1 / 180.;
+	setScale ( fDefaultScale );
 }
 ICompass::~ICompass() {}
 

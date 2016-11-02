@@ -43,69 +43,30 @@ IMagnetometer::IMagnetometer(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kMagnetometerType;
-	fCalibration = 10000;
-	fCalibrating = false;
-	if (isSignal())
-		setScale ( fCalibration );
+	if (isSignal()) fDefaultScale = 10000;
+	setScale ( fDefaultScale );
 }
 
 //------------------------------------------------------------------------
-IMagnetometer::~IMagnetometer()
-{
-}
-
-static float max (double v1, double v2, double v3, double v4) {
-	return std::max(v1, std::max(v2, std::max(v3, v4)));
-}
+IMagnetometer::~IMagnetometer()	{}
 
 //------------------------------------------------------------------------
 bool IMagnetometer::read (float& x, float& y, float& z)
 {
 	QMagnetometerReading*	reader = sensor()->reading();
 	if (reader) {
-		if (fCalibrating) {
-			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
-			if (fCalRunning) {
-				x = reader->x();
-				y = reader->y();
-				z = reader->z();
-			}
-		}
-		else {
-			x = reader->x();
-			y = reader->y();
-			z = reader->z();
-		}
+		x = reader->x();
+		y = reader->y();
+		z = reader->z();
 		return true;
 	}
 	else return false;
 }
 
 //------------------------------------------------------------------------
-void IMagnetometer::calibrate (bool state)
-{
-	if (fCalibrating == state)	return;		// nothing to do, already in the requested mode
-	fCalibrating = state;
-	if (state) {
-		fCalibration = 10000;
-		fCalRunning = running();
-		if (!fCalRunning) activate(true);
-	}
-	else {
-		if (!fCalRunning) activate(false);
-	}
-}
-
-//------------------------------------------------------------------------
 void IMagnetometer::setHandlers()
 {
 	ISensor::setHandlers();
-	
-	fMsgHandlerMap[kcalibrate_SetMethod]	= TSetMethodMsgHandler<IMagnetometer,bool>::create(this, &IMagnetometer::calibrate);
-	fMsgHandlerMap[kmax_GetSetMethod]		= TSetMethodMsgHandler<IMagnetometer,float>::create(this, &IMagnetometer::setMax);
-
-	fGetMsgHandlerMap[kmax_GetSetMethod]		= TGetParamMsgHandler<float>::create(fCalibration);
-	fAltGetMsgHandlerMap[kcalibrate_SetMethod]	= TGetParamMsgHandler<bool>::create(fCalibrating);
 }
 
 } // end namespace

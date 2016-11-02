@@ -56,10 +56,11 @@ class TEmptyParamMsgHandler : public GetParamMsgHandler {
 
 //------------------------------------------------------------------------
 ISensor::ISensor(const std::string& name, IObject * parent)
-	: ISignal (name, parent), fSensor(0), fTimerID(0), fAlpha(1)
+	: ISignal (name, parent), fSensor(0), fTimerID(0), fAlpha(1), fAutoScaling(false), fDefaultScale(1.0)
 {
 	fTypeString = kSensorType;
 	fIsSignal = (parent->getTypeString() == ISignalNode::kSignalNodeType);
+	setScale(fDefaultScale);
 }
 
 //------------------------------------------------------------------------
@@ -73,13 +74,16 @@ void ISensor::timerEvent(QTimerEvent * )	{ readData(); }
 void ISensor::setHandlers()
 {
 	fMsgHandlerMap[""]					= (void*)0;
+	fMsgHandlerMap[kreset_SetMethod]	= TMethodMsgHandler<ISensor, void (ISensor::*)(void)>::create(this, &ISensor::reset);
 	fMsgHandlerMap[krun_SetMethod]		= TMethodMsgHandler<ISensor>::create(this, &ISensor::run);
 	fMsgHandlerMap[ksmooth_GetSetMethod]= TSetMethodMsgHandler<ISensor,float>::create(this, &ISensor::setSmooth);
 	fMsgHandlerMap[kscale_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setScale);
+	fMsgHandlerMap[kautoScale_SetMethod]	= TSetMethodMsgHandler<ISensor,bool>::create(this, &ISensor::autoscale);
 
 	fGetMsgHandlerMap[""]					= TEmptyParamMsgHandler::create();
 	fGetMsgHandlerMap[ksmooth_GetSetMethod]	= TGetParamMethodHandler<ISensor, float(ISensor::*)() const>::create(this, &ISensor::getSmooth);
 	fAltGetMsgHandlerMap[krun_SetMethod]	= TGetParamMethodHandler<ISensor, bool(ISensor::*)() const>::create(this, &ISensor::running);
+	fAltGetMsgHandlerMap[kautoScale_SetMethod]	= TGetParamMsgHandler<bool>::create(fAutoScaling);
 
 	if (!fIsSignal) {
 		fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<ISensor>::create(this, &ISensor::watchMsg);

@@ -60,6 +60,8 @@ class ISensor : public ISignal, public QObject
 	
 	protected:
 		bool		fIsSignal;
+		bool		fAutoScaling;
+		float		fDefaultScale;	// the default scale
 
 				 ISensor(const std::string& name, IObject * parent);
 		virtual ~ISensor();
@@ -73,6 +75,8 @@ class ISensor : public ISignal, public QObject
 		float smooth (float val, float prev)	{ return fAlpha*val + (1-fAlpha)*prev;}
 		virtual float getSmooth () const		{ return fAlpha; }
 		virtual void  setSmooth (float alpha)	{ fAlpha = std::max(0.f, std::min(alpha, 1.f)); }
+		virtual void  reset ()					{ fAlpha = 1.f; setScale(fDefaultScale); }
+		virtual void  autoscale (bool on)		{ fAutoScaling = on; }
 
 	
 		SIMessageList getSetMsg() const;

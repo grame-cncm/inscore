@@ -55,8 +55,18 @@ void I1DSensor::readData ()
 #ifdef SENSORDEBUG
 	float val = (rand() / (RAND_MAX * 0.5) ) - 1;
 #else
-	float val = smooth (read()*getScale(), getXPos());
+	float val = read();
+	if (fAutoScaling) {
+		float scale = 1/abs(val);
+		if (scale < getScale()) {
+//INScore::postMessage("192.168.1.21:7001/I1DSensor", "setScale", scale);
+			setScale(scale);
+		}
+	}
+
+	val = smooth (val * getScale(), getXPos());
 #endif
+
 	if (fIsSignal) {
 //INScore::postMessage("192.168.1.21:7001/I1DSensor", "readData", sigvalue(val));
 		*(signal(0)) << sigvalue(val);

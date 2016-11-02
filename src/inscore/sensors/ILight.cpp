@@ -44,11 +44,9 @@ ILight::ILight(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kLightType;
-	fCalibration = 1/gLux;
-	fCalibrating = false;
 	fDefaultValue = 0.f;
-	if (isSignal())
-		setScale ( fCalibration );
+	if (isSignal()) fDefaultScale = 1/gLux;
+	setScale ( fDefaultScale );
 }
 ILight::~ILight() {}
 
@@ -60,30 +58,9 @@ float ILight::read ()
 }
 
 //------------------------------------------------------------------------
-void ILight::calibrate (bool state)
-{
-	if (fCalibrating == state)	return;		// nothing to do, already in the requested mode
-	fCalibrating = state;
-	if (state) {
-		fCalibration = 1;
-		fCalRunning = running();
-		if (!fCalRunning) activate(true);
-	}
-	else {
-		if (!fCalRunning) activate(false);
-	}
-}
-
-//------------------------------------------------------------------------
 void ILight::setHandlers()
 {
 	I1DSensor::setHandlers();
-	
-	fMsgHandlerMap[kcalibrate_SetMethod]	= TSetMethodMsgHandler<ILight,bool>::create(this, &ILight::calibrate);
-	fMsgHandlerMap[kmax_GetSetMethod]		= TSetMethodMsgHandler<ILight,float>::create(this, &ILight::setMax);
-
-	fGetMsgHandlerMap[kmax_GetSetMethod]		= TGetParamMsgHandler<float>::create(fCalibration);
-	fAltGetMsgHandlerMap[kcalibrate_SetMethod]	= TGetParamMsgHandler<bool>::create(fCalibrating);
 }
 
 } // end namespace

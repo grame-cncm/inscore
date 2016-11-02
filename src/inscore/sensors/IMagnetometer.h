@@ -45,10 +45,6 @@ typedef class libmapping::SMARTP<IMagnetometer>	SIMagnetometer;
 //------------------------------------------------------------------------
 class IMagnetometer : public IQSensor<QMagnetometer, I3DSensor>
 {
-	float			fCalibration;		// the calibration value (default to g)
-	bool			fCalibrating;		// a flag to indicate a calibration in progress
-	bool			fCalRunning;		// a flag to indicate whether the sensor was running before the calibration
-
 	public:
 		static const std::string kMagnetometerType;
 		static SIMagnetometer create(const std::string& name, IObject * parent)	{ return new IMagnetometer(name, parent); }
@@ -56,10 +52,6 @@ class IMagnetometer : public IQSensor<QMagnetometer, I3DSensor>
 	protected:
 				 IMagnetometer(const std::string& name, IObject * parent);
 		virtual ~IMagnetometer();
-
-		virtual void calibrate (bool state);
-		virtual float getMax () const		{ return fCalibration; }
-		virtual void  setMax (float max)	{ fCalibration = max; }
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual bool read (float& x, float& y, float& z);

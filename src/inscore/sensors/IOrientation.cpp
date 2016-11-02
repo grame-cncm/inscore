@@ -50,8 +50,8 @@ IOrientation::IOrientation(const std::string& name, IObject * parent)
 	fTypeString = kOrientationType;
 	fDefaultValue = 0.f;
 	fDirection = fClockWiseMap;
-	if (isSignal())
-		setScale ( 1.f/3.f );
+	if (isSignal()) fDefaultScale = 1/3.f;
+	setScale ( fDefaultScale );
 }
 IOrientation::~IOrientation() {}
 
