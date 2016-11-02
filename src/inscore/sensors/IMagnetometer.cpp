@@ -45,6 +45,8 @@ IMagnetometer::IMagnetometer(const std::string& name, IObject * parent)
 	fTypeString = kMagnetometerType;
 	fCalibration = 10000;
 	fCalibrating = false;
+	if (isSignal())
+		setScale ( fCalibration );
 }
 
 //------------------------------------------------------------------------
@@ -64,15 +66,15 @@ bool IMagnetometer::read (float& x, float& y, float& z)
 		if (fCalibrating) {
 			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
 			if (fCalRunning) {
-				x = reader->x() * fCalibration;
-				y = reader->y() * fCalibration;
-				z = reader->z() * fCalibration;
+				x = reader->x();
+				y = reader->y();
+				z = reader->z();
 			}
 		}
 		else {
-			x = reader->x() * fCalibration;
-			y = reader->y() * fCalibration;
-			z = reader->z() * fCalibration;
+			x = reader->x();
+			y = reader->y();
+			z = reader->z();
 		}
 		return true;
 	}

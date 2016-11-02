@@ -55,7 +55,7 @@ class ITilt : public IQSensor<QTiltSensor, I3DSensor>
 		virtual void calibrate ();
 		/// \brief called by the time task, intended to read the sensor data
 		virtual bool read (float& x, float& y, float& z);
-		/// \brief sets the message handlers.
+		virtual float sigvalue (float value) const { return value; };
 		virtual void setHandlers ();
 };
 

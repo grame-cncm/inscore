@@ -44,7 +44,10 @@ IRotation::IRotation(const std::string& name, IObject * parent)
 {
 	fTypeString = kRotationType;
 	fHasZ = sensor()->hasZ();
-	fax = fay = faz = 0;
+	fCX = fCY = fCZ = 0;
+	fSetFromEuler = false;
+	if (isSignal())
+		setScale ( 1 / 180. );
 }
 
 //------------------------------------------------------------------------
@@ -57,14 +60,33 @@ bool IRotation::read (float& x, float& y, float& z)
 {
 	QRotationReading*	reader = sensor()->reading();
 	if (reader) {
-		if (fax) reader->setFromEuler(fax, fay, faz);
-		x = reader->x() / 90;
-		y = reader->y() / 180;
-		z = reader->z() / 180;
+		if (fSetFromEuler) reader->setFromEuler(fCX, fCY, fCZ);
+		x = reader->x();
+		y = reader->y();
+		z = reader->z();
 		return true;
 	}
 	return false;
 }
+
+//------------------------------------------------------------------------
+void IRotation::readData ()
+{
+	float x, y, z;
+	if (read(x, y, z)) {
+		setXPos		( smooth (x * getScale(), getXPos()) );
+		setYPos		( smooth (y * getScale(), getYPos()) );
+		setZOrder	( smooth (z * getScale(), getZOrder()) );
+		if (fIsSignal) {
+			*fXSig << sigvalue( getXPos() * 2);
+			*fYSig << sigvalue( getYPos());
+			*fZSig << sigvalue( getZOrder());
+		}
+		else newData (true);
+		setModified();
+	}
+}
+
 
 //--------------------------------------------------------------------------
 bool IRotation::hasZ () const		{ return sensor()->hasZ(); }
@@ -72,11 +94,10 @@ bool IRotation::hasZ () const		{ return sensor()->hasZ(); }
 //--------------------------------------------------------------------------
 void IRotation::setFromEuler (float x, float y, float z)
 {
-	fax = x;
-	fay = y;
-	faz = z;
-//	QRotationReading*	reader = sensor()->reading();
-//	if (reader) reader->setFromEuler(x, y, z);
+	fCX = x;
+	fCY = y;
+	fCZ = z;
+	fSetFromEuler = true;
 }
 
 //--------------------------------------------------------------------------
@@ -101,10 +122,8 @@ void IRotation::setHandlers()
 {
 	ISensor::setHandlers();
 	
-	fMsgHandlerMap[kangle_GetSetMethod]	= TMethodMsgHandler<IRotation>::create(this, &IRotation::setAngles);
-
-//	fGetMsgHandlerMap[kangle_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fXPos);
-	fGetMsgHandlerMap[khasZ_GetMethod]	= TGetParamMethodHandler<IRotation, bool(IRotation::*)() const>::create(this, &IRotation::hasZ);
+	fMsgHandlerMap[kangle_GetSetMethod]		= TMethodMsgHandler<IRotation>::create(this, &IRotation::setAngles);
+	fAltGetMsgHandlerMap[khasZ_GetMethod]	= TGetParamMethodHandler<IRotation, bool(IRotation::*)() const>::create(this, &IRotation::hasZ);
 }
 
 } // end namespace

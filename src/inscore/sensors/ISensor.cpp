@@ -75,6 +75,7 @@ void ISensor::setHandlers()
 	fMsgHandlerMap[""]					= (void*)0;
 	fMsgHandlerMap[krun_SetMethod]		= TMethodMsgHandler<ISensor>::create(this, &ISensor::run);
 	fMsgHandlerMap[ksmooth_GetSetMethod]= TSetMethodMsgHandler<ISensor,float>::create(this, &ISensor::setSmooth);
+	fMsgHandlerMap[kscale_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setScale);
 
 	fGetMsgHandlerMap[""]					= TEmptyParamMsgHandler::create();
 	fGetMsgHandlerMap[ksmooth_GetSetMethod]	= TGetParamMethodHandler<ISensor, float(ISensor::*)() const>::create(this, &ISensor::getSmooth);
@@ -84,7 +85,11 @@ void ISensor::setHandlers()
 		fMsgHandlerMap[kwatch_GetSetMethod]	= TMethodMsgHandler<ISensor>::create(this, &ISensor::watchMsg);
 		fMsgHandlerMap[kwatchplus_SetMethod]= TMethodMsgHandler<ISensor>::create(this, &ISensor::watchMsgAdd);
 		fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= TGetParamMultiMethodHandler<ISensor, SIMessageList (ISensor::*)() const>::create(this, &ISensor::getWatch);
+		fSigHandlerMap[kscale_GetSetMethod]		= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setScale);
+		fGetMsgHandlerMap[kscale_GetSetMethod]	= TGetParamMsgHandler<float>::create(fScale);
 	}
+	else
+		fAltGetMsgHandlerMap[kscale_GetSetMethod]	= TGetParamMsgHandler<float>::create(fScale);
 }
 
 
@@ -112,6 +117,17 @@ MsgHandler::msgStatus ISensor::run(const IMessage* msg)
 	return MsgHandler::kProcessed;
 }
 
+static const char* kNotSupported = "is not supported by your device.";
+//------------------------------------------------------------------------
+MsgHandler::msgStatus ISensor::sizeMsg (const IMessage* msg)
+{
+	if (! fSensor->connectToBackend()) {
+		ITLErr << getOSCAddress() << kNotSupported << ITLEndl;
+		return MsgHandler::kCreateFailure;
+	}
+	return ISignal::sizeMsg(msg);
+}
+
 //------------------------------------------------------------------------
 MsgHandler::msgStatus ISensor::set (const IMessage* msg)
 {
@@ -120,7 +136,7 @@ MsgHandler::msgStatus ISensor::set (const IMessage* msg)
 	if (!msg->param(0, type))	return MsgHandler::kBadParameters;
 #ifndef SENSORDEBUG
 	if (! fSensor->connectToBackend()) {
-		ITLErr << getOSCAddress() << type << "is not supported by your device." << ITLEndl;
+		ITLErr << getOSCAddress() << type << kNotSupported << ITLEndl;
 		return MsgHandler::kCreateFailure;
 	}
 #endif

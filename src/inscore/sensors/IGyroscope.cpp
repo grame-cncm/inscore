@@ -46,6 +46,8 @@ IGyroscope::IGyroscope(const std::string& name, IObject * parent)
 	fTypeString = kGyroscopeType;
 	fCalibration = kDefaultCalibration;
 	fCalibrating = false;
+	if (isSignal())
+		setScale ( 1 / fCalibration );
 }
 
 //------------------------------------------------------------------------
@@ -65,20 +67,42 @@ bool IGyroscope::read (float& x, float& y, float& z)
 		if (fCalibrating) {
 			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
 			if (fCalRunning) {
-				x = reader->x() / fCalibration;
-				y = reader->y() / fCalibration;
-				z = reader->z() / fCalibration;
+				x = reader->x();
+				y = reader->y();
+				z = reader->z();
 			}
 		}
 		else {
-			x = reader->x() / fCalibration;
-			y = reader->y() / fCalibration;
-			z = reader->z() / fCalibration;
+			x = reader->x();
+			y = reader->y();
+			z = reader->z();
 		}
 		return true;
 	}
 	else return false;
 }
+
+//bool IGyroscope::read (float& x, float& y, float& z)
+//{
+//	QGyroscopeReading*	reader = sensor()->reading();
+//	if (reader) {
+//		if (fCalibrating) {
+//			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
+//			if (fCalRunning) {
+//				x = reader->x() / fCalibration;
+//				y = reader->y() / fCalibration;
+//				z = reader->z() / fCalibration;
+//			}
+//		}
+//		else {
+//			x = reader->x() / fCalibration;
+//			y = reader->y() / fCalibration;
+//			z = reader->z() / fCalibration;
+//		}
+//		return true;
+//	}
+//	else return false;
+//}
 
 //------------------------------------------------------------------------
 void IGyroscope::calibrate (bool state)

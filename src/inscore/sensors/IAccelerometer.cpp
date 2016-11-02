@@ -46,6 +46,8 @@ IAccelerometer::IAccelerometer(const std::string& name, IObject * parent)
 	fTypeString = kAccelerometerType;
 	fCalibration = gForce;
 	fCalibrating = false;
+	if (isSignal())
+		setScale ( 1 / gForce );
 }
 
 //------------------------------------------------------------------------
@@ -65,20 +67,43 @@ bool IAccelerometer::read (float& x, float& y, float& z)
 		if (fCalibrating) {
 			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
 			if (fCalRunning) {
-				x = reader->x() / fCalibration;
-				y = reader->y() / fCalibration;
-				z = reader->z() / fCalibration;
+				x = reader->x();
+				y = reader->y();
+				z = reader->z();
 			}
 		}
 		else {
-			x = reader->x() / fCalibration;
-			y = reader->y() / fCalibration;
-			z = reader->z() / fCalibration;
+			x = reader->x();
+			y = reader->y();
+			z = reader->z();
 		}
 		return true;
 	}
 	else return false;
 }
+
+//------------------------------------------------------------------------
+//bool IAccelerometer::read (float& x, float& y, float& z)
+//{
+//	QAccelerometerReading*	reader = sensor()->reading();
+//	if (reader) {
+//		if (fCalibrating) {
+//			fCalibration = max(std::abs(reader->x()), std::abs(reader->y()), std::abs(reader->z()), fCalibration);
+//			if (fCalRunning) {
+//				x = reader->x() / fCalibration;
+//				y = reader->y() / fCalibration;
+//				z = reader->z() / fCalibration;
+//			}
+//		}
+//		else {
+//			x = reader->x() / fCalibration;
+//			y = reader->y() / fCalibration;
+//			z = reader->z() / fCalibration;
+//		}
+//		return true;
+//	}
+//	else return false;
+//}
 
 //------------------------------------------------------------------------
 void IAccelerometer::calibrate (bool state)

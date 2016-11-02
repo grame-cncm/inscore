@@ -37,16 +37,18 @@ namespace inscore
 {
 
 const string ILight::kLightType = "light";
-static const float gLux = 150;
+static const float gLux = 200.f;
 
 //------------------------------------------------------------------------
 ILight::ILight(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kLightType;
-	fCalibration = gLux;
+	fCalibration = 1/gLux;
 	fCalibrating = false;
 	fDefaultValue = 0.f;
+	if (isSignal())
+		setScale ( fCalibration );
 }
 ILight::~ILight() {}
 

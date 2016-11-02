@@ -44,6 +44,8 @@ ICompass::ICompass(const std::string& name, IObject * parent)
 {
 	fTypeString = kCompassType;
 	fDefaultValue = 0.f;
+	if (isSignal())
+		setScale ( 1 / 180.f );
 }
 ICompass::~ICompass() {}
 
@@ -52,12 +54,6 @@ float ICompass::read ()
 {
 	QCompassReading* reader = sensor()->reading();
 	return reader ? reader->azimuth() : 0;
-}
-
-//------------------------------------------------------------------------
-void ICompass::setHandlers()
-{
-	I1DSensor::setHandlers();
 }
 
 } // end namespace

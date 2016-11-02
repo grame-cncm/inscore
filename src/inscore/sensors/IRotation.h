@@ -45,8 +45,9 @@ typedef class libmapping::SMARTP<IRotation>	SIRotation;
 //------------------------------------------------------------------------
 class IRotation : public IQSensor<QRotationSensor, I3DSensor>
 {
-	bool		fHasZ;		// a flag to indicate whether the sensor has z rotation
-	float		fax, fay, faz;
+	bool		fHasZ;				// a flag to indicate whether the sensor has z rotation
+	float		fCX, fCY, fCZ;		// calibration angles
+	bool		fSetFromEuler;
 
 	void		setFromEuler (float x, float y, float z);
 
@@ -60,6 +61,7 @@ class IRotation : public IQSensor<QRotationSensor, I3DSensor>
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual bool read (float& x, float& y, float& z);
+		virtual void readData ();
 
 		/// \brief the \c 'angle' message handler
 		virtual bool hasZ () const;
@@ -67,6 +69,7 @@ class IRotation : public IQSensor<QRotationSensor, I3DSensor>
 		/// \brief the \c 'angle' message handler
 		virtual MsgHandler::msgStatus setAngles(const IMessage* msg);
 
+		virtual float sigvalue (float value) const { return value; }
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();
 };

@@ -27,6 +27,7 @@
 #include <cmath>
 
 #include "I3DSensor.h"
+//#include "INScore.h"
 
 
 using namespace std;
@@ -100,13 +101,17 @@ void I3DSensor::readData ()
 #else
 	float x, y, z;
 	if (read(x, y, z)) {
-		setXPos		( smooth (x, getXPos()) );
-		setYPos		( smooth (y, getYPos()) );
-		setZOrder	( smooth (z, getZOrder()) );
+		setXPos		( smooth (x * getScale(), getXPos()) );
+		setYPos		( smooth (y * getScale(), getYPos()) );
+		setZOrder	( smooth (z * getScale(), getZOrder()) );
 		if (fIsSignal) {
-			*fXSig << getXPos();
-			*fYSig << getYPos();
-			*fZSig << getZOrder();
+//INScore::postMessage("192.168.1.21:7001/I3DSensor", "x", sigvalue(getXPos()));
+//INScore::postMessage("192.168.1.21:7001/I3DSensor", "y", sigvalue(getYPos()));
+//INScore::postMessage("192.168.1.21:7001/I3DSensor", "z", sigvalue(getZOrder()));
+
+			*fXSig << sigvalue( getXPos());
+			*fYSig << sigvalue( getYPos());
+			*fZSig << sigvalue( getZOrder());
 		}
 		else newData (true);
 		setModified();
@@ -120,9 +125,9 @@ void I3DSensor::setHandlers()
 	ISensor::setHandlers();
 	// x, y and z attributes of 3D sensors are used to store the sensor values
 	// and are available to 'get' messages
-	fGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
-	fGetMsgHandlerMap[ky_GetSetMethod]	= TGetParamMsgHandler<float>::create(fYPos);
-	fGetMsgHandlerMap[kz_GetSetMethod]	= TGetParamMsgHandler<float>::create(fZOrder);
+	fAltGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
+	fAltGetMsgHandlerMap[ky_GetSetMethod]	= TGetParamMsgHandler<float>::create(fYPos);
+	fAltGetMsgHandlerMap[kz_GetSetMethod]	= TGetParamMsgHandler<float>::create(fZOrder);
 }
 
 } // end namespace

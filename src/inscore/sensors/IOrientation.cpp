@@ -37,6 +37,11 @@ namespace inscore
 {
 
 const string IOrientation::kOrientationType = "orientation";
+// map the Qt values so that continuous values are emittd when the phone goes
+// from top up, face up, next clockwise rotation and finally top down
+const float  IOrientation::fClockWiseMap[7]			= { 0, 1, 6, 3, 5, 2, 4 };
+// the same but counter clockwise rotation
+const float  IOrientation::fCounterClockWiseMap[7]	= { 0, 1, 6, 5, 3, 2, 4 };
 
 //------------------------------------------------------------------------
 IOrientation::IOrientation(const std::string& name, IObject * parent)
@@ -44,6 +49,9 @@ IOrientation::IOrientation(const std::string& name, IObject * parent)
 {
 	fTypeString = kOrientationType;
 	fDefaultValue = 0.f;
+	fDirection = fClockWiseMap;
+	if (isSignal())
+		setScale ( 1.f/3.f );
 }
 IOrientation::~IOrientation() {}
 
@@ -51,7 +59,7 @@ IOrientation::~IOrientation() {}
 float IOrientation::read ()
 {
 	QOrientationReading* reader = sensor()->reading();
-	return reader ? reader->orientation() : 0;
+	return reader ? fDirection[reader->orientation()] : 0;
 }
 
 //------------------------------------------------------------------------

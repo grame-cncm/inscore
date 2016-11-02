@@ -44,6 +44,8 @@ IAmbientLight::IAmbientLight(const std::string& name, IObject * parent)
 {
 	fTypeString = kAmbientLightType;
 	fDefaultValue = 0.f;
+	if (isSignal())
+		setScale ( 0.4f );
 }
 IAmbientLight::~IAmbientLight() {}
 

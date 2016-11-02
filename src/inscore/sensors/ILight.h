@@ -59,7 +59,7 @@ class ILight : public IQSensor<QLightSensor, I1DSensor>
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual float read ();
-		virtual float sigvalue (float value) const		{ return value / fCalibration; }
+		virtual float sigvalue (float value) const		{ return value - 1; }
 
 		virtual void calibrate (bool state);
 		virtual float getMax () const		{ return fCalibration; }

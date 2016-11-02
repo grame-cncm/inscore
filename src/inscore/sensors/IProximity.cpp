@@ -48,11 +48,13 @@ IProximity::IProximity(const std::string& name, IObject * parent)
 
 IProximity::~IProximity() {}
 
+
 //------------------------------------------------------------------------
 float IProximity::read ()
 {
 	QProximityReading* reader = sensor()->reading();
-	return reader ? reader->close() : 0;
+	if (!reader) return 0;
+	return reader->close() ? 1 : (fIsSignal ? -1 : 0);
 }
 
 } // end namespace

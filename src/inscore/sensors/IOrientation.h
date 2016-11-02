@@ -44,6 +44,11 @@ typedef class libmapping::SMARTP<IOrientation>	SIOrientation;
 //------------------------------------------------------------------------
 class IOrientation : public IQSensor<QOrientationSensor, I1DSensor>
 {
+	static const float fClockWiseMap[7];
+	static const float fCounterClockWiseMap[7];
+	
+	const float* fDirection;
+
 	public:
 		static const std::string kOrientationType;
 		static SIOrientation create(const std::string& name, IObject * parent)	{ return new IOrientation(name, parent); }
@@ -54,7 +59,7 @@ class IOrientation : public IQSensor<QOrientationSensor, I1DSensor>
 
 		/// \brief called by the time task, intended to read the sensor data
 		virtual float read ();
-		virtual float sigvalue (float value) const		{ return (value + 1) / 4 - 1; }
+		virtual float sigvalue (float value) const		{ return value - 1; }
 
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();

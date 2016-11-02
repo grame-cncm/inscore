@@ -41,14 +41,14 @@ namespace inscore
 //------------------------------------------------------------------------
 class I3DSensor : public ISensor
 {
-	STSignal	fXSig, fYSig, fZSig;
-
 	public:
 		/// \brief in sensor context, provides access x, y and z signals
 		virtual bool	findSubNode (std::string node, subnodes& outlist);
 		virtual void	cleanup ();
 	
 	protected:
+		STSignal	fXSig, fYSig, fZSig;
+
 				 I3DSensor(const std::string& name, IObject * parent);
 		virtual ~I3DSensor();
 
@@ -61,6 +61,7 @@ class I3DSensor : public ISensor
 		virtual float	sigZ () const		{ return getZOrder(); }
 		virtual bool	read (float& x, float& y, float& z) = 0;
 
+		virtual float sigvalue (float value) const = 0;
 		virtual	bool activate(bool val) {}
 		virtual void setHandlers ();
 };

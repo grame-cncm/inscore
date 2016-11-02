@@ -61,10 +61,9 @@ class IGyroscope : public IQSensor<QGyroscope, I3DSensor>
 		virtual void  setMax (float max)	{ fCalibration = max; }
 
 		/// \brief called by the time task, intended to read the sensor data
-		virtual bool read (float& x, float& y, float& z);
-
-		/// \brief sets the message handlers.
-		virtual void setHandlers ();
+		virtual bool  read (float& x, float& y, float& z);
+		virtual float sigvalue (float value) const { return value; }
+		virtual void  setHandlers ();
 };
 
 /*! @} */

@@ -27,6 +27,7 @@
 #include <cmath>
 
 #include "I1DSensor.h"
+//#include "INScore.h"
 
 
 using namespace std;
@@ -54,15 +55,19 @@ void I1DSensor::readData ()
 #ifdef SENSORDEBUG
 	float val = (rand() / (RAND_MAX * 0.5) ) - 1;
 #else
-	float val = smooth (read(), getXPos());
+	float val = smooth (read()*getScale(), getXPos());
 #endif
-	if (fIsSignal) *(signal(0)) << sigvalue(val);
+	if (fIsSignal) {
+//INScore::postMessage("192.168.1.21:7001/I1DSensor", "readData", sigvalue(val));
+		*(signal(0)) << sigvalue(val);
+	}
 	if (val != getXPos())	{
 		setXPos(val);
 		if (!fIsSignal) newData (true);
 	}
 	setModified();
 }
+
 //------------------------------------------------------------------------
 bool I1DSensor::activate(bool val)
 {
@@ -77,7 +82,7 @@ void I1DSensor::setHandlers()
 {
 	ISensor::setHandlers();
 	// x is used to store the sensor values
-	fGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
+	fAltGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
 }
 
 } // end namespace

@@ -61,10 +61,8 @@ class IAccelerometer : public IQSensor<QAccelerometer, I3DSensor>
 		virtual float getMax () const		{ return fCalibration; }
 		virtual void  setMax (float max)	{ fCalibration = max; }
 
-		/// \brief called by the time task, intended to read the sensor data
 		virtual bool read (float& x, float& y, float& z);
-
-		/// \brief sets the message handlers.
+		virtual float sigvalue (float value) const { return value; }
 		virtual void setHandlers ();
 };
 

@@ -44,6 +44,8 @@ ITilt::ITilt(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kTiltType;
+	if (isSignal())
+		setScale ( 1 / 90. );
 }
 
 //------------------------------------------------------------------------
@@ -56,8 +58,8 @@ bool ITilt::read (float& x, float& y, float& z)
 {
 	QTiltReading*	reader = sensor()->reading();
 	if (reader) {
-		x = reader->xRotation() / 90;
-		y = reader->yRotation() / 90;
+		x = reader->xRotation();
+		y = reader->yRotation();
 		z = 0;
 		return true;
 	}

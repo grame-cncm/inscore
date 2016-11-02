@@ -83,6 +83,7 @@ class ISensor : public ISignal, public QObject
 
 		/// \brief object \c 'set' message handler.
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+		virtual MsgHandler::msgStatus sizeMsg (const IMessage* msg);
 
 		void		print (IMessage& out) const;
 		bool		setSensor(QSensor* sensor);
