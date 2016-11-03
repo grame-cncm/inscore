@@ -30,6 +30,7 @@
 #include <QOrientationReading>
 
 #include "IOrientation.h"
+#include "ITLError.h"
 
 using namespace std;
 
@@ -42,6 +43,9 @@ const string IOrientation::kOrientationType = "orientation";
 const float  IOrientation::fClockWiseMap[7]			= { 0, 1, 6, 3, 5, 2, 4 };
 // the same but counter clockwise rotation
 const float  IOrientation::fCounterClockWiseMap[7]	= { 0, 1, 6, 5, 3, 2, 4 };
+
+static const string kClockwiseMode	("clockwise");
+static const string kCClockwiseMode	("counterClockwise");
 
 //------------------------------------------------------------------------
 IOrientation::IOrientation(const std::string& name, IObject * parent)
@@ -63,9 +67,28 @@ float IOrientation::read ()
 }
 
 //------------------------------------------------------------------------
+void IOrientation::setMode (const std::string& mode)
+{
+	if (mode == kClockwiseMode)
+		fDirection = fClockWiseMap;
+	else if (mode == kCClockwiseMode)
+		fDirection = fCounterClockWiseMap;
+	else
+		ITLErr << getOSCAddress() <<  kmode_GetSetMethod << mode << ": invalid mode." << ITLEndl;
+}
+
+//------------------------------------------------------------------------
+std::string IOrientation::getMode () const
+{
+	return fDirection == fCounterClockWiseMap ? kCClockwiseMode : kClockwiseMode;
+}
+
+//------------------------------------------------------------------------
 void IOrientation::setHandlers()
 {
 	I1DSensor::setHandlers();
+	fGetMsgHandlerMap[kmode_GetSetMethod]	= TGetParamMethodHandler<IOrientation, string (IOrientation::*)() const>::create(this, &IOrientation::getMode);
+	fMsgHandlerMap[kmode_GetSetMethod]		= TSetMethodMsgHandler<IOrientation, string>::create(this, &IOrientation::setMode);
 }
 
 } // end namespace

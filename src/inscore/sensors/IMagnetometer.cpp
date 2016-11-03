@@ -30,6 +30,7 @@
 #include <QMagnetometerReading>
 
 #include "IMagnetometer.h"
+#include "ITLError.h"
 
 using namespace std;
 
@@ -37,6 +38,9 @@ namespace inscore
 {
 
 const string IMagnetometer::kMagnetometerType = "magnetometer";
+
+static const string kGeoMode	("geomagnetic");
+static const string kRawMode	("raw");
 
 //------------------------------------------------------------------------
 IMagnetometer::IMagnetometer(const std::string& name, IObject * parent)
@@ -63,10 +67,31 @@ bool IMagnetometer::read (float& x, float& y, float& z)
 	else return false;
 }
 
+
+//------------------------------------------------------------------------
+void IMagnetometer::setMode (const std::string& mode)
+{
+	if (mode == kGeoMode)
+		sensor()->setReturnGeoValues (true);
+	else if (mode == kRawMode)
+		sensor()->setReturnGeoValues (false);
+	else
+		ITLErr << getOSCAddress() <<  kmode_GetSetMethod << mode << ": invalid mode." << ITLEndl;
+}
+
+//------------------------------------------------------------------------
+std::string IMagnetometer::getMode () const
+{
+	return sensor()->returnGeoValues() ? kGeoMode : kRawMode;
+}
+
+
 //------------------------------------------------------------------------
 void IMagnetometer::setHandlers()
 {
 	ISensor::setHandlers();
+	fGetMsgHandlerMap[kmode_GetSetMethod]	= TGetParamMethodHandler<IMagnetometer, string (IMagnetometer::*)() const>::create(this, &IMagnetometer::getMode);
+	fMsgHandlerMap[kmode_GetSetMethod]		= TSetMethodMsgHandler<IMagnetometer, string>::create(this, &IMagnetometer::setMode);
 }
 
 } // end namespace

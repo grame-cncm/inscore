@@ -61,7 +61,8 @@ class IOrientation : public IQSensor<QOrientationSensor, I1DSensor>
 		virtual float read ();
 		virtual float sigvalue (float value) const		{ return value - 1; }
 
-		/// \brief sets the message handlers.
+		virtual void setMode (const std::string& mode);
+		virtual std::string getMode () const;
 		virtual void setHandlers ();
 };
 

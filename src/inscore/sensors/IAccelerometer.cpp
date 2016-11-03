@@ -30,6 +30,7 @@
 #include <QAccelerometerReading>
 
 #include "IAccelerometer.h"
+#include "ITLError.h"
 
 using namespace std;
 
@@ -71,10 +72,12 @@ void IAccelerometer::setMode (const std::string& mode)
 {
 	if (mode == kCombinedMode)
 		sensor()->setAccelerationMode (QAccelerometer::Combined);
-	if (mode == kGravityMode)
+	else if (mode == kGravityMode)
 		sensor()->setAccelerationMode (QAccelerometer::Gravity);
-	if (mode == kUserMode)
+	else if (mode == kUserMode)
 		sensor()->setAccelerationMode (QAccelerometer::User);
+	else
+		ITLErr << getOSCAddress() <<  kmode_GetSetMethod << mode << ": invalid mode." << ITLEndl;
 }
 
 //------------------------------------------------------------------------
@@ -99,7 +102,6 @@ void IAccelerometer::setHandlers()
 	ISensor::setHandlers();
 	fGetMsgHandlerMap[kmode_GetSetMethod]	= TGetParamMethodHandler<IAccelerometer, string (IAccelerometer::*)() const>::create(this, &IAccelerometer::getMode);
 	fMsgHandlerMap[kmode_GetSetMethod]		= TSetMethodMsgHandler<IAccelerometer, string>::create(this, &IAccelerometer::setMode);
-
 }
 
 } // end namespace

@@ -56,6 +56,9 @@ class IMagnetometer : public IQSensor<QMagnetometer, I3DSensor>
 		/// \brief called by the time task, intended to read the sensor data
 		virtual bool read (float& x, float& y, float& z);
 		virtual float sigvalue (float value) const { return value; };
+
+		virtual void setMode (const std::string& mode);
+		virtual std::string getMode () const;
 		virtual void setHandlers ();
 };
 
