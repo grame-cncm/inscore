@@ -2883,6 +2883,12 @@ Creating parallel graphic signals:
 Using data projection may be convenient when the input signal represents interleaved data. For example, the projection string \OSC{[n\~{}6]} distribute data over similar components of a set of graphic signals, where \OSC{n} represents the index of the graphic signal target component.
 
 
+
+%===============================
+%:Sensors
+\input{Sensors/sensors.tex}
+
+
 %===============================
 %:Events and Interaction
 \toplevel{Events and Interaction}
@@ -3230,6 +3236,17 @@ An object that follows mouse move.\\
 \sample{/ITL/scene/myObject watch mouseDown ( \\
 \hspace*{3cm}/ITL/scene/myObject x '\$sx', \\
 \hspace*{3cm}/ITL/scene/myObject y '\$sy' );}
+
+
+%===============================
+\subsublevel{Sensor variables}
+\label{sensorvar}
+
+Sensors values are available using the \OSC{\$x}, \OSC{\$y} and \OSC{\$z} variables, for events generated in the context of a sensor.
+\begin{rail} 
+xyz : ('x' | 'y' | 'z') ( | '[low,high]') 
+\end{rail}
+Note that depending on the sensor type, the \OSC{\$y} and \OSC{\$z} variables may be useless.
 
 
 %===============================
