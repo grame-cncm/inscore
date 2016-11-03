@@ -62,15 +62,9 @@ class IRotation : public IQSensor<QRotationSensor, I3DSensor>
 		/// \brief called by the time task, intended to read the sensor data
 		virtual bool read (float& x, float& y, float& z);
 		virtual void readData ();
-
-		/// \brief the \c 'angle' message handler
-		virtual bool hasZ () const;
-
-		/// \brief the \c 'angle' message handler
-		virtual MsgHandler::msgStatus setAngles(const IMessage* msg);
-
 		virtual float sigvalue (float value) const { return value; }
-		/// \brief sets the message handlers.
+
+		virtual bool hasZ () const;
 		virtual void setHandlers ();
 };
 
