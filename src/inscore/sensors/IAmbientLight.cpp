@@ -56,12 +56,6 @@ float IAmbientLight::read ()
 	return reader ? reader->lightLevel() : 0;
 }
 
-//------------------------------------------------------------------------
-void IAmbientLight::setHandlers()
-{
-	I1DSensor::setHandlers();
-}
-
 } // end namespace
 
 

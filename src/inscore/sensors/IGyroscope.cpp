@@ -62,12 +62,6 @@ bool IGyroscope::read (float& x, float& y, float& z)
 	else return false;
 }
 
-//------------------------------------------------------------------------
-void IGyroscope::setHandlers()
-{
-	ISensor::setHandlers();
-}
-
 } // end namespace
 
 

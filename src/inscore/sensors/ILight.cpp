@@ -57,12 +57,6 @@ float ILight::read ()
 	return reader ? reader->lux() : 0;
 }
 
-//------------------------------------------------------------------------
-void ILight::setHandlers()
-{
-	I1DSensor::setHandlers();
-}
-
 } // end namespace
 
 

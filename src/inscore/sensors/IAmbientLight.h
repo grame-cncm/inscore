@@ -55,9 +55,6 @@ class IAmbientLight : public IQSensor<QAmbientLightSensor, I1DSensor>
 		/// \brief called by the time task, intended to read the sensor data
 		virtual float read ();
 		virtual float sigvalue (float value) const		{ return value - 1; }
-
-		/// \brief sets the message handlers.
-		virtual void setHandlers ();
 };
 
 /*! @} */
