@@ -53,7 +53,7 @@ class ITilt : public IQSensor<QTiltSensor, I3DSensor>
 		virtual ~ITilt();
 
 		virtual void calibrate ();
-		/// \brief called by the time task, intended to read the sensor data
+
 		virtual bool read (float& x, float& y, float& z);
 		virtual float sigvalue (float value) const { return value; };
 		virtual void setHandlers ();

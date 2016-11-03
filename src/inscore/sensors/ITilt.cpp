@@ -47,11 +47,7 @@ ITilt::ITilt(const std::string& name, IObject * parent)
 	if (isSignal()) fDefaultScale = 1 / 90.;
 	setScale ( fDefaultScale );
 }
-
-//------------------------------------------------------------------------
-ITilt::~ITilt()
-{
-}
+ITilt::~ITilt() {}
 
 //------------------------------------------------------------------------
 bool ITilt::read (float& x, float& y, float& z)
@@ -67,11 +63,7 @@ bool ITilt::read (float& x, float& y, float& z)
 }
 
 //------------------------------------------------------------------------
-void ITilt::calibrate ()
-{
-	sensor()->calibrate();
-}
-
+void ITilt::calibrate ()	{ sensor()->calibrate(); }
 
 //------------------------------------------------------------------------
 void ITilt::setHandlers()
