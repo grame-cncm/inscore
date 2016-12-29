@@ -42,19 +42,19 @@ kTrig      init       0
   if kSigCC == 1 then
 kTrig      =          kTrig + 1
     if ky == 1 then
-           OSCsend    kTrig, "", giSendPort, "/ITL/scene/signal/sig", "ssfffff", "set", "y", 0.02, 0.001, 0.999, 0.999, 0.999
+           OSCsend    kTrig, "localhost", giSendPort, "/ITL/scene/signal/sig", "ssfffff", "set", "y", 0.02, 0.001, 0.999, 0.999, 0.999
     elseif kt == 1 then
-           OSCsend    kTrig, "", giSendPort, "/ITL/scene/signal/sig", "sfsffff", "set", 0.001, "t", 0.001, 0.999, 0.999, 0.999
+           OSCsend    kTrig, "localhost", giSendPort, "/ITL/scene/signal/sig", "sfsffff", "set", 0.001, "t", 0.001, 0.999, 0.999, 0.999
     elseif kh == 1 then
-           OSCsend    kTrig, "", giSendPort, "/ITL/scene/signal/sig", "sffsfff", "set", 0.001, 0.1, "h", 0.999, 0.999, 0.999
+           OSCsend    kTrig, "localhost", giSendPort, "/ITL/scene/signal/sig", "sffsfff", "set", 0.001, 0.1, "h", 0.999, 0.999, 0.999
     elseif ks == 1 then
-           OSCsend    kTrig, "", giSendPort, "/ITL/scene/signal/sig", "sfffsff", "set", 0.001, 0.1, 0.001, "s", 0.999, 0.999
+           OSCsend    kTrig, "localhost", giSendPort, "/ITL/scene/signal/sig", "sfffsff", "set", 0.001, 0.1, 0.001, "s", 0.999, 0.999
     elseif kb == 1 then
-           OSCsend    kTrig, "", giSendPort, "/ITL/scene/signal/sig", "sffffsf", "set", 0.001, 0.1, 0.001, 0.999, "b", 0.999
+           OSCsend    kTrig, "localhost", giSendPort, "/ITL/scene/signal/sig", "sffffsf", "set", 0.001, 0.1, 0.001, 0.999, "b", 0.999
     elseif ka == 1 then
-           OSCsend    kTrig, "", giSendPort, "/ITL/scene/signal/sig", "sfffffs", "set", 0.001, 0.1, 0.001, 0.999, 0.999, "a"
+           OSCsend    kTrig, "localhost", giSendPort, "/ITL/scene/signal/sig", "sfffffs", "set", 0.001, 0.1, 0.001, 0.999, 0.999, "a"
            else       ;reset
-           OSCsend    kTrig, "", giSendPort, "/ITL/scene/signal/sig", "sffffff", "set", 0.001, 0.02, 0.001, 0.999, 0.999, 0.999
+           OSCsend    kTrig, "localhost", giSendPort, "/ITL/scene/signal/sig", "sffffff", "set", 0.001, 0.02, 0.001, 0.999, 0.999, 0.999
     endif
   endif
   endin
@@ -62,8 +62,8 @@ kTrig      =          kTrig + 1
   instr SetInit
 ;load sinus.inscore file
 SrootPath  pwd
-           OSCsend    1,"", giSendPort, "/ITL", "ss", "rootPath", SrootPath
-           OSCsend    1,"", giSendPort, "/ITL", "ss", "load", "sinus.inscore"
+           OSCsend    1,"localhost", giSendPort, "/ITL", "ss", "rootPath", SrootPath
+           OSCsend    1,"localhost", giSendPort, "/ITL", "ss", "load", "sinus.inscore"
            turnoff2   "Sinus", 0, 0
            turnoff     
   endin
@@ -71,7 +71,7 @@ SrootPath  pwd
   instr Sinus
 kSend      metro      20
 kSin       oscili     gkAmp, gkFreq, giSine, -1
-           OSCsend    kSend, "", giSendPort, "/ITL/scene/signal/[ythsba]", "f", kSin
+           OSCsend    kSend, "localhost", giSendPort, "/ITL/scene/signal/[ythsba]", "f", kSin
   endin
 
 </CsInstruments>
@@ -82,8 +82,8 @@ i "RunIsFun" 0 99999
 <bsbPanel>
  <label>Widgets</label>
  <objectName/>
- <x>0</x>
- <y>0</y>
+ <x>276</x>
+ <y>255</y>
  <width>412</width>
  <height>357</height>
  <visible>true</visible>
@@ -93,25 +93,7 @@ i "RunIsFun" 0 99999
   <g>170</g>
   <b>0</b>
  </bgcolor>
- <bsbObject version="2" type="BSBVSlider">
-  <objectName>freq</objectName>
-  <x>160</x>
-  <y>76</y>
-  <width>20</width>
-  <height>100</height>
-  <uuid>{852b0e8c-48e5-4bea-99df-3bd823a22197}</uuid>
-  <visible>true</visible>
-  <midichan>0</midichan>
-  <midicc>0</midicc>
-  <minimum>0.10000000</minimum>
-  <maximum>1.00000000</maximum>
-  <value>0.10000000</value>
-  <mode>lin</mode>
-  <mouseControl act="jump">continuous</mouseControl>
-  <resolution>-1.00000000</resolution>
-  <randomizable group="0">false</randomizable>
- </bsbObject>
- <bsbObject version="2" type="BSBButton">
+ <bsbObject type="BSBButton" version="2">
   <objectName>start</objectName>
   <x>26</x>
   <y>86</y>
@@ -130,7 +112,7 @@ i "RunIsFun" 0 99999
   <latch>true</latch>
   <latched>false</latched>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>25</x>
   <y>4</y>
@@ -159,7 +141,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBButton">
+ <bsbObject type="BSBButton" version="2">
   <objectName/>
   <x>26</x>
   <y>127</y>
@@ -178,7 +160,7 @@ i "RunIsFun" 0 99999
   <latch>false</latch>
   <latched>false</latched>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>146</x>
   <y>49</y>
@@ -207,25 +189,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBVSlider">
-  <objectName>amp</objectName>
-  <x>207</x>
-  <y>76</y>
-  <width>20</width>
-  <height>100</height>
-  <uuid>{7d97be35-a6b3-473d-bba5-3c889bf5a7f5}</uuid>
-  <visible>true</visible>
-  <midichan>0</midichan>
-  <midicc>0</midicc>
-  <minimum>0.01000000</minimum>
-  <maximum>1.00000000</maximum>
-  <value>0.01000000</value>
-  <mode>lin</mode>
-  <mouseControl act="jump">continuous</mouseControl>
-  <resolution>-1.00000000</resolution>
-  <randomizable group="0">false</randomizable>
- </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>196</x>
   <y>49</y>
@@ -254,65 +218,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
-  <objectName>freq</objectName>
-  <x>144</x>
-  <y>176</y>
-  <width>49</width>
-  <height>26</height>
-  <uuid>{91a6a136-228d-40de-9205-4faa7d04ee01}</uuid>
-  <visible>true</visible>
-  <midichan>0</midichan>
-  <midicc>0</midicc>
-  <alignment>right</alignment>
-  <font>Arial</font>
-  <fontsize>12</fontsize>
-  <color>
-   <r>0</r>
-   <g>0</g>
-   <b>0</b>
-  </color>
-  <bgcolor mode="nobackground">
-   <r>255</r>
-   <g>255</g>
-   <b>255</b>
-  </bgcolor>
-  <resolution>0.01000000</resolution>
-  <minimum>0.1</minimum>
-  <maximum>10</maximum>
-  <randomizable group="0">false</randomizable>
-  <value>0.307</value>
- </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
-  <objectName>amp</objectName>
-  <x>192</x>
-  <y>176</y>
-  <width>49</width>
-  <height>26</height>
-  <uuid>{8897ea32-cdd3-4ed3-b250-db4687edc87a}</uuid>
-  <visible>true</visible>
-  <midichan>0</midichan>
-  <midicc>0</midicc>
-  <alignment>right</alignment>
-  <font>Arial</font>
-  <fontsize>12</fontsize>
-  <color>
-   <r>0</r>
-   <g>0</g>
-   <b>0</b>
-  </color>
-  <bgcolor mode="nobackground">
-   <r>255</r>
-   <g>255</g>
-   <b>255</b>
-  </bgcolor>
-  <resolution>0.01000000</resolution>
-  <minimum>0.01</minimum>
-  <maximum>1</maximum>
-  <randomizable group="0">false</randomizable>
-  <value>0.3664</value>
- </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>293</x>
   <y>50</y>
@@ -341,7 +247,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>292</x>
   <y>77</y>
@@ -370,7 +276,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBCheckBox">
+ <bsbObject type="BSBCheckBox" version="2">
   <objectName>y</objectName>
   <x>291</x>
   <y>102</y>
@@ -385,7 +291,7 @@ i "RunIsFun" 0 99999
   <pressedValue>1</pressedValue>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>312</x>
   <y>77</y>
@@ -414,7 +320,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBCheckBox">
+ <bsbObject type="BSBCheckBox" version="2">
   <objectName>t</objectName>
   <x>311</x>
   <y>102</y>
@@ -429,7 +335,7 @@ i "RunIsFun" 0 99999
   <pressedValue>1</pressedValue>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>332</x>
   <y>77</y>
@@ -458,7 +364,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>352</x>
   <y>77</y>
@@ -487,7 +393,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>372</x>
   <y>77</y>
@@ -516,7 +422,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>392</x>
   <y>77</y>
@@ -545,7 +451,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBCheckBox">
+ <bsbObject type="BSBCheckBox" version="2">
   <objectName>h</objectName>
   <x>331</x>
   <y>102</y>
@@ -560,7 +466,7 @@ i "RunIsFun" 0 99999
   <pressedValue>1</pressedValue>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBCheckBox">
+ <bsbObject type="BSBCheckBox" version="2">
   <objectName>s</objectName>
   <x>351</x>
   <y>102</y>
@@ -575,7 +481,7 @@ i "RunIsFun" 0 99999
   <pressedValue>1</pressedValue>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBCheckBox">
+ <bsbObject type="BSBCheckBox" version="2">
   <objectName>b</objectName>
   <x>371</x>
   <y>102</y>
@@ -590,7 +496,7 @@ i "RunIsFun" 0 99999
   <pressedValue>1</pressedValue>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBCheckBox">
+ <bsbObject type="BSBCheckBox" version="2">
   <objectName>a</objectName>
   <x>391</x>
   <y>102</y>
@@ -605,7 +511,7 @@ i "RunIsFun" 0 99999
   <pressedValue>1</pressedValue>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>25</x>
   <y>213</y>
@@ -634,7 +540,7 @@ i "RunIsFun" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>27</x>
   <y>275</y>
@@ -662,6 +568,100 @@ i "RunIsFun" 0 99999
   <bordermode>noborder</bordermode>
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
+ </bsbObject>
+ <bsbObject type="BSBSpinBox" version="2">
+  <objectName>freq</objectName>
+  <x>144</x>
+  <y>176</y>
+  <width>49</width>
+  <height>26</height>
+  <uuid>{91a6a136-228d-40de-9205-4faa7d04ee01}</uuid>
+  <visible>true</visible>
+  <midichan>0</midichan>
+  <midicc>0</midicc>
+  <alignment>right</alignment>
+  <font>Arial</font>
+  <fontsize>12</fontsize>
+  <color>
+   <r>0</r>
+   <g>0</g>
+   <b>0</b>
+  </color>
+  <bgcolor mode="nobackground">
+   <r>255</r>
+   <g>255</g>
+   <b>255</b>
+  </bgcolor>
+  <resolution>0.01000000</resolution>
+  <minimum>0.1</minimum>
+  <maximum>10</maximum>
+  <randomizable group="0">false</randomizable>
+  <value>0.31</value>
+ </bsbObject>
+ <bsbObject type="BSBSpinBox" version="2">
+  <objectName>amp</objectName>
+  <x>192</x>
+  <y>176</y>
+  <width>49</width>
+  <height>26</height>
+  <uuid>{8897ea32-cdd3-4ed3-b250-db4687edc87a}</uuid>
+  <visible>true</visible>
+  <midichan>0</midichan>
+  <midicc>0</midicc>
+  <alignment>right</alignment>
+  <font>Arial</font>
+  <fontsize>12</fontsize>
+  <color>
+   <r>0</r>
+   <g>0</g>
+   <b>0</b>
+  </color>
+  <bgcolor mode="nobackground">
+   <r>255</r>
+   <g>255</g>
+   <b>255</b>
+  </bgcolor>
+  <resolution>0.01000000</resolution>
+  <minimum>0.01</minimum>
+  <maximum>1</maximum>
+  <randomizable group="0">false</randomizable>
+  <value>0.37</value>
+ </bsbObject>
+ <bsbObject type="BSBVSlider" version="2">
+  <objectName>freq</objectName>
+  <x>160</x>
+  <y>76</y>
+  <width>20</width>
+  <height>100</height>
+  <uuid>{852b0e8c-48e5-4bea-99df-3bd823a22197}</uuid>
+  <visible>true</visible>
+  <midichan>0</midichan>
+  <midicc>0</midicc>
+  <minimum>0.10000000</minimum>
+  <maximum>1.00000000</maximum>
+  <value>0.31000000</value>
+  <mode>lin</mode>
+  <mouseControl act="jump">continuous</mouseControl>
+  <resolution>-1.00000000</resolution>
+  <randomizable group="0">false</randomizable>
+ </bsbObject>
+ <bsbObject type="BSBVSlider" version="2">
+  <objectName>amp</objectName>
+  <x>207</x>
+  <y>76</y>
+  <width>20</width>
+  <height>100</height>
+  <uuid>{7d97be35-a6b3-473d-bba5-3c889bf5a7f5}</uuid>
+  <visible>true</visible>
+  <midichan>0</midichan>
+  <midicc>0</midicc>
+  <minimum>0.01000000</minimum>
+  <maximum>1.00000000</maximum>
+  <value>0.37000000</value>
+  <mode>lin</mode>
+  <mouseControl act="jump">continuous</mouseControl>
+  <resolution>-1.00000000</resolution>
+  <randomizable group="0">false</randomizable>
  </bsbObject>
 </bsbPanel>
 <bsbPresets>

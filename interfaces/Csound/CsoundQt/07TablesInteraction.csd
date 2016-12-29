@@ -26,31 +26,31 @@ kTabLen    tableng    kft
 
 ;create panel for this table
 SPanel     sprintfk   "/ITL/Table_%s", Sname
-           OSCsend    1, "", giSendPort, SPanel, "s", "new"
+           OSCsend    1, "localhost", giSendPort, SPanel, "s", "new"
 
 ;delete previous content if necessary
 Sdelmsg    sprintfk   "%s/%s", SPanel, "*"
-           OSCsend    1,"", giSendPort, Sdelmsg, "s", "del"
+           OSCsend    1,"localhost", giSendPort, Sdelmsg, "s", "del"
 
 ;set signal size (= ftable size)
 SSignal    sprintfk   "%s/signal/table", SPanel
-           OSCsend    1, "", giSendPort, SSignal, "si", "size", kTabLen
+           OSCsend    1, "localhost", giSendPort, SSignal, "si", "size", kTabLen
 
 ;send values to the ring buffer
 kndx       =          0
 sendToInscore:
 kVal       tablekt    kndx, kft
-           OSCsend    kndx, "", giSendPort, SSignal, "f", kVal * .99 ;looks nicer if scales to 99%
+           OSCsend    kndx, "localhost", giSendPort, SSignal, "f", kVal * .99 ;looks nicer if scales to 99%
            loop_le    kndx, 1, kTabLen, sendToInscore
 
 ;create signal with table values as y values
 Ssig       sprintfk   "%s/signal/sig", SPanel
-           OSCsend    1, "", giSendPort, Ssig, "ssfffff", "set", "table", iThick, iHue, iSat, iBright, iTransp
+           OSCsend    1, "localhost", giSendPort, Ssig, "ssfffff", "set", "table", iThick, iHue, iSat, iBright, iTransp
 
 ;show signal as graph
 Sshow      sprintfk   "%s/show_table", SPanel
-           OSCsend    1, "", giSendPort, Sshow, "sss", "set", "graph", "sig"
-           OSCsend    1, "", giSendPort, Sshow, "sf", "scale", 2
+           OSCsend    1, "localhost", giSendPort, Sshow, "sss", "set", "graph", "sig"
+           OSCsend    1, "localhost", giSendPort, Sshow, "sf", "scale", 2
   endif
 
   endop
@@ -89,7 +89,7 @@ i "Curve" 0 99999
  <x>273</x>
  <y>265</y>
  <width>413</width>
- <height>138</height>
+ <height>140</height>
  <visible>true</visible>
  <uuid/>
  <bgcolor mode="background">
@@ -97,7 +97,7 @@ i "Curve" 0 99999
   <g>170</g>
   <b>0</b>
  </bgcolor>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>curve</objectName>
   <x>26</x>
   <y>50</y>
@@ -115,7 +115,7 @@ i "Curve" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>25</x>
   <y>4</y>
@@ -144,7 +144,7 @@ i "Curve" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>26</x>
   <y>85</y>
@@ -173,7 +173,7 @@ i "Curve" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBDisplay">
+ <bsbObject type="BSBDisplay" version="2">
   <objectName>curve</objectName>
   <x>353</x>
   <y>50</y>
@@ -205,10 +205,3 @@ i "Curve" 0 99999
 </bsbPanel>
 <bsbPresets>
 </bsbPresets>
-<MacGUI>
-ioView background {65535, 43690, 0}
-ioSlider {26, 50} {319, 31} -10.000000 10.000000 -2.539185 curve
-ioText {25, 4} {387, 38} label 0.000000 0.00100 "" center "Arial" 25 {0, 0, 0} {52736, 52736, 52736} nobackground noborder 07TablesInteraction
-ioText {26, 85} {387, 53} label 0.000000 0.00100 "" left "Arial" 14 {0, 0, 0} {52736, 52736, 52736} nobackground noborder Start Csound and watch the /ITL/Table_Curve panel
-ioText {353, 50} {59, 32} display -2.539000 0.00100 "curve" right "Arial" 16 {0, 0, 0} {52736, 52736, 52736} nobackground noborder -2.539
-</MacGUI>
