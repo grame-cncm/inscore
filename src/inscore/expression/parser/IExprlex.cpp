@@ -486,7 +486,6 @@ static yyconst flex_int32_t yy_rule_can_match_eol[18] =
 #pragma warning (disable : 4267 4100 4244)
 #endif
 
-//#include <stdio.h>
 #include <iostream>
 #include "IExprParser.h"
 #include "IExprParse.hpp"
@@ -536,7 +535,7 @@ static  char* unescape (char * str) {
 /* allowed character for args */
 /* A string can't begin with " or ' (conflict with QUOTEDSTRING), ( or ) (conflict with expression definition)*/
 /*  neither with & nor ~ (conflict with prefix) and finnaly not $ (conflict with variable)*/
-#line 540 "IExprlex.cpp"
+#line 539 "IExprlex.cpp"
 
 #define INITIAL 0
 #define DQSTR 1
@@ -777,13 +776,13 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 82 "IExpr.l"
+#line 81 "IExpr.l"
 
  /* ----------------------------------------- */
  /*	evaluable expression section */
  /* ----------------------------------------- */
 
-#line 787 "IExprlex.cpp"
+#line 786 "IExprlex.cpp"
 
     yylval = yylval_param;
 
@@ -886,17 +885,17 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 87 "IExpr.l"
+#line 86 "IExpr.l"
 return EXPR_START;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 88 "IExpr.l"
+#line 87 "IExpr.l"
 return EXPR_START;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 89 "IExpr.l"
+#line 88 "IExpr.l"
 return EXPR_END;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -904,34 +903,34 @@ return EXPR_END;
 /* ----------------------------------------- */
 case 4:
 YY_RULE_SETUP
-#line 96 "IExpr.l"
+#line 95 "IExpr.l"
 BEGIN DQSTR;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 97 "IExpr.l"
+#line 96 "IExpr.l"
 BEGIN QSTR;
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 99 "IExpr.l"
+#line 98 "IExpr.l"
 yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 100 "IExpr.l"
+#line 99 "IExpr.l"
 yyextra->fText = unescape(yytext); return QUOTEDSTRING;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 101 "IExpr.l"
+#line 100 "IExpr.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 102 "IExpr.l"
+#line 101 "IExpr.l"
 BEGIN INITIAL;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -939,46 +938,46 @@ BEGIN INITIAL;
 /* ----------------------------------------- */
 case 10:
 YY_RULE_SETUP
-#line 108 "IExpr.l"
+#line 107 "IExpr.l"
 yyextra->fText = yytext; return IDENTIFIER;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 109 "IExpr.l"
+#line 108 "IExpr.l"
 yyextra->fText = yytext; return STRING;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 111 "IExpr.l"
+#line 110 "IExpr.l"
 return AMPERSAND;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 112 "IExpr.l"
+#line 111 "IExpr.l"
 return TILDE;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 113 "IExpr.l"
+#line 112 "IExpr.l"
 return VARSTART;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 115 "IExpr.l"
+#line 114 "IExpr.l"
 ;   /* eat up space */
 	YY_BREAK
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 116 "IExpr.l"
+#line 115 "IExpr.l"
 yylloc->first_column=0; /* ignore */
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 119 "IExpr.l"
+#line 118 "IExpr.l"
 ECHO;
 	YY_BREAK
-#line 982 "IExprlex.cpp"
+#line 981 "IExprlex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(DQSTR):
 case YY_STATE_EOF(QSTR):
@@ -2124,7 +2123,7 @@ void IExprfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 119 "IExpr.l"
+#line 118 "IExpr.l"
 
 
 

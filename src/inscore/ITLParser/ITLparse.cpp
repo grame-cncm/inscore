@@ -2080,7 +2080,7 @@ yyreduce:
 
   case 76:
 #line 331 "ITL.y"
-    { (yyval.p) = context->fReader.parseExpr(context->fText, context->fExprStartLine, yyloc.first_column + 1 - context->fText.length());;}
+    { (yyval.p) = context->fReader.parseExpr(context->fText, context->fExprStartLine, yyloc.first_column + 1 - context->fText.length()); ;}
     break;
 
 
