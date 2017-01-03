@@ -29,9 +29,7 @@
 #include <map>
 
 #include "smartpointer.h"
-
 #include "evaluator.h"
-
 
 namespace inscore{
 
@@ -68,16 +66,16 @@ public:
 	 */
 	static SIExpression createEmpty();
 
-	inline std::string definition() const {return fDefinition;}
-	inline void setDefinition(std::string definition){fDefinition = definition;}
-	inline const SIExprArg& rootNode() const {return fRootNode;}
+	inline std::string definition() const				{ return fDefinition;}
+	inline void setDefinition(std::string definition)	{ fDefinition = definition;}
+	inline const SIExprArg& rootNode() const			{ return fRootNode;}
 	void setRootNode(SIExprArg rootNode);
 
 	/*!
 	 * \brief isValid Test if the IExpression is valid
 	 * \return True if the expression contains a not empty defition and expression tree.
 	 */
-	inline bool isValid(){return fRootNode!=0 && !fDefinition.empty();}
+	inline bool isValid()			{return fRootNode!=0 && !fDefinition.empty();}
 
 
 protected:
