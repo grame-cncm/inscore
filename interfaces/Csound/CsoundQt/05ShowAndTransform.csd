@@ -56,12 +56,12 @@ SUpDir     strsub     Sok, 0, ipos
 
 ;delete previous contents in /ITL/scene on localhost
 Sdelmsg    sprintf    "/ITL/scene/%s","*"
-           OSCsend    1,"", giSendPort, Sdelmsg, "s", "del"
+           OSCsend    1,"localhost", giSendPort, Sdelmsg, "s", "del"
 
 ;set root path
 Swd        pwd
 gSrootPath DirUp      Swd
-           OSCsend    1,"", giSendPort, "/ITL", "ss", "rootPath", gSrootPath
+           OSCsend    1,"localhost", giSendPort, "/ITL", "ss", "rootPath", gSrootPath
 
 ;receive GUI input for transformations
 gkScale    invalue    "scale"
@@ -155,35 +155,35 @@ kRandShwChng changed  kRandomShow
   endin
 
   instr Text
-           OSCsend    1,"", giSendPort, "/ITL/scene/txt", "sss", "set", "txt", gSText
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/txt", "sss", "set", "txt", gSText
 gkLast     =          1
            turnoff
   endin
 
   instr TextDel
-           OSCsend    1,"", giSendPort, "/ITL/scene/txt", "s", "del"
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/txt", "s", "del"
            turnoff
   endin
 
   instr Image
-           OSCsend    1,"", giSendPort, "/ITL/scene/img", "sss", "set", "img", "./rsrc/csconf.jpg"
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/img", "sss", "set", "img", "./rsrc/csconf.jpg"
 gkLast     =          2
            turnoff
   endin
 
   instr ImageDel
-           OSCsend    1,"", giSendPort, "/ITL/scene/img", "s", "del"
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/img", "s", "del"
            turnoff
   endin
 
   instr Score
-           OSCsend    1,"", giSendPort, "/ITL/scene/sco", "sss", "set", "gmnf", "./rsrc/1voice-846_2f.gmn"
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/sco", "sss", "set", "gmnf", "./rsrc/1voice-846_2f.gmn"
 gkLast     =          3
            turnoff
   endin
 
   instr ScoreDel
-           OSCsend    1,"", giSendPort, "/ITL/scene/sco", "s", "del"
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/sco", "s", "del"
            turnoff
   endin
 
@@ -196,14 +196,14 @@ Starget    =          "/ITL/scene/img"
   elseif iWhich == 3 then
 Starget    =          "/ITL/scene/sco"
   endif
-           OSCsend    1,"", giSendPort, Starget, "sf", "scale", gkScale
-           OSCsend    1,"", giSendPort, Starget, "sf", "x", gkX
-           OSCsend    1,"", giSendPort, Starget, "sf", "y", gkY
-           OSCsend    1,"", giSendPort, Starget, "sf", "angle", gkAngle
-           OSCsend    1,"", giSendPort, Starget, "sf", "rotatex", gkRotateX
-           OSCsend    1,"", giSendPort, Starget, "sf", "rotatey", gkRotateY
-           OSCsend    1,"", giSendPort, Starget, "sf", "rotatez", gkRotateZ
-           OSCsend    1,"", giSendPort, Starget, "sff", "shear", gkShearX, gkShearY
+           OSCsend    1,"localhost", giSendPort, Starget, "sf", "scale", gkScale
+           OSCsend    1,"localhost", giSendPort, Starget, "sf", "x", gkX
+           OSCsend    1,"localhost", giSendPort, Starget, "sf", "y", gkY
+           OSCsend    1,"localhost", giSendPort, Starget, "sf", "angle", gkAngle
+           OSCsend    1,"localhost", giSendPort, Starget, "sf", "rotatex", gkRotateX
+           OSCsend    1,"localhost", giSendPort, Starget, "sf", "rotatey", gkRotateY
+           OSCsend    1,"localhost", giSendPort, Starget, "sf", "rotatez", gkRotateZ
+           OSCsend    1,"localhost", giSendPort, Starget, "sff", "shear", gkShearX, gkShearY
            turnoff
   endin
 
@@ -307,7 +307,7 @@ i "RunForLive" 0 99999
   <g>170</g>
   <b>0</b>
  </bgcolor>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>23</x>
   <y>4</y>
@@ -336,7 +336,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>155</y>
@@ -365,7 +365,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>186</y>
@@ -394,7 +394,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>217</y>
@@ -423,7 +423,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>247</y>
@@ -452,7 +452,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>278</y>
@@ -481,7 +481,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>rotatex</objectName>
   <x>378</x>
   <y>278</y>
@@ -510,7 +510,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>304</y>
@@ -539,7 +539,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>rotatey</objectName>
   <x>378</x>
   <y>304</y>
@@ -568,7 +568,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>330</y>
@@ -597,7 +597,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>rotatez</objectName>
   <x>378</x>
   <y>330</y>
@@ -626,7 +626,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>362</y>
@@ -655,7 +655,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>shearx</objectName>
   <x>378</x>
   <y>362</y>
@@ -684,7 +684,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>24</x>
   <y>388</y>
@@ -713,7 +713,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>sheary</objectName>
   <x>378</x>
   <y>388</y>
@@ -742,7 +742,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>scale</objectName>
   <x>380</x>
   <y>155</y>
@@ -771,7 +771,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>1.66836</value>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>x</objectName>
   <x>378</x>
   <y>186</y>
@@ -800,7 +800,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>y</objectName>
   <x>378</x>
   <y>217</y>
@@ -829,7 +829,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBSpinBox">
+ <bsbObject type="BSBSpinBox" version="2">
   <objectName>angle</objectName>
   <x>378</x>
   <y>247</y>
@@ -858,7 +858,7 @@ i "RunForLive" 0 99999
   <randomizable group="0">false</randomizable>
   <value>0</value>
  </bsbObject>
- <bsbObject version="2" type="BSBButton">
+ <bsbObject type="BSBButton" version="2">
   <objectName>button28</objectName>
   <x>307</x>
   <y>123</y>
@@ -877,7 +877,7 @@ i "RunForLive" 0 99999
   <latch>false</latch>
   <latched>false</latched>
  </bsbObject>
- <bsbObject version="2" type="BSBButton">
+ <bsbObject type="BSBButton" version="2">
   <objectName>text</objectName>
   <x>172</x>
   <y>87</y>
@@ -896,7 +896,7 @@ i "RunForLive" 0 99999
   <latch>true</latch>
   <latched>false</latched>
  </bsbObject>
- <bsbObject version="2" type="BSBButton">
+ <bsbObject type="BSBButton" version="2">
   <objectName>image</objectName>
   <x>245</x>
   <y>87</y>
@@ -915,7 +915,7 @@ i "RunForLive" 0 99999
   <latch>true</latch>
   <latched>false</latched>
  </bsbObject>
- <bsbObject version="2" type="BSBButton">
+ <bsbObject type="BSBButton" version="2">
   <objectName>score</objectName>
   <x>316</x>
   <y>87</y>
@@ -934,7 +934,7 @@ i "RunForLive" 0 99999
   <latch>true</latch>
   <latched>false</latched>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>scale</objectName>
   <x>105</x>
   <y>156</y>
@@ -952,7 +952,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>x</objectName>
   <x>105</x>
   <y>187</y>
@@ -970,7 +970,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>y</objectName>
   <x>105</x>
   <y>218</y>
@@ -988,7 +988,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>angle</objectName>
   <x>105</x>
   <y>248</y>
@@ -1006,7 +1006,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>rotatex</objectName>
   <x>105</x>
   <y>279</y>
@@ -1024,7 +1024,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>rotatey</objectName>
   <x>105</x>
   <y>305</y>
@@ -1042,7 +1042,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>rotatez</objectName>
   <x>105</x>
   <y>331</y>
@@ -1060,7 +1060,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>shearx</objectName>
   <x>105</x>
   <y>363</y>
@@ -1078,7 +1078,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBHSlider">
+ <bsbObject type="BSBHSlider" version="2">
   <objectName>sheary</objectName>
   <x>105</x>
   <y>389</y>
@@ -1096,7 +1096,7 @@ i "RunForLive" 0 99999
   <resolution>-1.00000000</resolution>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBLineEdit">
+ <bsbObject type="BSBLineEdit" version="2">
   <objectName>intext</objectName>
   <x>22</x>
   <y>49</y>
@@ -1117,13 +1117,13 @@ i "RunForLive" 0 99999
    <b>0</b>
   </color>
   <bgcolor mode="nobackground">
-   <r>206</r>
-   <g>206</g>
-   <b>206</b>
+   <r>239</r>
+   <g>235</g>
+   <b>231</b>
   </bgcolor>
   <background>nobackground</background>
  </bsbObject>
- <bsbObject version="2" type="BSBCheckBox">
+ <bsbObject type="BSBCheckBox" version="2">
   <objectName>breaklines</objectName>
   <x>23</x>
   <y>124</y>
@@ -1138,7 +1138,7 @@ i "RunForLive" 0 99999
   <pressedValue>1</pressedValue>
   <randomizable group="0">false</randomizable>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>43</x>
   <y>123</y>
@@ -1167,7 +1167,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>22</x>
   <y>88</y>
@@ -1196,7 +1196,7 @@ i "RunForLive" 0 99999
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBButton">
+ <bsbObject type="BSBButton" version="2">
   <objectName>randomshow</objectName>
   <x>196</x>
   <y>123</y>
@@ -1215,7 +1215,7 @@ i "RunForLive" 0 99999
   <latch>true</latch>
   <latched>false</latched>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>23</x>
   <y>423</y>
@@ -1246,7 +1246,7 @@ Click on 'Random Show' for an example of automatic transformations.</label>
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>-15</x>
   <y>570</y>

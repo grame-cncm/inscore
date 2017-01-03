@@ -3,6 +3,7 @@
 -odac -m128
 </CsOptions>
 <CsInstruments>
+ksmps = 32
 /*******
 note: this is actually a translation of the original
 demo.osc file in the inscore sources to csound code
@@ -46,7 +47,7 @@ Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 Sslave     StrayGetEl Smsg, 1
 Smaster    StrayGetEl Smsg, 2
-           OSCsend    1, "", giPort, Sdest, "ss", Sslave, Smaster
+           OSCsend    1, "localhost", giPort, Sdest, "ss", Sslave, Smaster
 endin
 
 instr 3 ;for sync, e.g. "/ITL/scene/sync slave* guido hv"
@@ -55,7 +56,7 @@ Sdest      StrayGetEl Smsg, 0
 Sslave     StrayGetEl Smsg, 1
 Smaster    StrayGetEl Smsg, 2
 Smode      StrayGetEl Smsg, 3
-           OSCsend    1, "", giPort, Sdest, "sss", Sslave, Smaster, Smode
+           OSCsend    1, "localhost", giPort, Sdest, "sss", Sslave, Smaster, Smode
 endin
 
 
@@ -63,38 +64,38 @@ instr demotime
 ims = p4 ;value for pd metro (ms)
 Smsg       sprintf    "/ITL/scene/slave%s","*"
 ksend      metro      1000/ims
-           OSCsend    ksend, "", giPort, Smsg, "s", "clock"
+           OSCsend    ksend, "localhost", giPort, Smsg, "s", "clock"
 endin
 
 instr shape_dangle
 ksend      metro      100
-           OSCsend    ksend, "", giPort, "/ITL/scene/shape*", "sf", "dangle", .99
+           OSCsend    ksend, "localhost", giPort, "/ITL/scene/shape*", "sf", "dangle", .99
 endin
 
 instr is_dangle
 ksend      metro      100
-           OSCsend    ksend, "", giPort, "/ITL/scene/[is]*", "sf", "dangle", .99
+           OSCsend    ksend, "localhost", giPort, "/ITL/scene/[is]*", "sf", "dangle", .99
 endin
 
 instr all_dangle_scale
 Smsg       sprintf    "/ITL/scene/%s","*"
 ksend      metro      1000/11
-           OSCsend    ksend, "", giPort, Smsg, "sf", "dangle", .99
-           OSCsend    ksend, "", giPort, Smsg, "sf", "dscale", .99
+           OSCsend    ksend, "localhost", giPort, Smsg, "sf", "dangle", .99
+           OSCsend    ksend, "localhost", giPort, Smsg, "sf", "dscale", .99
 endin
 
 instr all_dangle
 iamount    =          p4
 Smsg       sprintf    "/ITL/scene/%s","*"
 ksend      metro      1000/10
-           OSCsend    ksend, "", giPort, Smsg, "sf", "dangle", iamount
+           OSCsend    ksend, "localhost", giPort, Smsg, "sf", "dangle", iamount
 endin
 
 instr init
-           OSCsend    1,"", giPort, "/ITL", "ss", "rootPath", gSrootPath
-           OSCsend    1, "", giPort, "/ITL", "si", "defaultShow", 0
+           OSCsend    1,"localhost", giPort, "/ITL", "ss", "rootPath", gSrootPath
+           OSCsend    1, "localhost", giPort, "/ITL", "si", "defaultShow", 0
 Sdelmsg    sprintf    "/ITL/scene/%s","*"
-           OSCsend    1,"",giPort, Sdelmsg, "s", "del" 
+           OSCsend    1,"localhost",giPort, Sdelmsg, "s", "del" 
            turnoff
 endin
 
@@ -105,7 +106,7 @@ ired       StrayGetNum Smsg, 2
 igreen     StrayGetNum Smsg, 3 
 iblue      StrayGetNum Smsg, 4 
 ialph      StrayGetNum Smsg, 5 
-           OSCsend    1,"",giPort, Sdest, "siiii", "color", ired, igreen, iblue, ialph 
+           OSCsend    1,"localhost",giPort, Sdest, "siiii", "color", ired, igreen, iblue, ialph 
            turnoff
 endin
 
@@ -113,7 +114,7 @@ instr width; e.g. width 1.33
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iwidth     StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "width", iwidth 
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "width", iwidth 
            turnoff
 endin
 
@@ -173,7 +174,7 @@ instr set_file ; e.g. set file rsrc/title.html
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 Sfil       StrayGetEl Smsg, 3 
-           OSCsend    1,"",giPort, Sdest, "sss", "set", "file", Sfil 
+           OSCsend    1,"localhost",giPort, Sdest, "sss", "set", "file", Sfil 
            turnoff
 endin
 
@@ -181,7 +182,7 @@ instr set_txt ; e.g. set txt bla
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 Stxt       StrayGetEl Smsg, 3 
-           OSCsend    1,"",giPort, Sdest, "sss", "set", "txt", Stxt
+           OSCsend    1,"localhost",giPort, Sdest, "sss", "set", "txt", Stxt
            turnoff
 endin
 
@@ -189,7 +190,7 @@ instr set_txtf ; e.g. set txtf rsrc/bla.txt
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 Sfil       StrayGetEl Smsg, 3 
-           OSCsend    1,"",giPort, Sdest, "sss", "set", "txtf", Sfil 
+           OSCsend    1,"localhost",giPort, Sdest, "sss", "set", "txtf", Sfil 
            turnoff
 endin
 
@@ -198,7 +199,7 @@ Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iwidth     StrayGetNum Smsg, 3 
 iheight    StrayGetNum Smsg, 4
-           OSCsend    1,"",giPort, Sdest, "ssff", "set", "rect", iwidth, iheight
+           OSCsend    1,"localhost",giPort, Sdest, "ssff", "set", "rect", iwidth, iheight
            turnoff
 endin
 
@@ -207,7 +208,7 @@ Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iwidth     StrayGetNum Smsg, 3 
 iheight    StrayGetNum Smsg, 4
-           OSCsend    1,"",giPort, Sdest, "ssff", "set", "ellipse", iwidth, iheight
+           OSCsend    1,"localhost",giPort, Sdest, "ssff", "set", "ellipse", iwidth, iheight
            turnoff
 endin
 
@@ -230,7 +231,7 @@ ix7        StrayGetNum Smsg, 15
 iy7        StrayGetNum Smsg, 16
 ix8        StrayGetNum Smsg, 17
 iy8        StrayGetNum Smsg, 18
-           OSCsend    1,"",giPort, Sdest, "ssffffffffffffffff", "set", "curve", ix1, iy1, ix2, iy2, ix3, iy3, ix4, iy4, ix5, iy5, ix6, iy6, ix7, iy7, ix8, iy8
+           OSCsend    1,"localhost",giPort, Sdest, "ssffffffffffffffff", "set", "curve", ix1, iy1, ix2, iy2, ix3, iy3, ix4, iy4, ix5, iy5, ix6, iy6, ix7, iy7, ix8, iy8
            turnoff
 endin
 
@@ -244,7 +245,7 @@ ix2        StrayGetNum Smsg, 5
 iy2        StrayGetNum Smsg, 6
 ix3        StrayGetNum Smsg, 7 
 iy3        StrayGetNum Smsg, 8
-           OSCsend    1,"", giPort, Sdest, "ssffffff", "set", "polygon", ix1, iy1, ix2, iy2, ix3, iy3
+           OSCsend    1,"localhost", giPort, Sdest, "ssffffff", "set", "polygon", ix1, iy1, ix2, iy2, ix3, iy3
            turnoff
 endin
 
@@ -252,7 +253,7 @@ instr set_gmnf ; e.g. set gmnf rsrc/1voice-846_2f.gmn
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 Sfil       StrayGetEl Smsg, 3 
-           OSCsend    1,"",giPort, Sdest, "sss", "set", "gmnf", Sfil
+           OSCsend    1,"localhost",giPort, Sdest, "sss", "set", "gmnf", Sfil
            turnoff
 endin
 
@@ -260,7 +261,7 @@ instr set_img ; e.g. set img rsrc/car_blue.gif
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 Sfil       StrayGetEl Smsg, 3 
-           OSCsend    1,"",giPort, Sdest, "sss", "set", "img", Sfil 
+           OSCsend    1,"localhost",giPort, Sdest, "sss", "set", "img", Sfil 
            turnoff
 endin
 
@@ -268,7 +269,7 @@ instr x ;e.g. x -0.12
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 ix         StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "x", ix 
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "x", ix 
            turnoff
 endin
 
@@ -276,7 +277,7 @@ instr y ;e.g. y -0.66
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iy         StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "y", iy 
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "y", iy 
            turnoff
 endin
 
@@ -284,7 +285,7 @@ instr scale ;e.g. scale 3.3
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iscal      StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "scale", iscal 
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "scale", iscal 
            turnoff
 endin
 
@@ -292,7 +293,7 @@ instr dscale ;e.g. dscale 0.95
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iscal      StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "dscale", iscal 
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "dscale", iscal 
            turnoff
 endin
 
@@ -300,7 +301,7 @@ instr show ;e.g. show 1
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 ishow      StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "si", "show", ishow 
+           OSCsend    1,"localhost",giPort, Sdest, "si", "show", ishow 
            turnoff
 endin
 
@@ -308,7 +309,7 @@ instr defaultShow ;e.g. defaultShow 1
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 ishow      StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "si", "defaultShow", ishow 
+           OSCsend    1,"localhost",giPort, Sdest, "si", "defaultShow", ishow 
            turnoff
 endin
 
@@ -316,7 +317,7 @@ instr dy ;e.g. dy -0.01
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iy         StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "dy", iy 
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "dy", iy 
            turnoff
 endin
 
@@ -324,7 +325,7 @@ instr z ;e.g. z 1
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iz         StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "z", iz
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "z", iz
            turnoff
 endin
 
@@ -332,7 +333,7 @@ instr angle ;e.g. angle 81.3
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iang       StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "angle", iang
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "angle", iang
            turnoff
 endin
 
@@ -340,14 +341,14 @@ instr dangle ;e.g. dangle 0.99
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 iang       StrayGetNum Smsg, 2 
-           OSCsend    1,"",giPort, Sdest, "sf", "dangle", iang
+           OSCsend    1,"localhost",giPort, Sdest, "sf", "dangle", iang
            turnoff
 endin
 
 instr del ;e.g. del
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
-           OSCsend    1,"",giPort, Sdest, "s", "del"
+           OSCsend    1,"localhost",giPort, Sdest, "s", "del"
            turnoff
 endin
 
@@ -356,7 +357,7 @@ Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 inum       StrayGetNum Smsg, 2 
 idenum     StrayGetNum Smsg, 3
-           OSCsend    1,"",giPort, Sdest, "sii", "date", inum, idenum
+           OSCsend    1,"localhost",giPort, Sdest, "sii", "date", inum, idenum
            turnoff
 endin
 
@@ -365,7 +366,7 @@ Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 inum       StrayGetNum Smsg, 2 
 idenum     StrayGetNum Smsg, 3
-           OSCsend    1,"",giPort, Sdest, "sii", "duration", inum, idenum
+           OSCsend    1,"localhost",giPort, Sdest, "sii", "duration", inum, idenum
            turnoff
 endin
 
@@ -373,7 +374,7 @@ instr mapf ;e.g. mapf rsrc/syncomment7.map
 Smsg       strget     p4
 Sdest      StrayGetEl Smsg, 0 
 Smap       StrayGetEl Smsg, 2
-           OSCsend    1,"",giPort, Sdest, "ss", "mapf", Smap
+           OSCsend    1,"localhost",giPort, Sdest, "ss", "mapf", Smap
            turnoff
 endin
 
@@ -658,7 +659,7 @@ i 1 56.123 . "/ITL defaultShow 1"
   <g>170</g>
   <b>0</b>
  </bgcolor>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>25</x>
   <y>4</y>
@@ -687,7 +688,7 @@ i 1 56.123 . "/ITL defaultShow 1"
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBDisplay">
+ <bsbObject type="BSBDisplay" version="2">
   <objectName>show_message</objectName>
   <x>25</x>
   <y>46</y>
@@ -716,7 +717,7 @@ i 1 56.123 . "/ITL defaultShow 1"
   <borderradius>1</borderradius>
   <borderwidth>1</borderwidth>
  </bsbObject>
- <bsbObject version="2" type="BSBLabel">
+ <bsbObject type="BSBLabel" version="2">
   <objectName/>
   <x>25</x>
   <y>124</y>
