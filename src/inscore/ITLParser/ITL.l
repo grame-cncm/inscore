@@ -238,9 +238,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
 <EXPRSECTION>"("				expressionNested++; yyextra->fText += yytext;
 <EXPRSECTION>")"				yyextra->fText += yytext; if(!--expressionNested){ BEGIN INITIAL; return EXPRESSION;}
-<EXPRSECTION>"\""				BEGIN DQSTR;
-<EXPRSECTION>"'"				BEGIN QSTR;
-<EXPRSECTION>[^()"']*			yyextra->fText += yytext;
+<EXPRSECTION>[^()]*				yyextra->fText += yytext;
 "expr"{SPACE}*"("				expressionNested = 1; BEGIN EXPRSECTION; yyextra->fText = yytext; yyextra->fExprStartLine = yylloc->last_line;
 
  /* ----------------------------------------- */
