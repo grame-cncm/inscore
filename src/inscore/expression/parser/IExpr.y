@@ -40,10 +40,7 @@
 %token QUOTEDSTRING STRING
 %token IDENTIFIER
 
-
-
 /*------------------------------   types  ------------------------------*/
-
 %type <str>		identifier string
 %type <str>		operator
 %type <strList>		variable
@@ -69,7 +66,7 @@ int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
 int lineno(inscore::IExprParser* context);
 
 
-#define CHECKVAR(VAR, SIZE) if(VAR ->size() != SIZE){yyerror(&yyloc, context, "wrong variable content"); YYABORT;}
+#define CHECKVAR(VAR, SIZE) if(VAR ->size() != SIZE) { yyerror(&yyloc, context, "wrong variable content"); YYABORT; }
 
 #define scanner context->fScanner
 
@@ -105,15 +102,11 @@ variable	: VARSTART identifier	{ $$ = context->readVar($2, lineno(context));}
 
 //_______________________________________________
 // expression declaration
-
-
-
 expression	: EXPR_START operator exprArg exprArg EXPR_END	{ $$ = new inscore::SIExprArg( inscore::ExprFactory::createExpr(*$2,*$3,*$4)); delete $2; delete $3; delete $4;}
 			| EXPR_START exprArg EXPR_END					{ $$ = $2; }
 			| EXPR_START operator variable EXPR_END			{ CHECKVAR($3, 2) $$ = new inscore::SIExprArg( inscore::ExprFactory::createExpr(*$2,
-																																			 inscore::ExprFactory::createArg($3->at(0)) ,
-																																			 inscore::ExprFactory::createArg($3->at(1))
-																										   )); delete $2; delete $3;}
+																														inscore::ExprFactory::createArg( $3->at(0) ) ,
+																														inscore::ExprFactory::createArg( $3->at(1) ))); delete $2; delete $3;}
 //			| EXPR_START variable exprArg EXPR_END			{ CHECKVAR($2, 2) $$ = new inscore::SIExprArg( inscore::ExprFactory::createExpr($2->at(0),$2->at(1), *$3)); delete $2; delete $3;}
 			;
 
@@ -127,11 +120,9 @@ exprArg		: arg
 			| expression
 			;
 
-
-arg		: string	{ $$ = new inscore::SIExprArg( inscore::ExprFactory::createArg(*$1) ); delete $1; }
-		| variable	{ CHECKVAR($1, 1) $$ = new inscore::SIExprArg( inscore::ExprFactory::createArg($1->at(0)) ); delete $1; }
-		;
-
+arg			: string	{ $$ = new inscore::SIExprArg( inscore::ExprFactory::createArg(*$1) ); delete $1; }
+			| variable	{ CHECKVAR($1, 1) $$ = new inscore::SIExprArg( inscore::ExprFactory::createArg($1->at(0)) ); delete $1; }
+			;
 
 %%
 

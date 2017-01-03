@@ -13,7 +13,6 @@
 #pragma warning (disable : 4267 4100 4244)
 #endif
 
-//#include <stdio.h>
 #include <iostream>
 #include "IExprParser.h"
 #include "IExprParse.hpp"
