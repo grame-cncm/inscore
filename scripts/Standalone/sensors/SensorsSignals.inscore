@@ -1,0 +1,150 @@
+<? javascript
+	var sensors = [ {name:"accelerometer",  ev:"S3D", sigs:"'accelerometer/x' 'accelerometer/y' 'accelerometer/z'"}, 
+					{name:"ambientlight", 	ev:"S1D", sigs:"ambientlight"}, 
+					{name:"compass", 		ev:"S1D", sigs:"compass"}, 
+					{name:"gyroscope", 		ev:"S3D", sigs:"'gyroscope/x' 'gyroscope/y' 'gyroscope/z'"}, 
+					{name:"light", 			ev:"S1D", sigs:"light"}, 
+					{name:"magnetometer", 	ev:"S3D", sigs:"'magnetometer/x' 'magnetometer/y' 'magnetometer/z'"}, 
+					{name:"orientation", 	ev:"S1D", sigs:"orientation"}, 
+					{name:"proximity", 		ev:"S1D", sigs:"proximity"}, 
+					{name:"rotation", 		ev:"S3D", sigs:"'rotation/x' 'rotation/y' 'rotation/z'"}, 
+					{name:"tilt", 			ev:"S2D", sigs:"'tilt/x' 'tilt/y'"}];
+
+	function makemsg (msg, index, name, y) {
+		msg  = msg.replace(/INDEX/g, index) ;
+		msg  = msg.replace(/Y/g, y) ;
+		return msg.replace(/SENSOR/g, name) ;
+	}
+	function makeevent (msg, ev, sig) {
+		msg  = msg.replace(/EVENT/g, ev) ;
+		return msg.replace(/SIG/g, sig) ;
+	}
+
+	function create () {
+		var n = sensors.length;
+		var msg = "/ITL/scene/lINDEX set txt SENSOR;\n";
+		msg    += " /ITL/scene/cINDEX set rect 0.07 0.07;\n";
+		msg    += " /ITL/scene/[lc]INDEX y Y;\n";
+		msg    += " /ITL/scene/signal/SENSOR size 200;\n";		
+		var out = "";
+		for (i=0; i < n; i++) {
+			out += makemsg(msg, i, sensors[i].name, -0.5 + 0.12 * i );
+		}
+		return out;
+	}
+
+	function watch () {
+		var n = sensors.length;
+		var msg = "/ITL/scene/cINDEX watch " + click + " ( \n";
+		msg    += "  /ITL/scene/cINDEX push,\n";
+		msg    += "  /ITL/scene/cINDEX brushStyle solid,\n";
+		msg    += "  /ITL/scene event EVENT SIG,\n";
+		msg    += "  /ITL/scene/signal/SENSOR run 1,\n";
+		msg    += "  /ITL/scene/cINDEX watch " + click + " (\n";
+		msg    += "    /ITL/scene/cINDEX brushStyle none,\n";
+		msg    += "    /ITL/scene/signal/SENSOR run 0,\n";
+		msg    += "    /ITL/scene/graph del,\n";
+		msg    += "    /ITL/scene/cINDEX pop));\n";
+		var out = "";
+		for (i=0; i < n; i++) {
+			out += makeevent(makemsg(msg, i, sensors[i].name, 0), sensors[i].ev, sensors[i].sigs);
+		}
+		return out;
+	}
+
+
+	function check () {
+		var n = sensors.length;
+		var msgoff = "/ITL/scene/?INDEX alpha  50;\n";
+		msgoff    += "/ITL/scene/cINDEX penWidth 0.2;\n";
+		msgoff    += "/ITL/scene/cINDEX watch;\n";
+		var out = "";
+		for (i=0; i < n; i++) {
+			if (eval(sensors[i].name) == 0)
+				out += makemsg(msgoff, i, "", 0);
+		}
+		return out;
+	}
+?>
+
+click 	= ($OSId < 3 ? touchBegin : mouseDown);
+scale 	= ($OSId < 3 ? 1.5 : 1.);
+dy 		= ($OSId < 3 ? -0.2 : 0.);
+
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+/ITL/scene/title set txt Sensors as signals;
+/ITL/scene/title fontSize 52;
+/ITL/scene/title color $color;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.8;
+
+<? javascript create() ?>
+
+/ITL/scene/l* fontSize 24;
+/ITL/scene/l* xorigin 1.;
+/ITL/scene/c* x 0.1;
+/ITL/scene/c* penWidth 1;
+/ITL/scene/c* brushStyle none;
+/ITL/scene/c* color 14 214 41;
+/ITL/scene/c* dy -0.01;
+
+accelerometer 	= ($(/ITL/scene/signal/accelerometer get smooth) ? 1 : 0);
+ambientlight 	= ($(/ITL/scene/signal/ambientlight get smooth) ? 1 : 0);
+compass 		= ($(/ITL/scene/signal/compass get smooth) ? 1 : 0);
+gyroscope 		= ($(/ITL/scene/signal/gyroscope get smooth) ? 1 : 0);
+light 			= ($(/ITL/scene/signal/light get smooth) ? 1 : 0);
+magnetometer 	= ($(/ITL/scene/signal/magnetometer get smooth) ? 1 : 0);
+orientation 	= ($(/ITL/scene/signal/orientation get smooth) ? 1 : 0);
+proximity 		= ($(/ITL/scene/signal/proximity get smooth) ? 1 : 0);
+rotation 		= ($(/ITL/scene/signal/rotation get smooth) ? 1 : 0);
+tilt 			= ($(/ITL/scene/signal/tilt get smooth) ? 1 : 0);
+
+<? javascript watch() ?>
+<? javascript check() ?>
+
+rectpos = 0.3;
+/ITL/scene/[lc]? dx -0.5;
+/ITL/scene/rect set rect 1 1;
+/ITL/scene/rect x $rectpos;
+
+/ITL/scene watch S3D (
+	/ITL/scene/signal/gx set '$1' 0.02 0. 1. 1. 1.,
+	/ITL/scene/signal/gy set '$2' 0.02 -0.5 1. 1. 1.,
+	/ITL/scene/signal/gz set '$3' 0.02 0.5 1. 1. 1.,
+	/ITL/scene/signal/gxyz set gx gy gz,
+	/ITL/scene/graph set graph gxyz,
+	/ITL/scene/graph x $rectpos
+);
+/ITL/scene watch S2D (
+	/ITL/scene/signal/gx set '$1' 0.02 0. 1. 1. 1.,
+	/ITL/scene/signal/gy set '$2' 0.02 -0.5 1. 1. 1.,
+	/ITL/scene/signal/gxy set gx gy,
+	/ITL/scene/graph set graph gxy,
+	/ITL/scene/graph x $rectpos
+);
+/ITL/scene watch S1D (
+	/ITL/scene/signal/gx set '$1' 0.02 0. 1. 1. 1.,
+	/ITL/scene/graph set graph gx,
+	/ITL/scene/graph x $rectpos
+);
+
+
+#/ITL/scene load SensorsSignalsListener.inscore;
+
+__END__
+
+/ITL/log level 2;
+/ITL/scene/l0 get width;
+
+192.168.1.145:7000/ITL/scene/c* get watch;
+192.168.1.91:7000/ITL/log clear;
+192.168.1.145:7000/ITL/scene/s* get run;
+192.168.1.91:7000/ITL/scene/s* get scale;
+192.168.1.145:7000/ITL preprocess SensorsNodes.inscore;
+192.168.1.145:7000/ITL load SensorsNodes.inscore;
+
