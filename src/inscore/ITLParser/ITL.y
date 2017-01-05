@@ -41,7 +41,6 @@
 %token IDENTIFIER OSCADDRESS
 %token EQUAL
 %token REGEXP
-%token FILEPATH
 %token STRING
 %token EVAL
 %token ERR
@@ -66,7 +65,7 @@
 /*------------------------------   types  ------------------------------*/
 %type <num> 	number mathbool
 %type <real>	FLOAT
-%type <str>		STRING FILEPATH IDENTIFIER REGEXP JSCRIPT
+%type <str>		STRING IDENTIFIER REGEXP JSCRIPT
 %type <str>		oscaddress identifier relativeaddress varname variabledecl hostname
 %type <msg>		message
 %type <msgList>	messagelist script
@@ -139,7 +138,7 @@ expr		: message  ENDEXPR		{ context->fReader.process(*$1); delete $1; }
 			;
 
 //_______________________________________________
-// javascript and lua support
+// javascript and support
 //_______________________________________________
 script		: JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::create());
 									*$$ = context->fReader.jsEval(context->fText.c_str(), yylloc.last_line);
@@ -148,7 +147,7 @@ script		: JSCRIPT			{	$$ = new inscore::SIMessageList (inscore::IMessageList::cr
 
 //_______________________________________________
 // messages specification (extends osc spec.)
-//____________________________________expArg expression___________
+//_______________________________________________
 
 message		: address					{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc)); (*$$)->setUrl($1->fUrl); delete $1; }
 			| address params			{ $$ = new inscore::SIMessage(inscore::IMessage::create($1->fOsc, *$2, $1->fUrl)); delete $1; delete $2; }

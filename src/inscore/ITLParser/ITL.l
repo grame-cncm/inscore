@@ -144,7 +144,6 @@ EOL		[\x0a\x0d]
 {SPACE}"?"{SPACE} return QUEST;
 "!"				return NEG;
 "=="			return EQ;
-"!="			return NEQ;
 ">"				return GREATER;
 ">="			return GREATEREQ;
 "<"				return LESS;
