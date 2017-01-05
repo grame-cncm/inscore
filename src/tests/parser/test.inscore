@@ -18,4 +18,7 @@ commentaire
 motog = '192.168.1.91';
 motoe = '192.168.1.168';
 
-$motog:7000/ITL/scene/acc watch newData (/accx '$(/ITL/scene/acc get x)');
+/ITL/scene/acc watch newData (/accx "$(/ITL/scene/acc get x)");
+/ITL/scene/txt set txt "a b \"c 'd";
+/ITL/scene/txt set txt 'a b "c \'d';
+
