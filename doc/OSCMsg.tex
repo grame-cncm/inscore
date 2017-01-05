@@ -105,7 +105,7 @@
 {\small The GUIDOEngine}  					& {\small \url{http://guidolib.sf.net}} \\
 {\small The IRCAM Gesture Follower} 		& {\small \url{http://imtr.ircam.fr/imtr/Gesture_Follower}} \\
 {\small The GRAME Faust Compiler} 		& {\small \url{http://faust.grame.fr}} \\
-{\small The Qt5 cross-platform application and UI framework} & {\small \url{http://qt-project.org/qt5}}
+{\small The Qt5 cross-platform application and UI framework} & {\small \url{https://www.qt.io/}}
 \end{tabular}
 \end{table}%
 
@@ -1730,6 +1730,7 @@ Application messages are accepted by the static OSC address \OSC{/ITL}.
 \begin{rail}
 ITLMsg : 'quit' 
 		| ('rootPath' path) 
+		| ('preprocess' file) 
 		| ('mouse' ('show' | 'hide'))
 		| ('defaultShow' int32)
 		| ('load' filePath)
@@ -1743,6 +1744,7 @@ ITLMsg : 'quit'
 		| forwardingMsg
 \end{rail}
 \index{ITL messages!rootPath}
+\index{ITL messages!preprocess}
 \index{ITL messages!mouse}
 \index{ITL messages!defaultShow}
 \index{ITL messages!load}
@@ -1758,6 +1760,8 @@ ITLMsg : 'quit'
 \item \OSC{quit}: requests the client application to quit.
 
 \item \OSC{rootPath}: \emph{rootPath} of an INScore application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the \OSC{rootPath} message without parameter resets the application path to its default value.
+
+\item \OSC{preprocess}: evaluates the input file script and print the result to the log window.
 
 \item \OSC{mouse}: hide or show the mouse pointer.
 
@@ -1979,6 +1983,7 @@ sceneMsg :  'new'
 			| 'reset'
 			| 'foreground'
 			| ('rootPath' ( path | )) 
+			| ('preprocess' file) 
 			| ('load' filePath)
 			| ('fullscreen' int32)
 			| ('frameless' int32)
@@ -1992,6 +1997,7 @@ sceneMsg :  'new'
 \index{Scene messages!del}
 \index{Scene messages!foreground}
 \index{Scene messages!rootPath}
+\index{Scene messages!preprocess}
 \index{Scene messages!load}
 \index{Scene messages!reset}
 \index{Scene messages!fullscreen}
@@ -2004,6 +2010,7 @@ sceneMsg :  'new'
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 \item \OSC{foreground}: display scene window in foreground of all other windows in the system windows manager.
 \item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used. Calling \OSC{rootPath} without argument clears the scene \emph{rootPath}.
+\item \OSC{preprocess}: evaluates the input file script and print the result to the log window.
 \item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 %\item \OSC{foreground}: put the scene to foreground.
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
@@ -2508,7 +2515,7 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 
 
 \subsublevel{Controlling the slave position}
-
+\label{syncPos}
 \begin{rail}
 syncPos : 'syncOver' | 'syncTop' | 'syncBottom' | 'syncFrame'
 \end{rail}

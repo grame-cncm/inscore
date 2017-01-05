@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 2402--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2409--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch14.html" >next</a>] [<a 
 href="OSCMsgch12.html" >prev</a>] [<a 
 href="OSCMsgch12.html#tailOSCMsgch12.html" >prev-tail</a>] [<a 
@@ -18,14 +18,14 @@ href="#tailOSCMsgch13.html">tail</a>] [<a
 href="OSCMsg3.html#OSCMsgch13.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;13</span><br /><a 
  id="x17-7700013"></a>Synchronization</h2>
-<!--l. 2405--><p class="noindent" >Synchronization between components is in charge of the static <span 
+<!--l. 2412--><p class="noindent" >Synchronization between components is in charge of the static <span 
 class="pcrr8tn-">sync </span>node, automatically embedded in each object.
 Its address is <span 
 class="pcrr8tn-">/ITL/.../</span><span 
 class="pcrro8t-">object</span><span 
 class="pcrr8tn-">/sync </span>and it supports messages to add or remove a master / slave relation
 between components or to query the synchronizations state.
-<!--l. 2407--><p class="noindent" ><span 
+<!--l. 2414--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -37,7 +37,7 @@ several times, corresponding to each master&#8217;s space.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2416--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2423--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">sync</span> <img 
 src="OSCMsg88x.png" alt="PICT" >
 </div></dd></dl>
@@ -76,21 +76,21 @@ class="list">
                                                                                  
 
                                                                                  
-<!--l. 2431--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2438--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">syncIdentifier</span> <img 
 src="OSCMsg89x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx17-77005"></a>
-<!--l. 2434--><p class="noindent" >Synchronization identifiers indicates 1) the name of an object or 2) the name of an object associated to a mapping
+<!--l. 2441--><p class="noindent" >Synchronization identifiers indicates 1) the name of an object or 2) the name of an object associated to a mapping
 name. Using the first form (i.e. without explicit mapping name), the system uses the default unnamed mapping (see
 section <a 
 href="OSCMsgch12.html#x16-7300012.1">12.1<!--tex4ht:ref: mapMsg --></a> p.<a 
 href="OSCMsgch12.html#x16-7300012.1">96<!--tex4ht:ref: mapMsg --></a> mappings and named mappings).
-<!--l. 2436--><p class="noindent" >Synchronization between components has no effect if any of the required mapping is missing (see table
+<!--l. 2443--><p class="noindent" >Synchronization between components has no effect if any of the required mapping is missing (see table
 <a 
 href="OSCMsgch12.html#x16-730041">12.1<!--tex4ht:ref: maptable --></a>).
-<!--l. 2438--><p class="noindent" ><span 
+<!--l. 2445--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -101,14 +101,14 @@ class="small-caps">E</span> </span><br
 class="newline" />Synchronizing an object on several masters:
 <div class="center" 
 >
-<!--l. 2441--><p class="noindent" >
+<!--l. 2448--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox72"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myParent/sync mySlave myMaster1;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myParent/sync mySlave myMaster2;</span></div></div>
 </div>
-<!--l. 2443--><p class="noindent" >Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (<span 
+<!--l. 2450--><p class="noindent" >Synchronizing two objects using a specific mapping (the second object is assumed to be a symbolic score (<span 
 class="pcrr8tn-">gmn</span>,
 <span 
 class="pcrr8tn-">gmnstream </span>or <span 
@@ -116,7 +116,7 @@ class="pcrr8tn-">gmnf</span>) which <span
 class="pcrr8tn-">system </span>mapping has been previously requested):
 <div class="center" 
 >
-<!--l. 2444--><p class="noindent" >
+<!--l. 2451--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox73"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myParent/sync mySlave myMaster:system;</span>
@@ -124,7 +124,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/myParent/sync mySlave myMaster:system;</span>
 </div>
 <h3 class="sectionHead"><span class="titlemark">13.1    </span> <a 
  id="x17-7800013.1"></a>Synchronization modes</h3>
-<!--l. 2450--><p class="noindent" >Synchronizing a slave component <span 
+<!--l. 2457--><p class="noindent" >Synchronizing a slave component <span 
 class="pcrr8tn-">A </span>to a master component <span 
 class="pcrr8tn-">B </span>has the following effect:
      <ul class="itemize1">
@@ -160,13 +160,13 @@ class="list">
                                                                                  
 
                                                                                  
-<!--l. 2460--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2467--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">syncmode</span> <img 
 src="OSCMsg90x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx17-78002"></a>
-<!--l. 2463--><p class="noindent" >
+<!--l. 2470--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">13.1.1    </span> <a 
  id="x17-7900013.1.1"></a>Using the master date</h4>
 <a 
@@ -174,7 +174,7 @@ src="OSCMsg90x.png" alt="PICT" >
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2466--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2473--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">syncHow</span> <img 
 src="OSCMsg91x.png" alt="PICT" >
 </div></dd></dl>
@@ -184,7 +184,7 @@ src="OSCMsg91x.png" alt="PICT" >
  id="dx17-79003"></a>
 <a 
  id="dx17-79004"></a>
-<!--l. 2471--><p class="noindent" >The synchronization mode makes use of the master time to graphic mapping to compute the slave position. It may
+<!--l. 2478--><p class="noindent" >The synchronization mode makes use of the master time to graphic mapping to compute the slave position. It may
 also use the master current date, depending on the following options:
      <ul class="itemize1">
      <li class="itemize"><span 
@@ -194,7 +194,7 @@ class="pcrr8tn-">relative</span>: the time position where the slave appears is r
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">absolute</span>: the time position where the slave appears corresponds to the mapping date only.</li></ul>
-<!--l. 2477--><p class="noindent" ><span 
+<!--l. 2484--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -212,7 +212,7 @@ class="pcrr8tn-">clock </span>messages, <span
 class="pcrr8tn-">A </span>will remain at a fixed
 position on <span 
 class="pcrr8tn-">B </span>although it is moving in time.
-<!--l. 2481--><p class="noindent" ><span 
+<!--l. 2488--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -224,7 +224,7 @@ class="newline" />Describing nested synchronizations, the first one using the <s
 class="pcrr8tn-">absolute </span>mode:
 <div class="center" 
 >
-<!--l. 2485--><p class="noindent" >
+<!--l. 2492--><p class="noindent" >
                                                                                  
 
                                                                                  
@@ -234,7 +234,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/sync slave masterSlave absolute ;</span><br
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/sync masterSlave master ;</span></div></div>
 </div>
-<!--l. 2487--><p class="noindent" >
+<!--l. 2494--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">13.1.2    </span> <a 
  id="x17-8000013.1.2"></a>Synchronizing an object duration</h4>
 <a 
@@ -242,7 +242,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/sync masterSlave master ;</span></div></div>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2491--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2498--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">syncStretch</span> <img 
 src="OSCMsg92x.png" alt="PICT" >
 </div></dd></dl>
@@ -254,7 +254,7 @@ src="OSCMsg92x.png" alt="PICT" >
  id="dx17-80004"></a>
 <a 
  id="dx17-80005"></a>
-<!--l. 2497--><p class="noindent" >The synchronization stretch mode has the following effect on the slave dimensions:
+<!--l. 2504--><p class="noindent" >The synchronization stretch mode has the following effect on the slave dimensions:
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">h</span>: the slave is horizontally stretched to align its begin and end dates to the corresponding master
@@ -265,8 +265,8 @@ class="pcrr8tn-">v</span>: the slave is vertically stretched to the master map v
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">hv</span>: combines the above parameters.</li></ul>
-<!--l. 2503--><p class="noindent" >By default, no stretching is applied.
-<!--l. 2505--><p class="noindent" ><span 
+<!--l. 2510--><p class="noindent" >By default, no stretching is applied.
+<!--l. 2512--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -278,7 +278,7 @@ class="newline" />Synchronizing two objects, aligning the slave duration to the 
 the master map vertical dimension:
 <div class="center" 
 >
-<!--l. 2507--><p class="noindent" >
+<!--l. 2514--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox75"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/sync mySlave myMaster hv ;</span>
@@ -287,7 +287,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/sync mySlave myMaster hv ;</span>
                                                                                  
 
                                                                                  
-<!--l. 2510--><p class="noindent" >
+<!--l. 2517--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">13.1.3    </span> <a 
  id="x17-8100013.1.3"></a>Controlling the slave position</h4>
 <a 
@@ -295,7 +295,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/sync mySlave myMaster hv ;</span>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2514--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2521--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">syncPos</span> <img 
 src="OSCMsg93x.png" alt="PICT" >
 </div></dd></dl>
@@ -309,7 +309,7 @@ src="OSCMsg93x.png" alt="PICT" >
  id="dx17-81005"></a>
 <a 
  id="dx17-81006"></a>
-<!--l. 2521--><p class="noindent" >The synchronization position mode has the following effects on the slave <span 
+<!--l. 2528--><p class="noindent" >The synchronization position mode has the following effects on the slave <span 
 class="pcrr8tn-">y </span>position:
      <ul class="itemize1">
      <li class="itemize"><span 
@@ -323,12 +323,12 @@ class="pcrr8tn-">syncBottom</span>: the top of the slave is aligned to the botto
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">syncFrame</span>: used to browse the master frame (see the next section).</li></ul>
-<!--l. 2528--><p class="noindent" >The default position mode is <span 
+<!--l. 2535--><p class="noindent" >The default position mode is <span 
 class="pcrr8tn-">syncOver</span>. The <span 
 class="pcrr8tn-">y </span>attribute of the slave remains available to displacement
 (<span 
 class="pcrr8tn-">dy</span>).
-<!--l. 2530--><p class="noindent" ><span 
+<!--l. 2537--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -337,7 +337,7 @@ class="newline" />The <span
 class="pcrr8tn-">y </span>position of a synchronized object remains a free attribute. To control this position, you should send <span 
 class="pcrr8tn-">dy</span>
 messages.
-<!--l. 2533--><p class="noindent" ><span 
+<!--l. 2540--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -349,7 +349,7 @@ class="newline" />Synchronizing two objects, aligning the slave duration to the 
 master map:
 <div class="center" 
 >
-<!--l. 2535--><p class="noindent" >
+<!--l. 2542--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox76"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/sync mySlave myMaster h syncBottom;</span>
@@ -358,25 +358,25 @@ class="pcrr8tn-x-x-90">/ITL/scene/sync mySlave myMaster h syncBottom;</span>
                                                                                  
 
                                                                                  
-<!--l. 2538--><p class="noindent" >
+<!--l. 2545--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">13.1.4    </span> <a 
  id="x17-8200013.1.4"></a>The syncFrame mode</h4>
-<!--l. 2541--><p class="noindent" >When the <span 
+<!--l. 2548--><p class="noindent" >When the <span 
 class="pcrr8tn-">syncFrame </span>mode is used, the slave is placed on the frame of the master. Typically, this frame
 corresponds to the object bounding box that is also the object default mapping. For ellipses, arcs,
 lines, polygons, the frame corresponds to the border of the object. The frame duration is the object
 duration.
-<!--l. 2543--><p class="noindent" >Mappings and stretch options are ignored in <span 
+<!--l. 2550--><p class="noindent" >Mappings and stretch options are ignored in <span 
 class="pcrr8tn-">syncFrame </span>mode.
                                                                                  
 
                                                                                  
-<!--l. 2548--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2555--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch14.html" >next</a>] [<a 
 href="OSCMsgch12.html" >prev</a>] [<a 
 href="OSCMsgch12.html#tailOSCMsgch12.html" >prev-tail</a>] [<a 
 href="OSCMsgch13.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch13.html" >up</a>] </p></div>
-<!--l. 2548--><p class="noindent" ><a 
+<!--l. 2555--><p class="noindent" ><a 
  id="tailOSCMsgch13.html"></a>  
 </body></html> 

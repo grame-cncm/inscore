@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1968--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1972--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch10.html" >next</a>] [<a 
 href="OSCMsgch8.html" >prev</a>] [<a 
 href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
@@ -18,20 +18,20 @@ href="#tailOSCMsgch9.html">tail</a>] [<a
 href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;9</span><br /><a 
  id="x13-640009"></a>Scene messages</h2>
-<!--l. 1970--><p class="noindent" >A scene may be viewed as a window on the score elements. Its address is <span 
+<!--l. 1974--><p class="noindent" >A scene may be viewed as a window on the score elements. Its address is <span 
 class="pcrr8tn-">/ITL/</span><span 
 class="pcrro8t-">sceneIdentifier </span>where
 <span 
 class="pcrro8t-">sceneIdentifier </span>is the scene name.
 <h3 class="sectionHead"><span class="titlemark">9.1    </span> <a 
  id="x13-650009.1"></a>Scene control</h3>
-<!--l. 1975--><p class="noindent" >The following messages are available at scene level, to control the scene appearance and behaviour:
+<!--l. 1979--><p class="noindent" >The following messages are available at scene level, to control the scene appearance and behaviour:
 <a 
  id="dx13-65001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1989--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1994--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">sceneMsg</span> <img 
 src="OSCMsg71x.png" alt="PICT" >
 </div></dd></dl>
@@ -51,13 +51,15 @@ src="OSCMsg71x.png" alt="PICT" >
  id="dx13-65008"></a>
 <a 
  id="dx13-65009"></a>
+                                                                                 
+
+                                                                                 
 <a 
  id="dx13-65010"></a>
 <a 
  id="dx13-65011"></a>
-                                                                                 
-
-                                                                                 
+<a 
+ id="dx13-65012"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">new</span>: creates a new scene and opens it in a new window.
@@ -81,6 +83,9 @@ class="ptmri8t-">rootPath </span>is used. Calling
      <span 
 class="pcrr8tn-">rootPath </span>without argument clears the scene <span 
 class="ptmri8t-">rootPath</span>.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">preprocess</span>: evaluates the input file script and print the result to the log window.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">load</span>: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC
@@ -118,7 +123,7 @@ href="OSCMsgch2.html#x6-60002">10<!--tex4ht:ref: common --></a>.
 class="pcrr8tn-">forwardingMsg</span>: a scene support message forwading and filtering. See section <a 
 href="OSCMsgch10.html#x14-6700010">10<!--tex4ht:ref: forwarding --></a> p.<a 
 href="OSCMsgch10.html#x14-6700010">90<!--tex4ht:ref: forwarding --></a>.</li></ul>
-<!--l. 2017--><p class="noindent" ><span 
+<!--l. 2024--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -129,55 +134,55 @@ class="small-caps">E</span> </span><br
 class="newline" />Setting a scene current path:
 <div class="center" 
 >
-<!--l. 2019--><p class="noindent" >
+<!--l. 2026--><p class="noindent" >
+                                                                                 
+
+                                                                                 
 <div 
 class="colorbox" id="colorbox57"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene rootPath "/path/to/my/folder";</span>
 </div></div>
 </div>
-<!--l. 2020--><p class="noindent" >Loading an INScore file:
-                                                                                 
-
-                                                                                 
+<!--l. 2027--><p class="noindent" >Loading an INScore file:
 <div class="center" 
 >
-<!--l. 2021--><p class="noindent" >
+<!--l. 2028--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox58"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene load "myscript.inscore";</span>
 </div></div>
 </div>
-<!--l. 2022--><p class="noindent" >&#x00A0;       will load <span 
+<!--l. 2029--><p class="noindent" >&#x00A0;       will load <span 
 class="pcrr8tn-">/path/to/my/folder/myscript.inscore </span>into the scene.
-<!--l. 2024--><p class="noindent" >Setting a scene to fullscreen:
+<!--l. 2031--><p class="noindent" >Setting a scene to fullscreen:
 <div class="center" 
 >
-<!--l. 2025--><p class="noindent" >
+<!--l. 2032--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox59"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene fullscreen 1;</span>
 </div></div>
 </div>
-<!--l. 2026--><p class="noindent" >Creating a new score named <span 
+<!--l. 2033--><p class="noindent" >Creating a new score named <span 
 class="pcrr8tn-">myScore</span>:
 <div class="center" 
 >
-<!--l. 2027--><p class="noindent" >
+<!--l. 2034--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox60"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/myScore new;</span>
 </div></div>
 </div>
-<!--l. 2032--><p class="noindent" >
+<!--l. 2039--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">9.2    </span> <a 
  id="x13-660009.2"></a>Scene queries</h3>
-<!--l. 2035--><p class="noindent" >A scene may respond to queries regarding its elements:
+<!--l. 2042--><p class="noindent" >A scene may respond to queries regarding its elements:
 <a 
  id="dx13-66001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 2039--><p class="noindent" ><div class="minipage"><span 
+<!--l. 2046--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">sceneQuery</span> <img 
 src="OSCMsg72x.png" alt="PICT" >
 </div></dd></dl>
@@ -187,16 +192,16 @@ src="OSCMsg72x.png" alt="PICT" >
  id="dx13-66003"></a>
 <a 
  id="dx13-66004"></a>
+                                                                                 
+
+                                                                                 
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">count</span>: count the number of elements in the scene.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">rcount</span>: recursively count the number of elements in the scene.</li></ul>
-                                                                                 
-
-                                                                                 
-<!--l. 2049--><p class="noindent" ><span 
+<!--l. 2056--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -207,7 +212,7 @@ class="small-caps">E</span> </span><br
 class="newline" />Counting the elements in a scene:
 <div class="center" 
 >
-<!--l. 2054--><p class="noindent" >
+<!--l. 2061--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox61"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene get count;</span><br 
@@ -219,12 +224,12 @@ class="pcrr8tn-x-x-90">/ITL/scene count 200;</span></div></div>
                                                                                  
 
                                                                                  
-<!--l. 2058--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2065--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch10.html" >next</a>] [<a 
 href="OSCMsgch8.html" >prev</a>] [<a 
 href="OSCMsgch8.html#tailOSCMsgch8.html" >prev-tail</a>] [<a 
 href="OSCMsgch9.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch9.html" >up</a>] </p></div>
-<!--l. 2058--><p class="noindent" ><a 
+<!--l. 2065--><p class="noindent" ><a 
  id="tailOSCMsgch9.html"></a>  
 </body></html> 
