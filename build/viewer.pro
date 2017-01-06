@@ -17,8 +17,12 @@ QT += quick qml quickwidgets sensors
 ############################## 
 ROOT = $$PWD/..
 SRC  = $$ROOT/src
+LOCALLIB 	= $$ROOT/lib
 APPL = $$SRC/inscoreviewer
 LIB  = $$SRC/inscore
+OSC  = $$LOCALLIB/oscpack
+win32 { OSCIP = $$OSC/ip/win32 }
+else  { OSCIP = $$OSC/ip/posix }
 
 CONFIG += c++11
 
@@ -29,6 +33,10 @@ NOVIEW { SOURCES += $$APPL/INScoreNoView.cpp }
 else   { SOURCES += $$APPL/INScoreAppl.cpp }
 HEADERS 	+= $$APPL/INScoreAppl.h
 INCLUDEPATH += $$APPL $$LIB/interface
+INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
+INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
+INCLUDEPATH += $$files($$OSC)
+INCLUDEPATH += $$files($$SRC/libmapping/src/[^.]*)
 
 ############### Resources
 RESOURCES += $$ROOT/rsrc/inscore.qrc
