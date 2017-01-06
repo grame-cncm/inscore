@@ -93,6 +93,7 @@ common:
 	cp -r doc $(package)
 	cp readme.txt $(package)
 	cp ../src/changelog.txt $(package)
+	cp -r ../interfaces $(package)
 	make samples
 		
 doc:

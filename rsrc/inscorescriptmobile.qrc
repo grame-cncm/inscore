@@ -9,5 +9,9 @@
 	<file alias="Score.ibundle">../scripts/mobile/Score.ibundle</file>
 	<file alias="Clock.ibundle">../scripts/mobile/Clock.ibundle</file>
 	<file alias="Mixed-Resources.ibundle">../scripts/mobile/Mixed-Resources.ibundle</file>
+	<file alias="SyncFrames.inscore">../scripts/Standalone/synchronization/syncframe.inscore</file>
+
+	<file alias="Sensors/SensorsList.inscore">../scripts/mobile/SensorsList.inscore</file>
+	<file alias="Sensors/SensorsSignals.inscore">../scripts/mobile/SensorsSignals.inscore</file>
     </qresource>
 </RCC>
