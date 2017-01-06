@@ -62,7 +62,7 @@ class I3DSensor : public ISensor
 		virtual bool	read (float& x, float& y, float& z) = 0;
 
 		virtual float sigvalue (float value) const = 0;
-		virtual	bool activate(bool val) {}
+		virtual	bool activate(bool val) { return false; }
 		virtual void setHandlers ();
 };
 

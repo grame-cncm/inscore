@@ -85,6 +85,7 @@ bool I1DSensor::activate(bool val)
 	// this default value should be overriden by derived class
 	// the idea is to force the newData event at activation time.
 	if (val) setXPos(fDefaultValue);
+	return true;
 }
 
 //------------------------------------------------------------------------

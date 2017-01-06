@@ -72,7 +72,7 @@ namespace inscore
 
 #ifdef WIN32
 #define _CRT_SECURE_NO_DEPRECATE
-static string getFilePath() { return string(getenv(("USERPROFILE")) + "\\"; }
+	static string getFilePath() { string user(getenv("USERPROFILE"));  return user + "\\"; }
 
 #elif ANDROID
 static string getFilePath() {
