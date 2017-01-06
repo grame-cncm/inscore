@@ -25,6 +25,8 @@
 #ifdef WIN32
 #include <windows.h>
 #define sleep(n)	Sleep(n*1000)
+#else
+#include <unistd.h>
 #endif
 
 #include <QApplication>
@@ -108,7 +110,7 @@ int main( int argc, char **argv )
 	char **argv = __argv;
 #endif
 
-//	QApplication qapp (argc, argv);
+	QApplication qapp (argc, argv);
 	int ret = 1;
 	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
 	INScoreAppl appl(argc, argv);

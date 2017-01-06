@@ -27,12 +27,11 @@
 
 #include <string>
 
-class inscore::IGlue;
 //_______________________________________________________________________
 class INScoreAppl
 {
 	public :
-				 INScoreAppl (int & argc, char ** argv ) {}
+				 INScoreAppl (int & , char ** ) {}
 		virtual ~INScoreAppl() {}
 		
 			int		exec(inscore::IGlue*);

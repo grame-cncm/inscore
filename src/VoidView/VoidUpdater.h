@@ -43,7 +43,7 @@ namespace inscore
 /*!
 	\brief A class intended to update the view
 */
-class export VoidUpdater : public Updater
+class inscore_export VoidUpdater : public Updater
 {
 	protected:
 				 VoidUpdater() {}
@@ -56,21 +56,21 @@ class export VoidUpdater : public Updater
 typedef class libmapping::SMARTP<VoidUpdater>	SVoidUpdater;
 
 
-class export VoidViewUpdater : public VoidUpdater {
+class inscore_export VoidViewUpdater : public VoidUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
 		virtual const char* name()	{ return "VoidViewUpdater"; }
 	static libmapping::SMARTP<VoidViewUpdater> create()	{ return new VoidViewUpdater(); }
 };
 
-class export VoidLocalMapUpdater : public VoidUpdater {
+class inscore_export VoidLocalMapUpdater : public VoidUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
 		virtual const char* name()	{ return "VoidLocalMapUpdater"; }
 	static libmapping::SMARTP<VoidLocalMapUpdater> create()	{ return new VoidLocalMapUpdater(); }
 };
 
-class export VoidSlaveMapUpdater : public VoidUpdater {
+class inscore_export VoidSlaveMapUpdater : public VoidUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
 		virtual const char* name()	{ return "VoidSlaveMapUpdater"; }
