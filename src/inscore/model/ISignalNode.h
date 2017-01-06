@@ -48,6 +48,7 @@ typedef class libmapping::SMARTP<ISignal>		SISignal;
 class ISignalNode;
 typedef class libmapping::SMARTP<ISignalNode>	SISignalNode;
 class ISignalConnection;
+typedef class libmapping::SMARTP<ISignalConnection>	SISignalConnection;
 
 //--------------------------------------------------------------------------
 /*! \brief the scene signals node
@@ -76,8 +77,8 @@ class ISignalNode : public IVNode
 		virtual bool debug () const			{ return fDebug; }
 		virtual void debug (bool state)		{ fDebug = state; }
 	
-        std::vector<ISignalConnection* > getConnectionsOf (const IObject* obj) const;
-        std::vector<ISignalConnection* >& getConnections() 	{ return fConnections; }
+        std::vector<SISignalConnection> getConnectionsOf (const IObject* obj) const;
+        std::vector<SISignalConnection>& getConnections() 	{ return fConnections; }
         SIMessageList getAllConnections() const;
 
         void cleanupSignal(const ParallelSignal* signal);	///< removes the connections of a signal
@@ -91,7 +92,7 @@ class ISignalNode : public IVNode
 		TCnxPair	string2cnxpair (const std::string& param) const;
 		TCnxSet		string2cnxset (const std::string& param) const;
 	
-        std::vector<ISignalConnection* > fConnections; // the connections between attributes and signals
+        std::vector<SISignalConnection> fConnections; // the connections between attributes and signals
     
         /*! \brief makes the connections between a signal and one ore more methods of an object */
 		MsgHandler::msgStatus connect(SISignal signal, std::string object, std::string methods);
@@ -106,19 +107,19 @@ class ISignalNode : public IVNode
 		MsgHandler::msgStatus disconnectMsg (const IMessage* msg);
     
 				 ISignalNode(IObject * parent);
-		virtual ~ISignalNode() {}
+		virtual ~ISignalNode();
 		virtual bool debug (int state);
     
 };
+
 //--------------------------------------------------------------------------
 /*! \brief the signal-attribute connections 
 */
-class ISignalConnection
+class ISignalConnection : public libmapping::smartable
 {	
 	public:
-				 ISignalConnection() {}
-		virtual ~ISignalConnection() {}
-    
+		static SISignalConnection create()		{ return new ISignalConnection; }
+	
     	/*! \brief returns the object whose attribute has been connected to the signal */
         IObject* getObject() const						{ return fObject;}
     
@@ -176,7 +177,9 @@ class ISignalConnection
 		void print(std::ostream& out) const;
 	
 	protected:
-    
+ 				 ISignalConnection() {}
+		virtual ~ISignalConnection() {}
+	
         IObject*		fObject;		///< the object whose attribute are connected to the signal
  		std::string		fMethod;		///< the name of the connected attribute
         SISignal		fSignal;		///< the signal to be connected
