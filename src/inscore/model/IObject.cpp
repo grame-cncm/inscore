@@ -788,7 +788,7 @@ int IObject::processSig ()
     {
 		 if (elements()[i]->getDeleted()) continue;
 		// looks for the object elements()[i] in all the signal connections
-        std::vector<ISignalConnection*> connections;
+        std::vector<SISignalConnection> connections;
         if(fSignals) connections = fSignals->getConnectionsOf(elements()[i]);
         if(!connections.empty())
         {

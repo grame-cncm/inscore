@@ -14,8 +14,12 @@ else
 ifeq ($(system), MINGW32_NT-6.2)
 	TARGET = windows
 else
+ifeq ($(system), MINGW64_NT-10.0)
+	TARGET = windows
+else
 	TARGET = linux
 	BUILDF ?= linux
+endif
 endif
 endif
 endif

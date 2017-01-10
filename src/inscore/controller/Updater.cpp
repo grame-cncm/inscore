@@ -100,7 +100,7 @@ void SigModified::updateTo (IGraphicSignal* gs)
 void SigModified::updateTo (ISignalNode* signode)
 {
 	if (signode->getState()) {
-		vector<ISignalConnection* >& cnx = signode->getConnections();		// propagate signal modification to connected objects
+		vector<SISignalConnection>& cnx = signode->getConnections();		// propagate signal modification to connected objects
 		for (size_t i=0; i<cnx.size(); i++) {
 			cnx[i]->getObject()->setModified();
 		}

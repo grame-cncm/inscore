@@ -26,6 +26,7 @@
 #define __VoidViewFactory__
 
 #include "IModelTypes.h"
+#include "VoidObjectView.h"
 
 
 namespace inscore
@@ -39,26 +40,29 @@ class VoidViewFactory
 {
 	public:
 
-	static VObjectView*		create (const IAppl* object);
-	static VObjectView*		create (const IScene* object);
+	static VObjectView* create (const void* object) { return new VoidObjectView (); }
 
-	static VObjectView*		create (const ICurve* object);
-	static VObjectView*		create (const IEllipse* object);
-	static VObjectView*		create (const IGraphicSignal* object);
-	static VObjectView*		create (const IGuidoCode* object);
-	static VObjectView*		create (const IGuidoFile* object);
-	static VObjectView*		create (const IHtml* object);
-	static VObjectView*		create (const IHtmlFile* object);
-	static VObjectView*		create (const IImage* object);
-	static VObjectView*		create (const ILine* object);
-	static VObjectView*		create (const IPolygon* object);
-	static VObjectView*		create (const IGrid* object);
-	static VObjectView*		create (const IRect* object);
-	static VObjectView*		create (const ISVG* object);
-	static VObjectView*		create (const ISVGFile* object);
-	static VObjectView*		create (const IText* object);
-	static VObjectView*		create (const ITextFile* object);
-	static VObjectView*		create (const IVideo* object);
+//	static VObjectView*		create (const IAppl* object);
+//	static VObjectView*		create (const IScene* object);
+//
+//	static VObjectView*		create (const IArc* object);
+//	static VObjectView*		create (const ICurve* object);
+//	static VObjectView*		create (const IEllipse* object);
+//	static VObjectView*		create (const IGraphicSignal* object);
+//	static VObjectView*		create (const IGuidoCode* object);
+//	static VObjectView*		create (const IGuidoFile* object);
+//	static VObjectView*		create (const IHtml* object);
+//	static VObjectView*		create (const IHtmlFile* object);
+//	static VObjectView*		create (const IImage* object);
+//	static VObjectView*		create (const ILine* object);
+//	static VObjectView*		create (const IPolygon* object);
+//	static VObjectView*		create (const IGrid* object);
+//	static VObjectView*		create (const IRect* object);
+//	static VObjectView*		create (const ISVG* object);
+//	static VObjectView*		create (const ISVGFile* object);
+//	static VObjectView*		create (const IText* object);
+//	static VObjectView*		create (const ITextFile* object);
+//	static VObjectView*		create (const IVideo* object);
 };
 
 /*!@} */

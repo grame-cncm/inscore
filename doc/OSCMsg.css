@@ -10,6 +10,7 @@
 .zptmcmr-x-x-74{font-size:74%; font-style: italic;}
 .zptmcmrm-x-x-74{font-size:74%;}
 .zpzccmry-{ font-weight: bold; font-style: italic;}
+.zpzccmry-x-x-74{font-size:74%; font-weight: bold; font-style: italic;}
 .pcrr8tn-x-x-90{font-size:90%;font-family: monospace;}
 .pcrr8tn-x-x-90{font-family: monospace;}
 .pcrr8tn-x-x-90{font-family: monospace;}
@@ -285,5 +286,8 @@ div#colorbox137{background-color:rgb(237,237,237);}
 div#colorbox138{background-color:rgb(237,237,237);}
 div#colorbox139{background-color:rgb(237,237,237);}
 div#colorbox140{background-color:rgb(237,237,237);}
+div#colorbox141{background-color:rgb(237,237,237);}
+div#colorbox142{background-color:rgb(237,237,237);}
+div#colorbox143{background-color:rgb(237,237,237);}
 /* end css.sty */
 

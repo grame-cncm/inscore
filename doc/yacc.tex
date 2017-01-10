@@ -2,96 +2,130 @@
 //_______________________________________________
 // relaxed simple ITL format specification
 //_______________________________________________
-start       : expr
+start        : expr
             | start expr
             ;
 //_______________________________________________
 // expression of the script language
 //_______________________________________________
-expr        : message  ENDEXPR
-            | variabledecl ENDEXPR
-            | script
-            | ENDSCRIPT
+expr        : message  ENDEXPR        
+            | variabledecl ENDEXPR    
+            | script            
+            | ENDSCRIPT            
             ;
 //_______________________________________________
-// javascript and lua support
+// javascript and support
 //_______________________________________________
-script      : LUASCRIPT
-            | JSCRIPT
+script        : JSCRIPT            
             ;
 //_______________________________________________
 // messages specification (extends osc spec.)
-//____________________________________expArg expression___________
-message     : address
-            | address params
+//_______________________________________________
+message        : address                    
+            | address params            
             | address eval LEFTPAR messagelist RIGHTPAR
-            | address eval variable
+            | address eval variable        
             ;
-messagelist : message
+messagelist : message                    
             | messagelist messagelistseparator message 
             ;
-messagelistseparator  : COMMA
-                      | COLON
-                      ;
+messagelistseparator    : COMMA
+                        | COLON
+                        ;
 //_______________________________________________
 // address specification (extends osc spec.)
-address     : oscaddress
-            | relativeaddress
-            | urlprefix oscaddress
+address        : oscaddress                
+            | relativeaddress            
+            | urlprefix oscaddress        
             ;
-oscaddress  : oscpath
-            | oscaddress oscpath
+oscaddress  : OSCADDRESS                
             ;
-relativeaddress : POINT oscaddress
+relativeaddress    : POINT oscaddress        
             ;
-oscpath     : PATHSEP identifier
-            | PATHSEP WATCH
-            | PATHSEP VARSTART varname
+urlprefix    : hostname  UINT            
+            | STRING COLON UINT            
+            | IPNUM COLON UINT            
             ;
-urlprefix   : hostname COLON UINT
-            | IPNUM COLON UINT
+hostname    : HOSTNAME                    
             ;
-hostname    : HOSTNAME
-            | hostname POINT HOSTNAME
-            ;
-identifier  : IDENTIFIER
-            | HOSTNAME
-            | REGEXP
+identifier    : IDENTIFIER                
+            | HOSTNAME                    
+            | REGEXP                    
             ;
 //_______________________________________________
 // parameters definitions
 // eval need a special case since messages are expected as argument
-eval        : EVAL
-params      : param
-            | variable
-            | params variable
-            | params param
+eval        : EVAL                
+            | variable                
+            | params variable        
+            | params param            
             ;
-variable    : VARSTART varname
-            | VARSTART LEFTPAR message RIGHTPAR 
+params        : sparam                
+            | params sparam            
+            | mathexpr                
+            | params mathexpr        
             ;
-param       : number
-            | FLOAT
-            | identifier
-            | STRING
-            | expression
-            | LEFTPAR messagelist RIGHTPAR
-            | script
+variable    : VARIABLE                
+            | VARIABLEPOSTINC        
+            | VARIABLEPOSTDEC        
+            | VARIABLEPREINC        
+            | VARIABLEPREDEC        
+            ;
+msgvariable    : VARSTART LEFTPAR message RIGHTPAR 
+            ;
+param    : number                
+        | FLOAT                    
+        | identifier            
+        | STRING                
+        ;
+sparam    : expression            
+        | LEFTPAR messagelist RIGHTPAR    
+        | script            
+        ;
+//_______________________________________________
+// math expressions
+mathexpr    : param                            
+            | variable                        
+            | msgvariable                    
+            | mathexpr ADD mathexpr            
+            | mathexpr SUB mathexpr            
+            | MINUS mathexpr                
+            | mathexpr MULT mathexpr        
+            | mathexpr DIV mathexpr            
+            | mathexpr MODULO mathexpr        
+            | LEFTPAR mathexpr RIGHTPAR     
+            | MIN LEFTPAR mathmin RIGHTPAR    
+            | MAX LEFTPAR mathmax RIGHTPAR    
+            | LEFTPAR mathbool QUEST mathexpr COLON mathexpr RIGHTPAR 
+            ;
+mathmin     : mathexpr                        
+            | mathmin mathexpr                
+            ;
+mathmax     : mathexpr                        
+            | mathmax mathexpr                
+            ;
+mathbool     : mathexpr                        
+            | NEG mathexpr                    
+            | mathexpr EQ mathexpr             
+            | mathexpr NEQ mathexpr         
+            | mathexpr GREATER mathexpr     
+            | mathexpr GREATEREQ mathexpr     
+            | mathexpr LESS mathexpr         
+            | mathexpr LESSEQ mathexpr         
             ;
 //_______________________________________________
 // variable declaration
-variabledecl : varname EQUAL params
+variabledecl : varname EQUAL params    
             ;
-varname     : IDENTIFIER
-            | HOSTNAME
+varname        : IDENTIFIER            
             ;
 //_______________________________________________
 // misc
-number      : UINT
-            | INT
+number        : UINT                    
+            | INT                    
             ;
 //_______________________________________________
 // expression declaration
-expression  : EXPRESSION
+expression    : EXPRESSION    
             ;
 \end{verbatim}

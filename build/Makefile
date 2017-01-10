@@ -14,15 +14,19 @@ ifeq ($(system), Darwin)
 	SPEC = -spec macx-xcode
 	QMAKEIOS = qmake-ios
 else
-ifeq ($(system), MINGW32_NT-6.1)
+ ifeq ($(system), MINGW32_NT-6.1)
 	TARGET = windows
-else
-ifeq ($(system), MINGW32_NT-6.2)
+ else
+ ifeq ($(system), MINGW32_NT-6.2)
 	TARGET = windows
-else
+  else
+  ifeq ($(system), MINGW64_NT-10.0)
+	TARGET = windows
+  else
 	TARGET = linux
 	BUILDF ?= linux
-endif
+  endif
+ endif
 endif
 endif
 
@@ -54,6 +58,7 @@ help :
 	@echo "  ios : to build for iOS"
 	@echo "  windows : to build for Windows"
 	@echo "  linux : to build for Linux"
+	@echo "  noview : to build inscore without view"
 	@echo "  android : to build for android"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
 	@echo "    with XXX the device serial number (can be retrieved using 'make devandroid')"
@@ -89,6 +94,29 @@ $(BUILDF)/INScoreViewer.xcodeproj : viewer.pro
 # this link is required for macdeployqt
 link:
 	cd macos && ln -s Release lib
+
+#===============================================================
+# building INScore without view
+#===============================================================
+noview : noview/INScore.xcodeproj noview/INScoreViewer.xcodeproj INScoreNoView
+
+noviewproj: library.pro viewer.pro
+	[ -d noview ] || mkdir noview
+	cd noview && $(QMAKE) $(SPEC) CONFIG+=NOVIEW ../library.pro 
+	touch noview/INScore.xcodeproj
+	cd noview && $(QMAKE) $(SPEC) CONFIG+=NOVIEW ../viewer.pro 
+	touch noview/INScoreViewer.xcodeproj
+
+INScoreNoView : 
+	xcodebuild -jobs 8 -project noview/INScore.xcodeproj -target INScore -configuration Release
+	xcodebuild -jobs 8 -project noview/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
+
+noview/INScore.xcodeproj : library.pro
+	make noviewproj
+
+noview/INScoreViewer.xcodeproj : viewer.pro
+	make noviewproj
+
 
 #===============================================================
 # building INScore for iOS 

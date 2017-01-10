@@ -1,7 +1,0 @@
-
-open -t 1.21/regression/S-mouseEvent/mouse1.inscore  1.20/regression/S-mouseEvent/mouse1.inscore # to check changes
-open -t 1.21/regression/S-mouseEvent/mouse4.inscore  1.20/regression/S-mouseEvent/mouse4.inscore # to check changes
-open -t 1.21/regression/S-mouseEvent/testMouse.inscore  1.20/regression/S-mouseEvent/testMouse.inscore # to check changes
-open -t 1.21/regression/S-sync/change1.inscore  1.20/regression/S-sync/change1.inscore # to check changes
-open -t 1.21/regression/S-sync/change3.inscore  1.20/regression/S-sync/change3.inscore # to check changes
-open -t 1.21/regression/S-sync/testSync.inscore  1.20/regression/S-sync/testSync.inscore # to check changes

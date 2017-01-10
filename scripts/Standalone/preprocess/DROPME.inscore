@@ -1,0 +1,26 @@
+
+/ITL/log clear;
+/ITL/log height 1;
+/ITL/log show 1;
+
+/ITL/scene/* del; 
+/ITL/scene height 1.2; 
+
+gray = 150;
+/ITL/scene/script set txtf javascript.inscore;
+/ITL/scene/script color $gray $gray $gray;
+
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+/ITL/scene/title set txt "Pre-processing";
+/ITL/scene/title color $color;
+/ITL/scene/title fontSize 32;
+/ITL/scene/title fontWeight bold;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -1.05;
+
+/ITL/scene/comment set txt "The result of the evaluation of the script above is displayed in the log window.";
+/ITL/scene/comment y 1.1;
+/ITL/scene/comment fontSize 16;
+
+/ITL preprocess javascript.inscore;

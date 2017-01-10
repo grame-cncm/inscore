@@ -6,8 +6,12 @@ else
 ifeq ($(system), MINGW32_NT-6.2) 
 	win32 = yes
 else
+ifeq ($(system), MINGW64_NT-10.0) 
+	win32 = yes
+else
 ifeq ($(system), CYGWIN_NT-6.1) 
 	win32 = yes
+endif
 endif
 endif
 endif
@@ -18,7 +22,7 @@ else
 ifdef win32 
   WIN32QTPATH ?= $(shell qmake --version | grep Using | sed -e 's/..*\([A-Za-z]:[^ ]*\)lib/\1/')
   QT5         ?= $(shell echo $(WIN32QTPATH) | sed -e 's/\/[5-9]\.[0-9]\/..*//')
-  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL QT5MultimediaWidgets.DLL Qt5Network.dll
+  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL QT5MultimediaWidgets.DLL Qt5Network.dll Qt5Sensors.dll
   ifeq ($(QT5), /c/Qt/Qt5.4.0)
    WIN32QT	  := $(WIN32QT) ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
   endif
@@ -93,6 +97,7 @@ common:
 	cp -r doc $(package)
 	cp readme.txt $(package)
 	cp ../src/changelog.txt $(package)
+	cp -r ../interfaces $(package)
 	make samples
 		
 doc:
@@ -227,6 +232,7 @@ win64:
 	cp $(QT5)/vcredist/vcredist_msvc2013_x86.exe $(package)
 	cp $(ibundle)/build/win64/release/IBundle.exe $(package)
 	cp $(ibundle)/readme.txt $(package)/IBundle-ReadMe.txt
+	cp rsrc/msvc*.dll $(package)/
 
 wincommon:
 	[ -d $(package) ] || mkdir -p $(package)

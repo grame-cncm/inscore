@@ -58,6 +58,9 @@ ISignalNode::ISignalNode(IObject * parent) : IVNode(kName, parent), fDebug(false
 }
 
 //--------------------------------------------------------------------------
+ISignalNode::~ISignalNode()	{}
+
+//--------------------------------------------------------------------------
 void ISignalNode::accept (Updater* u)
 {
 	u->updateTo (SISignalNode(this));
@@ -253,7 +256,7 @@ MsgHandler::msgStatus ISignalNode::connect(SISignal signal, std::string object, 
         // we test that the method is available for connections
         if(! obj->signalHandler(methodStr)) return MsgHandler::kBadParameters;
         
-        ISignalConnection * connection = new ISignalConnection();
+        SISignalConnection connection = ISignalConnection::create();
         
         objectMethod = object;
         objectMethod += ":";
@@ -310,7 +313,7 @@ MsgHandler::msgStatus ISignalNode::connect(SISignal signal, std::string object, 
         else
             connection->setRangeType("none");
         
-        vector<ISignalConnection*>::iterator it = fConnections.begin();
+        vector<SISignalConnection>::iterator it = fConnections.begin();
         bool found = false;
         while(it != fConnections.end()  && !found)
         {
@@ -319,12 +322,10 @@ MsgHandler::msgStatus ISignalNode::connect(SISignal signal, std::string object, 
             else
                 it++;
         }
-        if(found) // If this method of the object has already been stored, we replace the connection
-            fConnections.erase(it);
-        
+        if(found)	// If this method of the object has already been stored, we replace the connection
+			fConnections.erase(it);
         fConnections.push_back(connection);
     }
-
     return MsgHandler::kProcessed;
 }
 
@@ -333,7 +334,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SISignal signal, std::string objec
 {
     if(object.empty()) // if the object is not specified, we disconnect all connections with the signal
     {
-        std::vector<ISignalConnection* >::iterator it = fConnections.begin();
+        std::vector<SISignalConnection>::iterator it = fConnections.begin();
         while(it != fConnections.end())
         {
             if((*it)->contains(signal))		// if we find the signal, we erase the connection object
@@ -344,7 +345,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SISignal signal, std::string objec
     // if we only specified the signal and the object (without methods), we look for all the connections between the signal and this object
     else if(methods.empty())
     {
-        vector<ISignalConnection*>::iterator it = fConnections.begin();
+        vector<SISignalConnection>::iterator it = fConnections.begin();
         bool found = false;
         while(it != fConnections.end()  && !found)
         {
@@ -381,7 +382,7 @@ MsgHandler::msgStatus ISignalNode::disconnect(SISignal signal, std::string objec
             
             // we handle the fConnections map
             
-            vector<ISignalConnection*>::iterator it = fConnections.begin();
+            vector<SISignalConnection>::iterator it = fConnections.begin();
             bool found = false;
             while(it != fConnections.end()  && !found)
             {
@@ -399,9 +400,9 @@ MsgHandler::msgStatus ISignalNode::disconnect(SISignal signal, std::string objec
     return MsgHandler::kProcessed;
 }
 
-std::vector<ISignalConnection* > ISignalNode::getConnectionsOf(const IObject* obj) const
+std::vector<SISignalConnection> ISignalNode::getConnectionsOf(const IObject* obj) const
 {
-    std::vector<ISignalConnection*> connections;
+    std::vector<SISignalConnection> connections;
 	for (unsigned int i = 0; i < fConnections.size(); i++) {
 		if (fConnections[i]->getObject() == obj)
             connections.push_back(fConnections[i]);
@@ -430,7 +431,7 @@ SIMessageList ISignalNode::getAllConnections() const
 //--------------------------------------------------------------------------
 void ISignalNode::cleanupSignal(const ParallelSignal* signal)
 {
-	vector<ISignalConnection* >::iterator i = fConnections.begin();
+	vector<SISignalConnection>::iterator i = fConnections.begin();
 	while (i != fConnections.end()) {
 		if ((*i)->getSignal() == signal) {
 			i = fConnections.erase( i );
@@ -442,7 +443,7 @@ void ISignalNode::cleanupSignal(const ParallelSignal* signal)
 //--------------------------------------------------------------------------
 void ISignalNode::cleanupTarget(const IObject* obj)
 {
-	vector<ISignalConnection* >::iterator i = fConnections.begin();
+	vector<SISignalConnection>::iterator i = fConnections.begin();
 	while (i != fConnections.end()) {
 		if ((*i)->getObject() == obj) {
 			i = fConnections.erase( i );
