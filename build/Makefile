@@ -155,6 +155,9 @@ uninstallAndroid :
 #===============================================================
 # building the library on linux
 #===============================================================
+INSTALLBIN := /usr/bin
+INSTALLLIB := /usr/lib
+
 linux : $(BUILDF)/Makefile.lib $(BUILDF)/Makefile.app INScoreLinux
 
 linuxproj:
@@ -178,7 +181,15 @@ INScoreLinux:
 linuxclean:
 	make -C $(BUILDF) -f Makefile.lib clean
 	make -C $(BUILDF) -f Makefile.app clean
-	
+
+install: 
+	[ $(TARGET) = "linux" ] && make linuxinstall
+
+linuxinstall:
+	cp -d linux/libINScore.so.* $(INSTALLLIB)
+	cp linux/inscoreviewer  $(INSTALLBIN)
+	cp ../tools/IBundle/IBundle $(INSTALLBIN)
+
 	
 #===============================================================
 # building the library with mobileUI
