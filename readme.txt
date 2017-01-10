@@ -185,14 +185,8 @@ lua support starts to be deprecated. If you want to include lua in inscore, cont
 Http server support
 ----------------------------
 You should install libmicrohttpd library (a GNU project) on your computer.
-Then, you can build the http server in lib/httpserver folder : 
-	> cd lib/httpserver/build
-	> cmake -G "Your environnement"
-	> make
-
-The server can be added in your INScore folder to enabled http server plugin.
-
-Note that the http server library work only on Linux and Mac OS.
+see at https://www.gnu.org/software/libmicrohttpd/ for the different options.
+Note that the http server works only on Linux and Mac OS.
 
 ======================================================
  Note about the Guido Font
