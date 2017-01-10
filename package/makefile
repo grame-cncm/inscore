@@ -22,7 +22,7 @@ else
 ifdef win32 
   WIN32QTPATH ?= $(shell qmake --version | grep Using | sed -e 's/..*\([A-Za-z]:[^ ]*\)lib/\1/')
   QT5         ?= $(shell echo $(WIN32QTPATH) | sed -e 's/\/[5-9]\.[0-9]\/..*//')
-  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL QT5MultimediaWidgets.DLL Qt5Network.dll
+  WIN32QT	  := QT5PRINTSUPPORT.DLL QT5WIDGETS.DLL QT5OPENGL.DLL QT5GUI.DLL QT5CORE.DLL QT5SVG.DLL QT5QML.DLL QT5WebSockets.DLL QT5Multimedia.DLL QT5MultimediaWidgets.DLL Qt5Network.dll Qt5Sensors.dll
   ifeq ($(QT5), /c/Qt/Qt5.4.0)
    WIN32QT	  := $(WIN32QT) ICUIN53.DLL ICUUC53.DLL ICUDT53.DLL
   endif
