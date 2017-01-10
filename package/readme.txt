@@ -21,7 +21,8 @@ according to their time relations and on signals representation.
 
 The INScore Viewer has no user interface, it is intended to be 
 controled via OSC messages i.e. by any external application that 
-supports the OSC protocol (typically MaxMSP or Pure Data).
+supports the OSC protocol (typically MaxMSP or Pure Data) or more simply, 
+by drag and drop of inscore scripts to the application window.
 
 ======================================================
  Note about the Guido Font
