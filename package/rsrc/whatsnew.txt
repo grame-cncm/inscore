@@ -5,9 +5,16 @@ GRAME - Centre national de creation musicale
 http://www.grame.fr
 research@grame.fr
 ==================================================================
-Copyright GRAME (c) 2009-2015
+Copyright GRAME (c) 2009-2017
 INScore resources are released under the Creative Common license. 
 ------------------------------------------------------------------
+
+-------------------------------
+** January 10 2017
+-------------------------------
+New sample scripts to illustrate INScore new features:
+ - preprocessing, syncframe, edit, new objects, sensors...
+see the change log for details
 
 -------------------------------
 ** February 16 2016
