@@ -6,8 +6,12 @@ else
 ifeq ($(system), MINGW32_NT-6.2) 
 	win32 = yes
 else
+ifeq ($(system), MINGW64_NT-10.0) 
+	win32 = yes
+else
 ifeq ($(system), CYGWIN_NT-6.1) 
 	win32 = yes
+endif
 endif
 endif
 endif
@@ -228,6 +232,7 @@ win64:
 	cp $(QT5)/vcredist/vcredist_msvc2013_x86.exe $(package)
 	cp $(ibundle)/build/win64/release/IBundle.exe $(package)
 	cp $(ibundle)/readme.txt $(package)/IBundle-ReadMe.txt
+	cp rsrc/msvc*.dll $(package)/
 
 wincommon:
 	[ -d $(package) ] || mkdir -p $(package)

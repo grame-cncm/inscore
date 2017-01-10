@@ -14,15 +14,19 @@ ifeq ($(system), Darwin)
 	SPEC = -spec macx-xcode
 	QMAKEIOS = qmake-ios
 else
-ifeq ($(system), MINGW32_NT-6.1)
+ ifeq ($(system), MINGW32_NT-6.1)
 	TARGET = windows
-else
-ifeq ($(system), MINGW32_NT-6.2)
+ else
+ ifeq ($(system), MINGW32_NT-6.2)
 	TARGET = windows
-else
+  else
+  ifeq ($(system), MINGW64_NT-10.0)
+	TARGET = windows
+  else
 	TARGET = linux
 	BUILDF ?= linux
-endif
+  endif
+ endif
 endif
 endif
 
