@@ -12,7 +12,10 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
-Version 1.21
+Version 1.22
+
+----------------------------------------------------
+Version 1.21 - 2017-01-12
 - new set of sensor objects 
 - update to guido engine 1.63
 - new 'preprocess' message supported at application and scene level
