@@ -26,6 +26,7 @@ android 					{ DEFINES += ANDROID }
 ios 						{ DEFINES += IOS }
 macx 						{ DEFINES += MACOS }
 unix:!macx:!ios:!android 	{ DEFINES += __LINUX__ }
+greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_LESS_55}
 
 !win32 {
     QMAKE_CFLAGS_WARN_OFF += -Wno-deprecated-register -Wno-unused-parameter
