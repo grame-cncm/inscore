@@ -137,7 +137,8 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 			return false;
 		}
 		std::stringstream* ss = new std::stringstream;
-		*ss<<data.toStdString();
+//		*ss<< data.toStdString();
+		*ss<< data.data();
 		ifs = ss;
 	}else{
 		std::ifstream* fileStream = new std::ifstream(inputFile.c_str());
