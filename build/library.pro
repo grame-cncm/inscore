@@ -10,6 +10,7 @@ VERSION = 1.22
 CONFIG += c++11
 CONFIG += warn_off
 
+
 ############################## 
 # locations
 ############################## 
@@ -30,6 +31,8 @@ DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
+greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_LESS_55}
+
 
 ############################## 
 # source and headers
