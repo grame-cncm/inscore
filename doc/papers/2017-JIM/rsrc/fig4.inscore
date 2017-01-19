@@ -1,0 +1,44 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/score set gmn '[ g/2 g f f a a g g ]' ;
+/ITL/scene/score scale 0.6;
+
+w = 0.07;
+/ITL/scene/cursor set ellipse $w $w;
+/ITL/scene/cursor color 100 100 255;
+
+/ITL/scene/sync cursor score syncTop;
+/ITL/scene/cursor dy -0.1;
+
+/ITL/scene/cursor watch timeEnter 1 2 2 2 ( /ITL/scene/cursor show 0);
+/ITL/scene/cursor watch timeLeave 1 2 2 2 ( /ITL/scene/cursor show 1);
+/ITL/scene/cursor watch timeEnter 3 2 4 2 ( /ITL/scene/cursor show 0);
+/ITL/scene/cursor watch timeLeave 3 2 4 2 ( /ITL/scene/cursor show 1);
+/ITL/scene/cursor watch timeEnter 5 2 6 2 ( /ITL/scene/cursor show 0);
+/ITL/scene/cursor watch timeLeave 5 2 6 2 ( /ITL/scene/cursor show 1);
+/ITL/scene/cursor watch timeEnter 7 2 8 2 ( /ITL/scene/cursor show 0);
+/ITL/scene/cursor watch timeLeave 7 2 8 2 ( /ITL/scene/ctrl event mouseDown 0 0);
+
+/ITL/scene/ctrl set txt "Start";
+/ITL/scene/ctrl fontSize 32;
+/ITL/scene/ctrl y 0.5;
+/ITL/scene/ctrl alpha 100;
+/ITL/scene/ctrl watch mouseEnter (/ITL/scene/ctrl alpha 255);
+/ITL/scene/ctrl watch mouseLeave (/ITL/scene/ctrl alpha 100);
+/ITL/scene/ctrl watch mouseDown (
+	/ITL/scene/ctrl push,
+	/ITL/scene/cursor show 1,
+	/ITL/scene/cursor date 0,
+	/ITL/scene/cursor tempo 120,
+	/ITL/scene/ctrl set txt "Stop",
+	/ITL/scene/ctrl watch mouseDown (
+		/ITL/scene/ctrl set txt "Restart",
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/ctrl pop
+	)
+);
+
+__END__
+
+/ITL/log level 2;
