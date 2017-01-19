@@ -68,7 +68,7 @@
 %
 \begin{abstract}
 INScore est un environnement pour la conception de partition interactives augmentées, tourné vers des usages non conventionnels de la notation musicale. Dans cet environnement, bien que tous les objets de la partition aient une dimension temporelle, le temps reste statique i.e. que la date (ou la durée) d'un objet ne change pas, sauf à réception d'un message qui ne peut être produit que de manière externe ou événementielle. INScore n'inclut donc pas de gestionnaire du temps au sens classique du terme. 
-A l'origine, ce choix a été dicté par le fait que le système est conçu pour des usages couplés avec des logiciels de production sonore (e.g. Max-MSP, Pure Data), qui ont des contraintes de temps-réel plus strictes que l'environnement graphique d'INScore.
+A l'origine, ce choix a été dicté par le fait que le système fut conçu pour des usages couplés avec des logiciels de production sonore (e.g. Max-MSP, Pure Data), qui ont des contraintes de temps-réel plus strictes que l'environnement graphique d'INScore.
 Toutefois, la nécessité d'introduire un temps dynamique a progressivement émergé, conduisant à un modèle original, à la fois \emph{événementiel} et continu. C'est ce modèle qui est présenté et ses propriétés dans l'environnement d'INScore.
 \end{abstract}
 
@@ -177,8 +177,8 @@ Cette logique est particulièrement consistante pour les événements utilisateu
 \begin{figure}[h]
    \centering
    \sample{/ITL/scene/obj watch MYEVENT ( \\
-\hspace*{4mm}/ITL/scene/t1 set txt \$1, \\
-\hspace*{4mm}/ITL/scene/t2 set txt \$2 \\
+\tab/ITL/scene/t1 set txt \$1, \\
+\tab/ITL/scene/t2 set txt \$2 \\
 );   \\   
 /ITL/scene/obj event MYEVENT \\
 \hspace*{25mm}"This text is for t1"\\
@@ -239,15 +239,15 @@ La combinaison du temps musical et événementiel permet de concevoir des partit
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene/o1 watch timeLeave 0 \$t2 \\
-   \hspace*{4mm}( /ITL/scene/o2 event START );\\
+   \tab( /ITL/scene/o2 event START );\\
 	/ITL/scene/o1 watch timeLeave 0 \$d1 \\
-	\hspace*{4mm}( /ITL/scene/o1 event STOP );\\
+	\tab( /ITL/scene/o1 event STOP );\\
 	/ITL/scene/o2 watch timeLeave 0 \$d2 \\
-	\hspace*{4mm}( /ITL/scene/o2 event STOP, \\
-	\hspace*{8mm}/ITL/scene/o3 event START );\\
+	\tab( /ITL/scene/o2 event STOP, \\
+	\tab \tab/ITL/scene/o3 event START );\\
 	/ITL/scene/o3 watch timeLeave 0 \$d3 \\
-	\hspace*{4mm}( /ITL/scene/o3 event STOP, \\
-	\hspace*{8mm}/ITL/scene/o1 event START );
+	\tab( /ITL/scene/o3 event STOP, \\
+	\tab \tab/ITL/scene/o1 event START );
 }
    \caption{Activation mutuelle de 3 objets \OSC{o1, o2, o3} selon un schéma temporel prédéfinit.}
    \label{fig:ex1}
@@ -258,14 +258,14 @@ Les variables \OSC{\$t1, \$d1, \$d2} et \OSC{\$d3} sont instanciées avec des va
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene/o* watch STOP ( \\
-   \hspace*{4mm}/ITL/scene/\$self tempo 0,\\
-   \hspace*{4mm}/ITL/scene/\$self alpha \$alpha	\\
+   \tab/ITL/scene/\$self tempo 0,\\
+   \tab/ITL/scene/\$self alpha \$alpha	\\
 );\\
 \\
 /ITL/scene/o* watch START ( \\
-   \hspace*{4mm}/ITL/scene/\$self tempo 120,\\
-   \hspace*{4mm}/ITL/scene/\$self alpha 255,\\
-   \hspace*{4mm}/ITL/scene/\$self date 0\\
+   \tab/ITL/scene/\$self tempo 120,\\
+   \tab/ITL/scene/\$self alpha 255,\\
+   \tab/ITL/scene/\$self date 0\\
 );
 }
    \caption{Définition des événements utilisateur \OSC{START} et \OSC{STOP}.}
@@ -300,7 +300,7 @@ La partition (figure \ref{fig:sample}) comprend un ensemble de figures munies de
 Dans cette pièce, l'ordinateur joue en quelque sorte le rôle de chef d'orchestre : il calcule des séquences sonores basées sur les matériaux pré-enregistrés et active des chemins ou des stations pour des durées variables, calculées dynamiquement. Les chemins et stations possibles sont indiqués sur la figure \ref{fig:sample} par les labels P1 à P13. 
 
 Les aspects dynamiques de la partition sont définis avec des événements utilisateurs qui portent le nom des labels correspondants. Ces événements prennent une durée en paramètre, de sorte que pour activer un chemin ou une station, il suffit d'émettre le message :\\
-\hspace*{5mm} \OSC{/ITL/scene Px d} \\
+\tab \tab \OSC{/ITL/scene Px d} \\
 où \OSC{Px} est le nom de l'événement (\OSC{P1...P13})\\
  et \OSC{d} la durée correspondante. \\
 C'est donc une approche de haut niveau qui, du côté de Max/Msp, permet de \emph{conduire} la partition en temps réel.
@@ -318,25 +318,25 @@ Pour les stations, elle consiste à changer le canal alpha de la figure correspo
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene watch P1 ( \\
-\hspace*{4mm}/ITL/scene/g1 alpha 255, \\
-\hspace*{4mm}/ITL/scene event STATION \$tempo '\$1' \\
+\tab/ITL/scene/g1 alpha 255, \\
+\tab/ITL/scene event STATION \$tempo '\$1' \\
 ); \\
 \\
 /ITL/scene watch STATION ( \\
-\hspace*{4mm}/ITL/scene/cursor show 0,\\
-\hspace*{4mm}/ITL/scene/cursor watch timeLeave \\
+\tab/ITL/scene/cursor show 0,\\
+\tab/ITL/scene/cursor watch timeLeave \\
 \hspace*{30mm}0 '\$2' \$stop\_s,\\
-\hspace*{4mm}/ITL/scene/cursor date 0,\\
-\hspace*{4mm}/ITL/scene/cursor tempo '\$1'\\
+\tab/ITL/scene/cursor date 0,\\
+\tab/ITL/scene/cursor tempo '\$1'\\
 ); \\
 \\
 stop\_s = ( \\
-\hspace*{4mm}\# set the tempo to 0 \\
-\hspace*{4mm}/ITL/scene/cursor tempo 0, \\
-\hspace*{4mm}\# remove any watched event \\
-\hspace*{4mm}/ITL/scene/cursor watch,  \\
-\hspace*{4mm}\# and reset the alpha channel \\
-\hspace*{4mm}/ITL/scene/g* alpha \$alpha \\
+\tab\# set the tempo to 0 \\
+\tab/ITL/scene/cursor tempo 0, \\
+\tab\# remove any watched event \\
+\tab/ITL/scene/cursor watch,  \\
+\tab\# and reset the alpha channel \\
+\tab/ITL/scene/g* alpha \$alpha \\
 );
 }
    \caption{Définition de l'événement \OSC{P1} qui active la station représentée par l'objet \OSC{g1}.}
@@ -347,25 +347,25 @@ Pour les chemins, la durée de l'arc correspondant est fixée à la durée de l'
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene watch P5 ( \\
-\hspace*{4mm}/ITL/scene/a3 duration '\$1', \\
-\hspace*{4mm}/ITL/scene event CHEMIN a3 \$tempo '\$1' \\
+\tab/ITL/scene/a3 duration '\$1', \\
+\tab/ITL/scene event CHEMIN a3 \$tempo '\$1' \\
 ); \\
 \\
 /ITL/scene watch CHEMIN ( \\
-\hspace*{4mm}/ITL/scene/cursor show 1,\\
-\hspace*{4mm}/ITL/scene/sync cursor '\$1' syncFrame,\\
-\hspace*{4mm}/ITL/scene/cursor watch timeLeave \\
+\tab/ITL/scene/cursor show 1,\\
+\tab/ITL/scene/sync cursor '\$1' syncFrame,\\
+\tab/ITL/scene/cursor watch timeLeave \\
 \hspace*{30mm}0 '\$3' \$stop\_c,\\
-\hspace*{4mm}/ITL/scene/cursor date 0,\\
-\hspace*{4mm}/ITL/scene/cursor tempo '\$2'\\
+\tab/ITL/scene/cursor date 0,\\
+\tab/ITL/scene/cursor tempo '\$2'\\
 ); \\
 \\
 stop\_c = ( \\
-\hspace*{4mm}/ITL/scene/cursor show 0,\\
-\hspace*{4mm}/ITL/scene/cursor tempo 0, \\
-\hspace*{4mm}/ITL/scene/cursor watch,  \\
-\hspace*{4mm}\# remove the synchronization \\
-\hspace*{4mm}/ITL/scene/sync cursor \\
+\tab/ITL/scene/cursor show 0,\\
+\tab/ITL/scene/cursor tempo 0, \\
+\tab/ITL/scene/cursor watch,  \\
+\tab\# remove the synchronization \\
+\tab/ITL/scene/sync cursor \\
 );
 }
    \caption{Définition de l'événement \OSC{P5} qui active le chemin représenté par l'objet \OSC{a3}.}
