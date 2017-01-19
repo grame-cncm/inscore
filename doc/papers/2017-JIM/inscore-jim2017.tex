@@ -68,7 +68,7 @@
 %
 \begin{abstract}
 INScore est un environnement pour la conception de partition interactives augmentées, tourné vers des usages non conventionnels de la notation musicale. Dans cet environnement, bien que tous les objets de la partition aient une dimension temporelle, le temps reste statique i.e. que la date (ou la durée) d'un objet ne change pas, sauf à réception d'un message qui ne peut être produit que de manière externe ou événementielle. INScore n'inclut donc pas de gestionnaire du temps au sens classique du terme. 
-A l'origine, ce choix a été dicté par le fait que le système fut conçu pour des usages couplés avec des logiciels de production sonore (e.g. Max-MSP, Pure Data), qui ont des contraintes de temps-réel plus strictes que l'environnement graphique d'INScore.
+A l'origine, ce choix a été dicté par le fait que le système fut conçu pour des usages couplés avec des logiciels de production sonore (e.g. Max/MSP, Pure Data), qui ont des contraintes de temps-réel plus strictes que l'environnement graphique d'INScore.
 Toutefois, la nécessité d'introduire un temps dynamique a progressivement émergé, conduisant à un modèle original, à la fois \emph{événementiel} et continu. C'est ce modèle qui est présenté et ses propriétés dans l'environnement d'INScore.
 \end{abstract}
 
@@ -76,13 +76,15 @@ Toutefois, la nécessité d'introduire un temps dynamique a progressivement éme
 \section{Introduction}\label{sec:introduction}
 
 Les manipulations du temps dans les environnements pour la composition musicale peuvent s'exprimer de manière très différentes.
-Dans Open Music \cite{bresson08}, il y a 3 principaux types d'expression du temps: le temps musical (i.e. le temps de la notation symbolique, relatif à un tempo), le temps proportionnel (exprimé en millisecondes) et le temps continu (définit par des fonctions mathématiques). 
+
+Dans Open Music, il y a 3 principaux types d'expression du temps: "le temps musical (i.e. le temps de la notation symbolique, relatif à un tempo), le temps proportionnel (exprimé en millisecondes) et le temps continu (défini par des fonctions mathématiques)"~\cite{bresson08}. 
+
 Dans d'autres environnements comme Antescofo \cite{acont08} ou iScore \cite{AllombertDA08}, le temps est également \textit{événementiel} i.e. peut se décrire en terme de relations de Allen \cite{Allen:1983:MKT:182.358434}, ce qui permet d'introduire des aspects réactifs dans les oeuvres. 
 Bien que plus récement, ces aspects réactifs ont été également introduits dans Open Music \cite{bresson:hal-00965747}, témoignant de leur importance dans les approches compositionnelles contemporaines.
 
-Le temps dans INScore \cite{Fober:12a} est statique : tous les objets possèdent une date et une durée exprimée en temps musical. Cette dimension temporelle commune des objets d'une partition  permet de représenter leurs relations temporelles dans l'espace graphique \cite{fober:10b}. Ce temps est dit statique parce que les attributs temporel d'un objet ne peuvent être modifiés qu'avec l'émission de messages OSC.
+Le temps dans INScore \cite{Fober:12a} est statique : tous les objets possèdent une date et une durée exprimée en temps musical. Cette dimension temporelle commune des objets d'une partition  permet de représenter leurs relations temporelles dans l'espace graphique \cite{fober:10b}. Ce temps est dit statique parce que les attributs temporel d'un objet ne peuvent être modifiés qu'à la réception de messages OSC, nécessairement émis depuis une application externe.
 
-Ce choix initial d'un temps statique a été dicté par une conception orientée vers des usages couplés avec des logiciels de production sonore (e.g. Max-MSP, Pure Data), qui ont des contraintes de temps-réel strictes et de ce fait, offrent des mécanismes de gestion du temps efficaces et précis. Néanmoins, les aspects réactifs ont été rapidement pris en compte avec l'introduction d'\textit{événements} qui permettent d'interagir avec la partition \cite{fober13a}. Initialement, la typologie de ces événements inclus des interactions classiques de type "interface utilisateur" (e.g. interactions avec la souris), et introduit des événements le domaine temporel avec notamment la \textit{surveillance} d'intervalles temporels. Ce mécanisme d'\textit{événements} a ouvert la voie à une approche originale de la programmation de partitions en offrant à l'utilisateur, la possibilité de placer des messages - et donc des interactions - dans l'espace temporel. Il n'en demeurait pas moins que le temps étant toujours statique, l'usage d'une application externe restait nécessaire pour l'actionner.
+Ce choix initial d'un temps statique a été dicté par une conception orientée vers des usages couplés avec des logiciels de production sonore (e.g. Max/MSP, Pure Data), qui ont des contraintes de temps-réel strictes et de ce fait, offrent des mécanismes de gestion du temps efficaces et précis. Néanmoins, les aspects réactifs ont été rapidement pris en compte avec l'introduction d'\textit{événements} qui permettent d'interagir avec la partition \cite{fober13a}. Initialement, la typologie de ces événements inclus des interactions classiques de type "interface utilisateur" (e.g. interactions avec la souris), et introduit des événements dans le domaine temporel avec notamment la \textit{surveillance} d'intervalles temporels. Ce mécanisme d'\textit{événements} a ouvert la voie à une approche originale de la programmation de partitions en offrant à l'utilisateur, la possibilité de placer des messages - et donc des interactions - dans l'espace temporel. Il n'en demeurait pas moins que le temps étant toujours statique, l'usage d'une application externe restait nécessaire pour l'actionner.
 
 La nécessité d'un temps \emph{dynamique} a de ce fait émergé. Elle a été résolue de manière simple, avec l'introduction d'un attribut supplémentaire aux objets d'une partition : le \emph{tempo}. Ce simple ajout a néanmoins un impact important sur la conception du temps dans INScore et sur les aspects dynamiques des partitions. Nous présenterons tout d'abord le modèle du temps musical, qui est contrôlé par le tempo. Nous verrons ensuite comment ce temps se combine avec le temps événementiel, et permet de programmer des partitions dynamiques \emph{autonomes}. Nous montrerons enfin quelques cas d'utilisation avant de conclure et de donner quelques perspectives pour l'extension des dimensions temporelles des objets de la partition.
 
@@ -90,10 +92,10 @@ La nécessité d'un temps \emph{dynamique} a de ce fait émergé. Elle a été r
 %==============================================================
 \section{Le modèle du temps musical}\label{mustime}
 
-Du point de vue utilisateur et pour un objet donné, le temps est actif quand son attribut tempo est non null : une valeur non nulle du tempo a pour effet de déplacer l'objet dans le temps musical, en fonction de son tempo et de l'écoulement du temps absolu. \\
+Du point de vue utilisateur et pour un objet donné, le temps est actif quand son attribut tempo est non nul : une valeur non nulle du tempo a pour effet de déplacer l'objet dans le temps musical, en fonction de son tempo et de l'écoulement du temps absolu. \\
 Nous parlerons de \emph{date} pour faire référence au temps musical d'un objet, et de \emph{moment} pour faire référence à un point dans l'écoulement du temps absolu. \\
 
-Soit $t_0$, le moment d'activation du temps d'un objet et $v$ la valeur de son tempo, la date $d_t$ de l'objet à un instant $t$ est une fonction $f$ du temps telle que :
+Soit $t_0$, le moment d'activation du temps d'un objet et $v$ la valeur de son tempo, la date $d_t$ de l'objet à un instant $t$ est donnée par une fonction du temps $f$ telle que :
 \begin{equation}
 %\[
 	 f(t) \to d_t = d_t{_0} + (t - t_0) \times v \times k , \quad t \geqq t_0
@@ -102,13 +104,12 @@ Soit $t_0$, le moment d'activation du temps d'un objet et $v$ la valeur de son t
 \end{equation}
 où $d_i$ est la date de l'objet au moment $t_i$ et $k$ une constante permettant de convertir le temps absolu en temps musical. Dans la pratique, le temps absolu est exprimé en millisecondes et l'unité de temps musical est la ronde. De ce fait, la valeur de la constante $k$ est $1 / 1000 \times 60 \times 4$.
 
-La valeur du tempo est signée, ce qui signifie qu'un objet peut se déplacer dans tous les sens du temps (en avant ou en arrière).
-Par ailleurs, chaque objet de la partition a un tempo indépendant.
+Chaque objet de la partition a un tempo indépendant. La valeur du tempo est signée, ce qui signifie qu'un objet peut se déplacer dans tous les sens du temps (en avant ou en arrière). Il y a peu d'environnement permettent d'exprimer ce renversement du temps de manière simple et naturelle, de ce point de vue on peut citer IanniX \cite{iannix14}, un séquenceur graphique inspiré des travaux de Iannis Xenakis et que l'on peut voir comme un système d'écriture du temps.
 
 %=======================================
 \subsection{Implémentation}
 
-Dans INScore, la granularité du temps est celle de l'affichage. Dans la pratique, comme les effets du temps ne sont visibles que dans l'espace graphique, nous considérons qu'il n'est pas nécessaire d'adopter une granularité plus fine. 
+Dans INScore, la granularité du temps est celle de l'affichage : le système fonctionne de manière asynchrone et une tâche du temps périodique traite les messages entrants et calcule le rendu graphique. Dans la pratique, comme les effets du temps ne sont visibles que dans l'espace graphique, nous considérons qu'il n'est pas nécessaire d'adopter une granularité plus fine. 
 
 Par ailleurs, la fréquence de la tâche du temps peut être variable : 
 \begin{itemize}
@@ -172,7 +173,7 @@ Cette typologie a été largement étendue pour inclure :
 \end{itemize}
 \vspace*{1mm}
 Tout événement peut être arbitrairement déclenché avec l'émission d'un message \OSC{event} suivi de ses paramètres. Conceptuellement, ce message \OSC{event} est équivalent à l'appel d'une fonction paramétrée, et génère des messages OSC en sortie. 
-Cette logique est particulièrement consistante pour les événements utilisateurs, qui peuvent prendre un nombre variable de paramètres, ceux-ci étant ensuite accessibles dans les messages associés sous la forme de variables nommées $\$1...\$n$. La figure \ref{fig:uevent} présente un ex-emple d'événement utiilisateur à 2 arguments.
+Cette logique est particulièrement consistante pour les événements utilisateurs, qui peuvent prendre un nombre variable de paramètres, ceux-ci étant ensuite accessibles dans les messages associés sous la forme de variables nommées $\$1...\$n$. La figure \ref{fig:uevent} présente un ex-emple d'événement utilisateur à 2 arguments.
 
 \begin{figure}[h]
    \centering
@@ -201,7 +202,7 @@ La dimension temporelle de cette logique \emph{événementielle} permet de place
 %==============================================================
 \subsection{Implémentation}
 
-Chaque objet de la partition gère des relations entre un ensemble d'événements $\mathbb{E}$ et un ensemble de listes de messages $\mathbb{M}$. L'ensemble des événements $\mathbb{E}_o$ d'un objet $o$ est un ensemble polymorphe définit comme : 
+Chaque objet de la partition gère des relations entre un ensemble d'événements $\mathbb{E}$ et un ensemble de listes de messages $\mathbb{M}$. L'ensemble des événements $\mathbb{E}_o$ d'un objet $o$ est un ensemble polymorphe défini comme : 
 \[
 	\mathbb{E}_o = \mathbb{A}_o \cup \mathbb{U}_o \cup \mathbb{T}_o \cup \mathbb{T'}_o \cup \mathbb{K}  
 \] 
@@ -222,9 +223,9 @@ Les messages de $m$ sont alors envoyés.
 
 Le calcul d'un événement $e$ est dépendant du type de l'événement:
 \begin{itemize}
-\item[-] pour un message $x$ addressé à un objet $o$, un événement sera émit si $x \in \mathbb{A}_o$, 
-\item[-] pour un message \OSC{event x} addressé à un objet $o$, un événement sera émit si $x \in \mathbb{U}_o$,
-\item[-] pour un message \OSC{date x} addressé à un objet $o$ qui porte la date $d$, un événement sera émit si :\\ 
+\item[-] pour un message $x$ adressé à un objet $o$, un événement sera émis si $x \in \mathbb{A}_o$, 
+\item[-] pour un message \OSC{event x} adressé à un objet $o$, un événement sera émis si $x \in \mathbb{U}_o \cup \mathbb{A}_o \cup  \mathbb{K}$,
+\item[-] pour un message \OSC{date x} addressé à un objet $o$ qui porte la date $d$, un événement sera émis si :\\ 
 \hspace*{3.5mm} $\exists i \in \mathbb{T}_o\ \ |\ (x \in i\ \land\ d \not\in i)$ \\
 ou $\exists i \in \mathbb{T'}_o\ |\ (x \not \in i\ \land\ d \in i)$,
 \item[-] les événements de $\mathbb{K}$ sont calculés par le système hôte.
@@ -249,7 +250,7 @@ La combinaison du temps musical et événementiel permet de concevoir des partit
 	\tab( /ITL/scene/o3 event STOP, \\
 	\tab \tab/ITL/scene/o1 event START );
 }
-   \caption{Activation mutuelle de 3 objets \OSC{o1, o2, o3} selon un schéma temporel prédéfinit.}
+   \caption{Activation mutuelle de 3 objets \OSC{o1, o2, o3} selon un schéma temporel prédéfini.}
    \label{fig:ex1}
 \end{figure}
 
@@ -285,17 +286,9 @@ Les événements \OSC{START} et \OSC{STOP} activent et désactivent respectiveme
 %==============================================================
 \subsection{Jeu est un autre}
 
-\emph{Jeu est un autre} est une pièce pédagogique pour ordinateur et effectif variable de Vincent Carinola, où Max/Msp est mis en oeuvre pour calculer des processus sonores et activer une partition dynamique à l'intention des instrumentistes. 
+\emph{Jeu est un autre} est une pièce pédagogique pour ordinateur et effectif variable de Vincent Carinola, où Max/MSP est mis en oeuvre pour calculer des processus sonores et activer une partition dynamique à l'intention des instrumentistes. 
 
 La partition (figure \ref{fig:sample}) comprend un ensemble de figures munies de labels (sculpture, zébrure, allure, texture, tournure), reliées par des chemins. A chaque figure (que nous appelerons \emph{stations}) est associée un mode de jeu instrumental ainsi des processus sonores spécifiques, basés sur des matériaux préparés par les élèves. Par exemple, le chemin \emph{murmure} indique que \emph{le passage d'une figure à une autre se fait en traversant un chemin habité par des murmures. Il faut ici trouver, dans le jeu instrumental et vocal, ce qui s'apparenterait le plus à une histoire que l'on raconterait très doucement, en chuchotant.}\footnote{extrait des instructions données avec la partition.}.
-
-%\begin{figure}[ht]
-%%   \centering
-%%   \includegraphics[width=0.8\textwidth]{imgs/jeu}
-%   \includegraphics[width=1.0\columnwidth]{imgs/jeu}
-%   \caption{Partition de \emph{"Jeu est un autre"} annotée (en rouge) avec les chemins et les stations possibles. Ces annotations sont implémentées comme des événements utilisateur d'INScore, elles ne figurent pas sur la partition de l'instrumentiste.}
-%   \label{fig:sample}
-%\end{figure}
 
 Dans cette pièce, l'ordinateur joue en quelque sorte le rôle de chef d'orchestre : il calcule des séquences sonores basées sur les matériaux pré-enregistrés et active des chemins ou des stations pour des durées variables, calculées dynamiquement. Les chemins et stations possibles sont indiqués sur la figure \ref{fig:sample} par les labels P1 à P13. 
 
@@ -303,7 +296,7 @@ Les aspects dynamiques de la partition sont définis avec des événements utili
 \tab \tab \OSC{/ITL/scene Px d} \\
 où \OSC{Px} est le nom de l'événement (\OSC{P1...P13})\\
  et \OSC{d} la durée correspondante. \\
-C'est donc une approche de haut niveau qui, du côté de Max/Msp, permet de \emph{conduire} la partition en temps réel.
+C'est donc une approche de haut niveau qui, du côté de Max/MSP, permet de \emph{conduire} la partition en temps réel.
 
 \vspace{2mm}
 Visuellement, la partition rend compte de ces événements dans l'espace graphique de deux manières :
@@ -312,9 +305,9 @@ Visuellement, la partition rend compte de ces événements dans l'espace graphiq
 \item pour les chemins (événements \OSC{P5...P12}): en déplaçant un curseur le long du chemin, dans le sens correspondant.
 \end{itemize}
 
-Schématiquement, l'implémentation de ces événements repose sur un objet nommé \OSC{cursor} qui se déplace dans le temps à un tempo fixe, dépendant de l'unité de temps adoptée par Max/Msp. 
+Schématiquement, l'implémentation de ces événements repose sur un objet nommé \OSC{cursor} qui se déplace dans le temps à un tempo fixe, dépendant de l'unité de temps adoptée par Max/MSP. 
 
-Pour les stations, elle consiste à changer le canal alpha de la figure correspondant, à activer le temps du curseur et à instancier un événement pour la fin de la durée calculée par Max/Msp (figure \ref{fig:station}). 
+Pour les stations, elle consiste à changer le canal alpha de la figure correspondant, à activer le temps du curseur et à instancier un événement pour la fin de la durée calculée par Max/MSP (figure \ref{fig:station}). 
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene watch P1 ( \\
@@ -339,7 +332,7 @@ stop\_s = ( \\
 \tab/ITL/scene/g* alpha \$alpha \\
 );
 }
-   \caption{Définition de l'événement \OSC{P1} qui active la station représentée par l'objet \OSC{g1}.}
+   \caption{Définition de l'événement \OSC{P1} qui active la station représentée par l'objet \OSC{g1}. A noter : l'utilisation de la variable \OSC{stop\_s}, qui est évaluée par le parser, et qui permet de partager le comportement d'arrêt entre plusieurs événements. Les variables \OSC{tempo} et \OSC{alpha} sont définies de manière globale.}
    \label{fig:station}
 \end{figure}
 

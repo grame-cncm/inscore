@@ -1,8 +1,9 @@
 
 /ITL/scene/* del;
 
-/ITL/scene/score set gmn '[ g/2 g f f a a g g ]' ;
-/ITL/scene/score scale 0.6;
+unit = 4;
+/ITL/scene/score set gmn '[ g g f f a a e e ]' ;
+/ITL/scene/score scale ($unit == 2 ? 0.6 : 0.7);
 
 w = 0.07;
 /ITL/scene/cursor set ellipse $w $w;
@@ -11,14 +12,17 @@ w = 0.07;
 /ITL/scene/sync cursor score syncTop;
 /ITL/scene/cursor dy -0.1;
 
-/ITL/scene/cursor watch timeEnter 1 2 2 2 ( /ITL/scene/cursor show 0);
-/ITL/scene/cursor watch timeLeave 1 2 2 2 ( /ITL/scene/cursor show 1);
-/ITL/scene/cursor watch timeEnter 3 2 4 2 ( /ITL/scene/cursor show 0);
-/ITL/scene/cursor watch timeLeave 3 2 4 2 ( /ITL/scene/cursor show 1);
-/ITL/scene/cursor watch timeEnter 5 2 6 2 ( /ITL/scene/cursor show 0);
-/ITL/scene/cursor watch timeLeave 5 2 6 2 ( /ITL/scene/cursor show 1);
-/ITL/scene/cursor watch timeEnter 7 2 8 2 ( /ITL/scene/cursor show 0);
-/ITL/scene/cursor watch timeLeave 7 2 8 2 ( /ITL/scene/ctrl event mouseDown 0 0);
+odd = 0;
+even = ($odd ? 0 : 1);
+/ITL/scene/cursor watch timeEnter 0 $unit 1 $unit ( /ITL/scene/cursor show $even);
+/ITL/scene/cursor watch timeEnter 1 $unit 2 $unit ( /ITL/scene/cursor show $odd);
+/ITL/scene/cursor watch timeLeave 1 $unit 2 $unit ( /ITL/scene/cursor show $even);
+/ITL/scene/cursor watch timeEnter 3 $unit 4 $unit ( /ITL/scene/cursor show $odd);
+/ITL/scene/cursor watch timeLeave 3 $unit 4 $unit ( /ITL/scene/cursor show $even);
+/ITL/scene/cursor watch timeEnter 5 $unit 6 $unit ( /ITL/scene/cursor show $odd);
+/ITL/scene/cursor watch timeLeave 5 $unit 6 $unit ( /ITL/scene/cursor show $even);
+/ITL/scene/cursor watch timeEnter 7 $unit 8 $unit ( /ITL/scene/cursor show $odd);
+/ITL/scene/cursor watch timeLeave 7 $unit 8 $unit ( /ITL/scene/cursor date 0 );
 
 /ITL/scene/ctrl set txt "Start";
 /ITL/scene/ctrl fontSize 32;
