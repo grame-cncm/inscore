@@ -132,9 +132,8 @@ The system provides a set of messages for the graphic space control (\OSC{x, y, 
 \end{center}
 \end{figure}
 
-The address space is dynamic and not limited in depth. It is hierarchically organised, the first level \OSC{/ITL} is used to address the application, the second one 
-%\OSC{/ITL/\textit{scene}} 
-\OSC{/ITL/scene} 
+The address space is dynamic and not limited in depth. It is hierarchically organized, the first level \OSC{/ITL} is used to address the application, the second one 
+\OSC{/ITL/\textit{scene}} 
 to address the score and the next ones to address the components of a score (note that \textit{scene} is a default name that can be user defined). Arbitrary hierarchy of objects is supported.
 
 %------------------------------------------------------
@@ -196,7 +195,7 @@ localhost:8000/start;
 /ITL/scene/javascript run \\
 \tab \tab \tab \tab 'randpos("/ITL/scene/obj")'; 
 }
-\caption{The JavaScript section defines a \OSC{randpos} function that computes an \OSC{x} message with a random value, addressed to the object given as parameter. This function may be next called at initialisation or at any time using the static JavaScript node embedded into each score.}
+\caption{The JavaScript section defines a \OSC{randpos} function that computes an \OSC{x} message with a random value, addressed to the object given as parameter. This function may be next called at initialization or at any time using the static JavaScript node embedded into each score.}
 \label{fig:java}
 \end{center}
 \end{figure}
@@ -400,7 +399,7 @@ The filtering strategy is based on OSC adresses and/or on INScore methods (i.e. 
 %----------------------------------
 \section{The \emph{sensor} objects}
 
-INScore runs on the major operating systems including Android and iOS. Tablet and smartphone support have led to integrate gestural interaction with a set of sensor (Table \ref{tab:sensors}). 
+INScore runs on the major operating systems including Android and iOS. Tablet and smartphone support have led to integrate gestural interaction with a set of sensor (Table \ref{tabsensors}). 
 
 Sensors can be viewed as objects or as signals. When created as a signal node, a sensor behaves like any signal but may provide some additional features (like calibration). When created as a score element, a sensor has no graphical appearance but provides specific sensor events and features.
 
@@ -423,8 +422,8 @@ tilt			& x, y \\
 \hline
 \end{tabular}
 \end{center}
-\label{tab:sensors}
 \caption{The set of sensors and associated values}
+\label{tabsensors}
 \end{table}
 
 All the sensors won't likely be available on a given device. In case a sensor is not supported, an error message is generated at creation request and the creation process fails.
@@ -572,10 +571,10 @@ Combined with the dynamic musical time, this events system allows to describe au
 INScore\footnote{\url{http://inscore.sf.net})} is an ongoing open source project 
 that crystallizes a significant amount of research addressing the problematics of the music notation and representation in regard of the contemporary music creation. It is used in artistic projects and many of the concrete experiences raised new issues that are reflected into some of the system extensions. The domain is quite recent and there is still a lot of opened questions that we plan to address in future work and in particular: 
 \begin{itemize}
-\item turning the scripting language into a \emph{real} programming language would provide a more powerful approach to music score description. The embedded JavaScript engine may already be used for an algorithmic description of a score, but switching from one environment (INScore script) to another one (JavaScript) prooved to be a bit tedious.
+\item turning the scripting language into a \emph{real} programming language would provide a more powerful approach to music score description. The embedded JavaScript engine may already be used for an algorithmic description of a score, but switching from one environment (INScore script) to another one (JavaScript) proved to be a bit tedious.
 \item extending the score components to give a time dimension to any of their attributes could open a set of new possibilities, including arbitrary representations of the passage of time.
 \end{itemize}
-Finally, migrating the INScore native environment to the Web is part of the current plans and should also open new perspectives, notably due to the naturel connectivity of Web applications.
+Finally, migrating the INScore native environment to the Web is part of the current plans and should also open new perspectives, notably due to the intrinsic connectivity of Web applications.
 
 
 \balance
