@@ -10,11 +10,17 @@
 \usepackage{amssymb,amsmath} 
 \usepackage{verbatim}
 \usepackage{color}
+%\usepackage[small,labelfont=bf, indention=1cm]{caption}
+\usepackage[small,labelfont=bf,hang,indention=-1cm,justification=raggedright]{caption}
 
 \sloppy
 \newenvironment{contentsmall}{\small}
 
 \definecolor{mygrey}{gray}{0.95}
+\definecolor{captiongrey}{gray}{0.3}
+\definecolor{labelcolor}{rgb}{0.5, 0.2, 0.2}
+
+\captionsetup{labelfont={color=labelcolor,bf},textfont={color=captiongrey}} 
 
 \newcommand{\OSC}[1]	{{\fontsize{10pt}{10pt} \selectfont\texttt{#1}}}
 \newcommand{\tab}		{\hspace*{4mm}}
@@ -30,7 +36,7 @@
 \author
 {Dominique Fober \and Yann Orlarey \and Stéphane Letz
 \\ GRAME - Centre national de création musicale 
-\\ 11 cous de Verdun Gensoul
+\\ 11 cours de Verdun Gensoul
 \\ 69002 Lyon
 \\ France, 
 \\ \{fober, orlarey, letz\}@grame.fr 
@@ -44,7 +50,7 @@
 
 \begin{abstract}
 \begin{contentsmall}
-INScore is an environment for the design of augmented interactive music scores opened to conventional and non-conventional use of the music notation. The system has been presented at LAC 2012 and has significantly evolved since, with improvements turned to dynamic and animated notation. This paper presents the latest features and notably the dynamic time model, the events system, the scripting language, the symbolic scores composition engine, the network and web extensions, the interaction processes representation system and the set of sensor objects.
+INScore is an environment for the design of augmented interactive music scores opened to conventional and non-conventional use of the music notation. The system has been presented at LAC 2012 and has significantly evolved since, with improvements turned to dynamic and animated notation. This paper presents the latest features and notably the dynamic time model, the events system, the scripting language, the symbolic scores composition engine, the network and Web extensions, the interaction processes representation system and the set of sensor objects.
 \end{contentsmall}
 \end{abstract}
 
@@ -57,26 +63,26 @@ INScore, music score, dynamic score, interaction.
 %------------------------------------------------------
 \section{Introduction}
 
-Contemporary music creation poses numerous challenges to the music notation. Spatialised music, new instruments, gesture based interactions, real-time and interactive scores, are among the new domains that are now commonly explored by the artists. 
+Contemporary music creation poses numerous challenges to the music notation. Spatialized music, new instruments, gesture based interactions, real-time and interactive scores, are among the new domains that are now commonly explored by the artists. 
 Common music notation doesn't cover the needs of these new musical forms and numerous research and approaches have recently emerged, testifying to the maturity of the music notation domain, in the light of computer tools for music notation and representation.
-Issues like writing spatialised music \cite{Ellberger_tenor2015}, addressing new instruments \cite{tmays:2014} or new interfaces \cite{kschlei:2015} (to cite just a few), are now subject of active research and proposals.
+Issues like writing spatialized music \cite{Ellberger_tenor2015}, addressing new instruments \cite{tmays:2014} or new interfaces \cite{kschlei:2015} (to cite just a few), are now subject of active research and proposals.
 
 Interactive music and real-time scores are also representative of an expanding domain in the music creation field. The advent of the digital score and the maturation of the computer tools for music notation and representation constitute the basement for the development of this musical form, which is often grounded on non-traditional music representation \cite{RSmith_tenor2015} \cite{Hope_tenor2015} but may also use the common music notation \cite{Hoadley12,hoadley14}. 
 
-In order to address the notation challenges mentioned above, INScore has been designed as an environment opened to non-conventional music representation (although it supports symbolic notation), and turned to real-time and interactive use \cite{Fober:13b}. It is clearly focused on music representation only and in this way, differs from tools integrated into programming environments like Bach \cite{agostini12b} or MaxScore \cite{didko08}. 
+In order to address the notation challenges mentioned above, INScore \cite{Fober:10c} has been designed as an environment opened to non-conventional music representation (although it supports symbolic notation), and turned to real-time and interactive use \cite{Fober:13b}. It is clearly focused on music representation only and in this way, differs from tools integrated into programming environments like Bach \cite{agostini12b} or MaxScore \cite{didko08}. 
 
-INScore has been already presented at LAC 2012 \cite{Fober:12a}. It has significantly evolved since and this paper introduces the set of issues that have been more recently addressed. After a brief recall of the system and of the programming environment, we'll present the scripting language extensions and the symbolic scores composition engine that provides high level operations to describe real-time and interactive symbolic scores composition. Next we'll describe how interaction processes representations can be integrated into the music score and how remote access is supported using the network and/or web extensions. Tablet and smartphone support have led to integrate gestural interaction with a set of \emph{sensor} objects that will be presented. Finally, the time model, recently extended, will be described.
+INScore has been already presented at LAC 2012 \cite{Fober:12a}. It has significantly evolved since and this paper introduces the set of issues that have been more recently addressed. After a brief recall of the system and of the programming environment, we'll present the scripting language extensions and the symbolic scores composition engine that provides high level operations to describe real-time and interactive symbolic scores composition. Next we'll describe how interaction processes representations can be integrated into the music score and how remote access is supported using the network and/or Web extensions. Tablet and smartphone support have led to integrate gestural interaction with a set of \emph{sensor} objects that will be presented. Finally, the time model, recently extended, will be described.
 
 
 %------------------------------------------------------
 \section{The INScore environment}
 INScore is an environment to design interactive augmented music scores. It extends the music representation to arbitrary graphic objects (symbolic notation but also images, text, vectorial graphics, video, signals representation) and provides an homogeneous approach to manipulate the score components both in the graphic and time spaces. 
 
-It supports \emph{time synchronisation in the graphic space}, which refers to the graphic representation of the temporal relations between components of a score - via a synchronisation mechanism and using \emph{mappings} that express relations between time and graphic space segmentations (Fig. \ref{fig:sync}).
+It supports \emph{time synchronization in the graphic space}, which refers to the graphic representation of the temporal relations between components of a score - via a synchronization mechanism and using \emph{mappings} that express relations between time and graphic space segmentations (Fig. \ref{fig:sync}).
 \begin{figure}[ht]
 \begin{center}
 	\includegraphics[width=1.\columnwidth]{imgs/syncAB}
-\caption{A graphic score (Mark Applebaum's graphic score \emph{Metaphysics of Notation}, on the bottom) is synchronized to a symbolic score (below the score). The vertical lines express the graphic to graphic relationship, that have been computed by composing the objects common relations with the time space.}
+\caption{A graphic score (Mark Applebaum's graphic score \emph{Metaphysics of Notation}) is synchronized to a symbolic score. The picture in the middle is the result of the synchronization. The vertical lines express the graphic to graphic relationship, that have been computed by composing the objects common relations with the time space.}
 \label{fig:sync}
 \end{center}
 \end{figure}
@@ -93,7 +99,7 @@ INScore has been primarily designed to be controlled via OSC\footnote{\url{http:
 Compared to object oriented programming, the address may be viewed as an object pointer, the message string as a method name and the parameters as the method parameters. For example, the message:\\
 \tab \OSC{/ITL/scene/score color 255 128 40 150} \\
 may be viewed as the following method call: \\
-\tab \OSC{score->color(255 128 40 150)}
+\tab \OSC{ITL[scene[score]]->color(255 128 40 150)}
 
 The system provides a set of messages for the graphic space control (\OSC{x, y, color, space,} etc.), for the time space control (\OSC{date, duration,} etc.), and to manage the environment. It includes two special messages:
 \begin{itemize}
@@ -126,16 +132,19 @@ The system provides a set of messages for the graphic space control (\OSC{x, y, 
 \end{center}
 \end{figure}
 
-The address space is dynamic and not limited in depth. It is hierarchically organised, the first level \OSC{/ITL} is used to address the application, the second one \OSC{/ITL/\textit{scene}} to address the score and the next ones to address the components of a score (note that \textit{scene} is a default name that can be user defined). Arbitrary hierarchy of objects is supported.
+The address space is dynamic and not limited in depth. It is hierarchically organised, the first level \OSC{/ITL} is used to address the application, the second one 
+%\OSC{/ITL/\textit{scene}} 
+\OSC{/ITL/scene} 
+to address the score and the next ones to address the components of a score (note that \textit{scene} is a default name that can be user defined). Arbitrary hierarchy of objects is supported.
 
 %------------------------------------------------------
 \section{The scripting language}
 The OSC messages described above have been turned into a textual version to constitue the INScore scripting language. This language has been rapidly extended to support :
 \begin{itemize}
 \item variables, that may be used to share parameters between messages (Fig. \ref{fig:var}).
-\item message based variables and/or parameters thats consists in querying an object to retrieve one of it's attributes value (Fig. \ref{fig:msgvar}).
+\item message based variables and/or parameters that consists in querying an object to retrieve one of it's attributes value (Fig. \ref{fig:msgvar}).
 \item an extended OSC addressing scheme that allows to send OSC messages to an external application for initialization of control purposes (Fig. \ref{fig:eosc}).
-\item javascript sections that can be evaluated at parsing and/or run time. A javascript call is expected to produce INScore messages as output (Fig. \ref{fig:java}).
+\item JavaScript sections that can be evaluated at parsing and/or run time. A JavaScript call is expected to produce INScore messages as output (Fig. \ref{fig:java}).
 \item mathematical expressions (\OSC{+ - / *, conditionals}, etc.) that can be used for arguments computation (Fig. \ref{fig:math}).
 \item symbolic scores composition expressions that are described in section \ref{sec:scorecompo}. 
 \end{itemize}
@@ -187,7 +196,7 @@ localhost:8000/start;
 /ITL/scene/javascript run \\
 \tab \tab \tab \tab 'randpos("/ITL/scene/obj")'; 
 }
-\caption{The javascript section defines a \OSC{randpos} function that computes an \OSC{x} message with a random value, addressed to the object given as parameter. This function may be next called at initialisation or at any time using the static javascript node embedded into each score.}
+\caption{The JavaScript section defines a \OSC{randpos} function that computes an \OSC{x} message with a random value, addressed to the object given as parameter. This function may be next called at initialisation or at any time using the static JavaScript node embedded into each score.}
 \label{fig:java}
 \end{center}
 \end{figure}
@@ -209,7 +218,7 @@ localhost:8000/start;
 
 Rendering of symbolic music notation makes use of the Guido engine \cite{Dau:09b}. Thus the primary music score description format is the Guido Music Notation format \cite{hoos98} [GMN]. The MusicXML format \cite{good01} is also supported via conversion to the GMN format. 
 
-The Guido engine provide a set of operators for scores level composition \cite{fober12b}. These operators take consistently 2 scores as argument to produce a new score as output. They allow to put scores in sequence \OSC{(seq)}, in parallel \OSC{(par)}, to cut a score in the time dimension \OSC{(head, tail)}, in the polyphonic dimension \OSC{(top, bottom)}, to transpose \OSC{(transpose)}, to stretch \OSC{(duration)} a score and to apply the rhythm or the pitch of a score to another one \OSC{(rhythm, pitch)}.
+The Guido engine provides a set of operators for scores level composition \cite{fober12b}. These operators consistently take 2 scores as argument to produce a new score as output. They allow to put scores in sequence \OSC{(seq)}, in parallel \OSC{(par)}, to cut a score in the time dimension \OSC{(head, tail)}, in the polyphonic dimension \OSC{(top, bottom)}, to transpose \OSC{(transpose)}, to stretch \OSC{(duration)} a score and to apply the rhythm or the pitch of a score to another one \OSC{(rhythm, pitch)}.
 
 The INScore scripting language includes \emph{score expressions}, a simple language providing score composition operations. 
 The novelty of the proposed approach relies on the dynamic aspects of the operations, as well as on the persistence of the score expressions. A score may be composed as an arbitrary graph of score expressions and equipped with a fine control over the changes propagation.
@@ -323,7 +332,7 @@ When using a relative path, an absolute path is built using the current path of 
 \end{center}
 \end{figure}
 
-The current rootpath can be also be set to an arbitrary HTTP url, so that further use of a relative path will result in an url (Fig. \ref{fig:rooturl}).
+The current rootpath can also be set to an arbitrary HTTP url, so that further use of a relative path will result in an url (Fig. \ref{fig:rooturl}).
 
 %--------------------------
 \begin{figure}[ht]
@@ -337,7 +346,7 @@ The current rootpath can be also be set to an arbitrary HTTP url, so that furthe
 \end{center}
 \end{figure}
 
-This mechanism allows to mix local and remote resources in the same music score, but also to express local and remote scores in a similar way, using just a \OSC{rootPath} change.
+This mechanism allows to mix local and remote resources in the same music score, but also to express local and remote scores in a similar way, just using a \OSC{rootPath} change.
 
 
 %----------------------------------------
@@ -351,14 +360,14 @@ A music score can be published on the Internet using the HTTP or the WebSocket p
 \sample{/ITL/scene/http set httpd 8000; \\
   /ITL/scene/ws set websocket 8100 200;
 }
-\caption{This example creates an httpd server listening on the port 8000 and a websocket server listening on the port 8100 with a  maximum notification rate of 200 ms.}
+\caption{This example creates an httpd server listening on the port 8000 and a WebSocket server listening on the port 8100 with a  maximum notification rate of 200 ms.}
 \label{fig:servers}
 \end{center}
 \end{figure}
 
 The WebSocket server allows bi-directional communication between the server and the client. It sends notifications of score changes each time the graphic appearance of the score is modified, provided that the notification rate is lower than the maximum rate set at server creation time. 
 
-The communication scheme between a client and an INScore web server relies on a reduced set of messages. These messages are protocol independent and are equally supported over HTTP or WebSocket :
+The communication scheme between a client and an INScore Web server relies on a reduced set of messages. These messages are protocol independent and are equally supported over HTTP or WebSocket :
 \begin{itemize}
 \item \OSC{get}: requests an image of the score.
 \item \OSC{version}: requests the current version of the score. The server answers with an integer value that is increased each time the score is modified.
@@ -382,7 +391,7 @@ The filtering strategy is based on OSC adresses and/or on INScore methods (i.e. 
 /ITL/filter reject \\
 \dtab'/ITL/scene/javascript';
 }
-\caption{The application is requested to forward all messages on INScore port (7000) to the local network using a broadcast address. Messages addressed to the javascript engine are filtered out in order to only forward the result of their evaluation.}
+\caption{The application is requested to forward all messages on INScore port (7000) to the local network using a broadcast address. Messages addressed to the JavaScript engine are filtered out in order to only forward the result of their evaluation.}
 \label{fig:forward}
 \end{center}
 \end{figure}
@@ -465,12 +474,12 @@ This design is consistent with the overall system design since it is entirely me
 \label{events}
 
 The event-driven approach of time in INScore preceded the musical time model and has been presented in \cite{Fober:13b}. 
-The event-based interaction process relies on messages that are associated to events and that are send when the corresponding event occurs. The general format of an interaction message is described in Fig. \ref{fig:watch}.
+The event-based interaction process relies on messages that are associated to events and that are sent when the corresponding event occurs. The general format of an interaction message is described in Fig. \ref{fig:watch}.
 
 \begin{figure}[ht]
 \centerline{
 	\includegraphics[width=0.95\columnwidth]{imgs/watch}}
-\caption{Format of an interaction message : the \OSC{watch} request installs a messages list associated to the event \OSC{event}.}
+\caption{Format of an interaction message: the \OSC{watch} request installs a messages list associated to the event \OSC{event}.}
 \label{fig:watch}
 \end{figure}
 
@@ -494,6 +503,7 @@ mouseMove		&				\\
 
 This typology has been significantly extended to include:
 \begin{itemize}
+\item touch events \OSC{(touchBegin, touchEnd, touchUpdate)}, available on touch screens and supporting multi-touch.
 \item any attribute of an object: modifying an object attribute may trigger the corresponding event, that carries the name of the attribute (e.g. \OSC{x, y date}, etc.). 
 \item an object specific data i.e. defined with a \OSC{set} message. The event name is \OSC{newData} and has been introduced for the purpose of the symbolic score composition system.
 \item user defined events, that have to comply to a special naming scheme.
@@ -562,7 +572,7 @@ Combined with the dynamic musical time, this events system allows to describe au
 INScore\footnote{\url{http://inscore.sf.net})} is an ongoing open source project 
 that crystallizes a significant amount of research addressing the problematics of the music notation and representation in regard of the contemporary music creation. It is used in artistic projects and many of the concrete experiences raised new issues that are reflected into some of the system extensions. The domain is quite recent and there is still a lot of opened questions that we plan to address in future work and in particular: 
 \begin{itemize}
-\item turning the scripting language into a \emph{real} programming language would provide a more powerful approach to music score description. The embedded Javascript engine may already be used for an algorithmic description of a score, but switching from one environment (INScore script) to another one (Javascript) prooved to be a bit tedious.
+\item turning the scripting language into a \emph{real} programming language would provide a more powerful approach to music score description. The embedded JavaScript engine may already be used for an algorithmic description of a score, but switching from one environment (INScore script) to another one (JavaScript) prooved to be a bit tedious.
 \item extending the score components to give a time dimension to any of their attributes could open a set of new possibilities, including arbitrary representations of the passage of time.
 \end{itemize}
 Finally, migrating the INScore native environment to the Web is part of the current plans and should also open new perspectives, notably due to the naturel connectivity of Web applications.
