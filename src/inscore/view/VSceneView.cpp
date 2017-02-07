@@ -35,6 +35,7 @@
 #include <QGestureEvent>
 #include <QPinchGesture>
 #include <QGraphicsSceneMouseEvent>
+#include <QGLWidget> 
 
 #ifdef WIN32
 #include <windows.h>
@@ -55,6 +56,7 @@
 #include "INScore.h"
 #include "WindowEventFilter.h"
 
+using namespace std;
 
 namespace inscore
 {
@@ -64,6 +66,7 @@ namespace inscore
 ZoomingGraphicsView::ZoomingGraphicsView(QGraphicsScene * s) : QGraphicsView(s), fScene(0), fScaleFactor(1),
 		fTotalScaleFactor(1), fHorizontalOffset(0), fVerticalOffset(0), fSceneRect(defaultRect), fFocus(false)
 {
+	setViewport(new QGLWidget());
 }
 
 //------------------------------------------------------------------------------------------------------------------------

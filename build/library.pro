@@ -26,7 +26,7 @@ win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets 
-QT += quick qml quickwidgets sensors
+QT += quick qml quickwidgets sensors opengl
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine

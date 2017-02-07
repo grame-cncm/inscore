@@ -179,7 +179,7 @@ class ZoomingGraphicsView : public QGraphicsView
 	IScene*	fScene;
 
 	public :
-		ZoomingGraphicsView(QGraphicsScene * s);
+				 ZoomingGraphicsView(QGraphicsScene * s);
 		virtual ~ZoomingGraphicsView() {}
 
 		void setSceneAddress(const std::string& name)	{ fSceneAddress = name; }
