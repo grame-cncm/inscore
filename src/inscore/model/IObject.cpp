@@ -1385,7 +1385,12 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 {
+#ifdef __MOBILE__
+	ITLErr<< getOSCAddress()<< "export is not supported on mobile platforms."<<ITLEndl;
+
+#else
 	return genericExport(msg, true);
+#endif
 }
 
 //--------------------------------------------------------------------------
