@@ -13,6 +13,9 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.22
+- uses OpenGl for graphics rendering (improves significantly the cpu for graphics operations)
+- fix potential issue with dates: dates expressed with big values for the numerator or the 
+  denominator may result in overflow
 
 ----------------------------------------------------
 Version 1.21 - 2017-01-12
