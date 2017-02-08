@@ -62,7 +62,7 @@ class IDate : public TimeEventAble
 	
 	public:	
 		/// \brief returns the object date
-		virtual libmapping::rational getDate () const			{ return fDate; }
+		virtual libmapping::rational getDate () const;
 		/// \brief returns the object duration
 		virtual libmapping::rational getDuration () const		{ return fDuration; }
 

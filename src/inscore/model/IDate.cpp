@@ -52,8 +52,24 @@ void IDate::cleanup ()
 }
 
 //--------------------------------------------------------------------------
+libmapping::rational IDate::getDate () const
+{
+	const double max = 4000000000;
+	// in case the rational values are too big, the date is simplified to the nearest smallest value
+	// this is because the date representation could be constrained to smallest data types (e.g. int for OSC)
+	// some algorithm are also doing date based computation and it may quickly lead to overflow
+	// when the values are too big
+	if ((fDate.getNumerator() > max) || (fDate.getDenominator() > max)) {
+		return libmapping::rational(float(fDate));
+	}
+	return fDate;
+}
+
+//--------------------------------------------------------------------------
 void IDate::setDate (const rational& date)
 { 
+if (date.getNumerator() < 0)
+	cerr << "IDate::setDate " << date << endl;
 	if (date.getDenominator() == 0) return;
 	if (fDate != date) {
 		handleTimeChange(fDate, date);
