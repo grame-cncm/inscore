@@ -129,6 +129,7 @@ extern const char* kmouse_SetMethod;
 extern const char* kmusicxmlVersion_GetMethod ;
 extern const char* kname_GetSetMethod;
 extern const char* knew_SetMethod;
+extern const char* kopengl_GetSetMethod;
 extern const char* korder_GetSetMethod;
 extern const char* kosc_GetSetMethod;
 extern const char* kout_GetMethod;

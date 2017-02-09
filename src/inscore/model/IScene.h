@@ -63,6 +63,7 @@ typedef class libmapping::SMARTP<IFilterForward>		SIFilterForward;
 */
 class IScene : public IRectShape, public TILoader
 {	
+	bool			fOpenGl;
 	bool			fFullScreen;
 	bool			fFrameless;
 	bool			fAbsoluteCoordinates;
@@ -81,6 +82,8 @@ class IScene : public IRectShape, public TILoader
 		static libmapping::SMARTP<IScene> create(const std::string& name, IObject * parent)	{ return new IScene(name, parent); }
 		bool			getFullScreen() const		{ return fFullScreen; }
 		void			setFullScreen(bool state)	{ if (!fFrameless) fFullScreen = state; }
+		bool			getOpenGl() const			{ return fOpenGl; }
+		void			setOpenGl(bool state)		{ fOpenGl = state; }
 		bool			getFrameless() const		{ return fFrameless; }
 		void			setFrameless(bool state)	{ if (!fFullScreen) fFrameless = state; }
 		bool			getAbsoluteCoordinates() const		{ return fAbsoluteCoordinates; }

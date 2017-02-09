@@ -158,15 +158,22 @@ class VSceneView : public VDummyObjectView
 
 
 	protected:
-		ZoomingGraphicsView * fGraphicsView;
+		ZoomingGraphicsView *	fGraphicsView;
+		bool					fOpenGlRendering;
 
 		/*!
 		 * \brief createGraphicsView  create a QGraphicsView object for the GraphicsScene. The method is used in intialize method.
 		 * \param scene
 		 * \param address
-		 * \return
+		 * \return	a QGraphicsView
 		 */
 		virtual ZoomingGraphicsView* createGraphicsView(QGraphicsScene * scene, const char * address);
+
+		/*!
+		 * \brief change the ZoomingGraphicsView view port.
+		 * \param opengl used to switch to/from opengl rendering
+		 */
+		void swapViewPort(bool opengl);
 };
 
 //--------------------------------------------------------------------------
