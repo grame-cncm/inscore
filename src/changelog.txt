@@ -13,7 +13,9 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.22
-- uses OpenGl for graphics rendering (improves significantly the cpu for graphics operations)
+- new opengl message supported at scene level for optional OpenGl graphics rendering 
+  improves significantly the cpu use for graphics operations but at the cost of dirty rendering
+  for text and symbolic scores 
 - fix potential issue with dates: dates expressed with big values for the numerator or the 
   denominator may result in overflow
 

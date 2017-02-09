@@ -2033,6 +2033,20 @@ Setting a scene to fullscreen:
 Creating a new score named \OSC{myScore}:
 \sample{/ITL/myScore new;}
 
+%===============================
+%:  OpenGl rendering
+\sublevel{OpenGl rendering}
+A scene supports optional OpenGl rendering.
+\begin{rail}
+openglMsg :  'opengl' int32
+\end{rail}
+\index{Scene messages!opengl}
+\begin{itemize}
+\item \OSC{opengl}: requests the scene to switch to OpenGl or normal rendering.  The parameter is interpreted as a boolean value. Default value is \values{0}. 
+\end{itemize}
+
+\note \\
+OpenGl rendering improves significantly the performance of graphic operations but at the cost of dirty rendering for text and scores.
 
 %===============================
 %:  Scene queries
