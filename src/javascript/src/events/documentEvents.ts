@@ -31,7 +31,7 @@ function dropEvent(e: any) {
 					loader.load(filelist[i], INScore.getRoot());	
 				}
 				
-				else if ( ext == "png" || ext == "jpeg" ) {
+				else if ( ext == "png" || ext == "jpeg") {
 					post("/ITL/"+ targetScene + "/" + name, ["set", "img", file]);	
 				}
 				

@@ -86,6 +86,29 @@ class TMsgHandlerColor extends SetMsgHandler<SetColorMethod> {
 }
 
 // ------------------------------------------------------------------------------
+// an array message handler: passes an array to the client object
+// accepte only an array of two numbers
+// ------------------------------------------------------------------------------
+class TMsgHandlerArray extends SetMsgHandler<SetArrayMethod> {
+    constructor(method: SetArrayMethod) { super(method); }     
+    protected getnums(msg: IMessage): { err: boolean, numbers?: Array<number> } {
+        if ( msg.size() != 3 ) return { err: true };
+        let x = msg.paramNum(1);
+        let y = msg.paramNum(2);
+        if (!x.correct || !y.correct) return { err: true };
+        return { err: false, numbers: [x.value, y.value] };        
+    }
+    handle(msg: IMessage): msgStatus { 
+        if ( msg.size() != 3 ) return msgStatus.kBadParameters;
+        let nums = this.getnums(msg);
+        if ( nums.err ) { return msgStatus.kBadParameters; } 
+        
+        this.fMethod (nums.numbers); 
+        return msgStatus.kProcessed;
+    }
+}
+
+// ------------------------------------------------------------------------------
 // a time message handler: passes a date to the client object
 // it supports the followinf date forms:
 //    	- n d

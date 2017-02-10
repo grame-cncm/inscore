@@ -32,6 +32,10 @@ class IObjectFactory {
                 break;
             
             case "rect":
+
+                ///test 
+                console.log("IObjetFactory createObj rect");
+
                 obj = new IRect(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;

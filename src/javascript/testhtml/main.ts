@@ -6,3 +6,4 @@
 declare function print(arg: string);
 
 gCreateView = true;
+

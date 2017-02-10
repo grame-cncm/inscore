@@ -27,6 +27,7 @@ class SvgFactory {
                 rect.setAttribute('y', '10');
                 rect.setAttribute('height', '200');
                 rect.setAttribute('width', '200');
+                rect.setAttribute('rx' , '4');
                 svg.appendChild(rect);
                 break;
                 
