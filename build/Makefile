@@ -131,7 +131,7 @@ android/Makefile: library.pro INScore.pro
 INScoreAndroid :
 	cp -rf ../rsrc/ tmp-rsc
 	make -C $(MOBILESCRIPTS)
-	make -j 4 -C android -f Makefile
+	make -j 6 -C android -f Makefile
 	[ -d android/android-build ] || mkdir android/android-build
 	cd android && make INSTALL_ROOT=android-build install
 	cd android && androiddeployqt --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
