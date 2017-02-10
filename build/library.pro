@@ -26,7 +26,7 @@ win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets 
-QT += quick qml quickwidgets sensors opengl
+QT += quick qml quickwidgets sensors
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
@@ -92,6 +92,7 @@ NOVIEW {
 # assumes environment is MSVC
 ############################## 
 win32 {
+	QT += opengl
     VERSION = ""
 	DEFINES += MSVC _USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS WINDOWS 
 	# Variable to add to DEFINES to avoid execution errors when debbuging on windows "_ITERATOR_DEBUG_LEVEL=0"
@@ -118,6 +119,7 @@ win32 {
 # macos x support
 ############################## 
 macx {
+	QT += opengl
     QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
 	CONFIG += lib_bundle explicitlib
@@ -143,7 +145,7 @@ macx {
 # ios x support
 ############################## 
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 7.0
+    QMAKE_IOS_DEPLOYMENT_TARGET = 8.0
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
@@ -158,6 +160,7 @@ ios {
 # linux support
 ############################## 
 unix:!macx:!ios:!android {
+	QT += opengl
     DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
     LIBS += -lGUIDOEngine -lguidoar
 }

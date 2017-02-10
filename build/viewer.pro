@@ -63,7 +63,7 @@ macx {
 # ios support
 ##############################
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 7.0
+    QMAKE_IOS_DEPLOYMENT_TARGET = 8.0
 	QMAKE_LFLAGS += -L Release-iphoneos
 	LIBS += -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
 	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
@@ -102,7 +102,7 @@ android {
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
 	QT += androidextras
-	DEFINES += ANDROID
+	DEFINES += ANDROID __MOBILE__
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
 }
 
