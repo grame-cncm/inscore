@@ -87,6 +87,9 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 	return defaultValue;
 }
 
+static const char* kFontName = "Helvetica";
+static int kFontSize  = 9;
+
 
 //_______________________________________________________________________
 class INScoreAbout : public QSplashScreen
@@ -101,14 +104,30 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
     setMask (pixmap.mask());
 
 #ifdef linux
-	QFont font ("FreeSans", 9);
-#elif defined (WIN32) || defined (ANDROID)
-	QFont font ("Helvetica", 7);
-	font.setPixelSize(7);
-#else
-	QFont font ("Helvetica", 9);
-	font.setPixelSize(9);
+	kFontName = "FreeSans";
 #endif
+#ifdef WIN32
+	kFontSize = 7;
+#endif
+#ifdef ANDROID
+	kFontSize = 7;
+#endif
+	QFont font (kFontName, kFontSize);
+	font.setPixelSize(kFontSize);
+
+//#ifdef linux
+//	QFont font ("FreeSans", 9);
+//#elif defined(WIN32)
+//	QFont font ("Helvetica", 7);
+//	font.setPixelSize(7);
+//#elif defined(ANDROID)
+//	blurp
+//	QFont font ("Helvetica", 7);
+//	font.setPixelSize(7);
+//#else
+//	QFont font ("Helvetica", 9);
+//	font.setPixelSize(9);
+//#endif
 	int h = height();
 
 	QString version("INScore v.");
