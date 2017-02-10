@@ -83,7 +83,7 @@ class IScene : public IRectShape, public TILoader
 		bool			getFullScreen() const		{ return fFullScreen; }
 		void			setFullScreen(bool state)	{ if (!fFrameless) fFullScreen = state; }
 		bool			getOpenGl() const			{ return fOpenGl; }
-		void			setOpenGl(bool state)		{ fOpenGl = state; }
+		void			setOpenGl(bool state);
 		bool			getFrameless() const		{ return fFrameless; }
 		void			setFrameless(bool state)	{ if (!fFullScreen) fFrameless = state; }
 		bool			getAbsoluteCoordinates() const		{ return fAbsoluteCoordinates; }

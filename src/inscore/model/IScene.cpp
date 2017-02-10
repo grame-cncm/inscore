@@ -138,6 +138,17 @@ void IScene::reset ()
 }
 
 //--------------------------------------------------------------------------
+void IScene::setOpenGl(bool state)
+{
+#ifdef __MOBILE__
+	if (state)
+		ITLErr << "OpenGL is not (yet) supported on mobile platforms" << ITLEndl;
+#else
+	fOpenGl = state;
+#endif
+}
+
+//--------------------------------------------------------------------------
 SIMessageList IScene::getAll () const
 {
 	SIMessageList outMsgs = IMessageList::create();

@@ -35,7 +35,9 @@
 #include <QGestureEvent>
 #include <QPinchGesture>
 #include <QGraphicsSceneMouseEvent>
-#include <QGLWidget> 
+#ifndef __MOBILE__
+#include <QGLWidget>
+#endif
 
 #ifdef WIN32
 #include <windows.h>
@@ -323,6 +325,7 @@ QGraphicsScene * VSceneView::scene() const		{ return fScene; }
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::swapViewPort(bool opengl)
 {
+#ifndef __MOBILE__
 	if (opengl) {
 		QGLWidget* glw = new QGLWidget(QGLFormat(QGL::SampleBuffers));
 		fGraphicsView->setViewport(glw);
@@ -332,6 +335,7 @@ void VSceneView::swapViewPort(bool opengl)
 		fGraphicsView->setViewport(new QWidget());
 		fOpenGlRendering = false;
 	}
+#endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------
