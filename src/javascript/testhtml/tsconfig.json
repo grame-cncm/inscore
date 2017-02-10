@@ -5,7 +5,7 @@
         "target": "es3",
         "noImplicitAny": false,
         "outDir": "build",
-        "out": "../mainhtml.js",
+        "out": "../inscore.js",
         "sourceMap": false,
         "allowUnreachableCode": true,
         "allowUnusedLabels": true,
