@@ -2,6 +2,7 @@
 ///<reference path="VHtmlView.ts"/>
 ///<reference path="VHtmlTools.ts"/>
 ///<reference path="../model/IObject.ts"/>
+///<reference path="../events/documentEvents.ts"/>
 
 //--------------------------------------------------
 // VHtmlSceneContainer detects the current element 

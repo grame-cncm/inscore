@@ -1,7 +1,9 @@
-///<reference path="VHtmlView.ts"/>
+///<reference path="VHtmlSvg.ts"/>
 ///<reference path="SvgFactory.ts"/>
 ///<reference path="../model/IGuidoCode.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
+
+interface RefreshMethod 	{ (): void; }
 
 class VHtmlGMNView extends VHtmlSvg {
 	static fGMNScale = 2.6;		// scaling applied to get homogeneous size with inscore app
