@@ -91,10 +91,6 @@ function buildCorrectName(name: string): string {
 	return name	
 }
 
-// controller le nom avec regExp
-// 
-
-
 
 
 /*
