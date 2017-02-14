@@ -24,6 +24,8 @@ class IObjectFactory {
     }
         
     static createObj (name: string , type: string, parent: IObject): IObject {
+//        console.log("IObjetFactory createObj " + type);
+
         let obj: IObject;
         switch (type) {
             case "ellipse":
@@ -32,10 +34,6 @@ class IObjectFactory {
                 break;
             
             case "rect":
-
-                ///test 
-                console.log("IObjetFactory createObj rect");
-
                 obj = new IRect(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
