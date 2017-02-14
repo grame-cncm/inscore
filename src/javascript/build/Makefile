@@ -19,6 +19,10 @@ check :
 	rm -rf $(BUILDIR)
 	make -j $(TASKS) _check
 
+refs: 
+	./makerefs > refs.dot
+	dot -Tpdf refs.dot -o refs.pdf
+
 _check : $(DEPS) $(OUT)
 
 clean:
