@@ -1,6 +1,5 @@
 
 ///<reference path="IMessage.ts"/>
-///<reference path="../inscore.ts"/>
 ///<reference path="../globals.ts"/>
 ///<reference path="../model/IAppl.ts"/>
 ///<reference path="../events/documentEvents.ts"/>
@@ -15,7 +14,6 @@ class IGlue {
 	
     constructor() 			{ 
     	this.fAppl = new IAppl(); 
-    	let inscore = new INScore(this.fAppl);
     }
 
     initEventHandlers(): void {
@@ -37,6 +35,8 @@ class IGlue {
     	INScore.postMessage ("/ITL", ["quit"]);
     	clearTimeout (this.fTimer) ;		
     }
+
+    getRoot(): IAppl { return this.fAppl; }
 
 	timetask() : void {
 		ViewUpdater.update (this.fAppl);
