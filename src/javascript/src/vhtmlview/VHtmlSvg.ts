@@ -20,9 +20,6 @@ class VHtmlSvg extends VHtmlView {
     	let elt = this.getHtml();
 		this.fPixWidth = w ? w : 1; 
 		this.fPixHeight = h ? h : 1; 
-		
-		console.log('fWidth : ' + this.fPixWidth + ' / fHeight : ' + this.fPixHeight)
-		
 		elt.style.height = this.fPixHeight +"px";
         elt.style.width  = this.fPixWidth +"px";
 		this.fSVG.style.height = this.fPixHeight +"px";
