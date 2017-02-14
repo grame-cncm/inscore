@@ -30,7 +30,16 @@ class IColor {
 //--------------------------------------------------------------      
    cleanup(): void { this.fModified = false; }   
    modified(): boolean { return this.fModified; }   
-   
+
+
+// PROPERTIES COPY
+//--------------------------------------------------------------    
+   set (color: IColor) {
+        this.fRGB = color.fRGB.slice(0);
+        this.fHSB = color.fHSB.slice(0);
+        this.fA = color.fA;
+        this.fModified = true;
+   }
 
 // GETS VALUES
 //-------------------------------------------------------------- 
