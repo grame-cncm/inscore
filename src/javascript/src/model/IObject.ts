@@ -265,9 +265,9 @@ abstract class IObject implements Tree<IObject> {
     getOSCAddress(): string 	{ return this.fParent.getOSCAddress() + "/" + this.fName; }
 
     transferAttributes(dest: IObject): IObject {
-        dest.fPosition 	= this.fPosition;
-        dest.fColor		= this.fColor;
-        dest.fDate		= this.fDate;
+        dest.fPosition.set	( this.fPosition );
+        dest.fColor.set 	( this.fColor );
+        dest.fDate.set 		( this.fDate );
 
         //dest.fPosition.setPenWidth(getPenWidth());
         //dest.fPosition.setPenColor(getPenColor());
@@ -350,7 +350,7 @@ abstract class IObject implements Tree<IObject> {
             }
         }
             
-        if (result & msgStatus.kProcessed) { this.addState(objState.kSubModified); }
+        if (result & msgStatus.kProcessed + objState.kSubModified) { this.addState(objState.kSubModified); }
     	return result;     
     }
     
@@ -362,13 +362,13 @@ abstract class IObject implements Tree<IObject> {
         if (!type.correct) { return msgStatus.kBadParameters; }
 
         if (type.value != this.getTypeString()) {
+//debugger;
 			let out = this.proxy_create (msg, this.fName, this.getParent());
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
 	            this.transferAttributes (out.obj);
-            	this.del();
-            	this.fParent.addChild (out.obj);
 //				this.fParent.cleanupSync();
+            	this.del();
                 return out.status;		
             }
             
@@ -470,10 +470,9 @@ abstract class IObject implements Tree<IObject> {
     getDeleted(): boolean 	{ return this.fDelete; }
     del(): void {
     	this.fDelete = true;
+        if (this.getView()) this.getView().remove();
         let array = this.fParent.getSubNodes();
         array.splice(array.indexOf(this), 1);
-        if (this.getView()) this.getView().remove();
-        delete this;    
     }
     _del() : SetVoidMethod { return () => this.del(); }
 
@@ -483,6 +482,19 @@ abstract class IObject implements Tree<IObject> {
 		this.fDate.cleanup(); 
 		this.fColor.cleanup();
 		this.setState(objState.kClean);
+	}
+
+	//-----------------------------    
+	static timeTaskCleanup(obj: IObject) : void { 
+		let state = obj.getState();
+		if (state & (objState.kNewObject + objState.kModified)) obj.cleanup();		
+		if (state & objState.kSubModified) {
+			obj.setState (objState.kClean);
+			let nodes = obj.getSubNodes();
+			for (let i=0; i<nodes.length; i++) {
+				IObject.timeTaskCleanup(nodes[i]);
+			}
+		}
 	}
 }
 
