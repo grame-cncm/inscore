@@ -6,7 +6,7 @@
 function dropEvent(e: any) {
     dragOverEvent(e);
 	var targetScene = e.target.getAttribute("name");
-	console.log(targetScene);
+//	console.log(targetScene);
 
     let data = e.dataTransfer.getData("Text");
 	if (data) {			// check if text has been dropped
@@ -87,7 +87,6 @@ function buildCorrectName(name: string): string {
 		}	
 		}			
 	}	
-	console.log(name);
 	return name	
 }
 
