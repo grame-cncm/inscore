@@ -3,15 +3,15 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../externals/fraction.ts"/>
-///<reference path="../lib/ITLError.ts"/>
-///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/OSCRegexp.ts"/>
 ///<reference path="../lib/Tools.ts"/>
+///<reference path="../lib/ITLError.ts"/>
+///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
 ///<reference path="Methods.ts"/>
-///<reference path="Icolor.ts"/>
+///<reference path="IColor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
 
@@ -34,15 +34,13 @@ abstract class IObject implements Tree<IObject> {
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
-    protected fView: 		VObjectView;
     protected fParent: 		IObject;
+    protected fObjectView:	VObjectView;
     
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
-    
-    protected fObjectView: VObjectView;
     
     fPosition: 	IPosition;
     fDate: 		IDate;
