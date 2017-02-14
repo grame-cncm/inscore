@@ -40,8 +40,7 @@ class IGlue {
 
 	timetask() : void {
 		ViewUpdater.update (this.fAppl);
-		let a = new IObjectTreeApply();
-		a.applyCleanup (this.fAppl);
+		IObject.timeTaskCleanup (this.fAppl);
     	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
 	}
     _timetask()	: TTimerTask 		{ return () => this.timetask(); };
