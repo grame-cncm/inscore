@@ -1,6 +1,6 @@
 
 enum msgStatus { 
-    kBadAddress,
+    kBadAddress = 0,
     kProcessed = 1,
     kProcessedNoChange = 2,
     kBadParameters = 4,
@@ -8,7 +8,7 @@ enum msgStatus {
 }
 
 enum objState {
-    kClean,
+    kClean = 0,
     kNewObject = 1,
     kModified = 2,
     kSubModified = 4,
