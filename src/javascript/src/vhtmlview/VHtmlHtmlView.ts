@@ -14,10 +14,6 @@ class VHtmlHtmlView extends VHtmlView {
 
 	// scaling is applied as a transform only
 	getScale (obj: IObject): number { return 1; }
-	updateColor (obj: IObject): void {
-        if (obj.fColor.modified())
-	        this.getHtml().style.color = obj.fColor.getRGBString();
-	}
 
 	// CSS weight are used as numbers
 	fontWeight2Num	( weight: string) : number {

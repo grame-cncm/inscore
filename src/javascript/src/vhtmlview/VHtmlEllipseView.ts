@@ -15,6 +15,7 @@ class VHtmlEllipseView extends VHtmlSvg {
     }    
 
 	updateView	( obj: IObject) : void {
+		super.updateView (obj);
 		let scale = obj.fPosition.getScale();
 		let w = this.relative2SceneWidth( obj.fPosition.getWidth() ) * scale;
 		let h = this.relative2SceneHeight( obj.fPosition.getHeight() ) * scale;
@@ -28,6 +29,5 @@ class VHtmlEllipseView extends VHtmlSvg {
         this.fEllipse.setAttribute('cy', ry.toString());
         this.fEllipse.setAttribute('rx', rx.toString());
         this.fEllipse.setAttribute('ry', ry.toString());
-		this.updatePos(obj);
 	}
 }

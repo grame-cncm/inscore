@@ -15,6 +15,14 @@ class VHtmlSvg extends VHtmlView {
         this.fSVG.setAttribute('version', "1.1");
     	this.getHtml().appendChild(this.fSVG);
 	}
+
+	updateColor (obj: IObject): void {
+        if (obj.fColor.modified()) {
+	        this.fSVG.style.color = obj.fColor.getRGBString();
+	        let alpha =  obj.fColor.getA() / 255;
+	        this.fSVG.style.opacity = alpha.toString();
+		}
+	}
 	
 	updateSvgSize (w: number, h: number): void { 
     	let elt = this.getHtml();

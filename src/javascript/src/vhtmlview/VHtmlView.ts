@@ -28,9 +28,15 @@ class VHtmlView extends VObjectView {
 		this.updateColor (obj);
 	}
 
+	// target of color style depend on the html element implementation 
+	colorTarget(): HTMLElement { return this.fHtmlElt; }
 	updateColor (obj: IObject): void {
-        if (obj.fColor.modified())
-	        this.fHtmlElt.style.background = obj.fColor.getRGBString();
+        if (obj.fColor.modified()) {
+	        let elt = this.colorTarget();
+	        elt.style.color = obj.fColor.getRGBString();
+	        let alpha =  obj.fColor.getA() / 255;
+	        elt.style.opacity = alpha.toString();
+	    }
 	}
 
 	// getScale is intended to catch the div using auto height and width (like text, html...)
