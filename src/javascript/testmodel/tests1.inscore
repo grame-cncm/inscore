@@ -40,7 +40,7 @@ __END__
 /ITL/scene/r_5 hsb 50 100 100;
 
 /ITL/scene new;
-/ITL/scene/rect set rect 1 1 ;
+/ITL/scene/arc set arc 150 100;
 /ITL/scene/rect radius 5 5;
 
 /ITL/scene scale 0.8 ;
