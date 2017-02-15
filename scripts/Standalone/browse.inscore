@@ -7,7 +7,8 @@ osize = 42;
 
 /ITL/scene/title  set  txt "This script illustrates the use 'browse' message addressed to /ITL.";
 /ITL/scene/title  y -0.8;
-/ITL/scene/title scale 1.7;
+/ITL/scene/title fontSize 24;
+/ITL/scene/title effect $shadow;
 
 /ITL/scene/uinscore	set txt "inscore.sf.net";
 /ITL/scene/uinscore fontSize $fsize;

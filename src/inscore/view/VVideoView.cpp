@@ -40,87 +40,54 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
- :	VGraphicsItemView( scene , new IQGraphicsVideoItem(video) )
-#ifndef USEPHONON
-	, fMediaPlayer(0, QMediaPlayer::VideoSurface)
-	, fVideo(0)
-#endif
+ :	VGraphicsItemView( scene , new IQGraphicsVideoItem(video) ), fVideo(0)
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);
-#ifndef USEPHONON
-    connect(&fMediaPlayer, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(error(QMediaPlayer::Error)));
-    connect(&fMediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
-#endif
-
+    connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
+	player()->setVideoOutput (fVideoItem);
 }
 
+
 //----------------------------------------------------------------------
-#ifndef USEPHONON
-void VVideoView::error(QMediaPlayer::Error )
+void VVideoView::mediaReady()
 {
-	ITLErr << (fVideo ? fVideo->getOSCAddress().c_str() : "no video address") << fMediaPlayer.errorString().toStdString() << ITLEndl;
+	fVideo->setMediaDuration(player()->duration());
+	fVideo->mediaReady();
 }
 
 //----------------------------------------------------------------------
-void VVideoView::nativeSizeChanged(const QSizeF & size)
+void VVideoView::mediaEnd()					{ fVideo->mediaEnd(); }
+void VVideoView::posChanged(qint64 pos)		{ fVideo->setIDate(pos); }
+
+//----------------------------------------------------------------------
+void VVideoView::error(QString msg)
+{
+	ITLErr << (fVideo ? fVideo->getOSCAddress().c_str() : "no video OSC address") << "error" << msg.toStdString() << ITLEndl;
+}
+
+//----------------------------------------------------------------------
+void VVideoView::sizeChanged(const QSizeF & size)
 {
 	fVideoItem->setSize (size);
 	fVideo->setWidth ( scene2RelativeWidth(size.width()) );
 	fVideo->setHeight( scene2RelativeHeight(size.height()) );
-	INScore::postMessage (fVideo->getOSCAddress().c_str(), kshow_GetSetMethod, 1);
+	INScore::postMessage (fVideo->getOSCAddress().c_str(), kx_GetSetMethod, fVideo->getXPos());
 }
-
-//----------------------------------------------------------------------
-void VVideoView::mediaStatusChanged (QMediaPlayer::MediaStatus status)
-{
-//qDebug() << "VVideoView::mediaStatusChanged" << status << "metadata" << fMediaPlayer.availableMetaData().size();
-	switch (status) {
-		case QMediaPlayer::BufferedMedia:
-			break;
-
-		case QMediaPlayer::LoadingMedia:
-//			fMediaPlayer.play();
-//			fMediaPlayer.pause();
-//			fMediaPlayer.setPosition(0);
-//			fMediaPlayer.stop();
-			break;
-			
-		case QMediaPlayer::UnknownMediaStatus:
-		case QMediaPlayer::InvalidMedia:
-			break;
-		default:
-			break;
-	}
-}
-#endif
 
 //----------------------------------------------------------------------
 void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 {
-#ifdef USEPHONON
-	fVideoItem->setMediaFile( videoFile );
-	fVideoItem->media()->play();
-	fVideoItem->media()->pause();	
-	updateObjectSize (video);
-#else
-	fVideo = video;
-	fMediaPlayer.setMedia(QUrl::fromLocalFile(videoFile));
-	fMediaPlayer.setVideoOutput (fVideoItem);
-
+	setFile(videoFile);
 	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
-
-qDebug() << "VVideoView::initFile isSeekable" << fMediaPlayer.isSeekable() ;
-	video->setWidth(0.01f);			// default width
-	video->setHeight(0.01f);		// and height
-//	video->setVisible (false);
-    connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
-#endif
+	video->setWidth(0.f);		// unknown width
+	video->setHeight(0.f);		// unknown height
 }
 
 //----------------------------------------------------------------------
 void VVideoView::initialize( IVideo * video  )
 {
-	QString file = VApplView::toQString( video->getFile().c_str() );
+	fVideo = video;
+	QString file = VApplView::toQString( video->getPath().c_str() );
 	if ( QFile::exists(  file  ) ) 
 		initFile (video, file);
 }
@@ -128,32 +95,16 @@ void VVideoView::initialize( IVideo * video  )
 //----------------------------------------------------------------------
 void VVideoView::updateView( IVideo * video  )
 {
-    video->cleanupSync();
-    QString file = VApplView::toQString( video->getFile().c_str() );
-	if ( QFile::exists(  file  ) )
-	{
-		fVideoItem->setOpacity (video->getA() / 255.f);
-		QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
-		qint64 pos = video->currentTime() * 1000;
-#ifdef USEPHONON
-		fVideoItem->resize( size );
-		fVideoItem->media()->seek( pos );
-#else
-		if (pos < 0 ) pos = 0;
-		if (pos > fMediaPlayer.duration()) pos = fMediaPlayer.duration()-1;
-		if (size != fVideoItem->size()) fVideoItem->setSize( size );
-		fMediaPlayer.play ();
-		fMediaPlayer.setPosition( pos );
-		fMediaPlayer.pause ();
-#endif
-	}
-	else
-	{
-		// File not found. Do nothing. (Error msg is handled by the model.)
-	}
+	video->cleanupSync();
+	fVideoItem->setOpacity (video->getA() / 255.f);
+	QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
+	if (size != fVideoItem->size()) fVideoItem->setSize( size );
+	
+	updatePlayer (video);
+
 	itemChanged();
 	VGraphicsItemView::updateView( video );
 }
 
 
-} // end namespoace
+} // end namespace

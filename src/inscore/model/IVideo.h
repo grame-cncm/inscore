@@ -28,9 +28,7 @@
 #define __IVideo__
 
 #include <string>
-#include <sstream>
-#include "IRectShape.h"
-#include "TFile.h"
+#include "IMedia.h"
 
 #define VIDEO_MAP_TEMPO			"tempo"
 #define VIDEO_MAP_START_SECOND	"startSecond"
@@ -50,32 +48,32 @@ typedef class libmapping::SMARTP<IVideo>	SIVideo;
 /*!
 	\brief a video object.
 */
-class IVideo : public IRectShape,  public TFile
+class IVideo : public IMedia
 {
-	public:		
+	int musicalTime2mls (float date) const;
+
+	public:
 		static const std::string kVideoType;
 		static SIVideo create(const std::string& name, IObject * parent)	{ return new IVideo(name, parent); }
 		virtual void	accept (Updater* u);
-
-		/// \brief set the path name \param path the new file path
-		void			setFile(const std::string& path);
-		
+	
 		/// \brief Returns the current video time in seconds, according to the object's date and videoMap.
-		float currentTime() const;
+		float	currentTime() const;
+
+		/// \brief set the object duration according to the video duration (tempo assumed to be 60).
+		void	setVideoDuration( long mls)	{ setMediaDuration (mls); }
 
 	protected:
 				 IVideo( const std::string& name, IObject * parent);
 		virtual ~IVideo() {}
 
-		/// \brief the \c 'set' message handler
-		virtual MsgHandler::msgStatus set (const IMessage* msg);
-		
+
 		/// \brief the \c 'videoMapf' message handler
 		virtual MsgHandler::msgStatus videoMapFileMsg (const IMessage* msg );
 
 		/// \brief the \c 'videoMap' message handler
 		virtual MsgHandler::msgStatus videoMapMsg (const IMessage* msg );
-				
+	
 		class Date2SecondConverter: public smartable
 		{ 
 			public:

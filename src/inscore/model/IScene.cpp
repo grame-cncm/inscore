@@ -40,10 +40,10 @@
 #include "OSCAddress.h"
 #include "QFileWatcher.h"
 #include "rational.h"
-#include "TMessageEvaluator.h"
 #include "Updater.h"
 #include "IJavascript.h"
 #include "IFilterForward.h"
+#include "Events.h"
 
 #include "VSceneView.h"
 
@@ -58,15 +58,13 @@ const string IScene::kSceneType("scene");
 //--------------------------------------------------------------------------
 IScene::~IScene() 
 {
-    for(int i=0; i<size(); i++)
-        elements()[i]->del();
     fSync->cleanup();
     elements().clear();		// this is required to avoid orphan QGraphicsItem (and crash after that)
 }
 
 IScene::IScene(const std::string& name, IObject * parent)
 		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false),
-		fWindowOpacity(false), fUpdateVersion(false), fJavascript(parent->getJSEngine())
+		fWindowOpacity(false), fUpdateVersion(false), fJavascript(getAppl()->getJSEngine())
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
@@ -81,7 +79,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
 	fMsgHandlerMap[kwindowOpacity_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setWindowOpacity);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IScene>::create(this, &IScene::loadMsg);
-//	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IScene, string>::create(this, &IScene::setRootPath);
+	fMsgHandlerMap[kpreprocess_SetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::preProcessMsg);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::setRootPath);
 	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::forward);
 
@@ -110,7 +108,12 @@ void IScene::setHandlers ()
 void IScene::newScene ()						{}
 void IScene::foreground()						{ getSceneView()->foreground(); }
 void IScene::setRootPath(const std::string& s)  { fRootPath = IAppl::checkRootPath(s);}
-void IScene::del()								{ _del(false); }
+void IScene::del()
+{
+	for(int i=0; i<size(); i++)
+        elements()[i]->del();
+	_del(false);
+}
 VSceneView*	IScene::getSceneView() const		{ return static_cast<VSceneView *>(fView); }
 
 //--------------------------------------------------------------------------
@@ -130,8 +133,16 @@ void IScene::reset ()
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
-//	fJavascript.Initialize();
-	fLua.Initialize();
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IScene::getAll () const
+{
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create( getOSCAddress(), "new");
+	outMsgs->list().push_back (IMessage::create( getOSCAddress(), "new"));
+	outMsgs->list().push_back (IObject::getAll()->list());
+	return outMsgs;
 }
 
 //--------------------------------------------------------------------------
@@ -195,6 +206,11 @@ string IScene::address2scene (const char* addr) const
 	regexp.ReleaseString (replaced);
 	return sceneAddress;
 }
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::preProcessMsg(const IMessage* msg)
+{
+	return preprocess (msg, getAppl(), getRootPath());
+}
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
@@ -205,29 +221,14 @@ MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 void IScene::endPaint () const
 {
-	const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kEndPaint);
-	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
-
-	MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), 0);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (msgs, env);
-	if (outmsgs && outmsgs->list().size()) outmsgs->send();
+	checkEvent (kEndPaintEvent, libmapping::rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
 void IScene::add (const nodePtr& node)
 {
 	IObject::add (node);
-
-	const IMessageList* msgs = eventsHandler()->getMessages (EventsAble::kNewElement);
-	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
-
-	MouseLocation mouse (0, 0, 0, 0, 0, 0);
-	EventContext env(mouse, libmapping::rational(0,1), node);
-	TMessageEvaluator me;
-	SIMessageList outmsgs = me.eval (msgs, env);
-	if (outmsgs && outmsgs->list().size()) outmsgs->send();
+	checkEvent (kNewElementEvent, libmapping::rational(0,1), node);
 }
 
 //--------------------------------------------------------------------------
@@ -239,27 +240,11 @@ void IScene::setState (state s)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IScene::_watchMsg(const IMessage* msg, bool add)
-{ 
-	if (msg->size()) {
-		string what;
-		if (msg->param (0, what)) {
-			EventsAble::eventype t = EventsAble::string2type (what);
-			switch (t) {
-				case EventsAble::kNewElement:
-				case EventsAble::kEndPaint:
-					if (msg->size() > 1)
-						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
-						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
-					return MsgHandler::kProcessed;
-
-				default:
-					break;
-			}
-		}
-	}
-	return IObject::_watchMsg(msg, add);
+bool IScene::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	string ev(t);
+	if ( (ev == kNewElementEvent) || (ev == kEndPaintEvent)) return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------

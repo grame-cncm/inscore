@@ -28,6 +28,7 @@
 #define __IObjectFactory__
 
 #include <string>
+#include <map>
 #include "IModelTypes.h"
 
 namespace inscore
@@ -44,13 +45,20 @@ namespace inscore
 */
 class IObjectFactory
 {
+	typedef SIObject (*TCreateMethod)(const std::string& name , IObject* parent);
+	static std::map<std::string, TCreateMethod> fCreateMap;
+
 	public:
+	
+	static void init();		///< intended to initialise the methods map
+
 	/*! \brief creates an IObject
 		\param name the object name
 		\param type the object type
 		\param parent its parent object
 	*/
 	static SIObject create(const std::string& name , const std::string& type, IObject* parent);
+
 };
 
 /*! @} */

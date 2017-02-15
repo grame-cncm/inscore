@@ -1,6 +1,6 @@
-!-------------------------------------------------------
-! control user interactions with the score
-!-------------------------------------------------------
+#-------------------------------------------------------
+# control user interactions with the score
+#-------------------------------------------------------
 /ITL/scene/turenas watch mouseDown (
 	/ITL/scene/[cs]* date "$date[1/4]" ,
 	localhost:7100/date  "$date[1/4]" );

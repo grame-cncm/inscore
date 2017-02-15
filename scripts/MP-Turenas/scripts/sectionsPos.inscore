@@ -1,7 +1,7 @@
 
-!-----------------------------------------------------------
-! the comments positions for schemaSonagram and schema4Voix
-!-----------------------------------------------------------
+#-----------------------------------------------------------
+# the comments positions for schemaSonagram and schema4Voix
+#-----------------------------------------------------------
 
 /ITL/scene/section1 x -0.58;
 /ITL/scene/section2 x -0.4;

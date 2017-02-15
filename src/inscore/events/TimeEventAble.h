@@ -48,6 +48,8 @@ struct EventContext;
 class TimeEventAble
 {
 	public:
+		typedef const char* eventype;
+	
 				 TimeEventAble(const EventsAble* h) : fEventsHandler(h)	{}
 		virtual ~TimeEventAble() {}
 
@@ -58,13 +60,13 @@ class TimeEventAble
 		void handleDurChange  (libmapping::rational from, libmapping::rational to) const;
 
 		/// \brief adds an interval to the watched intervals list
-		void watchInterval	(int type, const RationalInterval&);
+		void watchInterval	(eventype type, const RationalInterval&);
 
 		/// \brief removes an interval from the watched intervals list
-		void delInterval	(int type, const RationalInterval&);
+		void delInterval	(eventype type, const RationalInterval&);
 
 		/// \brief clear a watched intervals list
-		void clearList		(int type);
+		void clearList		(eventype type);
 
 	protected:
 

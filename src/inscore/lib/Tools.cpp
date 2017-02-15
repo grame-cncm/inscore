@@ -90,6 +90,16 @@ bool Tools::isurl (const std::string& path)
 }
 
 //--------------------------------------------------------------------------
+bool Tools::isAbsolutePath (const std::string& path)
+{
+#ifdef WIN32
+		return path[1] == ':';
+#else
+		return path[0] == '/';
+#endif
+}
+
+//--------------------------------------------------------------------------
 bool Tools::regexp (const string& str)
 {
 	size_t n = str.size();
@@ -118,6 +128,23 @@ string Tools::ensurefloat (float f, int precision)
 	}
 	if (!hasdot) stream << ".0";
 	return stream.str();
+}
+
+//--------------------------------------------------------------------------
+// converts a string to a decimal number
+// check that the string contains only numbers
+// return true when the string is a number and has been converted
+//--------------------------------------------------------------------------
+bool Tools::str2num (const char* ptr, int& num)
+{
+	num = 0;
+	while (*ptr) {
+		int c = *ptr++;
+		if ((c < '0') || (c > '9')) return false;
+		num *= 10;
+		num += c - '0';
+	}
+	return true;
 }
 
 //--------------------------------------------------------------------------

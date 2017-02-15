@@ -27,8 +27,10 @@
 
 #include "TComposition.h"
 #include "VGraphicsItemView.h"
+#include "VSceneView.h"
 #include "maptypes.h"
 #include "TSegment.h"
+#include "TRect.h"
 
 #include <QtDebug>
 #include <QGraphicsScene>
@@ -36,7 +38,7 @@
 #include "QStretchTilerItem.h"
 
 #include "IObject.h"
-#include "TMessageEvaluator.h"
+#include "Events.h"
 #include "VExport.h"
 
 #include "MouseEventAble.h"
@@ -224,29 +226,6 @@ void VGraphicsItemView::setQBrushStyle(const std::string& brushStyle , QBrush& b
         brush.setStyle( Qt::SolidPattern );
 }
 
-//----------------------------------------------------------------------
-//void VGraphicsItemView::updateBoundingBox( IObject * object  )
-//{
-//	QColor color(object->getR(), object->getG(), object->getB() , object->getA());
-//	QPen pen = Qt::NoPen;
-//	if ( object->getPenWidth() > 0 )
-//	{
-//		pen = QPen( QColor(object->getPenColor().getR(), object->getPenColor().getG(), object->getPenColor().getB() , object->getPenColor().getA()) , object->getPenWidth() );
-//		setQPenStyle( object->getPenStyle() , pen );
-//        pen.setCapStyle( Qt::RoundCap );
-//		pen.setJoinStyle( Qt::RoundJoin );
-//	}
-//    
-//    
-//	if ( pen != fItem->pen() )
-//		fItem->setPen( pen );
-//	
-//	QBrush brush = QBrush(color);
-//	setQBrushStyle( object->getBrushStyle() , brush );
-//	fItem->setBrush( brush );
-//	itemChanged();
-//}
-
 //------------------------------------------------------------------------------------------------------------
 // Debug graphic feedback : displays the bounding rectangle and the object name for all the items
 //------------------------------------------------------------------------------------------------------------
@@ -284,6 +263,7 @@ void VGraphicsItemView::drawName(IObject* o, QGraphicsItem* item)
         QGraphicsTextItem * textItem = new QGraphicsTextDebugItem( o->name().c_str() , item );
         textItem->setDefaultTextColor( Qt::red );
 		textItem->setPos( bboxRectQt.x() , bboxRectQt.y() - textItem->boundingRect().height() );
+		fDebugItems << textItem;
 }
 
 
@@ -399,18 +379,51 @@ void VGraphicsItemView::setMouseEventSensibility(bool mouseSensible)
 	}
 }
 
+#define kUnknownLocation 999999.f
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::updateItemSyncFrame(QStretchTilerItem* item, IObject* o, SMaster master)
+{
+    item->setStretch(false);
+	TFloatPoint p;
+	IObject* m = master->getMaster();
+	rational d = o->getDate();
+	if (master->getMode() == Master::kSyncRelative)
+		d -= master->getMaster()->getDate();
+	if (m->date2FramePoint(d, p)) {
+		double width = relative2SceneWidth(o->getWidth());
+		double height = relative2SceneHeight(o->getHeight());
+
+		double mw = relative2SceneWidth(m->getWidth());
+		double mh = relative2SceneHeight(m->getHeight());
+		double x = p.fX * mw;
+		double y = p.fY * mh  + mh*(master->getDy());
+
+		item->setRect(QRectF(0,0,width,height));
+		item->setPos(x, y);
+		item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+		updateTransform (o, item);
+		QRectF bbrect = item->boundingRect();
+		double xo = bbrect.width() / 2;
+		double yo = bbrect.height() / 2;
+		item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
+	}
+	else {
+		item->setPos(kUnknownLocation, kUnknownLocation);
+	}
+}
+
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o, SMaster master)
 {
     item->setStretch(false);
-    
+	
     std::string mapName = master->getMaster()->name() + ":" + master->getMasterMapName();
     double width = relative2SceneWidth(o->getSyncWidth(mapName), item);
     double height = relative2SceneHeight(o->getSyncHeight(mapName), item);
     
     double x = relative2SceneX( o->getSyncPos(mapName).x(), item );
     double y = relative2SceneY( o->getSyncPos(mapName).y(), item );
-    
+ 
     item->setRect(QRectF(0,0,width,height));
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
@@ -429,7 +442,7 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
     updateTransform (o, item);
-    QRectF bbrect = item->boundingRect();
+    QRectF bbrect = getBoundingRect(o);
     double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
     double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
     item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
@@ -449,7 +462,7 @@ void VGraphicsItemView::updateItem(QGraphicsItem* item, IObject* o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateView(IObject* o)
 {
-    setSlave(o);
+	setSlave(o);
 
 	// firt update the object shape
 	drawBoundingBox (o);
@@ -457,21 +470,24 @@ void VGraphicsItemView::updateView(IObject* o)
     for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
     {
         SMaster master = i->first;
+		
         QStretchTilerItem * fTilerItem = fTilerItems.find(master)->second;
         fTilerItem->clearSegments();
             
         fTilerItem->setOpacity (o->getA() / 255.f);
-        std::string masterMapName = master->getMaster()->name() + ":" + master->getMasterMapName();
-        const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(masterMapName);
-        bool isHStretch =  o->UseGraphic2GraphicMapping(masterMapName);
-            
-        if(slave2Master && isHStretch)
-        {
-            updateItemHStretch(fTilerItem, slave2Master);
-        }
-        else
-        {
-            updateItemNoStretch(fTilerItem, o, master);
+		
+		if (master->getAlignment() == Master::kSyncFrame) {
+			updateItemSyncFrame (fTilerItem, o, master);
+		}
+		else {
+			std::string masterMapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+			const SGraphic2GraphicMapping& slave2Master = o->getSlave2MasterMapping(masterMapName);
+			bool isHStretch =  o->UseGraphic2GraphicMapping(masterMapName);
+				
+			if(slave2Master && isHStretch)
+				updateItemHStretch(fTilerItem, slave2Master);
+			else
+				updateItemNoStretch(fTilerItem, o, master);
         }
         updateItem(fTilerItem, o);
         fTilerItem->update();
@@ -490,14 +506,7 @@ void VGraphicsItemView::updateView(IObject* o)
 
 	while ( myExport.first.length() ) {
 		VExport::exportItem( item() , myExport.first.c_str() ,  o->getScale() ,  o->getScale(), myExport.second);
-		const IMessageList*	msgs = o->getMessages(EventsAble::kExport);
-		if (msgs) {
-			MouseLocation mouse (0, 0, 0, 0, 0, 0);
-			EventContext env(mouse, libmapping::rational(0,1), o);
-			TMessageEvaluator me;
-			SIMessageList outmsgs = me.eval (msgs, env);
-			if (outmsgs && outmsgs->list().size()) outmsgs->send();
-		}
+		o->checkEvent(kExportEvent, rational(0,1), o);
 		myExport = o->getNextExportFlag();
 	}
 
@@ -512,7 +521,13 @@ void VGraphicsItemView::updateView(IObject* o)
 	// ----------------------------------------------------------------------------------------------
 	// Debug graphic feedback : displays the bounding rectangle and the object name
 	if ( o->nameDebug() ) drawName (o);
-    
+	
+	// ----------------------------------------------------------------------------------------------
+	// and eventually check if an 'edit' request is pending
+	if (o->getEdit()) {
+		VSceneView* scene = o->getScene()->getSceneView();
+		if (scene) scene->edit(o);
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -572,7 +587,7 @@ void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
             found = true;
     }
     QStretchTilerItem * fTilerItem;
-    if(!found)
+    if(!found && master->getMaster()->getView())
     {
         fTilerItem = buildTiler(slave);
         VGraphicsItemView * masterView = dynamic_cast<VGraphicsItemView*>(master->getMaster()->getView());

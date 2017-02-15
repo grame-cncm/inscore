@@ -69,8 +69,7 @@ class IApplDebug : public IObjectDebug
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual SIMessageList getSetMsg () const;
-
-		void		setOSCDebug(bool state)		{ fOSCDebug = state; }
+		void		setOSCDebug(bool state)			{ fOSCDebug = state; }
 };
 std::ostream&	operator << (std::ostream& out, const SIApplDebug& o);
 
@@ -119,38 +118,49 @@ typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 class IApplLog : public IVNode
 {
 	VLogWindow*	fWindow;
+	int			fLogLevel;		// log level: 0: no log, 1: log errors, 2: + log get messages
 	
 	public:	
+		enum { kNolog, kLogError, kLogMsg };
+
 		/// \brief creates a new IApplLog
 		static SIApplLog create(IObject * parent)		{ return new IApplLog(parent); }
 
 		/// \brief print the object state \param out the output stream
 		virtual void	print(std::ostream& ) const	{}
 
+		/// \brief displays a message list
+		virtual void	write(const SIMessageList& msgs);
+
 		/// \brief accept an Update visitor
 		virtual void	accept (Updater*);
-		
+
+		/// \brief return accept 'get' messages status
+		virtual bool	acceptMsgs () const		{ return fLogLevel >= kLogMsg; };
+		virtual bool	acceptErrors () const	{ return fLogLevel > kNolog; };
+	
 		VLogWindow* window()				{ return fWindow; }
 		void		print(const char*);
+
 		void	setX		(float x)	{ fXPos = x; }
 		void	setY		(float y)	{ fYPos = y; }
 		void	setW		(float x)	{ fWidth = x; }
 		void	setH		(float y)	{ fHeight = y; }
+		void	setWrap		(bool state);
 
 	protected:	
 				 IApplLog(IObject * parent);
 		virtual ~IApplLog();
 
 		void	clear();
-		void	setWrap(bool state);
 
 		virtual void	setXPos		(float x);
 		virtual void	setYPos		(float y);
 		virtual void	setWidth	(float w);
 		virtual void	setHeight	(float h);
-		virtual void	setVisible (bool vis);
+		virtual void	setVisible	(bool vis);
+		virtual void	setLevel	(int level)		{ fLogLevel = level; };
 		virtual void	foreground ();
-
 
 		/// \brief object \c 'write' message handler.
 		virtual MsgHandler::msgStatus writeMsg (const IMessage* msg) const;

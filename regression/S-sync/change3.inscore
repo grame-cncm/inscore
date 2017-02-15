@@ -1,8 +1,8 @@
-! suppressing all sync relations of the slave
+# suppressing all sync relations of the slave
 /ITL/scene/sync slave;
 /ITL/scene/m*/text* del;
 
-! new sync relation
+# new sync relation
 /ITL/scene/cursor set rect 0.005 0.12;
 /ITL/scene/cursor y -0.5;
 /ITL/scene/sync slave cursor;
@@ -10,5 +10,5 @@
 /ITL/scene/subtitle set txt "/ITL/scene/sync slave;";
 /ITL/scene/cursor/text set txt "/ITL/scene/sync slave cursor";
 
-! the y coordinates is very high, because of the cursor's width
+# the y coordinates is very high, because of the cursor's width
 /ITL/scene/cursor/text y 80;

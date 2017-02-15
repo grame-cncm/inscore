@@ -103,9 +103,9 @@
 
 <?javascript reset() ?>
 
-!-------------------------------------------------
-! user interface design
-!-------------------------------------------------
+#-------------------------------------------------
+# user interface design
+#-------------------------------------------------
 colorOn 	= 240 50 50;
 colorOff 	= 130 130 130;
 
@@ -130,10 +130,10 @@ colorOff 	= 130 130 130;
 /ITL/scene/_ui_reset watch mouseUp 	(/ITL/scene/javascript run "reset()");
 /ITL/scene/_ui_undo  watch mouseUp 	(/ITL/scene/javascript run "undo()");
 
-!-------------------------------------------------
-! user interface design
-!-------------------------------------------------
-! require without associated message only generates a message on std::cerr and on osc err stream
+#-------------------------------------------------
+# user interface design
+#-------------------------------------------------
+# require without associated message only generates a message on std::cerr and on osc err stream
 required = 1.07;
 /ITL require $required  (
 	/ITL/scene/msg set txt "This script requires INScore version" $required "current version is" "$version",

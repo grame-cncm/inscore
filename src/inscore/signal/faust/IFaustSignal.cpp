@@ -25,10 +25,12 @@
 
 #include <stdio.h>
 #include <sstream>
+#include <string>
 
 #include "IFaustSignal.h"
 #include "IScene.h"
 #include "ITLError.h"
+#include "Tools.h"
 #include "Updater.h"
 
 #include "UI.h"
@@ -130,6 +132,24 @@ void IFaustSignal::addMsgHandler (const char* name, float* zone, float min, floa
 {
 	fMsgHandlerMap[translate(name)]	= SetCheckedFaustParamMsgHandler::create(zone, min, max);
 	fGetMsgHandlerMap[translate(name)]	= GetFaustParamMsgHandler::create(zone);
+}
+
+//--------------------------------------------------------------------------
+// output signals of a faust processor are available as 'name/0-n'
+// where 'name' is the faust processor name and '0-n' is an index
+// that refers to an output signal
+//--------------------------------------------------------------------------
+bool IFaustSignal::findSubNode (std::string name, subnodes& outlist)
+{
+	int index;
+	if (!Tools::str2num(name.c_str(), index))	return false;
+	if (index >= dimension())					return false;	// index must be less than the signal dimension
+	
+	string node = this->name() + "/" + name;
+	SISignal s = ISignal::create(node, getParent());	// create a signal using the whole name (name/index)
+	*s << this->signal(index);							// put it into the parent node
+	outlist.push_back(s);								// push the node to the output list
+	return true;										// and set the return code to true
 }
 
 //--------------------------------------------------------------------------

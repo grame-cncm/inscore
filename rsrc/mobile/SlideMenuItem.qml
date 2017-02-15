@@ -5,7 +5,8 @@ import "global.js" as Size
 
 Item {
     id: root
-    height:  Size.toPixel(5.8)
+    height:  Size.toPixel(5)
+//    height:  Size.toPixel(5.8)
     anchors.left:  parent!=null?parent.left : undefined
     anchors.right: parent!=null?parent.right: undefined
 
@@ -57,8 +58,9 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: root.height*1.8;
             color: "#3a3a3a"
-            font.pixelSize: root.height*0.5;
-            font.capitalization: Font.SmallCaps
+            font.pointSize: 13;
+//            font.pixelSize: root.height*0.5;
+//            font.capitalization: Font.SmallCaps
             text: "";
         }
         SimpleTouchArea{

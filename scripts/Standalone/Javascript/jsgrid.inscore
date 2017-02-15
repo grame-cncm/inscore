@@ -5,8 +5,8 @@ rversion = 0.96;
 /ITL require $rversion "/ITL/scene/warning" "y" 0.9;
 /ITL require $rversion "/ITL/scene/warning" "scale" 1.5;
 
-huespan=45;		! hue span in degrees
-hue=0;			! initial hue
+huespan=45;		# hue span in degrees
+hue=0;			# initial hue
 
 <? javascript
 	function makemsg (msg, index, w, x, y, hue) {

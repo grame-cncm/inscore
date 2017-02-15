@@ -58,39 +58,43 @@ class inscore_export Updater : public libmapping::smartable
 
 		virtual bool needupdate (IObject*) = 0;
 
-		virtual void updateTo (IObject*) {}
-		virtual void updateTo (IObjectDebug*) {}
 		virtual void updateTo (IAppl*) {}
 		virtual void updateTo (IApplLog*) {}
-		virtual void updateTo (IMenu*) {}
-		virtual void updateTo (IScene*) {}
-		virtual void updateTo (IText*) {}
-		virtual void updateTo (IHtml*) {}
-		virtual void updateTo (ISVG*) {}
-		virtual void updateTo (ISVGFile*) {}
+		virtual void updateTo (IArc*) {}
+		virtual void updateTo (IAudio*) {}
+		virtual void updateTo (ICurve*) {}
+		virtual void updateTo (IEllipse *) {}
+		virtual void updateTo (IGestureFollower*) {}
+		virtual void updateTo (IGraphicSignal*) {}
+		virtual void updateTo (IGrid *) {}
 		virtual void updateTo (IGuidoCode*) {}
 		virtual void updateTo (IGuidoPianoRoll*) {}
 		virtual void updateTo (IGuidoPianoRollStream *) {};
-		virtual void updateTo (IImage*) {}
-		virtual void updateTo (IGestureFollower*) {}
+		virtual void updateTo (IHtml*) {}
 		virtual void updateTo (IHttpd*) {}
-		virtual void updateTo (IGraphicSignal*) {}
+		virtual void updateTo (IImage*) {}
+		virtual void updateTo (ILayer *) {}
+		virtual void updateTo (ILine*) {}
+		virtual void updateTo (IMenu*) {}
+		virtual void updateTo (IObject*) {}
+		virtual void updateTo (IObjectDebug*) {}
+		virtual void updateTo (IPolygon *) {}
+		virtual void updateTo (IRect *) {}
+		virtual void updateTo (IScene*) {}
 		virtual void updateTo (IShape *) {}
 		virtual void updateTo (IShapeMap *) {}
-		virtual void updateTo (IRect *) {}
-        virtual void updateTo (IGrid *) {}
-        virtual void updateTo (ILayer *) {}
-		virtual void updateTo (IEllipse *) {}
-		virtual void updateTo (IPolygon *) {}
-		virtual void updateTo (ICurve*) {}
-		virtual void updateTo (ILine*) {}
-		virtual void updateTo (IVideo*) {}
+		virtual void updateTo (ISignalNode*) {}
+		virtual void updateTo (ISVG*) {}
+		virtual void updateTo (ISVGFile*) {}
+		virtual void updateTo (IText*) {}
 		virtual void updateTo (IUrlIntermediateObject*) {}
+		virtual void updateTo (IVideo*) {}
 };
 typedef class libmapping::SMARTP<Updater>	SUpdater;
 
 class inscore_export ViewUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
+//			virtual void update (IObject*);
 };
 
 class inscore_export LocalMapUpdater : public Updater {
@@ -100,6 +104,7 @@ class inscore_export LocalMapUpdater : public Updater {
 class inscore_export SlaveMapUpdater : public Updater {
 	public:	virtual bool needupdate (IObject*);
 };
+
 class SigModified : public Updater
 {
 	public:
@@ -107,6 +112,7 @@ class SigModified : public Updater
 		virtual ~SigModified() {}
 		virtual bool needupdate (IObject*)		{ return true; }
 		virtual void updateTo (IGraphicSignal*);
+		virtual void updateTo (ISignalNode*);
 };
 
 /*!@} */

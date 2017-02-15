@@ -11,9 +11,9 @@ gray = 100;
 /ITL/scene/sync slave cursor;
 /ITL/scene/cursor date 0;
 
-!---------------------------------------------
-! comments
-!---------------------------------------------
+#---------------------------------------------
+# comments
+#---------------------------------------------
 /ITL/scene/title set txt "Reversing the synchronization scheme";
 /ITL/scene/title y -0.85;
 /ITL/scene/title scale 2;

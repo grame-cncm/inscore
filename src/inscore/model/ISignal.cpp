@@ -183,6 +183,8 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 }
 
 //--------------------------------------------------------------------------
+// sets the components of a signal
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 {
 	int msgsize = msg->size();
@@ -199,10 +201,10 @@ MsgHandler::msgStatus ISignal::set (const IMessage* msg)
 		}
 		else {								// ------------ a named signal
 			string name;
-			if ( msg->param(i, name)) {
-				SISignalNode sigs = getSignalNode();
+			if ( msg->param(i, name)) {					// get the signal name
+				SISignalNode sigs = getSignalNode();	// get the signal node for this object
 				subnodes siglist;
-				if (sigs && sigs->find(name, siglist)) {
+				if (sigs && sigs->find(name, siglist)) {	// and ask the signal node to look for the nameD signal
 					isignals.push_back(dynamic_cast<ISignal*>((IObject*)siglist[0]));
 				}
 				else {
@@ -236,6 +238,7 @@ MsgHandler::msgStatus ISignal::sizeMsg (const IMessage* msg)
 	}
 	return MsgHandler::kBadParameters;
 }
+
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISignal::resetMsg (const IMessage* msg)
 {

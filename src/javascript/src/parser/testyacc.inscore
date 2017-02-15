@@ -1,0 +1,35 @@
+
+# comment 1
+# ---------------------------------------------
+#---------------------------------------------
+# another commented line
+# followed by another one
+#---------------------------------------------
+
+<?javascript	a javascript section ?>
+a = toto;
+
+/test "a -> " $a;
+b = $a 10 20 30;
+/test "a after b-> " $a;
+
+/toto/*titi/{a,b}* hello world 10 0.3;
+./toto/*titi/{a,b}*  x 0.5;
+localhost:7000/toto/*titi/{a,b}* 20;
+192.168.1.21:7000/toto/*titi/{a,b}* ;
+
+/toto/titi hello $a $b ;
+
+/TOTO $a;
+/TITI $b;
+msg = (/A p1 p2, /B 0.1 500);
+/a/b watch toto (/a/b show 0, /b/a hello 10 10 );
+/A watch other $msg;
+/A eval $msg;
+
+__END__
+
+# un commentaire après la fin
+/une/adresse/qui/devrait/etre/ignoree ;
+
+

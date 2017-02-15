@@ -21,7 +21,8 @@ according to their time relations and on signals representation.
 
 The INScore Viewer has no user interface, it is intended to be 
 controled via OSC messages i.e. by any external application that 
-supports the OSC protocol (typically MaxMSP or Pure Data).
+supports the OSC protocol (typically MaxMSP or Pure Data) or more simply, 
+by drag and drop of inscore scripts to the application window.
 
 ======================================================
  Note about the Guido Font
@@ -61,8 +62,16 @@ Optionnal dependency:
 INScore was initiated in the Interlude project (http://interlude.ircam.fr), 
 funded by the French National Research Agency [ANR- 08-CORD-010].
 I would like to thank all the people who have been contributing 
-to INScore design and development, and especially Christophe Daudin, 
-Martin Carlé, Guillaume Gouilloux, Gabriel Lepetit-Aimon, Eric Ravel, Camille Le Roi.
+to INScore design and development, and especially:
+ Christophe Daudin, 
+ Sarah Denoux, 
+ Martin Carlé,
+ Guillaume Gouilloux,
+ Joachim Heintz,
+ Camille Le Roi,
+ Gabriel Lepetit-Aimon,
+ Arnaud Margaillan,
+ Eric Ravel.
 Many thanks also to the Interlude team - Frédéric Bevilacqua, Norbert Schnell, 
 Nicolas Rasamimanana, Emmanuel Fléty, Fabrice Guédy, Jean-Louis Frechin, 
 Uros Petrevski, Bernard Garabédian, Rémi Dury, Bruno Verbrugghe - who contributed

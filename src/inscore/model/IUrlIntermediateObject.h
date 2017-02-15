@@ -54,7 +54,10 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
 		virtual ~IUrlIntermediateObject();
     
         virtual MsgHandler::msgStatus set (const IMessage* msg );
-    
+
+		/// \brief override IObject method
+		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
+	
         /// \brief sets the type of file that this intermediate object momently replace
 		void setType(std::string type) {fType = type; }
     
@@ -69,13 +72,7 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
     
         /// \brief handles the case of failure ("error" message sent by the QFileDownloader if the download has failed)
 		virtual MsgHandler::msgStatus updateFileFailed(const IMessage* msg );
-    
-		/// \brief the \c 'watch' message handler
-		virtual MsgHandler::msgStatus _watchMsg(const IMessage* msg, bool add);
-    
-        virtual void evalEventMsg(const IMessageList * list);
-    
-    
+    	
         std::string fUrlPath;
         std::string fType; // the type of the object to be created once the data is ready
         QFileDownloader *    fDownloaderThread; // the thread called to download the data from the URL. Once done, it sends the appropriate msg

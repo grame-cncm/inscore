@@ -40,13 +40,31 @@ namespace inscore
 @{
 */
 
+class GraphicsRoundedRectItem : public QGraphicsRectItem
+{
+	public:
+				 GraphicsRoundedRectItem (QGraphicsItem* parent=Q_NULLPTR) : QGraphicsRectItem(parent), fXRadius(0), fYRadius(0) {}
+		virtual ~GraphicsRoundedRectItem () {}
+	
+		void	setXRadius (qreal r)	{ fXRadius = r; }
+		void	setYRadius (qreal r)	{ fYRadius = r; }
+		qreal	getXRadius () const		{ return fXRadius; }
+		qreal	getYRadius () const		{ return fYRadius; }
+
+	protected:
+		qreal	fXRadius;
+		qreal	fYRadius;
+		virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR);
+};
+
+
 //--------------------------------------------------------------------------
 /**
 *	\brief a graphic view of a IRect.
 */
 class VRectView: public VMappedShapeView
 {
-	MouseEventAble<QGraphicsRectItem>*  item() const			{ return (MouseEventAble<QGraphicsRectItem>*)fItem; }
+	MouseEventAble<GraphicsRoundedRectItem>*  item() const			{ return (MouseEventAble<GraphicsRoundedRectItem>*)fItem; }
 
 	public :
 		using VMappedShapeView::updateView;

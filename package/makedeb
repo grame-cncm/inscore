@@ -1,13 +1,13 @@
 
 arch	:= $(shell arch)
 debarch := $(shell dpkg --print-architecture)
-dist	:= ubuntu-14.04
+dist	:= Debian-8.6
 package := INScore-$(version)-$(dist)-$(arch).deb
 viewer	:= inscoreviewer
 lib	:= libINScore.so
-musicxml := /usr/local/lib/libmusicxml2.so.3.11
+musicxml := /usr/lib/libmusicxml2.so.3.11
 guidoar  := /usr/lib/libguidoar.so.1.00
-guidolib := /usr/lib/libGUIDOEngine.so.1.62
+guidolib := /usr/lib/libGUIDOEngine.so.1.63
 deplibs  := $(musicxml) $(guidoar) $(guidolib)
 sovers  := 1
 control := debian/DEBIAN/control

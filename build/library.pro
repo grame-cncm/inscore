@@ -6,8 +6,10 @@ TARGET = INScore
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = 1.19
+VERSION = 1.22
 CONFIG += c++11
+CONFIG += warn_off
+
 
 ############################## 
 # locations
@@ -24,11 +26,13 @@ win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets 
-QT += quick qml quickwidgets 
+QT += quick qml quickwidgets sensors
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
+greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_LESS_55}
+
 
 ############################## 
 # source and headers
@@ -75,9 +79,9 @@ INCLUDEPATH +=  $$GUIDOAR_PATH/include
 NOVIEW {
 	message ("Compiled with no view - remove CONFIG+=NOVIEW to change.")
 	DEFINES += NOVIEW
-	SOURCES  =  $$files($$SRC/VoidView/*.cpp)
-	HEADERS  =  $$files($$SRC/VoidView/*.h)
-	INCLUDEPATH  =  $$files($$SRC/VoidView)
+	SOURCES  +=  $$files($$SRC/VoidView/*.cpp)
+	HEADERS  +=  $$files($$SRC/VoidView/*.h)
+	INCLUDEPATH +=  $$files($$SRC/VoidView)
 } else {
     message ("Compiled with Qt view - add CONFIG+=NOVIEW to change to no view.")
 }
@@ -107,14 +111,14 @@ win32 {
 	}
 }
 !win32 {
-    QMAKE_CXXFLAGS += -Wno-deprecated-register -Wno-unused-parameter
+    QMAKE_CFLAGS_WARN_OFF = -Wno-deprecated-register -Wno-unused-parameter
 }
 
 ############################## 
 # macos x support
 ############################## 
 macx {
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -Wno-deprecated-register
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
 	CONFIG += lib_bundle explicitlib
 	QMAKE_INFO_PLIST = $$PWD/libInfo.plist

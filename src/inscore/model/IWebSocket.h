@@ -67,7 +67,6 @@ class IWebSocket : public IObject, public WebSocketInformer
 		VObjectView*	getView() const;
 		int				getPort () const			{ return fPort; }
 		int				getFrequency () const		{ return fFrequency; }
-		TParseEnv*		getParseEnv();
 
 	protected:
 		int fPort;			///< the web socket communnication port

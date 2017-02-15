@@ -48,6 +48,7 @@ class IScene;
 */
 class TFile
 {
+	std::string	fFile;
 	std::string	fFilePath;
 	bool		fPathChanged;
 	IScene*		fScene;
@@ -57,7 +58,8 @@ class TFile
 	
 	public:
 		/// \brief returns the path of the object file
-		const std::string&	getFile() const						{ return fFilePath; }
+		const std::string&	getFile() const						{ return fFile; }
+		const std::string&	getPath() const						{ return fFilePath; }
 
 		/// \brief set the path name \param path the new file path
 		virtual void		setFile(const std::string& path)	{ fFilePath = path; fPathChanged = true; }

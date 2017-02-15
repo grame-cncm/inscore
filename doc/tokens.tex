@@ -19,6 +19,7 @@ IPNUM          :  {DIGIT}+"."{DIGIT}+"."{DIGIT}+"."{DIGIT}+
 // allowed characters for identifiers
 IDENTIFIER     : [_a-zA-Z][_a-zA-Z0-9]*
 REGEXP           see OSC doc for regular expressions
+OSCADDRESS
 
 //_______________________________________________
 // strings
@@ -28,15 +29,14 @@ STRING          : ("/"|(".""."?"/")*)([^ \t\\/?:*><|"';=]+"/"?)+"."[_a-zA-Z0-9]+
                   quotes could be single (') or double quotes (")
 
 //_______________________________________________
-// languages support
+// scripting
 //_______________________________________________
 JSCRIPT        : <?javascript any javascript code ?>
-LUASCRIPT      : <?lua any lua code ?>
+VARIABLE       : the name of a name
 
 //_______________________________________________
 // misc.
 //_______________________________________________
-PATHSEP        : '/'
 POINT          : '.'
 VARSTART       : '$'
 COLON          : ':'
@@ -53,5 +53,30 @@ EVAL           : "eval"
 //_______________________________________________
 EXPRESSION    expr( a valid score expression )
               see 'Score expressions grammar'
+
+//_______________________________________________
+// math expressions
+//_______________________________________________
+ADD            : '+'
+DIV            : '/'
+EQ             : '=='
+GREATER        : '>'
+GREATEREQ      : '>='
+LESS           : '<'
+LESSEQ         : '<='
+MINUS          : '-'
+MODULO         : '%'
+MULT           : '*'
+NEG            : '!'
+QUEST          : ' ? '
+SUB            : '- '
+MAX            : '@max' 
+MIN            : '@min'
+
+VARIABLEPOSTDEC : $VAR--
+VARIABLEPOSTINC : $VAR++
+VARIABLEPREDEC  : --$VAR
+VARIABLEPREINC  : ++$VAR
+
 \end{verbatim}
 

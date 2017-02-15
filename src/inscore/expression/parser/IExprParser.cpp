@@ -47,7 +47,7 @@ IExprParser::IExprParser(std::istream* stream, const TScripting* reader)
 {
 	fRootNode = SIExprArg(0);
 	fColumnOffset = 0;
-	fLineOffset = 0;
+	fLineOffset = fLine = 0;
 	setlocale(LC_NUMERIC, "C");
 	initScanner();
 }
@@ -80,10 +80,8 @@ bool IExprParser::parseExpression(std::string definition, SIExpression &expr, co
 }
 
 //--------------------------------------------------------------------------
-std::vector<string> *IExprParser::readVar(std::string* varName){
+std::vector<string> *IExprParser::readVar(std::string* varName, int line){
 	std::vector<std::string>* l = new std::vector<std::string>();
-
-	std::string defValue = "$" + *varName;
 
 #ifndef NO_EXPR_VAR_SUPPORT
 	if(!fReader){
@@ -92,7 +90,7 @@ std::vector<string> *IExprParser::readVar(std::string* varName){
 	}
 
 
-	IMessage::argslist list =  fReader->resolve(varName->c_str(), defValue.c_str());
+	IMessage::argslist list =  fReader->resolve(varName->c_str(), line);
 
 	for (unsigned int i = 0; i < list.size(); ++i) {
 		if(list.at(i)->isType<std::string>())

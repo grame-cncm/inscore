@@ -3,6 +3,7 @@
 -odac -m128
 </CsOptions>
 <CsInstruments>
+ksmps = 32
 
 ;set send and receive ports
 giSendPort =          7000 ;from Csound to Inscore
@@ -21,11 +22,11 @@ giGetErr   OSCinit    giErrPort
   instr ReceiveInscoreOutput
 ;delete previous contents in /ITL/scene on localhost
 Sdelmsg    sprintf    "/ITL/scene/%s","*"
-           OSCsend    1,"", giSendPort, Sdelmsg, "s", "del"
+           OSCsend    1,"localhost", giSendPort, Sdelmsg, "s", "del"
 ;send text
-           OSCsend    1,"", giSendPort, "/ITL/scene/text", "sss", "set", "txt", "Drag file 'GetPorts.inscore'\nhere and watch\nCsound's output console!"
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/text", "sss", "set", "txt", "Drag file 'GetPorts.inscore'\nhere and watch\nCsound's output console!"
 ;scale (enlarge)
-           OSCsend    1,"", giSendPort, "/ITL/scene/text", "sf", "scale", 4
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/text", "sf", "scale", 4
 gSmess     =          ""
 ;get message from inscore when file is dragged
 kInPort, kOutPort, kErrPort init 0
@@ -49,11 +50,11 @@ Smess      sprintf    "Message from Inscore:\nIP Address =  %s\nInput Port =  %d
   instr ReceiveInscoreErrors
 ;delete previous contents in /ITL/scene on localhost
 Sdelmsg    sprintf    "/ITL/scene/%s","*"
-           OSCsend    1,"", giSendPort, Sdelmsg, "s", "del"
+           OSCsend    1,"localhost", giSendPort, Sdelmsg, "s", "del"
 ;send new text
-           OSCsend    1,"", giSendPort, "/ITL/scene/text", "sss", "set", "txt", "Now drag file\n'GetError.inscore'\nhere and watch\nCsound's output console!"
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/text", "sss", "set", "txt", "Now drag file\n'GetError.inscore'\nhere and watch\nCsound's output console!"
 ;scale (enlarge)
-           OSCsend    1,"", giSendPort, "/ITL/scene/text", "sf", "scale", 4
+           OSCsend    1,"localhost", giSendPort, "/ITL/scene/text", "sf", "scale", 4
 gSerror1   =          ""
 gSerror2   =          ""
 kGotIt     OSClisten  giGetErr, "error:", "s", gSerror1

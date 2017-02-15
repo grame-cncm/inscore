@@ -31,20 +31,9 @@
 #include "BundleLog.h"
 
 #include "ScriptsParser.h"
-#include "TParseEnv.h"
 
 namespace ibundle{
 
-
-class BParseEnv : public inscore::TParseEnv {
-	inscore::TJSEngine fJavascriptEngine;
-	public:
-				 BParseEnv () { fJavascriptEngine.Initialize(); }
-		virtual ~BParseEnv() {}
-		inscore::TJSEngine*	getJSEngine()	{ return &fJavascriptEngine; }
-		inscore::TLua*		getLUAEngine()	{ return 0; }
-
-};
 
 
 bool ScriptsParser::read(std::string inputFile, ParsedData &result, const std::string& defaultRootPath, bool parseJS, BundleLog* log, const bool& verbose)
@@ -148,7 +137,8 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 			return false;
 		}
 		std::stringstream* ss = new std::stringstream;
-		*ss<<data.toStdString();
+//		*ss<< data.toStdString();
+		*ss<< data.data();
 		ifs = ss;
 	}else{
 		std::ifstream* fileStream = new std::ifstream(inputFile.c_str());
@@ -160,18 +150,14 @@ bool ScriptsParser::parseScript(std::string inputFile, SIMessageList &msgs)
 		ifs= fileStream;
 	}
 
-	BParseEnv penv;
-	inscore::ITLparser p(ifs, 0, &penv);
-	msgs = p.parse();
-
+	inscore::ITLparser p(ifs, 0, 0);
+	bool ret = p.parse();
 	delete ifs;
 
-	if(!p.fParseSucceed){
-		if(fLog) fLog->error("\""+inputFile+"\" is an incorrect INScore script.");
-		return false;
-	}
-
-	return true;
+	if(ret)
+		msgs = p.messages();
+	else if(fLog) fLog->error("\""+inputFile+"\" is an incorrect INScore script.");
+	return ret;
 }
 
 //______________________________________________

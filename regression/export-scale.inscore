@@ -10,7 +10,7 @@
 /ITL/scene/rect/sr/ssr color 200 200 255;
 /ITL/scene/rect/sr/ssr scale 2.0;
 
-!/ITL/scene watch endPaint (	/ITL/scene/rect export "rect.pdf" children) ;
+#/ITL/scene watch endPaint (	/ITL/scene/rect export "rect.pdf" children) ;
 
 /ITL/scene/comment set txt "No scaling for the exported object";
 /ITL/scene/comment scale 2.;

@@ -31,6 +31,7 @@
 #include "VObjectView.h"
 #include "TMapMsgHandler.h"
 #include "TVariety.h"
+#include "Events.h"
 
 #include "imapreader.h"
 #include "long_to_rational_reader.h"
@@ -49,11 +50,10 @@ const string IVideo::kVideoType("video");
 
 //--------------------------------------------------------------------------
 IVideo::IVideo( const std::string& name, IObject * parent ) 
-	: IRectShape (name, parent), TFile (parent->getScene())
+	: IMedia (name, parent)
 {	
 	fTypeString = kVideoType;
-	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
-	
+
 	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
 	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
 	
@@ -68,37 +68,6 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 void IVideo::accept (Updater* u)
 {
 	u->updateTo (SIVideo(this));
-}
-
-//--------------------------------------------------------------------------
-void IVideo::setFile(const std::string& path)
-{
-	TFile::setFile(path);
-
-	ifstream file;
-	file.open (path.c_str(), ifstream::in);
-	if (file.is_open())
-		file.close();
-	else
-	{
-		const char* msg = "can't open video file :"; 
-		cerr << msg << path << endl;
-		oscerr << OSCErr() << msg << path << OSCEnd();
-	}
-}
-
-//--------------------------------------------------------------------------
-MsgHandler::msgStatus IVideo::set (const IMessage* msg )
-{ 
-	MsgHandler::msgStatus status = IObject::set(msg);
-	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
-
-	status = TFile::set( msg );
-	if (status & MsgHandler::kProcessed) {
-		newData(true);
-		getView()->initialize(this);
-	}
-	return status;
 }
 
 //----------------------------------------------------------------------
@@ -168,29 +137,11 @@ MsgHandler::msgStatus IVideo::videoMapFileMsg (const IMessage* msg )
 IVideo::Date2SecondMappingConverter::Date2SecondMappingConverter( SFloat2RelativeTimeMapping map )
 {
 	fMapping = map;
-
-//	fMapping = TVirtualRelation<FloatSegment,RelativeTimeSegment>::create();
-//	Float2RelativeTimeRelation::const_directIterator i;
-//		
-//	for ( i = map->begin() ; i != map->end() ; i++ )
-//	{
-//		for ( unsigned int j = 0 ; j < i->second.size() ; j++ )
-//		{
-//			fMapping->addRelation( i->first , i->second[j] );
-//		}
-//	}
 }
 
 //----------------------------------------------------------------------
 float IVideo::Date2SecondMappingConverter::convert(const rational& r) const
 {
-//	RelativeTimeSegment timeSeg(r,r + rational(1,1));
-//	std::vector<FloatSegment> list;
-//	fMapping->reverseRelation( timeSeg , list );
-//	if ( list.size() )
-//		return list[0].start();
-//	else return 0;
-
 	RelativeTimeSegment t = MapTools::find (r, fMapping->reverse());// get the time segment containing the date r
 	std::set<FloatSegment> dates = fMapping->reverse().get(t);
 	float date = -1;
@@ -199,11 +150,6 @@ float IVideo::Date2SecondMappingConverter::convert(const rational& r) const
 		TAXBFunction<rational> f(t.interval(), pos);		// computes the linear interpolation function that goes from t to pos
 		TSegmentVariety<float,1> v (*dates.begin(), &f);	// create a variety of this segment using the previous linear interpolation function
 		date = v.get( f(r) );								// x is now the variety x pos et date relative pos regarding f
-
-
-//		float ratio = MapTools::relativepos(r, t.interval());		// get the relative position of date within the time segment
-//		const FloatInterval& i = dates.begin()->interval();
-//		date = i.first() + i.size() * ratio;
 	}
 	return date;
 }

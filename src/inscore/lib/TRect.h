@@ -69,9 +69,13 @@ template<typename T> class TPoint
 		TPoint<T> operator / ( const TPoint<T>& p ) const { return TPoint<T>( fX / p.fX , fY / p.fY ); }
 
 		TPoint<T> operator == ( const TPoint<T>& p ) const	{ return ( (fX == p.fX ) && ( fY == p.fY )); }
-		
+		TPoint<T> operator != ( const TPoint<T>& p ) const	{ return ( (fX != p.fX ) || ( fY != p.fY )); }
+	
 		void	  operator += ( const TPoint<T>& p)			{ (*this) = (*this) + p; }
 		void	  operator -= ( const TPoint<T>& p)			{ (*this) = (*this) - p; }
+
+		T		distance( const TPoint<T>& p) const			{ T x = fX - p.x(); T y = fY - p.y();
+															  return T(sqrt((x*x) + (y*y))); }
 
  		/// check for 0,0 TPoint
 		operator bool () const	{ return (fX != 0) || (fY != 0); }

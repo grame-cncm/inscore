@@ -1,7 +1,7 @@
-!-------------------------------------------------------
-! user interface setup
-! buttons + associated messages
-!-------------------------------------------------------
+#-------------------------------------------------------
+# user interface setup
+# buttons + associated messages
+#-------------------------------------------------------
 /ITL/scene/startbutton set img "rsrc/start.png";
 /ITL/scene/startbutton z 1.0;
 /ITL/scene/stopbutton set img "rsrc/stop.png";

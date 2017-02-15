@@ -127,6 +127,8 @@ double QGraphicsGraphItemRadial::drawSignal( ParallelSignal * sig, QPainter * pa
 //--------------------------------------------------------------------------
 void QGraphicsGraphItemRadial::paint( QPainter * painter, const QStyleOptionGraphicsItem *, QWidget * )
 {
+	if (!fSignals) return;
+
 	QRectF bb = boundingRect();
 	unsigned short size = signal()->size();
 	const float k = 2*kPI;

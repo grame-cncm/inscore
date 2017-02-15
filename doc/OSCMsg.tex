@@ -1,8 +1,10 @@
 
 \documentclass[a4paper,twoside]{report}
 \usepackage{INScore}
-\usepackage{pslatex}
 \usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+\usepackage{pslatex}
+\usepackage{times}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{amssymb}
@@ -42,7 +44,9 @@
 \newcommand{\values}[1]		{\texttt{#1}}
 \newcommand{\oldexample}	{\hspace*{1cm}}
 \newcommand{\example}		{\textbf{\hspace{-1.5cm}\textbf{\textsc{Example }}}}
-\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-1.03cm}\textbf{\textsc{Note #1}}}}
+\newcommand{\note}	[1]		{\vspace{2mm}\textbf{\hspace{-0.9cm}\textbf{\textsc{Note #1}}}}
+\newcommand{\warning}[1]	{\vspace{2mm}\textbf{\hspace{-1.5cm}\textbf{\textsc{Warning #1}}}}
+
 \renewcommand{\seealso}		{\textbf{See also: }}
 
 \newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
@@ -76,7 +80,6 @@
 								\end{minipage}}\end{center}}
 \newcommand{\sampleindent}	{ \hspace{0.5cm} }
 
-\newcommand{\warning}[1]	{\textbf{\textsc{Warning:}} #1}
 
 \makeatother
 \makeindex
@@ -84,7 +87,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.19}
+\title{INScore \\ OSC Messages Reference \\v.1.22}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -102,7 +105,7 @@
 {\small The GUIDOEngine}  					& {\small \url{http://guidolib.sf.net}} \\
 {\small The IRCAM Gesture Follower} 		& {\small \url{http://imtr.ircam.fr/imtr/Gesture_Follower}} \\
 {\small The GRAME Faust Compiler} 		& {\small \url{http://faust.grame.fr}} \\
-{\small The Qt5 cross-platform application and UI framework} & {\small \url{http://qt-project.org/qt5}}
+{\small The Qt5 cross-platform application and UI framework} & {\small \url{https://www.qt.io/}}
 \end{tabular}
 \end{table}%
 
@@ -244,6 +247,7 @@ commonMsg :  ('show' int32)
 			| ColorMsg
 			| TimeMsg
 			| WatchMsg
+			| EventMsg
 \end{rail}
 \index{Common messages!show}
 \index{Common messages!del}
@@ -272,6 +276,7 @@ When the destination file is not completely specified (second form or missing ex
 \item 'ColorMsg' are absolute and relative color control messages.
 \item 'TimeMsg' are time management messages. They are described in section \fullref{time}.
 \item 'WatchMsg' are described in section \fullref{interaction}.
+\item 'EventMsg' are described in section \fullref{eventMsg}.
 %\item 'clickSelectMsg' are provided to query objects relative positions.
 \end{itemize}
 
@@ -433,7 +438,7 @@ Rotating an object graphic on the \OSC{z} axis.
 \note{} \OSC{angle} and \OSC{rotatez} are equivalent. \OSC{angle} has been introduced before the transformation messages and is maintained for compatibility reasons.
 
 %-------------------------------
-%:Color messages
+%:    Color messages
 \sublevel{Color messages}
 \label{colormsg}
 
@@ -477,7 +482,7 @@ colorvalue :    int32 | float32
 The value may be specified as integer or float. The data range is given in table \ref{colorrange}.
 When the alpha component is not specified, the color is assumed to be opaque. 
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \begin{center}
 \begin{tabular}{|r|c|c|}
 \hline
@@ -569,7 +574,7 @@ Moving a color in the RGBA space:
 
 
 %-------------------------------
-%:  Pen control
+%:    Pen control
 \sublevel{Pen control}
 
 Pen messages accepted by all the components and result in 2 different behaviors:
@@ -618,7 +623,7 @@ Setting a rectangle border width and color:
 }
 
 %-------------------------------
-%:  'effect' messages
+%:    The 'effect' messages
 \sublevel{The 'effect' messages}
 \label{effectmsg}
 
@@ -687,6 +692,37 @@ The blur radius should be given as an int32 value. By default, the blur radius i
 Setting a shadow effect on \OSC{myObject}. \\
 The shadow offset is (10,10) pixels, the color is a transparent grey (100,100,100, 50) and the blur is 8 pixels.
 \sample{/ITL/scene/myObject effect shadow 10 10 100 100 100 50 8;}
+
+%-------------------------------
+%:    The 'edit' message
+\sublevel{The 'edit' message}
+\label{editmsg}
+
+The \OSC{edit} message opens a small editor that allows to edit the target object attributes.
+
+\begin{rail}
+effectMsg : 'edit' ( [1] | 
+					 [2] ( attributes +) )
+\end{rail}
+\index{Common messages!edit}
+
+\begin{itemize}
+\item \textbf{1}: without argument, the editor is initalized with all the target object attributes only.
+\item \textbf{2}: using a list of attributes, the editor is initalized with the target object corresponding attributes.
+\end{itemize}
+
+Each object maintains the current content of the editor, that is initialized at first \OSC{edit} message or when this content is cleared. Successive call to \OSC{edit} will preserve the editor content unless it is cleared.
+
+\note Since the editor preserves its content, it doesn't take account of changes that may result from received messages and thus may not reflect the target object changes. To synchronize the editor content with the current attributes values, you can clear the editor content, which will refresh the attributes to their current values.
+
+\note Although initialized with the target object attributes, the editor supports arbitrary INScore messages, i.e. addressed to any other object or even making use of extended OSC addresses.
+
+\example \\
+Editing an object on double click:
+\sample{/ITL/scene/myObject watch doubleClick (/ITL/scene/myObject edit);}
+Editing some specific attributes:
+\sample{/ITL/scene/myObject watch doubleClick (/ITL/scene/myObject edit x y);}
+
 
 
 %===============================
@@ -945,6 +981,7 @@ setMsg : 'set' (
 	('ellipse' width height) |
 	('polygon' ( (x y) +)) |
 	('curve' ((x1 y1 x2 y2 x3 y3 x4 y4) +)) |
+	('arc' width height startAngle endAngle) |
 	('line' ('xy' x y | 'wa' width angle)) |
 )
 \end{rail}
@@ -954,6 +991,7 @@ setMsg : 'set' (
 \index{Set type!ellipse}
 \index{Set type!polygon}
 \index{Set type!curve}
+\index{Set type!arc}
 \index{Set type!line}
 
 \begin{itemize}
@@ -963,6 +1001,7 @@ setMsg : 'set' (
 \item \OSC{ellipse}: an ellipse specified by a width and height.
 \item \OSC{polygon}: a polygon specified by a sequence of points, each point being defined by its (x,y) coordinates. The coordinates are expressed in the \OSC{scene} coordinate space, but only the relative position of the points is taken into account (\emph{i.e} a polygon A = \{ (0,0) ; (1,1) ; (0,1) \} is equivalent to a polygon B = \{ (1,1) ; (2,2) ; (1,2) \}).
 \item \OSC{curve}: a sequence of 4-points bezier cubic curve. If the end-point of a curve doesn't match the start-point of the following one, the curves are linked by a straight line. The first curve follows the last curve. The inner space defined by the sequence of curves is filled, using the object color. The points coordinates are handled like in a \OSC{polygon}.
+\item \OSC{arc}: an arc defined by its enclosing rectangle and the start and end angles. Angles are in degrees and express counter-clockwise directions.
 \item \OSC{line}: a simple line specified by a point (x,y) expressed in \OSC{scene} coordinate space or by a width and angle. The point form is used to compute a line from (0,0) to (x,y), which is next drawn centered on the scene.
 \end{itemize}
 
@@ -1110,7 +1149,7 @@ setFile :
 
 \seealso the application \OSC{rootPath} message (section \fullref{ITL}) for file based objects.
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{File extensions supported by the \OSC{file} translation scheme.}
 \begin{center}
 \begin{tabular}{|r|c|}
@@ -1285,8 +1324,8 @@ Querying the \OSC{width} and \OSC{height} of any object is always supported, pro
 
 
 %-------------------------------
-%:  Symbolic score management
-\sublevel{Symbolic score management}
+%:  Symbolic score 
+\sublevel{Symbolic score}
 \label{gmnpage}
 
 The following messages are accepted by the components types \OSC{gmn | gmnstream | gmnf}. 
@@ -1347,8 +1386,8 @@ Writing a score in 3 steps:
 
 
 %-------------------------------
-%:  piano roll management
-\sublevel{Piano roll management}
+%:  piano roll 
+\sublevel{Piano roll}
 \label{pianoroll}
 
 The following messages are accepted by the components types \OSC{pianoroll | pianorollstream | pianorollf}.
@@ -1413,11 +1452,71 @@ Writing a pianoroll in 3 steps:
 }
 
 %-------------------------------
-%:  svg
+%:  Video
+\sublevel{Video}
+\label{video}
+
+A video object has an own internal time and duration that is independant from the INScore time and duration. 
+This video time is controlled using specific messages.
+
+\begin{rail}
+video :	'play' int32
+		| volume float32
+		| rate   float32
+		| vdate  ( [1] int32 | [2] (int32 int32) | [3] float)
+\end{rail}
+\index{Specific messages! video! play}
+\index{Specific messages! video! volume}
+\index{Specific messages! video! rate}
+\index{Specific messages! video! vdate}
+
+\begin{itemize}
+\item \OSC{play} start or stop playing the video. Default value is 0. 
+\item \OSC{volume} sets the audio volume of the video. Default and maximum value is 1.
+\item \OSC{rate} sets the video playing rate. Default value is 1.
+\item \OSC{vdate} sets the current video frame. Default value is 0. Arguments are the following:
+\begin{itemize}
+\item \textbf{1} : a value in milliseconds. 
+\item \textbf{2} : a musical time expressed as a rational. Note that musical time is converted to milliseconds using a tempo value of 60. 
+\item \textbf{3} : a musical time expressed as a float. 
+\end{itemize}
+The video position may be updated while the video is playing.
+\end{itemize}
+
+A video object supports also specific queries: 
+\begin{rail}
+videoget :	'mls'
+			| 'vduration'
+\end{rail}
+\index{Specific messages! video! vduration}
+
+\begin{itemize}
+\item \OSC{mls} gives the video absolute duration in milliseconds.
+\item \OSC{vduration} gives the video duration in musical time. The returned value is a rational computed using the current rate, according to a tempo value of 60.
+\end{itemize}
+
+A video object supports specific events (see section \fullref{typespecevents} for more details). 
+\\
+
+\example \\
+Playing a video at half speed:
+\sample{/ITL/scene/video set video "Video.mp4"; \\
+/ITL/scene/video rate 0.5;\\
+/ITL/scene/video play 1";
+}
+
+\note \\
+Depending on the video encoding and on the platform renderer, setting the video current position using the \OSC{vdate} message may be aligned to key frames.
+\\
+Supported video formats are highly dependent on the platform, as well as the video specific features (e.g. setting the playing rate that may or may not be supported, or may behave differently).  
+
+
+%-------------------------------
+%:  SVG Objects
 \sublevel{SVG Objects}
 \label{svgobjects}
 
-The following message is accepted by the components types \OSC{svg | svgf}.
+The following message is accepted by the SVG components (types \OSC{svg | svgf}).
 
 \begin{rail}
 svgMsg :		'animate' int32
@@ -1433,6 +1532,53 @@ svgMsg :		'animate' int32
 
 \note\\
 SVG objects are rendered using the Qt SVG Renderer and suffer the Qt limitations. For example and with Qt 5.5, xlinks are not supported.
+
+
+%-------------------------------
+%:  Rectangles
+\sublevel{Rectangles}
+\label{rectobjects}
+
+Rectangles (type \OSC{rect}) accept a \OSC{radius} message that can be used to draw rounded rectangles.
+\begin{rail}
+radiusMsg :		'radius' float32 float32
+\end{rail}
+\index{Specific messages! rect! radius}
+
+\begin{itemize}
+\item \OSC{radius}: followed by 2 values that specify the radius on the x and y axis (default is 0 0). The values express a percentage of the object dimensions, thus the value's range is [0, 100].
+\end{itemize} 
+
+
+%-------------------------------
+%:  Arcs
+\sublevel{Arcs}
+\label{arcobjects}
+
+Arcs are portion of ellipses.
+Although an arc is specified by it's \OSC{set} message, it supports additional messages to control the start angles and the arc extension individually. An additional \OSC{close} message affects the drawing of the arc.
+\begin{rail}
+arcMsg :	  'start' 	float32 
+			| 'range' 	float32 
+			| 'dstart'  float32 
+			| 'drange' 	float32 
+			| 'close'	int32
+\end{rail}
+\index{Specific messages! arc! start}
+\index{Specific messages! arc! range}
+\index{Specific messages! arc! dstart}
+\index{Specific messages! arc! drange}
+\index{Specific messages! arc! close}
+
+\begin{itemize}
+\item \OSC{start}: 	set the start angle of the arc.
+\item \OSC{range}: 	set the arc extension in degrees counter-clockwise.
+\item \OSC{dstart}: move the start angle of the arc from the value given as parameter.
+\item \OSC{drange}: move the arc range from the value given as parameter.
+\item \OSC{close}: 	by default, only the curve of an arc is drawn. When the \OSC{close} attribute is set, lines from the arc borders to the center of the ellipse are also drawn. The \OSC{close} parameter is read as a boolean value.
+\end{itemize} 
+Angles are in degrees and express counter-clockwise directions.
+
 
 %-------------------------------
 \sublevel{The 'grid' object}
@@ -1584,6 +1730,7 @@ Application messages are accepted by the static OSC address \OSC{/ITL}.
 \begin{rail}
 ITLMsg : 'quit' 
 		| ('rootPath' path) 
+		| ('preprocess' file) 
 		| ('mouse' ('show' | 'hide'))
 		| ('defaultShow' int32)
 		| ('load' filePath)
@@ -1597,6 +1744,7 @@ ITLMsg : 'quit'
 		| forwardingMsg
 \end{rail}
 \index{ITL messages!rootPath}
+\index{ITL messages!preprocess}
 \index{ITL messages!mouse}
 \index{ITL messages!defaultShow}
 \index{ITL messages!load}
@@ -1612,6 +1760,8 @@ ITLMsg : 'quit'
 \item \OSC{quit}: requests the client application to quit.
 
 \item \OSC{rootPath}: \emph{rootPath} of an INScore application is the default path where the application reads or writes a file when a relative path is used for this file. The default value is the user home directory. Sending the \OSC{rootPath} message without parameter resets the application path to its default value.
+
+\item \OSC{preprocess}: evaluates the input file script and print the result to the log window.
 
 \item \OSC{mouse}: hide or show the mouse pointer.
 
@@ -1774,11 +1924,13 @@ ITLLog : 'show'  int32
 		| 'wrap' int32
 		| 'write' (arg +)
 		| 'save' string
+		| 'level' int32
 \end{rail}
 \index{ITL log!show}
 \index{ITL log!clear}
 \index{ITL log!wrap}
 \index{ITL log!save}
+\index{ITL log!level}
 
 \begin{itemize}
 \item \OSC{show} show or hides the console. The parameter is a boolean value.
@@ -1787,6 +1939,12 @@ ITLLog : 'show'  int32
 \item \OSC{wrap} control line wrapping of the console. The parameter is a boolean value.
 \item \OSC{write} write the \OSC{arg} list formatted as a string to the log window.
 \item \OSC{save} save the current log content to a file. The parameter is a file name. When expressed as a relative path, the file is saved under the current application root path.
+\item \OSC{level} set the log level. Expected values are: 
+\begin{itemize}
+\item 0 : no log
+\item 1 : log errors (default value)
+\item 2 : log errors and output of \OSC{get} messages
+\end{itemize}
 \end{itemize}
 
 
@@ -1825,6 +1983,7 @@ sceneMsg :  'new'
 			| 'reset'
 			| 'foreground'
 			| ('rootPath' ( path | )) 
+			| ('preprocess' file) 
 			| ('load' filePath)
 			| ('fullscreen' int32)
 			| ('frameless' int32)
@@ -1838,6 +1997,7 @@ sceneMsg :  'new'
 \index{Scene messages!del}
 \index{Scene messages!foreground}
 \index{Scene messages!rootPath}
+\index{Scene messages!preprocess}
 \index{Scene messages!load}
 \index{Scene messages!reset}
 \index{Scene messages!fullscreen}
@@ -1850,6 +2010,7 @@ sceneMsg :  'new'
 \item \OSC{reset}: clears the scene (i.e. delete all components) and resets the scene to its default state (position, size and color).
 \item \OSC{foreground}: display scene window in foreground of all other windows in the system windows manager.
 \item \OSC{rootPath}: \emph{rootPath} of a scene is the default path where the scene reads or writes a file when a relative path is used for this file. When no value has been specified, the application  \emph{rootPath} is used. Calling \OSC{rootPath} without argument clears the scene \emph{rootPath}.
+\item \OSC{preprocess}: evaluates the input file script and print the result to the log window.
 \item \OSC{load}: loads an INScore file to the scene. Note that the OSC addresses are translated to the scene OSC address.
 %\item \OSC{foreground}: put the scene to foreground.
 \item \OSC{fullscreen}: requests the scene to switch to full screen or normal screen.  The parameter is interpreted as a boolean value. Default value is \values{0}.
@@ -1938,8 +2099,8 @@ and to \OSC{host4.adomain.org} on port number 5100.
 \sample{/ITL/scene1 forward host1.adomain.org host2.adomain.org:5100;}
 
 %===============================
-%:  Filtering messages forwarding
-\sublevel{Filtering messages forwarding}
+%:  Filters
+\sublevel{Filters}
 \label{ITLFilteringForward}
 
 The messages forwarded to arbitrary remote hosts using the \OSC{forward} message can be filtered to send only wanted messages. The static \OSC{filter} node is use manage the filter. A static \OSC{filter} node is created for each scene and one at application level. The filter can be construct with OSC address and messages. 
@@ -2114,7 +2275,7 @@ The specified \OSC{map} can be named with an optional \OSC{mapName} string; this
 The \OSC{del} command deletes the mapping specified with \OSC{mapName}, or the \emph{'empty name'} mapping if no map name is specified.
 
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{Local segmentation type for each component}
 \begin{center}
 \begin{tabular}{|r|l|}
@@ -2353,21 +2514,23 @@ Synchronizing two objects, aligning the slave duration to the corresponding mast
 \sample{/ITL/scene/sync mySlave myMaster hv ;}
 
 
-\subsublevel{Controlling the slave \OSC{y} position}
-
+\subsublevel{Controlling the slave position}
+\label{syncPos}
 \begin{rail}
-syncPos : 'syncOver' | 'syncTop' | 'syncBottom'
+syncPos : 'syncOver' | 'syncTop' | 'syncBottom' | 'syncFrame'
 \end{rail}
 \index{Synchronization!syncPos}
 \index{Synchronization!syncPos!syncOver}
 \index{Synchronization!syncPos!syncTop}
 \index{Synchronization!syncPos!syncBottom}
+\index{Synchronization!syncPos!syncFrame}
 
 The synchronization position mode has the following effects on the slave \values{y} position:
 \begin{itemize}
 \item \OSC{syncOver}: the center of the slave is aligned to the master center.
 \item \OSC{syncTop}: the bottom of the slave is aligned to the top of the master.
 \item \OSC{syncBottom}: the top of the slave is aligned to the bottom of the master.
+\item \OSC{syncFrame}: used to browse the master frame (see the next section).
 \end{itemize}
 The default position mode is \OSC{syncOver}. The \OSC{y} attribute of the slave remains available to displacement (\OSC{dy}). 
 
@@ -2377,6 +2540,14 @@ The \values{y} position of a synchronized object remains a free attribute. To co
 \example \\
 Synchronizing two objects, aligning the slave duration to the corresponding master space, the slave being below the master map:
 \sample{/ITL/scene/sync mySlave myMaster h syncBottom;}
+
+
+\subsublevel{The syncFrame mode}
+\label{syncFrame}
+
+When the \OSC{syncFrame} mode is used, the slave is placed on the frame of the master. Typically, this frame corresponds to the object bounding box that is also the object default mapping. For ellipses, arcs, lines, polygons, the frame corresponds to the border of the object. The frame duration is the object duration.  
+
+Mappings and stretch options are ignored in  \OSC{syncFrame} mode.
 
 
 %===============================
@@ -2609,7 +2780,7 @@ A graphic signal is the graphic representation of a set of parallel signals. It 
 \end{figure}
 
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{HSBA color values.}
 \begin{center}
 \begin{tabular}{|r|cl|}
@@ -2670,7 +2841,7 @@ Creating a signal and its graphic representation:
 \subsublevel{Graphic signal default values.}
 As mentionned above, a graphic signal expects to be connected to parallel signals having at least an \values{y} component, a graphic thickness component and HSBA components. Thus, from graphic signal viewpoint, the expected dimension of a signal should be equal or greater than 6. In case the \OSC{signalIdentifier} dimension is less than 6, the graphic signal will use the default values defined in table \ref{gsigdefault}.
 
-\begin{table}[htdp]
+\begin{table}[htbp]
 \caption{Graphic signal default values.}
 \begin{center}
 \begin{tabular}{|r|cl|}
@@ -2719,14 +2890,22 @@ Creating parallel graphic signals:
 Using data projection may be convenient when the input signal represents interleaved data. For example, the projection string \OSC{[n\~{}6]} distribute data over similar components of a set of graphic signals, where \OSC{n} represents the index of the graphic signal target component.
 
 
+
+%===============================
+%:Sensors
+\input{Sensors/sensors.tex}
+
+
 %===============================
 %:Events and Interaction
 \toplevel{Events and Interaction}
 \label{interaction}
 
-Interaction messages are user defined messages associated to events and triggered when these events occur. These messages accept variables as message arguments.
+Interaction messages are user defined messages associated to \textit{events} and triggered when these events occur. These messages accept variables as message arguments.
 
-The general form of the message is the following:
+\textit{Events} are typical user interface events (mouse or touch events), extended in the time domain and to specific objects or engine properties. Starting from INScore version 1.20, the modification of any object attribute may be viewed as an event and user defined events have also been introduced (see section \fullref{attributeevents} for more details). 
+
+The general form of the message to \textit{watch} an event is the following:
 \begin{rail}
 interactMsg : (('watch' | 'watch+')  ([1] | 
 					what  ( [2] 
@@ -2766,10 +2945,11 @@ An extended address to send messages to \OSC{localhost} on port \OSC{12000}:
 \sample{localhost:12000/your/osc/address;}
 
 %===============================
-%:    Events
-\sublevel{Events}
+%:    Internal events
+\sublevel{Internal events}
 \label{defevents}
 
+Internal events are triggered by the user interaction (mouse or touch events) or by the engine internal functionning.
 
 %===============================
 %:       Mouse events
@@ -2778,7 +2958,7 @@ An extended address to send messages to \OSC{localhost} on port \OSC{12000}:
 
 User interface events are typical mouse events:
 \begin{rail}
-what : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
+mouseEvent : 'mouseDown' | 'mouseUp' | 'mouseEnter' | 'mouseLeave' | 'mouseMove' | 'doubleClick' 
 \end{rail}
 \index{Interaction!Events!mouseDown}
 \index{Interaction!Events!mouseUp}
@@ -2814,7 +2994,7 @@ Simulating a mouse down at position 10, 10 :
 \label{touchevents}
 Depending on the display device, multi-touch events are supported by INScore :
 \begin{rail}
-touch : 'touchBegin' | 'touchEnd' | 'touchUpdate' 
+touchEvent : 'touchBegin' | 'touchEnd' | 'touchUpdate' 
 \end{rail}
 \index{Interaction!Events!touchBegin}
 \index{Interaction!Events!touchEnd}
@@ -2829,7 +3009,7 @@ A typical sequence of generated events consists in a \OSC{touchBegin} event, fol
 
 Events are also defined on the time domain:
 \begin{rail}
-what : 	'timeEnter' time time | 'timeLeave' time time 
+timeEvent : 	'timeEnter' time time | 'timeLeave' time time 
 		| 'durEnter' time time | 'durLeave' time time 
 \end{rail}
 \index{Interaction!Events!timeEnter}
@@ -2856,7 +3036,7 @@ An object that moves a score to a given page number when it enters its time zone
 \OSC{url} objects (i.e. intermediate objects for URL based objects (see section \fullref{filebasedrsrc}) support specific events, intended to reflect the transaction state:
 
 \begin{rail}
-what : 	'success'  
+urlEvent : 	'success'  
 		| 'error'
 		| 'cancel'
 \end{rail}
@@ -2885,18 +3065,15 @@ Triggering an error message in case of failure :
 \label{miscevents}
 
 \begin{rail}
-what : 	  'export'
+miscEvent : 	  'export'
 		| 'newData'
-		| 'del'
 \end{rail}
 \index{Interaction!Events!export}
 \index{Interaction!Events!newData}
-\index{Interaction!Events!del}
 
 \begin{itemize}
 \item the \OSC{export} event is supported by all the components. It is triggered after an export message has been handled and could be used to simulate synchronous exports.
 \item the \OSC{newData} event is supported by all the components. It is triggered when the object specific data are modified (typically using the \OSC{set} message).
-\item the \OSC{del} event is triggered when an object is being deleted.
 \end{itemize}
 
 
@@ -2906,30 +3083,118 @@ what : 	  'export'
 \label{typespecevents}
 
 \begin{rail}
-what : 	  'pageCount'
+specificEvent : 	  'pageCount'
 		| 'newElement'
 		| 'endPaint'
 		| 'error'
+		| 'ready'
+		| 'end'
 \end{rail}
 \index{Interaction!Events!pageCount}
 \index{Interaction!Events!newElement}
 \index{Interaction!Events!endPaint}
 \index{Interaction!Events!error}
+\index{Interaction!Events!ready}
+\index{Interaction!Events!end}
 
 \begin{itemize}
 \item the \OSC{pageCount} event is supported by all the symbolic score components (\OSC{gmn(f)}, \OSC{gmnstream}, \OSC{musicxml(f)}). It is triggered when the page count of the score changes. It is mainly intended to manage variable scores like \OSC{gmnstream}.
 \item the \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 \item the \OSC{endPaint} event is supported at scene level only and triggered after a scene has been painted.
-\item the \OSC{error} event is supported at application level and triggered when an error occurs while receiving messages. Note that syntax errors are also triggering the event but the event handler must be set at the time of the script reading i.e. that the sequence \\
-\OSC{ /ITL watch error (a message lists);}\\
-\OSC{ /ITL/scene incorrect syntax}\\
-won't trigger the error the first time it is loaded. \\
+\item the \OSC{error} event is supported at application level and triggered when an error occurs while receiving messages. 
 Typically you can use of this event to open the log window (\OSC{/ITL/log show 1}) 
+\item the \OSC{ready} event is supported by \OSC{video} objects. It is triggered when video data (duration, graphic dimensions) are available.
+\item the \OSC{end} event is supported by \OSC{video} objects. It is triggered when a video is playing and reaches the end of the media. In this case, the object \OSC{play} status is automatically switched to 0 to reflect the actual player state.
 \end{itemize}
 
 \example \\
 Displaying a welcome message to new elements:
 \sample{/ITL/scene watch newElement (/ITL/scene/msg set txt "Welcome");}
+
+%===============================
+%:    Attribute based events
+\sublevel{Attribute based events}
+\label{attributeevents}
+
+Attribute based events includes the whole set of messages that are supported by an object: \OSC{x}, \OSC{y}, \OSC{color}, etc. but also type specific messages. These events are triggered when a message has been succesfully processed. However, you shouldn't assume that the attribute value has been changed: when a message sets an attribute to it's current value, it is succesully processed and the corresponding event - if any - is triggered. 
+
+\example \\
+Watching an object \OSC{x} coordinate change:
+\sample{/ITL/scene/myObject watch x (/ITL/scene/msg set txt "myObject moved");}
+
+\note \\
+Watching the \OSC{newData} event is equivalent to watch the \OSC{set} attribute. However, the \OSC{newData} event is triggered only when the object state is changed.
+
+\warning \\
+With the event's generalisation to any object attribute, a one tick delay has been introduced to all events. Thus the associated messages are not processed synchronously to the event but posted to be processed by the next time task. This delay has been introduced to avoid freezing the system in case of loops. However, it introduces also a pitfall in interaction design, when message based variables are used (see section \fullref{msgvar}): message based variables are evaluated at the event time while messages are processed by the next time task, thus the following messages won't produce the expected result:
+\sample{/ITL/scene/myObject watch x ( \\
+\hspace*{1cm} /ITL/scene/A x '\$(/ITL/scene/myObject get x)', \\
+\hspace*{1cm} /ITL/scene/B x '\$(/ITL/scene/A get x)' \\
+);}
+actually, when the \OSC{\$(/ITL/scene/A get x)} variable is evaluated, the preceding message that sets the x attribute of A has not been aready processed.
+One workaround consists in splitting the interaction in several parts, making sure that the messages are processed e.g.
+\sample{/ITL/scene/myObject watch x ( /ITL/scene/A x '\$(/ITL/scene/myObject get x)'); \\
+/ITL/scene/A watch x ( /ITL/scene/B x '\$(/ITL/scene/A get x)' );
+}
+
+
+
+
+%===============================
+%:    User defined events
+\sublevel{User defined events}
+\label{userevents}
+
+INScore events supports user defined events. The name of user defined events must start with a capital letter and be composed of capital letters and/or numbers. Other characters are reserved for INScore use.
+
+Messages attached to user defined events accept regular variables (although the position variables are useless), 
+but they accept also any number of a variables which names are \$1, ... \$i and which values are taken from the event call arguments (see section \fullref{udevar}).
+
+User defined events can only be triggered using the \OSC{event} message (see section \fullref{eventMsg}).
+
+\example \\
+Watching and triggering a user defined event:
+\sample{/ITL/scene/myObject watch MYEVENT (/ITL/scene/msg set txt "MYEVENT occured!");\\
+/ITL/scene/myObject event MYEVENT;
+}
+
+Defining high level abstractions:
+\sample{/ITL/scene/myObject watch MOVEABC ( \\
+\hspace*{1cm}/ITL/scene/a x \$1,\\
+\hspace*{1cm}/ITL/scene/b x \$2,\\
+\hspace*{1cm}/ITL/scene/C x \$3\\
+); \\
+/ITL/scene/myObject event MOVEABC -0.4 0.1 0.6;
+}
+
+
+%===============================
+%:    The event message
+\sublevel{The \OSC{event} message}
+\label{eventMsg}
+
+The \OSC{event} message may be used to triggered events. It's the only way to trigger user defined events. 
+It may be used also to simulate user interface events (like mouse events).
+
+\begin{rail}
+eventMsg :  'event' 
+			([1] ( (mouseEvent | touchEvent) float32 float32) 
+			| [2] userEvent ( | var +)
+			| [3] eventName
+			)
+\end{rail}
+\index{Common messages!event}
+
+
+\begin{itemize}
+\item \textbf{1}: this form is intended to simulate mouse or touch event. It must be followed by the x and y coordinates of the interaction point. Coordinates express a position in pixels (the top left corner of the object is in [0,0]).
+\item \textbf{2}: triggers a user defined event. It accepts any number of arguments, that are then expanded in place of the variables \$1 ... \$i. User defined events may be viewed as functions with arbitrary parameters; however parameters count and type is not checked. 
+\item \textbf{3}: triggers any other event. 
+\end{itemize}
+
+\note \\
+Time events are excluded from the \OSC{event} message supported events: to trigger a time event, you can use a \OSC{date} message.
+
 
 
 %===============================
@@ -2943,7 +3208,8 @@ Variables are values computed when an event is triggered. These values are send 
 \subsublevel{Position variables}
 \label{posvar}
 
-Position variables reflects the current mouse position for mouse events or the current touch position for touch events. They are set to \values{0} for the other events. 
+Position variables reflects the current mouse position for mouse events or the current touch position for touch events. 
+For attribute based events, the \OSC{x} and  \OSC{y} variables are set to the target object current position and the other variables are undefined. For other events, the position variables are set to \values{0}. 
 
 \begin{rail} 
 posVar : xy | 'absx' | 'absy' | 'sx' | 'sy' 
@@ -2977,10 +3243,21 @@ An object that follows mouse move.\\
 
 
 %===============================
+\subsublevel{Sensor variables}
+\label{sensorvar}
+
+Sensors values are available using the \OSC{\$x}, \OSC{\$y} and \OSC{\$z} variables, for events generated in the context of a sensor.
+\begin{rail} 
+xyz : ('x' | 'y' | 'z') ( | '[low,high]') 
+\end{rail}
+Note that depending on the sensor type, the \OSC{\$y} and \OSC{\$z} variables may be useless.
+
+
+%===============================
 \subsublevel{Time variables}
 \label{timevar}
 
-Time variables reflects the date corresponding to the current mouse position for mouse events. 
+Time variables reflects the date corresponding to the current mouse position for mouse events. For attribute based events, the time variables are set to the target object current time position.
 They are set to \values{0} for the other events. 
 
 \begin{rail} 
@@ -3042,6 +3319,15 @@ Note that all the 'get' messages attached to an event are evaluated at the same 
 An object that takes the \values{x} position of another object on mouse down:
 \sample{/ITL/scene/myObject watch mouseDown \\
 \hspace*{3cm}(/ITL/scene/myObject x '\$(/ITL/scene/obj get x)');}
+
+%===============================
+%:    Variables for user defined events
+\subsublevel{Variables for user defined events}
+\label{udevar}
+
+Messages associated to user defined events accept any number of a variables which names are \$1, ... \$i and which values are taken from the event call arguments. These events may be viewed as functions with arbitrary parameters; however parameters count and type is not checked: arguments in excess are ignored and variables without corresponding argument (e.g. \$3 when only 2 arguments are available) are left unexpanded.
+
+
 
 
 %===============================
@@ -3261,6 +3547,26 @@ Using variables in interaction messages: \$sx is evaluated at event occurrence	a
 /ITL/scene/foo watch mouseDown (/ITL/scene/foo "\$sx" \$y);
 }
 
+%===============================
+%:    Environnement variables
+\sublevel{Environnement variables}\label{envvar}
+
+Environnement variables are predefined variables available in a script context. They provide information related to the current context. Current environment variables are:
+\begin{itemize}
+\item \textbf{\OSC{OSName}}: gives the current operating system name. The value is among \OSC{"MacOS"}, \OSC{"Windows"}, \OSC{"Linux"}, \OSC{"Android"} and \OSC{"iOS"}.
+\item \textbf{\OSC{OSId}} : gives the current operating system as a numeric identifier. Returned value is (in alphabetic order): 
+\begin{itemize}
+\item 1 for Android
+\item 2 for iOS.
+\item 3 for Linux, 
+\item 4 for MacOS, 
+\item 5 for Windows, 
+\end{itemize}
+\end{itemize}
+
+\note\\
+There is nothing to prevent overriding of an environment variable. It's the script responsibility to handle variable names collisions.
+
 
 %===============================
 %:    Message based parameters
@@ -3382,6 +3688,10 @@ The Javascript engine is based on the Qt5 Javascrip engine, extended with additi
 %/ITL load 'call-javascript.inscore';
 %}
 
+
+%===============================
+%:Math expressions
+\input{MathExpressions/mathexpressions.tex}
 
 %===============================
 %:Score expressions

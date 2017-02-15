@@ -1,0 +1,119 @@
+<? javascript
+	var sensors = [ {name:"accelerometer", 	sigs:"'$x' '$y' '$z'"}, 
+					{name:"ambientlight", 	sigs:"'$x'"}, 
+					{name: "compass", 		sigs:"'$x'"}, 
+					{name: "gyroscope", 	sigs:"'$x' '$y' '$z'"}, 
+					{name: "light", 		sigs:"'$x'"}, 
+					{name: "magnetometer", 	sigs:"'$x' '$y' '$z'"}, 
+					{name: "orientation", 	sigs:"'$x'"}, 
+					{name: "proximity", 	sigs:"'$x'"}, 
+					{name: "rotation", 		sigs:"'$x' '$y' '$z'"}, 
+					{name: "tilt", 			sigs:"'$x' '$y'"}];
+
+	function makemsg (msg, index, name, y) {
+		msg  = msg.replace(/INDEX/g, index) ;
+		msg  = msg.replace(/Y/g, y) ;
+		return msg.replace(/SENSOR/g, name) ;
+	}
+
+	function create () {
+		var n = sensors.length;
+		var msg = "/ITL/scene/lINDEX set txt SENSOR;\n";
+		msg    += " /ITL/scene/cINDEX set rect 0.07 0.07;\n";
+		msg    += " /ITL/scene/[lc]INDEX y Y;\n";
+		msg    += " /ITL/scene/sINDEX set SENSOR;\n";		
+		var out = "";
+		for (i=0; i < n; i++) {
+			out += makemsg(msg, i, sensors[i].name, -0.5 + 0.12 * i * scale);
+		}
+		return out;
+	}
+
+	function watch () {
+		var n = sensors.length;
+		var msg = "/ITL/scene/cINDEX watch " + click + " ( \n";
+		msg    += "  /ITL/scene/cINDEX push,\n";
+		msg    += "  /ITL/scene/cINDEX brushStyle solid,\n";
+		msg    += "  /ITL/scene/sINDEX run 1,\n";
+		msg    += "  /ITL/scene/cINDEX watch " + click + " (\n";
+		msg    += "    /ITL/scene/cINDEX brushStyle none,\n";
+		msg    += "    /ITL/scene/sINDEX run 0,\n";
+		msg    += "    /ITL/scene/cINDEX pop));\n";
+		var out = "";
+		for (i=0; i < n; i++) {
+			out += makemsg(msg, i, sensors[i].name, 0);
+		}
+		return out;
+	}
+
+
+	function check () {
+		var n = sensors.length;
+		var msgoff = "/ITL/scene/?INDEX alpha  50;\n";
+		msgoff    += "/ITL/scene/cINDEX penWidth 0.2;\n";
+		msgoff    += "/ITL/scene/cINDEX watch;\n";
+		var out = "";
+		for (i=0; i < n; i++) {
+			if (eval(sensors[i].name) == 0)
+				out += makemsg(msgoff, i, "", 0);
+		}
+		return out;
+	}
+?>
+
+click 	= ($OSId < 3 ? touchBegin : mouseDown);
+scale 	= ($OSId < 3 ? 1.5 : 1.);
+dy 		= ($OSId < 3 ? -0.2 : 0.);
+
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+/ITL/scene/title set txt Sensors as nodes;
+/ITL/scene/title fontSize 52;
+/ITL/scene/title color $color;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.8;
+
+<? javascript create() ?>
+
+/ITL/scene/l* fontSize 24;
+/ITL/scene/l* xorigin 1.;
+/ITL/scene/c* x 0.1;
+/ITL/scene/c* penWidth 1;
+/ITL/scene/c* brushStyle none;
+/ITL/scene/c* color 14 214 41;
+/ITL/scene/c* dy -0.01;
+
+accelerometer 	= ($(/ITL/scene/s0 get smooth) ? 1 : 0);
+ambientlight 	= ($(/ITL/scene/s1 get smooth) ? 1 : 0);
+compass 		= ($(/ITL/scene/s2 get smooth) ? 1 : 0);
+gyroscope 		= ($(/ITL/scene/s3 get smooth) ? 1 : 0);
+light 			= ($(/ITL/scene/s4 get smooth) ? 1 : 0);
+magnetometer 	= ($(/ITL/scene/s5 get smooth) ? 1 : 0);
+orientation 	= ($(/ITL/scene/s6 get smooth) ? 1 : 0);
+proximity 		= ($(/ITL/scene/s7 get smooth) ? 1 : 0);
+rotation 		= ($(/ITL/scene/s8 get smooth) ? 1 : 0);
+tilt 			= ($(/ITL/scene/s9 get smooth) ? 1 : 0);
+
+<? javascript watch() ?>
+<? javascript check() ?>
+
+/ITL/scene/[^s]* scale $scale;
+/ITL/scene/* dy $dy;
+
+/ITL/scene load SensorsNodesListener.inscore;
+
+__END__
+
+/ITL/log level 2;
+
+192.168.1.145:7000/ITL/scene/c* get watch;
+192.168.1.91:7000/ITL/log clear;
+192.168.1.145:7000/ITL/scene/s* get run;
+192.168.1.91:7000/ITL/scene/s* get scale;
+192.168.1.145:7000/ITL preprocess SensorsNodes.inscore;
+192.168.1.145:7000/ITL load SensorsNodes.inscore;
+

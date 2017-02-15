@@ -24,7 +24,10 @@
 ../scripts/Standalone/queries/widthheight.inscore
 ../scripts/Standalone/synchronization/sync-duration.inscore
 ../scripts/Standalone/synchronization/sync-masters.inscore
+../scripts/Standalone/synchronization/syncframe.inscore
 ../scripts/Standalone/variables/DROP-ME.inscore
+../scripts/Standalone/radius.inscore
+../scripts/Standalone/math.inscore
 
 ../scripts/Standalone/eval.inscore
 ../scripts/Standalone/line-arrows.inscore
@@ -34,4 +37,4 @@
 ../scripts/MP-Turenas/turenas.inscore
 
 ../scripts/Standalone/GuidoExpression/guidoEchoes.inscore
-../scripts/mobile/Multi-touch.inscore
+../scripts/Standalone/GuidoExpression/permutation.inscore

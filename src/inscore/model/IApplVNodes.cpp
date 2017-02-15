@@ -52,7 +52,7 @@ IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 
 	fGetMsgHandlerMap[kmap_GetSetMethod]	= SGetParamMsgHandler(0);
 	fGetMsgHandlerMap[kname_GetSetMethod]	= SGetParamMsgHandler(0);
-	fGetMsgHandlerMap[ksignal_GetMethod]	= SGetParamMsgHandler(0);
+//	fGetMsgHandlerMap[ksignal_GetMethod]	= SGetParamMsgHandler(0);
 }
 
 //--------------------------------------------------------------------------
@@ -123,6 +123,8 @@ IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 {
 	fWindow = new VLogWindow ("/ITL/log", this);
+	fLogLevel = kLogError;
+	
 	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
 	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
 	fMsgHandlerMap[ksave_SetMethod]		= TMethodMsgHandler<IApplLog, MsgHandler::msgStatus (IApplLog::*)(const IMessage*) const>::create(this, &IApplLog::saveMsg);
@@ -132,12 +134,14 @@ IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 	fMsgHandlerMap[kshow_GetSetMethod]		= TSetMethodMsgHandler<IObject,bool>::create(this, &IObject::setVisible);
 	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IApplLog,float>::create(this, &IApplLog::setWidth);
 	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,float>::create(this, &IApplLog::setHeight);
+	fMsgHandlerMap[klevel_GetSetMethod]		= TSetMethodMsgHandler<IApplLog,int>::create(this, &IApplLog::setLevel);
 
 	fGetMsgHandlerMap[kx_GetSetMethod]		= TGetParamMsgHandler<float>::create(fXPos);
 	fGetMsgHandlerMap[ky_GetSetMethod]		= TGetParamMsgHandler<float>::create(fYPos);
 	fGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fWidth);
 	fGetMsgHandlerMap[kheight_GetSetMethod] = TGetParamMsgHandler<float>::create(fHeight);
 	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
+	fGetMsgHandlerMap[klevel_GetSetMethod]	= TGetParamMsgHandler<int>::create(fLogLevel);
 
 	fMsgHandlerMap[kforeground_SetMethod]		= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::foreground);
 
@@ -190,6 +194,16 @@ MsgHandler::msgStatus IApplLog::saveMsg (const IMessage* msg) const
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+void IApplLog::write(const SIMessageList& msgs)
+{
+	for (size_t i=0; i< msgs->list().size(); i++) {
+		stringstream sstr;
+		msgs->list()[i]->print (sstr);
+		fWindow->append (sstr.str().c_str());
+	}
 }
 
 //--------------------------------------------------------------------------

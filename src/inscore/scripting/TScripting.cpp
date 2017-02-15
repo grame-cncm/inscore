@@ -29,11 +29,13 @@
 #include "TScripting.h"
 #include "TMessageEvaluator.h"
 #include "IExprParser.h"
+#include "IAppl.h"
 
 #include "TEnv.h"
-#include "TParseEnv.h"
 #include "ITLparser.h"
 #include "ITLError.h"
+
+#include "TMaths.h"
 
 using namespace std;
 extern inscore::TScripting* gScripter;
@@ -47,11 +49,16 @@ class IMessage;
 class TEnv;
 
 //--------------------------------------------------------------------------------------------
-TScripting::TScripting(TParseEnv* penv)
-	: 	fParseEnv(penv)
+TScripting::TScripting(IAppl* root, bool execute)
+	: fRoot(root), fExecute(execute)
 {
-	fJavascript = fParseEnv ? fParseEnv->getJSEngine() : 0;
-	fLua		= fParseEnv ? fParseEnv->getLUAEngine() : 0;
+#ifdef IBUNDLE
+	fJavascriptEngine.Initialize();
+	fJavascript = &fJavascriptEngine;
+	fExecute = false;				// never execute a message in bundle environment
+#else
+	fJavascript = root->getJSEngine();
+#endif
 	fMessages = IMessageList::create();
 	fEnv = TEnv::create();
 }
@@ -74,15 +81,23 @@ void TScripting::variable (const char* ident, const SIMessageList* msgs)
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (SIMessage& msg)
+void TScripting::process (SIMessage& msg)
 {
-	fMessages->list().push_back (msg);
+	if (fExecute)
+		fRoot->processMsg(msg);
+	else
+		fMessages->list().push_back (msg);
 }
 
 //--------------------------------------------------------------------------------------------
-void TScripting::add (SIMessageList& msgs)
+void TScripting::process (SIMessageList& msgs)
 {
-	fMessages->list().push_back (msgs->list());
+	if (fExecute) {
+		for (size_t i=0; i<msgs->list().size(); i++)
+			fRoot->processMsg(msgs->list()[i]);
+	}
+	else
+		fMessages->list().push_back (msgs->list());
 }
 
 //--------------------------------------------------------------------------------------------
@@ -99,47 +114,16 @@ void TScripting::addEnv (const TScripting& sc)
 void TScripting::error(int line, int col, const char* s) const
 {
 	ITLErr << "line" << line << "col" << col << ":" << s << ITLEndl;
-	if (fParseEnv) fParseEnv->error();
-}
-
-
-
-//--------------------------------------------------------------------------------------------
-// lua support
-//--------------------------------------------------------------------------------------------
-#ifdef LUA
-bool TScripting::checkLua () const							{ return fLua != 0; }
-
-SIMessageList TScripting::luaEval (const char* script)
-{
-	if (fLua) {
-		fLua->bindEnv (fEnv);
-		string luaout;
-		if (fLua->eval(script, luaout)) {
-			if (luaout.size()) {
-				istringstream stream(luaout);
-				ITLparser p (&stream, 0, fJavascript, fLua);
-				return p.parse();
-			}
-		}
-	}
-	else ITLErr << "lua is not available!" << ITLEndl;
-	return 0;
-}
-#else
-bool TScripting::checkLua () const							{ return false; }
-SIMessageList TScripting::luaEval (const char* /*script*/)
-{
-	ITLErr << "lua is not available!" << ITLEndl;
-	return 0;
-}
+#if !defined(IBUNDLE) && !defined(PARSERTEST)	// no appl instance for the bundle tool nor in parser test
+	if (fRoot) fRoot->error();
 #endif
+}
 
 
 //--------------------------------------------------------------------------------------------
 // javascript support
 //--------------------------------------------------------------------------------------------
-#if defined V8ENGINE || defined QTJSENGINE || IBUNDLE
+#if defined QTJSENGINE || IBUNDLE
 bool TScripting::checkJavascript () const						{ return fJavascript != 0; }
 
 static int countlines (const char* script)
@@ -164,10 +148,10 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 		if (fJavascript->eval(lineno - countlines(script), script, jsout)) {
 			if (jsout.size()) {
 				istringstream stream(jsout);
-				ITLparser p (&stream, 0, fParseEnv);
-				SIMessageList msgs = p.parse();
+				ITLparser p (&stream, 0, fRoot, false);
+				p.parse();
 				addEnv( p.fReader );
-				return msgs;
+				return p.messages();
 			}
 		}
 	}
@@ -184,29 +168,73 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 #endif
 
 //--------------------------------------------------------------------------------------------
+#ifdef PARSERTEST
+IMessage::argslist TScripting::resolve (const IMessage* ) const
+#else
 IMessage::argslist TScripting::resolve (const IMessage* msg) const
+#endif
 {
 #ifdef PARSERTEST
 	IMessage::argslist out;
 	out.push_back (new inscore::IMsgParam<std::string>("unresolved"));
 	return out;
 #else
-	MouseLocation ml;
-	libmapping::rational date (0,1);
-	EventContext env (ml, date, 0);
+	EventContext env (0);
 	TMessageEvaluator me;
 	return me.evalMessage(msg, env);
 #endif
 }
 
 
+//--------------------------------------------------------------------------------------------
+bool TScripting::checkVar (IMessage::argslist& val, const char* var, int line) const
+{
+	if (val.empty()) {
+		string pvar("$");
+		pvar += var;
+		ITLErr << "line " << line <<": warning! variable " <<  pvar << " is not defined." << ITLEndl;
+		val.push_back(new IMsgParam<string>(pvar));
+		return false;
+	}
+	return true;
+}
 
 //--------------------------------------------------------------------------------------------
-IMessage::argslist TScripting::resolve (const char* var, const char * defaultVal) const
+IMessage::argslist TScripting::resolve (const char* var, int line) const
 {
 	IMessage::argslist val = fEnv->value (var);
-	if (val.empty() && defaultVal)
-		val.push_back(new IMsgParam<string>(defaultVal));
+	checkVar (val, var, line);
+	return val;
+}
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolveinc (const char* var, bool post, int line)
+{
+	string svar (var);
+	svar = post ? svar.substr(0, svar.size()-2) : svar.substr(2, string::npos);
+	IMessage::argslist val = fEnv->value (svar);
+	if (checkVar (val, svar.c_str(), line)) {
+		TMaths m;
+		IMessage::argslist* val1 = m.inc(val);
+		variable (svar.c_str(), val1);
+		if (!post) val = *val1;
+		delete val1;
+	}
+	return val;
+}
+
+//--------------------------------------------------------------------------------------------
+IMessage::argslist TScripting::resolvedec (const char* var, bool post, int line)
+{
+	string svar (var);
+	svar = post ? svar.substr(0, svar.size()-2) : svar.substr(2, string::npos);
+	IMessage::argslist val = fEnv->value (svar);
+	if (checkVar (val, svar.c_str(), line)) {
+		TMaths m;
+		IMessage::argslist* val1 = m.dec(val);
+		variable (svar.c_str(), val1);
+		if (!post) val = *val1;
+		delete val1;
+	}
 	return val;
 }
 

@@ -46,15 +46,16 @@ typedef libmapping::SMARTP<IObject>			SIObject;
 * \brief current mouse location in various coordinate spaces
 */
 typedef struct MouseLocation {
-	enum { noloc = -999999 };
-	float fx, fy;			///< coordinates relative to the object, as in internal representation
+	float fx, fy, fz;		///< coordinates relative to the object, as in internal representation
 	float fabsx, fabsy;		///< absolute coordinates relative to the object
 	float fsx, fsy;			///< coordinates relative to the scene
 
 	MouseLocation (float x, float y, float ax, float ay, float sx, float sy)
-		: fx(x), fy(y), fabsx(ax), fabsy(ay), fsx(sx), fsy(sy) {}
+		: fx(x), fy(y), fz(0), fabsx(ax), fabsy(ay), fsx(sx), fsy(sy) {}
+	MouseLocation (float x, float y, float z)
+		: fx(x), fy(y), fz(z), fabsx(0), fabsy(0), fsx(0), fsy(0) {}
 	MouseLocation ()
-		: fx(noloc), fy(noloc), fabsx(noloc), fabsy(noloc), fsx(noloc), fsy(noloc) {}
+		: fx(0), fy(0), fz(0), fabsx(0), fabsy(0), fsx(0), fsy(0) {}
 } MouseLocation;
 
 //----------------------------------------------------------------------
@@ -76,9 +77,11 @@ typedef struct EventContext {
 	void set (const GestureContext& g) { gesture = g; }
 
 	EventContext (const MouseLocation& ml, const libmapping::rational& d, const IObject* o)
-		: mouse(ml), date(d), object(o) {} //, varmsg(0) {}
+		: mouse(ml), date(d), object(o) {}
+	EventContext (const libmapping::rational& d, const IObject* o)
+		: date(d), object(o) {}
 	EventContext (const IObject* o)
-		: object(o) {} //, varmsg(0) {}
+		: object(o) { date.set(0, 1); }
 
 } EventContext;
 
@@ -140,6 +143,15 @@ class TMessageEvaluator
 		IMessage::argslist evalVariable (const std::string& var, const EventContext& env) const;
 
 		/**
+		*	\brief evaluates a variable in user defined context
+			\param var the variable
+			\param env the context of the event
+			\param args the arguments of the event
+			\return a list or arguments to be used as parameters in place of the variable
+		*/
+		IMessage::argslist evalVariable (const std::string& var, const EventContext& env, const IMessage::argslist& args) const;
+
+		/**
 		*	\brief evaluates a string that may contain a variable
 			\param str the string
 			\param env the context of the event
@@ -152,6 +164,30 @@ class TMessageEvaluator
 		virtual ~TMessageEvaluator() {}
 
 		/**
+		*	\brief evaluates a user defined message
+			\param msg the message to be evaluated
+			\param env the event context (only the object ptr and the date are significant)
+			\param args a list of arguments
+			\return a list of evaluated message i.e. without variable part
+		
+			Evaluation of a user defined event consists in replacing the variable parameters with the values
+			taken from the \c args list. Variables are expected to be name $1, $2 etc...
+		*/
+		SIMessageList	eval (const IMessageList *msg, const EventContext& env, const IMessage::argslist& args) const;
+
+		/**
+		*	\brief evaluates a single user defined message
+			\param msg the message to be evaluated
+			\param env the event context (only the object ptr and the date are significant)
+			\param args a list of arguments
+			\return an evaluated message i.e. without variable part
+		
+			Evaluation of a message consists in replacing the variable parameters with values
+			evaluated in a given EventContext
+		*/
+		SIMessage		eval (const IMessage *msg, const EventContext& env, const IMessage::argslist& args) const;
+
+		/**
 		*	\brief evaluates a single message
 			\param msg the message to be evaluated
 			\param env the context of the event
@@ -161,6 +197,7 @@ class TMessageEvaluator
 			evaluated in a given EventContext
 		*/
 		SIMessage		eval (const IMessage *msg, const EventContext& env) const;
+
 		/**
 		*	\brief evaluates a list of messages
 			\param msgs the message list to be evaluated

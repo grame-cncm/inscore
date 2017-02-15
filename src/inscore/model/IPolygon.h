@@ -46,28 +46,38 @@ typedef class libmapping::SMARTP<IPolygon>	SIPolygon;
 */
 class IPolygon : public IShapeMap
 {
+	std::vector<float>	fSegmentsLength;
+	float				fTotalLength;
+
+	float	getLength(const TFloatPoint& p1, const TFloatPoint& p2) const;
+	void	getMetrics();
+
 	public:
-		typedef std::vector< std::pair<float,float> > PolygonData;
+		typedef std::vector<TFloatPoint> PolygonData;
 
 		static const std::string kPolygonType;
 		static SIPolygon create(const std::string& name, IObject* parent)	{ return new IPolygon(name, parent); }
 
-		const std::vector< std::pair<float,float> >&		getPoints() const			{ return fPoints; }
+		const PolygonData&		getPoints() const			{ return fPoints; }
 
 		virtual void	print(std::ostream& out) const;
 		virtual void	accept (Updater*);
+		virtual float	getXOffset () const		{ return fXMin; }
+		virtual float	getYOffset () const		{ return fYMin; }
+        virtual bool	date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
 
 	protected:
 				 IPolygon( const std::string& name, IObject* parent );
 		virtual ~IPolygon() {}
 
-		void			setPoints(const std::vector< std::pair<float,float> >& points)		{ fPoints = points; }
+		void	setPoints(const PolygonData& points);
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
 	private:
 		PolygonData fPoints;
+		float		fXMin, fYMin;
 };
 
 OSCStream& operator <<(OSCStream& s, const IPolygon::PolygonData& val);

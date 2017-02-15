@@ -113,7 +113,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		///< the object export flag and the object childexport option flag (if the children should be exported as well)
 		std::deque<std::pair<std::string, bool> >	fExportFlag;
 
-		bool	fNewData;
+		bool		fNewData;		///< a flag for the object data change
+		bool		fEdit;			///< a flag to open the object editor
+		std::string	fEditString;	///< the object editor current content
 
 		/*!
 			\brief find a named object in the application hierarchy
@@ -130,6 +132,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		 * \return MsgHandler::kProcessed or MsgHandler::kBadParameters if failed
 		 */
 		MsgHandler::msgStatus genericExport(const IMessage* msg, bool drawChildren);
+
+		/// \brief propagates modification state up to parents
+		virtual void	propagateSubModified ();
+
 
 	protected:
 		std::string fTypeString;		///< the type string
@@ -150,6 +156,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief state query handlers map
 		std::map<std::string, SGetParamMsgHandler>	fGetMsgHandlerMap;
+	
+		/// \brief state query handlers alternate map for redundant attributes (e.g. red green blue vs color
+		std::map<std::string, SGetParamMsgHandler>	fAltGetMsgHandlerMap;
 
 		/// \brief state query handlers map (handlers returning a message list).
 		std::map<std::string, SGetParamMultiMsgHandler>	fGetMultiMsgHandlerMap;
@@ -177,11 +186,22 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void setName(const std::string& name)	{ fName = name; }
 		/// \brief returns the \e deleted state object
 		virtual bool	getDeleted() const			{ return fDelete; }
+		/// \brief returns the object status regarding the mapping
+		virtual bool	mapable() const				{ return true; }
 
 		/// \brief returns the object display start location
 		virtual float	getDispStart() const			{ return fDispStart; }
-		/// \brief returns the object display end lo	cation
+		/// \brief returns the object display end location
 		virtual float	getDispEnd() const				{ return fDispEnd; }
+
+		/// \brief clear the 'edit' flag of the object
+		virtual void	clearEdit()							{ fEdit = false; }
+		/// \brief returns the object edit flag
+		virtual bool	getEdit() const						{ return fEdit; }
+		/// \brief returns the current content of the object editor
+		virtual const std::string&	getEditString() const	{ return fEditString; }
+		/// \brief returns the current content of the object editor
+		virtual void	setEditString(const std::string& str) { fEditString = str; }
 
 		/*!
 		 * \brief returns the next object export-flag with file path and draw children flag to draw or not object children.
@@ -235,6 +255,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 				
 		/// \brief sets the object global modification state \see getState
 		virtual	void	setState (state s);
+		/// \brief sets the object modification state and propagate \c kSubModified up
+		virtual	void	setModified ();
 
 		/// \brief returns the object data modification state
 				bool			newData () const			{ return fNewData; }
@@ -369,6 +391,22 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 
 		/*!
+			\brief check and process an event
+			
+			Check if an event has an associated list of message. In this case, the messages are evaluated and sent.
+			
+			\param event the event that occured
+			\param date a date  for the event context
+			\param obj an object for the event processing
+			\return true when associated messages have been processed
+		*/
+		virtual bool checkEvent (EventsAble::eventype event, libmapping::rational date, const IObject* obj) const;
+		virtual bool checkEvent (EventsAble::eventype event, EventContext& context) const;
+		virtual bool checkEvent (EventsAble::eventype event, const IMessage::argslist& args) const;
+		/// check if an event name complies to user defined events naming scheme
+		virtual bool checkUserEvent(EventsAble::eventype t) const;
+
+		/*!
 			\brief process a signal
 			
 			\return the signal processing status
@@ -402,6 +440,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief recursively get all objects state
 		virtual SIMessageList getAll () const;
 
+		/// \brief get an object state
+		virtual SIMessageList nonRecursiveGetAll () const;
+
 		/// \brief recursively get the specified attributes from all objects
 		virtual SIMessageList getAttributes (const std::vector<std::string>& attributes) const;
 		
@@ -426,7 +467,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void setHandlers ();
 		virtual void setdyMsgHandler (); 
 		virtual void setdyMsgHandler (Master* m);
-    
+		virtual void setSyncDY (float dy);
+	
         virtual IObject* getParent() const {return fParent;}
 
         /*! \brief cleanup the relations set
@@ -446,19 +488,36 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return the object master or 0 when not found
 		*/    
         virtual SMaster getMaster(SIObject o) const;
+    
+		/*! \brief retrieve the named masters of an object
+			\param o		the object to look for in the synchronization set
+			\param master	the master name (supports regular expressions)
+			\param map		the master map name
+			\return a list of master, empty when not found
+		*/    
+        virtual std::vector<SMaster> getMasters(SIObject o, const std::string& master, const std::string& map) const;
 
 		/*! \brief gives the masters of an object
 			\param o the object to look for in the synchronization set
 			\return a vector of all the masters or an empty vector when not found
 		*/    
         virtual std::vector<SMaster> getMasters(SIObject o) const;
-    
+	
 		/*! \brief gives the slaves of an object
 			\param o the object to look for in the synchronization set
 			\return a vector of all the slaves or an empty vector when not found
 		*/    
         virtual std::vector<SIObject> getSlaves(const SIObject o) const;
-    
+	
+		/*! \brief gives a date location on the object frame
+			\param date a date
+			\param p	on output: the corresponding point
+			\return true when the date corresponds to a point
+			
+			This method is intended to support the frame synchronization mode: 
+		*/
+        virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
+	
         /// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
     
@@ -469,8 +528,6 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return the corresponding handler if any
 		*/
 		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
- 
-		virtual TQtJs*	getJSEngine()		{ return 0; }	///< gives the associated javascript engine, defaults to 0
 	
 	protected:	
 		VObjectView* fView;		///< the object view
@@ -576,6 +633,12 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual MsgHandler::msgStatus evalMsg(const IMessage* msg);
 
 		/// \brief utility to delegate events acceptability
+//		virtual bool acceptMouseEvent(EventsAble::eventype t) const;
+
+		/// \brief utility to delegate events acceptability
+//		virtual bool acceptCommonEvent(const std::string& ev) const;
+
+		/// \brief utility to delegate events acceptability
 		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
 
 		/// \brief the \c 'watch' message handler
@@ -610,6 +673,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief object \c 'event' message handler (provided for events simulation).
 		virtual MsgHandler::msgStatus eventMsg (const IMessage* msg);
+
+		/// \brief object \c 'edit' message handler.
+		virtual MsgHandler::msgStatus editMsg (const IMessage* msg);
 
 };
 

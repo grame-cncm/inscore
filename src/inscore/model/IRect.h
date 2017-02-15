@@ -28,6 +28,7 @@
 #define __IRect__
 
 #include "IRectShape.h"
+#include "TRect.h"
 
 namespace inscore
 {
@@ -46,15 +47,23 @@ typedef class libmapping::SMARTP<IRect>	SIRect;
 */
 class IRect : public IRectShape
 {
+	TFloatPoint radius2FramePoint(float angle, float w, float h) const;
+	bool		checkCorner(const libmapping::rational& date, float datelen, float angle, float dist, float w, float h, const TFloatPoint& offset, TFloatPoint& p) const;
+
 	public:
 		static const std::string kRectType;
 		static SIRect create(const std::string& name, IObject* parent)	{ return new IRect(name, parent); }
 
 		virtual void	accept (Updater*);
+		virtual void		setRadius (const TFloatSize& r)	{ fRadius = r; }
+		virtual TFloatSize	getRadius () const				{ return fRadius; }
+        virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
 
 	protected:
 				 IRect( const std::string& name, IObject* parent );
-		virtual ~IRect() {}	
+		virtual ~IRect() {}
+	
+		TFloatSize	fRadius;
 };
 
 /*! @} */

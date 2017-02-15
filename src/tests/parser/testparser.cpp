@@ -27,34 +27,26 @@
 #include "IMessage.h"
 #include "IMessageStream.h"
 #include "IExpression.h"
-#include "TParseEnv.h"
 
 using namespace std;
 using namespace inscore;
-
-class TestEnv : public TParseEnv
-{
-	public:
-	virtual TJSEngine*	getJSEngine()	{ return 0; }
-	virtual TLua*		getLUAEngine()	{ return 0; }
-};
 
 int main (int argc, char * argv[])
 {
 	if (argc > 1) {
 		ifstream in (argv[1]);
-
-		TestEnv env;
-		ITLparser p(&in, 0, &env);
+		ITLparser p(&in, 0, 0, false);
 		SIMessageList outMsgs;
-		outMsgs = p.parse ();
-		if (outMsgs) {
+		if (p.parse ()) outMsgs = p.messages();
+		if (outMsgs && outMsgs->list().size()) {
 			outMsgs->list().set("", "\n");
 			cout << outMsgs->list() << endl;
+			return 0;
 		}
-		else
+		else {
 			cout << "error reading " << argv[1] << endl;
+		}
 	}
- 	return 0;
+ 	return 1;
 }
 

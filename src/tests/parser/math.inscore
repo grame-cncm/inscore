@@ -1,0 +1,110 @@
+
+/tata 2;
+/ITL/scene/* del;
+
+toto = 1;
+titi = 2;
+
+tata = @max( 3 5 2 0 8 9 1);
+a = (!$tata ? "false" : "true");
+c1 = 0 0 0;
+c2 = 100 100 110;
+var = ( /ITL log write toto);
+
+/ITL/scene/toto1 set rect 1 1;
+/ITL/scene/toto1 x $toto - 2  "-> expecting" $toto " - 2";
+/ITL/scene/toto1 x2 ($toto ? -1 : 2); # 	"-> expecting" $toto "? -1 : 2";
+/ITL/scene/toto1 x3 -$toto;
+/ITL/scene/toto1 y ($toto ? -$toto : $toto);
+/ITL/scene/toto1 y2 -($toto ? $toto + 1 : "null");
+/ITL/scene/toto1 y3 ($toto ? $toto / 2 : ($titi ? $titi / 0.2 : $toto + "hello world"));
+/ITL/scene/toto1 y2 100 - -($toto ? $toto + 1 : "null");
+/ITL/scene/toto1 xsup ($toto > $titi ? $toto : $titi);
+/ITL/scene/toto1 xcsup ($c1 > $c1 ? $c1 : $c2);
+/ITL/scene/toto1 xeq ($toto == $titi ? $toto : $titi);
+/ITL/scene/toto1 xmax @max(3 1 2 6 $toto $titi);
+/ITL/scene/toto1 xmin @min(1 2 3 4 $toto $titi);
+/ITL/scene/toto1 minmax @min( @max(1 2) @max(7 5 0));
+/ITL/scene/toto1 maxvar (!$tata ? "false" : "true");
+/ITL/scene/toto1 a $a;
+/ITL/scene/toto1 mod $tata 5 $tata % 5;
+
+tata = $tata + 1;
+
+localhost:8000/ITL/scene/toto1 tata $tata;
+c1 = $c1 + 1;
+/ITL/scene/toto1 plusplustoto ++$toto;
+/ITL/scene/toto1 totoplusplus $toto++;
+/ITL/scene/toto1 toto $toto;
+/ITL/scene/toto1 moinsmoinstoto --$toto;
+/ITL/scene/toto1 totomoinsmoins $toto--;
+/ITL/scene/toto1 toto $toto;
+/ITL/scene/toto1 toto $x;
+#/ITL/scene/o? max @max( 10*50 $c2 );
+/ITL/scene/o? min @min( $c1 $c2 );
+/ITL/scene/text min @min( toto oizeroiu );
+/ITL/scene/text max @max ( toto oizeroiu );
+/ITL/scene/par nopar 10 + 2 * 3;
+/ITL/scene/par par ( 10 + 2 ) * 3;
+/ITL/scene/text math text + 1;
+/ITL/scene/text math text + $c2;
+/ITL/scene/text math text + 0.1;
+
+a = 10 20 ;
+/ITL/scene/array  $a '*' $c2 "->" $a * $c2;
+/ITL/scene/array  $a '/' $c2 "->" $a / $c2;
+/ITL/scene/array  $a '%' $c2 "->" $a % $c2;
+/ITL/scene/array  $a '+' $c2 "->" $a + $c2;
+/ITL/scene/array  $a '-' $c2 "->" $a - $c2;
+/ITL/scene/array '--' --$c2;
+/ITL/scene/myObject x 0.5 * 0.2;
+/ITL/scene/myObject x 1 + 2.;
+
+__END__
+
+Sémantique des opérations
+--------------------------------------
+int 	op int 		-> int
+int 	op float 	-> float
+float 	op int 		-> float
+float 	op float 	-> float
+string 	op string	-> string
+string 	+ num		-> string
+num 	+ string	-> string
+
+--------------------------------------
+arg 	op array	-> array		ex: arg op [1...n] -> [arg op 1 ... arg op n]
+array 	op arg		-> array		ex: [1...n] op arg -> [1 op arg ... n op arg]
+
+
+--------------------------------------
+boolean (< <= > >= ==)
+num bool num	classique
+num bool string		-> num bool string.size	
+string bool num		-> string.size bool num	
+string bool string	-> string.size bool string.size	
+string == string	-> string.size == string.size	
+
+
+
+
+--------------------------------------
+types precedence:
+array	-> array
+string	-> string
+float	-> float
+int
+
+string + string -> string		ex: "a" + "b" 	-> "ab"
+string + int 	-> string		= string + string(int) 
+string + float 	-> string		= string + string(float) 
+string op array	-> array		= array[string op el1, ... string op eln]  
+
+int op int		-> int
+int op float	 = float op int 	-> float
+
+
+unsupported:
+string - string -> string		ex: "aba" - "a" -> "b"
+string * string -> string		ex: "a" * "b" 	-> (a * b) % 26 + 0 
+string / string -> string		ex: "a" / "b" 	-> int(a / b) + 0 

@@ -1,6 +1,6 @@
-!-------------------------------------------------------
-! required version
-!-------------------------------------------------------
+#-------------------------------------------------------
+# required version
+#-------------------------------------------------------
 /ITL require 1.0 (
 	/ITL/scene/warning set txt "WARNING: this scene requires version 1.0" ,
 	/ITL/scene/warning scale 2.0 ,
@@ -8,9 +8,9 @@
 
 /ITL/scene width 1.3;
 
-!-------------------------------------------------------
-! zoom slider
-!-------------------------------------------------------
+#-------------------------------------------------------
+# zoom slider
+#-------------------------------------------------------
 /ITL/scene/_zoom set txt Zoom;
 /ITL/scene/_zoom y -0.97;
 /ITL/scene/_zoom scale 1.2;
@@ -35,9 +35,9 @@
 	/ITL/scene/page[0-9]* scale "$x[0.05,5]" ,
 	/ITL/scene/_zoompos date "$date" );
 
-!-------------------------------------------------------
-! pages slider
-!-------------------------------------------------------
+#-------------------------------------------------------
+# pages slider
+#-------------------------------------------------------
 /ITL/scene/_pagerect set rect 1.2 0.03;
 /ITL/scene/_pagerect x -0.6;
 /ITL/scene/_pagerect y 0.88;
@@ -56,18 +56,18 @@
 /ITL/scene/_pagerect watch mouseMove 	( /ITL/scene/_pageturn date "$date[1/1]" );
 /ITL/scene/_pagerect watch mouseUp 		( /ITL/scene/_pageturn date "$date[1/1]" );
 
-!-------------------------------------------------------
-! a hidden cursor to turn pages
-!-------------------------------------------------------
+#-------------------------------------------------------
+# a hidden cursor to turn pages
+#-------------------------------------------------------
 /ITL/scene/_pageturn set rect 0.1 0.1;
 /ITL/scene/_pageturn show 0;
-! the cursor is first constrained to the date 0
+# the cursor is first constrained to the date 0
 /ITL/scene/_pageturn watch timeEnter -1 1 0 1 	( /ITL/scene/_pageturn date 0 1 );
 /ITL/scene/_pageturn watch timeEnter 0 1 1 1 	( /ITL/scene/_pageturn date 0 1 );
 
-!-------------------------------------------------------
-! left and right triangles 
-!-------------------------------------------------------
+#-------------------------------------------------------
+# left and right triangles 
+#-------------------------------------------------------
 /ITL/scene/_anext set polygon 0.0 0.0 0.04 0.02 0.0 0.04;
 /ITL/scene/_aprevious set polygon 0.0 0.0 -0.04 0.02 0.0 0.04;
 /ITL/scene/_a* color 180 180 180;
@@ -80,6 +80,6 @@
 	/ITL/scene/_pageturn ddate 1 1 ,
 	/ITL/scene/_pageturn ddate -1 1 );
 
-!-------------------------------------------------------
-! put all the user interface in front
+#-------------------------------------------------------
+# put all the user interface in front
 /ITL/scene/_* z 2.0;

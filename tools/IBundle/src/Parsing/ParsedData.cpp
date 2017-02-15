@@ -198,7 +198,7 @@ std::string ParsedData::generateScript(std::string name) const
 	return script.str();
 }
 
-void ParsedData::simplifyPaths(int charToDelete)
+void ParsedData::simplifyPaths(size_t charToDelete)
 {
 	if(mainScript.empty() && fScripts.empty() && fRessources.empty())
 		return;
@@ -248,13 +248,13 @@ void ParsedData::simplifyPaths()
 
 	//  -- search for common path trunk --
 	std::vector<std::string> trunk = splitPath(fRessources.size()? fRessources.begin()->first: fScripts.begin()->first);
-	int commonPath = trunk.size()-1;
+	size_t commonPath = trunk.size()-1;
 
 	for(auto it = fRessources.cbegin(); it != fRessources.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
-		int i=0;
-		while ( i < commonPath && i < (int)path.size()-1 ) {
+		size_t i=0;
+		while ( i < commonPath && i < path.size()-1 ) {
 			if(path.at(i)!=trunk.at(i)){
 				break;
 			}
@@ -266,8 +266,8 @@ void ParsedData::simplifyPaths()
 	for(auto it = fScripts.cbegin(); it != fScripts.cend(); it++){
 		std::vector<std::string> path = splitPath(it->first);
 
-		int i=0;
-		while ( i < commonPath && i < (int)path.size()-1 ) {
+		size_t i=0;
+		while ( i < commonPath && i < path.size()-1 ) {
 			if(path.at(i)!=trunk.at(i))
 				break;
 			i++;
@@ -280,7 +280,7 @@ void ParsedData::simplifyPaths()
 
 	std::string trunkPath = "/";
 
-	for (int i = 0; i < commonPath; ++i)
+	for (size_t i = 0; i < commonPath; ++i)
 		trunkPath += trunk.at(i)+"/";
 
 	size_t removable = trunkPath.size();

@@ -181,7 +181,8 @@ bool BundleExtractor::writeMappedArchive(QArchive* archive, ParsedData& script, 
 			if(archiveFileName.startsWith("Ressources/"))
 				archive->readFile(archiveFileName, filedata);
 			else
-				filedata = QByteArray::fromStdString(script.generateScript(archiveFileName.toStdString()));
+//				filedata = QByteArray::fromStdString(script.generateScript(archiveFileName.toStdString()));
+				filedata = QByteArray(script.generateScript(archiveFileName.toStdString()).c_str());
 			f.write(filedata);
 			f.close();
 		}

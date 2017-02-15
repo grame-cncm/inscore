@@ -109,6 +109,7 @@ MsgHandler::msgStatus ICurve::set (const IMessage* msg)
 				newData(true);
 				return MsgHandler::kProcessed;
 			}
+			return MsgHandler::kProcessedNoChange;
 		}
 	}
 	return MsgHandler::kBadParameters;

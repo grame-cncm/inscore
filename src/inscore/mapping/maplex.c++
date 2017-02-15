@@ -523,12 +523,12 @@ char *itlmaptext;
 
 #include <stdio.h>
 
-#ifdef WIN32
-#pragma warning (disable : 4267 4100)
-#endif
-
 #define YY_NO_UNISTD_H
 static int nested;
+
+#ifdef WIN32
+#pragma warning (disable : 4267 4100 4244)
+#endif
 
 
 

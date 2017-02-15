@@ -1,4 +1,4 @@
-! cleanup
+# cleanup
 /ITL/scene/* del ;
 /ITL/scene color 255 255 255 ;
 /ITL/scene/title set txt "Grouping phenomena" ;
@@ -10,7 +10,7 @@
 /ITL/scene/p1 y -0.50 ;
 /ITL/scene/p3 y 0.50 ;
 /ITL/scene/p* color 0 0 255 255 ;
-!/ITL/scene/comment set txtf "moving.txt" ;
+#/ITL/scene/comment set txtf "moving.txt" ;
 /ITL/scene/comment set txt "Perceived motion is highly dependent on its context.
 Johansson (1975) has demonstrated a number of grouping phenomena that show that the brain 
 has a strong tendency to group moving objects in a hierarchichal fashion." ;

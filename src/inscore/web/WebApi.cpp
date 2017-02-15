@@ -77,13 +77,14 @@ std::string WebApi::postScript(const std::string &inscoreScript)
 {
     stringstream stream;
     stream.str(inscoreScript);
-    ITLparser p (&stream, 0, fParseEnv);
+    ITLparser p (&stream, 0, fRoot, false);
 
     // wait for other network users
 	fPostCommandMutex.lock();
 
 	oscerr.activeConcatError(true);
-	SIMessageList msgs = p.parse();
+	p.parse();
+	SIMessageList msgs = p.messages();
 	oscerr.activeConcatError(false);
 
 	string logParse = oscerr.streamConcat().str();
@@ -156,18 +157,18 @@ void WebApi::sendEvent(QGraphicsItem * item, int eventType)
 {
         VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
         // Create an event
-        QGraphicsSceneMouseEvent event((QEvent::Type) eventType);
-        // Coordinate of the click in item coordinate
-        QPointF point(0, 0);
-        event.setPos(point);
-        event.setButton(Qt::LeftButton);
-        event.setButtons(Qt::LeftButton);
+//        QGraphicsSceneMouseEvent event((QEvent::Type) eventType);
+//        // Coordinate of the click in item coordinate
+//        QPointF point(0, 0);
+//        event.setPos(point);
+//        event.setButton(Qt::LeftButton);
+//        event.setButtons(Qt::LeftButton);
 
         if(!item->isEnabled())
             item->setEnabled(true);
 
-        QGraphicsScene * scene = sceneView->scene();
-        scene->sendEvent(item, &event);
+//        QGraphicsScene * scene = sceneView->scene();
+        sceneView->postEvent(item, (QEvent::Type) eventType);
 }
 
 //--------------------------------------------------------------------------

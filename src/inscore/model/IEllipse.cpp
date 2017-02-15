@@ -23,6 +23,8 @@
 
 */
 
+#include <iostream>
+
 #include "IEllipse.h"
 #include "IMessage.h"
 #include "Updater.h"
@@ -38,6 +40,27 @@ const string IEllipse::kEllipseType("ellipse");
 IEllipse::IEllipse( const std::string& name, IObject* parent ) : IRectShape(name, parent)
 {
 	fTypeString = kEllipseType;
+}
+
+//--------------------------------------------------------------------------
+bool IEllipse::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const
+{
+	const libmapping::rational dur = getDuration();
+	if ((date < 0.) || (date > dur))	return false;
+
+	double angle = float(date) / float(dur) * 2 * M_PI + M_PI;
+	double r1 = getWidth() / 2;
+	double r2 = getHeight() / 2;
+	if (r1 > r2) {
+		p.fX = (r1*cos(angle) + r1) / (r1*2);
+		p.fY = (r2*sin(angle) + r2) / (r2*2);
+	}
+	else {
+		p.fX = (r2*cos(angle) + r2) / (r2*2);
+		p.fY = (r1*sin(angle) + r1) / (r1*2);
+	}
+//cout << "IEllipse::date2FramePoint angle: " << angle << " -> " << p << " (" << r1 << " " << r2 << " )" << endl;
+	return true;
 }
 
 //--------------------------------------------------------------------------

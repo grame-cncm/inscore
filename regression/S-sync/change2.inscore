@@ -1,4 +1,4 @@
-! suppressing of a sync relation
+# suppressing of a sync relation
 /ITL/scene/sync slave m3 del;
 /ITL/scene/subtitle set txt "/ITL/scene/sync slave m3 del;";
 /ITL/scene/m3/text del;

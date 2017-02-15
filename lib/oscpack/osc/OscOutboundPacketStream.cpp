@@ -34,6 +34,7 @@
 #include <assert.h>
 
 #if defined(__WIN32__) || defined(WIN32)
+#pragma warning (disable : 4267 4244)
 #include <malloc.h> // for alloca
 #endif
 

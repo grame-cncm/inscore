@@ -183,7 +183,7 @@ Item {
                                 }
                             }
                             SlideMenuItem{
-                                text: "From files"
+                                text: "Files"
                                 onClicked: {
                                     root.state = "exploreMenu";
                                     exploreView.setRootPath("HOME", "file://"+initialRootPath);

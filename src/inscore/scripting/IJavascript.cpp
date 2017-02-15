@@ -55,10 +55,7 @@ MsgHandler::msgStatus IJavascript::runMsg(const IMessage* msg)
 			SIMessageList msgs = fScripter.jsEval (code.c_str(), 1);
 			if (msgs) {
 				for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-					string beg  = OSCAddress::addressFirst((*i)->address());
-					string tail = OSCAddress::addressTail((*i)->address());
-					int ret = getRoot()->processMsg(beg, tail, *i);
-					IGlue::trace(*i, ret);
+					getAppl()->processMsg(*i);
 				}
 			}
 		}

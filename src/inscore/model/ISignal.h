@@ -61,6 +61,8 @@ class ISignal : public IObject, public ParallelSignal
     
 		/// \brief creates the object virtual nodes : none for the signals.
 		virtual void	createVirtualNodes (){}
+		/// \brief a handler to provide sub signals from a signal
+		virtual bool	findSubNode (std::string node, subnodes& outlist) { return false; }
 
 	protected:
 		using IObject::print;
@@ -97,7 +99,8 @@ class ISignal : public IObject, public ParallelSignal
 		/// \brief set signals to the message signals
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
 	
-		virtual SISignalNode getSignalNode();
+		/// \brief gives the signals container at a given level
+		virtual SISignalNode	getSignalNode();
 
 		// ------------------------
 		// messages handling

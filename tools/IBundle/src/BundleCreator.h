@@ -46,7 +46,7 @@ public:
 	BundleCreator();
 
 	/*!
-	 * \brief bundle INScore scripts with all theor dependency
+	 * \brief bundle INScore scripts with all its dependencies
 	 * \param inputFile the path to the main script
 	 * \return	true if succeed, false otherwise
 	 */

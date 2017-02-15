@@ -1,631 +1,73 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>18 Plugins</title> 
+<head><title>18 Mathematical expressions</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
 <!-- html,2,frames,index=3,info --> 
 <meta name="src" content="OSCMsg.tex"> 
-<meta name="date" content="2016-03-29 10:00:00"> 
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 3374--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 13--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch19.html" >next</a>] [<a 
 href="OSCMsgch17.html" >prev</a>] [<a 
 href="OSCMsgch17.html#tailOSCMsgch17.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch18.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;18</span><br /><a 
- id="x23-11700018"></a>Plugins</h2>
-<!--l. 3377--><p class="noindent" >A plugin is an external library that is dynamically loaded when an object that need it is created. The system looks
-for plugins in the following locations:
-     <ul class="itemize1">
-     <li class="itemize">in the current folder first
-     </li>
-     <li class="itemize">in the PlugIns folder, located in the application bundle on macos, in the application folder on other
-     systems
-     </li>
-     <li class="itemize">in the system default locations for shared libraries</li></ul>
-<!--l. 3384--><p class="noindent" >Additionaly, a user path can be set, where the system will look for plugins in first position. See section <a 
-href="OSCMsgch8.html#x12-570008.5.4">8.5.4<!--tex4ht:ref: ITLplugins --></a>
-p.<a 
-href="OSCMsgch8.html#x12-570008.5.4">76<!--tex4ht:ref: ITLplugins --></a>.
-<!--l. 3386--><p class="noindent" >The plugins are shared libraries which extension is platform dependent. The plugin name should not
-include the extension. The expected extensions are the following: .dylib on MacOS and Linux, .dll on
-Windows.
+ id="x23-13400018"></a>Mathematical expressions</h2>
+<!--l. 16--><p class="noindent" >Since INScore version 1.20, mathematical expressions have been introduced as messages arguments. These
+expressions allows to compute values at parsing time.
 <h3 class="sectionHead"><span class="titlemark">18.1    </span> <a 
- id="x23-11800018.1"></a>FAUST plugins</h3>
-<!--l. 3395--><p class="noindent" >FAUST [Functional Audio Stream]<span class="footnote-mark"><a 
-href="OSCMsg24.html#fn1x260"><sup class="textsuperscript">1</sup></a></span><a 
- id="x23-118001f1"></a> 
-is a functional programming language specifically designed for real-time signal processing and synthesis. A
-FAUST/INScore architecture allows to embed FAUST processors in INScore, for the purpose of signals
-computation. A FAUST plugin is viewed as a parallel signal and thus it is created in the <span 
-class="pcrr8tn-">signal </span>address space.
-Similarly to signals, it is associated to an OSC address in the form <span 
-class="pcrr8tn-">/ITL/</span><span 
-class="pcrro8t-">scene</span><span 
-class="pcrr8tn-">/signal/</span><span 
-class="pcrro8t-">name </span>where <span 
-class="pcrro8t-">name </span>is a
-user defined name.
-<h4 class="subsectionHead"><span class="titlemark">18.1.1    </span> <a 
- id="x23-11900018.1.1"></a>Set Message</h4>
-<!--l. 3399--><p class="noindent" >There are two ways to create a FAUST Processor :
-     <ul class="itemize1">
-     <li class="itemize">- By charging a DSP as a plugin already compiled <br 
-class="newline" />
-<a 
- id="dx23-119001"></a>
-     <dl class="list2"><dt class="list">
-     </dt><dd 
-class="list">
-     <!--l. 3405--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustprocessor</span> <img 
-src="OSCMsg128x.png" alt="PICT" >
-     </div> </dd></dl>
-<a 
- id="dx23-119002"></a>
-     <!--l. 3408--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />
-     <div class="center" 
->
-                                                                                 
-
-                                                                                 
-<!--l. 3409--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox121"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust set faust aFaustPlugin;</span>
-</div></div>
-</div>
-     <!--l. 3411--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />The plugin name should not include the extension. The expected extensions are the following: .dylib on
-     MacOS and Linux, .dll on Windows. <br 
-class="newline" />
-     </li>
-     <li class="itemize">- By charging libfaust as a plugin to compile a DSP on-the-fly (as a string or a file). <br 
-class="newline" />
-<a 
- id="dx23-119003"></a>
-     <dl class="list2"><dt class="list">
-     </dt><dd 
-class="list">
-     <!--l. 3417--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustdsp</span> <img 
-src="OSCMsg129x.png" alt="PICT" >
-     </div> </dd></dl>
-<a 
- id="dx23-119004"></a>
-<a 
- id="dx23-119005"></a>
-     <dl class="list2"><dt class="list">
-     </dt><dd 
-class="list">
-     <!--l. 3424--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustdspfile</span> <img 
-src="OSCMsg130x.png" alt="PICT" >
-     </div> </dd></dl>
-<a 
- id="dx23-119006"></a>
-     <!--l. 3427--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />
-     <div class="center" 
->
-<!--l. 3430--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox122"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/plus set faustdsp "process=+;"; </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/mydsp set faustdspf "mydsp.dsp";</span></div></div>
-</div>
-     </li></ul>
-<!--l. 3436--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.1.2    </span> <a 
- id="x23-12000018.1.2"></a>Specific messages</h4>
-<!--l. 3438--><p class="noindent" >A FAUST processor is characterized by the numbers of input and output channels and by a set of parameters. Each
-parameter carries a name defined by the FAUST processor. The set of messages supported by a FAUST
-processor is the set of signals messages extended with the parameters names and with specific query
-messages.
-<a 
- id="dx23-120001"></a>
-                                                                                 
-
-                                                                                 
+ id="x23-13500018.1"></a>Operators</h3>
+<!--l. 22--><p class="noindent" >Basic mathematical expressions are supported. They are listed below.
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3444--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">faustmessage</span> <img 
-src="OSCMsg131x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx23-120002"></a>
-<a 
- id="dx23-120003"></a>
-<a 
- id="dx23-120004"></a>
-<a 
- id="dx23-120005"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrro8t-">msg </span>is any of the FAUST processor parameters, which are defined by the FAUST processor.
-     </li>
-     <li class="itemize">the <span 
-class="pcrr8tn-">get </span>message is extended to query the FAUST processor: <span 
-class="pcrr8tn-">in </span>and <span 
-class="pcrr8tn-">out </span>give the number of input and
-     output channels.</li></ul>
-<!--l. 3456--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Querying a FAUST processor input and output count:
-<div class="center" 
->
-<!--l. 3458--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox123"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust get in out;</span>
-</div></div>
-</div>
-<!--l. 3459--><p class="noindent" >&#x00A0;       gives as output:
-<div class="center" 
->
-<!--l. 3462--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox124"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust in 2; </span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust out 4;</span></div></div>
-</div>
-<!--l. 3463--><p class="noindent" >Modifying the value of a FAUST processor parameter named <span 
-class="pcrr8tn-">volume</span>:
-<div class="center" 
->
-<!--l. 3464--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox125"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/myFaust volume 0.8</span>
-</div></div>
-</div>
-                                                                                 
-
-                                                                                 
-<!--l. 3468--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.1.3    </span> <a 
- id="x23-12100018.1.3"></a>Feeding and composing FAUST processors</h4>
-<!--l. 3471--><p class="noindent" >A FAUST processor accepts float values as input, which are taken as interleaved data and distributed to the input
-channels.
-<!--l. 3473--><p class="noindent" >From composition viewpoint, a FAUST processor is a parallel signal which dimension is the number of
-output channels. Thus, a FAUST processor can be used like any parallel signal. However, the signal
-identifier defined in <a 
-href="OSCMsgch14.html#x18-7900014.1.2">14.1.2<!--tex4ht:ref: parcomp --></a> is extended to support adressing single components of parallel signal as
-follows:
-<a 
- id="dx23-121001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3479--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">signal</span> <img 
-src="OSCMsg132x.png" alt="PICT" >
-</div></dd></dl>
-<!--l. 3480--><p class="noindent" >where <span 
-class="pcrr8tn-">n </span>selects the signal #n of a parallel signal. Note that indexes start at 0.
-<!--l. 3482--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Creating 3 parallel signals using the 3 output channels of a FAUST processor named <span 
-class="pcrr8tn-">myFaust</span>:
-<div class="center" 
->
-<!--l. 3487--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox126"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/y1 set &#8217;myFaust/0&#8217; 0.01 0. 1. 1. 1. ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/y2 set &#8217;myFaust/1&#8217; 0.01 0.5 1. 1. 1. ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/signal/y3 set &#8217;myFaust/2&#8217; 0.01 -0.5 1. 1. 1. ;</span></div></div>
-</div>
-<!--l. 3492--><p class="noindent" >
-<h3 class="sectionHead"><span class="titlemark">18.2    </span> <a 
- id="x23-12200018.2"></a>Gesture Follower</h3>
-<!--l. 3495--><p class="noindent" >INScore supports gesture following using the technology developed by the IRCAM IMTR team. These features are
-available as a plugin that is included in the INScore distribution (version 1.03 or greater) or available from the
-IRCAM.
-<!--l. 3500--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.2.1    </span> <a 
- id="x23-12300018.2.1"></a>Basic principle</h4>
-<!--l. 3501--><p class="noindent" >Gesture following is provided as a mean to interact with a score. From input viewpoint, the gesture follower is
-similar to signals (see section <a 
-href="OSCMsgch14.html#x18-7800014.1.1">14.1.1<!--tex4ht:ref: ssignal --></a> p.<a 
-href="OSCMsgch14.html#x18-7800014.1.1">109<!--tex4ht:ref: ssignal --></a>): it accepts data stream as input both in learning and following modes. It
-implements a specific set of events related to gesture following and can generate message streams parametrized
-with the gesture follower current state.
-<!--l. 3503--><p class="noindent" >A gesture follower is setup to handle a given count of gestures, which are actually denoted by streams of float
-                                                                                 
-
-                                                                                 
-vectors. We&#8217;ll refer to the size of the float vector as the <span 
-class="ptmri8t-">gesture dimension</span>. For example, the dimension of a gesture
-captured from x, y and z accelerometers is 3.
-<!--l. 3505--><p class="noindent" >A gesture follower operates in two distinct phases: a <span 
-class="ptmri8t-">learning phase </span>where it actually stores the gestures data, and a
-<span 
-class="ptmri8t-">following phase </span>where it tries to match incoming data to the stored gestures data. When not learning nor following,
-we&#8217;ll talk of an idle phase.
-<!--l. 3507--><p class="noindent" >In the <span 
-class="ptmri8t-">following phase</span>, the system maintains a list of likelihood for the learned gestures, a list of positions in the
-gestures and a list of speeds representing how fast the gestures are made. Of course, the higher the
-likelihood, the more these data are meaningfull. It&#8217;s the user responsability to decide on the meaningfull
-likelihood threshold value. Interaction events are triggered only in the <span 
-class="ptmri8t-">following phase </span>and for meaningfull
-likelihoods.
-<!--l. 3511--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.2.2    </span> <a 
- id="x23-12400018.2.2"></a>Messages</h4>
-<!--l. 3512--><p class="noindent" >A gesture follower is created in a scene using the <span 
-class="pcrr8tn-">imtrgf </span>type. It has a graphic appearance that may be used for
-debug purpose but it is hidden by default.
-<a 
- id="dx23-124001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3516--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesturefollower</span> <img 
-src="OSCMsg133x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx23-124002"></a>
-<!--l. 3519--><p class="noindent" >The parameters are:
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">gesturedimension</span>: the size of the gestures data vector.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">bufsize</span>: the size of the gesture data storage.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">name</span>: a list of names to be used to refer to the learned gestures.</li></ul>
-<!--l. 3526--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span><br 
-class="newline" />A gesture follower is created with a fixed count of gestures that can be learned and decoded. These gestures are
-named gestures and can be addressed at <span 
-class="pcrr8tn-">/ITL/</span><span 
-class="pcrro8t-">scene</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">myfollower</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">gesturename </span>where the part in italic are
-user defined names and where <span 
-class="pcrr8tn-">myfollower </span>is a gesture follower.
-<a 
- id="dx23-124003"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-                                                                                 
-
-                                                                                 
-<!--l. 3539--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesturefollower</span> <img 
-src="OSCMsg134x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx23-124004"></a>
-<a 
- id="dx23-124005"></a>
-<a 
- id="dx23-124006"></a>
-<a 
- id="dx23-124007"></a>
-<a 
- id="dx23-124008"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="ptmb8t-">[1] </span>input data into the gesture follower. The data are interpreted according to the current operating
-     mode i.e. learning, following or idle.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[2] </span>starts to learn the gesture designated by <span 
-class="ptmri8t-">name</span>. Actually records the next input data to the gesture.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[3] </span>starts following i.e. trying to match the next input data to the recorded gestures.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[4] </span>stops learning or following. Actually puts the system in idle phase.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[5] </span>clear all the gestures data. This is equivalent to send the <span 
-class="pcrr8tn-">clear </span>message to all the gestures.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[6] </span>sets the size of the window that contains the history of the likelihoods. May be viewed as how fast
-     the likelihoods will change.
-     </li>
-     <li class="itemize"><span 
-class="ptmb8t-">[7] </span>sets the follower tolerance.</li></ul>
-<!--l. 3556--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Creating a gesture follower for 3 dimensional data and a typical learning sequence:
-<div class="center" 
->
-<!--l. 3562--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox127"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf set imtrgf 3 1000 gestureA gestureB gestureC gestureD ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf learn gestureA ;</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf 0.1 0.5 -0.2 ... 0.7; ! the data size must be a multiple of 3</span><br 
-class="newline" /><span 
-class="pcrr8tn-x-x-90">/ITL/scene/gf stop;</span>
-                                                                                 
-
-                                                                                 
-</div></div>
-</div>
-<!--l. 3566--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.2.3    </span> <a 
- id="x23-12500018.2.3"></a>Gestures management</h4>
-<!--l. 3568--><p class="noindent" >Messages can also be sent to gestures i.e. to addresses in the form <span 
-class="pcrr8tn-">/ITL/</span><span 
-class="pcrro8t-">scene</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">myfollower</span><span 
-class="pcrr8tn-">/</span><span 
-class="pcrro8t-">gesturename</span>
-where <span 
-class="pcrr8tn-">myfollower </span>is a gesture follower.
-<!--l. 3570--><p class="noindent" >A gesture could be in two states:
-     <ul class="itemize1">
-     <li class="itemize">an active state: when its likelihood is greater or equal to the likelihood threshold.
-     </li>
-     <li class="itemize">an idle state: when its likelihood is lower than the likelihood threshold.</li></ul>
-<a 
- id="dx23-125001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3581--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesture</span> <img 
-src="OSCMsg135x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx23-125002"></a>
-<a 
- id="dx23-125003"></a>
-<a 
- id="dx23-125004"></a>
-<a 
- id="dx23-125005"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">set</span>: sets the gesture data. This is equivalent to learn the corresponding data. The <span 
-class="pcrr8tn-">set </span>message could
-     be used to restored previously saved gesture data.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">clear</span>: clears the gesture data.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">learn</span>: puts the gestures follower in learning mode and starts learning the corresponding gesture.
-     This is equivalent to send OSClearn <span 
-class="ptmri8t-">gesturename </span>to the parent gesture follower.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">likelihoodThreshold</span>: sets the gesture likelihood threshold. The parameter is a float value in the
-     range <span 
-class="pcrr8tn-">[0,1]</span>. Default value is <span 
-class="pcrr8tn-">0.5</span>.</li></ul>
-                                                                                 
-
-                                                                                 
-<!--l. 3595--><p class="noindent" >Gestures supports also specific queries :
-<a 
- id="dx23-125006"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3598--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gestureget</span> <img 
-src="OSCMsg136x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx23-125007"></a>
-<a 
- id="dx23-125008"></a>
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">get</span>: without parameter, returns a set message when the gesture is not empty.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">size</span>: gives the current size of the gesture, actually the number of recorded frames.</li></ul>
-<!--l. 3610--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.2.4    </span> <a 
- id="x23-12600018.2.4"></a>Events and interaction</h4>
-<!--l. 3612--><p class="noindent" >Events are defined at gesture level and events management messages should be addressed to gestures.
-<a 
- id="dx23-126001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3617--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gestureevents</span> <img 
-src="OSCMsg137x.png" alt="PICT" >
-</div></dd></dl>
-<a 
- id="dx23-126002"></a>
-<a 
- id="dx23-126003"></a>
-<a 
- id="dx23-126004"></a>
-<a 
- id="dx23-126005"></a>
-<a 
- id="dx23-126006"></a>
-                                                                                 
-
-                                                                                 
-     <ul class="itemize1">
-     <li class="itemize"><span 
-class="pcrr8tn-">gfEnter </span>triggered when the gesture state changes from idle to active.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfLeave </span>triggered when the gesture state changes from active to idle.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfActive </span>triggered in active state each time the gesture likelihood is refreshed.
-     </li>
-     <li class="itemize"><span 
-class="pcrr8tn-">gfIdle </span>triggered in idle state each time the gesture likelihood is refreshed.</li></ul>
-<!--l. 3631--><p class="noindent" >A message associated to a gesture supports the following specific variables:
-<a 
- id="dx23-126007"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3637--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">gesturevariable</span> <img 
+<!--l. 34--><p class="noindent" ><div class="minipage"><!--l. 34--><p class="center" ><img 
 src="OSCMsg138x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx23-126008"></a>
-<a 
- id="dx23-126009"></a>
-<a 
- id="dx23-126010"></a>
-<!--l. 3641--><p class="noindent" >These variables support the scaling feature associated to position variables and described in section <a 
-href="OSCMsgch15.html#x19-9400015.2.1">15.2.1<!--tex4ht:ref: posvar --></a>
-p.<a 
-href="OSCMsgch15.html#x19-9400015.2.1">135<!--tex4ht:ref: posvar --></a>.
+ id="dx23-135001"></a>
+<!--l. 37--><p class="noindent" >Note that <span 
+class="ptmri8t-">matharg </span>could be a <span 
+class="ptmri8t-">mathexpr </span>as well (see section <a 
+href="#x23-13600018.2">18.2<!--tex4ht:ref: mathargs --></a>).
      <ul class="itemize1">
      <li class="itemize"><span 
-class="pcrr8tn-">gflikelihood </span>indicates the current likelihood
+class="ptmb8t-">1</span>: addition.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">gfpos </span>indicates the current position in the gesture
+class="ptmb8t-">2</span>: substraction.
      </li>
      <li class="itemize"><span 
-class="pcrr8tn-">gfspeed </span>indicates the current gesture execution speed</li></ul>
-<!--l. 3648--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />Variables described in section <a 
-href="OSCMsgch15.html#x19-9300015.2">15.2<!--tex4ht:ref: interactvar --></a> p.<a 
-href="OSCMsgch15.html#x19-9300015.2">135<!--tex4ht:ref: interactvar --></a> may also be used but they are meaningless and contains default
-values.
-<!--l. 3654--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.2.5    </span> <a 
- id="x23-12700018.2.5"></a>Gesture Follower Appearance</h4>
-<!--l. 3656--><p class="noindent" >A gesture follower object has a graphic appearance and supports all the standard objects properties, including
-mapping and synchronization. This graphic appearance is provided mainly for debug purpose and
-by default, the object is hidden. Figure <a 
-href="#x23-1270011">18.1<!--tex4ht:ref: fig:gfgraph --></a> shows the gesture follower appearance in its different
-phases:
-     <ul class="itemize1">
-     <li class="itemize">when idle, the upper part of the graphic indicates the buffer state of the different gestures. It also
-     includes the gestures likelihood threshold.
-                                                                                 
-
-                                                                                 
+class="ptmb8t-">3</span>: negation.
      </li>
-     <li class="itemize">when learning, a red frame and a grey background indicates that a learning a gesture is currently in
-     progress. The gesture buffer state is refreshed while learning.
-     </li>
-     <li class="itemize">when following, the upper part indicates each gesture current likelihood and the lower part indicates
-     the current estimated positions.</li></ul>
-<!--l. 3664--><p class="noindent" ><hr class="figure"><div class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
- id="x23-1270011"></a>
-                                                                                 
-
-                                                                                 
-<!--l. 3665--><p class="noindent" ><img 
-src="OSCMsg139x.png" alt="PIC" class="graphics" width="405.45045pt" height="120.19774pt" ><!--tex4ht:graphics  
-name="OSCMsg139x.png" src="imgs/gesture-follower.ps"  
--->
-<br /> <div class="caption" 
-><span class="id">Figure&#x00A0;18.1: </span><span  
-class="content">The gesture follower appearance in its different phases.</span></div><!--tex4ht:label?: x23-1270011 -->
-                                                                                 
-
-                                                                                 
-<!--l. 3668--><p class="noindent" ></div><hr class="endfigure">
-<h3 class="sectionHead"><span class="titlemark">18.3    </span> <a 
- id="x23-12800018.3"></a>Httpd server plugin</h3>
-<!--l. 3677--><p class="noindent" >INScore can embed Http server to expose real time screenshot image of a scene to the web. This feature is based on
-libmicrohttpd <span class="footnote-mark"><a 
-href="OSCMsg25.html#fn2x260"><sup class="textsuperscript">2</sup></a></span><a 
- id="x23-128001f2"></a> 
-and is available as a plugin that is included in the INScore distribution (version 1.11 or greater). The Url to get the
-image is the base url of the server.
-<h4 class="subsectionHead"><span class="titlemark">18.3.1    </span> <a 
- id="x23-12900018.3.1"></a>Set Message</h4>
-<!--l. 3683--><p class="noindent" >The http server object is created in a scene like other objects and served image of his scene.
-<a 
- id="dx23-129001"></a>
-<dl class="list1"><dt class="list">
-</dt><dd 
-class="list">
-<!--l. 3687--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">httpdserver</span> <img 
-src="OSCMsg140x.png" alt="PICT" >
-</div> </dd></dl>
-<a 
- id="dx23-129002"></a>
-     <ul class="itemize1">
      <li class="itemize"><span 
-class="pcrr8tn-">port </span>http port used by the server.</li></ul>
-<!--l. 3694--><p class="noindent" ><span 
+class="ptmb8t-">4</span>: multiplication.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">5</span>: division.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">6</span>: modulo.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">7</span>: parenthesis, to be used for evaluation order.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">8</span>: gives the maximum value.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">9</span>: gives the minimum value.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">10</span>: conditional form: returns the first <span 
+class="pcrr8tn-">matharg </span>if <span 
+class="pcrr8tn-">mathbool </span>is true, otherwise returns the second one.</li></ul>
+<!--l. 52--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -633,66 +75,434 @@ class="small-caps">M</span><span
 class="small-caps">P</span><span 
 class="small-caps">L</span><span 
 class="small-caps">E</span> </span><br 
-class="newline" />
+class="newline" />Some simple mathematical expressions used as message parameters:
 <div class="center" 
 >
-<!--l. 3695--><p class="noindent" >
+<!--l. 56--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox127"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject x 0.5 * 0.2;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myObject y ($var ? 1 : -1);</span></div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 58--><p class="noindent" >Boolean operations are the following:
+<a 
+ id="dx23-135002"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 67--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">mathbool</span> <img 
+src="OSCMsg139x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx23-135003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="ptmb8t-">1</span>: evaluate the argument as a boolean value.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">2</span>: evaluate the argument as a boolean value and negates the result.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">3</span>: check if the arguments are equal.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">4</span>: check if the first argument is greater than the second one.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">5</span>: check if the first argument is greater or equel to the second one.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">6</span>: check if the first argument is less than the second one.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">7</span>: check if the first argument is less or equal to the second one.</li></ul>
+<!--l. 80--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Compare two variables:
+<div class="center" 
+>
+<!--l. 83--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox128"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/server set httpd 8000;</span>
+class="pcrr8tn-x-x-90">/ITL/scene/myObject x ($var1 &#x003E; $var2 ? 1 : -1);</span>
 </div></div>
 </div>
-<!--l. 3697--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span><br 
-class="newline" />If the http port is already used, the server cannot start.
-<!--l. 3702--><p class="noindent" >
-<h4 class="subsectionHead"><span class="titlemark">18.3.2    </span> <a 
- id="x23-13000018.3.2"></a>Specific messages</h4>
-<!--l. 3704--><p class="noindent" >The http server status can be delivered with a specific message.
-<a 
- id="dx23-130001"></a>
                                                                                  
 
                                                                                  
+<!--l. 88--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">18.2    </span> <a 
+ id="x23-13600018.2"></a>Arguments</h3>
+<!--l. 91--><p class="noindent" >Arguments of mathematical operations are the following:
+<a 
+ id="dx23-136001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 3708--><p class="noindent" ><div class="minipage"><span 
-class="ptmri8t-">httpdmessage</span> <img 
-src="OSCMsg141x.png" alt="PICT" >
-</div> </dd></dl>
+<!--l. 100--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">matharg</span> <img 
+src="OSCMsg140x.png" alt="PICT" >
+</div></dd></dl>
 <a 
- id="dx23-130002"></a>
-<!--l. 3712--><p class="noindent" >A string corresponding to the server status ("started" or "stopped") is return.
-<!--l. 3714--><p class="noindent" ><span 
-class="ptmbc8t-">E<span 
-class="small-caps">X</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">P</span><span 
-class="small-caps">L</span><span 
-class="small-caps">E</span> </span><br 
-class="newline" />
-<div class="center" 
->
-<!--l. 3715--><p class="noindent" >
-<div 
-class="colorbox" id="colorbox129"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/server get status;</span>
-</div></div>
-</div>
+ id="dx23-136002"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="ptmb8t-">1</span>: any message parameter.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">2</span>: a variable value.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">3</span>: a variable that is post incremented or post decremented.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">4</span>: a variable that is pre incremented or pre decremented.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">5</span>: a message based variable.
+     </li>
+     <li class="itemize"><span 
+class="ptmb8t-">6</span>: a mathematical expression.</li></ul>
+<!--l. 115--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">18.3    </span> <a 
+ id="x23-13700018.3"></a>Polymorphism</h3>
+<!--l. 118--><p class="noindent" >Since INScore&#8217;s parameters are polymorphic, the semantic of the operations are to be defined notably when applied
+to non numeric arguments. Actually, a basic OSC message parameter type is between <span 
+class="pcrr8tn-">int32</span>, <span 
+class="pcrr8tn-">float32 </span>and <span 
+class="pcrr8tn-">string</span>.
+However, due to the extension of the scripting language, parameters could also be arrays of any type, including
+mixed types (e.g. resulting from variable declarations).
                                                                                  
 
                                                                                  
-<!--l. 3719--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 121--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">18.3.1    </span> <a 
+ id="x23-13800018.3.1"></a>Numeric values</h4>
+<!--l. 123--><p class="noindent" >For numeric arguments, automatic type conversion is applied with a precedence of <span 
+class="pcrr8tn-">float32 </span>i.e. when one of the
+argument&#8217;s type is <span 
+class="pcrr8tn-">float32</span>, the result is also <span 
+class="pcrr8tn-">float32 </span>(see Table <a 
+href="#x23-1380011">18.1<!--tex4ht:ref: table:mathopnum --></a>). <div class="table">
+                                                                                 
+
+                                                                                 
+<!--l. 124--><p class="noindent" ><a 
+ id="x23-1380011"></a><hr class="float"><div class="float" 
+>
+                                                                                 
+
+                                                                                 
+<div class="tabular"> <table id="TBL-13" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-13-1g"><col 
+id="TBL-13-1"><col 
+id="TBL-13-2"><col 
+id="TBL-13-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-13-1-1"  
+class="td01">   arg1</td><td  style="white-space:nowrap; text-align:left;" id="TBL-13-1-2"  
+class="td11">arg2       </td><td  style="white-space:nowrap; text-align:center;" id="TBL-13-1-3"  
+class="td10"> output  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-13-2-1"  
+class="td01">  <span 
+class="pcrr8tn-">int32</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-13-2-2"  
+class="td11"><span 
+class="pcrr8tn-">int32  </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-13-2-3"  
+class="td10"> <span 
+class="pcrr8tn-">int32 </span></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-13-3-1"  
+class="td01"><span 
+class="pcrr8tn-">float32</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-13-3-2"  
+class="td11"><span 
+class="pcrr8tn-">int32 </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-13-3-3"  
+class="td10"><span 
+class="pcrr8tn-">float32</span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-13-4-1"  
+class="td01">  <span 
+class="pcrr8tn-">int32</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-13-4-2"  
+class="td11"><span 
+class="pcrr8tn-">float32</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-13-4-3"  
+class="td10"><span 
+class="pcrr8tn-">float32</span></td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-13-5-1"  
+class="td01"><span 
+class="pcrr8tn-">float32</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-13-5-2"  
+class="td11"><span 
+class="pcrr8tn-">float32</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-13-5-3"  
+class="td10"><span 
+class="pcrr8tn-">float32</span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-13-6-1"  
+class="td01">       </td></tr></table></div>
+<br /><div class="caption" 
+><span class="id">Table&#x00A0;18.1: </span><span  
+class="content">Numeric operations output</span></div><!--tex4ht:label?: x23-1380011 -->
+                                                                                 
+
+                                                                                 
+</div><hr class="endfloat" />
+</div>
+<h4 class="subsectionHead"><span class="titlemark">18.3.2    </span> <a 
+ id="x23-13900018.3.2"></a>Strings</h4>
+<!--l. 142--><p class="noindent" >For <span 
+class="pcrr8tn-">string </span>parameters, operations that have an obvious semantic (like + applied to two strings) are defined (see
+Table <a 
+href="#x23-1390012">18.2<!--tex4ht:ref: table:mathopstr --></a>) , the others are undefined and generate an error (see Table <a 
+href="#x23-1390023">18.3<!--tex4ht:ref: table:mathnoopstr --></a>).
+<div class="table">
+                                                                                 
+
+                                                                                 
+<!--l. 144--><p class="noindent" ><a 
+ id="x23-1390012"></a><hr class="float"><div class="float" 
+>
+                                                                                 
+
+                                                                                 
+<div class="tabular"> <table id="TBL-14" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-14-1g"><col 
+id="TBL-14-1"><col 
+id="TBL-14-2"><col 
+id="TBL-14-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-14-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-14-1-1"  
+class="td01">           operation</td><td  style="white-space:nowrap; text-align:left;" id="TBL-14-1-2"  
+class="td11">evaluates to                </td><td  style="white-space:nowrap; text-align:center;" id="TBL-14-1-3"  
+class="td10">       comment              </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-14-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-14-2-1"  
+class="td01">     <span 
+class="pcrr8tn-">string </span>+ <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-14-2-2"  
+class="td11"><span 
+class="pcrr8tn-">string           </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-14-2-3"  
+class="td10">concatenate the two strings</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-14-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-14-3-1"  
+class="td01">        <span 
+class="pcrr8tn-">string </span>+ <span 
+class="pcrr8tn-">num</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-14-3-2"  
+class="td11"><span 
+class="pcrr8tn-">string </span>+ <span 
+class="ptmri8t-">string</span>(<span 
+class="pcrr8tn-">num</span>)</td><td  style="white-space:nowrap; text-align:center;" id="TBL-14-3-3"  
+class="td10"> <span 
+class="pcrr8tn-">num </span>is converted to string </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-14-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-14-4-1"  
+class="td01">        <span 
+class="pcrr8tn-">num </span>+ <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:left;" id="TBL-14-4-2"  
+class="td11"><span 
+class="ptmri8t-">string</span>(<span 
+class="pcrr8tn-">num</span>) + <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-14-4-3"  
+class="td10">          "                     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-14-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-14-5-1"  
+class="td01">@max(<span 
+class="pcrr8tn-">stringstring</span>)</td><td  style="white-space:nowrap; text-align:left;" id="TBL-14-5-2"  
+class="td11"><span 
+class="pcrr8tn-">string           </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-14-5-3"  
+class="td10">  select the largest string   </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-14-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-14-6-1"  
+class="td01"> @min(<span 
+class="pcrr8tn-">stringstring</span>)</td><td  style="white-space:nowrap; text-align:left;" id="TBL-14-6-2"  
+class="td11"><span 
+class="pcrr8tn-">string           </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-14-6-3"  
+class="td10"> select the smallest string  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-14-7-"><td  style="white-space:nowrap; text-align:right;" id="TBL-14-7-1"  
+class="td01">                   </td></tr></table></div>
+<br /><div class="caption" 
+><span class="id">Table&#x00A0;18.2: </span><span  
+class="content">Supported operations on strings</span></div><!--tex4ht:label?: x23-1390012 -->
+                                                                                 
+
+                                                                                 
+</div><hr class="endfloat" />
+</div>
+<div class="table">
+                                                                                 
+
+                                                                                 
+<!--l. 161--><p class="noindent" ><a 
+ id="x23-1390023"></a><hr class="float"><div class="float" 
+>
+                                                                                 
+
+                                                                                 
+<div class="tabular"> <table id="TBL-15" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-15-1g"><col 
+id="TBL-15-1"><col 
+id="TBL-15-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-15-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-15-1-1"  
+class="td01">               operation</td><td  style="white-space:nowrap; text-align:center;" id="TBL-15-1-2"  
+class="td10">      comment            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-15-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-15-2-1"  
+class="td01">       <span 
+class="pcrr8tn-">string </span><span 
+class="zptmcmrm-">op</span>&#x00A0;<span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-15-2-2"  
+class="td10">where <span 
+class="zptmcmrm-">op</span>&#x00A0;is in [- * / %]</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-15-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-15-3-1"  
+class="td01">          <span 
+class="pcrr8tn-">string </span><span 
+class="zptmcmrm-">op</span>&#x00A0;<span 
+class="pcrr8tn-">num</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-15-3-2"  
+class="td10">         "                  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-15-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-15-4-1"  
+class="td01">          <span 
+class="pcrr8tn-">num </span><span 
+class="zptmcmrm-">op</span>&#x00A0;<span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-15-4-2"  
+class="td10">         "                  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-15-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-15-5-1"  
+class="td01">                -<span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-15-5-2"  
+class="td10">                   </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-15-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-15-6-1"  
+class="td01">prefixed or postfixed <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-15-6-2"  
+class="td10">                   </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-15-7-"><td  style="white-space:nowrap; text-align:right;" id="TBL-15-7-1"  
+class="td01">                       </td></tr></table></div>
+<br /><div class="caption" 
+><span class="id">Table&#x00A0;18.3: </span><span  
+class="content">Non supported operations on strings</span></div><!--tex4ht:label?: x23-1390023 -->
+                                                                                 
+
+                                                                                 
+</div><hr class="endfloat" />
+</div>
+<!--l. 178--><p class="noindent" >Boolean operations are supported on <span 
+class="pcrr8tn-">string </span>only when both arguments are strings (see Table <a 
+href="#x23-1390034">18.4<!--tex4ht:ref: table:mathboolstr --></a>). Other types
+combination generate an error.
+<div class="table">
+                                                                                 
+
+                                                                                 
+<!--l. 181--><p class="noindent" ><a 
+ id="x23-1390034"></a><hr class="float"><div class="float" 
+>
+                                                                                 
+
+                                                                                 
+<div class="tabular"> <table id="TBL-16" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-16-1g"><col 
+id="TBL-16-1"><col 
+id="TBL-16-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-16-1-"><td  style="white-space:nowrap; text-align:right;" id="TBL-16-1-1"  
+class="td01"> boolean operation</td><td  style="white-space:nowrap; text-align:center;" id="TBL-16-1-2"  
+class="td10">        evaluated as                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-16-2-"><td  style="white-space:nowrap; text-align:right;" id="TBL-16-2-1"  
+class="td01"><span 
+class="pcrr8tn-">string </span>== <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-16-2-2"  
+class="td10">  regular strings comparison    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-16-3-"><td  style="white-space:nowrap; text-align:right;" id="TBL-16-3-1"  
+class="td01"> <span 
+class="pcrr8tn-">string </span>&#x003E; <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-16-3-2"  
+class="td10">alphabetical strings comparison</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-16-4-"><td  style="white-space:nowrap; text-align:right;" id="TBL-16-4-1"  
+class="td01"><span 
+class="pcrr8tn-">string </span>&#x003E;= <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-16-4-2"  
+class="td10">            "                         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-16-5-"><td  style="white-space:nowrap; text-align:right;" id="TBL-16-5-1"  
+class="td01"> <span 
+class="pcrr8tn-">string </span>&#x003C; <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-16-5-2"  
+class="td10">            "                         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-16-6-"><td  style="white-space:nowrap; text-align:right;" id="TBL-16-6-1"  
+class="td01"><span 
+class="pcrr8tn-">string </span>&#x003C;= <span 
+class="pcrr8tn-">string</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-16-6-2"  
+class="td10">            "                         </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-16-7-"><td  style="white-space:nowrap; text-align:right;" id="TBL-16-7-1"  
+class="td01">               </td></tr></table></div>
+<br /><div class="caption" 
+><span class="id">Table&#x00A0;18.4: </span><span  
+class="content">Supported boolean operations on strings</span></div><!--tex4ht:label?: x23-1390034 -->
+                                                                                 
+
+                                                                                 
+</div><hr class="endfloat" />
+</div>
+<h4 class="subsectionHead"><span class="titlemark">18.3.3    </span> <a 
+ id="x23-14000018.3.3"></a>Arrays</h4>
+<!--l. 201--><p class="noindent" >For arrays, the operation is distributed inside the array elements:
+<center class="math-display" >
+<img 
+src="OSCMsg141x.png" alt="arg op[v1 ...vn]:= [arg opv1 ...argop vn] " class="math-display" ></center>
+or
+<center class="math-display" >
+<img 
+src="OSCMsg142x.png" alt="[v1 ...vn]op arg := [v1 oparg...vn op arg]
+" class="math-display" ></center>
+<!--l. 206--><p class="noindent" >When both parameters are arrays, the operation is distributed from one array elements to the other array elements
+when the arrays have the same size and it generates an error when the sizes differ:
+<center class="math-display" >
+<img 
+src="OSCMsg143x.png" alt="[a1 ...ai]op[b1 ...bi]:= [a1 opb1 ...ai op bi ]
+" class="math-display" ></center>
+<!--l. 209--><p class="noindent" >Boolean operations on arrays are evaluated as the logical <span 
+class="zptmcmrm-">and </span>of it&#8217;s element&#8217;s boolean values and generate an error
+when the arrays sizes differ.
+                                                                                 
+
+                                                                                 
+<!--l. 3--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch19.html" >next</a>] [<a 
 href="OSCMsgch17.html" >prev</a>] [<a 
 href="OSCMsgch17.html#tailOSCMsgch17.html" >prev-tail</a>] [<a 
 href="OSCMsgch18.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch18.html" >up</a>] </p></div>
-<!--l. 3719--><p class="noindent" ><a 
+<!--l. 3--><p class="noindent" ><a 
  id="tailOSCMsgch18.html"></a>  
 </body></html> 

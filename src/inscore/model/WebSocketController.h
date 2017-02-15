@@ -32,7 +32,7 @@ namespace inscore
 {
 
 class VObjectView;
-class TParseEnv;
+class IAppl;
 
 /*!
  * \brief An abstract implementation of a web socket.
@@ -46,7 +46,6 @@ class WebSocketInformer
 		virtual VObjectView*	getView() const			= 0;
 		virtual int				getFrequency() const	= 0;
 		virtual int				getPort() const			= 0;
-		virtual TParseEnv*		getParseEnv()			= 0;
 };
 
 /*!

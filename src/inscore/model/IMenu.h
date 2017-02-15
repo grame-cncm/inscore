@@ -66,9 +66,10 @@ class IMenu : public IVNode
 		 * \param vis true to show the menu, false to hide the menu.
 		 */
         virtual void	setVisible (bool vis);
+//		virtual		SIMessageList getAll () const	{ return IMessageList::create(); }
 };
 /*! @} */
 
-} // end namespoace
+} // end namespace
 
 #endif // IMENU_H

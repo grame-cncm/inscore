@@ -10,10 +10,9 @@
 %{
 
 #ifdef WIN32
-#pragma warning (disable : 4267 4100)
+#pragma warning (disable : 4267 4100 4244)
 #endif
 
-//#include <stdio.h>
 #include <iostream>
 #include "IExprParser.h"
 #include "IExprParse.hpp"
@@ -21,7 +20,7 @@
 using namespace std;
 
 #define YY_EXTRA_TYPE inscore::IExprParser*
-#define YY_USER_ACTION yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
+#define YY_USER_ACTION yyextra->fLine = yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
 
 #define YY_INPUT(buf,result,max_size)   \
    {                                       \

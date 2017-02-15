@@ -30,7 +30,7 @@
 #include "GUIDOEngine.h"
 #include "GmnEvaluator.h"
 #include "IExpressionHandler.h"
-#include "TMessageEvaluator.h"
+#include "Events.h"
 
 using namespace std;
 using namespace libmapping;
@@ -61,8 +61,8 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fMsgHandlerMap[kmap_GetSetMethod]			= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::mapMsg);
 
 	fGetMsgHandlerMap[kpage_GetSetMethod]		= TGetParamMsgHandler<int>::create(fPage);
-	fGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMethodHandler<IGuidoCode, int (IGuidoCode::*)() const>::create(this, &IGuidoCode::getPageCount);
-	fGetMsgHandlerMap[ksystemCount_GetMethod]	= TGetParamMethodHandler<IGuidoCode, vector<int> (IGuidoCode::*)() const>::create(this, &IGuidoCode::getSystemsCount);
+	fAltGetMsgHandlerMap[kpageCount_GetMethod]		= TGetParamMethodHandler<IGuidoCode, int (IGuidoCode::*)() const>::create(this, &IGuidoCode::getPageCount);
+	fAltGetMsgHandlerMap[ksystemCount_GetMethod]	= TGetParamMethodHandler<IGuidoCode, vector<int> (IGuidoCode::*)() const>::create(this, &IGuidoCode::getSystemsCount);
 	fGetMsgHandlerMap[kpageFormat_GetSetMethod]	= TGetParamMsgHandler<TFloatSize>::create(fPageFormat);
 	fGetMsgHandlerMap[kcolumns_GetSetMethod]	= TGetParamMsgHandler<int>::create(fNbOfPageColumns);
 	fGetMsgHandlerMap[krows_GetSetMethod]		= TGetParamMsgHandler<int>::create(fNbOfPageRows);
@@ -75,7 +75,7 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 //--------------------------------------------------------------------------
 bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
 {
-	if (t == EventsAble::kPageCount) return true;
+	if (t == kPageCountEvent) return true;
 	return IObject::acceptSimpleEvent(t);
 }
 
@@ -83,17 +83,9 @@ bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
 void IGuidoCode::setPageCount(int count)
 {
 	if (count != fCurrentPagesCount) {
-		const IMessageList*	msgs = getMessages (EventsAble::kPageCount);	// look for watch error messages
-		if (msgs && msgs->list().size()) {
-			MouseLocation mouse (0, 0, 0, 0, 0, 0);
-			EventContext env(mouse, libmapping::rational(0,1), 0);
-			TMessageEvaluator me;
-			SIMessageList outmsgs = me.eval (msgs, env);
-			if (outmsgs && outmsgs->list().size())
-				outmsgs->send();
-		}
+		fCurrentPagesCount = count;
+		checkEvent(kPageCountEvent, rational(0,1), this);
 	}
-	fCurrentPagesCount = count;
 }
 
 //--------------------------------------------------------------------------

@@ -246,11 +246,7 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 	const SRelativeTime2GraphicMapping& map = (m->getMode()==Master::kSyncRelative) ? timeshift(master->getMapping( mapName ), mdate)
 																					: master->getMapping( mapName );
 	const SRelativeTime2GraphicMapping& slavemap = timeshift(slave->getMapping( "" ), date);
-	if ( !map ) {
-		ITLErr << master->getOSCAddress() << ": mapping is missing." << ITLEndl;
-		return masterSeg;
-	}
-    if ( !slavemap ) {
+	if ( !map || !slavemap ) {
 		ITLErr << slave->getOSCAddress() << ": mapping is missing." << ITLEndl;
 		return masterSeg;
 	}
@@ -286,13 +282,13 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
 #endif
 
 	if (found) {
-        float h = isVStretch ? masterSeg.yinterval().size() : 2*slave->getHeight()*slave->getScale()/(master->getHeight());
-        float w = 2*slave->getWidth()*slave->getScale()/(master->getWidth());
+        float h = isVStretch ? masterSeg.yinterval().size() : master->getHeight() ? 2*slave->getHeight()*slave->getScale()/(master->getHeight()) : 0;
+        float w = master->getWidth() ? 2*slave->getWidth()*slave->getScale()/(master->getWidth()) : 0;
         float y = getYPos (h, masterSeg, align) + m->getDy();
         // this is the vertical offset corresponding to the slave's mapping :
         y -= slaveSeg.yinterval().center()*slave->getHeight()*slave->getScale()/(master->getHeight());
         GraphicSegment destSeg = offsetSegment(slave, h, w, x, y); // this is the destination segment of the slave alone (in master's coordinate)
-        
+		
         GraphicSegment entireSlaveSeg = GraphicSegment(-1,-1,1,1);
         
         GraphicSegment extendedSeg = computeSegmentWithChildren(slave, entireSlaveSeg); //this is the source segment of the slave and its children (in slave's coordinate)
@@ -306,13 +302,13 @@ GraphicSegment IMappingUpdater::updateNoStretch (IObject* slave, SMaster m, bool
         x = invertedVariety.getx(0.5); // the center
         y = invertedVariety.gety(0.5);
         
-		slave->setSyncPos(masterMapName, QPointF(x,y));
+		slave->setSyncPos(masterMapName, TFloatPoint(x,y));
         slave->setSyncHeight(masterMapName, extendedDestSeg.yinterval().size());
         slave->setSyncWidth(masterMapName, extendedDestSeg.xinterval().size());
         
 		return masterSeg;
 	}
-    slave->setSyncPos(masterMapName, QPointF(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
+    slave->setSyncPos(masterMapName, TFloatPoint(kUnknownLocation,kUnknownLocation)); // puts the object away when no mapping available or missing resources
 	return masterSeg;
 }
 
@@ -346,6 +342,7 @@ void IMappingUpdater::updateIObject (IObject* object)
     for(unsigned int i = 0; i<masters.size(); i++)
     {
         const IObject* mobj = masters[i]->getMaster();
+		if (!mobj->getView()) continue;		// sync on an object without view
         if (object->localMapModified() || object->getState() || object->dateModified()
             || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
             mobj->getView()->refreshSyncCache();
@@ -538,7 +535,7 @@ SGraphic2GraphicMapping IMappingUpdater::verticalAdjust (const SGraphic2GraphicM
     
     if(!master->getMaster()->getWidth() || !master->getMaster()->getHeight())
         master->getMaster()->getView()->updateObjectSize (master->getMaster());
-    if(o->getWidth() || !o->getHeight())
+    if(!o->getWidth() || !o->getHeight())
         o->getView()->updateObjectSize (o);
     
 	if ( (valign == Master::kSyncOver) && (stretch & Master::kStretchV) && TFloat::eq(master->getDy(),0))

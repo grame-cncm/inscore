@@ -32,6 +32,7 @@
 #include <QDebug>
 
 #include "EventsAble.h"
+#include "Events.h"
 
 
 namespace inscore
@@ -76,7 +77,8 @@ template <typename T> class MouseEventAble : public T
 					if(!e->touchPoints().size() || e->touchPoints().size()>1)
 						return false;
 					fTouchID = e->touchPoints().first().id();
-					handleEvent (e->touchPoints().first().pos(), EventsAble::kTouchBegin);
+//					handleEvent (e->touchPoints().first().pos(), EventsAble::kTouchBegin);
+					handleEvent (e->touchPoints().first().pos(), kTouchBeginEvent);
 				}else if(e->type() == QEvent::TouchEnd || e->type() == QEvent::TouchCancel){
 					fTouchID = -1;
 					touchEnd(e);
@@ -85,9 +87,11 @@ template <typename T> class MouseEventAble : public T
 						const QTouchEvent::TouchPoint& p = e->touchPoints().at(i);
 						if(p.id() == fTouchID){
 							if(p.state() == Qt::TouchPointMoved)
-								handleEvent(p.pos(), EventsAble::kTouchUpdate);
+//								handleEvent(p.pos(), EventsAble::kTouchUpdate);
+								handleEvent(p.pos(), kTouchUpdateEvent);
 							else if(p.state() == Qt::TouchPointReleased){
-								handleEvent(p.pos(), EventsAble::kTouchEnd);
+//								handleEvent(p.pos(), EventsAble::kTouchEnd);
+								handleEvent(p.pos(), kTouchEndEvent);
 								fTouchID = -1;
 							}
 							break;
@@ -101,16 +105,27 @@ template <typename T> class MouseEventAble : public T
 			return T::sceneEvent(event);
 		}
 
-		void touchBegin		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchBegin); }
-		void touchEnd		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchEnd); }
-		void touchUpdate	( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchUpdate); }
+//		void touchBegin		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchBegin); }
+//		void touchEnd		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchEnd); }
+//		void touchUpdate	( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), EventsAble::kTouchUpdate); }
+//
+//		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseDoubleClick); }
+//		void mouseMoveEvent		( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseMove); }
+//		void mousePressEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseDown); }
+//		void mouseReleaseEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseUp); }
+//		void hoverEnterEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseEnter); }
+//		void hoverLeaveEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseLeave); }
 
-		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseDoubleClick); }
-		void mouseMoveEvent		( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseMove); }
-		void mousePressEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseDown); }
-		void mouseReleaseEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), EventsAble::kMouseUp); }
-		void hoverEnterEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseEnter); }
-		void hoverLeaveEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), EventsAble::kMouseLeave); }
+		void touchBegin		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), kTouchBeginEvent); }
+		void touchEnd		( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), kTouchEndEvent); }
+		void touchUpdate	( QTouchEvent * event )		{ handleEvent (_MouseEventAble::touchPos(event), kTouchUpdateEvent); }
+
+		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), kMouseDoubleClickEvent); }
+		void mouseMoveEvent		( QGraphicsSceneMouseEvent * event )		{ handleEvent (event->pos(), kMouseMoveEvent); }
+		void mousePressEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), kMouseDownEvent); }
+		void mouseReleaseEvent	( QGraphicsSceneMouseEvent * event)			{ handleEvent (event->pos(), kMouseUpEvent); }
+		void hoverEnterEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), kMouseEnterEvent); }
+		void hoverLeaveEvent	( QGraphicsSceneHoverEvent * event )		{ handleEvent (event->pos(), kMouseLeaveEvent); }
 };
 
 } // end namespoace

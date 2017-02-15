@@ -32,11 +32,8 @@
 #include <set>
 
 #include "IObject.h"
-
-//#include "mapbuilder.h"
+#include "GUIDOEngine.h"
 #include "TLocalMapping.h"
-
-
 #include "IExpressionHandler.h"
 #include "GmnEvaluator.h"
 

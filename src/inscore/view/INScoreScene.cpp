@@ -149,23 +149,8 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 		}
 		event->accept();
 	}
-
 	else if (event->mimeData()->hasText()) {
-		stringstream sstr (event->mimeData()->text().toStdString());
-		ITLparser p (&sstr, 0, fScene->getAppl());
-		SIMessageList msgs = p.parse();
-		if (msgs) {
-			for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-				string addr;
-				if ((*i)->extendedAddress())
-					addr = string((*i)->url()) + (*i)->address();
-				else if ((*i)->relativeAddress())
-					addr = (*i)->relative2absoluteAddress( fScene->getOSCAddress());
-				else
-					addr = (*i)->address();
-				INScore::postMessage (addr.c_str(), *i);
-			}
-		}
+		TILoader::loadString(event->mimeData()->text().toStdString(), fScene);
 		event->accept();
 	}
 }

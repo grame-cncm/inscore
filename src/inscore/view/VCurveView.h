@@ -23,19 +23,16 @@
 
 */
 
-
 #ifndef __VCurveView__
 #define __VCurveView__
+
+#include <QGraphicsPathItem>
 
 #include "VMappedShapeView.h"
 #include "MouseEventAble.h"
 
-#include <QGraphicsPathItem>
-
 namespace inscore
 {
-
-class EventsAble;
 
 /*!
 \addtogroup ITLView
@@ -57,11 +54,10 @@ class VCurveView: public VMappedShapeView
 		virtual ~VCurveView() {}
 		
 		virtual void updateView( ICurve * Curve  );
-        virtual void updateObjectSize( IObject * o );
 };
 
 /*!@} */
 
-} // end namespoace
+} // end namespace
 
 #endif

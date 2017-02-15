@@ -9,7 +9,8 @@ Item {
 
     anchors.left: parent.left
     anchors.right: parent.right
-    height: Screen.pixelDensity * 5
+    height: Screen.pixelDensity * 4
+//    height: Screen.pixelDensity * 5
 
     Rectangle{
         id: line1
@@ -26,8 +27,10 @@ Item {
         id: label
         text: ""
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 16
-        font.letterSpacing: Screen.pixelDensity/2
+        font.letterSpacing: 1
+        font.pointSize: 15
+//        font.pointSize: 16
+//        font.letterSpacing: Screen.pixelDensity/2
         font.capitalization: Font.SmallCaps
         font.bold: true;
         color: "#474646"

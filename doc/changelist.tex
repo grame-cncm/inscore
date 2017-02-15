@@ -1,5 +1,40 @@
 
 %===============================
+%:    Differences to version 1.18  (version 1.21)
+\sublevel{Differences to version 1.18}
+\begin{itemize}
+\item new set of sensor objects. See section \fullref{sensors}.
+\item update to guido engine 1.63
+\item new \OSC{preprocess} message supported at application and scene level intended to debug javascript sections or math expressions. Output of pre-processing is printed to the log window. See section \fullref{applmgmt} and  \fullref{scene}.
+\item environement variables introduced in scripting environment (OSName and OSId). See section \fullref{envvar}.
+\item new math expressions introduced in scripting context. See section \fullref{mathExpr}.
+% Version 1.20
+\item new \OSC{syncFrame} synchronisation mode. See section \fullref{syncPos} and \fullref{syncFrame}.
+\item the \OSC{events} system has been extended to any object attribute and supports user defined events.
+  This change comes also with a one tick delay introduced to handle all the events (i.e. the 
+  event associated messages are processed by the next time task): this is intended to avoid
+  freezing the system in case of loops. See section \fullref{attributeevents} and  \fullref{userevents}.
+\item lua support has been dropped (compilation was optional, never embedded into a distribution)
+\item parser strategy changed: now each message is processed one by one to ensure the system
+  consistency, especially for message based variables: an object state remains now consistent 
+  from one message to another.
+\item new \OSC{arc} object. See section \fullref{vgraphscore} and  \fullref{arcobjects}.
+\item new \OSC{radius} message supported by rectangles. See section \fullref{rectobjects}.
+\item new \OSC{edit} message supported by all objects: opens a small messages editor. See section \fullref{editmsg}.
+\item new \OSC{level} message supported by the log window and extended debugging support. See section \fullref{ITLlog}.
+\item new video specific messages and management: the video time is now independent from the 
+  inscore object time. See section \fullref{video}.
+\item gmn objects \OSC{set}: output correct error message in case of syntax error
+\item save msg output changed: a scene emit the \OSC{new} message, static info nodes (log, stat, javascript...)
+\item bug in debug name corrected (was not removed from graphic space)
+\item bug in polygon and curve position corrected (was not centered on 0 0) - use \OSC{/ITL compatibility} 
+  to preserve previous behaviour
+\item crash bug corrected: occured when lauching inscore from a secondary screen
+% Version 1.19
+\item new \OSC{write} message supported by text based objects. See section \fullref{txtwrite}.
+\end{itemize}
+
+%===============================
 %:    Differences to version 1.17  (version 1.18)
 \sublevel{Differences to version 1.17}
 \begin{itemize}

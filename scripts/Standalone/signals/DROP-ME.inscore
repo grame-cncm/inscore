@@ -27,7 +27,7 @@ data = 0. 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.8 ;
 /ITL/scene/title  y -0.92;
 /ITL/scene/title scale 1.7;
 
-! create a set of signals
+# create a set of signals
 /ITL/scene/signal/y  size $size;
 /ITL/scene/signal/t  size $size;
 /ITL/scene/signal/h  size $size;
@@ -35,7 +35,7 @@ data = 0. 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.8 ;
 /ITL/scene/signal/b  size $size;
 /ITL/scene/signal/a  size $size;
 
-! set their default values
+# set their default values
 /ITL/scene/signal/y  default 0.;
 /ITL/scene/signal/t  default 0.02;
 /ITL/scene/signal/h  default 0.;
@@ -43,10 +43,10 @@ data = 0. 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.8 ;
 /ITL/scene/signal/b  default 1.;
 /ITL/scene/signal/a  default 1.;
 
-! put the signals in parallel
+# put the signals in parallel
 /ITL/scene/signal/sig  set y t h s b a;
 
-! and create the corresponding graphic signal
+# and create the corresponding graphic signal
 /ITL/scene/graphsig  set graph sig;
 
 

@@ -28,7 +28,7 @@
 	/ITL/scene/comment1 set  txt "System and staves 1, 3 and 5 have a mapping.",
 	/ITL/scene/comment2 set  txt "Click here to remove staves map.",
 	/ITL/scene/comment2 watch mouseDown ( 
-		/ITL/scene/score map del,			! delete the default map
+		/ITL/scene/score map del,			# delete the default map
 		/ITL/scene/score map staff3 del,
 		/ITL/scene/score map staff5 del,
 		/ITL/scene/comment1 set  txt "System mapping.",

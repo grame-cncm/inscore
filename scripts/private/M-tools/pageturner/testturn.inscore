@@ -4,20 +4,20 @@
 /ITL/scene/pagepos date 0 1;
 /ITL/scene/score page 1;
 
-!-------------------------------------------------------
-! buttons feedback
-!-------------------------------------------------------
+#-------------------------------------------------------
+# buttons feedback
+#-------------------------------------------------------
 /ITL/scene/centerbutton dblue 255;
 
-!-------------------------------------------------------
-! inhibit left and right buttons in page turn test mode
-!-------------------------------------------------------
+#-------------------------------------------------------
+# inhibit left and right buttons in page turn test mode
+#-------------------------------------------------------
 /ITL/scene/leftbutton watch;
 /ITL/scene/rightbutton watch;
 
-!-------------------------------------------------------
-! messages addressed to the outside world
-!-------------------------------------------------------
+#-------------------------------------------------------
+# messages addressed to the outside world
+#-------------------------------------------------------
 /ITL/scene/score watch mouseDown (
 	/ITL/scene/_* date "$date:system" ,
 	/ITL/scene/pagepos date "$date:system" );

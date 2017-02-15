@@ -1,7 +1,7 @@
 
 
 
-! send sinus data to the hue using a projection string
+# send sinus data to the hue using a projection string
 <? javascript sinus("sig '[2]'", 50, 0.2); ?>
 
 

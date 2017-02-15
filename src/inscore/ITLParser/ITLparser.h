@@ -29,17 +29,22 @@
 #include <locale.h>
 
 #include "TScripting.h"
+#include "TMaths.h"
 
 namespace inscore 
 {
 
-class TParseEnv;
+class IAppl;
+
 /* \brief a class for reading ITL streams
 */
 class ITLparser {	
 		
+	TMaths	fMath;
+
 	void initScanner();
 	void destroyScanner();
+	void setupEnv();
 
 	public:
 		class address {
@@ -57,14 +62,17 @@ class ITLparser {
 		std::string		fText;		// the current text
 		int				fInt;		// the current int
 		float			fFloat;		// the current float
-		int				fLine;		// line offset
+		int				fLineOffset;// line offset
+		int				fLine;		// current line
+		int				fColumn;	// current column
 		int				fExprStartLine;
-		bool			fParseSucceed;
 
-				 ITLparser(std::istream* stream, int line, TParseEnv* penv);
+				 ITLparser(std::istream* stream, int line, IAppl* root, bool execute=true);
 		virtual ~ITLparser();
 		
-		SIMessageList parse();
+		bool parse();
+		SIMessageList messages()	{ return fReader.messages(); }
+		const TMaths& math() const	{ return fMath; }
 };
 
 } // end namespace

@@ -54,6 +54,7 @@
 #include "Tools.h"
 #include "QFileDownloader.h"
 #include "QGuidoImporter.h"
+#include "Events.h"
 
 #include "INScore.h"
 
@@ -68,31 +69,25 @@ using namespace std;
 namespace inscore
 {
 
-//--------------------------------------------------------------------------
-const string IAppl::kApplType("appl");
 
 #ifdef WIN32
 #define _CRT_SECURE_NO_DEPRECATE
-std::string IAppl::fRootPath = std::string(getenv("USERPROFILE")) + "\\";
+	static string getFilePath() { string user(getenv("USERPROFILE"));  return user + "\\"; }
 
 #elif ANDROID
-static std::string getFilePath() {
+static string getFilePath() {
 	// Use standard location as root path (/sdcard/documents/inscore on most device)
-	QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
-	if (!path.isEmpty() && !path.endsWith("/"))
-		path += "/";
-	path += "inscore/";
+	QStringList plist = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+	QString path = plist[0] + (path.endsWith("/") ? "inscore" : "/inscore");
+	oscerr << OSCStart("INScore") << "document path set to" << path.toStdString().c_str() << OSCEnd();
 	QDir dir(path);
-	if (!dir.exists())
-		dir.mkpath(path);
+	if (!dir.mkpath(path))
+		oscerr << OSCStart("INScore") << "failed to set rootPath" << OSCEnd();
 	return path.toStdString();
 }
-// Files are writed in sdcard only
-std::string IAppl::fRootPath = getFilePath();
 
 #elif IOS
-// Files are writed in ios application sandbox only
-static std::string getFilePath() {
+static string getFilePath() {
     QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
     QDir dir(path);
     if (!dir.exists())
@@ -101,11 +96,19 @@ static std::string getFilePath() {
         path += "/";
     return path.toStdString();
 }
-std::string IAppl::fRootPath = getFilePath();
 
 #else
-std::string IAppl::fRootPath = std::string(getenv("HOME")) + "/";
+static string getFilePath() { return string(getenv("HOME")) + "/"; }
 #endif
+
+
+//--------------------------------------------------------------------------
+const string IAppl::kApplType("appl");
+string IAppl::fRootPath;
+
+//--------------------------------------------------------------------------
+void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
+
 
 inscore::SIMenu getMenuNode(inscore::IObject * parent) {
 #ifdef __MOBILE__
@@ -170,6 +173,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
+	fMsgHandlerMap[kpreprocess_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::preProcessMsg);
 	fMsgHandlerMap[kread_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadBuffer);
 	fMsgHandlerMap[kbrowse_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::browseMsg);
 	fMsgHandlerMap[krequire_SetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::requireMsg);
@@ -195,14 +199,13 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fGetMsgHandlerMap[kdefaultShow_GetSetMethod]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
 	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fCompatibilityVersionNum);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fRate);
-//	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::getRate);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getForwardList);
-	fGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
-	fGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
+	fAltGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
+	fAltGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
 
-	fGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
-	fGetMsgHandlerMap["guido-version"]			= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
-	fGetMsgHandlerMap["musicxml-version"]		= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
+	fAltGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
+	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
+	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 	fMsgHandlerMap[kstartBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
@@ -299,6 +302,9 @@ void IAppl::createVirtualNodes()
 	fApplStat  = IApplStat::create(this);					// statistics
 	fDebug = fApplDebug;
 	fApplLog = IApplLog::create(this);
+#if __MOBILE__
+	fApplLog->setWrap (true);
+#endif
 	fFilterForward = IFilterForward::create(this);
 	add(getMenuNode(this));
 	add ( fDebug );
@@ -341,6 +347,19 @@ SIMessageList IAppl::getAll() const
 }
 
 //--------------------------------------------------------------------------
+bool IAppl::processMsg (const IMessage* msg)
+{
+	if (!msg) return false;
+
+	string address = msg->address();
+	string beg  = OSCAddress::addressFirst(address);
+	string tail = OSCAddress::addressTail(address);
+	int ret = processMsg(beg, tail, msg);
+	IGlue::trace(msg, ret);
+	return ret & MsgHandler::kProcessed + MsgHandler::kProcessedNoChange;
+}
+
+//--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
@@ -365,13 +384,14 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 		tail = OSCAddress::addressTail(i->second.first);
 	}
 
-	if (tail.size()) 		// application is not the final destination of the message
+	if (tail.size()) {		// application is not the final destination of the message
 		status = IObject::processMsg(head, tail, msg);
+ 	}
 	
 	else if (match(head)) {			// the message is for the application itself
 		status = execute(msg);
 		if (status & MsgHandler::kProcessed)
-			setState(IObject::kModified);
+			setModified();
 	}
 	if ((status == MsgHandler::kProcessed) || (status == MsgHandler::kProcessedNoChange))
 		return status;
@@ -384,15 +404,7 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 //--------------------------------------------------------------------------
 void IAppl::error () const
 {
-	const IMessageList*	msgs = getMessages (EventsAble::kError);	// look for watch error messages
-	if (msgs && msgs->list().size()) {
-		MouseLocation mouse (0, 0, 0, 0, 0, 0);
-		EventContext env(mouse, libmapping::rational(0,1), 0);
-		TMessageEvaluator me;
-		SIMessageList outmsgs = me.eval (msgs, env);
-		if (outmsgs && outmsgs->list().size())
-			outmsgs->send();
-	}
+	checkEvent(kErrorEvent, libmapping::rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
@@ -447,8 +459,7 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 					const IMessageList* msgs = msg->watchMsg2Msgs(1);
 					if (!msgs || msgs->list().empty()) return MsgHandler::kBadParameters;
 
-					MouseLocation mouse (0, 0, 0, 0, 0, 0);
-					EventContext env(mouse, libmapping::rational(0,1), this);
+					EventContext env(this);
 					TMessageEvaluator me;
 					SIMessageList outmsgs = me.eval (msgs, env);
 					if (outmsgs && outmsgs->list().size()) outmsgs->send();
@@ -559,31 +570,14 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IAppl::_watchMsg(const IMessage* msg, bool add)
-{ 
-	if (msg->size()) {
-		string what;
-		if (msg->param (0, what)) {
-			EventsAble::eventype t = EventsAble::string2type (what);
-			switch (t) {
-				case EventsAble::kError:
-					if (msg->size() > 1)
-						if (add) eventsHandler()->addMsg (t, msg->watchMsg2Msgs(1));
-						else eventsHandler()->setMsg (t, msg->watchMsg2Msgs(1));
-					else if (!add) eventsHandler()->setMsg (t, 0);
-					return MsgHandler::kProcessed;
-
-				default:
-					break;
-			}
-		}
-	}
-	return IObject::_watchMsg(msg, add);
+bool IAppl::acceptSimpleEvent(EventsAble::eventype t) const
+{
+	if ( string(t) == kErrorEvent) return true;
+	return IObject::acceptSimpleEvent(t);
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
-//bool IAppl::loadBuffer (const char* buffer)
 {
 	stringstream s;
 	for (int i=0; i<msg->size(); i++ ) {
@@ -595,24 +589,15 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 	if (!s.str().size()) return MsgHandler::kBadParameters;
 
 	ITLparser p (&s, 0, this);
-	SIMessageList msgs = p.parse();
-	if (msgs) {
-		for (IMessageList::TMessageList::const_iterator i = msgs->list().begin(); i != msgs->list().end(); i++) {
-			string beg  = OSCAddress::addressFirst((*i)->address());
-			string tail = OSCAddress::addressTail((*i)->address());
-			int ret = processMsg(beg, tail, *i);
-			if (oscDebug()) IGlue::trace(*i, ret);
-		}
-		return MsgHandler::kProcessed;
-	}
+	if (p.parse()) return MsgHandler::kProcessed;
 	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)
-{
-	return load (msg, this, getRootPath());
-}
+MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)		{ return load (msg, this, getRootPath()); }
+MsgHandler::msgStatus IAppl::preProcessMsg(const IMessage* msg) { return preprocess (msg, this, getRootPath()); }
+void IAppl::logMsgs(const SIMessageList& msgs)					{ fApplLog->write (msgs); }
+std::string IAppl::absolutePath( const std::string& path )		{ return TILoader::makeAbsolutePath (getRootPath(), path); }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
@@ -636,13 +621,7 @@ MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-std::string IAppl::absolutePath( const std::string& path )
-{
-	return TILoader::makeAbsolutePath (getRootPath(), path);
-}
-
-//--------------------------------------------------------------------------
-void IAppl::addAlias( const string& alias, const std::string& address, const std::string& msg )
+void IAppl::addAlias( const string& alias, const string& address, const string& msg )
 {
 	fAliases[alias] = make_pair(address, msg);
 }

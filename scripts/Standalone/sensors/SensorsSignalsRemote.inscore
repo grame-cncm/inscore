@@ -1,0 +1,199 @@
+<? javascript
+	var sensors = [ {name:"accelerometer",  scale:0.1019}, // approx 1 / 9.81
+					{name:"ambientlight", 	scale:0.8 }, 
+					{name:"compass", 		scale:0.0111 }, // i.e. 2 / 180 
+					{name:"gyroscope", 		scale:0.0222 }, // i.e. 2 / 90 
+					{name:"light", 			scale:0.01 },
+					{name:"magnetometer", 	scale:25000 }, 
+					{name:"orientation", 	scale:0.66}, 
+					{name:"proximity", 		scale:1.}, 
+					{name:"rotation", 		scale:0.0111 }, // i.e. 2 / 180  
+					{name:"tilt", 			scale:0.0222 }];
+
+	var remote = "192.168.1.91:7000";
+	
+	function makemsg (msg, index, name, y) {
+		msg  = msg.replace(/INDEX/g, index) ;
+		msg  = msg.replace(/Y/g, y) ;
+		msg  = msg.replace(/REMOTE/g, remote) ;
+		return msg.replace(/SENSOR/g, name) ;
+	}
+
+	function create () {
+		var n = sensors.length;
+		var msg = "/ITL/scene/lINDEX set txt SENSOR;\n";
+		msg    += " /ITL/scene/cINDEX set rect 0.07 0.07;\n";
+		msg    += " /ITL/scene/[lc]INDEX y Y;\n";
+		var out = "";
+		for (i=0; i < n; i++) {
+			out += makemsg(msg, i, sensors[i].name, -0.5 + 0.12*i);
+		}
+		return out;
+	}
+
+	function watch () {
+		var n = sensors.length;
+		var msg = "/ITL/scene/cINDEX watch " + click + " ( \n";
+		msg    += "  /ITL/scene/cINDEX push,\n";
+		msg    += "  /ITL/scene/cINDEX brushStyle solid,\n";
+		msg    += "  /ITL/scene/rect2 duration DUR,\n";
+		msg    += "  /ITL/scene/line2 duration DUR,\n";
+		msg    += "  /ITL/scene/reset event mouseDown 0 0,\n";
+		msg    += "  /ITL/scene/reset event mouseUp 0 0,\n";
+		msg    += "  REMOTE/ITL/scene/cINDEX event touchBegin 0 0,\n";
+		msg    += "  /ITL/scene/cINDEX watch " + click + " (\n";
+		msg    += "    /ITL/scene/cINDEX brushStyle none,\n";
+		msg    += "    REMOTE/ITL/scene/cINDEX event touchBegin 0 0,\n";
+		msg    += "    /ITL/scene/cINDEX pop));\n";
+		var out = "";
+		for (i=0; i < n; i++) {
+			out += makemsg(msg, i, sensors[i].name, 0).replace(/DUR/g,  sensors[i].scale) ;
+		}
+		return out;
+	}
+
+?>
+
+click 	= ($OSId < 3 ? touchBegin : mouseDown);
+
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+/ITL/scene/title set txt Sensors as signals remote control;
+/ITL/scene/title fontSize 48;
+/ITL/scene/title color $color;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.8;
+
+<? javascript create() ?>
+
+/ITL/scene/l* fontSize 24;
+/ITL/scene/l* xorigin 1.;
+/ITL/scene/c* x 0.1;
+/ITL/scene/c* penWidth 1;
+/ITL/scene/c* brushStyle none;
+/ITL/scene/c* color 14 214 41;
+/ITL/scene/c* dy -0.01;
+
+<? javascript watch() ?>
+
+g = 230;
+w = 1.05;
+h = 0.05;
+y = 0.75;
+y2 = $y + $h * 1.5;
+/ITL/scene/rect1 set rect $w $h;
+/ITL/scene/rect2 set rect $w $h;
+/ITL/scene/rect? color $g $g $g;
+/ITL/scene/rect? radius 2 40;
+/ITL/scene/rect1 y $y;
+/ITL/scene/rect2 y $y2;
+
+/ITL/scene/line1 set line wa 1 0;
+/ITL/scene/line2 set line wa 1 0;
+/ITL/scene/line? penWidth 2;
+/ITL/scene/line1 y $y;
+/ITL/scene/line2 y $y2;
+
+/ITL/scene/label1 	set txt "smooth";
+/ITL/scene/label2 	set txt "scale";
+/ITL/scene/label1 	xorigin 1.4;
+/ITL/scene/label2 	xorigin 1.6;
+/ITL/scene/label? 	x $w/-2;
+/ITL/scene/label1 	y $(/ITL/scene/rect1 get y);
+/ITL/scene/label2 	y $(/ITL/scene/rect2 get y);
+
+/ITL/scene/value1 	set txt " ";
+/ITL/scene/value2 	set txt " ";
+/ITL/scene/value? 	xorigin -1.4;
+/ITL/scene/value? 	x $w / 2;
+/ITL/scene/value1 	y $(/ITL/scene/rect1 get y);
+/ITL/scene/value2 	y $(/ITL/scene/rect2 get y);
+
+w = 0.035;
+/ITL/scene/smooth set ellipse $w $w;
+/ITL/scene/smooth color 240 0 0;
+/ITL/scene/smooth date 0.999;
+/ITL/scene/sync smooth line1;
+
+/ITL/scene/scale set ellipse $w $w;
+/ITL/scene/scale color 240 0 0;
+/ITL/scene/sync scale line2;
+
+smothControl = ( 
+	/ITL/scene/smooth date '$date',
+	/ITL/scene/value1 set txt '$date%f',
+	192.168.1.91:7000/ITL/scene/signal/* smooth '$date%f'
+);
+/ITL/scene/rect1 watch mouseDown $smothControl;
+/ITL/scene/rect1 watch mouseMove $smothControl;
+
+scaleControl = ( 
+	/ITL/scene/scale date '$date',
+	/ITL/scene/value2 set txt '$date%f',
+	192.168.1.91:7000/ITL/scene/signal/* scale '$date%f'
+);
+/ITL/scene/rect2 watch mouseDown $scaleControl;
+/ITL/scene/rect2 watch mouseMove $scaleControl;
+
+
+/ITL/scene/reset set ellipse $w $w;
+/ITL/scene/reset penWidth 1;
+/ITL/scene/reset brushStyle none;
+/ITL/scene/reset color 14 214 41;
+/ITL/scene/reset y $(/ITL/scene/rect2 get y) + $h + 0.03 ;
+/ITL/scene/label3 	set txt "reset";
+/ITL/scene/label3 	xorigin 1.2;
+/ITL/scene/label3 	x -$w;
+/ITL/scene/label3 	y $(/ITL/scene/reset get y);
+
+/ITL/scene/reset watch mouseDown (
+	/ITL/scene/smooth date 0.999,
+	/ITL/scene/scale date 0,
+	/ITL/scene/value? set txt " ",
+	/ITL/scene/reset brushStyle solid,
+	192.168.1.91:7000/ITL/scene/signal/* reset
+);
+/ITL/scene/reset watch mouseUp ( /ITL/scene/reset brushStyle none);
+
+
+__END__
+
+/ITL/scene/rect2 get duration;
+/ITL/scene/scale get date;
+192.168.1.91:7000/ITL/log clear;
+192.168.1.91:7000/ITL/scene/signal/* autoscale 1;
+192.168.1.91:7000/ITL/scene/signal/* autoscale 0;
+192.168.1.91:7000/ITL/scene/signal/accelerometer autoscale 0;
+192.168.1.91:7000/ITL/scene/signal/accelerometer get autoscale;
+192.168.1.91:7000/ITL/scene/s? get scale;
+192.168.1.91:7000/ITL/scene/s? autoscale 1;
+192.168.1.91:7000/ITL/scene/s? autoscale 0;
+192.168.1.91:7000/ITL/scene/s? reset;
+192.168.1.91:7000/ITL/scene/s0 mode user;
+192.168.1.91:7000/ITL/scene/s0 mode gravity;
+192.168.1.91:7000/ITL/scene/s0 mode combined;
+192.168.1.91:7000/ITL/scene/s0 mode toto;
+192.168.1.91:7000/ITL/scene/s0 get mode;
+
+192.168.1.91:7000/ITL/scene/s5 mode toto;
+192.168.1.91:7000/ITL/scene/s5 mode raw;
+192.168.1.91:7000/ITL/scene/s5 mode geomagnetic;
+192.168.1.91:7000/ITL/scene/s5 get mode;
+
+192.168.1.91:7000/ITL/scene/s6 mode toto;
+192.168.1.91:7000/ITL/scene/s6 mode clockwise;
+192.168.1.91:7000/ITL/scene/s6 mode counterClockwise;
+192.168.1.91:7000/ITL/scene/s6 get mode;
+
+192.168.1.91:7000/ITL/scene/s8 get hasZ;
+192.168.1.91:7000/ITL/scene/s8 angle;
+192.168.1.91:7000/ITL/scene/s8 angle 90. 90. 90.;
+192.168.1.91:7000/ITL/scene/s8 angle 0. 0. 180.;
+
+192.168.1.91:7000/ITL/scene/s9 calibrate;
+192.168.1.91:7000/ITL/scene/sensor watch newData (192.168.1.21:7001/y '$y[0.,1.]');
+

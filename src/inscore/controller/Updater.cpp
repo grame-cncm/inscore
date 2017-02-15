@@ -23,13 +23,15 @@
 
 */
 
+#include <iostream>
 
 #include "Updater.h"
 #include "IObject.h"
 #include "ISync.h"
 #include "IGraphicSignal.h"
+#include "ISignalNode.h"
 
-#include <iostream>
+
 using namespace std;
 
 namespace inscore
@@ -53,8 +55,16 @@ void Updater::update (IObject* object)
 }
 
 //--------------------------------------------------------------------------
+//void ViewUpdater::update (IObject* object)
+//{
+//	cout << "ViewUpdater::update " << object->name() << " " << needupdate (object) << endl;
+//	Updater::update(object);
+//}
+
+//--------------------------------------------------------------------------
 bool ViewUpdater::needupdate (IObject* o)
 {
+	if (o->getDeleted()) return false;
 	int state = o->getState();
 	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
 }
@@ -62,18 +72,19 @@ bool ViewUpdater::needupdate (IObject* o)
 //--------------------------------------------------------------------------
 bool LocalMapUpdater::needupdate (IObject* o)
 {
-	return ( o->fAutoMap && o->durationModified()) || o->localMapModified() || o->newData();
+	if (o->getDeleted()) return false;
+	bool need = ( o->fAutoMap && o->durationModified()) || o->localMapModified() || o->newData();
+	return need;
 }
 
 //--------------------------------------------------------------------------
-bool SlaveMapUpdater::needupdate (IObject*)
+bool SlaveMapUpdater::needupdate (IObject* o)
 {
-	return true;
-
-//	return o->localMapModified() || o->dateModified(); // || master->getMaster()->localMapModified() || master->modified();
-
-//	int state = o->getState();
-//	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
+	if (o->getDeleted() || !o->mapable()) return false;
+	int state = o->getState();
+	bool need = o->localMapModified() || o->dateModified() || (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
+	//if (need) cout << "SlaveMapUpdater::needupdate: " << o->name() << endl;
+	return need;
 }
 
 //--------------------------------------------------------------------------
@@ -82,7 +93,17 @@ bool SlaveMapUpdater::needupdate (IObject*)
 void SigModified::updateTo (IGraphicSignal* gs)
 {
 	if (gs->getSignal()->getState()) {
-		gs->setState (IObject::kModified);
+		gs->setModified();
+	}
+}
+
+void SigModified::updateTo (ISignalNode* signode)
+{
+	if (signode->getState()) {
+		vector<SISignalConnection>& cnx = signode->getConnections();		// propagate signal modification to connected objects
+		for (size_t i=0; i<cnx.size(); i++) {
+			cnx[i]->getObject()->setModified();
+		}
 	}
 }
 
