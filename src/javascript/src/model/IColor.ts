@@ -15,14 +15,13 @@ class IColor {
 //--------------------------------------------------------------    
     constructor(input : Array<number>|IColor) {
         if (input instanceof Array) { 
-        	this.fRGB = input; 
+        	this.fRGB = input.slice(0,3);
+        	if (input.length == 4) this.fA = input[3]; 
         }
         else if (input instanceof IColor) {
-            this.fRGB = input.fRGB;
-            this.fA = input.fA;
+            this.set (input);
         }
         this.fHSB = new Array<number>();
-        this.fModified = false;
         this.updateHSB();         
     }
   
@@ -43,10 +42,10 @@ class IColor {
 
 // GETS VALUES
 //-------------------------------------------------------------- 
-    getRGB(): Array<number> { return this.fRGB; }
-    getHSB(): Array<number> { return this.fHSB; }
+    getRGB(): Array<number> { let c = this.fRGB; c.push(this.fA); return c; }
+    getHSB(): Array<number> { let c = this.fHSB; c.push(this.fA); return c; }
   
-	getRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.fRGB[3]})`; }
+	getRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.fA})`; }
 	getRGBString(): string { return `rgb(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]})`; }
 
     
@@ -62,8 +61,8 @@ class IColor {
 
 // GETS VALUES CLOSURES
 //-------------------------------------------------------------- 
-    _getRGB(): GetArrayMethod { return () => this.fRGB; }
-    _getHSB(): GetArrayMethod { return () => this.fHSB; }
+    _getRGB(): GetArrayMethod { return () => this.getRGB(); }
+    _getHSB(): GetArrayMethod { return () => this.getHSB(); }
     
     _getR(): GetNumMethod { return () => this.fRGB[0]; }
     _getG(): GetNumMethod { return () => this.fRGB[1]; } 
@@ -96,8 +95,18 @@ class IColor {
         }
     }
     
-    setRGB(val: Array<number>): void 	{ this.fRGB = val; this.updateHSB(); this.fModified = true; }
-    setHSB(val: Array<number>): void 	{ this.fHSB = val; this.updateRGB(); this.fModified = true; }
+    setRGB(val: Array<number>): void { 
+    	this.fRGB = val.slice(0,3);
+        if (val.length == 4) this.fA = val[3]; 
+		this.updateHSB(); 
+		this.fModified = true; 
+    }
+    setHSB(val: Array<number>): void  {
+    	this.fHSB = val.slice(0,3); 
+        if (val.length == 4) this.fA = val[3]; 
+    	this.updateRGB(); 
+    	this.fModified = true; 
+    }
     _setRGB()	: SetColorMethod 		{ return (n) => this.setRGB(n); };
     _setHSB()	: SetColorMethod 		{ return (n) => this.setHSB(n); };
     
