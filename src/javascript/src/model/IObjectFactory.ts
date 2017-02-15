@@ -2,6 +2,7 @@
 ///<reference path="../vhtmlview/HtmlViewFactory.ts"/>
 ///<reference path="ICurve.ts"/>
 ///<reference path="IEllipse.ts"/>
+///<reference path="IArc.ts"/>
 ///<reference path="IHtml.ts"/>
 ///<reference path="IImage.ts"/>
 ///<reference path="ILine.ts"/>
@@ -11,7 +12,6 @@
 ///<reference path="IText.ts"/>
 ///<reference path="ITextf.ts"/>
 ///<reference path="Methods.ts"/>
-
 
 class IObjectFactory {	
 	static fViewFactory = new HtmlViewFactory();
@@ -32,10 +32,6 @@ class IObjectFactory {
                 break;
             
             case "rect":
-
-                ///test 
-                console.log("IObjetFactory createObj rect");
-
                 obj = new IRect(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
@@ -83,8 +79,13 @@ class IObjectFactory {
             case "img":
                 obj = new IImage(name, parent);
                 this.createView(obj, parent.getView());  
-                break;    
-                
+                break;
+
+            case "arc":
+                obj = new IArc(name, parent);
+                this.createView(obj, parent.getView());
+                break;
+
             default:
                 break;
         }

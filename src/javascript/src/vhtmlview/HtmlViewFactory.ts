@@ -41,8 +41,11 @@ class HtmlViewFactory implements ViewFactory {
                 return new VHtmlImageView (parent);
                 
             case "gmn":
-                    return new VHtmlGMNView (parent);
-                
+                return new VHtmlGMNView (parent);
+
+            case "arc":
+                return new VHtmlArcView (parent);
+
             default:
                 return null;
         }
