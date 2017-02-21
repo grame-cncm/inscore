@@ -2,6 +2,7 @@
 ///<reference path="VHtmlView.ts"/>
 ///<reference path="VHtmlTools.ts"/>
 ///<reference path="../model/IObject.ts"/>
+///<reference path="../events/documentEvents.ts"/>
 
 //--------------------------------------------------
 // VHtmlSceneContainer detects the current element 
@@ -34,8 +35,8 @@ class VHtmlSceneView extends VHtmlView {
         let div = this.getHtml();
 		div.className = "inscore-scene";
 		div.setAttribute("name", name); 
-		div.addEventListener("drop", dropEvent, false);
-		div.addEventListener("dragover", dragOverEvent, false);
+		div.addEventListener("drop", inscore_dropEvent, false);
+		div.addEventListener("dragover", inscore_dragOverEvent, false);
     }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }

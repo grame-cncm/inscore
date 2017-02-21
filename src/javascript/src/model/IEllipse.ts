@@ -2,11 +2,11 @@
 
 class IEllipse extends IRectShape {
     
-    protected kEllipseType: string;
+    //protected kEllipseType: string;
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kEllipseType = 'ellipse';
-        this.fTypeString = this.kEllipseType;
+        //this.kEllipseType = 'ellipse';
+        this.fTypeString = kEllipseType;
     }
 }

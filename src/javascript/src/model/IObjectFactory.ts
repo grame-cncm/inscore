@@ -11,6 +11,10 @@
 ///<reference path="IScene.ts"/>
 ///<reference path="IText.ts"/>
 ///<reference path="ITextf.ts"/>
+///<reference path="IGuidoCode.ts"/>
+///<reference path="IGuidoPianoRoll.ts"/>
+///<reference path="IWebSocket.ts"/>
+///<reference path="ISVG.ts"/>
 ///<reference path="Methods.ts"/>
 
 class IObjectFactory {	
@@ -24,68 +28,90 @@ class IObjectFactory {
     }
         
     static createObj (name: string , type: string, parent: IObject): IObject {
+//        console.log("IObjetFactory createObj " + type);
+
         let obj: IObject;
         switch (type) {
-            case "ellipse":
+            case kEllipseType:
                 obj = new IEllipse(name, parent);
                 this.createView(obj, parent.getView());  
                 break;
             
-            case "rect":
-                obj = new IRect(name, parent);                
+            case kRectType:
+                obj = new IRect(name, parent);
                 this.createView(obj, parent.getView());    
                 break;
                 
-            case "curve":
+            case kCurveType:
                 obj = new ICurve(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
                 
-            case "line":
+            case kLineType:
                 obj = new ILine(name, parent);                
                 this.createView(obj, parent.getView());    
                 break;
                 
-            case "gmn":
-                obj = new IGuidoCode(name, parent);                
+            case kGuidoCodeType:
+                obj = new IGuidoCode(name, parent); 
                 this.createView(obj, parent.getView());    
-                break;                
+                break;   
+                
+            case kGuidoPianoRollType:
+                obj = new IGuidoPianoRoll(name, parent); 
+                this.createView(obj, parent.getView());    
+                break;                              
                    
-            case "scene":
+            case kSceneType:
                 obj = new IScene(name, parent);
                 this.createView(obj);  
                 break;
                 
-            case "polygon":
+            case kPolygonType:
                 obj = new IPolygon(name, parent);
                 this.createView(obj, parent.getView());  
                 break;
                 
-            case "txt":
+            case kTextType:
                 obj = new IText(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 
-            case "txtf":
+            case kTextfType:
                 obj = new ITextf(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 
-            case "html":
+            case kHtmlType:
                 obj = new IHtml(name, parent);
                 this.createView(obj, parent.getView());  
                 break;    
                 
-            case "img":
+            case kImgType:
                 obj = new IImage(name, parent);
                 this.createView(obj, parent.getView());  
                 break;
 
-            case "arc":
+            case kArcType:
                 obj = new IArc(name, parent);
                 this.createView(obj, parent.getView());
                 break;
 
+            case kVideoType:
+                obj = new IVideo(name, parent);
+                this.createView(obj, parent.getView());  
+                break;    
+                                  
+            case kSvgType:
+                obj = new ISVG(name, parent);
+                this.createView(obj, parent.getView());  
+                break;  
+
+            case kWebSocketType:
+                obj = new IWebSocket(name, parent);
+                this.createView(obj, parent.getView());  
+                break;                        
+                          
             default:
                 break;
         }

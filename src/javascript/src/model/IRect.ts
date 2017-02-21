@@ -4,7 +4,7 @@
 class IRect extends IRectShape {
     
     protected kRectType: string;
-    protected fRadius: Array<number>;    
+    protected fRadius: Array<number> = [0, 0];    
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
@@ -15,9 +15,9 @@ class IRect extends IRectShape {
         this.fMsgHandlerMap[kradius_GetSetMethod] 	 = new TMsgHandlerArray(this._setRadius());
     } 
     
-        getRadius() : Array<number> { return this.fRadius }
-        setRadius(radius : Array<number>): void {this.fRadius = radius}
+    getRadius() : Array<number>             { return this.fRadius }
+    setRadius(radius : Array<number>): void { this.fRadius = radius}
 
-        _getRadius()  {return () => this.getRadius()}
-        _setRadius()  {return (radius : Array<number>) => this.setRadius(radius)}
+    _getRadius()  {return () => this.getRadius()}
+    _setRadius()  {return (radius : Array<number>) => this.setRadius(radius)}
 }

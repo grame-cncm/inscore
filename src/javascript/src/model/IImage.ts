@@ -2,13 +2,13 @@
 
 class IImage extends IObject {
     
-    protected kImgType: string;
+    //protected kImgType: string;
     protected fFile: string;
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kImgType = 'img';
-        this.fTypeString = this.kImgType;      
+        //this.kImgType = 'img';
+        this.fTypeString = kImgType;      
     }
 
     colorAble(): void { }		// color attributes are not available for images
@@ -22,6 +22,7 @@ class IImage extends IObject {
             let file = msg.paramStr(2);
             if (!file.correct) return msgStatus.kBadParameters;
         	this.fFile = file.value;
+            this.newData(true);
         	status = msgStatus.kProcessed;
         }
         else status = msgStatus.kBadParameters;
@@ -29,6 +30,6 @@ class IImage extends IObject {
     }
     
     getSet(): IMessage	{
-    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.kImgType, "'"+this.getFile()+"'"]); 
+    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, "'"+this.getFile()+"'"]); 
     }
 }

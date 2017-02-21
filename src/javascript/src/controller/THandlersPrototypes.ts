@@ -1,5 +1,5 @@
 
-///<reference path="./IMessage.ts"/>
+///<reference path="IMessage.ts"/>
 ///<reference path="../lib/TEnums.ts"/>
 ///<reference path="../externals/fraction.ts"/>
 

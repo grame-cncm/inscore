@@ -15,6 +15,7 @@ class VHtmlRectView extends VHtmlSvg {
     }    
 
 	updateView	( obj: IObject) : void {
+		super.updateView(obj);
         let rect = <IRect>obj;
 		let scale = rect.fPosition.getScale();
 		let w = this.relative2SceneWidth( rect.fPosition.getWidth() ) * scale;
@@ -28,6 +29,5 @@ class VHtmlRectView extends VHtmlSvg {
         let ry = radius[1];    
         this.fRect.setAttribute('rx', rx.toString());
         this.fRect.setAttribute('ry', ry.toString());
-		this.updatePos(obj);
 	}
 }

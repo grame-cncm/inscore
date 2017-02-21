@@ -9,18 +9,26 @@ class ArcParams
     fEnd       : Array<number> = [0,0];
     fRX        : number;
     fRY        : number;
+    fLine      : Array<number>;
     fArcFlags  : Array<number> = [0,0];
+    fClose     : number;
 
-    getArcs(start : Array<number>, rX : number, rY : number, arcFlags : Array<number>, end : Array<number>)
+    getArcs(start : Array<number>, line : Array<number>, rX : number, rY : number, arcFlags : Array<number>, end : Array<number>, close : number)
     {
         this.fStart     = start;
         this.fEnd       = end;
         this.fRX        = rX;
         this.fRY        = rY;
+        this.fLine      = line;
         this.fArcFlags  = arcFlags;
+        this.fClose     = close;
     }
 
-    toArray (): Array<any> 	{ return ["M ",this.fStart, "A ", this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd]; }
+    toArray (): Array<any> 	{
+        if ( this.fClose == 0)
+        {
+             return ["M " + this.fStart + "A " + this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd];
+        }else return ["M " + this.fLine," L " + this.fStart + "A " + this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd + " Z "]; }
     toString(): string 	    { return this.toArray().toString(); }
 }
 
@@ -39,12 +47,6 @@ class VHtmlArcView extends VHtmlSvg
 
     updateView( obj: IObject) : void
     {
-        // let arcs = getArcs (arc) => array {x1, y1, x2, y2, rx, ry, direction}
-        // getArcs fait le découpage et utilise angleToXY (angle, w h) => x, y
-        // pour chaque element du tableau
-        // setArc (arcs[i]);
-        // verifier: s'il le nbre d'arcs diminue, supprimer les derniers
-
         let arc = <IArc>obj;
 
         let scale = arc.fPosition.getScale();
@@ -54,103 +56,71 @@ class VHtmlArcView extends VHtmlSvg
 
         this.fArc.setAttribute( 'width'  , w.toString());
         this.fArc.setAttribute( 'height' , h.toString());
-        this.fArc.style.fill = obj.fColor.getRGBString();
+        this.fArc.style.stroke = obj.fColor.getRGBString();
+        this.fArc.style.strokeWidth = obj.fPenControl.fPenWidth.toString();
 
-        let r1  = arc.fPosition.getWidth () / 2;
-        let r2  = arc.fPosition.getHeight() / 2;
+        let r1  = w / 2;
+        let r2  = h / 2;
+
+        arc.setRange(arc.getRange() + arc.getDRange());
+        arc.setStart(arc.getStart() + arc.getDStart());
         let startAngle  =  this.angleStandardization(arc.getStart());
-        let endAngle    =  this.angleStandardization((arc.getStart() + arc.getRange()));
-        let startPoint : Array<number> =  this.PointCalculator(r1, r2, startAngle );
-        let endPoint   : Array<number> =  this.PointCalculator(r1, r2, endAngle   );
-        let path = this.arcNumberCalculatorAndSetting(arc.getRange(), startAngle, startPoint, endPoint, r1, r2);
-        this.fArc.setAttribute('b', path);
-        // this.updatePos(obj);      vérifier son utilisation avec arcs multiples
+        let endAngle    =  this.angleStandardization(startAngle + arc.getRange());
+        let startPoint  : Array<number> =  this.PointCalculator(r1, r2, startAngle );
+        let endPoint    : Array<number> =  this.PointCalculator(r1, r2, endAngle   );
+        let line : Array<number> = [r1, r2];
+        let close       : number        =  arc.getClose();
+        let path        : string =  this.arcSettings(arc.getRange(), startPoint, line, endPoint, r1, r2, close);
+        this.fArc.setAttribute('d', path);
+        super.updateView (obj);
     }
 
-    //Coordinate setting with width, height and angle of the ellipse
-    PointCalculator(r1 : number, r2 : number, angle : number)
+    //Coordinate setting with width/2, height/2 and angle of the ellipse
+PointCalculator(r1 : number, r2 : number, angle : number) : Array<number>
     {
+        angle = (angle * Math.PI/180);
         let point : Array<number> = [0, 0];
 
-        if(r1 > r2)
-        {
-            point[0] = (r1 * Math.cos(angle) + r1) / (r1 * 2);
-            point[1] = (r2 * Math.cos(angle) + r2) / (r2 * 2);
-        }else
-        {
-            point[0] = (r2 * Math.cos(angle) + r2) / (r2 * 2);
-            point[1] = (r1 * Math.cos(angle) + r1) / (r1 * 2);
-        }
+            point[0] = r1 * (Math.cos(angle)  + 1);
+            point[1] = r2 * (-Math.sin(angle) + 1);
+
         return point;
     }
 
     //Compute and set the arcs in fArcs
-    arcNumberCalculatorAndSetting(arcRange : number, startAngle : number, start : Array<number>,
-                                  end : Array<number>, rx : number, ry : number)
+    arcSettings(arcRange : number, start : Array<number>, line : Array<number>,
+                end : Array<number>, rx : number, ry : number, close : number)
     {
         //values setting
-        arcRange   = this.angleStandardization(arcRange);
-        startAngle = this.angleStandardization(startAngle);
-        arcRange   = Math.max(Math.min(arcRange, 360), -360);
-        let endAngle = startAngle + arcRange;
-        let flag : Array<number> = this.arcFlag(startAngle);
-        let paths : Array<string>;
-
-        if (((startAngle >  0 ) && (endAngle <   0)) || ((startAngle <   0 ) && (endAngle >   0 )) ||
-            ((startAngle < 180) && (endAngle > 180)) || ((startAngle > -180) && (endAngle < -180)))
-        {
-            let arc2 : ArcParams;
-            //arc2.getArcs();
-            let path2 = arc2.toString();
-
-
-            if (((startAngle <  0 ) && (endAngle > 180)) || ((startAngle >   0 ) && (endAngle < -180)) ||
-                ((startAngle > 180) && (endAngle <  0 )) || ((startAngle < -180) && (endAngle >  0 )))
-            {
-                let arc3 : ArcParams;
-                //arc3.getArcs();
-                let path3 = arc3.toString();
-            }
-        }
-        let arc : ArcParams;
-        arc.getArcs(start,rx, ry, flag,end);
-        let path = arc.toString();
+        arcRange     = Math.max(Math.min(arcRange, 359), -359);
+        let flag  : Array<number> = this.direction(arcRange);
+        let path  : string;
+        let paths : Array<string> = new Array<string>();
+        let arc   : ArcParams = new ArcParams();
+        arc.getArcs(start, line, rx, ry, flag, end, close);
+        path = arc.toString();
         paths.push(path);
 
-
-        //return paths;
-        //path en return juste pour un test simple fragment
         return path;
     }
 
-    //Check if angle value is between -360 and 360°
-    angleStandardization(angle : number)
+    //return angle between 180 and - 180°
+    angleStandardization(angle : number) : number
     {
-        if(angle > 0)
-        {
-            while (angle >  180)
-            {
-               angle -= 360;
-            }
-        }else
-            while (angle < -180)
-            {
-                angle += 360;
-            }
+        if (angle > 180)
+            return this.angleStandardization(angle - 360);
+        else if (angle < -180)
+            return this.angleStandardization(angle + 360);
         return angle;
     }
 
     //arcFlagSetting use it after angle standardization
-    arcFlag(startAngle : number)
+    direction (arcRange : number) : Array<number>
     {
-        let flags : Array<number> = [0,0];
-
-        if (startAngle > 0 )
-        {
-             flags = [0,1];
-        }
-        else flags = [0,0];
-
-        return flags;
+        //tests
+        let direction : Array<number> = [0,0];
+        arcRange > 180 ? direction[0] = 1 : direction[0] = 0;
+        arcRange > 0 ? direction[1] = 0 : direction[1] = 1;
+        return direction;
     }
 }

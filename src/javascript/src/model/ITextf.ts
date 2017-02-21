@@ -4,12 +4,12 @@ interface TTxtfLoadEndHandler 		{ (): void; }
 
 class ITextf extends IText {
     protected fTextFile: string;
-    protected kTextfType: string;
+    //protected kTextfType: string;
         
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kTextfType = 'txtf';
-        this.fTypeString = this.kTextfType;
+        //this.kTextfType = 'txtf';
+        this.fTypeString = kTextfType;
 
         super.setHandlers();
      	this.fGetMsgHandlerMap[""] = new TGetMsgHandlerText(this._getTextFile());
@@ -50,7 +50,7 @@ class ITextf extends IText {
 // GETSET METHOD
 //--------------------------------------------------------------    
     getSet(): IMessage	{ 
-    	let a: Array<any> = [kset_SetMethod, this.kTextfType];
+    	let a: Array<any> = [kset_SetMethod, this.fTypeString];
     	return new IMessage(this.getOSCAddress(), a.concat ("'"+this.fTextFile+"'") ); 
     }
 }

@@ -3,17 +3,19 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../externals/fraction.ts"/>
-///<reference path="../lib/ITLError.ts"/>
-///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/OSCRegexp.ts"/>
 ///<reference path="../lib/Tools.ts"/>
+///<reference path="../lib/ITLError.ts"/>
+///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
+///<reference path="Constants.ts"/>
 ///<reference path="Methods.ts"/>
-///<reference path="Icolor.ts"/>
+///<reference path="IColor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
+///<reference path="IPenControl.ts"/>
 
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -34,19 +36,18 @@ abstract class IObject implements Tree<IObject> {
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
-    protected fView: 		VObjectView;
     protected fParent: 		IObject;
+    protected fObjectView:	VObjectView;
     
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
     
-    protected fObjectView: VObjectView;
-    
-    fPosition: 	IPosition;
-    fDate: 		IDate;
-    fColor: 	IColor;
+    fPosition: 	 IPosition;
+    fDate: 		 IDate;
+    fColor: 	 IColor;
+    fPenControl: IPenControl;
 
     
 // CONSTRUCTOR
@@ -64,6 +65,8 @@ abstract class IObject implements Tree<IObject> {
         this.fPosition = new IPosition;
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
+        
+        this.fPenControl = new IPenControl(kObjType);
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
@@ -84,6 +87,7 @@ abstract class IObject implements Tree<IObject> {
  	    this.colorAble();
 	    this.positionAble();
 	    this.timeAble();
+        this.penControlAble();
     }
     
     colorAble(): void {
@@ -165,6 +169,18 @@ abstract class IObject implements Tree<IObject> {
 
         this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
         this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime(this.fDate._getDuration());
+    }
+    
+    penControlAble() {
+        this.fMsgHandlerMap[kpenWidth_GetSetMethod]     = new TMsgHandlerNum(this.fPenControl._setPenWidth());
+        this.fMsgHandlerMap[kpenColor_GetSetMethod] 	= new TMsgHandlerColor(this.fPenControl.fPenColor._setRGB());
+        this.fMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TMsgHandlerText(this.fPenControl._setPenStyle());
+        this.fMsgHandlerMap[kpenAlpha_GetSetMethod] 	= new TMsgHandlerNum(this.fPenControl._setPenAlpha());
+
+        this.fGetMsgHandlerMap[kpenWidth_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPenControl._getPenWidth());
+        this.fGetMsgHandlerMap[kpenColor_GetSetMethod] 	= new TGetMsgHandlerArray(this.fPenControl.fPenColor._getRGB());
+        this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerText(this.fPenControl._getPenStyle());
+        this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum(this.fPenControl._getPenAlpha());
     }
     
 //--------------------------------------------------------------  
@@ -267,9 +283,9 @@ abstract class IObject implements Tree<IObject> {
     getOSCAddress(): string 	{ return this.fParent.getOSCAddress() + "/" + this.fName; }
 
     transferAttributes(dest: IObject): IObject {
-        dest.fPosition 	= this.fPosition;
-        dest.fColor		= this.fColor;
-        dest.fDate		= this.fDate;
+        dest.fPosition.set	( this.fPosition );
+        dest.fColor.set 	( this.fColor );
+        dest.fDate.set 		( this.fDate );
 
         //dest.fPosition.setPenWidth(getPenWidth());
         //dest.fPosition.setPenColor(getPenColor());
@@ -352,7 +368,7 @@ abstract class IObject implements Tree<IObject> {
             }
         }
             
-        if (result & msgStatus.kProcessed) { this.addState(objState.kSubModified); }
+        if (result & msgStatus.kProcessed + objState.kSubModified) { this.addState(objState.kSubModified); }
     	return result;     
     }
     
@@ -364,13 +380,13 @@ abstract class IObject implements Tree<IObject> {
         if (!type.correct) { return msgStatus.kBadParameters; }
 
         if (type.value != this.getTypeString()) {
+//debugger;
 			let out = this.proxy_create (msg, this.fName, this.getParent());
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
 	            this.transferAttributes (out.obj);
-            	this.del();
-            	this.fParent.addChild (out.obj);
 //				this.fParent.cleanupSync();
+            	this.del();
                 return out.status;		
             }
             
@@ -472,10 +488,9 @@ abstract class IObject implements Tree<IObject> {
     getDeleted(): boolean 	{ return this.fDelete; }
     del(): void {
     	this.fDelete = true;
+        if (this.getView()) this.getView().remove();
         let array = this.fParent.getSubNodes();
         array.splice(array.indexOf(this), 1);
-        if (this.getView()) this.getView().remove();
-        delete this;    
     }
     _del() : SetVoidMethod { return () => this.del(); }
 
@@ -485,6 +500,19 @@ abstract class IObject implements Tree<IObject> {
 		this.fDate.cleanup(); 
 		this.fColor.cleanup();
 		this.setState(objState.kClean);
+	}
+
+	//-----------------------------    
+	static timeTaskCleanup(obj: IObject) : void { 
+		let state = obj.getState();
+		if (state & (objState.kNewObject + objState.kModified)) obj.cleanup();		
+		if (state & objState.kSubModified) {
+			obj.setState (objState.kClean);
+			let nodes = obj.getSubNodes();
+			for (let i=0; i<nodes.length; i++) {
+				IObject.timeTaskCleanup(nodes[i]);
+			}
+		}
 	}
 }
 

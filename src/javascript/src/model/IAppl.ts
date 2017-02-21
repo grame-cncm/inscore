@@ -1,6 +1,7 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="IObject.ts"/>
+///<reference path="Constants.ts"/>
 ///<reference path="IProxy.ts"/>
 ///<reference path="IApplStaticNodes.ts"/>
 
@@ -12,8 +13,8 @@ class IAppl extends IObject {
     
     constructor() {
         super('ITL');
-        this.kApplType = 'IAppl';
-        this.fTypeString = 'IAppl';
+        this.kApplType = kApplType;
+        this.fTypeString = kApplType;
         this.fReceivedMsgs = 0;
         this.fRate = 100;
     } 

@@ -3,7 +3,7 @@
 
 class ILine extends IObject {
     
-    protected kLineType: string;
+    //protected kLineType: string;
     protected fPoint: TPoint;
     protected fWAMode: boolean;
     protected fLWidth: number
@@ -11,8 +11,8 @@ class ILine extends IObject {
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kLineType = 'line';
-        this.fTypeString = this.kLineType;
+        //this.kLineType = 'line';
+        this.fTypeString = kLineType;
         
         super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
@@ -42,8 +42,12 @@ class ILine extends IObject {
                 this.fWAMode = true;
                 this.fLWidth = a.value;
                 this.fLAngle = b.value;
-                let x = a.value * Math.cos(Math.PI * b.value / 180);
-                let y = a.value * Math.sin(Math.PI * b.value / 180);
+                
+                if (this.fLAngle < 0) { this.fLAngle = 360 + this.fLAngle; } 
+                if ( 180 <= Math.abs(this.fLAngle) && Math.abs(this.fLAngle) <= 360) { this.fLAngle -= 180; }                 
+
+                let x = Math.round(a.value * Math.cos(Math.PI * this.fLAngle / 180) * 1000) / 1000;
+                let y = Math.round(a.value * Math.sin(Math.PI * this.fLAngle / 180) * 1000) / 1000;
                 this.setPoint( new TPoint(x, y) );
             }
             else return msgStatus.kBadParameters;
@@ -69,6 +73,6 @@ class ILine extends IObject {
     }
 
     getSet(): IMessage	{
-    	return new IMessage(this.getOSCAddress(), this.getSetLine([kset_SetMethod, this.kLineType])); 
+    	return new IMessage(this.getOSCAddress(), this.getSetLine([kset_SetMethod, this.fTypeString])); 
     }
 }

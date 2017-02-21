@@ -122,12 +122,16 @@ bool IArc::arc2FramePoint(float ratio, TFloatPoint& p) const
 	double r1 = getWidth() / 2;
 	double r2 = getHeight() / 2;
 	if (r1 > r2) {
-		p.fX = (r1*cos(angle) + r1) / (r1*2);
-		p.fY = (r2*sin(angle) + r2) / (r2*2);
+//		p.fX = (r1*cos(angle) + r1) / (r1*2);
+//		p.fY = (r2*sin(angle) + r2) / (r2*2);
+		p.fX = (cos(angle) + 1) / 2;
+		p.fY = (sin(angle) + 1) / 2;
 	}
 	else {
-		p.fX = (r2*cos(angle) + r2) / (r2*2);
-		p.fY = (r1*sin(angle) + r1) / (r1*2);
+//		p.fX = (r2*cos(angle) + r2) / (r2*2);
+//		p.fY = (r1*sin(angle) + r1) / (r1*2);
+		p.fX = (cos(angle) + 1) / 2;
+		p.fY = (sin(angle) + 1) / 2;
 	}
 	return true;
 }
