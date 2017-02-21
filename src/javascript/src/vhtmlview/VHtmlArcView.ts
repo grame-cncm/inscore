@@ -62,7 +62,7 @@ class VHtmlArcView extends VHtmlSvg
         let r1  = w / 2;
         let r2  = h / 2;
 
-        arc.setRange(arc.getRange() + arc.getDRange());
+        arc.setRange(this.rangeSetting(arc.getRange() + arc.getDRange()));
         arc.setStart(arc.getStart() + arc.getDStart());
         let startAngle  =  this.angleStandardization(arc.getStart());
         let endAngle    =  this.angleStandardization(startAngle + arc.getRange());
@@ -113,6 +113,13 @@ PointCalculator(r1 : number, r2 : number, angle : number) : Array<number>
             return this.angleStandardization(angle + 360);
         return angle;
     }
+    
+    rangeSetting(range : number) : number
+    {
+        if (range >= 360 ) return  359;
+        if (range <= -360) return -359;
+        return range;
+    }
 
     //arcFlagSetting use it after angle standardization
     direction (arcRange : number) : Array<number>
@@ -120,6 +127,7 @@ PointCalculator(r1 : number, r2 : number, angle : number) : Array<number>
         //tests
         let direction : Array<number> = [0,0];
         arcRange > 180 ? direction[0] = 1 : direction[0] = 0;
+        arcRange < -180 ? direction[0] = 1 : direction[0] = 0;
         arcRange > 0 ? direction[1] = 0 : direction[1] = 1;
         return direction;
     }

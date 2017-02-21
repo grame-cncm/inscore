@@ -1,0 +1,113 @@
+
+//test de comportement par segment de 90°
+
+range=90;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/a set arc $w $h 30 $range;
+
+/ITL/scene/b set arc $w $h 120 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/c set arc $w $h 210 $range;
+/ITL/scene/c color 0 250 0;
+
+/ITL/scene/d set arc $w $h 300 $range;
+/ITL/scene/d color 0 0 250;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+
+---------------------------------------------------------------------
+//test de comportement par segment de 120°
+
+range=120;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 30 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/c set arc $w $h 150 $range;
+/ITL/scene/c color 0 250 0;
+
+/ITL/scene/d set arc $w $h 270 $range;
+/ITL/scene/d color 0 0 250;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 180°
+
+range=180;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 30 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/c set arc $w $h 210 $range;
+/ITL/scene/c color 0 250 0;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 270°
+
+range=270;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 45 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/b drange -90;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 359°
+
+range=359;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 1 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 120° avec close sur un seul segment
+
+range=120;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 30 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/c set arc $w $h 150 $range;
+/ITL/scene/c color 0 250 0;
+/ITL/scene/c close 1;
+
+/ITL/scene/d set arc $w $h 270 $range;
+/ITL/scene/d color 0 0 250;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+/ITL/scene/d drange 25;
+/ITL/scene/b dstart 2;
