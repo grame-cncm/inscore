@@ -1,7 +1,7 @@
 
 angle=0;			# initial angle
 angle2=0;
-step=0.1;			# initial step
+step=0.5;			# initial step
 
 <? javascript
 
@@ -11,7 +11,7 @@ step=0.1;			# initial step
 		angle2 -= step;
 		INScore.postMessage("/ITL/scene/line",  ["set", "line", "wa", 1, angle]);
 		INScore.postMessage("/ITL/scene/line2", ["set", "line", "wa", 1, angle2]);
-		var timer = setTimeout (turnLine, 0.05);
+		var timer = setTimeout (turnLine, 20);
 	}
 
 ?>
