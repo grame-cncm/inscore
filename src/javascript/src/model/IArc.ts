@@ -86,9 +86,9 @@ class IArc extends IRectShape
     _getDRange()  { return () => this.getDRange() }
     _getDStart()  { return () => this.getDStart() }
 
-    _setStart()   { return (start) => this.setStart(start) }
-    _setRange()   { return (range) => this.setRange(range) }
-    _setClose()   { return (close) => this.setClose(close) }
-    _setDRange()  { return (dRange) => this.setDRange(dRange) }
-    _setDStart()  { return (dStart) => this.setDStart(dStart) }
+    _setStart()   { return (start  : number) => this.setStart(start) }
+    _setRange()   { return (range  : number) => this.setRange(range) }
+    _setClose()   { return (close  : number) => this.setClose(close) }
+    _setDRange()  { return (dRange : number) => this.setDRange(dRange) }
+    _setDStart()  { return (dStart : number) => this.setDStart(dStart) }
 }
