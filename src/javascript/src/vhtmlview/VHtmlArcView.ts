@@ -27,7 +27,7 @@ class ArcParams
     toArray (): Array<any> 	{
         if ( this.fClose == 0)
         {
-             return ["M " + this.fStart + "A " + this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd];
+              return ["M " + this.fStart + "A " + this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd];
         }else return ["M " + this.fLine," L " + this.fStart + "A " + this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd + " Z "]; }
     toString(): string 	    { return this.toArray().toString(); }
 }
@@ -48,7 +48,6 @@ class VHtmlArcView extends VHtmlSvg
     updateView( obj: IObject) : void
     {
         let arc = <IArc>obj;
-
         let scale = arc.fPosition.getScale();
         let w     = this.relative2SceneWidth (arc.fPosition.getWidth ()) * scale;
         let h     = this.relative2SceneHeight(arc.fPosition.getHeight()) * scale;
@@ -72,6 +71,13 @@ class VHtmlArcView extends VHtmlSvg
         let close       : number        =  arc.getClose();
         let path        : string =  this.arcSettings(arc.getRange(), startPoint, line, endPoint, r1, r2, close);
         this.fArc.setAttribute('d', path);
+        let penColor = arc.getPenColor();
+        if (arc.getPenColor() != []) this.fArc.setAttribute('fill', 'rgb(' + penColor.toString() + ')');
+        this.fArc.setAttribute('stroke-width', arc.getPenWidth().toString());
+        let penStyle = arc.getPenStyle();
+        if (penStyle != "") this.fArc.setAttribute('style', arc.getPenStyle());
+        this.fArc.setAttribute('fill-opacity', (arc.getPenAlpha()/255).toString());
+
         super.updateView (obj);
     }
 
@@ -116,7 +122,7 @@ PointCalculator(r1 : number, r2 : number, angle : number) : Array<number>
     
     rangeSetting(range : number) : number
     {
-        if (range >= 360 ) return  359;
+        if (range >=  360) return  359;
         if (range <= -360) return -359;
         return range;
     }
@@ -126,9 +132,9 @@ PointCalculator(r1 : number, r2 : number, angle : number) : Array<number>
     {
         //tests
         let direction : Array<number> = [0,0];
-        arcRange > 180 ? direction[0] = 1 : direction[0] = 0;
-        arcRange < -180 ? direction[0] = 1 : direction[0] = 0;
-        arcRange > 0 ? direction[1] = 0 : direction[1] = 1;
+        arcRange >=  180 ? direction[0] = 1 : direction[0] = 0;
+        arcRange <= -180 ? direction[0] = 1 : direction[0] = 0;
+        arcRange >     0 ? direction[1] = 0 : direction[1] = 1;
         return direction;
     }
 }
