@@ -499,6 +499,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fPosition.cleanup(); 
 		this.fDate.cleanup(); 
 		this.fColor.cleanup();
+		this.fPenControl.cleanup();
 		this.setState(objState.kClean);
 	}
 
