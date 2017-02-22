@@ -1,40 +1,10 @@
 ///<reference path="VHtmlSvg.ts"/>
+///<reference path="../lib/TPoint.ts"/>
 ///<reference path="../model/IArc.ts"/>
 
-//Set arcs parameters
-class ArcParams
-{
-    //Params to create the SVG path
-    fStart     : Array<number> = [0,0];
-    fEnd       : Array<number> = [0,0];
-    fRX        : number;
-    fRY        : number;
-    fLine      : Array<number>;
-    fArcFlags  : Array<number> = [0,0];
-    fClose     : number;
-
-    getArcs(start : Array<number>, line : Array<number>, rX : number, rY : number, arcFlags : Array<number>, end : Array<number>, close : number)
-    {
-        this.fStart     = start;
-        this.fEnd       = end;
-        this.fRX        = rX;
-        this.fRY        = rY;
-        this.fLine      = line;
-        this.fArcFlags  = arcFlags;
-        this.fClose     = close;
-    }
-
-    toArray (): Array<any> 	{
-        if ( this.fClose == 0)
-        {
-              return ["M " + this.fStart + "A " + this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd];
-        }else return ["M " + this.fLine," L " + this.fStart + "A " + this.fRX, this.fRY, "0", this.fArcFlags , this.fEnd + " Z "]; }
-    toString(): string 	    { return this.toArray().toString(); }
-}
 
 class VHtmlArcView extends VHtmlSvg
 {
-    protected fArcs  : Array<SVGPathElement> = new Array<SVGPathElement>();
     protected fArc   : SVGPathElement;
 
     constructor(parent: VHtmlView)
@@ -47,7 +17,7 @@ class VHtmlArcView extends VHtmlSvg
 
     updateView( obj: IObject) : void
     {
-        let arc = <IArc>obj;
+        const arc = <IArc>obj;
         let scale = arc.fPosition.getScale();
         let w     = this.relative2SceneWidth (arc.fPosition.getWidth ()) * scale;
         let h     = this.relative2SceneHeight(arc.fPosition.getHeight()) * scale;
@@ -61,80 +31,57 @@ class VHtmlArcView extends VHtmlSvg
         let r1  = w / 2;
         let r2  = h / 2;
 
-        arc.setRange(this.rangeSetting(arc.getRange() + arc.getDRange()));
-        arc.setStart(arc.getStart() + arc.getDStart());
-        let startAngle  =  this.angleStandardization(arc.getStart());
-        let endAngle    =  this.angleStandardization(startAngle + arc.getRange());
-        let startPoint  : Array<number> =  this.PointCalculator(r1, r2, startAngle );
-        let endPoint    : Array<number> =  this.PointCalculator(r1, r2, endAngle   );
-        let line : Array<number> = [r1, r2];
-        let close       : number        =  arc.getClose();
-        let path        : string =  this.arcSettings(arc.getRange(), startPoint, line, endPoint, r1, r2, close);
+        let startAngle  = this.normalize(arc.getStart());
+        let endAngle    = this.normalize(startAngle + arc.getRange());
+        let startPoint  = this.getPoint(r1, r2, startAngle );
+        let endPoint    = this.getPoint(r1, r2, endAngle   );
+        let path        = this.getPath(arc.getRange(), startPoint, endPoint, r1, r2, arc.getClose() ? true : false);
         this.fArc.setAttribute('d', path);
-        let penColor = arc.getPenColor();
-        if (arc.getPenColor() != []) this.fArc.setAttribute('fill', 'rgb(' + penColor.toString() + ')');
-        this.fArc.setAttribute('stroke-width', arc.getPenWidth().toString());
-        let penStyle = arc.getPenStyle();
-        if (penStyle != "") this.fArc.setAttribute('style', arc.getPenStyle());
-        this.fArc.setAttribute('fill-opacity', (arc.getPenAlpha()/255).toString());
-
         super.updateView (obj);
     }
 
-    //Coordinate setting with width/2, height/2 and angle of the ellipse
-PointCalculator(r1 : number, r2 : number, angle : number) : Array<number>
+    // computes a point coordinates at a given angle
+	getPoint(r1 : number, r2 : number, angle : number) : TPoint
     {
         angle = (angle * Math.PI/180);
-        let point : Array<number> = [0, 0];
-
-            point[0] = r1 * (Math.cos(angle)  + 1);
-            point[1] = r2 * (-Math.sin(angle) + 1);
-
-        return point;
+		let x = r1 * (Math.cos(angle)  + 1);
+		let y = r2 * (-Math.sin(angle) + 1);
+        return new TPoint(x, y);
     }
 
-    //Compute and set the arcs in fArcs
-    arcSettings(arcRange : number, start : Array<number>, line : Array<number>,
-                end : Array<number>, rx : number, ry : number, close : number)
+    // gives the arc path string
+    getPath (arcRange : number, start : TPoint, end : TPoint, rx : number, ry : number, close : boolean) : string
     {
         //values setting
-        arcRange     = Math.max(Math.min(arcRange, 359), -359);
-        let flag  : Array<number> = this.direction(arcRange);
-        let path  : string;
-        let paths : Array<string> = new Array<string>();
-        let arc   : ArcParams = new ArcParams();
-        arc.getArcs(start, line, rx, ry, flag, end, close);
-        path = arc.toString();
-        paths.push(path);
-
-        return path;
+        arcRange = this.clip(arcRange);
+        let flag = this.direction(arcRange);
+		let arcStr = start + " A " + rx+","+ry+", 0,"+ flag.sup+","+flag.dir+ " "+ end;
+		if ( close )
+        	 return "M " + start + ", L " + arcStr + " Z ";
+        else return "M " + arcStr;
     }
 
-    //return angle between 180 and - 180°
-    angleStandardization(angle : number) : number
+    // normalize the angle between 180 and - 180°
+    normalize(angle : number) : number
     {
-        if (angle > 180)
-            return this.angleStandardization(angle - 360);
-        else if (angle < -180)
-            return this.angleStandardization(angle + 360);
+        if (angle > 180)		return this.normalize(angle - 360);
+        else if (angle < -180)	return this.normalize(angle + 360);
         return angle;
     }
     
-    rangeSetting(range : number) : number
+    clip (range : number) : number
     {
         if (range >=  360) return  359;
         if (range <= -360) return -359;
         return range;
     }
 
-    //arcFlagSetting use it after angle standardization
-    direction (arcRange : number) : Array<number>
+    // computes the arc directions: up or down, clockwise or counter clockwise
+    direction (arcRange : number) : { sup: number, dir: number }
     {
-        //tests
-        let direction : Array<number> = [0,0];
-        arcRange >=  180 ? direction[0] = 1 : direction[0] = 0;
-        arcRange <= -180 ? direction[0] = 1 : direction[0] = 0;
-        arcRange >     0 ? direction[1] = 0 : direction[1] = 1;
-        return direction;
+        arcRange = Math.abs(arcRange);
+        let sup = arcRange >=  180 ? 1 : 0;
+        let dir = arcRange > 0 ? 0 : 1;
+        return { sup: sup, dir: dir };
     }
 }
