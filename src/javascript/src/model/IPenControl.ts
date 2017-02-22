@@ -8,6 +8,7 @@ class IPenControl {
     fPenColor: IColor;
     fPenStyle: penStyle;
     fPenAlpha: number;
+    protected fModified : boolean; 
     
     fPenStylesList_set: { [id: string] : penStyle; } = {};
     fPenStylesList_get: { [id: number] : string; } = {};
@@ -21,7 +22,13 @@ class IPenControl {
         
         this.buildPenStyle();
     }
-    
+   
+// MODIFIED STATUS
+//--------------------------------------------------------------      
+   	cleanup(): void 	{ this.fModified = false; }   
+   	modified(): boolean { return this.fModified; }   
+   	modify(): void 		{ this.fModified = true; }   
+   
     buildPenStyle(): void {
         this.fPenStylesList_set["solid"]         = penStyle.solid;
         this.fPenStylesList_set["dash"]          = penStyle.dash;
@@ -52,13 +59,14 @@ class IPenControl {
     _getPenStyle(): GetStringMethod    { return () => this.fPenStylesList_get[this.fPenStyle]; }
     _getPenAlpha(): GetNumMethod    { return () => this.fPenAlpha; }
 
-    setPenWidth(penWidth : number)  : void  { this.fPenWidth = penWidth; }
-    setPenColor(penColor : IColor)  : void  { this.fPenColor = penColor; }
+    setPenWidth(penWidth : number)  : void  { this.fPenWidth = penWidth; this.modify(); }
+    setPenColor(penColor : IColor)  : void  { this.fPenColor = penColor; this.modify(); }
     setPenStyle(penStyle : string)  : void  { 
-        this.fPenStyle = this.fPenStylesList_set[penStyle]; 
-        if (!this.fPenStyle && this.fPenStyle != 0) { ITLError.badParameter("penStyle", penStyle);}
+        let style = this.fPenStylesList_set[penStyle]; 
+        if (!style && style != 0) { ITLError.badParameter("penStyle", penStyle);}
+        else { this.fPenStyle = style; this.modify(); }
     }
-    setPenAlpha(penAlpha : number)  : void  { this.fPenAlpha = penAlpha; }
+    setPenAlpha(penAlpha : number)  : void  { this.fPenAlpha = penAlpha; this.modify(); }
 
     _setPenWidth(): SetNumMethod    { return (n) => this.setPenWidth(n); }
     _setPenColor(): SetColorMethod  { return (n) => this.fPenColor.setRGB(n); }
