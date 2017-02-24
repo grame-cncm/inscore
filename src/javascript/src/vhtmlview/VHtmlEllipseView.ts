@@ -29,5 +29,6 @@ class VHtmlEllipseView extends VHtmlSvg {
         this.fEllipse.setAttribute('cy', ry.toString());
         this.fEllipse.setAttribute('rx', rx.toString());
         this.fEllipse.setAttribute('ry', ry.toString());
+        this.fEllipse.setAttribute('transform', super.getTranslate());
 	}
 }

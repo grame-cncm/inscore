@@ -25,7 +25,9 @@ class VHtmlLineView extends VHtmlSvg {
     	this.updateSvgSize (x, y);
         this.fLine.setAttribute('width', Math.abs(x).toString());
         this.fLine.setAttribute('height', Math.abs(y).toString());
-				
+		this.fLine.setAttribute('transform', super.getTranslate());
+
+
 		if ( x < 0 || y < 0 ) {
 			this.fLine.setAttribute('x1', this.fSVG.style.width);
 			this.fLine.setAttribute('y1', '0');	

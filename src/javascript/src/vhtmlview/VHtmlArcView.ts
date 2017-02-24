@@ -25,17 +25,18 @@ class VHtmlArcView extends VHtmlSvg
 
         this.fArc.setAttribute( 'width'  , w.toString());
         this.fArc.setAttribute( 'height' , h.toString());
-        this.fArc.style.stroke = obj.fColor.getRGBString();
+        this.fArc.setAttribute('transform', super.getTranslate());
+        this.fArc.style.fill = obj.fColor.getRGBString();
         this.fArc.style.strokeWidth = obj.fPenControl.fPenWidth.toString();
 
         let r1  = w / 2;
         let r2  = h / 2;
 
         let startAngle  = this.normalize(arc.getStart());
-        let endAngle    = this.normalize(startAngle + arc.getRange());
+        let endAngle    = this.normalize(startAngle + this.clip(arc.getRange()));
         let startPoint  = this.getPoint(r1, r2, startAngle );
-        let endPoint    = this.getPoint(r1, r2, endAngle   );
-        let path        = this.getPath(arc.getRange(), startPoint, endPoint, r1, r2, arc.getClose() ? true : false);
+        let endPoint    = this.getPoint(r1, r2, endAngle);
+        let path        = this.getPath(this.clip(arc.getRange()), startPoint, endPoint, r1, r2, arc.getClose() ? true : false);
         this.fArc.setAttribute('d', path);
         super.updateView (obj);
     }
@@ -55,9 +56,9 @@ class VHtmlArcView extends VHtmlSvg
         //values setting
         arcRange = this.clip(arcRange);
         let flag = this.direction(arcRange);
-		let arcStr = start + " A " + rx+","+ry+", 0,"+ flag.sup+","+flag.dir+ " "+ end;
+		let arcStr = start + " A " + rx + "," + ry + ", 0," + flag.sup + "," + flag.dir + " " + end;
 		if ( close )
-        	 return "M " + start + ", L " + arcStr + " Z ";
+        	 return "M " + rx + "," + ry + ", L " + arcStr + " Z ";
         else return "M " + arcStr;
     }
 
@@ -79,9 +80,9 @@ class VHtmlArcView extends VHtmlSvg
     // computes the arc directions: up or down, clockwise or counter clockwise
     direction (arcRange : number) : { sup: number, dir: number }
     {
+        let dir = arcRange > 0 ? 0 : 1;
         arcRange = Math.abs(arcRange);
         let sup = arcRange >=  180 ? 1 : 0;
-        let dir = arcRange > 0 ? 0 : 1;
         return { sup: sup, dir: dir };
     }
 }

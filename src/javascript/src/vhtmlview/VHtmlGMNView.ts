@@ -46,6 +46,7 @@ class VHtmlGMNView extends VHtmlSvg {
         // mis à jour de fSVG        
         let elt = this.getHtml(); 
         this.updateSvgSize (elt.clientWidth, elt.clientHeight);
+
 	}
 
     updateCol(obj: IObject, color: string, elt: any) {

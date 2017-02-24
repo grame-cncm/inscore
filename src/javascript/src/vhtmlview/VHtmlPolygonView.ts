@@ -57,8 +57,8 @@ class VHtmlPolygonView extends VHtmlSvg {
                 elt.style.height = polygonSize.height + 'px';
             }  
             this.updateObjectSize (obj);      
-	    } 
-
+	    }
+        this.fPolygon.setAttribute('transform', super.getTranslate());
         this.fPolygon.style.fill = obj.fColor.getRGBString();  
         this.updatePos(polygon); 
     }        

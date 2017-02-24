@@ -63,9 +63,10 @@ class VHtmlView extends VObjectView {
 		let pos 	= obj.getPosition();
 		let size 	= obj.getSize();
 		let scale 	= this.getScale(obj);
+		let penWidth = obj.fPenControl.getPenWidth()? obj.fPenControl.getPenWidth() : 0;
 		let z		= obj.fPosition.getZOrder();
-        let w  		= this.relative2SceneWidth (size.w) * scale;
-        let h 		= this.relative2SceneHeight (size.h) * scale;
+        let w  		= this.relative2SceneWidth (size.w) * scale + penWidth;
+        let h 		= this.relative2SceneHeight (size.h)* scale + penWidth;
         let left  	= this.relative2SceneX (pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
         let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
 
@@ -87,7 +88,7 @@ class VHtmlView extends VObjectView {
 
 		obj.fPosition.setWidth (w);
 		obj.fPosition.setHeight (h);
-	}
+    }
 
 	getTransform (obj: IObject): string {
 		let rotate = obj.getRotate();

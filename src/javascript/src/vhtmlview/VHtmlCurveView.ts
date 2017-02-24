@@ -32,7 +32,8 @@ class VHtmlCurveView extends VHtmlSvg {
                                         + 't' + d1 + ',' + d2);
         }
 
-            let curveSize = this.fCurve.getBBox();
+        this.fCurve.setAttribute('transform', super.getTranslate());
+        let curveSize = this.fCurve.getBBox();
             this.updateSvgPos (curveSize.x, curveSize.y);  
             this.updateSvgSize (curveSize.width, curveSize.height);
        
