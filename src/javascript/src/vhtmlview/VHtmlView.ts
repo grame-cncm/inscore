@@ -63,7 +63,7 @@ class VHtmlView extends VObjectView {
 		let pos 	= obj.getPosition();
 		let size 	= obj.getSize();
 		let scale 	= this.getScale(obj);
-		let penWidth = obj.fPenControl.getPenWidth()? obj.fPenControl.getPenWidth() : 0;
+		let penWidth = obj.fPenControl.getPenWidth() ? obj.fPenControl.getPenWidth() : 0;
 		let z		= obj.fPosition.getZOrder();
         let w  		= this.relative2SceneWidth (size.w) * scale + penWidth;
         let h 		= this.relative2SceneHeight (size.h)* scale + penWidth;
@@ -71,8 +71,8 @@ class VHtmlView extends VObjectView {
         let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
 
     	let elt = this.getHtml();
-        elt.style.width  = w +"px";
-        elt.style.height = h +"px";
+        elt.style.width  = (w ? w : 1) +"px";
+        elt.style.height = (h ? h : 1) +"px";
         elt.style.left 	=  left + "px";
         elt.style.top 	=  top + "px";
         elt.style.zIndex = z.toString();
