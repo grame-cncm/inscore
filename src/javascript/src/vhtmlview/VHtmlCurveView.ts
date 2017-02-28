@@ -32,7 +32,6 @@ class VHtmlCurveView extends VHtmlSvg {
                                         + 't' + d1 + ',' + d2);
         }
 
-        this.fCurve.setAttribute('transform', super.getTranslate());
         let curveSize = this.fCurve.getBBox();
             this.updateSvgPos (curveSize.x, curveSize.y);  
             this.updateSvgSize (curveSize.width, curveSize.height);
@@ -52,8 +51,9 @@ class VHtmlCurveView extends VHtmlSvg {
                                         + 'q' + b1 + ',' + b2 + ' '    
                                               + c1 + ',' + c2 + ' ' 
                                         + 't' + d1 + ',' + d2);
-        }        
-            this.updateObjectSize (obj);
+        }
+        this.fCurve.setAttribute('transform', super.getTranslate());
+        this.updateObjectSize (obj);
             this.fCurve.style.fill = 'rgba(0, 0, 0, 0)';        
             this.fCurve.style.stroke = obj.fColor.getRGBString(); 
 

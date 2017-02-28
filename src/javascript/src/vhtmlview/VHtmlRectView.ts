@@ -23,12 +23,12 @@ class VHtmlRectView extends VHtmlSvg {
     	this.updateSvgSize (w, h);
         this.fRect.setAttribute('width', w.toString());
         this.fRect.setAttribute('height', h.toString());
-        this.fRect.setAttribute('transform', super.getTranslate());
         this.fRect.style.fill = obj.fColor.getRGBString();
         let radius = rect.getRadius();
 		let rx = radius[0];
         let ry = radius[1];    
         this.fRect.setAttribute('rx', rx.toString());
         this.fRect.setAttribute('ry', ry.toString());
-	}
+        this.fRect.setAttribute('transform', super.getTranslate());
+    }
 }

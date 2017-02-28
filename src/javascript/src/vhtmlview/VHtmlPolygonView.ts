@@ -55,11 +55,11 @@ class VHtmlPolygonView extends VHtmlSvg {
                 elt.style.left = x + 'px';
                 elt.style.width = polygonSize.width + 'px';
                 elt.style.height = polygonSize.height + 'px';
-            }  
+            }
+            this.fPolygon.setAttribute('transform', super.getTranslate());
             this.updateObjectSize (obj);      
 	    }
-        this.fPolygon.setAttribute('transform', super.getTranslate());
-        this.fPolygon.style.fill = obj.fColor.getRGBString();  
+        this.fPolygon.style.fill = obj.fColor.getRGBString();
         this.updatePos(polygon); 
     }        
 

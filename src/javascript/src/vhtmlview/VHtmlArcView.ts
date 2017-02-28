@@ -23,9 +23,9 @@ class VHtmlArcView extends VHtmlSvg
         let h     = this.relative2SceneHeight(arc.fPosition.getHeight()) * scale;
         this.updateSvgSize(w, h);
 
-        this.fArc.setAttribute( 'width'  , w.toString());
-        this.fArc.setAttribute( 'height' , h.toString());
         this.fArc.setAttribute('transform', super.getTranslate());
+        this.fArc.setAttribute( 'width'   , w.toString());
+        this.fArc.setAttribute( 'height'  , h.toString());
         this.fArc.style.fill = obj.fColor.getRGBString();
         this.fArc.style.strokeWidth = obj.fPenControl.fPenWidth.toString();
 
