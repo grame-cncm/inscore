@@ -11,14 +11,18 @@ class ILine extends IObject {
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        //this.kLineType = 'line';
         this.fTypeString = kLineType;
+        this.fPenControl.setPenWidth(1);
         
         super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
     }
     
-    setPoint(p: TPoint)		{ this.fPoint = p; }
+    setPoint(p: TPoint)		{ 
+    	this.fPoint = p; 
+    	this.fPosition.setWidth  (p.getX()); 
+    	this.fPosition.setHeight (p.getY()); 
+    }
     getPoint() : TPoint		{ return this.fPoint; }
     _getPoint(): GetArrayMethod        { return () => this.fPoint.toArray(); }
 
