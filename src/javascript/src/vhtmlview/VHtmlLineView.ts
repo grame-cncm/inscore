@@ -46,37 +46,6 @@ class VHtmlLineView extends VHtmlSvg {
 		this.updatePos(obj);
 	}
 
-	updatePos (obj: IObject): void {
-
-
-		let pos 	= obj.getPosition();
-		let size 	= obj.getSize();
-		let scale 	= this.getScale(obj);
-		let penWidth = obj.fPenControl.getPenWidth()? obj.fPenControl.getPenWidth() : 0;
-
-		let line = <ILine>obj;
-		let p = line.getPoint();
-		let x = this.relative2SceneWidth ( p.getX() ) * scale;
-		let y = this.relative2SceneHeight( p.getY() ) * scale;
-
-		let z		= obj.fPosition.getZOrder();
-		let w  		= this.relative2SceneWidth  (size.w)* scale + penWidth;
-		let h 		= this.relative2SceneHeight (size.h)* scale + penWidth;
-		let left  	= this.relative2SceneX (pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
-		let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
-
-		let elt = this.getHtml();
-		elt.style.width  = w +"px";
-		elt.style.height = h +"px";
-		elt.style.left 	=  left + "px";
-		elt.style.top 	=  top + "px";
-		elt.style.zIndex = z.toString();
-		elt.style.transform  = this.getTransform(obj);
-		elt.style.visibility  = obj.fPosition.getVisible() ? "inherit" : "hidden";
-
-		this.setPos( top, left, w, h);
-		console.log("VHtmlLineView updatePos test w h : " + w + "," + h);
-	}
 /*
 	getTransform (obj: IObject): string {
 		let hw = this.fPixWidth/2;
