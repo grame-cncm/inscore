@@ -80,7 +80,7 @@ class VHtmlSvgView extends VHtmlSvg {
 		let scale 	= this.autoScale(obj) * VHtmlGMNView.fGMNScale;
 		return super.getTransform(obj) + ` scale(${scale})`;
 	}  
-
+/*
     updateSvgSize (w: number, h: number): void { 
     	let elt = this.getHtml();
 		this.fPixWidth = w ? w : 1; 
@@ -90,7 +90,7 @@ class VHtmlSvgView extends VHtmlSvg {
 		this.fSVG.style.height = this.fPixHeight +"px";
         this.fSVG.style.width  = this.fPixWidth +"px";
 	} 
-
+*/
 	updateSvgPos (x: number, y: number): void { 
     	let elt = this.getHtml();		
 		elt.style.left = x +"px";

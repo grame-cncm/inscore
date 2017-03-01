@@ -87,7 +87,7 @@ class VHtmlPolygonView extends VHtmlSvg {
         console.log('w ' + elt.clientWidth + ' h ' + elt.clientHeight + ' x ' + elt.clientLeft + ' y ' + elt.clientTop)
         console.log(x + ' ' + y)
     }	
-    	
+/*    	
 	getTransform (obj: IObject): string {
 		let hw = this.fPixWidth/2;
 		let hh = this.fPixHeight/2;
@@ -95,7 +95,7 @@ class VHtmlPolygonView extends VHtmlSvg {
 		let dy = -(this.fPixHeight/2) * (1 + obj.fPosition.getYOrigin());	
         return super.getTransform(obj) + ` translate(${dx}px, ${dy}px)`;
 	}
-    
+*/    
 	updateSvgPos (x: number, y: number): void { 
     	let elt = this.getHtml();		
 		elt.style.left = x +"px";
@@ -103,27 +103,4 @@ class VHtmlPolygonView extends VHtmlSvg {
 		this.fSVG.style.left = x +"px";
         this.fSVG.style.top  = y +"px";
 	}    
-
-/*
-    updatePos (obj: IObject): void {
-		let pos 	= obj.getPosition();
-		let size 	= obj.getSize();
-		let scale 	= this.getScale(obj);
-		let z		= obj.fPosition.getZOrder();
-        let w  		= this.relative2SceneWidth (size.w) * scale;
-        let h 		= this.relative2SceneHeight (size.h) * scale;
-        let left  	= this.relative2SceneX (pos.x) - w/2.0;
-        let top 	= this.relative2SceneY (pos.y) - h/2.0;
-
-    	let elt = this.getHtml();
-        elt.style.width  = w +"px";
-        elt.style.height = h +"px";
-        elt.style.left 	=  left + "px";
-        elt.style.top 	=  top + "px";
-        elt.style.zIndex = z.toString();
-		elt.style.transform  = this.getTransform(obj);
-        elt.style.visibility  = obj.fPosition.getVisible() ? "inherit" : "hidden";
-        this.setPos( top, left, w, h);
-	}
-*/    
 }
