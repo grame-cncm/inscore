@@ -14,60 +14,44 @@ class VHtmlLineView extends VHtmlSvg {
     	this.fSVG.appendChild(this.fLine)
     }
 
+	getStrokeWidth (obj: IObject): number 	{ return obj.fPenControl.getPenWidth() * obj.fPosition.getHeight();  }
+	getStrokeHeight (obj: IObject): number 	{ return obj.fPenControl.getPenWidth() * obj.fPosition.getWidth();  }
+
 	updateView	( obj: IObject) : void {
 		let line = <ILine>obj;
 		let scale = line.fPosition.getScale();
 		let strokeWidth = obj.fPenControl.getPenWidth();
 		this.fLine.style.stroke = obj.fColor.getRGBString();
 		let p = line.getPoint();
-		let x = (this.relative2SceneWidth (p.getX()) * scale) + strokeWidth/2;
-		let y = (this.relative2SceneHeight(p.getY()) * scale) + strokeWidth/2;
 		this.fLine.style.fill = obj.fColor.getRGBString();
 		this.fLine.style.strokeWidth = strokeWidth + "px";
 
-		if ( x < 0)
-		{
-			this.fLine.setAttribute('x1', (x).toString());
-			this.fLine.setAttribute('y1', (y).toString());
-			this.fLine.setAttribute('x2', (strokeWidth/2).toString());
-            this.fLine.setAttribute('y2', (strokeWidth/2).toString());
-			// this.fLine.setAttribute('x1', (strokeWidth/2).toString());
-			// this.fLine.setAttribute('y1', (strokeWidth/2).toString());
-			// this.fLine.setAttribute('x2', (x).toString());
-			// this.fLine.setAttribute('y2', (y).toString());
-        	//trouver une solution pour repartir sur un affichage comme lors du 1e 1/4 de cerlce
-			this.fLine.style.transform = this.translate(line);
-			this.updateSvgSize(Math.abs(x) + strokeWidth/2, Math.abs(y) + strokeWidth/2);
-			console.log("VHtmlLine updateView x < 0 ??? : " + x )
-		}
-		else
-		{
-			this.fLine.setAttribute('x1', (strokeWidth/2).toString());
-			this.fLine.setAttribute('y1', (strokeWidth/2).toString());
-			this.fLine.setAttribute('x2', (x).toString());
-			this.fLine.setAttribute('y2', (y).toString());
-			this.updateSvgSize (x + strokeWidth/2 ,y + strokeWidth/2);
-			this.fLine.style.transform = "translate(0,0)";
-		}
-		console.log("VHtmlLineView updateView " + this.relative2SceneWidth(p.getX()) + ", " + this.relative2SceneHeight(p.getY()))
-		this.updatePos(obj);
-	}
+		let x = Math.abs(this.relative2SceneWidth (p.getX()) * scale);
+		let y = Math.abs(this.relative2SceneHeight(p.getY()) * scale);
+		let strokeOffset = strokeWidth / 2;
+		let r = x + y;
+		let strokeXOffset = 0; // r ? strokeOffset * y / r : strokeOffset;
+		let strokeYOffset = 0; // r ? strokeOffset * x / r : strokeOffset;
+		x += strokeXOffset;
+		y += strokeYOffset;
 
-	translate (obj: IObject): string {
-		let dx = -(this.fPixWidth)  * (1 + obj.fPosition.getXOrigin());
-		let dy = -(this.fPixHeight) * (1 + obj.fPosition.getYOrigin());
-       return "translate(" + dx +  "," + dy + ")";
+		this.fLine.setAttribute('x1', strokeXOffset.toString());
+		this.fLine.setAttribute('y1', strokeYOffset.toString());
+		this.fLine.setAttribute('x2', (x).toString());
+		this.fLine.setAttribute('y2', (y).toString());
+		this.updateSvgSize (x + strokeWidth, y + strokeWidth);
+//		this.fLine.style.transform = "translate(0,0)";
+
+		console.log("VHtmlLineView updateView " + this.relative2SceneWidth(p.getX()) + ", " + this.relative2SceneHeight(p.getY()));
+//		super.updateView(obj);
+		this.updatePos(obj);
+		this.updatePenControl(obj);
 	}
 /*
-	updateSvgSize (w: number, h: number): void {
-    	w = Math.abs(w);
-		h = Math.abs(h);
-		let elt = this.getHtml();
-		this.fPixWidth = w ? w : 1;
-		this.fPixHeight = h ? h : 1; 		
-		elt.style.height = this.fPixHeight + "px";
-        elt.style.width  = this.fPixWidth  + "px";
-		this.fSVG.style.height = this.fPixHeight + "px";
-        this.fSVG.style.width  = this.fPixWidth  + "px";
-	}*/
+	translate (x: number, y: number): string {
+		let dx = -(this.fPixWidth)  * (1 + obj.fPosition.getXOrigin());
+		let dy = -(this.fPixHeight) * (1 + obj.fPosition.getYOrigin());
+       return "translate(" + x +  "," + y + ")";
+	}
+*/
 }

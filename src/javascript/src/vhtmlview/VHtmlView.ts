@@ -40,6 +40,11 @@ class VHtmlView extends VObjectView {
 	    }
 	}
 
+	// stroke width is used to compute the div dimensions, depending on the object (e.g. line)
+	// it may not be taken into account
+	getStrokeWidth (obj: IObject): number 	{ return obj.fPenControl.getPenWidth();  }
+	getStrokeHeight (obj: IObject): number 	{ return obj.fPenControl.getPenWidth();  }
+
 	// getScale is intended to catch the div using auto height and width (like text, html...)
 	getScale (obj: IObject): number 	{ return obj.fPosition.getScale();  }
 	// getScale is intended to divs using auto height and width (like text, html...)
@@ -55,22 +60,21 @@ class VHtmlView extends VObjectView {
 		elt.style.borderWidth = penWidth + 'px'; 
 		elt.style.borderColor = penColor;
 		elt.style.borderStyle = penStyle;
-		elt.style.borderColor = penAlpha;
 	}
 
 	updatePos (obj: IObject): void {
 		let pos 	 = obj.getPosition();
 		let size 	 = obj.getSize();
 		let scale 	 = this.getScale(obj);
-		let penWidth = obj.fPenControl.getPenWidth() ? obj.fPenControl.getPenWidth() : 0;
+//		let penWidth = obj.fPenControl.getPenWidth();
 		let z	     = obj.fPosition.getZOrder();
-        let w   	 = this.relative2SceneWidth (size.w) * scale + penWidth;
-        let h 		 = this.relative2SceneHeight(size.h) * scale + penWidth;
+        let w   	 = this.relative2SceneWidth (size.w) * scale + this.getStrokeWidth(obj);
+        let h 		 = this.relative2SceneHeight(size.h) * scale + this.getStrokeHeight(obj);
         let left  	 = this.relative2SceneX(pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
         let top 	 = this.relative2SceneY(pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
 
-        console.log("VHtmlView updatePos pos xy : " + pos.x + ", " + pos.y + " size hw : " + size.h + ", " + size.w +
-		" penWindth " + penWidth + " wh : " + w + ", " + h + " left top " + left + ", " + top);
+//        console.log("VHtmlView updatePos pos xy : " + pos.x + ", " + pos.y + " size hw : " + size.h + ", " + size.w +
+//		" penWindth " + penWidth + " wh : " + w + ", " + h + " left top " + left + ", " + top);
 
     	let elt = this.getHtml();
         elt.style.width  = (w ? w : 1) + "px";
@@ -97,7 +101,7 @@ class VHtmlView extends VObjectView {
         return `rotate(${rotate.z}deg)`;
 	}
 
-	setPos (top: number,	left: number, width: number, height: number): void {
+	setPos (top: number, left: number, width: number, height: number): void {
     	this.fTop = top;
     	this.fLeft = left;
     	this.fWidth = width;
