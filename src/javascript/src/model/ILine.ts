@@ -13,15 +13,15 @@ class ILine extends IObject {
         super(name, parent);
         this.fTypeString = kLineType;
         this.fPenControl.setPenWidth(1);
-!
+
         super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
     }
     
     setPoint(p: TPoint)		{ 
     	this.fPoint = p; 
-    	this.fPosition.setWidth  (p.getX()); 
-    	this.fPosition.setHeight (p.getY()); 
+    	this.fPosition.setWidth  (Math.abs(p.getX())); 
+    	this.fPosition.setHeight (Math.abs(p.getY())); 
     }
      getPoint(): TPoint	        	{ return this.fPoint; }
     _getPoint(): GetArrayMethod     { return () => this.fPoint.toArray(); }
