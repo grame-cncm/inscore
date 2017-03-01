@@ -13,7 +13,7 @@ class ILine extends IObject {
         super(name, parent);
         this.fTypeString = kLineType;
         this.fPenControl.setPenWidth(1);
-        
+!
         super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
     }
@@ -23,8 +23,8 @@ class ILine extends IObject {
     	this.fPosition.setWidth  (p.getX()); 
     	this.fPosition.setHeight (p.getY()); 
     }
-    getPoint() : TPoint		{ return this.fPoint; }
-    _getPoint(): GetArrayMethod        { return () => this.fPoint.toArray(); }
+     getPoint(): TPoint	        	{ return this.fPoint; }
+    _getPoint(): GetArrayMethod     { return () => this.fPoint.toArray(); }
 
 
     set(msg:IMessage): msgStatus {
@@ -47,7 +47,7 @@ class ILine extends IObject {
                 this.fLWidth = a.value;
                 this.fLAngle = b.value;
                 
-                if (this.fLAngle < 0) { this.fLAngle = 360 + this.fLAngle; } 
+                if (this.fLAngle < 0) { this.fLAngle += 360; }
                 if ( 180 <= Math.abs(this.fLAngle) && Math.abs(this.fLAngle) <= 360) { this.fLAngle -= 180; }                 
 
                 let x = Math.round(a.value * Math.cos(Math.PI * this.fLAngle / 180) * 1000) / 1000;

@@ -28,12 +28,13 @@ class VHtmlSvg extends VHtmlView {
 	
 	updateSvgSize (w: number, h: number): void {
     	let elt = this.getHtml();
-		this.fPixWidth = w ? w + this.fStrokeWidth : 1;
+		this.fPixWidth  = w ? w + this.fStrokeWidth : 1;
 		this.fPixHeight = h ? h + this.fStrokeWidth : 1;
 		elt.style.height = this.fPixHeight + "px";
-        elt.style.width  = this.fPixWidth + "px";
+        elt.style.width  = this.fPixWidth  + "px";
 		this.fSVG.style.height = this.fPixHeight + "px";
-        this.fSVG.style.width  = this.fPixWidth + "px";
+        this.fSVG.style.width  = this.fPixWidth  + "px";
+        this.fSVG.style.verticalAlign = "top";
     }
 
 	updatePenControl(obj:IObject): void
