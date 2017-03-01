@@ -56,28 +56,30 @@ class VHtmlView extends VObjectView {
 		elt.style.borderColor = penColor;
 		elt.style.borderStyle = penStyle;
 		elt.style.borderColor = penAlpha;
-		
 	}
 
 	updatePos (obj: IObject): void {
-		let pos 	= obj.getPosition();
-		let size 	= obj.getSize();
-		let scale 	= this.getScale(obj);
+		let pos 	 = obj.getPosition();
+		let size 	 = obj.getSize();
+		let scale 	 = this.getScale(obj);
 		let penWidth = obj.fPenControl.getPenWidth() ? obj.fPenControl.getPenWidth() : 0;
-		let z		= obj.fPosition.getZOrder();
-        let w  		= this.relative2SceneWidth (size.w) * scale + penWidth;
-        let h 		= this.relative2SceneHeight (size.h)* scale + penWidth;
-        let left  	= this.relative2SceneX (pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
-        let top 	= this.relative2SceneY (pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
+		let z	     = obj.fPosition.getZOrder();
+        let w   	 = this.relative2SceneWidth (size.w) * scale + penWidth;
+        let h 		 = this.relative2SceneHeight(size.h) * scale + penWidth;
+        let left  	 = this.relative2SceneX(pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
+        let top 	 = this.relative2SceneY(pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
+
+        console.log("VHtmlView updatePos pos xy : " + pos.x + ", " + pos.y + " size hw : " + size.h + ", " + size.w +
+		" penWindth " + penWidth + " wh : " + w + ", " + h + " left top " + left + ", " + top);
 
     	let elt = this.getHtml();
-        elt.style.width  = (w ? w : 1) +"px";
-        elt.style.height = (h ? h : 1) +"px";
-        elt.style.left 	=  left + "px";
-        elt.style.top 	=  top + "px";
-        elt.style.zIndex = z.toString();
+        elt.style.width  = (w ? w : 1) + "px";
+        elt.style.height = (h ? h : 1) + "px";
+        elt.style.left   =  left + "px";
+        elt.style.top 	 =  top  + "px";
+        elt.style.zIndex =  z.toString();
 		elt.style.transform  = this.getTransform(obj);
-        elt.style.visibility  = obj.fPosition.getVisible() ? "inherit" : "hidden";
+        elt.style.visibility = obj.fPosition.getVisible() ? "inherit" : "hidden";
         this.setPos( top, left, w, h);
 	}
 
