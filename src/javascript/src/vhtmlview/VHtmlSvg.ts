@@ -4,8 +4,8 @@
 
 class VHtmlSvg extends VHtmlView {
     protected fSVG:SVGSVGElement;
-	protected fPixWidth : number;		// the element width in pixels
-    protected fPixHeight: number;		// the element height in pixels
+//	protected fPixWidth : number;		// the element width in pixels
+//    protected fPixHeight: number;		// the element height in pixels
 	protected fStrokeWidth : number;
    
     constructor(parent: VHtmlView) {
@@ -27,13 +27,8 @@ class VHtmlSvg extends VHtmlView {
 	}
 	
 	updateSvgSize (w: number, h: number): void {
-    	let elt = this.getHtml();
-		this.fPixWidth  = w ? w + this.fStrokeWidth : 1;
-		this.fPixHeight = h ? h + this.fStrokeWidth : 1;
-		elt.style.height = this.fPixHeight + "px";
-        elt.style.width  = this.fPixWidth  + "px";
-		this.fSVG.style.height = this.fPixHeight + "px";
-        this.fSVG.style.width  = this.fPixWidth  + "px";
+		this.fSVG.style.width = (w ? w : 1) + "px";
+        this.fSVG.style.height  = (h ? h : 1)  + "px";
         this.fSVG.style.verticalAlign = "top";
     }
 
@@ -46,10 +41,10 @@ class VHtmlSvg extends VHtmlView {
 			this.fSVG.style.strokeOpacity = (obj.fPenControl.getPenAlpha()/255).toString();
 			this.fSVG.style.strokeDasharray = this.penStyleDashArrayConstrucor(obj.fPenControl.getPenStyleNum());
 
-				if(obj.fPenControl.getPenWidth() > 0)
+			if(obj.fPenControl.getPenWidth() > 0)
 			{
 				this.fStrokeWidth = obj.fPenControl.getPenWidth();
-				this.updateSvgSize(this.fPixWidth, this.fPixHeight);
+				this.updateSvgSize(this.fWidth, this.fHeight);
             }
 		}
 	}
