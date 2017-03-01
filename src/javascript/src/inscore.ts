@@ -1,17 +1,16 @@
 
 ///<reference path="inscore-interface.ts"/>
 ///<reference path="controller/IMessage.ts"/>
-///<reference path="controller/THandlersPrototypes.ts"/>
 ///<reference path="controller/IGlue.ts"/>
 ///<reference path="lib/ITLError.ts"/>
 ///<reference path="lib/ITLOut.ts"/>
 ///<reference path="lib/TEnums.ts"/>
 ///<reference path="model/IObject.ts"/>
 ///<reference path="model/TILoader.ts"/>
-///<reference path="globals.ts"/>
 
 
-class INScoreImpl extends INScoreInterface {
+class INScoreImpl extends INScoreInterface 
+{
 	private fVersion: number = 0.6;
 	private fGlue: IGlue;
 	private fErrStrings = new Array<string>();
@@ -20,7 +19,7 @@ class INScoreImpl extends INScoreInterface {
 		let str = this.fErrStrings[err];
 		return (str ? str : "unknown error " + err);
 	}
-	
+
 	// ------------------------------------------------------------
 	constructor ()		{ 
 		super();
@@ -64,7 +63,7 @@ class INScoreImpl extends INScoreInterface {
 	}
 }
 
-INScore = new INScoreImpl();
+var INScore = new INScoreImpl();
 function StartINScore(scene?: string) : void { 
 	INScore.start(scene); 
 }

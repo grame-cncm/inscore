@@ -1,5 +1,6 @@
 #
-# 
+# a makefile to build inscore as a javascript library
+# includes various tools
 #
 
 SRC  := $(shell find ../src -name "*.ts")
@@ -8,16 +9,32 @@ BUILDIR := js
 OUT	 := $(patsubst ../src/%.ts, $(BUILDIR)/%.js, $(SRC))
 TASKS ?= 4
 	
-all : $(DEPS)
+all : ../inscore.js
+
+help : 
+	@echo "This makefile is intended to build INScore as a JavaScript library."
+	@echo "Available targets are : "
+	@echo "  all    : (default) build inscore.js using tsc"
+	@echo "  check  : check that individual ts files are correctly compiled"
+	@echo "  minify : build a minified version of inscore.js"
+	@echo "  refs   : builds a dependencies graph using the reference paths"
+	@echo "           output file is refs.pdf"
+
+../inscore.js : $(SRC)
 	make -C ../src/parser
 	cd ../src && tsc
-	
+
 ../src/model/Methods.ts: ../../inscore/model/Methods.cpp
 	./methods2ts ../../inscore/model/Methods.cpp > ../src/model/Methods.ts
 
 check :
 	rm -rf $(BUILDIR)
 	make -j $(TASKS) _check
+
+minify : ../inscore.min.js
+
+../inscore.min.js : ../inscore.js
+	sh minify
 
 refs: 
 	./makerefs > refs.dot
@@ -30,7 +47,7 @@ clean:
 
 #===============================================================
 # rules to compile a .ts 
-TSOPT  := --noImplicitAny  --noImplicitReturns
+TSOPT  := --noImplicitAny  --noImplicitReturns --alwaysStrict
 JSOPTS := --allowJs  --allowUnreachableCode  --allowUnusedLabels 
 #$(BUILDIR)/model/TILoader.js: ../src/model/TILoader.ts
 #	@[ -d $(@D) ] || mkdir -p $(@D)

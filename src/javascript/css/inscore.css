@@ -55,6 +55,7 @@
 	font-style: normal; 
 	font-size: 14px; 
 }
+
 .inscore-html 	{ 
 	position: absolute; 
 	font-family: 'CarlitoRegular'; 
@@ -65,14 +66,20 @@
 }
 
 .inscore-log 	{ 
+	font-family: 'courier'; 
+	font-size: 10pt; 
 	margin: 10px 20px 10px 20px;
+	color: rgb(120,120,120); 
 }
 
+/*
 .inscore-log > pre	{ 
 	font-family: 'courier'; 
 	font-size: 10pt; 
-	color: rgb(120,120,120); 
+	padding: 0 0 0 0; 
+	color: rgb(200,120,120); 
 }
+*/
 
 .inscore-gmn {
 	position: absolute;
