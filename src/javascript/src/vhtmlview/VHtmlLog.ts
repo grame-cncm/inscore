@@ -22,17 +22,18 @@ class VHtmlLog extends VObjectView {
 						  ((this.fPreviousOY < 0) ? true : (pos.y != this.fPreviousOY));
 			this.fPreviousOX = pos.x;
 			this.fPreviousOY = pos.y;
-			this.checkwindow (obj);
-			this.fWindow.focus();
-			if (obj.fPosition.modified()) {
-				this.fWindow.resizeTo (this.relative2SceneWidth (size.w), this.relative2SceneHeight (size.h));
-				if (posChge) {
-					let top 	= this.relative2SceneY (pos.y - (size.h/2));
-					let left 	= this.relative2SceneX (pos.x - (size.w/2));
-					this.fWindow.moveTo (left, top);
+			if (this.checkwindow (obj)) {
+				this.fWindow.focus();
+				if (obj.fPosition.modified()) {
+					this.fWindow.resizeTo (this.relative2SceneWidth (size.w), this.relative2SceneHeight (size.h));
+					if (posChge) {
+						let top 	= this.relative2SceneY (pos.y - (size.h/2));
+						let left 	= this.relative2SceneX (pos.x - (size.w/2));
+						this.fWindow.moveTo (left, top);
+					}
 				}
+				this.writelog(<IApplLog>obj);
 			}
-			this.writelog(<IApplLog>obj);
 		} 
 		else if (this.fWindow) {
 			this.fWindow.close();
@@ -45,8 +46,8 @@ class VHtmlLog extends VObjectView {
 			this.fWindow.document.body.innerHTML = "";
 		let content = log.content();
 		for (let i=0; i < content.length; i++)
-//			this.fWindow.document.write(content[i] + "<br />\n");
-			this.fWindow.document.write("<pre>"+content[i] + "</pre>");
+			this.fWindow.document.write(content[i] + "<br />\n");
+//			this.fWindow.document.write("<pre>"+content[i] + "</pre>");
 		log.done();
 	}
 
@@ -71,16 +72,36 @@ class VHtmlLog extends VObjectView {
 	}
 	_close (o: IObject) :  TCloseHandler  	{ return () => this.closeHandler (o); }
 
-	checkwindow ( obj: IObject ) : void {	// checks if the window is opened and otherwise creates the window
-		if (!this.fWindow) {
-			let specs	= "menubar=no, titlebar=no, status=no, directories=no, location=no";
-			this.fWindow = window.open("_blank", obj.getOSCAddress(), specs);
-			this.fWindow.document.write("<head><title>"+obj.getOSCAddress()+"</title>\n<link href='css/inscore.css' rel='stylesheet'></head>");
-			this.fWindow.document.write("<body class='inscore-log'></body>");
-			this.fWindow.addEventListener("resize", this._resizeLog(obj));
-			this.fWindow.addEventListener("unload", this._close(obj));
+	getCurrentStyleSheets () : string {		// get the current style sheets and build the corresponding links
+  		var style = "";
+  		for( var i in document.styleSheets ) {
+  			let href = document.styleSheets[i].href;
+		    if (href) {
+		    	style += "<link href='" + href + "' rel='stylesheet'>\n";
+		    }
 		}
-		else this.checkwindowpos (obj);
+		return style;
+	}
+
+	checkwindow ( obj: IObject ) : boolean {	// checks if the window is opened and otherwise creates the window
+		if (!this.fWindow) {
+			let specs = "menubar=no, titlebar=no, status=no, directories=no, location=no";
+			let style = this.getCurrentStyleSheets();
+			this.fWindow = window.open("", obj.getOSCAddress(), specs);
+			if (this.fWindow) {
+				this.fWindow.document.write("<head><title>"+obj.getOSCAddress()+"</title>\n" + style + "</head>");
+				this.fWindow.document.write("<body class='inscore-log'></body>");
+				this.fWindow.addEventListener("resize", this._resizeLog(obj));
+				this.fWindow.addEventListener("unload", this._close(obj));
+				return true;
+			}
+			return false;
+		}
+		else {
+			this.checkwindowpos (obj);
+			this.fWindow.focus();
+		}
+		return true;
 	}
 	
 	resizeLog(obj: IObject) {
