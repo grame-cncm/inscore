@@ -13,6 +13,8 @@ class TPoint {
     toString(): string 			{ return this.toArray().toString(); }
     getX(): number 				{ return this.fX; }
     getY(): number 				{ return this.fY; }
+
+	equal (p: TPoint) 			{ return this.fX == p.fX && this.fY == p.fY; }
     
     // Methodes de calcul sur les points à faire...
 }

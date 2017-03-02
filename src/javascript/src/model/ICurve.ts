@@ -1,31 +1,42 @@
 ///<reference path="IObject.ts"/>
+///<reference path="../lib/TPoint.ts"/>
 
 class BezierCurve {
-    protected fPoints: Array<number>;
+    protected fPoints: Array<TPoint>;
         
     constructor(ax: number, ay: number, bx: number, by: number, cx: number, cy: number, dx: number, dy: number ) {
-        this.fPoints = [ax, ay, bx, by, cx, cy, dx, dy];
+//        this.fPoints = [ax, ay, bx, by, cx, cy, dx, dy];
+        this.fPoints = new Array<TPoint>();
+        this.fPoints.push (new TPoint(ax, ay));
+        this.fPoints.push (new TPoint(bx, by));
+        this.fPoints.push (new TPoint(cx, cy));
+        this.fPoints.push (new TPoint(dx, dy));
     }
 		
 	equal (other: BezierCurve) {
-		return this.fPoints.every ( ( val: number, index: number) => { return val == other.fPoints[index]; } );
+		return this.fPoints.every ( ( p: TPoint, index: number) => { return p.equal (other.fPoints[index]); } );
 	}
 
-	points(): Array<number> { return this.fPoints; }
+	points(): Array<TPoint> { return this.fPoints; }
+
+    toArray(): Array<number> {
+    	let a = new Array<number>();
+    	for ( let i=1; i< this.fPoints.length; i++) 
+    		a = a.concat(this.fPoints[i].toArray());
+    	return a;
+    }
 }  
     
 
-class ICurve extends IObject {
-    
-    //protected kCurveType: string;
+class ICurve extends IObject 
+{
     protected fPoints: Array<BezierCurve>;
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        //this.kCurveType = 'curve';
         this.fTypeString = kCurveType;
         this.fPoints = new Array<BezierCurve>();
-        
+        this.fPenControl.setPenWidth(1);
         super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
     }
@@ -50,10 +61,8 @@ class ICurve extends IObject {
                 let cx = msg.paramNum(i+4), cy = msg.paramNum(i+5);
                 let dx = msg.paramNum(i+6), dy = msg.paramNum(i+7);
                 
-                if (!ax.correct	|| !ay.correct ||
-                    !bx.correct || !by.correct ||
-                    !cx.correct || !cy.correct ||
-                    !dx.correct || !dy.correct) {
+                if (!ax.correct	|| !ay.correct || !bx.correct || !by.correct ||
+                    !cx.correct || !cy.correct || !dx.correct || !dy.correct) {
                         return msgStatus.kBadParameters;
                 }                
                 let bezierCurve = new BezierCurve( ax.value, ay.value, bx.value, by.value, cx.value, cy.value, dx.value, dy.value );    
@@ -78,10 +87,17 @@ class ICurve extends IObject {
     }
 
     toArray(): Array<number> {
-    	let a = this.fPoints[0].points();
-    	for ( let i=1; i<this.fPoints.length; i++) 
-    		a = a.concat(this.fPoints[i].points());
+    	let a = new Array<number>();
+    	for ( let i=0; i < this.fPoints.length; i++)
+    		a = a.concat(this.fPoints[i].toArray());
     	return a;
+    }
+
+    toString(): string {
+    	let str = "";
+    	for ( let i=0; i < this.fPoints.length; i++)
+    		str += this.fPoints[i].toString();
+    	return str;
     }
 
     getSet(): IMessage	{ 
