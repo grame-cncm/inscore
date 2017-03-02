@@ -36,6 +36,7 @@ class VHtmlPolygonView extends VHtmlSvg {
             }          
             this.fPolygon.setAttribute('points', strPoints);
         }
+        this.fPolygon.setAttribute('fill', obj.fColor.getRGBString());
      	super.updateView(obj);
     }        
 
