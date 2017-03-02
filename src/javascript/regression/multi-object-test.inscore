@@ -22,8 +22,7 @@
 /ITL/scene/line* z 1;
 
 /ITL/scene/elli set ellipse 0.5 0.25;
-/ITL/scene/elli x 0;
-
+/ITL/scene/elli y 0.75;
 /ITL/scene/elli color 50 50 50 100;
 
 /ITL/scene/arc set arc 1 1 180 90;
