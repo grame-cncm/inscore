@@ -3,6 +3,8 @@
 ///<reference path="controller/IMessage.ts"/>
 ///<reference path="model/IObject.ts"/>
 
+var INScore : INScoreInterface;
+
 abstract class INScoreInterface {
 	abstract version () : number;
 	abstract getRoot() : IObject;

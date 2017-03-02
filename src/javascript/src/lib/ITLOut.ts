@@ -1,5 +1,5 @@
 
-///<reference path="../globals.ts"/>
+///<reference path="../inscore-interface.ts"/>
 
 class ITLOut {
     

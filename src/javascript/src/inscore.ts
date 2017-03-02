@@ -63,7 +63,7 @@ class INScoreImpl extends INScoreInterface
 	}
 }
 
-var INScore = new INScoreImpl();
+INScore = new INScoreImpl();
 function StartINScore(scene?: string) : void { 
 	INScore.start(scene); 
 }
