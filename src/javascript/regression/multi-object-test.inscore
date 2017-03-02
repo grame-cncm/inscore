@@ -11,19 +11,24 @@
 /ITL/scene/line5 set line wa 0.65 0;
 /ITL/scene/line5 y 0.5;
 /ITL/scene/line5 x -0.3;
+/ITL/scene/line5 penStyle dot;
 /ITL/scene/line6 set line wa 0.6 90;
 /ITL/scene/line6 x -0.5;
 /ITL/scene/line6 y 0.3;
+/ITL/scene/line6 penStyle dashDot;
 /ITL/scene/line7 set line wa 0.25 90;
 /ITL/scene/line7 x 0.5;
 /ITL/scene/line8 set line wa 1 135;
 /ITL/scene/line8 x -0.25;
 /ITL/scene/line8 y 0.25;
+/ITL/scene/line8 penStyle dash;
 /ITL/scene/line* z 1;
 
 /ITL/scene/elli set ellipse 0.5 0.25;
 /ITL/scene/elli y 0.75;
 /ITL/scene/elli color 200 0 200 150;
+/ITL/scene/elli penWidth 1;
+/ITL/scene/elli penStyle dot;
 
 /ITL/scene/arc set arc 1 1 180 90;
 /ITL/scene/arc close 1;
@@ -45,3 +50,4 @@
 /ITL/scene/rect x 0.15;
 /ITL/scene/rect color 0 200 200 150;
 /ITL/scene/rect penWidth 1;
+/ITL/scene/rect penStyle dashDot;

@@ -53,10 +53,10 @@ class VHtmlSvg extends VHtmlView {
 	penStyle2Dash(style : number) : string
 	{
 		switch(style) {
-			case 1 :	return "3, 4";
+			case 1 :	return "4, 4";
 			case 2 :	return "1, 5";
-			case 3 :	return "3, 4, 1, 5";
-			case 4 :	return "3, 4, 1, 5, 1, 5";
+			case 3 :	return "4, 4, 1, 5";
+			case 4 :	return "4, 4, 1, 5, 1, 5";
 			default : 	return "";
 		}
 	}
