@@ -13,9 +13,10 @@ class VHtmlPolygonView extends VHtmlSvg {
     	this.fSVG.appendChild(this.fPolygon)
     }
     
-    updateView	( obj: IObject) : void {        
-        let polygon = <IPolygon>obj;
-        
+    updateView	( obj: IObject) : void {
+    	super.updateView(obj);
+
+        let polygon = <IPolygon>obj;        
         if (obj.isNewData()) {
             obj.newData(false);
 		    let points = polygon.getPoints();
@@ -30,8 +31,8 @@ class VHtmlPolygonView extends VHtmlSvg {
             this.fPolygon.setAttribute('points', strPoints);
             
             let polygonSize = this.fPolygon.getBBox();        
-            this.updateSvgSize (polygonSize.width, polygonSize.height);            
-            this.updateSvgPos(polygonSize.x, polygonSize.y);                          
+//            this.updateSvgSize (polygonSize.width, polygonSize.height);            
+//            this.updateSvgPos(polygonSize.x, polygonSize.y);                          
 
             if ( !this.getOrigin(polygonSize) ) {
                 let x = this.scene2RelativeWidth(polygonSize.width)
@@ -56,7 +57,7 @@ class VHtmlPolygonView extends VHtmlSvg {
                 elt.style.width = polygonSize.width + 'px';
                 elt.style.height = polygonSize.height + 'px';
             }
-            this.fPolygon.setAttribute('transform', super.getTranslate());
+//            this.fPolygon.setAttribute('transform', super.getTranslate());
             this.updateObjectSize (obj);      
 	    }
         this.fPolygon.style.fill = obj.fColor.getRGBString();

@@ -4,8 +4,6 @@
 
 class VHtmlRectView extends VHtmlSvg {
     protected fRect: SVGRectElement;
-    protected fPixWidth: number;		
-    protected fPixHeight: number;	
     
     constructor(parent: VHtmlView) {
 		super(parent);
@@ -16,19 +14,14 @@ class VHtmlRectView extends VHtmlSvg {
 
 	updateView	( obj: IObject) : void {
 		super.updateView(obj);
+		let size = this.getInnerSize(obj);
         let rect = <IRect>obj;
-		let scale = rect.fPosition.getScale();
-		let w = this.relative2SceneWidth( rect.fPosition.getWidth() ) * scale;
-		let h = this.relative2SceneHeight( rect.fPosition.getHeight() ) * scale;
-    	this.updateSvgSize (w, h);
-        this.fRect.setAttribute('width', w.toString());
-        this.fRect.setAttribute('height', h.toString());
-        this.fRect.style.fill = obj.fColor.getRGBString();
         let radius = rect.getRadius();
-		let rx = radius[0];
-        let ry = radius[1];    
-        this.fRect.setAttribute('rx', rx.toString());
-        this.fRect.setAttribute('ry', ry.toString());
-        this.fRect.setAttribute('transform', super.getTranslate());
+        this.fRect.setAttribute('width', size.w.toString());
+        this.fRect.setAttribute('height', size.h.toString());
+        this.fRect.style.fill = obj.fColor.getRGBString();
+        this.fRect.setAttribute('rx', radius[0].toString());
+        this.fRect.setAttribute('ry', radius[1].toString());
+        this.fRect.style.transform = this.strokeTranslate(obj);
     }
 }

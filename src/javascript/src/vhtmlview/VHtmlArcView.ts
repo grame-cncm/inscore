@@ -17,13 +17,15 @@ class VHtmlArcView extends VHtmlSvg
 
     updateView( obj: IObject) : void
     {
+    	super.updateView (obj);
+
         const arc = <IArc>obj;
-        let scale = arc.fPosition.getScale();
+        let scale = 1; //arc.fPosition.getScale();
         let w     = this.relative2SceneWidth (arc.fPosition.getWidth ()) * scale;
         let h     = this.relative2SceneHeight(arc.fPosition.getHeight()) * scale;
-        this.updateSvgSize(w, h);
+//        this.updateSvgSize(w, h);
 
-        this.fArc.setAttribute('transform', super.getTranslate());
+//        this.fArc.setAttribute('transform', super.getTranslate());
         this.fArc.setAttribute( 'width'   , w.toString());
         this.fArc.setAttribute( 'height'  , h.toString());
         this.fArc.style.fill = obj.fColor.getRGBString();

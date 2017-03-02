@@ -17,11 +17,8 @@ class VHtmlView extends VObjectView {
    }
 
 	getParent() : VObjectView 			{ return this.fParent; }
-	getHtml() : HTMLElement 			{ return this.fHtmlElt; }
-	// nominal scale is implemented at scene view level
-	nominalScale() : number 			{ return 1 * this.fParent.nominalScale(); }
-
-	remove() : void 					{ this.fHtmlElt.parentNode.removeChild(this.fHtmlElt); }
+	getHtml() 	: HTMLElement 			{ return this.fHtmlElt; }
+	remove() 	: void 					{ this.fHtmlElt.parentNode.removeChild(this.fHtmlElt); }
 
 	updateView	( obj: IObject) : void {
 		this.updatePos	(obj);
@@ -45,11 +42,6 @@ class VHtmlView extends VObjectView {
 	getStrokeWidth (obj: IObject): number 	{ return obj.fPenControl.getPenWidth();  }
 	getStrokeHeight (obj: IObject): number 	{ return obj.fPenControl.getPenWidth();  }
 
-	// getScale is intended to catch the div using auto height and width (like text, html...)
-	getScale (obj: IObject): number 	{ return obj.fPosition.getScale();  }
-	// getScale is intended to divs using auto height and width (like text, html...)
-	autoScale (obj: IObject): number 	{ return obj.getRScale() * obj.getParent().getRSizeAsScale() * this.nominalScale(); }
-
 	updatePenControl (obj: IObject) {
 		let penWidth = obj.fPenControl.getPenWidth();
 		let penColor = obj.fPenControl.fPenColor.getRGBString();
@@ -62,43 +54,60 @@ class VHtmlView extends VObjectView {
 		elt.style.borderStyle = penStyle;
 	}
 
+	getSize (obj: IObject):  {w: number, h: number } {
+		let size 	 = obj.getSize();
+		let strokeWidth = obj.fPenControl.getPenWidth();
+        let w   	 = this.relative2SceneWidth (size.w) + strokeWidth;
+        let h 		 = this.relative2SceneHeight(size.h) + strokeWidth;
+		return { w: (w ? w : 1), h: (h ? h : 1) };
+	}
+
 	updatePos (obj: IObject): void {
 		let pos 	 = obj.getPosition();
-		let size 	 = obj.getSize();
-		let scale 	 = this.getScale(obj);
-//		let penWidth = obj.fPenControl.getPenWidth();
+		let size 	 = this.getSize(obj);
 		let z	     = obj.fPosition.getZOrder();
-        let w   	 = this.relative2SceneWidth (size.w) * scale + this.getStrokeWidth(obj);
-        let h 		 = this.relative2SceneHeight(size.h) * scale + this.getStrokeHeight(obj);
-        let left  	 = this.relative2SceneX(pos.x) - w/2.0 - (w * obj.fPosition.getXOrigin() / 2.0);
-        let top 	 = this.relative2SceneY(pos.y) - h/2.0 - (h * obj.fPosition.getYOrigin() / 2.0);
-
-//        console.log("VHtmlView updatePos pos xy : " + pos.x + ", " + pos.y + " size hw : " + size.h + ", " + size.w +
-//		" penWindth " + penWidth + " wh : " + w + ", " + h + " left top " + left + ", " + top);
+        let left  	= this.relative2SceneX(pos.x); // - size.w * (1 - obj.fPosition.getXOrigin()) / 2.0;
+        let top 	= this.relative2SceneY(pos.y); // - size.h * (1 - obj.fPosition.getYOrigin()) / 2.0;
+        this.setPos( top, left, size.w, size.h);		// store the metrics 
 
     	let elt = this.getHtml();
-        elt.style.width  = (w ? w : 1) + "px";
-        elt.style.height = (h ? h : 1) + "px";
-        elt.style.left   =  left + "px";
-        elt.style.top 	 =  top  + "px";
-        elt.style.zIndex =  z.toString();
-		elt.style.transform  = this.getTransform(obj);
+        elt.style.width  = size.w + "px";
+        elt.style.height = size.h + "px";
+        elt.style.left   = left + "px";
+        elt.style.top 	 = top  + "px";
+        elt.style.zIndex = z.toString();
+		let transform  = this.getTransform(obj);
+		elt.style.transform  = transform;
         elt.style.visibility = obj.fPosition.getVisible() ? "inherit" : "hidden";
-        this.setPos( top, left, w, h);
 	}
 
 	// to be used for elts with auto width and height
 	updateObjectSize ( obj: IObject) : void {
         let w = this.scene2RelativeWidth(this.fHtmlElt.clientWidth);
         let h = this.scene2RelativeHeight(this.fHtmlElt.clientHeight);
-
 		obj.fPosition.setWidth (w);
 		obj.fPosition.setHeight (h);
     }
 
+	getScale (obj: IObject): string {
+		let scale 	 = obj.fPosition.getScale();
+        return (scale==1) ? "" : `scale(${scale},${scale}) `;
+	}
+
+	getRotate (obj: IObject): string {
+		let rotate 	 = obj.getRotate();
+        return (rotate.z) ? `rotate(${rotate.z}deg) ` : "";
+	}
+
+	getTranslate (obj: IObject): string {
+		let tx = -this.fWidth * (1 + obj.fPosition.getXOrigin()) / 2.0;
+		let ty = -this.fHeight * (1 + obj.fPosition.getYOrigin()) / 2.0;
+        return (tx || ty) ? `translate(${tx}px,${ty}px) ` : " ";
+	}
+
 	getTransform (obj: IObject): string {
 		let rotate = obj.getRotate();
-        return `rotate(${rotate.z}deg)`;
+        return this.getTranslate(obj) + this.getScale(obj) + this.getRotate(obj) ;
 	}
 
 	setPos (top: number, left: number, width: number, height: number): void {

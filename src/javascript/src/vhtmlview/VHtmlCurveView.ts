@@ -34,7 +34,7 @@ class VHtmlCurveView extends VHtmlSvg {
 
         let curveSize = this.fCurve.getBBox();
             this.updateSvgPos (curveSize.x, curveSize.y);  
-            this.updateSvgSize (curveSize.width, curveSize.height);
+//            this.updateSvgSize (curveSize.width, curveSize.height);
        
         for (let i = 0; i < BezierCurves.length; i++) {
             let points: Array<number> = BezierCurves[i].points()
@@ -52,7 +52,7 @@ class VHtmlCurveView extends VHtmlSvg {
                                               + c1 + ',' + c2 + ' ' 
                                         + 't' + d1 + ',' + d2);
         }
-        this.fCurve.setAttribute('transform', super.getTranslate());
+//        this.fCurve.setAttribute('transform', super.getTranslate());
         this.updateObjectSize (obj);
             this.fCurve.style.fill = 'rgba(0, 0, 0, 0)';        
             this.fCurve.style.stroke = obj.fColor.getRGBString(); 
