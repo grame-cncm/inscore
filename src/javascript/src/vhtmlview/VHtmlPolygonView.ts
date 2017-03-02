@@ -22,8 +22,8 @@ class VHtmlPolygonView extends VHtmlSvg {
         let polygon = <IPolygon>obj;        
         if (obj.isNewData()) {
 		    let points = polygon.getPoints();
-            let minx = 0xffffffff;
-            let miny = 0xffffffff;
+            let minx = 0x1fffffff;
+            let miny = 0x1fffffff;
             for (let i = 0; i < points.length; i++) {
             	minx = Math.min(minx, points[i].getX());
             	miny = Math.min(miny, points[i].getY());
