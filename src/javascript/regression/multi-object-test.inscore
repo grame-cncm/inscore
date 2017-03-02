@@ -1,8 +1,8 @@
 /ITL/scene/* del;
 /ITL/scene/line1 set line wa 1 0;
-/ITL/scene/line1 color 255 0 0;
+/ITL/scene/line1 penColor 255 0 0;
 /ITL/scene/line2 set line wa 1 90;
-/ITL/scene/line2 color 0 0 255;
+/ITL/scene/line2 penColor 0 0 255;
 /ITL/scene/line* scale 2;
 /ITL/scene/line3 set line wa 0.6 0;
 /ITL/scene/line3 y -0.5;
@@ -23,22 +23,25 @@
 
 /ITL/scene/elli set ellipse 0.5 0.25;
 /ITL/scene/elli y 0.75;
-/ITL/scene/elli color 50 50 50 100;
+/ITL/scene/elli color 200 0 200 150;
 
 /ITL/scene/arc set arc 1 1 180 90;
 /ITL/scene/arc close 1;
 /ITL/scene/arc x 0;
 /ITL/scene/arc y 0;
-/ITL/scene/arc color 0 255 0;
+/ITL/scene/arc color 225 225 0;
 
 /ITL/scene/curve set curve 0 0 0.1 0.25 0.5 0 0.25 0.25;
 /ITL/scene/curve z 1;
 
-/ITL/scene/polygon set polygon 1 1 0 1 0 0;
-/ITL/scene/polygon x 0;
-/ITL/scene/polygon y 0;
+/ITL/scene/polygon set polygon 0.5 0 0 0.5 0.5 0.5;
+/ITL/scene/polygon x -0.25;
+/ITL/scene/polygon y -0.25;
+/ITL/scene/polygon color 255 112 0;
+/ITL/scene/polygon get color;
 
 /ITL/scene/rect set rect 0.3 0.5;
 /ITL/scene/rect y -0.5;
 /ITL/scene/rect x 0.15;
-/ITL/scene/rect color 100 100 100 50;
+/ITL/scene/rect color 0 200 200 150;
+/ITL/scene/rect penWidth 1;
