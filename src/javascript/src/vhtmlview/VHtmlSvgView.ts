@@ -4,8 +4,6 @@
 ///<reference path="VHtmlGMNView.ts"/>
 ///<reference path="../model/ISvg.ts"/>
 
-interface RefreshMethod 	{ (): void; }
-
 class VHtmlSvgView extends VHtmlSvg {
 
     constructor(parent: VHtmlView) {
@@ -29,15 +27,5 @@ class VHtmlSvgView extends VHtmlSvg {
         let w = svgsize.width + strokeWidth;
         let h = svgsize.height + strokeWidth;
 		return { w: (w ? w : 1), h: (h ? h : 1) };
-	}
- 
-	_updateView	( obj: IObject) : RefreshMethod { return () => this.updateView (obj); }
-	updateObjectSize ( obj: IObject) : void {
-		let size = this.getInnerSize (obj);
-        let w = this.scene2RelativeWidth(size.w);
-        let h = this.scene2RelativeHeight(size.h);
-		obj.fPosition.setWidth (w);
-		obj.fPosition.setHeight (h);
-		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
 	}
 }

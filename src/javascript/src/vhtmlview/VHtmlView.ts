@@ -66,8 +66,8 @@ class VHtmlView extends VObjectView {
 		let pos 	 = obj.getPosition();
 		let size 	 = this.getSize(obj);
 		let z	     = obj.fPosition.getZOrder();
-        let left  	= this.relative2SceneX(pos.x); // - size.w * (1 - obj.fPosition.getXOrigin()) / 2.0;
-        let top 	= this.relative2SceneY(pos.y); // - size.h * (1 - obj.fPosition.getYOrigin()) / 2.0;
+        let left  	= this.relative2SceneX(pos.x);
+        let top 	= this.relative2SceneY(pos.y);
         this.setPos( top, left, size.w, size.h);		// store the metrics 
 
     	let elt = this.getHtml();
