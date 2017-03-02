@@ -13,7 +13,7 @@ class VHtmlGMNView extends VHtmlSvg {
         this.getHtml().className = "inscore-gmn";
     }
       
-	getScale (obj: IObject): number 	{ return 1;  }
+//	getScale (obj: IObject): number 	{ return 1;  }
     updateView	(obj: IObject) : void {           	
         // si le code gmn a changé, on le charge
         let gmn = this.updateGMN(obj);
@@ -45,7 +45,7 @@ class VHtmlGMNView extends VHtmlSvg {
 */
         // mis à jour de fSVG        
         let elt = this.getHtml(); 
-        this.updateSvgSize (elt.clientWidth, elt.clientHeight);
+//        this.updateSvgSize (elt.clientWidth, elt.clientHeight);
 
 	}
 
@@ -78,9 +78,10 @@ class VHtmlGMNView extends VHtmlSvg {
 		obj.fPosition.setHeight (h);
 		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
 	}
-
+/*
 	getTransform (obj: IObject): string {
 		let scale 	= this.autoScale(obj) * VHtmlGMNView.fGMNScale;
 		return super.getTransform(obj) + ` scale(${scale})`;
 	}
+*/
 }

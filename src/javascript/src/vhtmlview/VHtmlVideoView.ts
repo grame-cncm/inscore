@@ -14,7 +14,7 @@ class VHtmlVideoView extends VHtmlView {
     }     
     
 	// getScale is intended to catch the div using auto height and width (like text, html...)
-	getScale (obj: IObject): number 	{ return 1;  }    
+//	getScale (obj: IObject): number 	{ return 1;  }    
 
 	updateView	( obj: IObject) : void {
 		let video = <IVideo>obj;
@@ -37,9 +37,10 @@ class VHtmlVideoView extends VHtmlView {
 		obj.fPosition.setHeight (h);
 		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
 	}
-
+/*
 	getTransform (obj: IObject): string {
 		let scale 	= this.autoScale(obj);
 		return super.getTransform(obj) + ` scale(${scale})`;
 	}      
+*/
 }

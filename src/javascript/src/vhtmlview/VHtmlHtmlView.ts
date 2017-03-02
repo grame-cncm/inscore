@@ -12,9 +12,6 @@ class VHtmlHtmlView extends VHtmlView {
 
 	getText	( obj: IText) : string { return obj.getText(); }
 
-	// scaling is applied as a transform only
-	getScale (obj: IObject): number { return 1; }
-
 	// CSS weight are used as numbers
 	fontWeight2Num	( weight: string) : number {
 		switch (weight) {
@@ -44,12 +41,5 @@ class VHtmlHtmlView extends VHtmlView {
 		this.updateObjectSize (obj);
 		if (t.fontModified()) this.setFont (t);
 		super.updateView(obj);
-		elt.style.color = t.fColor.getRGBAString();
 	}
-
-	getTransform (obj: IObject): string {
-		let scale 	= this.autoScale(obj);
-		return super.getTransform(obj) + ` scale(${scale})`;
-	}
-
 }

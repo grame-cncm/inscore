@@ -16,19 +16,16 @@ class VHtmlEllipseView extends VHtmlSvg {
 
 	updateView	( obj: IObject) : void {
 		super.updateView (obj);
-		let scale = obj.fPosition.getScale();
-		let w = this.relative2SceneWidth( obj.fPosition.getWidth() ) * scale;
-		let h = this.relative2SceneHeight( obj.fPosition.getHeight() ) * scale;
-    	this.updateSvgSize (w, h);
-        this.fEllipse.setAttribute('width', w.toString());
-        this.fEllipse.setAttribute('height', h.toString());
+		let size = this.getInnerSize(obj);
+        this.fEllipse.setAttribute('width',  size.w.toString());
+        this.fEllipse.setAttribute('height', size.h.toString());
         this.fEllipse.style.fill = obj.fColor.getRGBString();
-		let rx = w/2;
-		let ry = h/2;
+		let rx = size.w/2;
+		let ry = size.h/2;
         this.fEllipse.setAttribute('cx', rx.toString());
         this.fEllipse.setAttribute('cy', ry.toString());
         this.fEllipse.setAttribute('rx', rx.toString());
         this.fEllipse.setAttribute('ry', ry.toString());
-        this.fEllipse.setAttribute('transform', super.getTranslate());
+        this.fEllipse.style.transform = this.strokeTranslate(obj);
 	}
 }
