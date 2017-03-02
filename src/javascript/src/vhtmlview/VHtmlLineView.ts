@@ -27,19 +27,27 @@ class VHtmlLineView extends VHtmlSvg {
 		this.fLine.style.strokeWidth = obj.fPenControl.getPenWidth() + "px";
 
 		let x = this.relative2SceneWidth (p.getX());
-		let y = Math.abs(this.relative2SceneHeight(p.getY()));
+		let y = this.relative2SceneWidth (p.getY());
+		let x0 = 0;
+		let y0 = 0;
 
-		if(x > 0)
-		{
-			this.fLine.setAttribute('x1', '0');
-			this.fLine.setAttribute('x2', (x).toString());
-		}else
-		{
-			this.fLine.setAttribute('x1', Math.abs(x).toString());
-			this.fLine.setAttribute('x2', '0');
+		if ((x < 0) && (y < 0)) {
+			x = -x;
+			y = -y;
+		} else if (x < 0) {
+			y0 = y;
+			x = -x;
+			y = 0;
 		}
-		this.fLine.setAttribute('y1', '0');
-		this.fLine.setAttribute('y2', (y).toString());
+		else if (y < 0) {
+			y0 = -y;
+			y = 0;
+		}
+
+		this.fLine.setAttribute('x1', x0.toString());
+		this.fLine.setAttribute('x2', x.toString());
+		this.fLine.setAttribute('y1', y0.toString());
+		this.fLine.setAttribute('y2', y.toString());
         this.fLine.style.transform = this.strokeTranslate(obj);
 	}
 }
