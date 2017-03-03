@@ -8,4 +8,5 @@ class VHtmlPianoRollView extends VHtmlGMNView {
         super(parent); 
         this.getHtml().className = "inscore-pianoroll";
     }        
+	updateObjectSize ( obj: IObject) : void {}  // do nothing, the size is user defined
 }

@@ -38,12 +38,16 @@ class IGuidoPianoRoll extends IGuidoCode {
         this.setWidth(1);
         this.setHeight(0.5);
         super.setHandlers();
+        this.fMsgHandlerMap[kwidth_GetSetMethod]		= new TMsgHandlerNum(this._setWidth());
+        this.fMsgHandlerMap[kheight_GetSetMethod]		= new TMsgHandlerNum(this._setHeight());
     }      
     
     AR2SVG(ar: ARHandler): string {
         let guidoPianoRoll  = new Module.GUIDOPianoRollAdapter;
         let pr = guidoPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
-        let svg = guidoPianoRoll.svgExport(pr, -1, -1);
+        let w = this.getView().relative2SceneWidth (this.fPosition.getWidth());
+        let h = this.getView().relative2SceneHeight (this.fPosition.getHeight());
+        let svg = guidoPianoRoll.svgExport(pr, w, h);
         guidoPianoRoll.destroyPianoRoll(pr);                                     
 	    return svg;
     }
