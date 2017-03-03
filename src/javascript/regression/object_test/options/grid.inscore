@@ -1,0 +1,14 @@
+/ITL/scene/line1 set line wa 1 0;
+/ITL/scene/line1 penColor 255 0 0;
+/ITL/scene/line2 set line wa 1 90;
+/ITL/scene/line2 penColor 0 0 255;
+/ITL/scene/line* scale 2;
+
+/ITL/scene/lineTest1 set line wa 1.5 90;
+/ITL/scene/lineTest1 x 0.5;
+/ITL/scene/lineTest2 set line wa 1.5 0;
+/ITL/scene/lineTest2 y 0.5;
+/ITL/scene/lineTest3 set line wa 1.5 90;
+/ITL/scene/lineTest3 x -0.5;
+/ITL/scene/lineTest4 set line wa 1.5 0;
+/ITL/scene/lineTest4 y -0.5;
