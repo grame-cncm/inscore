@@ -12,61 +12,50 @@ class VHtmlGMNView extends VHtmlSvg {
         super(parent); 
         this.getHtml().className = "inscore-gmn";
     }
+
+	getSize (obj: IObject):  {w: number, h: number } {
+		let strokeWidth = obj.fPenControl.getPenWidth();
+        let w = this.fSVG.clientWidth + strokeWidth;
+        let h = this.fSVG.clientHeight + strokeWidth;
+		return { w: (w ? w : 1), h: (h ? h : 1) };
+	}
       
-//	getScale (obj: IObject): number 	{ return 1;  }
     updateView	(obj: IObject) : void {           	
         // si le code gmn a changé, on le charge
-        let gmn = this.updateGMN(obj);
-        if (gmn.modif) this.fSVG.innerHTML = gmn.gmnCode;
-              
-        // on récupère la taille de fSVG pour l'écrire dans le modele
-        this.updateObjectSize (obj);
-        
-        // update de la couleur et de la position => on récupère dans le modèle pour
-        // pour changer les propriétés de la div
-		super.updatePos(obj);
-		super.updatePenControl(obj);
-
-        let color = obj.fColor.getRGBString();
-        this.updateCol(obj, color, this.fSVG)
-
-/*
-        let g = this.fSVG.getElementsByTagName('g');
-        let txt = this.fSVG.getElementsByTagName('text');
-        let color = obj.fColor.getRGBString();
-        for (let i = 0; i < g.length; i++) {
-            g[i].style.stroke = color; 
-            g[i].style.fill = color; 
-        }
-        for (let i = 0; i < txt.length; i++) {
-            txt[i].style.fill = color; 
-            txt[i].style.stroke = color; 
-        }
-*/
-        // mis à jour de fSVG        
-        let elt = this.getHtml(); 
-//        this.updateSvgSize (elt.clientWidth, elt.clientHeight);
-
+		if (obj.isNewData()) {
+            let gmn = <IGuidoCode>obj;
+            this.fSVG.innerHTML = gmn.getGMNsvg();    
+        }   
+    	super.updateView(obj);       
 	}
 
-    updateCol(obj: IObject, color: string, elt: any) {
-        let childs = elt.childNodes;
-        for (let i = 0; i < childs.length; i++) {
-            if (childs[i].nodeName != "#text" && childs[i].nodeName != "#comment") {
-                childs[i].style.stroke = color; 
-                childs[i].style.fill = color; 
-            }
-            this.updateCol(obj, color, childs[i]);
+	updatePenControl(obj:IObject): void 	{ this.basePenControl (obj); }
+	
+	getFirstSVGGroup (root: Node): SVGSVGElement {
+		let g : Node;
+	    let childs = root.childNodes;
+		for (let i = 0; i < childs.length && !g; i++) {
+			if (childs[i].nodeName == 'g') {
+				g = childs[i];
+				break;
+			}
+			g = this.getFirstSVGGroup (childs[i]);
         }
-    }
-
-    updateGMN(obj: IObject) : { gmnCode: string, modif: boolean } {
-        if (obj.isNewData()) {
-            let gmn = <IGuidoCode>obj;
-            return { gmnCode: gmn.getGMNsvg(), modif: true }    
-        } 
-    
-        return { gmnCode: null, modif: false };     
+        return <SVGSVGElement>g;
+	}
+	
+	updateColor (obj: IObject): void {
+        if (obj.fColor.modified()) {
+	        let color = obj.fColor.getRGBString();
+	        let alpha = obj.fColor.getSVGA();
+	        let g = this.getFirstSVGGroup (this.fSVG);
+	        if (g) {
+   	       		g.style.stroke = color; 
+   	       		g.style.strokeOpacity = alpha.toString(); 
+    	        g.style.fill = color; 
+    	        g.style.fillOpacity = alpha.toString(); 
+	        }
+        }
     }
 
 	_updateView	( obj: IObject) : RefreshMethod { return () => this.updateView (obj); }
@@ -78,10 +67,4 @@ class VHtmlGMNView extends VHtmlSvg {
 		obj.fPosition.setHeight (h);
 		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
 	}
-/*
-	getTransform (obj: IObject): string {
-		let scale 	= this.autoScale(obj) * VHtmlGMNView.fGMNScale;
-		return super.getTransform(obj) + ` scale(${scale})`;
-	}
-*/
 }
