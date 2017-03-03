@@ -24,9 +24,10 @@ class VHtmlGMNView extends VHtmlSvg {
         // si le code gmn a changé, on le charge
 		if (obj.isNewData()) {
             let gmn = <IGuidoCode>obj;
-            this.fSVG.innerHTML = gmn.getGMNsvg();    
+            this.fSVG.innerHTML = gmn.getSVG();    
         }   
-    	super.updateView(obj);       
+    	this.updateObjectSize (obj);     
+    	super.updateView(obj);
 	}
 
 	updatePenControl(obj:IObject): void 	{ this.basePenControl (obj); }
