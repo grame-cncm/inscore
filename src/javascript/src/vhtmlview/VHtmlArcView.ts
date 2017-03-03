@@ -23,23 +23,20 @@ class VHtmlArcView extends VHtmlSvg
         let scale = 1; //arc.fPosition.getScale();
         let w     = this.relative2SceneWidth (arc.fPosition.getWidth ()) * scale;
         let h     = this.relative2SceneHeight(arc.fPosition.getHeight()) * scale;
-//        this.updateSvgSize(w, h);
-
-//        this.fArc.setAttribute('transform', super.getTranslate());
-        this.fArc.setAttribute( 'width'   , w.toString());
-        this.fArc.setAttribute( 'height'  , h.toString());
-        this.fArc.style.fill = obj.fColor.getRGBString();
-        this.fArc.style.strokeWidth = obj.fPenControl.fPenWidth.toString();
-
         let r1  = w / 2;
         let r2  = h / 2;
-
         let startAngle  = this.normalize(arc.getStart());
         let endAngle    = this.normalize(startAngle + this.clip(arc.getRange()));
         let startPoint  = this.getPoint(r1, r2, startAngle );
         let endPoint    = this.getPoint(r1, r2, endAngle);
         let path        = this.getPath(this.clip(arc.getRange()), startPoint, endPoint, r1, r2, arc.getClose() ? true : false);
+
+        this.fArc.setAttribute( 'width'   , w.toString());
+        this.fArc.setAttribute( 'height'  , h.toString());
+        this.fArc.style.fill = obj.fColor.getRGBString();
+        this.fArc.style.strokeWidth = obj.fPenControl.fPenWidth.toString();
         this.fArc.setAttribute('d', path);
+		this.fArc.style.transform = this.strokeTranslate(obj);
         super.updateView (obj);
     }
 
