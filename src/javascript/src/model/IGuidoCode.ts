@@ -1,23 +1,26 @@
 ///<reference path="IObject.ts"/>
+///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
 ///<reference path="../externals/libGUIDOEngine.ts"/>
 
-
 class IGuidoCode extends IObject { 
-    //protected kGuidoCodeType: string;
-    
-    protected fGMNsvg: string;
+	static fGuidoEngine: GuidoEngineAdapter;
+
+    protected fGMN: string;
+    protected fSVG: string;
     protected fPage: number;
-    protected fPageFormat: Array<number>;
-    
+    protected fPageFormat: Array<number>;    
     protected fCurrentPagesCount: number;
-    
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        //this.kGuidoCodeType = 'gmn';
-        this.fTypeString = kGuidoCodeType;
         
+        if (!IGuidoCode.fGuidoEngine) {
+        	IGuidoCode.fGuidoEngine = new Module.GuidoEngineAdapter;
+        	IGuidoCode.fGuidoEngine.init();
+        }
+        
+        this.fTypeString = kGuidoCodeType;
         this.fCurrentPagesCount = 1; 
         this.fPage = 1; 
         //this.fPageFormat = [21.0f, 29.7f]; 
@@ -25,63 +28,51 @@ class IGuidoCode extends IObject {
         super.setHandlers();
     }
     
-    setGMNsvg(gmn: string): void				        { this.fGMNsvg = gmn; /*localMapModified(true);*/ }
+    setSVG(gmn: string): void				        { this.fSVG = gmn; /*localMapModified(true);*/ }
 	setPage(page: number): void							{ this.fPage = page; /*localMapModified(true);*/ }
 	setPageFormat(pageFormat: Array<number>): void	    { this.fPageFormat = pageFormat; /*localMapModified(true);*/ }
     //setdPage(dpage: number): void                       {}
     
-    getGMNsvg(): string			        { return this.fGMNsvg; }
+    getSVG(): string			        { return this.fSVG; }
 	getPage(): number					{ return this.fPage; }
 	getPageFormat(): Array<number>		{ return this.fPageFormat; }
 	//getPageCount(): number              {return}
+    
+    str2AR(gmn: string): ARHandler {
+        let p = IGuidoCode.fGuidoEngine.openParser();
+	    let ar = IGuidoCode.fGuidoEngine.string2AR(p, gmn);
+	    if (!ar) {
+			let error = IGuidoCode.fGuidoEngine.parserGetErrorCode(p);
+			ITLError.write ("Error line " + error.line + " column " + error.col + ": " + error.msg);
+	    }
+        IGuidoCode.fGuidoEngine.closeParser(p);
+	    return ar;
+    }
+    
+    AR2SVG(ar: ARHandler): string {
+        let gr = IGuidoCode.fGuidoEngine.ar2gr(ar);
+        let svg = IGuidoCode.fGuidoEngine.gr2SVG(gr, 1, false, 0);
+        IGuidoCode.fGuidoEngine.freeGR(gr);
+	    return svg;
+    }
     
     set(msg: IMessage): msgStatus {
         let status = super.set(msg);
         if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
 
+		if (msg.size() != 3) return msgStatus.kBadParameters;
         let gmn = msg.paramStr(2);
-        
-        // test if the parsing works
-        let guidoEngine = new Module.GuidoEngineAdapter;
-        guidoEngine.init();        
-        let p = guidoEngine.openParser();
-	    let ar = guidoEngine.string2AR(p, gmn.value);
-        
-        if ((msg.size() == 3) && gmn.correct && ar) {
-            /*
-            if(expr){
-                if(!fExprHandler.composeExpr(expr, t))
-                    return msgStatus.kBadParameters;
-            }
-            else
-                    fExprHandler.clearExpr();
-            */
-            if (gmn.value != this.getGMNsvg()) {
-                if (this.fTypeString == kGuidoCodeType) {
-                    let gr = guidoEngine.ar2gr(ar);
-                    this.setGMNsvg(guidoEngine.gr2SVG(gr, 1, false, 0));
-                    guidoEngine.freeGR(gr);                   
-                }
-                if (this.fTypeString == kGuidoPianoRollType) {
-                    let guidoPianoRoll  = new Module.GUIDOPianoRollAdapter;
-                    let pr = guidoPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
-                    this.setGMNsvg(guidoPianoRoll.svgExport(pr, -1, -1));
-                    guidoPianoRoll.destroyPianoRoll(pr);                                     
-                }
-                
-                status = msgStatus.kProcessed;
-                this.newData(true);
-            }
-            else status = msgStatus.kProcessedNoChange;
-
-        }
-        else status = msgStatus.kBadParameters;
-        guidoEngine.freeAR(ar);
-        guidoEngine.closeParser(p);
-        return status;
+		if (!gmn.correct) return msgStatus.kBadParameters;
+        let ar = this.str2AR (gmn.value);
+		if (!ar) return msgStatus.kBadParameters;
+		
+		this.fGMN = gmn.value;
+		this.fSVG = this.AR2SVG (ar);
+		IGuidoCode.fGuidoEngine.freeAR (ar);
+        return msgStatus.kProcessed;
     }
     
     getSet(): IMessage	{ 
-    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, 'todo']); 
+    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, this.fGMN]); 
     }    
 }

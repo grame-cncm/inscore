@@ -22,29 +22,29 @@ class IGuidoPianoRoll extends IGuidoCode {
 	protected fKeyboard: boolean;
 	protected fAutoVoiceColor: boolean;
 	protected fMeasureBars: boolean;
-	protected fPitchLines: number;    
+	protected fPitchLines: number;
  	//std::map<int, IColor> fVoicesColor;
    
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.fTypeString = kGuidoPianoRollType;
-        this.fKeyboard = false;
-        this.fAutoVoiceColor = false;
-        this.fMeasureBars = false;
-        this.fPitchLines = kAutoLines;
+        this.fTypeString 	= kGuidoPianoRollType;
+        this.fKeyboard 		= false;
+        this.fAutoVoiceColor= false;
+        this.fMeasureBars 	= false;
+        this.fPitchLines 	= kAutoLines;
         //this.fLimits.lowPitch = -1;
         //this.fLimits.highPitch = -1;
         
-        let init: GuidoDate;
-        //init.num = 0;
-        //init.denom = 0;
-        //this.fLimits.startDate = init;
-        //this.fLimits.endDate = init;
-        
         this.setWidth(1);
         this.setHeight(0.5);
-        //this.fColor.setRGB([0,0,0]);
-        
         super.setHandlers();
     }      
+    
+    AR2SVG(ar: ARHandler): string {
+        let guidoPianoRoll  = new Module.GUIDOPianoRollAdapter;
+        let pr = guidoPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
+        let svg = guidoPianoRoll.svgExport(pr, -1, -1);
+        guidoPianoRoll.destroyPianoRoll(pr);                                     
+	    return svg;
+    }
 }
