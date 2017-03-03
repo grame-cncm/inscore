@@ -12,7 +12,7 @@
 /ITL/scene/vid x -0.5;
 /ITL/scene/vid y 0.5;
 
-/ITL/scene/txt set txt "Ceci n'est pas un test";
+/ITL/scene/txt set txt "Ceci n'est pas un test.";
 /ITL/scene/txt x -0.7;
 /ITL/scene/txt y -0.95;
 
