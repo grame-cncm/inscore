@@ -22,10 +22,9 @@ class VHtmlSvgView extends VHtmlSvg {
 	}   
 
 	getSize (obj: IObject):  {w: number, h: number } {
-        let svgsize = this.fSVG.querySelectorAll('svg')[0].getBoundingClientRect();
 		let strokeWidth = obj.fPenControl.getPenWidth();
-        let w = svgsize.width + strokeWidth;
-        let h = svgsize.height + strokeWidth;
+        let w = this.fSVG.clientWidth + strokeWidth;
+        let h = this.fSVG.clientHeight + strokeWidth;
 		return { w: (w ? w : 1), h: (h ? h : 1) };
 	}
 }
