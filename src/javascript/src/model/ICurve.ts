@@ -5,7 +5,6 @@ class BezierCurve {
     protected fPoints: Array<TPoint>;
         
     constructor(ax: number, ay: number, bx: number, by: number, cx: number, cy: number, dx: number, dy: number ) {
-//        this.fPoints = [ax, ay, bx, by, cx, cy, dx, dy];
         this.fPoints = new Array<TPoint>();
         this.fPoints.push (new TPoint(ax, ay));
         this.fPoints.push (new TPoint(bx, by));
