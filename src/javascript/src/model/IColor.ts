@@ -69,6 +69,7 @@ class IColor {
     getV(): number { return this.fHSB[2]; }      
         
     getA(): number { return this.fA; }
+    getSVGA(): number { return this.fA/255; }
 
 // GETS VALUES CLOSURES
 //-------------------------------------------------------------- 
