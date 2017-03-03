@@ -36,6 +36,10 @@ class VHtmlSvg extends VHtmlView {
         this.fSVG.style.verticalAlign = "top";
 	}
 
+	basePenControl(obj:IObject): void {		// provided to bypass the SVG behavior
+		super.updatePenControl (obj);
+	}
+
 	updatePenControl(obj:IObject): void {
 		if (obj.fPenControl.modified()) {
 			this.fSVG.style.strokeWidth = obj.fPenControl.getPenWidth().toString();
