@@ -1,10 +1,10 @@
 ---------------Color------------------------
-
 /ITL/scene/* alpha 0;
 /ITL/scene/* alpha 100;
 /ITL/scene/* alpha 200;
 /ITL/scene/* alpha 250;
 
+/ITL/scene/* color 0 0 0 255;
 /ITL/scene/* color 255 0 0;
 /ITL/scene/* color 0 255 0;
 /ITL/scene/* color 0 0 255;
@@ -18,45 +18,38 @@
 /ITL/scene/* blue 0;
 
 
-/ITL/scene/* dalpha 0;
-/ITL/scene/* dalpha 100;
-/ITL/scene/* dalpha 200;
-/ITL/scene/* dalpha 250;
+/ITL/scene/* dalpha -50;
+/ITL/scene/* dalpha 50;
 
-/ITL/scene/* dcolor 255 0 0;
-/ITL/scene/* dcolor 0 255 0;
-/ITL/scene/* dcolor 0 0 255;
+/ITL/scene/* dcolor 20 20 20;
+/ITL/scene/* dcolor -20 -20 -20;
 
 /ITL/scene/* dred 255;
 /ITL/scene/* dgreen 255;
 /ITL/scene/* dblue 255;
 
-/ITL/scene/* dred 0;
-/ITL/scene/* dgreen 0;
-/ITL/scene/* dblue 0;
-
 ---------------PenControl-------------------
-
 /ITL/scene/* penAlpha 0;
 /ITL/scene/* penAlpha 100;
 /ITL/scene/* penAlpha 200;
 /ITL/scene/* penAlpha 250;
 
-/ITL/scene/* pendAlpha 0;
-/ITL/scene/* pendAlpha 100;
-/ITL/scene/* pendAlpha 200;
-/ITL/scene/* pendAlpha 250;
+/ITL/scene/* pendAlpha 50;
+/ITL/scene/* pendAlpha -50;
 
+/ITL/scene/* penColor 0 0 0 255;
 /ITL/scene/* penColor 255 0 0;
 /ITL/scene/* penColor 0 255 0;
 /ITL/scene/* penColor 0 0 255;
 
+/ITL/scene/* penStyle solid;
 /ITL/scene/* penStyle dot;
 /ITL/scene/* penStyle dash;
 /ITL/scene/* penStyle dashDot;
 /ITL/scene/* penStyle dashDotDot;
 
 /ITL/scene/* penWidth 0;
+/ITL/scene/* penWidth 1;
 /ITL/scene/* penWidth 5;
 /ITL/scene/* penWidth 10;
 
@@ -74,104 +67,33 @@
 /ITL/scene/* z 0;
 /ITL/scene/* z 1;
 
-
 /ITL/scene/* dx 0.5;
 /ITL/scene/* dy 0.5;
 
 /ITL/scene/* dx -0.5;
 /ITL/scene/* dy -0.5;
 
-/ITL/scene/* dx 0;
-/ITL/scene/* dy 0;
-
-/ITL/scene/* dz 0;
-/ITL/scene/* dz 1;
-
-
+/ITL/scene/* xorigin -1.5;
+/ITL/scene/* xorigin -1;
+/ITL/scene/* xorigin -0.5;
 /ITL/scene/* xorigin 0;
+/ITL/scene/* xorigin 0.5;
+/ITL/scene/* xorigin 1;
+/ITL/scene/* xorigin 1.5;
+
+/ITL/scene/* yorigin -1.5;
+/ITL/scene/* yorigin -1;
+/ITL/scene/* yorigin -0.5;
 /ITL/scene/* yorigin 0;
-
-/ITL/scene/* xorigin 0.5;
 /ITL/scene/* yorigin 0.5;
-
-/ITL/scene/* xorigin 1;
 /ITL/scene/* yorigin 1;
-
-/ITL/scene/* xorigin 1.5;
 /ITL/scene/* yorigin 1.5;
 
-
-/ITL/scene/* xorigin -0.5;
-/ITL/scene/* yorigin -0.5;
-
-/ITL/scene/* xorigin -1;
-/ITL/scene/* yorigin -1;
-
-/ITL/scene/* xorigin -1.5;
-/ITL/scene/* yorigin -1.5;
-
-
-/ITL/scene/* xorigin 0.5;
-/ITL/scene/* yorigin -0.5;
-
-/ITL/scene/* xorigin 1;
-/ITL/scene/* yorigin -1;
-
-/ITL/scene/* xorigin 1.5;
-/ITL/scene/* yorigin -1.5;
-
-
-/ITL/scene/* xorigin -0.5;
-/ITL/scene/* yorigin 0.5;
-
-/ITL/scene/* xorigin -1;
-/ITL/scene/* yorigin 1;
-
-/ITL/scene/* xorigin -1.5;
-/ITL/scene/* yorigin 1.5;
-
-
-/ITL/scene/* dxorigin 0;
-/ITL/scene/* dyorigin 0;
-
 /ITL/scene/* dxorigin 0.5;
-/ITL/scene/* dyorigin 0.5;
-
-/ITL/scene/* dxorigin 1;
-/ITL/scene/* dyorigin 1;
-
-/ITL/scene/* dxorigin 1.5;
-/ITL/scene/* dyorigin 1.5;
-
-
 /ITL/scene/* dxorigin -0.5;
-/ITL/scene/* dyorigin -0.5;
 
-/ITL/scene/* dxorigin -1;
-/ITL/scene/* dyorigin -1;
-
-/ITL/scene/* dxorigin -1.5;
-/ITL/scene/* dyorigin -1.5;
-
-
-/ITL/scene/* dxorigin 0.5;
-/ITL/scene/* dyorigin -0.5;
-
-/ITL/scene/* dxorigin 1;
-/ITL/scene/* dyorigin -1;
-
-/ITL/scene/* dxorigin 1.5;
-/ITL/scene/* dyorigin -1.5;
-
-
-/ITL/scene/* dxorigin -0.5;
 /ITL/scene/* dyorigin 0.5;
-
-/ITL/scene/* dxorigin -1;
-/ITL/scene/* dyorigin 1;
-
-/ITL/scene/* dxorigin -1.5;
-/ITL/scene/* dyorigin 1.5;
+/ITL/scene/* dyorigin -0.5;
 
 ---------------Rotation-------------------
 
