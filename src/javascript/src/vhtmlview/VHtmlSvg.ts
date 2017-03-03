@@ -49,9 +49,14 @@ class VHtmlSvg extends VHtmlView {
 		}
 	}
 
-    strokeTranslate(obj:IObject) : string {
+	innerTranslate  (obj: IObject): {x: number, y: number} {
     	let w = obj.fPenControl.getPenWidth() / 2;
-        return w ? `translate(${w}px,${w}px) ` : "none";
+    	return {x: w, y: w}
+	}
+
+    strokeTranslate(obj:IObject) : string {
+    	let t = this.innerTranslate(obj);
+        return (t.x || t.y) ? `translate(${t.x}px,${t.y}px) ` : "none";
     }
 
 	penStyle2Dash(style : number) : string
