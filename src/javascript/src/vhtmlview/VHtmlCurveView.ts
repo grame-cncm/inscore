@@ -1,9 +1,12 @@
 
 ///<reference path="VHtmlSvg.ts"/>
 ///<reference path="../model/ICurve.ts"/>
+///<reference path="../lib/TPoint.ts"/>
 
 class VHtmlCurveView extends VHtmlSvg {
-    protected fCurve: SVGPathElement;
+    protected fCurve: 	SVGPathElement;
+    protected fStart: 	TPoint;
+    protected fEnd: 	TPoint;
     
     constructor(parent: VHtmlView) {
 		super(parent);
@@ -14,21 +17,22 @@ class VHtmlCurveView extends VHtmlSvg {
 
 	getSize (obj: IObject):  {w: number, h: number } {
         let size = this.fCurve.getBBox();        
-		return { w: size.width, h: size.height };
+		let strokeWidth = obj.fPenControl.getPenWidth();
+		return { w: size.width + strokeWidth, h: size.height + strokeWidth};
 	}
 
 	relative2SceneCurve	(curve: BezierCurve) : Array<number> {
 		let p = curve.points();
-		let a1 = this.relative2SceneX (p[0].getX());
-		let a2 = this.relative2SceneY (p[0].getY());
-		let b1 = this.relative2SceneX (p[1].getX());
-		let b2 = this.relative2SceneY (p[1].getY());
-		let c1 = this.relative2SceneX (p[2].getX());
-		let c2 = this.relative2SceneY (p[2].getY());
-		let d1 = this.relative2SceneX (p[3].getX());
-		let d2 = this.relative2SceneY (p[3].getY());
-		let minx = Math.min(a1, d1);
+		let a1 = this.relative2SceneWidth (p[0].getX());
+		let a2 = this.relative2SceneWidth (p[0].getY());
+		let b1 = this.relative2SceneWidth (p[1].getX());
+		let b2 = this.relative2SceneWidth (p[1].getY());
+		let c1 = this.relative2SceneWidth (p[2].getX());
+		let c2 = this.relative2SceneWidth (p[2].getY());
+		let d1 = this.relative2SceneWidth (p[3].getX());
+		let d2 = this.relative2SceneWidth (p[3].getY());
 		let miny = Math.min(a2, d2);
+		let minx = miny; //Math.min(a1, d1);
 		return [a1-minx, a2-miny, b1-minx, b2-miny, c1-minx, c2-miny, d1-minx, d2-miny ]
 	}
 
@@ -36,23 +40,26 @@ class VHtmlCurveView extends VHtmlSvg {
 		let curve = <ICurve>obj;
 		if (obj.isNewData()) {
 			let points = curve.getPoints();
-			let minx = 0x1fffffff;
-			let miny = 0x1fffffff;
-			for (let i = 0; i < points.length; i++) {
-				let p = points[i].points()
-				minx = Math.min(minx, p[i].getX());
-				miny = Math.min(miny, p[i].getY());
-			}
-
 			for (let i = 0; i < points.length; i++) {
 				let p = points[i].points();
 				let ps = this.relative2SceneCurve (points[i]);
-				let attributes = 'M' + ps[0] + ',' + ps[1] + ' ' + 'C' + ps[2] + ',' + ps[3] + ' ' + ps[4] + ',' + ps[5] + ' ' + ps[6] + ',' + ps[7];
+				this.fStart = new TPoint(ps[0], ps[1]);
+				this.fEnd   = new TPoint(ps[6], ps[7]);
+				let attributes = 'M' + this.fStart.getX() + ',' + this.fStart.getY() + ' ' + 'C' + ps[2] + ',' + ps[3] + ' ' + ps[4] + ',' + ps[5] + ' ' + this.fEnd.getX() + ',' + this.fEnd.getY();
 				this.fCurve.setAttribute('d', attributes);
 			}
-			this.fCurve.style.fillOpacity = "0";
+			this.fCurve.style.transform = this.strokeTranslate(obj);
+//			this.fCurve.style.fillOpacity = "0";
 		}  
 		super.updateView(obj);
+	}
+
+	innerTranslate  (obj: IObject): {x: number, y: number} {
+		let t = super.innerTranslate (obj);
+        let size = this.fCurve.getBBox();
+		t.x += size.width - this.fEnd.getX();
+		t.y += size.height - this.fEnd.getY();
+		return t;
 	}
 
 	updateObjectSize ( obj: IObject) : void {
