@@ -36,7 +36,7 @@
 /ITL/scene/arc y 0;
 /ITL/scene/arc color 225 225 0;
 
-/ITL/scene/curve set curve 0 0 0.5 0.5 0.5 -0.75 0.75 0.5;
+/ITL/scene/curve set curve 0. 0. 0.5 0.5 0.5 -0.75 0.75 0.5;
 /ITL/scene/curve x 0.38;
 
 /ITL/scene/curve z 1;
