@@ -96,136 +96,59 @@
 /ITL/scene/* dyorigin -0.5;
 
 ---------------Rotation-------------------
-
 /ITL/scene/* angle 0;
-/ITL/scene/* angle 30;
-/ITL/scene/* angle 60;
+/ITL/scene/* angle 45;
 /ITL/scene/* angle 90;
-/ITL/scene/* angle 120;
-/ITL/scene/* angle 150;
-/ITL/scene/* angle 180;
+/ITL/scene/* angle 135;
 
-/ITL/scene/* angle -30;
-/ITL/scene/* angle -60;
+/ITL/scene/* angle -45;
 /ITL/scene/* angle -90;
-/ITL/scene/* angle -120;
-/ITL/scene/* angle -150;
-/ITL/scene/* angle -180;
+/ITL/scene/* angle -135;
 
 /ITL/scene/* rotatex 0;
-/ITL/scene/* rotatex 30;
-/ITL/scene/* rotatex 60;
+/ITL/scene/* rotatex 45;
 /ITL/scene/* rotatex 90;
-/ITL/scene/* rotatex 120;
-/ITL/scene/* rotatex 150;
-/ITL/scene/* rotatex 180;
+/ITL/scene/* rotatex 135;
 
-/ITL/scene/* rotatex -30;
-/ITL/scene/* rotatex -60;
+/ITL/scene/* rotatex -45;
 /ITL/scene/* rotatex -90;
-/ITL/scene/* rotatex -120;
-/ITL/scene/* rotatex -150;
-/ITL/scene/* rotatex -180;
+/ITL/scene/* rotatex -135;
 
 /ITL/scene/* rotatey 0;
-/ITL/scene/* rotatey 30;
-/ITL/scene/* rotatey 60;
+/ITL/scene/* rotatey 45;
 /ITL/scene/* rotatey 90;
-/ITL/scene/* rotatey 120;
-/ITL/scene/* rotatey 150;
-/ITL/scene/* rotatey 180;
+/ITL/scene/* rotatey 135;
 
-/ITL/scene/* rotatey -30;
-/ITL/scene/* rotatey -60;
+/ITL/scene/* rotatey -45;
 /ITL/scene/* rotatey -90;
-/ITL/scene/* rotatey -120;
-/ITL/scene/* rotatey -150;
-/ITL/scene/* rotatey -180;
+/ITL/scene/* rotatey -135;
 
 /ITL/scene/* rotatez 0;
-/ITL/scene/* rotatez 30;
-/ITL/scene/* rotatez 60;
+/ITL/scene/* rotatez 45;
 /ITL/scene/* rotatez 90;
-/ITL/scene/* rotatez 120;
-/ITL/scene/* rotatez 150;
-/ITL/scene/* rotatez 180;
+/ITL/scene/* rotatez 135;
 
-/ITL/scene/* rotatez -30;
-/ITL/scene/* rotatez -60;
+/ITL/scene/* rotatez -45;
 /ITL/scene/* rotatez -90;
-/ITL/scene/* rotatez -120;
-/ITL/scene/* rotatez -150;
-/ITL/scene/* rotatez -180;
+/ITL/scene/* rotatez -135;
 
-/ITL/scene/* dangle 0;
-/ITL/scene/* dangle 30;
-/ITL/scene/* dangle 60;
-/ITL/scene/* dangle 90;
-/ITL/scene/* dangle 120;
-/ITL/scene/* dangle 150;
-/ITL/scene/* dangle 180;
+/ITL/scene/* dangle 10;
+/ITL/scene/* dangle -10;
 
-/ITL/scene/* dangle -30;
-/ITL/scene/* dangle -60;
-/ITL/scene/* dangle -90;
-/ITL/scene/* dangle -120;
-/ITL/scene/* dangle -150;
-/ITL/scene/* dangle -180;
+/ITL/scene/* drotatex 10;
+/ITL/scene/* drotatex -10;
 
-/ITL/scene/* drotatex 0;
-/ITL/scene/* drotatex 30;
-/ITL/scene/* drotatex 60;
-/ITL/scene/* drotatex 90;
-/ITL/scene/* drotatex 120;
-/ITL/scene/* drotatex 150;
-/ITL/scene/* drotatex 180;
+/ITL/scene/* drotatey 10;
+/ITL/scene/* drotatey -10;
 
-/ITL/scene/* drotatex -30;
-/ITL/scene/* drotatex -60;
-/ITL/scene/* drotatex -90;
-/ITL/scene/* drotatex -120;
-/ITL/scene/* drotatex -150;
-/ITL/scene/* drotatex -180;
-
-/ITL/scene/* drotatey 0;
-/ITL/scene/* drotatey 30;
-/ITL/scene/* drotatey 60;
-/ITL/scene/* drotatey 90;
-/ITL/scene/* drotatey 120;
-/ITL/scene/* drotatey 150;
-/ITL/scene/* drotatey 180;
-
-/ITL/scene/* drotatey -30;
-/ITL/scene/* drotatey -60;
-/ITL/scene/* drotatey -90;
-/ITL/scene/* drotatey -120;
-/ITL/scene/* drotatey -150;
-/ITL/scene/* drotatey -180;
-
-/ITL/scene/* drotatez 0;
-/ITL/scene/* drotatez 30;
-/ITL/scene/* drotatez 60;
-/ITL/scene/* drotatez 90;
-/ITL/scene/* drotatez 120;
-/ITL/scene/* drotatez 150;
-/ITL/scene/* drotatez 180;
-
-/ITL/scene/* drotatez -30;
-/ITL/scene/* drotatez -60;
-/ITL/scene/* drotatez -90;
-/ITL/scene/* drotatez -120;
-/ITL/scene/* drotatez -150;
-/ITL/scene/* drotatez -180;
+/ITL/scene/* drotatez 10;
+/ITL/scene/* drotatez -10;
 
 ---------------Scale-------------------
-
 /ITL/scene/* scale 0.5;
 /ITL/scene/* scale 1;
 /ITL/scene/* scale 1.5;
 /ITL/scene/* scale 2;
 
-
 /ITL/scene/* dscale 0.5;
-/ITL/scene/* dscale 1;
-/ITL/scene/* dscale 1.5;
-/ITL/scene/* dscale 2;
+/ITL/scene/* dscale -0.5;
