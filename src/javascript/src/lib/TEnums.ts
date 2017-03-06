@@ -16,11 +16,12 @@ enum objState {
 }
 
 enum penStyle {
-    solid,
+    solid = 0,
     dash,
     dot,
     dashDot,
     dashDotDot,
+    last
 }
 
 enum brushStyle{
