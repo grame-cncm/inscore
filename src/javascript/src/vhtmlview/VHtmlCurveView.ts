@@ -49,7 +49,6 @@ class VHtmlCurveView extends VHtmlSvg {
 				this.fCurve.setAttribute('d', attributes);
 			}
 			this.fCurve.style.transform = this.strokeTranslate(obj);
-//			this.fCurve.style.fillOpacity = "0";
 		}  
 		super.updateView(obj);
 	}
