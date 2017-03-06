@@ -89,36 +89,39 @@ abstract class IObject implements Tree<IObject> {
 	    this.timeAble();
         this.penControlAble();
     }
+
+    // intended for ILine : the target is always the pen color
+    getColorTarget(): IColor 				{ return this.fColor; };
     
     colorAble(): void {
-        this.fMsgHandlerMap[kcolor_GetSetMethod] 		= new TMsgHandlerColor(this.fColor._setRGB());
-        this.fMsgHandlerMap[khsb_SetMethod] 			= new TMsgHandlerColor(this.fColor._setHSB());
+        let target = this.getColorTarget();
+        this.fMsgHandlerMap[kcolor_GetSetMethod] 		= new TMsgHandlerColor(target._setRGB());
+        this.fMsgHandlerMap[khsb_SetMethod] 			= new TMsgHandlerColor(target._setHSB());
+        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum(target._setR());
+	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum(target._setG());
+	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum(target._setB());
+        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum(target._setA());
+	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum(target._setH());
+	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum(target._setS());
+        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum(target._setV());
 
-        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum(this.fColor._setR());
-	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum(this.fColor._setG());
-	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum(this.fColor._setB());
-        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum(this.fColor._setA());
-	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum(this.fColor._setH());
-	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum(this.fColor._setS());
-        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum(this.fColor._setV());
+        this.fMsgHandlerMap[kdred_SetMethod] 			= new TMsgHandlerNum(target._dR());
+	    this.fMsgHandlerMap[kdgreen_SetMethod] 			= new TMsgHandlerNum(target._dG());
+	    this.fMsgHandlerMap[kdblue_SetMethod]			= new TMsgHandlerNum(target._dB());
+        this.fMsgHandlerMap[kdalpha_SetMethod] 			= new TMsgHandlerNum(target._dA());
+	    this.fMsgHandlerMap[kdhue_SetMethod] 			= new TMsgHandlerNum(target._dH());
+	    this.fMsgHandlerMap[kdsaturation_SetMethod]		= new TMsgHandlerNum(target._dS());
+        this.fMsgHandlerMap[kdbrightness_SetMethod]		= new TMsgHandlerNum(target._dV());
 
-        this.fMsgHandlerMap[kdred_SetMethod] 			= new TMsgHandlerNum(this.fColor._dR());
-	    this.fMsgHandlerMap[kdgreen_SetMethod] 			= new TMsgHandlerNum(this.fColor._dG());
-	    this.fMsgHandlerMap[kdblue_SetMethod]			= new TMsgHandlerNum(this.fColor._dB());
-        this.fMsgHandlerMap[kdalpha_SetMethod] 			= new TMsgHandlerNum(this.fColor._dA());
-	    this.fMsgHandlerMap[kdhue_SetMethod] 			= new TMsgHandlerNum(this.fColor._dH());
-	    this.fMsgHandlerMap[kdsaturation_SetMethod]		= new TMsgHandlerNum(this.fColor._dS());
-        this.fMsgHandlerMap[kdbrightness_SetMethod]		= new TMsgHandlerNum(this.fColor._dV());
-
-        this.fGetMsgHandlerMap[kcolor_GetSetMethod] 	= new TGetMsgHandlerArray(this.fColor._getRGB());
-        this.fGetMsgHandlerMap[khsb_SetMethod] 			= new TGetMsgHandlerArray(this.fColor._getHSB());
-        this.fGetMsgHandlerMap[kred_GetSetMethod] 		= new TGetMsgHandlerNum(this.fColor._getR());
-        this.fGetMsgHandlerMap[kgreen_GetSetMethod] 	= new TGetMsgHandlerNum(this.fColor._getG());
-	    this.fGetMsgHandlerMap[kblue_GetSetMethod] 		= new TGetMsgHandlerNum(this.fColor._getB());
-        this.fGetMsgHandlerMap[kalpha_GetSetMethod] 	= new TGetMsgHandlerNum(this.fColor._getA());
-        this.fGetMsgHandlerMap[khue_GetSetMethod] 		= new TGetMsgHandlerNum(this.fColor._getH());
-	    this.fGetMsgHandlerMap[ksaturation_GetSetMethod] = new TGetMsgHandlerNum(this.fColor._getS());
-	    this.fGetMsgHandlerMap[kbrightness_GetSetMethod] = new TGetMsgHandlerNum(this.fColor._getV());    
+        this.fGetMsgHandlerMap[kcolor_GetSetMethod] 	= new TGetMsgHandlerArray(target._getRGB());
+        this.fGetMsgHandlerMap[khsb_SetMethod] 			= new TGetMsgHandlerArray(target._getHSB());
+        this.fGetMsgHandlerMap[kred_GetSetMethod] 		= new TGetMsgHandlerNum(target._getR());
+        this.fGetMsgHandlerMap[kgreen_GetSetMethod] 	= new TGetMsgHandlerNum(target._getG());
+	    this.fGetMsgHandlerMap[kblue_GetSetMethod] 		= new TGetMsgHandlerNum(target._getB());
+        this.fGetMsgHandlerMap[kalpha_GetSetMethod] 	= new TGetMsgHandlerNum(target._getA());
+        this.fGetMsgHandlerMap[khue_GetSetMethod] 		= new TGetMsgHandlerNum(target._getH());
+	    this.fGetMsgHandlerMap[ksaturation_GetSetMethod] = new TGetMsgHandlerNum(target._getS());
+	    this.fGetMsgHandlerMap[kbrightness_GetSetMethod] = new TGetMsgHandlerNum(target._getV());    
     }
     
     positionAble() {
