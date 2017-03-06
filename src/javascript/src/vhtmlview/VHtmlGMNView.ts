@@ -12,6 +12,7 @@ class VHtmlGMNView extends VHtmlSvg {
         super(parent); 
         this.getHtml().className = "inscore-gmn";
     }
+    getSVGTarget() : SVGShape  { return this.fSVG; }
 
 	getSize (obj: IObject):  {w: number, h: number } {
 		let strokeWidth = obj.fPenControl.getPenWidth();

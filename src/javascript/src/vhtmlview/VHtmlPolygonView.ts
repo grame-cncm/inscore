@@ -13,6 +13,8 @@ class VHtmlPolygonView extends VHtmlSvg {
     	this.fSVG.appendChild(this.fPolygon)
     }
 
+    getSVGTarget() : SVGShape  { return this.fPolygon; }
+
 	getSize (obj: IObject):  {w: number, h: number } {
         let size = this.fPolygon.getBBox();        
 		return { w: size.width, h: size.height };

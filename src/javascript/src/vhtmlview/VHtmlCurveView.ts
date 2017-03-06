@@ -15,6 +15,8 @@ class VHtmlCurveView extends VHtmlSvg {
     	this.fSVG.appendChild(this.fCurve) 
     } 
 
+    getSVGTarget() : SVGShape  { return this.fCurve; }
+
 	getSize (obj: IObject):  {w: number, h: number } {
         let size = this.fCurve.getBBox();        
 		let strokeWidth = obj.fPenControl.getPenWidth();

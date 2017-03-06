@@ -15,6 +15,8 @@ class VHtmlArcView extends VHtmlSvg
         this.fSVG.appendChild(this.fArc)
     }
 
+    getSVGTarget() : SVGShape  { return this.fArc; }
+
     updateView( obj: IObject) : void
     {
     	super.updateView (obj);

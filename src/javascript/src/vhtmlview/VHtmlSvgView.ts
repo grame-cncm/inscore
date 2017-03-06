@@ -10,6 +10,8 @@ class VHtmlSvgView extends VHtmlSvg {
         super(parent); 
     	this.getHtml().className = "inscore-svg";
     } 
+
+    getSVGTarget() : SVGShape  { return this.fSVG; }
     
     updateView	(obj: IObject) : void {           	
         // si le code gmn a changé, on le charge

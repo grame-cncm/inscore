@@ -14,20 +14,17 @@ class VHtmlEllipseView extends VHtmlSvg {
     	this.fSVG.appendChild(this.fEllipse)
     }    
 
+    getSVGTarget() : SVGShape  { return this.fEllipse; }
+
 	updateView	( obj: IObject) : void {
 		super.updateView (obj);
 		let size = this.getInnerSize(obj);
-        this.fEllipse.setAttribute('width',  size.w.toString());
-        this.fEllipse.setAttribute('height', size.h.toString());
-		let rs = <IRectShape>obj;
-		let color = rs.getBrushStyle() === "none" ? "none" : obj.fColor.getRGBAString();
-        this.fEllipse.style.fill = color; // obj.fColor.getRGBString();
+        this.updateCommonSVG(obj, size.w, size.h);
 		let rx = size.w/2;
 		let ry = size.h/2;
         this.fEllipse.setAttribute('cx', rx.toString());
         this.fEllipse.setAttribute('cy', ry.toString());
         this.fEllipse.setAttribute('rx', rx.toString());
         this.fEllipse.setAttribute('ry', ry.toString());
-        this.fEllipse.style.transform = this.strokeTranslate(obj);
 	}
 }
