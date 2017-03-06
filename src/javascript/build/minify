@@ -1,1 +1,6 @@
-curl -X POST -s --data-urlencode 'input@../inscore.js' http://javascript-minifier.com/raw > ../inscore.min.js
+#!/bin/sh
+#
+
+echo "curl -X POST -s --data-urlencode 'input@$1.js' http://javascript-minifier.com/raw > $1.min.js"
+curl -X POST -s --data-urlencode 'input@$1.js' http://javascript-minifier.com/raw > $1.min.js
+exit $?
