@@ -1,17 +1,38 @@
-
+///<reference path="../lib/TEnums.ts"/>
 ///<reference path="IObject.ts"/>
 
 class IRectShape extends IObject {
 
+    fBrushStyle : brushStyle;
+    protected fModified : boolean;
+
+    fBrushStyleStr2Num: { [id: string] : brushStyle; } = {};
+    fBrushStyleNum2Str: { [id: number] : string; } = {};
+
+
     constructor(name: string, parent: IObject) {
         super(name, parent);
+        this.fBrushStyle = brushStyle.none;
+        this.buildBrushStyle();
+    }
+
+    buildBrushStyle(): void {
+        this.fBrushStyleStr2Num["solid"] = brushStyle.solid;
+        this.fBrushStyleStr2Num["none"]  = brushStyle.none;
+
+        this.fBrushStyleNum2Str[brushStyle.solid] = "solid";
+        this.fBrushStyleNum2Str[brushStyle.none]  = "none";
     }
 
     create(name: string, parent: IObject): IRectShape { return new IRectShape(name, parent); }
-    setHandlers() {  
+
+    setHandlers() {
     	super.setHandlers(); 
-        this.fMsgHandlerMap[kwidth_GetSetMethod]		= new TMsgHandlerNum(this._setWidth());
-        this.fMsgHandlerMap[kheight_GetSetMethod]		= new TMsgHandlerNum(this._setHeight());
+        this.fMsgHandlerMap[kwidth_GetSetMethod]  = new TMsgHandlerNum(this._setWidth());
+        this.fMsgHandlerMap[kheight_GetSetMethod] = new TMsgHandlerNum(this._setHeight());
+
+        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this._getBrushStyle());
+        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this._setBrushStyle());
     }
    
     set(msg: IMessage): msgStatus {
@@ -43,5 +64,12 @@ class IRectShape extends IObject {
     }
    
     //accept (Updater*): void
-    // virtual MsgHandler::msgStatus set (const IMessage* msg);		
+    // virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+    getBrushStyle () : string {return this.fBrushStyleNum2Str[this.fBrushStyle];}
+    _getBrushStyle() : GetStringMethod { return () => this.getBrushStyle() }
+    setBrushStyle (brushStyle : string): void {
+        let style = this.fBrushStyleStr2Num[brushStyle];
+        this.fBrushStyle = style;}
+    _setBrushStyle(): SetStringMethod { return (brush : string) => this.setBrushStyle(brush) }
 }

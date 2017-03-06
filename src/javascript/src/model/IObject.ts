@@ -49,7 +49,7 @@ abstract class IObject implements Tree<IObject> {
     fColor: 	 IColor;
     fPenControl: IPenControl;
 
-    
+
 // CONSTRUCTOR
 //--------------------------------------------------------------       
     constructor(name: string, parent?: IObject) {
@@ -170,7 +170,7 @@ abstract class IObject implements Tree<IObject> {
         this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
         this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime(this.fDate._getDuration());
     }
-    
+
     penControlAble() {
         this.fMsgHandlerMap[kpenWidth_GetSetMethod]     = new TMsgHandlerNum(this.fPenControl._setPenWidth());
         this.fMsgHandlerMap[kpenColor_GetSetMethod] 	= new TMsgHandlerColor(this.fPenControl._setPenColor());
@@ -182,7 +182,7 @@ abstract class IObject implements Tree<IObject> {
         this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerText(this.fPenControl._getPenStyle());
         this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum(this.fPenControl._getPenAlpha());
     }
-    
+
 //--------------------------------------------------------------  
 // Special position handlers
 // size change requires the modification state to be 

@@ -22,3 +22,8 @@ enum penStyle {
     dashDot,
     dashDotDot,
 }
+
+enum brushStyle{
+    none,
+    solid,
+}

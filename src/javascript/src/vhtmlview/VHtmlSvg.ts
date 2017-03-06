@@ -34,6 +34,7 @@ class VHtmlSvg extends VHtmlView {
 		this.fSVG.style.width = this.fWidth + "px";
         this.fSVG.style.height  = this.fHeight  + "px";
         this.fSVG.style.verticalAlign = "top";
+        this.updateBrushStyle(<IRectShape>obj);
 	}
 
 	basePenControl(obj:IObject): void {		// provided to bypass the SVG behavior
@@ -47,6 +48,12 @@ class VHtmlSvg extends VHtmlView {
 			this.fSVG.style.strokeOpacity = (obj.fPenControl.getPenAlpha()/255).toString();
 			this.fSVG.style.strokeDasharray = this.penStyle2Dash(obj.fPenControl.getPenStyleNum());
 		}
+	}
+
+	updateBrushStyle(obj:IRectShape):void{
+		if(obj.getBrushStyle() === "none"){
+			this.fSVG.setAttribute("fill", "none");
+		}else this.fSVG.style.fill = obj.fColor.getRGBAString();
 	}
 
 	innerTranslate  (obj: IObject): {x: number, y: number} {
