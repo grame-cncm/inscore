@@ -18,26 +18,22 @@ class VHtmlArcView extends VHtmlSvg
     updateView( obj: IObject) : void
     {
     	super.updateView (obj);
+		let size = this.getInnerSize(obj);
 
         const arc = <IArc>obj;
-        let scale = 1; //arc.fPosition.getScale();
-        let w     = this.relative2SceneWidth (arc.fPosition.getWidth ()) * scale;
-        let h     = this.relative2SceneHeight(arc.fPosition.getHeight()) * scale;
-        let r1  = w / 2;
-        let r2  = h / 2;
+        let r1  = size.w / 2;
+        let r2  = size.h / 2;
         let startAngle  = this.normalize(arc.getStart());
         let endAngle    = this.normalize(startAngle + this.clip(arc.getRange()));
         let startPoint  = this.getPoint(r1, r2, startAngle );
         let endPoint    = this.getPoint(r1, r2, endAngle);
         let path        = this.getPath(this.clip(arc.getRange()), startPoint, endPoint, r1, r2, arc.getClose() ? true : false);
+		this.fArc.setAttribute('d', path);
 
-        this.fArc.setAttribute( 'width'   , w.toString());
-        this.fArc.setAttribute( 'height'  , h.toString());
+        this.fArc.setAttribute( 'width'   , size.w.toString());
+        this.fArc.setAttribute( 'height'  , size.h.toString());
         this.fArc.style.fill = obj.fColor.getRGBString();
-        this.fArc.style.strokeWidth = obj.fPenControl.fPenWidth.toString();
-        this.fArc.setAttribute('d', path);
-		this.fArc.style.transform = this.strokeTranslate(obj);
-        super.updateView (obj);
+ 		this.fArc.style.transform = this.strokeTranslate(obj);
     }
 
     // computes a point coordinates at a given angle
