@@ -14,18 +14,20 @@ class VHtmlLineView extends VHtmlSvg {
     	this.fSVG.appendChild(this.fLine)
     }
 
-	getStrokeWidth (obj: IObject): number 	{ return obj.fPenControl.getPenWidth() * obj.fPosition.getHeight();  }
-	getStrokeHeight (obj: IObject): number 	{ return obj.fPenControl.getPenWidth() * obj.fPosition.getWidth();  }
+    getSVGTarget() : SVGShape  { return this.fLine; }
+
+	updateColor (obj: IObject): void {
+		if (obj.fPenControl.fPenColor.modified()) {
+			this.fLine.style.stroke = obj.fPenControl.getPenColor().getRGBString();
+	        this.fLine.style.strokeOpacity = obj.fPenControl.getPenColor().getSVGA().toString();
+	    }
+	}
 
 	updateView	( obj: IObject) : void {
 		super.updateView(obj);
 
 		let line = <ILine>obj;
 		let p = line.getPoint();
-		let strokeWidth = obj.fPenControl.getPenWidth();
-		this.fLine.style.fill = obj.fColor.getRGBString();
-		this.fLine.style.strokeWidth = obj.fPenControl.getPenWidth() + "px";
-
 		let x = this.relative2SceneWidth (p.getX());
 		let y = this.relative2SceneWidth (p.getY());
 		let x0 = 0;
