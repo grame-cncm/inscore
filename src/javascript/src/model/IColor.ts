@@ -53,8 +53,8 @@ class IColor {
 
 // GETS VALUES
 //-------------------------------------------------------------- 
-    getRGB(): Array<number> { let c = this.fRGB; c.push(this.fA); return c; }
-    getHSB(): Array<number> { let c = this.fHSB; c.push(this.fA); return c; }
+    getRGB(): Array<number> { return this.fRGB.concat(this.fA); }
+    getHSB(): Array<number> { return this.fHSB.concat(this.fA); }
   
 	getRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.fA})`; }
 	getRGBString(): string { return `rgb(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]})`; }
