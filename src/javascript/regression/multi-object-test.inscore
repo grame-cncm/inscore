@@ -47,9 +47,12 @@
 /ITL/scene/polygon color 255 112 0;
 /ITL/scene/polygon get color;
 
-/ITL/scene/rect set rect 0.3 0.5;
+
 /ITL/scene/rect y -0.5;
 /ITL/scene/rect x 0.15;
 /ITL/scene/rect color 0 200 200 150;
 /ITL/scene/rect penWidth 1;
 /ITL/scene/rect penStyle dashDot;
+
+
+/ITL/scene/* brushStyle none;

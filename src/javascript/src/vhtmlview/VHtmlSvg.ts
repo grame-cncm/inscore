@@ -34,7 +34,6 @@ class VHtmlSvg extends VHtmlView {
 		this.fSVG.style.width = this.fWidth + "px";
         this.fSVG.style.height  = this.fHeight  + "px";
         this.fSVG.style.verticalAlign = "top";
-        this.updateBrushStyle(<IRectShape>obj);
 	}
 
 	basePenControl(obj:IObject): void {		// provided to bypass the SVG behavior
@@ -50,12 +49,14 @@ class VHtmlSvg extends VHtmlView {
 		}
 	}
 
-	updateBrushStyle(obj:IRectShape):void{
-		if (!obj) return;		// lines are not RectShape
-		if(obj.getBrushStyle() === "none"){
-			this.fSVG.setAttribute("fill", "none");
-		}
-		else this.fSVG.style.fill = obj.fColor.getRGBAString();
+	updateSizeAndBrush(obj:IRectShape,svg:SVGElement, w:number, h:number){
+	svg.setAttribute('width', w.toString());
+	svg.setAttribute('height', h.toString());
+	if (!obj) return;		// lines are not RectShape
+	if(obj.getBrushStyle() === "none"){
+		svg.setAttribute("fill", "none");
+	}
+	else svg.setAttribute("fill", obj.fColor.getRGBAString());
 	}
 
 	innerTranslate  (obj: IObject): {x: number, y: number} {
