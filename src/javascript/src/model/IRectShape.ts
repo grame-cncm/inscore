@@ -63,13 +63,21 @@ class IRectShape extends IObject {
     	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, this.fPosition.getWidth(), this.fPosition.getHeight()]); 
     }
    
+
+	//-----------------------------    
+	cleanup() : void { 
+		super.cleanup();
+		this.fModified = false;
+	}
+
+    brushModified () : boolean 					{ return this.fModified; }
     //accept (Updater*): void
     // virtual MsgHandler::msgStatus set (const IMessage* msg);
 
-    getBrushStyle () : string {return this.fBrushStyleNum2Str[this.fBrushStyle];}
-    _getBrushStyle() : GetStringMethod { return () => this.getBrushStyle() }
-    setBrushStyle (brushStyle : string): void {
-        let style = this.fBrushStyleStr2Num[brushStyle];
-        this.fBrushStyle = style;}
-    _setBrushStyle(): SetStringMethod { return (brush : string) => this.setBrushStyle(brush) }
+    getBrushStyle () : string { return this.fBrushStyleNum2Str[this.fBrushStyle];}
+    _getBrushStyle() : GetStringMethod 			{ return () => this.getBrushStyle() }
+
+    setBrushStyle (brushStyle : string): void 	{ this.fBrushStyle = this.fBrushStyleStr2Num[brushStyle]; this.fModified = true; }
+    _setBrushStyle(): SetStringMethod 			{ return (brush : string) => this.setBrushStyle(brush) }
+
 }
