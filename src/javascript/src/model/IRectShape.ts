@@ -12,7 +12,7 @@ class IRectShape extends IObject {
 
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.fBrushStyle = brushStyle.none;
+        this.fBrushStyle = brushStyle.solid;
         this.buildBrushStyle();
     }
 
