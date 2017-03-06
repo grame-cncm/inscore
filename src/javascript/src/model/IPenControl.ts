@@ -40,12 +40,6 @@ class IPenControl {
         this.fPenStyleNum2Str[penStyle.dashDotDot]    = "dashDotDot";        
     }
     
-    getAlphaString(): string { return 'rgba(' + this.fPenColor.getR() + ', ' +
-                                                this.fPenColor.getG() + ', ' +
-                                                this.fPenColor.getB() + ', ' +
-                                                this.fPenColor.getA() + ')' 
-    }
-    
     getPenWidth()   : number   { return this.fPenWidth; }
     getPenColor()   : IColor   { return this.fPenColor; }
     getPenStyle()   : string   { return this.fPenStyleNum2Str[this.fPenStyle]; }
@@ -58,7 +52,7 @@ class IPenControl {
     _getPenAlpha(): GetNumMethod    { return () => this.getPenAlpha(); }
 
     setPenWidth(penWidth : number)  : void  { this.fPenWidth = penWidth; this.modify(); }
-    setPenColor(penColor : IColor)  : void  { this.fPenColor = penColor; this.modify();}
+    setPenColor(penColor : IColor)  : void  { this.fPenColor.set(penColor); this.modify();}
     setPenStyle(penStyle : string)  : void  { 
         let style = this.fPenStyleStr2Num[penStyle]; 
         if (!style && style != 0) { ITLError.badParameter("penStyle", penStyle);}
@@ -66,8 +60,8 @@ class IPenControl {
     }
     setPenAlpha(penAlpha : number)  : void  { this.fPenColor.setA(penAlpha); this.modify(); }
 
-    _setPenWidth(): SetNumMethod    { return (n) => this.setPenWidth(n); }
-    _setPenColor(): SetColorMethod  { return (n) => this.setPenColor(new IColor(n)); }
-    _setPenStyle(): SetStringMethod { return (n) => this.setPenStyle(n); }
-    _setPenAlpha(): SetNumMethod    { return (n) => this.setPenAlpha(n); }
+    _setPenColor(): SetColorMethod  	{ return (n) => this.setPenColor(new IColor(n)); }
+    _setPenAlpha(): SetNumMethod    	{ return (n) => this.setPenAlpha(n); }
+    _setPenWidth(): SetNumMethod    	{ return (n) => this.setPenWidth(n); }
+    _setPenStyle(): SetStringMethod 	{ return (n) => this.setPenStyle(n); }
 }
