@@ -51,9 +51,11 @@ class VHtmlSvg extends VHtmlView {
 	}
 
 	updateBrushStyle(obj:IRectShape):void{
+		if (!obj) return;		// lines are not RectShape
 		if(obj.getBrushStyle() === "none"){
 			this.fSVG.setAttribute("fill", "none");
-		}else this.fSVG.style.fill = obj.fColor.getRGBAString();
+		}
+		else this.fSVG.style.fill = obj.fColor.getRGBAString();
 	}
 
 	innerTranslate  (obj: IObject): {x: number, y: number} {

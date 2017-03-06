@@ -19,7 +19,9 @@ class VHtmlEllipseView extends VHtmlSvg {
 		let size = this.getInnerSize(obj);
         this.fEllipse.setAttribute('width',  size.w.toString());
         this.fEllipse.setAttribute('height', size.h.toString());
-        this.fEllipse.style.fill = obj.fColor.getRGBString();
+		let rs = <IRectShape>obj;
+		let color = rs.getBrushStyle() === "none" ? "none" : obj.fColor.getRGBAString();
+        this.fEllipse.style.fill = color; // obj.fColor.getRGBString();
 		let rx = size.w/2;
 		let ry = size.h/2;
         this.fEllipse.setAttribute('cx', rx.toString());
