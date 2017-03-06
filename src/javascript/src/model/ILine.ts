@@ -13,8 +13,6 @@ class ILine extends IObject {
         super(name, parent);
         this.fTypeString = kLineType;
         this.fPenControl.setPenWidth(1);
-
-        super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
     }
     
@@ -26,7 +24,8 @@ class ILine extends IObject {
      getPoint(): TPoint	        	{ return this.fPoint; }
     _getPoint(): GetArrayMethod     { return () => this.fPoint.toArray(); }
 
-
+    getColorTarget(): IColor 		{ return this.fPenControl.fPenColor; };
+    
     set(msg:IMessage): msgStatus {
         let status = super.set(msg);
         if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
@@ -63,17 +62,7 @@ class ILine extends IObject {
     }
 
     getSetLine(p: Array<any>): Array<any>	{
-    	if (this.fWAMode) {
-    		p.push ("wa");
-    		p.push (this.fLWidth);
-    		p.push (this.fLAngle);
-    	}
-    	else {
-    		p.push ("xy");
-    		p.push (this.fPoint.getX());
-    		p.push (this.fPoint.getY());
-    	}
-    	return p; 
+    	return this.fWAMode ? ["wa", this.fLWidth, this.fLAngle] : ["xy", this.fPoint.getX(), this.fPoint.getY()];
     }
 
     getSet(): IMessage	{
