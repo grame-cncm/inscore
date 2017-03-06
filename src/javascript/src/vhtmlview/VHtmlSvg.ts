@@ -2,7 +2,20 @@
 ///<reference path="../model/IObject.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
-class VHtmlSvg extends VHtmlView {
+interface SVGStyle {
+    color: string;
+    fill: string;
+    fillOpacity: string;
+    transform: string;
+}
+
+interface SVGShape {
+	setAttribute (a: string, v: string) : void;
+    style: SVGStyle;
+}
+
+
+abstract class VHtmlSvg extends VHtmlView {
     protected fSVG:SVGSVGElement;
    
     constructor(parent: VHtmlView) {
@@ -14,11 +27,19 @@ class VHtmlSvg extends VHtmlView {
     	this.getHtml().appendChild(this.fSVG);
 	}
 
+    abstract getSVGTarget() : SVGShape;
+
 	updateColor (obj: IObject): void {
-        if (obj.fColor.modified()) {
-	        this.fSVG.style.color = obj.fColor.getRGBString();
-	        let alpha =  obj.fColor.getA() / 255;
-	        this.fSVG.style.fillOpacity = alpha.toString();
+       	let target = this.getSVGTarget();
+		let shape = <IRectShape>obj;
+		let modified = obj.fColor.modified() || (shape ? shape.brushModified() : false);
+		
+		if (shape && shape.brushModified() && (shape.getBrushStyle() === "none")) {
+			target.style.fill = "none";
+		}
+		else if (modified) {
+	        target.style.fill = obj.fColor.getRGBAString();
+	        target.style.fillOpacity = obj.fColor.getSVGA().toString();
 		}
 	}
 		
@@ -49,14 +70,11 @@ class VHtmlSvg extends VHtmlView {
 		}
 	}
 
-	updateSizeAndBrush(obj:IRectShape,svg:SVGElement, w:number, h:number){
-	svg.setAttribute('width', w.toString());
-	svg.setAttribute('height', h.toString());
-	if (!obj) return;		// lines are not RectShape
-	if(obj.getBrushStyle() === "none"){
-		svg.setAttribute("fill", "none");
-	}
-	else svg.setAttribute("fill", obj.fColor.getRGBAString());
+	updateCommonSVG (obj: IObject, w: number, h: number) : void {
+       	let target = this.getSVGTarget();
+		target.setAttribute('width', w.toString());
+		target.setAttribute('height', h.toString());
+        target.style.transform = this.strokeTranslate(obj);
 	}
 
 	innerTranslate  (obj: IObject): {x: number, y: number} {
