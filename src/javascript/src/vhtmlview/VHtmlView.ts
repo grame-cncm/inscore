@@ -44,9 +44,9 @@ class VHtmlView extends VObjectView {
 
 	updatePenControl (obj: IObject) {
 		let penWidth = obj.fPenControl.getPenWidth();
-		let penColor = obj.fPenControl.fPenColor.getRGBString();
+		let penColor = obj.fPenControl.getPenColor().getRGBString();
 		let penStyle = obj.fPenControl.getPenStyle();
-		let penAlpha = obj.fPenControl.getAlphaString();
+		let penAlpha = obj.fPenControl.getPenColor().getA();
     	
 		let elt = this.getHtml();
 		elt.style.borderWidth = penWidth + 'px'; 
