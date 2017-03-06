@@ -21,6 +21,7 @@ class VHtmlArcView extends VHtmlSvg
     {
     	super.updateView (obj);
 		let size = this.getInnerSize(obj);
+        this.updateCommonSVG (obj, size.w, size.h);
 
         const arc = <IArc>obj;
         let r1  = size.w / 2;
@@ -31,11 +32,6 @@ class VHtmlArcView extends VHtmlSvg
         let endPoint    = this.getPoint(r1, r2, endAngle);
         let path        = this.getPath(this.clip(arc.getRange()), startPoint, endPoint, r1, r2, arc.getClose() ? true : false);
 		this.fArc.setAttribute('d', path);
-
-        this.fArc.setAttribute( 'width'   , size.w.toString());
-        this.fArc.setAttribute( 'height'  , size.h.toString());
-        this.fArc.style.fill = obj.fColor.getRGBString();
- 		this.fArc.style.transform = this.strokeTranslate(obj);
     }
 
     // computes a point coordinates at a given angle
