@@ -26,6 +26,7 @@ class VHtmlSceneContainer extends VHtmlView {
 
 class VHtmlSceneView extends VHtmlView {
 	protected fDoc: VHtmlSceneContainer;
+	protected fAbsolutePos: boolean;
     static fNominalSize = 800;
 
     constructor(name: string) {
@@ -37,10 +38,13 @@ class VHtmlSceneView extends VHtmlView {
 		div.setAttribute("name", name); 
 		div.addEventListener("drop", inscore_dropEvent, false);
 		div.addEventListener("dragover", inscore_dragOverEvent, false);
+	    let style = window.getComputedStyle(div);
+	    this.fAbsolutePos = (style.position === 'absolute');
     }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }
 	relative2SceneY(y: number) : number 			{ return this.fParent.fTop + super.relative2SceneY(y); }
+	getTranslate (obj: IObject): string 			{ return this.fAbsolutePos ? super.getTranslate(obj) : ""; }
 
 	updateView	( obj: IObject) : void {
 		this.fDoc.updatePos();
