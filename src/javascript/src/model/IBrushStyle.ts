@@ -5,7 +5,7 @@
 class IBrushStyle {
 
     protected fBrushModified: boolean;
-    protected fBrush: brushStyle;
+    		  fBrush: brushStyle;
 
     constructor() {
         this.fBrush = brushStyle.solid;
