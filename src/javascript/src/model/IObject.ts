@@ -15,6 +15,7 @@
 ///<reference path="IColor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
+///<reference path="IBrushStyle.ts"/>
 ///<reference path="IPenControl.ts"/>
 
 class TMsgHandler<T> 			{ [index: string]: T; }
