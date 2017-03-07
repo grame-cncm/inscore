@@ -32,8 +32,8 @@
 
 /ITL/scene/arc set arc 1 1 180 90;
 /ITL/scene/arc close 1;
-/ITL/scene/arc x 0;
-/ITL/scene/arc y 0;
+/ITL/scene/arc x -0.01;
+/ITL/scene/arc y 0.01;
 /ITL/scene/arc color 225 225 0;
 
 /ITL/scene/curve set curve 0. 0. 0.5 0.5 0.5 -0.75 0.75 0.5;
@@ -45,14 +45,13 @@
 /ITL/scene/polygon x -0.25;
 /ITL/scene/polygon y -0.25;
 /ITL/scene/polygon color 255 112 0;
-/ITL/scene/polygon get color;
 
-
+/ITL/scene/rect set rect 0.3 0.6;
 /ITL/scene/rect y -0.5;
 /ITL/scene/rect x 0.15;
 /ITL/scene/rect color 0 200 200 150;
 /ITL/scene/rect penWidth 1;
 /ITL/scene/rect penStyle dashDot;
 
-
+__END__
 /ITL/scene/* brushStyle none;
