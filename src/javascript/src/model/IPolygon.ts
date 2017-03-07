@@ -13,8 +13,7 @@ class IPolygon extends IObject {
     }
     setHandlers(){
         super.setHandlers();
-        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this._getBrushStyle());
-        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this._setBrushStyle());
+        this.brushAble();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
     }
     

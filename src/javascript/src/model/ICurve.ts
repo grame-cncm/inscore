@@ -43,8 +43,7 @@ class ICurve extends IObject
 
     setHandlers(){
         super.setHandlers();
-        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this._getBrushStyle());
-        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this._setBrushStyle());
+        this.brushAble();
     }
 
     setPoints(points: Array<BezierCurve>)    { this.fPoints = points; }
