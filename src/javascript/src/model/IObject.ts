@@ -39,7 +39,7 @@ abstract class IObject implements Tree<IObject> {
     protected fLock: 		boolean;
     protected fParent: 		IObject;
     protected fObjectView:	VObjectView;
-    protected fModified :   boolean;
+    protected fBrushModified: boolean;
     
     protected fSubNodes: Array<IObject> = new Array;
     
@@ -73,6 +73,7 @@ abstract class IObject implements Tree<IObject> {
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
 		this.fBrushStyle = brushStyle.solid;
+        this.fBrushModified = false;
         
         this.fPenControl = new IPenControl(kObjType);
 
@@ -194,7 +195,12 @@ abstract class IObject implements Tree<IObject> {
         this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerText(this.fPenControl._getPenStyle());
         this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum(this.fPenControl._getPenAlpha());
     }
-
+    
+    brushAble() {
+        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this._getBrushStyle());
+        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this._setBrushStyle());
+	}
+	
 //--------------------------------------------------------------  
 // Special position handlers
 // size change requires the modification state to be 
@@ -513,7 +519,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fColor.cleanup();
 		this.fPenControl.cleanup();
 		this.setState(objState.kClean);
-        this.fModified = false;
+        this.fBrushModified = false;
     }
 
 	//-----------------------------    
@@ -528,17 +534,13 @@ abstract class IObject implements Tree<IObject> {
 			}
 		}
 	}
+
     //-----------------------------
+    brushModified () : boolean 					{ return this.fBrushModified; }
 
-
-    brushModified () : boolean 					{ return this.fModified; }
-    //accept (Updater*): void
-    // virtual MsgHandler::msgStatus set (const IMessage* msg);
-
-    getBrushStyle () : string { return this.fBrushStyleNum2Str[this.fBrushStyle];}
-    _getBrushStyle() : GetStringMethod 			{ return () => this.getBrushStyle() }
-
-    setBrushStyle (brushStyle : string): void 	{ this.fBrushStyle = this.fBrushStyleStr2Num[brushStyle]; this.fModified = true; }
+    getBrushStyle () : brushStyle 				{ return this.fBrushStyle;}
+    _getBrushStyle() : GetStringMethod 			{ return () => this.fBrushStyleNum2Str[this.getBrushStyle()] }
+    setBrushStyle (brushStyle : string): void 	{ this.fBrushStyle = this.fBrushStyleStr2Num[brushStyle]; this.fBrushModified = true; }
     _setBrushStyle(): SetStringMethod 			{ return (brush : string) => this.setBrushStyle(brush) }
 
     buildBrushStyle(): void {
