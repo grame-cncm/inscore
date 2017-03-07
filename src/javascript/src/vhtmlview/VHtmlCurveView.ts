@@ -13,7 +13,6 @@ class VHtmlCurveView extends VHtmlSvg {
         this.fCurve = document.createElementNS('http://www.w3.org/2000/svg','path'); 
         this.getHtml().className = "inscore-curve";
     	this.fSVG.appendChild(this.fCurve)
-		this.fCurve.style.fill = "none";
     }
 
 	getSVGTarget() : SVGShape  { return this.fCurve; }
@@ -22,18 +21,6 @@ class VHtmlCurveView extends VHtmlSvg {
         let size = this.fCurve.getBBox();        
 		let strokeWidth = obj.fPenControl.getPenWidth();
 		return { w: size.width + strokeWidth, h: size.height + strokeWidth};
-	}
-
-	updateColor (obj: IObject): void {
-		let target = this.getSVGTarget();
-		let modified = obj.fColor.modified() && obj.getBrushStyle() != "none";
-		if (obj.brushModified() && (obj.getBrushStyle() === "none")) {
-			target.style.fill = "none";
-		}
-		else if (modified || (obj.brushModified() && obj.getBrushStyle() == "solid")) {
-			target.style.fill = obj.fColor.getRGBAString();
-			target.style.fillOpacity = obj.fColor.getSVGA().toString();
-		}
 	}
 
 	relative2SceneCurve	(curve: BezierCurve) : Array<number> {
@@ -68,6 +55,7 @@ class VHtmlCurveView extends VHtmlSvg {
 		super.updateView(obj);
 	}
 
+	// method is overriden to fit the object in its bounding box
 	innerTranslate  (obj: IObject): {x: number, y: number} {
 		let t = super.innerTranslate (obj);
         let size = this.fCurve.getBBox();

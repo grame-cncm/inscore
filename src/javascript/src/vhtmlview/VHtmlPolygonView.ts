@@ -20,18 +20,6 @@ class VHtmlPolygonView extends VHtmlSvg {
 		return { w: size.width, h: size.height };
 	}
 
-    updateColor (obj: IObject): void {
-        let target = this.getSVGTarget();
-        let modified = obj.fColor.modified() && obj.getBrushStyle() != "none";
-        if (obj.brushModified() && (obj.getBrushStyle() === "none")) {
-            target.style.fill = "none";
-        }
-        else if (modified || (obj.brushModified() && obj.getBrushStyle() == "solid")) {
-            target.style.fill = obj.fColor.getRGBAString();
-            target.style.fillOpacity = obj.fColor.getSVGA().toString();
-        }
-    }
-
     updateView	( obj: IObject) : void {
         let polygon = <IPolygon>obj;        
         if (obj.isNewData()) {
