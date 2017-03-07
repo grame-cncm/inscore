@@ -1,5 +1,6 @@
 
 ///<reference path="../model/IObject.ts"/>
+///<reference path="../lib/TEnums.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
 interface SVGStyle {
@@ -30,10 +31,9 @@ abstract class VHtmlSvg extends VHtmlView {
 
 	updateColor (obj: IObject): void {
        	let target = this.getSVGTarget();
-		let shape = <IRectShape>obj;
-		let modified = (obj.fColor.modified() || (shape ? shape.brushModified() : false)) && (obj.getBrushStyle() != "none");
+		let modified = (obj.fColor.modified() || obj.brushModified()) && (obj.getBrushStyle() != brushStyle.none);
 
-		if (shape && shape.brushModified() && (shape.getBrushStyle() === "none")) {
+		if (obj.brushModified() && (obj.getBrushStyle() == brushStyle.none)) {
 			target.style.fill = "none";
 		}
 		else if (modified) {
