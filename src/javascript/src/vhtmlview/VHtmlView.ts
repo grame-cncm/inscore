@@ -102,17 +102,17 @@ class VHtmlView extends VObjectView {
 
 	getRotateX (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
-		return (rotate.x) ? "skewX(" + rotate.x + "deg)" : "";
+		return (rotate.x) ? "rotateX(" + rotate.x + "deg)" : "";
 	}
 
 	getRotateY (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
-		return (rotate.y) ? "skewY(" + rotate.y + "deg)" : "";
+		return (rotate.y) ? "rotateY(" + rotate.y + "deg)" : "";
 	}
 
 	getRotateZ (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
-		return (rotate.z) ? `rotate(${rotate.z}deg) ` : "";
+		return (rotate.z) ? `rotateZ(${rotate.z}deg) ` : "";
 	}
 
 	getTransform (obj: IObject): string {
