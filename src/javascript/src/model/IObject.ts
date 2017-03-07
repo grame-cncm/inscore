@@ -136,7 +136,7 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateX()); 
         this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateY()); 
         this.fMsgHandlerMap[krotatez_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ()); 
-        
+
         this.fMsgHandlerMap[kdx_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addXPos());
         this.fMsgHandlerMap[kdy_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addYPos());
         this.fMsgHandlerMap[kdxorigin_SetMethod] 	= new TMsgHandlerNum(this.fPosition._addXOrigin());
@@ -144,6 +144,9 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kdz_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addZOrder());
         this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum(this.fPosition._addAngle());
         this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum(this.fPosition._multScale());
+        this.fMsgHandlerMap[kdrotatex_SetMethod]    = new TMsgHandlerNum(this.fPosition._addXAngle());
+        this.fMsgHandlerMap[kdrotatey_SetMethod]    = new TMsgHandlerNum(this.fPosition._addYAngle());
+        this.fMsgHandlerMap[kdrotatez_SetMethod]    = new TMsgHandlerNum(this.fPosition._addAngle());
         this.fMsgHandlerMap[kshow_GetSetMethod]		= new TMsgHandlerNum(this.fPosition._setVisible());
 
         this.fGetMsgHandlerMap[kx_GetSetMethod]			= new TGetMsgHandlerNum(this.fPosition._getXPos());
