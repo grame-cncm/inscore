@@ -59,8 +59,17 @@ class VHtmlCurveView extends VHtmlSvg {
 	innerTranslate  (obj: IObject): {x: number, y: number} {
 		let t = super.innerTranslate (obj);
         let size = this.fCurve.getBBox();
-		t.x += size.width - this.fEnd.getX();
-		t.y += size.height - this.fEnd.getY();
+        let startx = Math.min( this.fStart.getX(), this.fEnd.getX());
+        let endx = Math.max( this.fStart.getX(), this.fEnd.getX());
+        let starty = Math.min( this.fStart.getY(), this.fEnd.getY());
+        let endy = Math.max( this.fStart.getY(), this.fEnd.getY());
+
+		if ((startx > 0) && (endx > 0))			t.x += -startx;
+		else if ((startx < 0) && (endx < 0))	t.x += -endx;
+		else 									t.x += size.width - endx;
+		if ((starty > 0) && (endy > 0))			t.y += -starty;
+		else if ((starty < 0) && (endy < 0))	t.y += -endy;
+		else 									t.y += size.height - endy;
 		return t;
 	}
 
