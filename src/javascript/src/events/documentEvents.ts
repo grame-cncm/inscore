@@ -53,30 +53,31 @@ class dropLoader {
 			if (!filelist) return;
 			
 			let filecount = filelist.length;
-			if (filecount > 0) {
-				for (let i = 0; i < filecount; i++ ) {
-					let fileName: string = filelist[i].name;
- 					let properties = this.getFileProperties(fileName);
-					let name 	= properties.name;
-					let ext 	= properties.ext.toLocaleLowerCase();
-					
-					let file = <Blob>filelist[i]
-					let reader: FileReader = new FileReader();				
-					if (ext == kInscoreFile) { INScore.load(filelist[i]); }
-					
-					else if (this.fExtHandlers[ext] == kImgType || this.fExtHandlers[ext] == kVideoType ) {
-						INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
-					}
-					
-					else {
-						reader.readAsText(file);
-						if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTextType; }
-						reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
-					}	
-					// to do : xml, faust		
+			for (let i = 0; i < filecount; i++ ) {
+				let file 	= <Blob>filelist[i]
+				let fileName: string = filelist[i].name;
+				let properties = this.getFileProperties(fileName);
+				let name 	= properties.name;
+				let ext 	= properties.ext.toLocaleLowerCase();
+/*
+console.log("relative path: " + filelist[i].webkitRelativePath);
+console.log("doc url: " + document.URL);
+*/				
+				let reader: FileReader = new FileReader();				
+				if (ext == kInscoreFile) { INScore.load (file); }
+				
+				else if (this.fExtHandlers[ext] == kImgType || this.fExtHandlers[ext] == kVideoType ) {
+					INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
 				}
+				
+				else {
+					reader.readAsText(file);
+					if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTextType; }
+					reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
+				}	
+				// to do : xml, faust		
 			}
-		}	
+		}
 	}
 
 	// take target scene
