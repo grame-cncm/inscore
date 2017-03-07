@@ -14,7 +14,6 @@ interface SVGShape {
     style: SVGStyle;
 }
 
-
 abstract class VHtmlSvg extends VHtmlView {
     protected fSVG:SVGSVGElement;
    
@@ -32,8 +31,8 @@ abstract class VHtmlSvg extends VHtmlView {
 	updateColor (obj: IObject): void {
        	let target = this.getSVGTarget();
 		let shape = <IRectShape>obj;
-		let modified = obj.fColor.modified() || (shape ? shape.brushModified() : false);
-		
+		let modified = (obj.fColor.modified() || (shape ? shape.brushModified() : false)) && (obj.getBrushStyle() != "none");
+
 		if (shape && shape.brushModified() && (shape.getBrushStyle() === "none")) {
 			target.style.fill = "none";
 		}

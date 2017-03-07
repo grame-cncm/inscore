@@ -16,6 +16,7 @@
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
 ///<reference path="IPenControl.ts"/>
+///<reference path="../lib/TEnums.ts"/>
 
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -38,6 +39,7 @@ abstract class IObject implements Tree<IObject> {
     protected fLock: 		boolean;
     protected fParent: 		IObject;
     protected fObjectView:	VObjectView;
+    protected fModified :   boolean;
     
     protected fSubNodes: Array<IObject> = new Array;
     
@@ -48,6 +50,11 @@ abstract class IObject implements Tree<IObject> {
     fDate: 		 IDate;
     fColor: 	 IColor;
     fPenControl: IPenControl;
+    fBrushStyle : brushStyle;
+
+    fBrushStyleStr2Num: { [id: string] : brushStyle; } = {};
+    fBrushStyleNum2Str: { [id: number] : string; } = {};
+
 
 
 // CONSTRUCTOR
@@ -65,6 +72,7 @@ abstract class IObject implements Tree<IObject> {
         this.fPosition = new IPosition;
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
+		this.fBrushStyle = brushStyle.solid;
         
         this.fPenControl = new IPenControl(kObjType);
 
@@ -72,6 +80,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
         this.setHandlers();
         this.createStaticNodes();
+        this.buildBrushStyle();
     } 
     
     createStaticNodes() : void {}
@@ -444,7 +453,7 @@ abstract class IObject implements Tree<IObject> {
     //-------------------------------------------------------------
     // get 1 message for 1 attribute
     get1AttributeMsg(attribute: string): IMessage {
-        let outmsg : IMessage
+        let outmsg : IMessage;
         let h = this.fGetMsgHandlerMap[attribute];
         if (h) { 
         	outmsg = new IMessage (this.getOSCAddress(), attribute);
@@ -504,7 +513,8 @@ abstract class IObject implements Tree<IObject> {
 		this.fColor.cleanup();
 		this.fPenControl.cleanup();
 		this.setState(objState.kClean);
-	}
+        this.fModified = false;
+    }
 
 	//-----------------------------    
 	static timeTaskCleanup(obj: IObject) : void { 
@@ -518,6 +528,26 @@ abstract class IObject implements Tree<IObject> {
 			}
 		}
 	}
+    //-----------------------------
+
+
+    brushModified () : boolean 					{ return this.fModified; }
+    //accept (Updater*): void
+    // virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+    getBrushStyle () : string { return this.fBrushStyleNum2Str[this.fBrushStyle];}
+    _getBrushStyle() : GetStringMethod 			{ return () => this.getBrushStyle() }
+
+    setBrushStyle (brushStyle : string): void 	{ this.fBrushStyle = this.fBrushStyleStr2Num[brushStyle]; this.fModified = true; }
+    _setBrushStyle(): SetStringMethod 			{ return (brush : string) => this.setBrushStyle(brush) }
+
+    buildBrushStyle(): void {
+        this.fBrushStyleStr2Num["solid"] = brushStyle.solid;
+        this.fBrushStyleStr2Num["none"]  = brushStyle.none;
+
+        this.fBrushStyleNum2Str[brushStyle.solid] = "solid";
+        this.fBrushStyleNum2Str[brushStyle.none]  = "none";
+    }
 }
 
 

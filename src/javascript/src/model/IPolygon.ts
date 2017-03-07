@@ -10,10 +10,13 @@ class IPolygon extends IObject {
         //this.kPolygonType = 'polygon';
         this.fTypeString = kPolygonType;
         this.fPoints = new Array<TPoint>();
-        
+    }
+    setHandlers(){
         super.setHandlers();
+        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this._getBrushStyle());
+        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this._setBrushStyle());
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
-    }   
+    }
     
     setPoints(points: Array<TPoint>)    { this.fPoints = points; }
     getPoints(): Array<TPoint>          { return this.fPoints; }

@@ -1,27 +1,10 @@
-///<reference path="../lib/TEnums.ts"/>
 ///<reference path="IObject.ts"/>
 
 class IRectShape extends IObject {
 
-    fBrushStyle : brushStyle;
-    protected fModified : boolean;
-
-    fBrushStyleStr2Num: { [id: string] : brushStyle; } = {};
-    fBrushStyleNum2Str: { [id: number] : string; } = {};
-
-
     constructor(name: string, parent: IObject) {
         super(name, parent);
         this.fBrushStyle = brushStyle.solid;
-        this.buildBrushStyle();
-    }
-
-    buildBrushStyle(): void {
-        this.fBrushStyleStr2Num["solid"] = brushStyle.solid;
-        this.fBrushStyleStr2Num["none"]  = brushStyle.none;
-
-        this.fBrushStyleNum2Str[brushStyle.solid] = "solid";
-        this.fBrushStyleNum2Str[brushStyle.none]  = "none";
     }
 
     create(name: string, parent: IObject): IRectShape { return new IRectShape(name, parent); }
@@ -62,22 +45,4 @@ class IRectShape extends IObject {
     getSet(): IMessage	{ 
     	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, this.fPosition.getWidth(), this.fPosition.getHeight()]); 
     }
-   
-
-	//-----------------------------    
-	cleanup() : void { 
-		super.cleanup();
-		this.fModified = false;
-	}
-
-    brushModified () : boolean 					{ return this.fModified; }
-    //accept (Updater*): void
-    // virtual MsgHandler::msgStatus set (const IMessage* msg);
-
-    getBrushStyle () : string { return this.fBrushStyleNum2Str[this.fBrushStyle];}
-    _getBrushStyle() : GetStringMethod 			{ return () => this.getBrushStyle() }
-
-    setBrushStyle (brushStyle : string): void 	{ this.fBrushStyle = this.fBrushStyleStr2Num[brushStyle]; this.fModified = true; }
-    _setBrushStyle(): SetStringMethod 			{ return (brush : string) => this.setBrushStyle(brush) }
-
 }

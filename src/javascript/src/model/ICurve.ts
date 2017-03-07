@@ -38,9 +38,15 @@ class ICurve extends IObject
         this.fPenControl.setPenWidth(1);
         super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
+        this.fBrushStyle = brushStyle.none;
     }
 
-    setHandlers()                   		 { super.setHandlers(); }
+    setHandlers(){
+        super.setHandlers();
+        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this._getBrushStyle());
+        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this._setBrushStyle());
+    }
+
     setPoints(points: Array<BezierCurve>)    { this.fPoints = points; }
     getPoints(): Array<BezierCurve>          { return this.fPoints; }
     

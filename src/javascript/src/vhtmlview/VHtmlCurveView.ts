@@ -12,15 +12,28 @@ class VHtmlCurveView extends VHtmlSvg {
 		super(parent);
         this.fCurve = document.createElementNS('http://www.w3.org/2000/svg','path'); 
         this.getHtml().className = "inscore-curve";
-    	this.fSVG.appendChild(this.fCurve) 
-    } 
+    	this.fSVG.appendChild(this.fCurve)
+		this.fCurve.style.fill = "none";
+    }
 
-    getSVGTarget() : SVGShape  { return this.fCurve; }
+	getSVGTarget() : SVGShape  { return this.fCurve; }
 
 	getSize (obj: IObject):  {w: number, h: number } {
         let size = this.fCurve.getBBox();        
 		let strokeWidth = obj.fPenControl.getPenWidth();
 		return { w: size.width + strokeWidth, h: size.height + strokeWidth};
+	}
+
+	updateColor (obj: IObject): void {
+		let target = this.getSVGTarget();
+		let modified = obj.fColor.modified() && obj.getBrushStyle() != "none";
+		if (obj.brushModified() && (obj.getBrushStyle() === "none")) {
+			target.style.fill = "none";
+		}
+		else if (modified || (obj.brushModified() && obj.getBrushStyle() == "solid")) {
+			target.style.fill = obj.fColor.getRGBAString();
+			target.style.fillOpacity = obj.fColor.getSVGA().toString();
+		}
 	}
 
 	relative2SceneCurve	(curve: BezierCurve) : Array<number> {
