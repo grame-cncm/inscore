@@ -54,4 +54,9 @@
 /ITL/scene/rect penStyle dashDot;
 
 __END__
+/ITL/scene/* brushStyle plop;
+
 /ITL/scene/* brushStyle none;
+/ITL/scene/* brushStyle solid;
+/ITL/scene/* color 255 0 0;
+/ITL/scene/* color 255 112 0;

@@ -50,12 +50,15 @@ abstract class IObject implements Tree<IObject> {
     fDate: 		 IDate;
     fColor: 	 IColor;
     fPenControl: IPenControl;
-    fBrushStyle : brushStyle;
+    fBrushStyle: brushStyle;
 
-    fBrushStyleStr2Num: { [id: string] : brushStyle; } = {};
-    fBrushStyleNum2Str: { [id: number] : string; } = {};
-
-
+    static fBrushStyleStr2Num(str: string): { correct: boolean, val: number } {
+        let val = IObject.fBrushStyleStr2Num[str];
+        return { correct: (typeof val != "undefined"), val: val }
+    }
+    static fBrushStyleNum2Str(n: number): { correct: boolean, val: string } {
+        let str = IObject.fBrushStyleNum2Str[n];
+        return { correct: (typeof str != "undefined"), val: str }}
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -81,7 +84,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
         this.setHandlers();
         this.createStaticNodes();
-        this.buildBrushStyle();
+        IObject.buildBrushStyle();
     } 
     
     createStaticNodes() : void {}
@@ -237,8 +240,8 @@ abstract class IObject implements Tree<IObject> {
     	return size / 2 * this.fParent.getRSizeAsScale(); 
     }
 
-    getPosition(): {x: number, y: number } 			{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
-    getSize():     {w: number, h: number } 			{ return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
+    getPosition(): {x: number, y: number } 		     { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
+    getSize():     {w: number, h: number } 			 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
 
     toString(): string 				{ 
@@ -539,19 +542,22 @@ abstract class IObject implements Tree<IObject> {
     brushModified () : boolean 					{ return this.fBrushModified; }
 
     getBrushStyle () : brushStyle 				{ return this.fBrushStyle;}
-    _getBrushStyle() : GetStringMethod 			{ return () => this.fBrushStyleNum2Str[this.getBrushStyle()] }
-    setBrushStyle (brushStyle : string): void 	{ this.fBrushStyle = this.fBrushStyleStr2Num[brushStyle]; this.fBrushModified = true; }
+    _getBrushStyle() : GetStringMethod 			{ return () => IObject.fBrushStyleNum2Str[this.getBrushStyle()] }
+    setBrushStyle (brushStyle : string): void 	{
+        let style = IObject.fBrushStyleStr2Num(brushStyle);
+        if (!style.correct) { ITLError.badParameter("brushStyle", brushStyle);}
+        else { this.fBrushStyle = style.val; this.fBrushModified = true; }
+    }
     _setBrushStyle(): SetStringMethod 			{ return (brush : string) => this.setBrushStyle(brush) }
 
-    buildBrushStyle(): void {
-        this.fBrushStyleStr2Num["solid"] = brushStyle.solid;
-        this.fBrushStyleStr2Num["none"]  = brushStyle.none;
+    static buildBrushStyle(): void {
+        IObject.fBrushStyleStr2Num["solid"] = brushStyle.solid;
+        IObject.fBrushStyleStr2Num["none"]  = brushStyle.none;
 
-        this.fBrushStyleNum2Str[brushStyle.solid] = "solid";
-        this.fBrushStyleNum2Str[brushStyle.none]  = "none";
+        IObject.fBrushStyleNum2Str[brushStyle.solid] = "solid";
+        IObject.fBrushStyleNum2Str[brushStyle.none]  = "none";
     }
 }
-
 
 class IObjectTreeApply implements TreeApply<IObject> {
 	apply (f: TApplyFunction<IObject>, t: IObject) {
