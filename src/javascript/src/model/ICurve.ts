@@ -38,7 +38,7 @@ class ICurve extends IObject
         this.fPenControl.setPenWidth(1);
         super.setHandlers();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
-        this.fBrushStyle = brushStyle.none;
+        this.fBrushStyle.fBrush = brushStyle.none;
     }
 
     setHandlers(){

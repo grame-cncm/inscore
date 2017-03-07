@@ -30,10 +30,9 @@ abstract class VHtmlSvg extends VHtmlView {
     abstract getSVGTarget() : SVGShape;
 
 	updateColor (obj: IObject): void {
-       	let target = this.getSVGTarget();
-		let modified = (obj.fColor.modified() || obj.brushModified()) && (obj.getBrushStyle() != brushStyle.none);
-
-		if (obj.brushModified() && (obj.getBrushStyle() == brushStyle.none)) {
+		let target = this.getSVGTarget();
+		let modified = (obj.fColor.modified() || obj.fBrushStyle.brushModified()) && (obj.fBrushStyle.getBrushStyle() != brushStyle.none);
+		if (obj.fBrushStyle.brushModified() && (obj.fBrushStyle.getBrushStyle() == brushStyle.none)) {
 			target.style.fill = "none";
 		}
 		else if (modified) {
@@ -65,7 +64,7 @@ abstract class VHtmlSvg extends VHtmlView {
 			this.fSVG.style.strokeWidth = obj.fPenControl.getPenWidth().toString();
 			this.fSVG.style.stroke = obj.fPenControl.getPenColor().getRGBString();
 			this.fSVG.style.strokeOpacity = (obj.fPenControl.getPenAlpha()/255).toString();
-			this.fSVG.style.strokeDasharray = this.penStyle2Dash(obj.fPenControl.getPenStyleNum());
+			this.fSVG.style.strokeDasharray = VHtmlSvg.penStyle2Dash(obj.fPenControl.getPenStyleNum());
 		}
 	}
 
@@ -86,7 +85,7 @@ abstract class VHtmlSvg extends VHtmlView {
         return (t.x || t.y) ? `translate(${t.x}px,${t.y}px) ` : "none";
     }
 
-	penStyle2Dash(style : number) : string
+	static penStyle2Dash(style : number) : string
 	{
 		switch(style) {
 			case 1 :	return "4, 4";

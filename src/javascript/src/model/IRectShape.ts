@@ -4,7 +4,7 @@ class IRectShape extends IObject {
 
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.fBrushStyle = brushStyle.solid;
+        this.fBrushStyle.fBrush = brushStyle.solid;
     }
 
     create(name: string, parent: IObject): IRectShape { return new IRectShape(name, parent); }

@@ -17,7 +17,7 @@ class IPenControl {
         if (type == kLineType) { this.fPenWidth = 1; }
         this.fPenColor = new IColor([0, 0, 0, 255]);
         this.fPenStyle = penStyle.solid;
-        this.buildPenStyle();
+        IPenControl.buildPenStyle();
     }
    
 // MODIFIED STATUS
@@ -26,7 +26,7 @@ class IPenControl {
    	modified(): boolean { return this.fModified; }   
    	modify()  : void 	{ this.fModified = true; }
    
-    buildPenStyle(): void {
+    static buildPenStyle(): void {
         IPenControl.fPenStyleStr2Num["solid"]         = penStyle.solid;
         IPenControl.fPenStyleStr2Num["dash"]          = penStyle.dash;
         IPenControl.fPenStyleStr2Num["dot"]           = penStyle.dot;
@@ -40,11 +40,11 @@ class IPenControl {
         IPenControl.fPenStyleNum2Str[penStyle.dashDotDot]    = "dashDotDot";        
     }
 
-    penStyleStr2Num(str: string): { correct: boolean, val: number } { 
+    static penStyleStr2Num(str: string): { correct: boolean, val: number } {
     	let val = IPenControl.fPenStyleStr2Num[str];
     	return { correct: (typeof val != "undefined"), val: val }
     }
-    penStyleNum2Str(n: number): { correct: boolean, val: string } { 
+    static penStyleNum2Str(n: number): { correct: boolean, val: string } {
     	let str = IPenControl.fPenStyleNum2Str[n];
     	return { correct: (typeof str != "undefined"), val: str }
     }
@@ -63,7 +63,7 @@ class IPenControl {
     setPenWidth(penWidth : number)  : void  { this.fPenWidth = penWidth; this.modify(); }
     setPenColor(penColor : IColor)  : void  { this.fPenColor.set(penColor); this.modify();}
     setPenStyle(penStyle : string)  : void  { 
-        let style = this.penStyleStr2Num (penStyle); 
+        let style = IPenControl.penStyleStr2Num (penStyle);
         if (!style.correct) { ITLError.badParameter("penStyle", penStyle);}
         else { this.fPenStyle = style.val; this.modify(); }
     }

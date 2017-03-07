@@ -18,7 +18,7 @@ class IArc extends IRectShape
         this.fRange  = 0;
         this.fClose  = 0;
         this.fPenControl.setPenWidth(1);
-        this.fBrushStyle = brushStyle.none;
+        this.fBrushStyle.fBrush = brushStyle.none;
     }
 
 // HANDLERS

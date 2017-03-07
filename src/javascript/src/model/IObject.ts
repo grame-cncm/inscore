@@ -16,8 +16,6 @@
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
 ///<reference path="IPenControl.ts"/>
-///<reference path="../lib/TEnums.ts"/>
-
 
 class TMsgHandler<T> 			{ [index: string]: T; }
 class TGetMsgHandler<T> 		{ [index: string]: T; }
@@ -39,8 +37,6 @@ abstract class IObject implements Tree<IObject> {
     protected fLock: 		boolean;
     protected fParent: 		IObject;
     protected fObjectView:	VObjectView;
-    protected fBrushModified: boolean;
-    
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
@@ -50,15 +46,7 @@ abstract class IObject implements Tree<IObject> {
     fDate: 		 IDate;
     fColor: 	 IColor;
     fPenControl: IPenControl;
-    fBrushStyle: brushStyle;
-
-    static fBrushStyleStr2Num(str: string): { correct: boolean, val: number } {
-        let val = IObject.fBrushStyleStr2Num[str];
-        return { correct: (typeof val != "undefined"), val: val }
-    }
-    static fBrushStyleNum2Str(n: number): { correct: boolean, val: string } {
-        let str = IObject.fBrushStyleNum2Str[n];
-        return { correct: (typeof str != "undefined"), val: str }}
+    fBrushStyle: IBrushStyle;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -75,17 +63,15 @@ abstract class IObject implements Tree<IObject> {
         this.fPosition = new IPosition;
         this.fDate = new IDate;
 		this.fColor = new IColor([0,0,0]);
-		this.fBrushStyle = brushStyle.solid;
-        this.fBrushModified = false;
         
         this.fPenControl = new IPenControl(kObjType);
+        this.fBrushStyle = new IBrushStyle();
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
         this.setHandlers();
         this.createStaticNodes();
-        IObject.buildBrushStyle();
-    } 
+    }
     
     createStaticNodes() : void {}
 
@@ -200,8 +186,8 @@ abstract class IObject implements Tree<IObject> {
     }
     
     brushAble() {
-        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this._getBrushStyle());
-        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this._setBrushStyle());
+        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this.fBrushStyle._getBrushStyle());
+        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this.fBrushStyle._setBrushStyle());
 	}
 	
 //--------------------------------------------------------------  
@@ -522,7 +508,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fColor.cleanup();
 		this.fPenControl.cleanup();
 		this.setState(objState.kClean);
-        this.fBrushModified = false;
+        this.fBrushStyle.fBrushModified = false;
     }
 
 	//-----------------------------    
@@ -537,26 +523,6 @@ abstract class IObject implements Tree<IObject> {
 			}
 		}
 	}
-
-    //-----------------------------
-    brushModified () : boolean 					{ return this.fBrushModified; }
-
-    getBrushStyle () : brushStyle 				{ return this.fBrushStyle;}
-    _getBrushStyle() : GetStringMethod 			{ return () => IObject.fBrushStyleNum2Str[this.getBrushStyle()] }
-    setBrushStyle (brushStyle : string): void 	{
-        let style = IObject.fBrushStyleStr2Num(brushStyle);
-        if (!style.correct) { ITLError.badParameter("brushStyle", brushStyle);}
-        else { this.fBrushStyle = style.val; this.fBrushModified = true; }
-    }
-    _setBrushStyle(): SetStringMethod 			{ return (brush : string) => this.setBrushStyle(brush) }
-
-    static buildBrushStyle(): void {
-        IObject.fBrushStyleStr2Num["solid"] = brushStyle.solid;
-        IObject.fBrushStyleStr2Num["none"]  = brushStyle.none;
-
-        IObject.fBrushStyleNum2Str[brushStyle.solid] = "solid";
-        IObject.fBrushStyleNum2Str[brushStyle.none]  = "none";
-    }
 }
 
 class IObjectTreeApply implements TreeApply<IObject> {
