@@ -76,7 +76,7 @@ class VHtmlView extends VObjectView {
         elt.style.left   = left + "px";
         elt.style.top 	 = top  + "px";
         elt.style.zIndex = z.toString();
-		let transform  = this.getTransform(obj);
+		let transform  = this.getZTransform(obj);
 		elt.style.transform  = transform;
         elt.style.visibility = obj.fPosition.getVisible() ? "inherit" : "hidden";
 	}
@@ -94,20 +94,19 @@ class VHtmlView extends VObjectView {
         return (scale==1) ? "" : `scale(${scale},${scale}) `;
 	}
 
-	getRotate (obj: IObject): string {
-		let rotate 	 = obj.getRotate();
-        return (rotate.z) ? `rotate(${rotate.z}deg) ` : "";
-	}
-
 	getTranslate (obj: IObject): string {
 		let tx = -this.fWidth * (1 + obj.fPosition.getXOrigin()) / 2.0;
 		let ty = -this.fHeight * (1 + obj.fPosition.getYOrigin()) / 2.0;
         return (tx || ty) ? `translate(${tx}px,${ty}px) ` : " ";
 	}
 
-	getTransform (obj: IObject): string {
-		let rotate = obj.getRotate();
-        return this.getTranslate(obj) + this.getScale(obj) + this.getRotate(obj) ;
+	getRotateZ (obj: IObject): string {
+		let rotate 	 = obj.getRotate();
+		return (rotate.z) ? `rotate(${rotate.z}deg) ` : "";
+	}
+
+	getZTransform (obj: IObject): string {
+        return this.getTranslate(obj) + this.getScale(obj) + this.getRotateZ(obj) ;
 	}
 
 	setPos (top: number, left: number, width: number, height: number): void {
