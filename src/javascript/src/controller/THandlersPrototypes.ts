@@ -22,7 +22,8 @@ interface SetNumMethod 		{ (val: number): void; }
 interface SetStringMethod 	{ (val: string): void; }
 interface SetTimeMethod 	{ (val: Fraction): void; }
 interface SetColorMethod 	{ (val: Array<number>): void; }
-interface SetArrayMethod	{ (val: Array<number>): void; }
+interface SetNumArrayMethod	{ (val: Array<number>): msgStatus; }
+interface SetAnyArrayMethod	{ (val: Array<any>): msgStatus; }
 
 // ------------------------------------------------------------------------------
 // the get message handler types

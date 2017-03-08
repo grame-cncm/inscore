@@ -87,24 +87,35 @@ class TMsgHandlerColor extends SetMsgHandler<SetColorMethod> {
 
 // ------------------------------------------------------------------------------
 // an array message handler: passes an array to the client object
-// accepte only an array of two numbers
+// accepte any type as parameters
 // ------------------------------------------------------------------------------
-class TMsgHandlerArray extends SetMsgHandler<SetArrayMethod> {
-    constructor(method: SetArrayMethod) { super(method); }     
+class TMsgHandlerAnyArray extends SetMsgHandler<SetAnyArrayMethod> {
+    constructor(method: SetAnyArrayMethod) { super(method); }     
+    handle(msg: IMessage): msgStatus { 
+        return this.fMethod (msg.params()); 
+    }
+}
+
+// ------------------------------------------------------------------------------
+// an array message handler: passes an array to the client object
+// accepte only numbers as parameters
+// ------------------------------------------------------------------------------
+class TMsgHandlerNumArray extends SetMsgHandler<SetNumArrayMethod> {
+    constructor(method: SetNumArrayMethod) { super(method); }     
     protected getnums(msg: IMessage): { err: boolean, numbers?: Array<number> } {
-        if ( msg.size() != 3 ) return { err: true };
-        let x = msg.paramNum(1);
-        let y = msg.paramNum(2);
-        if (!x.correct || !y.correct) return { err: true };
-        return { err: false, numbers: [x.value, y.value] };        
+        let out: Array<number> = [];
+        for (let i=1; i<msg.size(); i++) {
+        	let val = msg.paramNum(i);
+        	if (!val.correct) return { err: true };
+        	out.push (val.value);
+        }
+        return { err: false, numbers: out };        
     }
     handle(msg: IMessage): msgStatus { 
-        if ( msg.size() != 3 ) return msgStatus.kBadParameters;
         let nums = this.getnums(msg);
         if ( nums.err ) { return msgStatus.kBadParameters; } 
         
-        this.fMethod (nums.numbers); 
-        return msgStatus.kProcessed;
+        return this.fMethod (nums.numbers); 
     }
 }
 
