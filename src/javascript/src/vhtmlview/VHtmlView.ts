@@ -100,23 +100,23 @@ class VHtmlView extends VObjectView {
 	}
 
 
-	getRotateX (obj: IObject): string {
+	static getRotateX (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
 		return (rotate.x) ? "rotateX(" + rotate.x + "deg)" : "";
 	}
 
-	getRotateY (obj: IObject): string {
+	static getRotateY (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
 		return (rotate.y) ? "rotateY(" + rotate.y + "deg)" : "";
 	}
 
-	getRotateZ (obj: IObject): string {
+	static getRotateZ (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
 		return (rotate.z) ? `rotateZ(${rotate.z}deg) ` : "";
 	}
 
 	getTransform (obj: IObject): string {
-        return this.getTranslate(obj) + this.getScale(obj) + this.getRotateX(obj) + this.getRotateY(obj) + this.getRotateZ(obj) ;
+        return this.getTranslate(obj) + this.getScale(obj) + VHtmlSvg.getRotateX(obj) + VHtmlSvg.getRotateY(obj) + VHtmlSvg.getRotateZ(obj) ;
 	}
 
 	setPos (top: number, left: number, width: number, height: number): void {

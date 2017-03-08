@@ -16,6 +16,7 @@
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
 ///<reference path="IBrushStyle.ts"/>
+///<reference path="IEffect.ts"/>
 ///<reference path="IPenControl.ts"/>
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -48,6 +49,7 @@ abstract class IObject implements Tree<IObject> {
     fColor: 	 IColor;
     fPenControl: IPenControl;
     fBrushStyle: IBrushStyle;
+    fEffect:     IEffect;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -67,6 +69,7 @@ abstract class IObject implements Tree<IObject> {
         
         this.fPenControl = new IPenControl(kObjType);
         this.fBrushStyle = new IBrushStyle();
+        this.fEffect     = new IEffect();
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
@@ -88,6 +91,7 @@ abstract class IObject implements Tree<IObject> {
 	    this.positionAble();
 	    this.timeAble();
         this.penControlAble();
+        this.effectAble();
     }
 
     // intended for ILine : the target is always the pen color
@@ -193,7 +197,11 @@ abstract class IObject implements Tree<IObject> {
         this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this.fBrushStyle._getBrushStyle());
         this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this.fBrushStyle._setBrushStyle());
 	}
-	
+
+	effectAble(){
+        this.fGetMsgHandlerMap[keffect_GetSetMethod]     = new TGetMsgHandlerArray(this.fEffect._getEffect());
+        this.fMsgHandlerMap[keffect_GetSetMethod]        = new TMsgHandlerArray(this.fEffect._setEffect());
+    }
 //--------------------------------------------------------------  
 // Special position handlers
 // size change requires the modification state to be 
@@ -513,6 +521,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fPenControl.cleanup();
 		this.setState(objState.kClean);
         this.fBrushStyle.cleanup();
+        this.fEffect.cleanup();
     }
 
 	//-----------------------------    

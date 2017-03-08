@@ -28,3 +28,10 @@ enum brushStyle{
     kNone,
     kSolid,
 }
+
+enum effect {
+    kNone,
+    kBlur,
+    kColorize,
+    kShadow,
+}

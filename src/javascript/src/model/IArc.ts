@@ -35,7 +35,6 @@ class IArc extends IRectShape
     set(msg: IMessage): msgStatus
     {
         let status = super.set(msg);
-
         // Cas ou le type est différent, le proxy est utilisé dans super.set()
          if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
 
