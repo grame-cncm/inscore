@@ -2,7 +2,7 @@
 ///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../lib/TEnums.ts"/>
 
-class IEffect{
+class IEffect {
     protected fEffectModified: boolean;
     fEffectName : effect;
     fEffect     : Array<any>;
@@ -13,7 +13,7 @@ class IEffect{
     private static fEffectStr2Num: { [id: string] : effect; } = {};
     private static fEffectNum2Str: { [id: number] : string; } = {};
 
-    constructor(){
+    constructor() {
         this.fEffectModified = false;
         this.fEffectName = effect.kNone;
         this.fShadow     = [0, 0];
@@ -51,12 +51,12 @@ class IEffect{
     // MODIFIED STATUS
 //--------------------------------------------------------------
     cleanup(): void 			{ this.fEffectModified = false; }
-    brushModified(): boolean 	{ return this.fEffectModified; }
+    effectModified(): boolean 	{ return this.fEffectModified; }
     modify() : void 			{ this.fEffectModified = true; }
 
     getEffect()  : Array<any> 		 { return this.fEffect;}
     _getEffect() : GetArrayMethod 	 { return () => this.getEffect(); }
-
+/*
     set(msg: IMessage): msgStatus {
        switch (msg.params()[1]) {
            case effect.kNone : break;
@@ -70,11 +70,15 @@ class IEffect{
            default: return msgStatus.kBadParameters;
        }
     }
-
+*/
     setEffect (effect : Array<any>): msgStatus 	{
         console.log("IEffect setEffect " + effect);
+        return msgStatus.kProcessed;
+/*
         let style = IEffect.effectStr2Num(effect[1]);
         if (!style.correct) { ITLError.badParameter("effect", effect);}
-        else { return msgStatus.kProcessed; this.fEffectModified = true; }}
-    _setEffect(): SetArrayMethod { return (effect : Array<any>) => this.setEffect(effect) }
+        else { return msgStatus.kProcessed; this.fEffectModified = true; }
+*/
+    }
+    _setEffect(): SetAnyArrayMethod { return (effect : Array<any>) => this.setEffect(effect) }
 }

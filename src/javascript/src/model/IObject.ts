@@ -200,8 +200,9 @@ abstract class IObject implements Tree<IObject> {
 
 	effectAble(){
         this.fGetMsgHandlerMap[keffect_GetSetMethod]     = new TGetMsgHandlerArray(this.fEffect._getEffect());
-        this.fMsgHandlerMap[keffect_GetSetMethod]        = new TMsgHandlerArray(this.fEffect._setEffect());
+        this.fMsgHandlerMap[keffect_GetSetMethod]        = new TMsgHandlerAnyArray(this.fEffect._setEffect());
     }
+    
 //--------------------------------------------------------------  
 // Special position handlers
 // size change requires the modification state to be 
