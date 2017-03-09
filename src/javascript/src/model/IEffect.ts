@@ -3,9 +3,8 @@
 ///<reference path="../lib/TEnums.ts"/>
 
 class IEffect {
-    protected fEffectModified: boolean;
+    fEffectModified: boolean;
     fEffectName : effect;
-    fEffect     : Array<any>;
     fShadow     : Array<number>;  //set shadow x and y
     fBlur       : number;         //set blur
     fColorize   : IColor;         //set color of shadow
@@ -18,8 +17,7 @@ class IEffect {
         this.fEffectName = effect.kNone;
         this.fShadow     = [0, 0];
         this.fBlur       = 0;
-        this.fColorize   = new IColor([0, 0, 0, 255]);
-        this.fEffect     = [this.fShadow, this.fColorize, this.fBlur];
+        this.fColorize   = new IColor([0, 0, 0, 1]);
         IEffect.buildEffect();
     }
 
@@ -44,41 +42,53 @@ class IEffect {
         return { correct: (typeof str != "undefined"), val: str }
     }
 
-    effectCraft(shadow : Array<number>, color : IColor, blur : number)
-    {
-        this.fEffect = [shadow, color.getRGBAString(), blur];
-    }
     // MODIFIED STATUS
 //--------------------------------------------------------------
     cleanup(): void 			{ this.fEffectModified = false; }
     effectModified(): boolean 	{ return this.fEffectModified; }
     modify() : void 			{ this.fEffectModified = true; }
 
-    getEffect()  : Array<any> 		 { return this.fEffect;}
+    getEffect()  : Array<any> 		 {  return [this.fColorize,this.fShadow,this.fBlur]}
     _getEffect() : GetArrayMethod 	 { return () => this.getEffect(); }
-/*
-    set(msg: IMessage): msgStatus {
-       switch (msg.params()[1]) {
-           case effect.kNone : break;
-           case effect.kBlur : this.fBlur = msg.params()[2]; break;
-           case effect.kColorize: this.fColorize = new IColor([msg.params()[2],msg.params()[3],msg.params()[4],msg.params()[5]]); break;
-           case effect.kShadow :
-               this.fShadow = [msg.params()[2],msg.params()[3]];
-               this.fColorize = new IColor([msg.params()[4],msg.params()[5],msg.params()[6],msg.params()[7]]);
-               this.fBlur = msg.params()[8];
+
+    assignParams(effectArray: Array<any>) {
+       switch (effectArray[1]) {
+           case IEffect.effectNum2Str(effect.kNone).val :
+               if(effectArray.length == 2) {
+                   this.fEffectName = effect.kNone;
+                   this.fShadow = [0,0];
+                   this.fBlur = 0;
+                   this.fColorize = new IColor([0,0,0,255]);
+               }else ITLError.badParameter("effect", effectArray);
                break;
-           default: return msgStatus.kBadParameters;
+           case IEffect.effectNum2Str(effect.kBlur).val :
+               if(effectArray.length == 3) {
+                   this.fEffectName = effect.kBlur;
+                   this.fBlur = effectArray[2];
+               }else ITLError.badParameter("effect", effectArray);
+               break;
+           case IEffect.effectNum2Str(effect.kColorize).val :
+               if(effectArray.length == 6) {
+                   this.fEffectName = effect.kColorize;
+                   this.fColorize = new IColor([effectArray[2], effectArray[3], effectArray[4], effectArray[5]/255]);
+               }else ITLError.badParameter("effect", effectArray);
+               break;
+           case IEffect.effectNum2Str(effect.kShadow).val :
+               if(effectArray.length == 9) {
+                   this.fEffectName = effect.kShadow;
+                   this.fShadow = [effectArray[2], effectArray[3]];
+                   this.fColorize = new IColor([effectArray[4], effectArray[5], effectArray[6], effectArray[7]/255]);
+                   this.fBlur = effectArray[8];
+               }else ITLError.badParameter("effect", effectArray);
+               break;
+           default: ITLError.badParameter("effect", effectArray);
        }
     }
-*/
+
     setEffect (effect : Array<any>): msgStatus 	{
-        console.log("IEffect setEffect " + effect);
-        return msgStatus.kProcessed;
-/*
         let style = IEffect.effectStr2Num(effect[1]);
         if (!style.correct) { ITLError.badParameter("effect", effect);}
-        else { return msgStatus.kProcessed; this.fEffectModified = true; }
-*/
+        else this.modify(); this.assignParams(effect); return msgStatus.kProcessed;
     }
     _setEffect(): SetAnyArrayMethod { return (effect : Array<any>) => this.setEffect(effect) }
 }

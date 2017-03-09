@@ -53,7 +53,7 @@ class IText extends IObject {
 
 // GETS / SETS VALUES 
 //--------------------------------------------------------------    
-    fontModified(): boolean         { return this.fFontModified; }
+    fontModified(): boolean         { if(this.fFontModified == false)return this.fEffect.effectModified();else return this.fFontModified; }
     getText(): string               { return this.fText; }
     setText(txt: string): void      { this.fText = txt; }
     

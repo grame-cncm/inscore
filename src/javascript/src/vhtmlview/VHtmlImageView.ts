@@ -16,7 +16,8 @@ class VHtmlImageView extends VHtmlAutoSize
 	updateView	( obj: IObject) : void {
 		let img = <IImage>obj;
         this.fImage.src  = img.getFile();
-		super.updateView(obj);
+        super.autoSizeEffects(obj);
+        super.updateView(obj);
 	}
 
 	getAutoElement() : HTMLElement 	{ return this.fImage; }

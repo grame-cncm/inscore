@@ -30,6 +30,8 @@ class VHtmlHtmlView extends VHtmlAutoSize {
         elt.style.fontFamily 	= t.getFontFamily();
         elt.style.fontStyle 	= t.getFontStyle();
         elt.style.fontWeight 	= this.fontWeight2Num(t.getFontWeight());
+        if(t.fEffect.effectModified()){
+        	elt.style.textShadow = VHtmlView.getEffects(t);}
     }
 
 	updateView	( obj: IObject) : void {

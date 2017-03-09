@@ -26,5 +26,11 @@ abstract class VHtmlAutoSize extends VHtmlView {
 		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
 	}
 
+	autoSizeEffects(obj: IObject): void {
+		if(obj.fEffect.fEffectModified){
+			this.getHtml().setAttribute("style", "box-shadow: " + VHtmlView.getEffects(obj));
+		}
+	}
+
 	abstract getAutoElement() : HTMLElement;
 }

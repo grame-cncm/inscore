@@ -9,7 +9,7 @@ class VHtmlTextView extends VHtmlHtmlView {
     	let elt = this.getHtml();
         elt.className = "inscore-txt";
         elt.style.verticalAlign = "middle";
-    }    
+	}
 
 	getPre( t: IText) {
 		if (t.fontModified()) return "<pre style='" + this.getCSSFont(t)+"'>";
@@ -19,16 +19,18 @@ class VHtmlTextView extends VHtmlHtmlView {
 	getText	( obj: IText) : string { return this.getPre(<IText>obj) + obj.getText() +"</pre>"; }
 
 	setFont	( t: IText) : void {
-    	let elt = this.getHtml();
+		let elt = this.getHtml();
         elt.style.fontSize 		= t.getFontSize()+"px";
         elt.style.fontFamily 	= t.getFontFamily();
         elt.style.fontStyle 	= t.getFontStyle();
         elt.style.fontWeight 	= this.fontWeight2Num(t.getFontWeight()).toString();
-    }
+	}
 	getCSSFont	( t: IText) : string {
-    	return "font-size: " + t.getFontSize()+"px; " 
+
+		return "font-size: " + t.getFontSize()+"px; "
     			+ "font-family: " + t.getFontFamily() +"; "
-    			+ "font-style: " + t.getFontStyle() +"; "
-    			+ "font-weight: " + this.fontWeight2Num(t.getFontWeight()) + "; " ;
-    }
+    			+ "font-style: "  + t.getFontStyle() +"; "
+    			+ "font-weight: " + this.fontWeight2Num(t.getFontWeight()) + "; "
+				+ "text-shadow: " + VHtmlView.getEffects(t);
+	}
 }

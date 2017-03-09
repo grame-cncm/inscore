@@ -1,0 +1,8 @@
+/ITL/scene/img set img "imgs/Graphic1.png";
+/ITL/scene/img effect shadow 10 7 100 100 100 100 10;
+
+__END__
+
+/ITL/scene/img effect blur 25;
+/ITL/scene/img effect colorize 0 255 0 200;
+/ITL/scene/img effect none;

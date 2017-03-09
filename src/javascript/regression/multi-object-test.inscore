@@ -60,3 +60,25 @@ __END__
 /ITL/scene/* brushStyle solid;
 /ITL/scene/* color 255 0 0;
 /ITL/scene/* color 255 112 0;
+
+/ITL/scene/rect effect none;
+/ITL/scene/rect effect blur 5;
+/ITL/scene/rect effect colorize 100 100 100 100;
+/ITL/scene/rect effect shadow 5 10 150 150 150 150 8;
+
+/ITL/scene/rect effect none 5;
+/ITL/scene/rect effect blur 5 5;
+/ITL/scene/rect effect colorize 100 100 100 100 5;
+/ITL/scene/rect effect shadow 5 10 150 150 150 150 8 5;
+
+/ITL/scene/rect effect plop;
+
+/ITL/scene/txt set txt plopiplop;
+/ITL/scene/txt effect shadow 5 10 150 150 150 150 8;
+
+/ITL/scene/curve effect colorize 255 0 0 150;
+
+/ITL/scene/* effect none;
+/ITL/scene/* effect blur 5;
+/ITL/scene/* effect colorize 0 255 0 150;
+/ITL/scene/* effect shadow 10 15 255 112 0 150 0;

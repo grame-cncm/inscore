@@ -50,6 +50,8 @@ abstract class VHtmlSvg extends VHtmlView {
 
 	updateView	( obj: IObject) : void {
 		super.updateView(obj);
+		if(obj.fEffect.fEffectModified) {
+			this.fSVG.setAttribute("filter", VHtmlView.effectsOnSVG(obj));}
 		this.fSVG.style.width = this.fWidth + "px";
         this.fSVG.style.height  = this.fHeight  + "px";
         this.fSVG.style.verticalAlign = "top";

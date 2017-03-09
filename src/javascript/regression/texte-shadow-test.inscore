@@ -1,0 +1,8 @@
+/ITL/scene/txt set txt plopiplop;
+/ITL/scene/txt effect shadow 5 10 20 20 20 150 8;
+
+__END__
+
+/ITL/scene/txt effect blur 0;
+/ITL/scene/txt effect colorize 255 0 0 100;
+/ITL/scene/txt effect none;
