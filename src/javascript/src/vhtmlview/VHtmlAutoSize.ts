@@ -35,7 +35,6 @@ abstract class VHtmlAutoSize extends VHtmlView {
 				case effect.kShadow : this.getHtml().style.boxShadow = VHtmlView.getEffects(obj);
 					console.log("VHtmlAutoSize autoSizeEffects box-shadow: " + VHtmlView.getEffects(obj));
 					break;
-				break;
 				case  effect.kBlur : this.getHtml().style.filter = VHtmlView.getEffects(obj);
 				break;
 			}

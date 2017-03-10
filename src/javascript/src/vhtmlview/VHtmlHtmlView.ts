@@ -33,10 +33,9 @@ class VHtmlHtmlView extends VHtmlAutoSize {
         if(t.fEffect.fEffectModified){
 
 			switch (t.fEffect.fEffectArray.length){
-				case 0 : elt.style.textShadow = "text-shadow: 0px 0px";
+				case 0 : elt.style.textShadow = "0px 0px 0px";
 					break;
 				case 1 : elt.style.textShadow = "0px 0px " + t.fEffect.getEffect()[0] + "px";
-				console.log("VHtmlHtmlView setFont blur test : " + "text-shadow: 0px 0px " + t.fEffect.getEffect()[0] + "px");
 					break;
 				case 2 : "";
 					break;

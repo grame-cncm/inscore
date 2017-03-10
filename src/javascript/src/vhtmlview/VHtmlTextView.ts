@@ -34,7 +34,6 @@ class VHtmlTextView extends VHtmlHtmlView {
 		switch (t.fEffect.fEffectArray.length){
 			case 0 : return font;
 			case 1 : return font += "text-shadow: 0px 0px " + t.fEffect.getEffect()[0] + "px";
-			case 2 : return font += "";
 			case 3 : return font += "text-shadow: " + VHtmlView.getEffects(t);
 		}
 		return font;
