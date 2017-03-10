@@ -13,7 +13,7 @@ class VHtmlHtmlView extends VHtmlAutoSize {
 	getText	( obj: IText) : string { return obj.getText(); }
 
 	// CSS weight are used as numbers
-	fontWeight2Num	( weight: string) : string {
+	static fontWeight2Num	( weight: string) : string {
 		switch (weight) {
 			case IText.kWeightNormal: 		return "400";
 			case IText.kWeightLight:		return "200";
@@ -29,16 +29,28 @@ class VHtmlHtmlView extends VHtmlAutoSize {
         elt.style.fontSize 		= t.getFontSize()+"px";
         elt.style.fontFamily 	= t.getFontFamily();
         elt.style.fontStyle 	= t.getFontStyle();
-        elt.style.fontWeight 	= this.fontWeight2Num(t.getFontWeight());
-        if(t.fEffect.effectModified()){
-        	elt.style.textShadow = VHtmlView.getEffects(t);}
+        elt.style.fontWeight 	= VHtmlHtmlView.fontWeight2Num(t.getFontWeight());
+        if(t.fEffect.fEffectModified){
+
+			switch (t.fEffect.fEffectArray.length){
+				case 0 : elt.style.textShadow = "text-shadow: 0px 0px";
+					break;
+				case 1 : elt.style.textShadow = "0px 0px " + t.fEffect.getEffect()[0] + "px";
+				console.log("VHtmlHtmlView setFont blur test : " + "text-shadow: 0px 0px " + t.fEffect.getEffect()[0] + "px");
+					break;
+				case 2 : "";
+					break;
+				case 3 : elt.style.textShadow = VHtmlView.getEffects(t);
+					break;
+			}
+        	}
     }
 
 	updateView	( obj: IObject) : void {
 		let t = <IText>obj;
     	let elt = this.getHtml();
         elt.innerHTML  = this.getText(t);
-		if (t.fontModified()) this.setFont (t);
+		if (t.fontModified() || obj.fEffect.fEffectModified) this.setFont (t);
 		super.updateView(obj);
 	}
 

@@ -128,11 +128,22 @@ class VHtmlView extends VObjectView {
 
 	static getEffects(obj:IObject) : string{
 		let effects = obj.fEffect.getEffect();
-		return effects[0].getRGBAString() + effects[1][0] + "px " + effects[1][1] + "px " + effects[2] + "px ";
+		switch (effects.length){
+			case 0 : return "drop-shadow(0px 0px)";
+			case 1 : return "blur( " + effects[0] + "px)";
+			case 2 : return "";
+			case 3 : return effects[0].getRGBAString() + effects[1][0] + "px " + effects[1][1] + "px " + effects[2] + "px ";
+		}return "";
 	}
 
 	static effectsOnSVG(obj:IObject):string{
-        return ("drop-shadow(" + VHtmlView.getEffects(obj) + ")");
+		let effects = obj.fEffect.getEffect();
+		switch (effects.length){
+			case 0 : return "blur(0px)";
+			case 1 : return VHtmlView.getEffects(obj);
+			case 2 : return "";
+			case 3 : return ("drop-shadow(" + VHtmlView.getEffects(obj) + ")");
+		}return "";
 	}
 
 	positionString() : string { return `top: ${this.fTop} left: ${this.fLeft} w: ${this.fWidth} h: ${this.fHeight}`; }

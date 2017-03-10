@@ -4,20 +4,20 @@
 
 class IEffect {
     fEffectModified: boolean;
-    fEffectName : effect;
-    fShadow     : Array<number>;  //set shadow x and y
-    fBlur       : number;         //set blur
-    fColorize   : IColor;         //set color of shadow
+    fEffectName  : effect;
+    fEffectArray : Array<any>;
+    fShadow      : Array<number>;  //set shadow x and y
+    fShadowBlur   : number;
+    fBlur        : number;         //set blur
+    fColorize    : IColor;         //set color of shadow
+    fColorPerCent: number;         //set color perCent for colorize
 
     private static fEffectStr2Num: { [id: string] : effect; } = {};
     private static fEffectNum2Str: { [id: number] : string; } = {};
 
     constructor() {
         this.fEffectModified = false;
-        this.fEffectName = effect.kNone;
-        this.fShadow     = [0, 0];
-        this.fBlur       = 0;
-        this.fColorize   = new IColor([0, 0, 0, 1]);
+        this.resetSetting();
         IEffect.buildEffect();
     }
 
@@ -48,29 +48,30 @@ class IEffect {
     effectModified(): boolean 	{ return this.fEffectModified; }
     modify() : void 			{ this.fEffectModified = true; }
 
-    getEffect()  : Array<any> 		 {  return [this.fColorize,this.fShadow,this.fBlur]}
+    getEffect()  : Array<any> 		 {  return this.fEffectArray}
     _getEffect() : GetArrayMethod 	 { return () => this.getEffect(); }
 
     assignParams(effectArray: Array<any>) {
        switch (effectArray[1]) {
            case IEffect.effectNum2Str(effect.kNone).val :
-               if(effectArray.length == 2) {
-                   this.fEffectName = effect.kNone;
-                   this.fShadow = [0,0];
-                   this.fBlur = 0;
-                   this.fColorize = new IColor([0,0,0,255]);
+               if(effectArray.length  == 2) {
+                   this.fEffectName   = effect.kNone;
+                   this.resetSetting();
                }else ITLError.badParameter("effect", effectArray);
                break;
            case IEffect.effectNum2Str(effect.kBlur).val :
                if(effectArray.length == 3) {
                    this.fEffectName = effect.kBlur;
                    this.fBlur = effectArray[2];
+                   this.fEffectArray = [this.fBlur];
                }else ITLError.badParameter("effect", effectArray);
                break;
            case IEffect.effectNum2Str(effect.kColorize).val :
                if(effectArray.length == 6) {
-                   this.fEffectName = effect.kColorize;
-                   this.fColorize = new IColor([effectArray[2], effectArray[3], effectArray[4], effectArray[5]/255]);
+                   this.fEffectName  = effect.kColorize;
+                   this.fColorPerCent= effectArray[2];
+                   this.fColorize    = new IColor([effectArray[3], effectArray[4], effectArray[5]]);
+                   this.fEffectArray = [this.fColorPerCent,this.fColorize];
                }else ITLError.badParameter("effect", effectArray);
                break;
            case IEffect.effectNum2Str(effect.kShadow).val :
@@ -78,11 +79,22 @@ class IEffect {
                    this.fEffectName = effect.kShadow;
                    this.fShadow = [effectArray[2], effectArray[3]];
                    this.fColorize = new IColor([effectArray[4], effectArray[5], effectArray[6], effectArray[7]/255]);
-                   this.fBlur = effectArray[8];
+                   this.fShadowBlur = effectArray[8];
+                   this.fEffectArray = [this.fColorize,this.fShadow,this.fShadowBlur];
                }else ITLError.badParameter("effect", effectArray);
                break;
            default: ITLError.badParameter("effect", effectArray);
        }
+    }
+
+    resetSetting(){
+        this.fEffectName = effect.kNone;
+        this.fEffectArray= [];
+        this.fShadow     = [0, 0];
+        this.fShadowBlur = 0;
+        this.fBlur       = 0;
+        this.fColorPerCent= 0;
+        this.fColorize   = new IColor([0, 0, 0, 1]);
     }
 
     setEffect (effect : Array<any>): msgStatus 	{
