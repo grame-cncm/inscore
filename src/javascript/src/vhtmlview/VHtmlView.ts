@@ -4,7 +4,7 @@
 class VHtmlView extends VObjectView {
     protected fHtmlElt : HTMLElement;
     protected fParent  : VHtmlView;
-    
+
     fTop: number;	fLeft: number;
     fWidth: number; fHeight: number;
 
@@ -68,15 +68,18 @@ class VHtmlView extends VObjectView {
 		let z	     = obj.fPosition.getZOrder();
         let left  	= this.relative2SceneX(pos.x);
         let top 	= this.relative2SceneY(pos.y);
-        this.setPos( top, left, size.w, size.h);		// store the metrics 
+        this.setPos( top, left, size.w, size.h);		// store the metrics
+		let shear = obj.fPosition.getShear();
 
-    	let elt = this.getHtml();
+
+		let elt = this.getHtml();
         elt.style.width  = size.w + "px";
         elt.style.height = size.h + "px";
         elt.style.left   = left + "px";
         elt.style.top 	 = top  + "px";
         elt.style.zIndex = z.toString();
-		elt.style.transform  = this.getTransform(obj);
+        console.log("VHtmlView updatePos transform : " + this.getTransform(obj) + " skewX(" + shear[0] + "rad) skewY(" + shear[1] + "rad)");
+		elt.style.transform  = this.getTransform(obj) + " skewX(" + shear[0] + "rad) skewY(" + shear[1] + "rad)";
         elt.style.visibility = obj.fPosition.getVisible() ? "inherit" : "hidden";
 	}
 

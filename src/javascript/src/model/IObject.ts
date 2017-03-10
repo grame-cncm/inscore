@@ -136,7 +136,7 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kz_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setZOrder());
         this.fMsgHandlerMap[kangle_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ());
         this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum(this._setScale());
-//        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TSetMethodMsgHandler(this.fPosition._setShear());
+        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TMsgHandlerNumArray(this.fPosition._setShear());
         this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateX()); 
         this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateY()); 
         this.fMsgHandlerMap[krotatez_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ()); 

@@ -19,7 +19,7 @@ class ISVG extends IObject {
         if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
         
         let n = msg.size();
-        if (n = 3) {
+        if (n == 3) {
             let svg = msg.paramStr(2);
             if (!svg.correct) { return msgStatus.kBadParameters; }
             

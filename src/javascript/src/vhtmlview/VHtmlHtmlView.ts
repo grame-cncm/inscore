@@ -37,8 +37,6 @@ class VHtmlHtmlView extends VHtmlAutoSize {
 					break;
 				case 1 : elt.style.textShadow = "0px 0px " + t.fEffect.getEffect()[0] + "px";
 					break;
-				case 2 : "";
-					break;
 				case 3 : elt.style.textShadow = VHtmlView.getEffects(t);
 					break;
 			}
