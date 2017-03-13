@@ -24,8 +24,11 @@ class VHtmlView extends VObjectView {
 		this.updatePos	(obj);
 		this.updateColor(obj);
 		this.updatePenControl (obj);
+		this.updateEffects (obj);
 	}
 
+	//------------------------------------------------------------------------------------
+	// update color
 	// target of color style depend on the html element implementation 
 	colorTarget(): HTMLElement { return this.fHtmlElt; }
 	updateColor (obj: IObject): void {
@@ -37,6 +40,8 @@ class VHtmlView extends VObjectView {
 	    }
 	}
 
+	//------------------------------------------------------------------------------------
+	// update pen
 	// stroke width is used to compute the div dimensions, depending on the object (e.g. line)
 	// it may not be taken into account
 	getStrokeWidth (obj: IObject): number 	{ return obj.fPenControl.getPenWidth();  }
@@ -54,6 +59,8 @@ class VHtmlView extends VObjectView {
 		elt.style.borderStyle = penStyle;
 	}
 
+	//------------------------------------------------------------------------------------
+	// update position
 	getSize (obj: IObject):  {w: number, h: number } {
 		let size 	 = obj.getSize();
 		let strokeWidth = obj.fPenControl.getPenWidth();
@@ -103,23 +110,23 @@ class VHtmlView extends VObjectView {
 	}
 
 
-	static getRotateX (obj: IObject): string {
+	getRotateX (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
 		return (rotate.x) ? "rotateX(" + rotate.x + "deg)" : "";
 	}
 
-	static getRotateY (obj: IObject): string {
+	getRotateY (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
 		return (rotate.y) ? "rotateY(" + rotate.y + "deg)" : "";
 	}
 
-	static getRotateZ (obj: IObject): string {
+	getRotateZ (obj: IObject): string {
 		let rotate 	 = obj.getRotate();
 		return (rotate.z) ? `rotateZ(${rotate.z}deg) ` : "";
 	}
 
 	getTransform (obj: IObject): string {
-        return this.getTranslate(obj) + this.getScale(obj) + VHtmlSvg.getRotateX(obj) + VHtmlSvg.getRotateY(obj) + VHtmlSvg.getRotateZ(obj) ;
+        return this.getTranslate(obj) + this.getScale(obj) + this.getRotateX(obj) + this.getRotateY(obj) + this.getRotateZ(obj) ;
 	}
 
 	setPos (top: number, left: number, width: number, height: number): void {
@@ -129,22 +136,32 @@ class VHtmlView extends VObjectView {
     	this.fHeight = height;
 	}
 
-	static getEffects(obj:IObject) : string{
-		let effects = obj.fEffect.getEffect();
-		switch (effects.length){
-			case 0 : return "drop-shadow(0px 0px)";
-			case 1 : return "blur( " + effects[0] + "px)";
-			case 3 : return effects[0].getRGBAString() + effects[1][0] + "px " + effects[1][1] + "px " + effects[2] + "px ";
-		}return "";
+	//------------------------------------------------------------------------------------
+	// update effects
+	updateEffects (obj: IObject): void {
+		if (!obj.fEffect.fEffectModified) return;		
+
+		let elt = this.getHtml();
+		switch (obj.fEffect.type()) {
+			case effect.kNone : 	this.setNone();
+				break;
+			case effect.kBlur :		this.setBlur( obj.fEffect.param(0) );
+				break;
+			case effect.kShadow : 	this.setShadow ( obj.fEffect.params() );
+				break;
+		}
 	}
 
-	static effectsOnSVG(obj:IObject):string{
-		let effects = obj.fEffect.getEffect();
-		switch (effects.length){
-			case 0 : return "blur(0px)";
-			case 1 : return VHtmlView.getEffects(obj);
-			case 3 : return ("drop-shadow(" + VHtmlView.getEffects(obj) + ")");
-		}return "";
+	setNone () : void 				{	this.setBlur(0); }
+	setBlur (val: number) : void 	{
+		this.getHtml().style.boxShadow = "(0px 0px)";
+		this.getHtml().style.filter = "blur( " + val + "px)";
+	}
+
+	setShadow (params: Array<number>) : void {
+		let color = new IColor( params.slice(2,6) );
+		this.getHtml().style.boxShadow = color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px";
+		this.getHtml().style.filter = "blur(0)";
 	}
 
 	positionString() : string { return `top: ${this.fTop} left: ${this.fLeft} w: ${this.fWidth} h: ${this.fHeight}`; }

@@ -30,24 +30,20 @@ class VHtmlHtmlView extends VHtmlAutoSize {
         elt.style.fontFamily 	= t.getFontFamily();
         elt.style.fontStyle 	= t.getFontStyle();
         elt.style.fontWeight 	= VHtmlHtmlView.fontWeight2Num(t.getFontWeight());
-        if(t.fEffect.fEffectModified){
-
-			switch (t.fEffect.fEffectArray.length){
-				case 0 : elt.style.textShadow = "0px 0px 0px";
-					break;
-				case 1 : elt.style.textShadow = "0px 0px " + t.fEffect.getEffect()[0] + "px";
-					break;
-				case 3 : elt.style.textShadow = VHtmlView.getEffects(t);
-					break;
-			}
-        	}
     }
+
+	setNone () : void 				{ this.getHtml().style.textShadow = "0px 0px 0px";  }
+	setBlur (val: number) : void 	{ this.getHtml().style.textShadow = "0px 0px " + val + "px"; }
+	setShadow (params: Array<number>) : void {
+		let color = new IColor( params.slice(2,6) );
+		this.getHtml().style.textShadow = color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px";
+	}
 
 	updateView	( obj: IObject) : void {
 		let t = <IText>obj;
     	let elt = this.getHtml();
         elt.innerHTML  = this.getText(t);
-		if (t.fontModified() || obj.fEffect.fEffectModified) this.setFont (t);
+		if (t.fontModified()) this.setFont (t);
 		super.updateView(obj);
 	}
 

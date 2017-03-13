@@ -16,9 +16,13 @@ class VHtmlVideoView extends VHtmlAutoSize {
 	updateView	( obj: IObject) : void {
 		let video = <IVideo>obj;
         this.fVideo.src  = video.getFile();
-        super.autoSizeEffects(obj);
         super.updateView(obj);
 	}  
-    
+ 
+	setShadow (params: Array<number>) : void {
+		let color = new IColor( params.slice(2,6) );
+		this.getHtml().style.filter = "drop-shadow(" + color.getCSSRGBAString() + " "+ params[0] +"px " + params[1] +"px " + params[6] +"px)";
+	}
+   
 	getAutoElement() : HTMLElement 	{ return this.fVideo; }
 }
