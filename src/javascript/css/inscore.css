@@ -46,13 +46,14 @@
 
 .inscore-ellipse 	{ position: absolute; }
 .inscore-curve 		{ position: absolute; }
-.inscore-txt 		{ position: absolute; border: 0px blue solid;}
-
-.inscore-txt > pre	{ 
+.inscore-txt 	{ 
+	position: absolute; 
+	border: 0px blue solid;
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
 	font-style: normal; 
 	font-size: 14px; 
+	white-space: pre;
 }
 
 .inscore-html 	{ 
