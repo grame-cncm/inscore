@@ -1,8 +1,14 @@
 /ITL/scene/txt set txt plopiplop;
-/ITL/scene/txt effect shadow 5 10 20 20 20 150 8;
+/ITL/scene/txt set html "<h1>Hello world !</h1>";
+/ITL/scene/txt effect shadow 15 20 100 20 20 100 5;
+/ITL/scene/txt effect blur 15 ;
+/ITL/scene/txt effect none ;
 
 __END__
 
 /ITL/scene/txt effect blur 0;
 /ITL/scene/txt effect colorize 255 0 0 100;
 /ITL/scene/txt effect none;
+
+/ITL/scene/* del;
+/ITL/scene/* get effect;
