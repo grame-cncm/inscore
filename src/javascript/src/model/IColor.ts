@@ -57,6 +57,7 @@ class IColor {
     getHSB(): Array<number> { return this.fHSB.concat(this.fA); }
   
 	getRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.fA})`; }
+	getCSSRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.getSVGA()})`; }
 	getRGBString(): string { return `rgb(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]})`; }
 
     
