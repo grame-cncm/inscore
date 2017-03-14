@@ -1,0 +1,7 @@
+/ITL/scene/rect set rect 1 1;
+/ITL/scene/rect color 100 100 100 100;
+/ITL/scene/rect penWidth 1;
+
+/ITL/scene/txt set txt "drop grid to see rect's position";
+/ITL/scene/txt dx -0.1;
+/ITL/scene/txt dy -0.4;

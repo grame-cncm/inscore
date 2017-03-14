@@ -1,0 +1,83 @@
+---------------Position-------------------
+/ITL/scene/* del;
+
+/ITL/scene/* x 0.5;
+/ITL/scene/* y 0.5;
+
+/ITL/scene/* x -0.5;
+/ITL/scene/* y -0.5;
+
+/ITL/scene/* x 0;
+/ITL/scene/* y 0;
+
+/ITL/scene/* z 0;
+/ITL/scene/* z 1;
+
+/ITL/scene/* dx 0.5;
+/ITL/scene/* dy 0.5;
+/ITL/scene/* dz 0.5;
+
+/ITL/scene/* dx -0.5;
+/ITL/scene/* dy -0.5;
+/ITL/scene/* dz -0.5;
+
+/ITL/scene/* angle 0;
+/ITL/scene/* angle 45;
+/ITL/scene/* angle 90;
+/ITL/scene/* angle 135;
+
+/ITL/scene/* angle -45;
+/ITL/scene/* angle -90;
+/ITL/scene/* angle -135;
+
+/ITL/scene/* dangle 10;
+/ITL/scene/* dangle -10;
+
+/ITL/scene/* scale 0.5;
+/ITL/scene/* scale 1;
+/ITL/scene/* scale 1.5;
+/ITL/scene/* scale 2;
+
+/ITL/scene/* dscale 0.5;
+/ITL/scene/* dscale -0.5;
+
+---------------Error-------------------
+/ITL/scene/* x a;
+/ITL/scene/* x 0 0;
+/ITL/scene/* x;
+
+/ITL/scene/* y a;
+/ITL/scene/* y 0 0;
+/ITL/scene/* y;
+
+/ITL/scene/* z a;
+/ITL/scene/* z 0 0;
+/ITL/scene/* z;
+
+/ITL/scene/* dx a;
+/ITL/scene/* dx 0 0;
+/ITL/scene/* dx;
+
+/ITL/scene/* dy a;
+/ITL/scene/* dy 0 0;
+/ITL/scene/* dy;
+
+/ITL/scene/* dz a;
+/ITL/scene/* dz 0 0;
+/ITL/scene/* dz;
+
+/ITL/scene/* angle a;
+/ITL/scene/* angle 0 0;
+/ITL/scene/* angle;
+
+/ITL/scene/* dangle a;
+/ITL/scene/* dangle 0 0;
+/ITL/scene/* dangle;
+
+/ITL/scene/* scale a;
+/ITL/scene/* scale 0 0;
+/ITL/scene/* scale;
+
+/ITL/scene/* dscale a;
+/ITL/scene/* dscale 0 0;
+/ITL/scene/* dscale;
