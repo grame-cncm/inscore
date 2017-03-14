@@ -3,15 +3,12 @@
 
 class IScene extends IRectShape {
     
-    //protected kSceneType: string;
-    
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        //this.kSceneType = 'scene';
         this.fTypeString = kSceneType;        
 
-        this.fPosition.setWidth (2);
-        this.fPosition.setHeight (2);
+        this.fPosition.setWidth (1);
+        this.fPosition.setHeight (1);
         this.fMsgHandlerMap[knew_SetMethod] = new TMsgHandlerVoid(this._newScene());
         this.fMsgHandlerMap["redraw"]	= new TMsgHandlerVoid(this._redraw());
     }

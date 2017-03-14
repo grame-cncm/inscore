@@ -78,7 +78,6 @@ class VHtmlView extends VObjectView {
         this.setPos( top, left, size.w, size.h);		// store the metrics
 		let shear = obj.fPosition.getShear();
 
-
 		let elt = this.getHtml();
         elt.style.width  = size.w + "px";
         elt.style.height = size.h + "px";
@@ -97,8 +96,15 @@ class VHtmlView extends VObjectView {
 		obj.fPosition.setHeight (h);
     }
 
+	getParentsScale (obj: IObject): number	{ 
+		let p = obj.getParent();
+		if (p) return p.fPosition.getScale() * this.getParentsScale(p);
+		return 1; 
+	}
+	getViewScale (obj: IObject): number 	{ return obj.fPosition.getScale() * this.getParentsScale(obj); }
+
 	getScale (obj: IObject): string {
-		let scale 	 = obj.fPosition.getScale();
+		let scale = this.getViewScale(obj);
         return (scale==1) ? "" : `scale(${scale},${scale}) `;
 	}
 

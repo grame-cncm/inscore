@@ -1,6 +1,5 @@
 
 /ITL/scene/* del;
-/ITL/scene scale 0.9;
 
 /ITL/scene/rect set rect 0.9 0.9 ;
 /ITL/scene/rect color 220 220 220;

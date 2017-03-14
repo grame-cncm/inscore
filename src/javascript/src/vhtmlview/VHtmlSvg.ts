@@ -68,6 +68,8 @@ abstract class VHtmlSvg extends VHtmlView {
 		}
 	}
 
+	getViewScale (obj: IObject): number 	{ return obj.fPosition.getScale(); }
+
 	updateCommonSVG (obj: IObject, w: number, h: number) : void {
        	let target = this.getSVGTarget();
 		target.setAttribute('width', w.toString());

@@ -1,0 +1,28 @@
+
+/ITL/scene/* del;
+
+w = 1;
+/ITL/scene/rect set rect $w $w ;
+/ITL/scene/rect color 220 220 220;
+
+/ITL/scene/rect/sr set rect $w $w ;
+/ITL/scene/rect/sr color 220 100 100;
+
+/ITL/scene/rect/sr/ssr set rect $w $w ;
+/ITL/scene/rect/sr/ssr color 100 100 220;
+
+
+__END__
+
+/ITL/scene/rect set rect 1 1 ;
+/ITL/scene/rect x 0.3;
+/ITL/scene/rect y -0.3;
+/ITL/scene/rect xorigin -1;
+/ITL/scene/rect yorigin -1;
+/ITL/scene/rect scale 0.5;
+/ITL/scene/rect scale 1;
+
+/ITL/scene width 0.7;
+/ITL/scene height 0.7;
+/ITL/scene width 1;
+/ITL/scene height 1;
