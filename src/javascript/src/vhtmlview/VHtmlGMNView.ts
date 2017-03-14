@@ -14,6 +14,11 @@ class VHtmlGMNView extends VHtmlSvg {
     }
     getSVGTarget() : SVGShape  { return this.fSVG; }
 
+	getViewScale (obj: IObject): number {
+		// this is to ensure a size similar to the native app version
+		return super.getViewScale(obj) * 2.3; 
+	}
+
 	getSize (obj: IObject):  {w: number, h: number } {
 		let strokeWidth = obj.fPenControl.getPenWidth();
         let w = this.fSVG.clientWidth + strokeWidth;
