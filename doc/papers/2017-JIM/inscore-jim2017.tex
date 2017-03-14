@@ -77,23 +77,23 @@ Toutefois, la nécessité d'introduire un temps dynamique a progressivement éme
 
 Les manipulations du temps dans les environnements pour la composition musicale peuvent s'exprimer de manière très différentes.
 
-Dans Open Music, il y a 3 principaux types d'expression du temps: "le temps musical (i.e. le temps de la notation symbolique, relatif à un tempo), le temps proportionnel (exprimé en millisecondes) et le temps continu (défini par des fonctions mathématiques)"~\cite{bresson08}. 
+Dans OpenMusic, il y a 3 principaux types d'expression du temps: "le temps musical (i.e. le temps de la notation symbolique, relatif à un tempo), le temps proportionnel (exprimé en millisecondes) et le temps continu (défini par des fonctions mathématiques)"~\cite{bresson08}. 
 
 Dans d'autres environnements comme Antescofo \cite{acont08} ou iScore \cite{AllombertDA08}, le temps est également \textit{événementiel} et peut notamment se décrire en terme de relations de Allen \cite{Allen:1983:MKT:182.358434}, ce qui permet d'introduire des aspects réactifs dans les oeuvres. 
-Plus récement, ces aspects réactifs ont été également introduits dans Open Music \cite{bresson:hal-00965747}, témoignant de leur importance dans les approches compositionnelles contemporaines.
+Plus récement, ces aspects réactifs ont été également introduits dans OpenMusic \cite{bresson:hal-00965747}, témoignant de leur importance dans les approches compositionnelles contemporaines.
 
 Le temps dans INScore \cite{Fober:12a} est \emph{fixe} : tous les objets possèdent une date et une durée exprimée en temps musical qui sont fixés dans la description de la partition. La dimension temporelle commune des objets d'une partition  permet de représenter leurs relations temporelles dans l'espace graphique \cite{fober:10b}. L'\emph{animation} du temps (i.e. la modification des attributs temporel d'un objet) se fait à la réception de messages OSC, nécessairement émis depuis une application externe.
 
-Ce choix initial d'un temps \emph{fixe} a été dicté par une conception orientée vers des usages couplés avec des logiciels de production sonore (e.g. Max/MSP, Pure Data), qui ont des contraintes de temps-réel strictes et de ce fait, offrent des mécanismes de gestion du temps efficaces et précis. Néanmoins, les aspects réactifs ont été rapidement pris en compte avec l'introduction d'\textit{événements} qui permettent d'interagir avec la partition \cite{fober13a}. Initialement, la typologie de ces événements inclus des interactions classiques de type "interface utilisateur" (e.g. interactions avec la souris), et introduit des événements dans le domaine temporel avec notamment la \textit{surveillance} d'intervalles temporels. Ce mécanisme d'\textit{événements} a ouvert la voie à une approche originale de la programmation de partitions en offrant à l'utilisateur, la possibilité de placer des messages - et donc des interactions - dans l'espace temporel. Il n'en demeurait pas moins que le temps étant toujours \emph{fixe}, l'usage d'une application externe restait nécessaire pour l'actionner.
+Ce choix initial d'un temps \emph{fixe} a été dicté par une conception orientée vers des usages couplés avec des logiciels de production sonore (e.g. Max/MSP, Pure Data), qui ont des contraintes de temps-réel strictes et de ce fait, offrent des mécanismes de gestion du temps efficaces et précis. Néanmoins, les aspects réactifs ont été rapidement pris en compte avec l'introduction d'\textit{événements} qui permettent d'interagir avec la partition \cite{fober13a}. Initialement, la typologie de ces événements inclut des interactions classiques de type "interface utilisateur" (e.g. interactions avec la souris) et introduit des événements dans le domaine temporel avec notamment la \textit{surveillance} d'intervalles temporels. Ce mécanisme d'\textit{événements} a ouvert la voie à une approche originale de la programmation de partitions en offrant à l'utilisateur, la possibilité de placer des messages - et donc des interactions - dans l'espace temporel. Il n'en demeurait pas moins que le temps étant toujours \emph{fixe}, l'usage d'une application externe restait nécessaire pour l'actionner.
 
-La nécessité d'un temps \emph{dynamique} a de ce fait émergé. Elle a été résolue de manière simple, avec l'introduction d'un attribut supplémentaire aux objets d'une partition : le \emph{tempo}. Ce simple ajout a néanmoins un impact important sur la conception du temps dans INScore et sur les aspects dynamiques des partitions. Nous présenterons tout d'abord le modèle du temps musical, qui est contrôlé par le tempo. Nous verrons ensuite comment ce temps se combine avec le temps événementiel, et permet de programmer des partitions dynamiques \emph{autonomes}. Nous montrerons enfin quelques cas d'utilisation avant de conclure et de donner quelques perspectives pour l'extension des dimensions temporelles des objets de la partition.
+La nécessité d'un temps \emph{dynamique} a de ce fait émergé. Elle a été résolue de manière simple, avec l'introduction d'un attribut supplémentaire aux objets d'une partition : le \emph{tempo}. Ce simple ajout a néanmoins un impact important sur la conception du temps dans INScore et sur les aspects dynamiques des partitions. Nous présenterons tout d'abord le modèle du temps musical, qui est contrôlé par le tempo. Nous verrons ensuite comment ce temps se combine avec le temps événementiel et permet de programmer des partitions dynamiques \emph{autonomes}. Nous montrerons enfin quelques cas d'utilisation avant de conclure et de donner quelques perspectives pour l'extension des dimensions temporelles des objets de la partition.
 
 
 %==============================================================
 \section{Le modèle du temps musical}\label{mustime}
 
 Du point de vue utilisateur et pour un objet donné, le temps est actif quand son attribut tempo est non nul : une valeur non nulle du tempo a pour effet de déplacer l'objet dans le temps musical, en fonction de son tempo et de l'écoulement du temps absolu. \\
-Nous parlerons de \emph{date} pour faire référence au temps musical d'un objet, et de \emph{moment} pour faire référence à un point dans l'écoulement du temps absolu. \\
+Nous parlerons de \emph{date} pour faire référence au temps musical d'un objet et de \emph{moment} pour faire référence à un point dans l'écoulement du temps absolu. \\
 
 Soit $t_0$, le moment d'activation du temps d'un objet et $v$ la valeur de son tempo, la date $d_t$ de l'objet à un instant $t$ est donnée par une fonction du temps $f$ telle que :
 \begin{equation}
@@ -102,9 +102,9 @@ Soit $t_0$, le moment d'activation du temps d'un objet et $v$ la valeur de son t
 %\]
 \label{timeeq}
 \end{equation}
-où $d_i$ est la date de l'objet au moment $t_i$ et $k$ une constante permettant de convertir le temps absolu en temps musical. Dans la pratique, le temps absolu est exprimé en millisecondes et l'unité de temps musical est la ronde. De ce fait, la valeur de la constante $k$ est $1 / 1000 \times 60 \times 4$.
+où $d_t{_i}$ est la date de l'objet au moment $t_i$ et $k$ une constante permettant de convertir le temps absolu en temps musical. Dans la pratique, le temps absolu est exprimé en millisecondes et l'unité de temps musical est la ronde. De ce fait, la valeur de la constante $k$ est $1 / 1000 \times 60 \times 4$.
 
-Chaque objet de la partition a un tempo indépendant. La valeur du tempo est signée, ce qui signifie qu'un objet peut se déplacer dans tous les sens du temps (en avant ou en arrière). Il y a peu d'environnement permettent d'exprimer ce renversement du temps de manière simple et naturelle, de ce point de vue on peut citer IanniX \cite{iannix14}, un séquenceur graphique inspiré des travaux de Iannis Xenakis et que l'on peut voir comme un système d'écriture du temps.
+Chaque objet de la partition a un tempo indépendant. La valeur du tempo est signée, ce qui signifie qu'un objet peut se déplacer dans tous les sens du temps (vers le futur ou vers le passé). Il y a peu d'environnements permettent d'exprimer ce renversement du temps de manière simple et naturelle, on peut citer IanniX \cite{iannix14}, un séquenceur graphique inspiré des travaux de Iannis Xenakis et que l'on peut voir comme un système d'écriture du temps.
 
 %=======================================
 \subsection{Implémentation}
@@ -113,7 +113,7 @@ Dans INScore, la granularité du temps est celle de l'affichage : le système fo
 
 Par ailleurs, la fréquence de la tâche du temps peut être variable : 
 \begin{itemize}
-\item par défaut, elle est effectuée toutes les 10 mls mais l'utilisateur peut changer librement cette valeur en adressant le message \OSC{rate} à l'application, suivi d'une valeur en millisecondes.
+\item par défaut, elle est effectuée toutes les 10 ms mais l'utilisateur peut changer librement cette valeur en adressant le message \OSC{rate} à l'application, suivi d'une valeur en millisecondes.
 \item cette tâche n'est pas réentrante et la complexité de l'affichage peut potentiellement la ralentir.
 \end{itemize}
 De ce fait et à chaque tâche du temps, le système mesure le temps réellement écoulé. Les objets dont le tempo n'est pas nul utilisent alors cette valeur pour calculer un offset en temps musical comme indiqué en (\ref{timeeq}), puis s'auto-envoient un message \OSC{ddate} (déplacement de la date en mode relatif) avec la valeur correspondante.
@@ -131,7 +131,7 @@ De ce fait et à chaque tâche du temps, le système mesure le temps réellement
    \label{fig:tempo}
 \end{figure}
 
-Pour être consistante avec l'ensemble du système, cette implémentation est entièrement basée sur des messages. De ce fait, elle est compatible avec tous les mécanismes d'INScore, tels que par exemple, le système de \emph{forwarding} des messages. 
+Pour être consistante avec l'ensemble du système, cette implémentation est entièrement basée sur des messages. De ce fait, elle est compatible avec tous les mécanismes d'INScore, tels que le système de \emph{forwarding} des messages. 
 
 
 %==============================================================
@@ -172,7 +172,7 @@ Cette typologie a été largement étendue pour inclure :
 \item des événements arbitraires définis par l'utilisateur.
 \end{itemize}
 \vspace*{1mm}
-Tout événement peut être arbitrairement déclenché avec l'émission d'un message \OSC{event} suivi de ses paramètres. Conceptuellement, ce message \OSC{event} est équivalent à l'appel d'une fonction paramétrée, et génère des messages OSC en sortie. 
+Tout événement peut être arbitrairement déclenché avec l'émission d'un message \OSC{event} suivi de ses paramètres. Conceptuellement, ce message \OSC{event} est équivalent à l'appel d'une fonction paramétrée qui génère des messages OSC en sortie. 
 Cette logique est particulièrement consistante pour les événements utilisateurs, qui peuvent prendre un nombre variable de paramètres, ceux-ci étant ensuite accessibles dans les messages associés sous la forme de variables nommées $\$1...\$n$. La figure \ref{fig:uevent} présente un ex-emple d'événement utilisateur à 2 arguments.
 
 \begin{figure}[h]
@@ -224,8 +224,8 @@ Les messages de $m$ sont alors envoyés.
 Le calcul d'un événement $e$ est dépendant du type de l'événement:
 \begin{itemize}
 \item[-] pour un message $x$ adressé à un objet $o$, un événement sera émis si $x \in \mathbb{A}_o$, 
-\item[-] pour un message \OSC{event x} adressé à un objet $o$, un événement sera émis si $x \in \mathbb{U}_o \cup \mathbb{A}_o \cup  \mathbb{K}$,
-\item[-] pour un message \OSC{date x} addressé à un objet $o$ qui porte la date $d$, un événement sera émis si :\\ 
+\item[-] pour un message \OSC{event} $x$ adressé à un objet $o$, un événement sera émis si $x \in \mathbb{U}_o \cup \mathbb{A}_o \cup  \mathbb{K}$,
+\item[-] pour un message \OSC{date} $x$ adressé à un objet $o$ qui porte la date $d$, un événement sera émis si :\\ 
 \hspace*{3.5mm} $\exists i \in \mathbb{T}_o\ \ |\ (x \in i\ \land\ d \not\in i)$ \\
 ou $\exists i \in \mathbb{T'}_o\ |\ (x \not \in i\ \land\ d \in i)$,
 \item[-] les événements de $\mathbb{K}$ sont calculés par le système hôte.
@@ -274,7 +274,7 @@ Les variables \OSC{\$t1, \$d1, \$d2} et \OSC{\$d3} sont instanciées avec des va
 \end{figure}
 
 
-Les événements \OSC{START} et \OSC{STOP} activent et désactivent respectivement le temps de l'objet récepteur en changeant la valeur de son tempo, et en modifiant son aspect graphique (canal alpha) pour rendre compte de l'activation du temps. L'événement \OSC{START} positionne par ailleurs la date de l'objet à 0, ce qui permet le bouclage du système par \OSC{o3}.
+Les événements \OSC{START} et \OSC{STOP} activent et désactivent respectivement le temps de l'objet récepteur en changeant la valeur de son tempo et en modifiant son aspect graphique (canal alpha) pour rendre compte de l'activation du temps. L'événement \OSC{START} positionne par ailleurs la date de l'objet à 0, ce qui permet le bouclage du système par \OSC{o3}.
 \begin{figure}[h]
    \centering
    \includegraphics[width=0.8\columnwidth]{imgs/sample}
@@ -332,7 +332,7 @@ stop\_s = ( \\
 \tab/ITL/scene/g* alpha \$alpha \\
 );
 }
-   \caption{Définition de l'événement \OSC{P1} qui active la station représentée par l'objet \OSC{g1}. A noter : l'utilisation de la variable \OSC{stop\_s}, qui est évaluée par le parser, et qui permet de partager le comportement d'arrêt entre plusieurs événements. Les variables \OSC{tempo} et \OSC{alpha} sont définies de manière globale.}
+   \caption{Définition de l'événement \OSC{P1} qui active la station représentée par l'objet \OSC{g1}. A noter : l'utilisation de la variable \OSC{stop\_s}, qui est évaluée par le parser et qui permet de partager le comportement d'arrêt entre plusieurs événements. Les variables \OSC{tempo} et \OSC{alpha} sont définies de manière globale.}
    \label{fig:station}
 \end{figure}
 
@@ -373,7 +373,7 @@ L'approche temporelle proposée par INScore fournit un support original à la co
 Elle reste toutefois limitée : à la différence d'environnements comme Antescofo par exemple, les événements n'ont pas de dimension temporelle ce qui interdit de les composer avec des opérations d'ordre logique. Il serait également intéressant d'étendre les dimensions temporelles d'un objet à tous ses attributs graphiques, de sorte que ses déplacements dans le temps puissent se traduire dans l'espace graphique par la variation de ses attributs.
 
 \balance
-\bibliographystyle{ieeetr}
+\bibliographystyle{plain}
 \bibliography{../interlude}
 
 
