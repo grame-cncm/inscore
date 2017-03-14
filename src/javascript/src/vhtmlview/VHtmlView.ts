@@ -85,7 +85,6 @@ class VHtmlView extends VObjectView {
         elt.style.left   = left + "px";
         elt.style.top 	 = top  + "px";
         elt.style.zIndex = z.toString();
-        console.log("VHtmlView updatePos transform : " + this.getTransform(obj) + " skewX(" + shear[0] + "rad) skewY(" + shear[1] + "rad)");
 		elt.style.transform  = this.getTransform(obj) + " skewX(" + shear[0] + "rad) skewY(" + shear[1] + "rad)";
         elt.style.visibility = obj.fPosition.getVisible() ? "inherit" : "hidden";
 	}

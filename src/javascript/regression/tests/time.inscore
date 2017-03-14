@@ -1,4 +1,6 @@
 ---------------Time------------------------
+/ITL/scene/* del;
+
 /ITL/scene/* clock;
 /ITL/scene/* durClock;
 
