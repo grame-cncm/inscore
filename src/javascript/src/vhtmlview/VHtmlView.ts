@@ -42,11 +42,6 @@ class VHtmlView extends VObjectView {
 
 	//------------------------------------------------------------------------------------
 	// update pen
-	// stroke width is used to compute the div dimensions, depending on the object (e.g. line)
-	// it may not be taken into account
-	getStrokeWidth (obj: IObject): number 	{ return obj.fPenControl.getPenWidth();  }
-	getStrokeHeight (obj: IObject): number 	{ return obj.fPenControl.getPenWidth();  }
-
 	updatePenControl (obj: IObject) {
 		let penWidth = obj.fPenControl.getPenWidth();
 		let penColor = obj.fPenControl.getPenColor().getRGBString();

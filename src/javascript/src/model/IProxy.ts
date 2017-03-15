@@ -1,10 +1,11 @@
 
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="IObjectFactory.ts"/>
+///<reference path="IProxyInterface.ts"/>
 
-class IProxy {	
+class IProxyImpl extends IProxyInterface {	
 
-	static execute (msg: IMessage, objName: string, parent: IObject): { status: msgStatus, obj?: IObject } {
+	execute (msg: IMessage, objName: string, parent: IObject): { status: msgStatus, obj?: IObject } {
         
         if (Tools.regexp(objName)) { return { status: msgStatus.kBadAddress }; }
 
@@ -43,3 +44,5 @@ class IProxy {
 		return { status: msgStatus.kCreateFailure };
     }
 }
+
+IProxy = new IProxyImpl();

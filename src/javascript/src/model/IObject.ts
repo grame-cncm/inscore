@@ -18,6 +18,9 @@
 ///<reference path="IBrushStyle.ts"/>
 ///<reference path="IEffect.ts"/>
 ///<reference path="IPenControl.ts"/>
+///<reference path="ITempo.ts"/>
+///<reference path="IProxyInterface.ts"/>
+
 
 class TMsgHandler<T> 			{ [index: string]: T; }
 class TGetMsgHandler<T> 		{ [index: string]: T; }
@@ -31,9 +34,9 @@ abstract class IObject implements Tree<IObject> {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
+    private   fState: 		objState;
     protected fTypeString:	string;
     protected fName: 		string;
-    protected fState: 		objState;
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
@@ -228,7 +231,7 @@ abstract class IObject implements Tree<IObject> {
 //--------------------------------------------------------------  
     addChild(obj: IObject): void { 
         this.fSubNodes.push(obj);
-        this.setState(objState.kSubModified);
+        this.addState(objState.kSubModified);
     } 
     
     setParent(parent: IObject): void { this.fParent = parent; }    
@@ -390,11 +393,11 @@ abstract class IObject implements Tree<IObject> {
                     }
                 }               
                 else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
-                else { result = this.proxy_create (msg, beg, this).status; }
+                else  { result = this.proxy_create (msg, beg, this).status; }
             }
         }
             
-        if (result & msgStatus.kProcessed + objState.kSubModified) { this.addState(objState.kSubModified); }
+        if (result & (msgStatus.kProcessed + objState.kSubModified)) { this.addState(objState.kSubModified); }
     	return result;     
     }
     
@@ -406,7 +409,6 @@ abstract class IObject implements Tree<IObject> {
         if (!type.correct) { return msgStatus.kBadParameters; }
 
         if (type.value != this.getTypeString()) {
-//debugger;
 			let out = this.proxy_create (msg, this.fName, this.getParent());
             if (out.status & msgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
@@ -508,7 +510,7 @@ abstract class IObject implements Tree<IObject> {
  
     //-----------------------------    
     protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
-    				{ return this.getAppl().proxy_create(msg, name, parent); }                
+    				{ return IProxy.execute (msg, name, parent); }         
     
     //-----------------------------    
     getDeleted(): boolean 	{ return this.fDelete; }

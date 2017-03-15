@@ -11,6 +11,20 @@ w = 1;
 /ITL/scene/rect/sr/ssr set rect $w $w ;
 /ITL/scene/rect/sr/ssr color 100 100 220;
 
+/ITL/scene/text 			set txt "Hello world!";
+/ITL/scene/rect/text 		set txt "Hello rect!";
+/ITL/scene/rect/sr/text 	set txt "Hello sr!";
+/ITL/scene/rect/sr/ssr/text set txt "Hello ssr!";
+/ITL/scene/text 			y 1;
+/ITL/scene/rect/text 		y 1;
+/ITL/scene/rect/sr/text 	y 1;
+/ITL/scene/rect/sr/ssr/text y 1;
+
+/ITL/scene/text 			fontSize 14;
+/ITL/scene/rect/text 		fontSize 14;
+/ITL/scene/rect/sr/text 	fontSize 14;
+/ITL/scene/rect/sr/ssr/text fontSize 14;
+
 
 __END__
 
@@ -19,6 +33,8 @@ __END__
 /ITL/scene/rect y -0.3;
 /ITL/scene/rect xorigin -1;
 /ITL/scene/rect yorigin -1;
+/ITL/scene/rect xorigin 0;
+/ITL/scene/rect yorigin 0;
 /ITL/scene/rect scale 0.5;
 /ITL/scene/rect scale 1;
 
@@ -26,3 +42,4 @@ __END__
 /ITL/scene height 0.7;
 /ITL/scene width 1;
 /ITL/scene height 1;
+/ITL/scene alpha 150;

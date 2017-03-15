@@ -8,7 +8,6 @@ class ModelUpdater {
         let elt = stack.length;
         if (elt != 0) {
             for (let i = elt; i > 0; i--) {
-//                let msg = INScore.getGlue().popStack();
 				let msg = stack[i];
                 INScore.checkStatus (INScore.getRoot().process(msg), msg)
             }

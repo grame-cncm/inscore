@@ -62,12 +62,13 @@ class IAppl extends IObject {
 			if (status & msgStatus.kProcessed)
 				this.setState(objState.kModified);
 		}
-//		if ((status == msgStatus.kProcessed) || (status == msgStatus.kProcessedNoChange))
-			return status;
+		return status;
     }
 
+/*
 	protected newObj (msg: IMessage, name: string): { status: msgStatus, obj?: IObject } 
     				{ return this.proxy_create(msg, name, this); }                
     protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject }	
     				{ return IProxy.execute (msg, name, parent); }
+*/
 }

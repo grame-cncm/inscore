@@ -11,7 +11,6 @@ interface TTimerTask  	{ (): void; }
 class IGlue { 
 	protected fAppl: IAppl;
 	protected fTimer: number;		// this is to catch multiple defs in nodes and in browser contexts
-//	protected fTimerTask: any;			// should find a typed solution
 	private   fStack: Array<IMessage>;
 
     constructor() 			{ 

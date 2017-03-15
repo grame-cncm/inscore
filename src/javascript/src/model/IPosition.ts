@@ -49,8 +49,8 @@ class IPosition {
         this.fYPos 		= pos.fYPos;
         this.fXOrigin 	= pos.fXOrigin;
         this.fYOrigin 	= pos.fYOrigin;
-        this.fWidth 	= pos.fWidth; 
-        this.fHeight 	= pos.fHeight;
+//        this.fWidth 	= pos.fWidth; 
+//        this.fHeight 	= pos.fHeight;
         this.fZOrder 	= pos.fZOrder;
         this.fVisible 	= pos.fVisible; 
         this.fScale 	= pos.fScale;  
@@ -119,7 +119,7 @@ class IPosition {
         this.setRotateY	( p.getRotateY() );
         this.setRotateZ	( p.getRotateZ() );
         this.setWidth	( p.getWidth() );
-        this.setHeight	( p.getHeight() );
+        this.setHeight ( p.getHeight() );
         this.setVisible	( p.getVisible() );
     }
     
