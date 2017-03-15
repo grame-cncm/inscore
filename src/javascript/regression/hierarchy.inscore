@@ -25,14 +25,28 @@ w = 1;
 /ITL/scene/rect/sr/text 	fontSize 14;
 /ITL/scene/rect/sr/ssr/text fontSize 14;
 
+/ITL/scene/e set ellipse 0.03 0.03 ;
 
 __END__
+
+/ITL/scene/c set txt "Center";
+/ITL/scene/c fontSize 18;
 
 /ITL/scene/rect set rect 1 1 ;
 /ITL/scene/rect x 0.3;
 /ITL/scene/rect y -0.3;
 /ITL/scene/rect xorigin -1;
 /ITL/scene/rect yorigin -1;
+/ITL/scene/rect xorigin 1;
+/ITL/scene/rect yorigin 1;
+o = -0.5;
+/ITL/scene/rect 		xorigin $o;
+/ITL/scene/rect 		yorigin $o;
+/ITL/scene/rect/sr 		xorigin $o;
+/ITL/scene/rect/sr 		yorigin $o;
+/ITL/scene/rect/sr/ssr 	xorigin $o;
+/ITL/scene/rect/sr/ssr 	yorigin $o;
+
 /ITL/scene/rect xorigin 0;
 /ITL/scene/rect yorigin 0;
 /ITL/scene/rect scale 0.5;
@@ -42,4 +56,5 @@ __END__
 /ITL/scene height 0.7;
 /ITL/scene width 1;
 /ITL/scene height 1;
+/ITL/scene scale 1.2;
 /ITL/scene alpha 150;
