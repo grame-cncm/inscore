@@ -18,13 +18,15 @@
 	
 	<div>
 	<inscore-code>
-		color = 20 0 150;
+		color  = 20 0 150;
+		shadow = shadow 5 5 0 0 0 75 10;
 
 		/ITL/scene/* del;
 		/ITL/scene/welcome set txt "Welcome to INScore";
 		/ITL/scene/welcome color $color;
 		/ITL/scene/welcome fontSize 40;
 		/ITL/scene/welcome fontWeight bold;
+		/ITL/scene/welcome effect $shadow;
 
 		/ITL/scene/welcome y -0.5;
 		/ITL/scene/what1 set txt "An environment for the design of";
@@ -34,7 +36,7 @@
 		/ITL/scene/what* fontSize 18;
 
 		/ITL/scene/score set gmn "[ a f# g ]";
-		#/ITL/scene/score effect $shadow;
+		/ITL/scene/score effect $shadow;
 		/ITL/scene/score y 0.03;
 
 		dy = 0.05;
@@ -50,13 +52,13 @@
 		/ITL/scene/c4 fontWeight bold;
 		/ITL/scene/c4 fontSize 18;
 		/ITL/scene/c4 color $color;
+		/ITL/scene/c4 effect $shadow;
 
 		/ITL/scene/logo set img 'grame.png';
 		/ITL/scene/logo y 0.8;
+		/ITL/scene/logo effect $shadow;
 
 		/ITL/scene/* dy -0.12;
-		/ITL/scene width 1.7;
-		/ITL/scene height 1.7;
 	</inscore-code>
 	</div>
 
