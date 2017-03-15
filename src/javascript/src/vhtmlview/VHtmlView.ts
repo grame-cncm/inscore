@@ -104,8 +104,11 @@ class VHtmlView extends VObjectView {
 	}
 
 	getTranslate (obj: IObject): string {
-		let tx = -this.fWidth * (1 + obj.fPosition.getXOrigin()) / 2.0;
-		let ty = -this.fHeight * (1 + obj.fPosition.getYOrigin()) / 2.0;
+		let scale = obj.fPosition.getScale();
+		let xo = obj.fPosition.getXOrigin() * scale;
+		let yo = obj.fPosition.getYOrigin() * scale;
+		let tx = -this.fWidth * (1 + xo) / 2.0;
+		let ty = -this.fHeight * (1 + yo) / 2.0;
         return (tx || ty) ? `translate(${tx}px,${ty}px) ` : " ";
 	}
 
