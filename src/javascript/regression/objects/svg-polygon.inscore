@@ -1,0 +1,3 @@
+/ITL/scene/pol set polygon -0.75 -0.75 -0.75 0 0.75 0 0.75 0.75;
+/ITL/scene/pol color 100 100 100 100;
+/ITL/scene/pol penWidth 1;

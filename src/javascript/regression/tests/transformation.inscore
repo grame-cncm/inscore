@@ -35,19 +35,18 @@
 /ITL/scene/* drotatez -10;
 
 /ITL/scene/* shear 0 0;
-/ITL/scene/* shear 45 45;
-/ITL/scene/* shear 0 45;
-/ITL/scene/* shear 45 0;
+/ITL/scene/* shear 15 15;
+/ITL/scene/* shear 0 15;
+/ITL/scene/* shear 15 0;
 
 /ITL/scene/* shear -45 -45;
 /ITL/scene/* shear 0 -45;
 /ITL/scene/* shear -45 0;
 
-/ITL/scene/* width 100;
-/ITL/scene/* width 200;
+/ITL/scene/* width 0.1;
 
-/ITL/scene/* height 100;
-/ITL/scene/* height 200;
+/ITL/scene/* height 0.5;
+/ITL/scene/* height 0.1;
 
 ---------------Error-------------------
 /ITL/scene/* rotatex a;

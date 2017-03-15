@@ -50,23 +50,15 @@
 
 /ITL/scene/* date a 2;
 /ITL/scene/* date 4 2 0;
-/ITL/scene/* date "";
-/ITL/scene/* date;
 
 /ITL/scene/* ddate a 2;
 /ITL/scene/* ddate 4 2 0;
-/ITL/scene/* ddate "";
-/ITL/scene/* ddate;
 
 /ITL/scene/* duration a 2;
 /ITL/scene/* duration 4 2 0;
-/ITL/scene/* duration "";
-/ITL/scene/* duration;
 
 /ITL/scene/* dduration a 2;
 /ITL/scene/* dduration 4 2 0;
-/ITL/scene/* dduration "";
-/ITL/scene/* dduration;
 
 /ITL/scene/* tempo a;
 /ITL/scene/* tempo 80 0;

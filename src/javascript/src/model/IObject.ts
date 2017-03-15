@@ -46,6 +46,7 @@ abstract class IObject implements Tree<IObject> {
     
     fPosition: 	 IPosition;
     fDate: 		 IDate;
+    fTempo:      ITempo;
     fColor: 	 IColor;
     fPenControl: IPenControl;
     fBrushStyle: IBrushStyle;
@@ -65,6 +66,7 @@ abstract class IObject implements Tree<IObject> {
 
         this.fPosition = new IPosition;
         this.fDate = new IDate;
+        this.fTempo = new ITempo;
 		this.fColor = new IColor([0,0,0]);
         
         this.fPenControl = new IPenControl(kObjType);
@@ -176,9 +178,13 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime(this.fDate._addDuration());        
         this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid(this.fDate._clock());
         this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid(this.fDate._durclock());
+        this.fMsgHandlerMap[ktempo_GetSetMethod] 	= new TMsgHandlerNum(this.fTempo._setTempo());
+        this.fMsgHandlerMap[kdtempo_SetMethod] 	    = new TMsgHandlerNum(this.fTempo._addTempo());
 
-        this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
+
+        this.fGetMsgHandlerMap[ktempo_GetSetMethod] 	= new TGetMsgHandlerNum(this.fTempo._getTempo());
         this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime(this.fDate._getDuration());
+        this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
     }
 
     penControlAble() {
