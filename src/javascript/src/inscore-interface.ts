@@ -12,5 +12,6 @@ abstract class INScoreInterface {
 	abstract checkStatus (status: msgStatus, msg: IMessage) : void;
 	abstract postMessage (address: string, params: Array<any>) : void;
 	abstract load (data: any): void;
+	abstract register (elt : string): void;
 
 }

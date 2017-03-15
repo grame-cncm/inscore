@@ -61,6 +61,16 @@ class INScoreImpl extends INScoreInterface
 		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
 		else 							{ loader.load (data, this.getRoot()); }		
 	}
+
+	register (elt : string): void {
+		var x = document.getElementsByTagName (elt);
+		for (var i= 0 ; i < x.length; i++) {
+			var icode = x[i].textContent;
+			INScore.load (icode);
+			x[i].textContent = "";
+			x[i].parentElement.removeChild(x[i]);
+		}
+	}
 }
 
 INScore = new INScoreImpl();
