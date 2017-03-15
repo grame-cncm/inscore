@@ -16,12 +16,13 @@ class VHtmlPolygonView extends VHtmlSvg {
     getSVGTarget() : SVGShape  { return this.fPolygon; }
 
 	getSize (obj: IObject):  {w: number, h: number } {
-        let size = this.fPolygon.getBBox();        
-		return { w: size.width, h: size.height };
+        let strokeWidth = obj.fPenControl.getPenWidth();
+        let size = this.fPolygon.getBBox();
+		return { w: size.width + strokeWidth, h: size.height + strokeWidth};
 	}
 
     updateView	( obj: IObject) : void {
-        let polygon = <IPolygon>obj;        
+        let polygon = <IPolygon>obj;       
         if (obj.isNewData()) {
 		    let points = polygon.getPoints();
             let minx = 0x1fffffff;
@@ -32,14 +33,16 @@ class VHtmlPolygonView extends VHtmlSvg {
 			}
             let strPoints: string = '';
             for (let i = 0; i < points.length; i++) {
-                let x = this.relative2SceneWidth( points[i].getX() - minx );
+                let x = this.relative2SceneWidth( points[i].getX() - minx);
                 let y = this.relative2SceneWidth( points[i].getY() - miny);
                 strPoints += x + ',' + y + ' ';
             }          
             this.fPolygon.setAttribute('points', strPoints);
         }
         this.fPolygon.setAttribute('fill', obj.fColor.getRGBString());
-     	super.updateView(obj);
+        super.updateView(obj);
+        let size = this.getInnerSize(obj);
+        this.updateCommonSVG (obj, size.w, size.h); 
     }        
 
 	updateObjectSize ( obj: IObject) : void {

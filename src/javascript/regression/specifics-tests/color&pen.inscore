@@ -1,0 +1,39 @@
+/ITL/scene/txt1 set txt "penStyle solid";
+/ITL/scene/txt1 x -0.5;
+/ITL/scene/txt1 y -0.8;
+/ITL/scene/rect1 set rect 0.5 0.5;
+/ITL/scene/rect1 x -0.5;
+/ITL/scene/rect1 y -0.5;
+/ITL/scene/rect1 color 100 100 100 100;
+/ITL/scene/rect1 penWidth 2;
+
+/ITL/scene/txt2 set txt "penStyle dot";
+/ITL/scene/txt2 x 0.5;
+/ITL/scene/txt2 y -0.8;
+/ITL/scene/ell set ellipse 0.5 0.5;
+/ITL/scene/ell x 0.5;
+/ITL/scene/ell y -0.5;
+/ITL/scene/ell color 255 100 100 100;
+/ITL/scene/ell penWidth 2;
+/ITL/scene/ell penStyle dot;
+
+/ITL/scene/txt3 set txt "penStyle dash";
+/ITL/scene/txt3 x -0.5;
+/ITL/scene/txt3 y 0.8;
+/ITL/scene/arc set arc 0.5 0.5 0 230;
+/ITL/scene/arc x -0.5;
+/ITL/scene/arc y 0.5;
+/ITL/scene/arc color 100 255 100 100;
+/ITL/scene/arc penWidth 2;
+/ITL/scene/arc penStyle dash;
+/ITL/scene/arc brushStyle solid;
+
+/ITL/scene/txt4 set txt "penStyle dash dot"; 
+/ITL/scene/txt4 x 0.5;
+/ITL/scene/txt4 y 0.8;
+/ITL/scene/polygon set polygon 0.5 0 0 0.5 0.5 0.5;
+/ITL/scene/polygon x 0.5;
+/ITL/scene/polygon y 0.5;
+/ITL/scene/polygon color 100 100 255 100;
+/ITL/scene/polygon penWidth 2;
+/ITL/scene/polygon penStyle dashDot;
