@@ -22,7 +22,7 @@ cat << !
 
 	{ rank = same; IColor; IDate; IPosition; IPenControl; IProxy; fraction; ITLError; ITLOut; }
 	{ rank = same; VHtmlView; VObjectView; ViewFactory; }
-	{ rank = same; IAppl; IApplStaticNodes; ICurve; IEllipse; IGuidoCode; IGuidoPianoRoll; IHtml; IImage; ILine; IPolygon; IRect; IScene; IText; ITextf; IVideo; IWebSocket; }
+	{ rank = same; IAppl; IApplStaticNodes; IArc; ICurve; IEllipse; IGuidoCode; IGuidoPianoRoll; IHtml; IImage; ILine; IPolygon; IRect; IScene; IText; ITextf; IVideo; IWebSocket; }
 #	{ rank = same; ITLError; ITLOut; }
 	{ rank = same; 	VHtmlCurveView; VHtmlEllipseView; VHtmlGMNView; VHtmlHtmlView; VHtmlImageView; VHtmlLineView; VHtmlLog; VHtmlPianoRollView; VHtmlPolygonView; VHtmlRectView; VHtmlSceneView; VHtmlSvgView; VHtmlTextView; VHtmlVideoView; }
 }
