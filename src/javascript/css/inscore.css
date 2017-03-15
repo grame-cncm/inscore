@@ -52,7 +52,7 @@
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
 	font-style: normal; 
-	font-size: 14px; 
+	font-size: 12px; 
 	white-space: pre;
 }
 
@@ -71,15 +71,6 @@
 	margin: 10px 20px 10px 20px;
 	color: rgb(120,120,120); 
 }
-
-/*
-.inscore-log > pre	{ 
-	font-family: 'courier'; 
-	font-size: 10pt; 
-	padding: 0 0 0 0; 
-	color: rgb(200,120,120); 
-}
-*/
 
 .inscore-gmn {
 	position: absolute;
