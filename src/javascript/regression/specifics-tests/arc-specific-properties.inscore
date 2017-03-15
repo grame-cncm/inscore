@@ -1,0 +1,58 @@
+/ITL/scene/txt1 set txt "Original(start angle 180°)";
+/ITL/scene/txt1 x -0.5;
+/ITL/scene/txt1 y -0.9;
+/ITL/scene/arc1 set arc 0.5 0.5 180 225;
+/ITL/scene/arc1 x -0.5;
+/ITL/scene/arc1 y -0.6;
+/ITL/scene/arc1 color 100 100 100 100;
+/ITL/scene/arc1 brushStyle solid;
+
+/ITL/scene/txt2 set txt "start 90";
+/ITL/scene/txt2 x 0.5;
+/ITL/scene/txt2 y -0.9;
+/ITL/scene/arc2 set arc 0.5 0.5 180 225;
+/ITL/scene/arc2 x 0.5;
+/ITL/scene/arc2 y -0.6;
+/ITL/scene/arc2 color 100 100 100 100;
+/ITL/scene/arc2 brushStyle solid;
+/ITL/scene/arc2 start 90;
+
+/ITL/scene/txt3 set txt "range 180";
+/ITL/scene/txt3 x -0.5;
+/ITL/scene/txt3 y -0.2;
+/ITL/scene/arc3 set arc 0.5 0.5 180 225;
+/ITL/scene/arc3 x -0.5;
+/ITL/scene/arc3 y 0;
+/ITL/scene/arc3 color 100 100 100 100;
+/ITL/scene/arc3 brushStyle solid;
+/ITL/scene/arc3 range 180;
+
+/ITL/scene/txt4 set txt "dstart 90";
+/ITL/scene/txt4 x 0.5;
+/ITL/scene/txt4 y -0.3;
+/ITL/scene/arc4 set arc 0.5 0.5 180 225;
+/ITL/scene/arc4 x 0.5;
+/ITL/scene/arc4 y 0;
+/ITL/scene/arc4 color 100 100 100 100;
+/ITL/scene/arc4 brushStyle solid;
+/ITL/scene/arc4 dstart 90;
+
+/ITL/scene/txt5 set txt "drange 45";
+/ITL/scene/txt5 x -0.5;
+/ITL/scene/txt5 y 0.9;
+/ITL/scene/arc5 set arc 0.5 0.5 180 225;
+/ITL/scene/arc5 x -0.5;
+/ITL/scene/arc5 y 0.6;
+/ITL/scene/arc5 color 100 100 100 100;
+/ITL/scene/arc5 brushStyle solid;
+/ITL/scene/arc5 drange 45;
+
+/ITL/scene/txt6 set txt "close";
+/ITL/scene/txt6 x 0.5;
+/ITL/scene/txt6 y 0.9;
+/ITL/scene/arc6 set arc 0.5 0.5 180 225;
+/ITL/scene/arc6 x 0.5;
+/ITL/scene/arc6 y 0.6;
+/ITL/scene/arc6 close 1;
+/ITL/scene/arc6 color 100 100 100 100;
+/ITL/scene/arc6 brushStyle solid;

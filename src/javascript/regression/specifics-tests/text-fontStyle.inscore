@@ -1,0 +1,20 @@
+/ITL/scene/txt1 set txt "Original";
+/ITL/scene/txt1 x -0.5;
+/ITL/scene/txt1 y -0.5;
+
+/ITL/scene/txt2 set txt "Italic";
+/ITL/scene/txt2 x 0.5;
+/ITL/scene/txt2 y -0.5;
+/ITL/scene/txt2 fontStyle italic;
+
+/ITL/scene/txt3 set txt "Oblique";
+/ITL/scene/txt3 x -0.5;
+/ITL/scene/txt3 y 0.5;
+/ITL/scene/txt3 fontStyle oblique;
+
+/ITL/scene/txt4 set txt "normal";
+/ITL/scene/txt4 x 0.5;
+/ITL/scene/txt4 y 0.5;
+/ITL/scene/txt4 fontStyle normal;
+
+/ITL/scene/txt* fontSize 30;

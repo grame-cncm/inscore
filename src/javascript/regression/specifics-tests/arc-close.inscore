@@ -1,0 +1,35 @@
+/ITL/scene/txt1 set txt "Open";
+/ITL/scene/txt1 x -0.5;
+/ITL/scene/txt1 y -0.8;
+/ITL/scene/arc1 set arc 0.5 0.5 0 270;
+/ITL/scene/arc1 x -0.5;
+/ITL/scene/arc1 y -0.5;
+/ITL/scene/arc1 color 100 255 100 100;
+
+/ITL/scene/txt2 set txt "Close";
+/ITL/scene/txt2 x 0.5;
+/ITL/scene/txt2 y -0.8;
+/ITL/scene/arc2 set arc 0.5 0.5 0 270;
+/ITL/scene/arc2 x 0.5;
+/ITL/scene/arc2 y -0.5;
+/ITL/scene/arc2 color 100 255 100 100;
+/ITL/scene/arc2 close 1;
+
+/ITL/scene/txt3 set txt "Open Solid";
+/ITL/scene/txt3 x -0.5;
+/ITL/scene/txt3 y 0.8;
+/ITL/scene/arc3 set arc 0.5 0.5 0 270;
+/ITL/scene/arc3 x -0.5;
+/ITL/scene/arc3 y 0.5;
+/ITL/scene/arc3 color 100 255 100 100;
+/ITL/scene/arc3 brushStyle solid;
+
+/ITL/scene/txt4 set txt "Close Solid";
+/ITL/scene/txt4 x 0.5;
+/ITL/scene/txt4 y 0.8;
+/ITL/scene/arc4 set arc 0.5 0.5 0 270;
+/ITL/scene/arc4 x 0.5;
+/ITL/scene/arc4 y 0.5;
+/ITL/scene/arc4 color 100 255 100 100;
+/ITL/scene/arc4 close 1;
+/ITL/scene/arc4 brushStyle solid;

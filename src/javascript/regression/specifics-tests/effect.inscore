@@ -1,0 +1,41 @@
+/ITL/scene/txt1 set txt "original";
+/ITL/scene/txt1 x -0.5;
+/ITL/scene/txt1 y -0.8;
+/ITL/scene/rect1 set rect 0.5 0.5;
+/ITL/scene/rect1 x -0.5;
+/ITL/scene/rect1 y -0.5;
+/ITL/scene/rect1 color 100 100 100 100;
+/ITL/scene/rect1 penWidth 2;
+
+/ITL/scene/txt2 set txt "none";
+/ITL/scene/txt2 x 0.5;
+/ITL/scene/txt2 y -0.8;
+/ITL/scene/ell set ellipse 0.5 0.5;
+/ITL/scene/ell x 0.5;
+/ITL/scene/ell y -0.5;
+/ITL/scene/ell rotatez 90;
+/ITL/scene/ell color 255 100 100 100;
+/ITL/scene/ell penWidth 2;
+/ITL/scene/arc effect none;
+
+/ITL/scene/txt3 set txt "blur";
+/ITL/scene/txt3 x -0.5;
+/ITL/scene/txt3 y 0.8;
+/ITL/scene/arc set arc 0.5 0.5 0 230;
+/ITL/scene/arc x -0.5;
+/ITL/scene/arc y 0.5;
+/ITL/scene/arc rotatez 180;
+/ITL/scene/arc color 100 255 100 100;
+/ITL/scene/arc penWidth 2;
+/ITL/scene/arc effect blur 2;
+
+/ITL/scene/txt4 set txt "shadow"; 
+/ITL/scene/txt4 x 0.5;
+/ITL/scene/txt4 y 0.8;
+/ITL/scene/polygon set polygon 0.5 0 0 0.5 0.5 0.5;
+/ITL/scene/polygon x 0.5;
+/ITL/scene/polygon y 0.5;
+/ITL/scene/polygon rotatez 270;
+/ITL/scene/polygon color 100 100 255 255;
+/ITL/scene/polygon penWidth 2;
+/ITL/scene/polygon effect shadow 15 15 100 100 100 100 2;
