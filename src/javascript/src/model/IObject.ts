@@ -31,9 +31,9 @@ abstract class IObject implements Tree<IObject> {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
+    private   fState: 		objState;
     protected fTypeString:	string;
     protected fName: 		string;
-    protected fState: 		objState;
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
@@ -222,7 +222,7 @@ abstract class IObject implements Tree<IObject> {
 //--------------------------------------------------------------  
     addChild(obj: IObject): void { 
         this.fSubNodes.push(obj);
-        this.setState(objState.kSubModified);
+        this.addState(objState.kSubModified);
     } 
     
     setParent(parent: IObject): void { this.fParent = parent; }    
@@ -384,11 +384,11 @@ abstract class IObject implements Tree<IObject> {
                     }
                 }               
                 else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
-                else { result = this.proxy_create (msg, beg, this).status; }
+                else  { result = this.proxy_create (msg, beg, this).status; }
             }
         }
             
-        if (result & msgStatus.kProcessed + objState.kSubModified) { this.addState(objState.kSubModified); }
+        if (result & (msgStatus.kProcessed + objState.kSubModified)) { this.addState(objState.kSubModified); }
     	return result;     
     }
     

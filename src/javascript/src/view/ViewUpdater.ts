@@ -11,13 +11,14 @@ class ViewUpdater {
 		else {
 			let state = obj.getState();
 			if (state & (objState.kNewObject + objState.kModified)) {
-				obj.getView().updateView(obj);
-//console.log("ViewUpdater update " + obj.getName() + " state: " + state + " pc: " + obj.fPosition.modified() + " " + obj.fColor.modified());
+				let view = obj.getView();
+				if (view) view.updateView(obj);
 			}
 			if (state & objState.kSubModified) {
 				let subnodes = obj.getSubNodes();
-				for (let i=0; i < subnodes.length; i++)
+				for (let i=0; i < subnodes.length; i++) {
 					this.update (subnodes[i]);
+				}
 			}
 		}
 	}	
