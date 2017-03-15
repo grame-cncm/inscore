@@ -2,57 +2,34 @@
 <html lang="en">
 
 <head>
-    <title>INScore Test1</title>
+	<meta charset="utf-8">
+    <title>INScore Test</title>
 
-    <link href="css/inscore.css" rel="stylesheet">
-
-	<script src="../mainhtml.js"></script>
-	<script src="../libGUIDOEngine.js"/>	
-
+    <link href="../css/inscore.css" rel="stylesheet">
+    <link href="../css/inscore-scene-relative.css" rel="stylesheet">
+	<script src="../libGUIDOEngine.js"></script>
+	<script src="../inscore.js"></script>
 </head>
 
 <body style="margin: 20px">
-    <script type="text/javascript"> StartINScore() </script>
 
-    <inscore>
-
+    <inscore-code>
 	color = 20 0 150;
-
 	/ITL/scene/* del;
 	/ITL/scene/welcome set txt "Welcome to INScore";
 	/ITL/scene/welcome color $color;
 	/ITL/scene/welcome fontSize 40;
 	/ITL/scene/welcome fontWeight bold;
 	/ITL/scene/welcome y -0.5;
+    </inscore-code>
+    <inscore-code>
+	/ITL/scene/toto set txt "Hello world!";
+    </inscore-code>
 
-	/ITL/scene/what1 set txt "An environment for the design of";
-	/ITL/scene/what2 set txt "interactive, augmented music scores.";
-	/ITL/scene/what1 y -0.34;
-	/ITL/scene/what2 y -0.28;
-	/ITL/scene/what* fontSize 18;
-
-	/ITL/scene/score set gmn "[ a f# g ]";
-	#/ITL/scene/score effect $shadow;
-	/ITL/scene/score y 0.03;
-
-	dy = 0.05;
-	/ITL/scene/c1 set txt "INScore is an open source project";
-	/ITL/scene/c2 set txt "developed by GRAME.";
-	/ITL/scene/c3 set txt "More information on";
-	/ITL/scene/c4 set html "<a href='http://inscore.sf.net'>inscore.sf.net</a>";
-	/ITL/scene/c* y 0.28;
-	/ITL/scene/c[2-4] dy $dy;
-	/ITL/scene/c[3-4] dy $dy;
-	/ITL/scene/c4 dy $dy;
-	/ITL/scene/c4 dy 0.01;
-	/ITL/scene/c4 fontWeight bold;
-	/ITL/scene/c4 fontSize 18;
-	/ITL/scene/c4 color $color;
-	/ITL/scene/logo set img 'grame.png';
-	/ITL/scene/logo y 0.7;
-	/ITL/scene/* dy -0.12;
-
-    </inscore>
+    <script type="text/javascript"> 
+    	INScore.start(); 
+    	INScore.register("inscore-code");
+    </script>
 
 </body>
 
