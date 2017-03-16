@@ -35,8 +35,3 @@ enum eEffect {
     kColorize,
     kShadow,
 }
-
-enum ePosition {
-    kRelatif,
-    kAbsolute,
-}
