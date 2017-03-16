@@ -177,10 +177,10 @@ class VHtmlView extends VObjectView {
 	relative2SceneX(x: number) : number				{ return this.fParent.fWidth * (x+1.0) / 2.0; }
 
 	// Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-	relative2SceneWidth(width: number) : number		{ return this.fParent.fWidth * width / 2.0; }
+	relative2SceneWidth(width: number) : number		{ return Math.min(this.fParent.fWidth,this.fParent.fHeight) * width / 2.0; }
 
 	// Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-	relative2SceneHeight(height: number) : number	{ return this.fParent.fHeight * height / 2.0; }
+	relative2SceneHeight(height: number) : number	{ return Math.min(this.fParent.fWidth,this.fParent.fHeight) * height / 2.0; }
 
 	// Maps the referenceRect() width value to the corresponding [0,2] value.
 	scene2RelativeWidth(width: number) : number		{ return (width * 2.0) / this.fParent.fWidth; }
