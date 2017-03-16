@@ -27,12 +27,10 @@ class IGlue {
 		window.addEventListener("resize", inscore_resizeDocument);
     }
     
-    start(scene?: string): void {
-		let target = "/ITL/scene";
-    	if (scene) 
-    		target = "/ITL/" + scene;
+    start(scene: string, position: string): void {
+    	let target = "/ITL/" + scene;
     	INScore.postMessage (target, ["new"]);
-		
+    	INScore.postMessage (target, ["position", position]);	
 		if (gCreateView)
 	    	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
     }
