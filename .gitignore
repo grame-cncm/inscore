@@ -33,7 +33,9 @@ scripts/mobile/*.ibundle
 *.xcodeproj
 *.build
 *.o
+*.graffle
 moc_*.cpp
+
 android
 ios
 macos
