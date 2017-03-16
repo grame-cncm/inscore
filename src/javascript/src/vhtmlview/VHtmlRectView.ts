@@ -21,7 +21,9 @@ class VHtmlRectView extends VHtmlSvg {
 
         let rect = <IRect>obj;
         let radius = rect.getRadius();
-        this.fRect.setAttribute('rx', radius[0].toString());
-        this.fRect.setAttribute('ry', radius[1].toString());
+        if (radius) {
+	        this.fRect.setAttribute('rx', radius[0].toString());
+	        this.fRect.setAttribute('ry', radius[1].toString());
+	    }
     }
 }
