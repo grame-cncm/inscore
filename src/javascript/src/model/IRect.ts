@@ -4,7 +4,7 @@
 class IRect extends IRectShape {
     
     protected kRectType: string;
-    protected fRadius: Array<number> = [0, 0];    
+    protected fRadius: Array<number>  
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
