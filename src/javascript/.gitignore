@@ -2,3 +2,4 @@
 *.js
 testhtml/src
 build/refs.*
+rsrc
