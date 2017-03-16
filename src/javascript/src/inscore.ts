@@ -40,7 +40,7 @@ class INScoreImpl extends INScoreInterface
 			this.fGlue = new IGlue();
 			this.fGlue.initEventHandlers();
 		}
-		this.fGlue.start(scene, position ? position : "absolute");
+		this.fGlue.start(scene, position ? position : "relative");
 		ITLOut.write ("INScore version " + this.version());
 	}
 
