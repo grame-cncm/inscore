@@ -12,6 +12,7 @@
 
 ///<reference path="Constants.ts"/>
 ///<reference path="Methods.ts"/>
+///<reference path="MethodsJS.ts"/>
 ///<reference path="IColor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
@@ -34,7 +35,7 @@ abstract class IObject implements Tree<IObject> {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
-    private   fState: 		objState;
+    private   fState: 		eObjState;
     protected fTypeString:	string;
     protected fName: 		string;
     protected fNewData: 	boolean;
@@ -63,7 +64,7 @@ abstract class IObject implements Tree<IObject> {
         
         this.fDelete = false;
         this.fLock = false;
-        this.fState = objState.kNewObject;
+        this.fState = eObjState.kNewObject;
         this.fNewData = true;        
         this.fParent = parent; 
 
@@ -224,14 +225,14 @@ abstract class IObject implements Tree<IObject> {
     _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
     _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
 	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
-	posModified() : void 			{ this.fPosition.modify(); this.addState (objState.kModified + objState.kSubModified); }
+	posModified() : void 			{ this.fPosition.modify(); this.addState (eObjState.kModified + eObjState.kSubModified); }
    
     
 // METHODS
 //--------------------------------------------------------------  
     addChild(obj: IObject): void { 
         this.fSubNodes.push(obj);
-        this.addState(objState.kSubModified);
+        this.addState(eObjState.kSubModified);
     } 
     
     setParent(parent: IObject): void { this.fParent = parent; }    
@@ -303,9 +304,9 @@ abstract class IObject implements Tree<IObject> {
     newData     (state: boolean): void  { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     isNewData   (): boolean             { return this.fNewData; }
     
-    setState (s: objState): void 	{ this.fState = s; }
-    addState (s: objState): void 	{ this.fState |= s; }
-    getState(): objState 			{ return this.fState; }
+    setState (s: eObjState): void 	{ this.fState = s; }
+    addState (s: eObjState): void 	{ this.fState |= s; }
+    getState(): eObjState 			{ return this.fState; }
     
     getPos(): IPosition 		{ return this.fPosition; }
     getColor(): IColor 			{ return this.fColor; }
@@ -329,7 +330,7 @@ abstract class IObject implements Tree<IObject> {
     
     //-----------------------------
     execute (msg: IMessage): number {
-    	if (msg.size() == 0) return msgStatus.kBadParameters;
+    	if (msg.size() == 0) return eMsgStatus.kBadParameters;
     	let method = msg.message();
     	if (method.correct) {
        		let handler = this.messageHandler(method.value);
@@ -340,11 +341,11 @@ abstract class IObject implements Tree<IObject> {
 
 	        //handler = this.messageHandler("*");
 	        //if (handler) return ;
-	        //return msgStatus.kBadParameters;		
+	        //return eMsgStatus.kBadParameters;		
     	}
     	else {			// sig handler 
     	}
-		return msgStatus.kBadParameters;
+		return eMsgStatus.kBadParameters;
     }
     
     //-----------------------------
@@ -370,9 +371,9 @@ abstract class IObject implements Tree<IObject> {
 		return this.processMsg(beg, tail, msg);
     }
 
-    processMsg (address: string, addressTail: string , msg: IMessage): msgStatus {
+    processMsg (address: string, addressTail: string , msg: IMessage): eMsgStatus {
 
-        let result: number = msgStatus.kBadAddress;
+        let result: number = eMsgStatus.kBadAddress;
         if (this.match(address)) {
             let beg: string = OSCAddress.addressFirst(addressTail);	
             let tail: string = OSCAddress.addressTail(addressTail);
@@ -389,28 +390,28 @@ abstract class IObject implements Tree<IObject> {
                     for (let i = 0; i < n; i++) {
                         let target = targets[i];
                         result |= target.execute(msg);	
-                        if (result & msgStatus.kProcessed) { target.addState(objState.kModified); }
+                        if (result & eMsgStatus.kProcessed) { target.addState(eObjState.kModified); }
                     }
                 }               
-                else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
+                else if (Tools.regexp(beg)) { result = eMsgStatus.kProcessedNoChange; }                    
                 else  { result = this.proxy_create (msg, beg, this).status; }
             }
         }
             
-        if (result & (msgStatus.kProcessed + objState.kSubModified)) { this.addState(objState.kSubModified); }
+        if (result & (eMsgStatus.kProcessed + eObjState.kSubModified)) { this.addState(eObjState.kSubModified); }
     	return result;     
     }
     
     //-------------------------------------------------------------
     // the basic 'set' handler
     //-------------------------------------------------------------
-    set(msg: IMessage): msgStatus	{
+    set(msg: IMessage): eMsgStatus	{
         let type = msg.paramStr(1);
-        if (!type.correct) { return msgStatus.kBadParameters; }
+        if (!type.correct) { return eMsgStatus.kBadParameters; }
 
         if (type.value != this.getTypeString()) {
 			let out = this.proxy_create (msg, this.fName, this.getParent());
-            if (out.status & msgStatus.kProcessed) {
+            if (out.status & eMsgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
 	            this.transferAttributes (out.obj);
 //				this.fParent.cleanupSync();
@@ -418,16 +419,16 @@ abstract class IObject implements Tree<IObject> {
                 return out.status;		
             }
             
-            return msgStatus.kProcessedNoChange;
+            return eMsgStatus.kProcessedNoChange;
         }
-        return msgStatus.kBadParameters;
+        return eMsgStatus.kBadParameters;
     }
     _set(): SetMsgMethod	{ return (m) => this.set(m); }
     
      //-------------------------------------------------------------
     // the basic 'get' handler
     //-------------------------------------------------------------
-    get(msg: IMessage): msgStatus {
+    get(msg: IMessage): eMsgStatus {
         let n = msg.size();
         if ( n == 1 ) {				// get without param should give a 'set' msg
 			let outmsg = this.getSet();
@@ -443,21 +444,21 @@ abstract class IObject implements Tree<IObject> {
         	}
         	else {
         		ITLError.badParameter (msg.toString(), msg.param(i));
-         		return msgStatus.kBadParameters;
+         		return eMsgStatus.kBadParameters;
        		}        	
         }
-        return msgStatus.kProcessedNoChange;
+        return eMsgStatus.kProcessedNoChange;
     }
     _get(): SetMsgMethod	{ return (m) => this.get(m); }
     
      //-------------------------------------------------------------
     // the 'save' handler
     //-------------------------------------------------------------
-    save(msg: IMessage): msgStatus {
+    save(msg: IMessage): eMsgStatus {
     	let out = this.getSetRecurse();
 	    for (let i=0; i < out.length; i++)
         	ITLOut.write (out[i].toString() + ";");
-    	return msgStatus.kProcessedNoChange;
+    	return eMsgStatus.kProcessedNoChange;
     }
     _save(): SetMsgMethod	{ return (m) => this.save(m); }
 
@@ -509,7 +510,7 @@ abstract class IObject implements Tree<IObject> {
     }
  
     //-----------------------------    
-    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
+    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: eMsgStatus, obj?: IObject } 
     				{ return IProxy.execute (msg, name, parent); }         
     
     //-----------------------------    
@@ -528,7 +529,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fDate.cleanup(); 
 		this.fColor.cleanup();
 		this.fPenControl.cleanup();
-		this.setState(objState.kClean);
+		this.setState(eObjState.kClean);
         this.fBrushStyle.cleanup();
         this.fEffect.cleanup();
     }
@@ -536,9 +537,9 @@ abstract class IObject implements Tree<IObject> {
 	//-----------------------------    
 	static timeTaskCleanup(obj: IObject) : void { 
 		let state = obj.getState();
-		if (state & (objState.kNewObject + objState.kModified)) obj.cleanup();		
-		if (state & objState.kSubModified) {
-			obj.setState (objState.kClean);
+		if (state & (eObjState.kNewObject + eObjState.kModified)) obj.cleanup();		
+		if (state & eObjState.kSubModified) {
+			obj.setState (eObjState.kClean);
 			let nodes = obj.getSubNodes();
 			for (let i=0; i<nodes.length; i++) {
 				IObject.timeTaskCleanup(nodes[i]);

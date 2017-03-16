@@ -1,5 +1,5 @@
 
-enum msgStatus { 
+enum eMsgStatus { 
     kBadAddress = 0,
     kProcessed = 1,
     kProcessedNoChange = 2,
@@ -7,7 +7,7 @@ enum msgStatus {
     kCreateFailure = 8,
 }
 
-enum objState {
+enum eObjState {
     kClean = 0,
     kNewObject = 1,
     kModified = 2,
@@ -15,7 +15,7 @@ enum objState {
     kMasterModified = 8, 
 }
 
-enum penStyle {
+enum ePenStyle {
     kSolid = 0,
     kDash,
     kDot,
@@ -24,14 +24,19 @@ enum penStyle {
     kLast
 }
 
-enum brushStyle{
+enum eBrushStyle{
     kNone,
     kSolid,
 }
 
-enum effect {
+enum eEffect {
     kNone,
     kBlur,
     kColorize,
     kShadow,
+}
+
+enum ePosition {
+    kRelatif,
+    kAbsolute,
 }

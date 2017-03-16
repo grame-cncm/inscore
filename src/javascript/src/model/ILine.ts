@@ -26,16 +26,16 @@ class ILine extends IObject {
 
     getColorTarget(): IColor 		{ return this.fPenControl.fPenColor; };
     
-    set(msg:IMessage): msgStatus {
+    set(msg:IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
         
         if (msg.size() == 5) {
             let mode = msg.paramStr(2); 
             let a = msg.paramNum(3), b = msg.paramNum(4); 
             
-            if (!mode.correct)				return msgStatus.kBadParameters;
-            if (!a.correct || !b.correct) 	return msgStatus.kBadParameters;
+            if (!mode.correct)				return eMsgStatus.kBadParameters;
+            if (!a.correct || !b.correct) 	return eMsgStatus.kBadParameters;
                
             if (mode.value == "xy") {
                 this.fWAMode = false;
@@ -53,11 +53,11 @@ class ILine extends IObject {
                 let y = Math.round(a.value * Math.sin(Math.PI * this.fLAngle / 180) * 1000) / 1000;
                 this.setPoint( new TPoint(x, y) );
             }
-            else return msgStatus.kBadParameters;
+            else return eMsgStatus.kBadParameters;
             this.newData(true);
-            status = msgStatus.kProcessed;
+            status = eMsgStatus.kProcessed;
         }
-        else status = msgStatus.kBadParameters;
+        else status = eMsgStatus.kBadParameters;
         return status;
     }
 

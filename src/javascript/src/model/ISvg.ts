@@ -14,23 +14,23 @@ class ISVG extends IObject {
     
     getSvg(): string { return this.fSvg; } 
     
-    set(msg:IMessage): msgStatus {
+    set(msg:IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
         
         let n = msg.size();
         if (n == 3) {
             let svg = msg.paramStr(2);
-            if (!svg.correct) { return msgStatus.kBadParameters; }
+            if (!svg.correct) { return eMsgStatus.kBadParameters; }
             
             if (svg.value != this.getSvg()) {
                 this.setSvg(svg.value);
                 this.newData(true);                
-                status = msgStatus.kProcessed;
+                status = eMsgStatus.kProcessed;
             }
-            else status = msgStatus.kProcessedNoChange;
+            else status = eMsgStatus.kProcessedNoChange;
         }
-        else status = msgStatus.kBadParameters;
+        else status = eMsgStatus.kBadParameters;
         return status;                
     }
     

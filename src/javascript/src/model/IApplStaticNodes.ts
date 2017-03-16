@@ -48,15 +48,15 @@ class IApplLog extends IStaticNode {
 	clear(): void 				{ this.fClear = true; this.fLog=[]; }
 	_clear(): SetVoidMethod 	{ return () => this.clear(); }
 	// support the scale message due to the current strategy to handle windows resize
-	_scale(): SetMsgMethod 		{ return (m) => { return msgStatus.kProcessedNoChange; } }
+	_scale(): SetMsgMethod 		{ return (m) => { return eMsgStatus.kProcessedNoChange; } }
 
-	write(msg: IMessage): msgStatus {
+	write(msg: IMessage): eMsgStatus {
 		let p = msg.params();
 		let s = "";
 		for (let i=1; i<p.length; i++)
 			s += p[i].toString() + " ";
 		this.fLog.push(s);
-		return msgStatus.kProcessed; 
+		return eMsgStatus.kProcessed; 
 	}
 	_write(): SetMsgMethod	{ return (m) => this.write(m); }
 

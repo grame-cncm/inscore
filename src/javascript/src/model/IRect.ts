@@ -16,10 +16,10 @@ class IRect extends IRectShape {
     } 
     
     getRadius() : Array<number>             { return this.fRadius }
-    setRadius(radius : Array<number>): msgStatus { 
-    	if (radius.length != 2) return msgStatus.kBadParameters;
+    setRadius(radius : Array<number>): eMsgStatus { 
+    	if (radius.length != 2) return eMsgStatus.kBadParameters;
     	this.fRadius = radius;
-       	return msgStatus.kProcessed;
+       	return eMsgStatus.kProcessed;
     }
 
     _getRadius()  {return () => this.getRadius()}

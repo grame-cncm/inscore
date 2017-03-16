@@ -35,10 +35,10 @@ class IAppl extends IObject {
 	positionAble(): void	{}
 	timeAble() : void		{}
 
-    processMsg (address: string, addressTail: string , msg: IMessage): msgStatus {
+    processMsg (address: string, addressTail: string , msg: IMessage): eMsgStatus {
     	this.fReceivedMsgs++;
 
-		let status = msgStatus.kBadAddress;
+		let status = eMsgStatus.kBadAddress;
 		let head = address;
 		let tail = addressTail;
 
@@ -59,16 +59,16 @@ class IAppl extends IObject {
 	
 		else if (this.match(head)) {		// the message is for the application itself
 			status = this.execute(msg);
-			if (status & msgStatus.kProcessed)
-				this.setState(objState.kModified);
+			if (status & eMsgStatus.kProcessed)
+				this.setState(eObjState.kModified);
 		}
 		return status;
     }
 
 /*
-	protected newObj (msg: IMessage, name: string): { status: msgStatus, obj?: IObject } 
+	protected newObj (msg: IMessage, name: string): { status: eMsgStatus, obj?: IObject } 
     				{ return this.proxy_create(msg, name, this); }                
-    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject }	
+    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: eMsgStatus, obj?: IObject }	
     				{ return IProxy.execute (msg, name, parent); }
 */
 }

@@ -31,8 +31,8 @@ abstract class VHtmlSvg extends VHtmlView {
 
 	updateColor (obj: IObject): void {
 		let target = this.getSVGTarget();
-		let modified = (obj.fColor.modified() || obj.fBrushStyle.brushModified()) && (obj.fBrushStyle.getBrushStyle() != brushStyle.kNone);
-		if (obj.fBrushStyle.brushModified() && (obj.fBrushStyle.getBrushStyle() == brushStyle.kNone)) {
+		let modified = (obj.fColor.modified() || obj.fBrushStyle.brushModified()) && (obj.fBrushStyle.getBrushStyle() != eBrushStyle.kNone);
+		if (obj.fBrushStyle.brushModified() && (obj.fBrushStyle.getBrushStyle() == eBrushStyle.kNone)) {
 			target.style.fill = "none";
 		}
 		else if (modified) {

@@ -14,18 +14,18 @@ class IImage extends IObject {
     colorAble(): void { }		// color attributes are not available for images
     getFile(): string { return this.fFile; }
 
-    set(msg:IMessage): msgStatus {
+    set(msg:IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
         
         if (msg.size() == 3) {
             let file = msg.paramStr(2);
-            if (!file.correct) return msgStatus.kBadParameters;
+            if (!file.correct) return eMsgStatus.kBadParameters;
         	this.fFile = file.value;
             this.newData(true);
-        	status = msgStatus.kProcessed;
+        	status = eMsgStatus.kProcessed;
         }
-        else status = msgStatus.kBadParameters;
+        else status = eMsgStatus.kBadParameters;
         return status;
     }
     

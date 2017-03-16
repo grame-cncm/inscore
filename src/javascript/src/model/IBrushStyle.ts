@@ -5,25 +5,25 @@
 class IBrushStyle {
 
     protected fBrushModified: boolean;
-    fBrush: brushStyle;
+    fBrush: eBrushStyle;
 
     constructor() {
-        this.fBrush = brushStyle.kSolid;
+        this.fBrush = eBrushStyle.kSolid;
         this.fBrushModified = false;
     }
 
     static brushStyleStr2Num(str: string): { correct: boolean, val: number } {
         switch (str) {
-        	case "solid": 	return { correct: true, val: brushStyle.kSolid }
-        	case "none": 	return { correct: true, val: brushStyle.kNone }
+        	case "solid": 	return { correct: true, val: eBrushStyle.kSolid }
+        	case "none": 	return { correct: true, val: eBrushStyle.kNone }
         } 
         return { correct: false, val: 0 };
     }
 
     static brushStyleNum2Str(n: number): { correct: boolean, val: string } {
         switch (n) {
-        	case brushStyle.kSolid: 	return { correct: true, val: "solid" }
-        	case brushStyle.kNone: 	return { correct: true, val: "none" }
+        	case eBrushStyle.kSolid: 	return { correct: true, val: "solid" }
+        	case eBrushStyle.kNone: 	return { correct: true, val: "none"  }
         } 
         return { correct: false, val: "" };
     }
@@ -34,7 +34,7 @@ class IBrushStyle {
     brushModified(): boolean 	{ return this.fBrushModified; }
     modify()  : void 			{ this.fBrushModified = true; }
 
-    getBrushStyle()  : brushStyle 				{ return this.fBrush;}
+    getBrushStyle()  : eBrushStyle 				{ return this.fBrush;}
     _getBrushStyle() : GetStringMethod 			{ return () => IBrushStyle.brushStyleNum2Str(this.getBrushStyle()).val; }
 
     setBrushStyle (brushStyle : string): void 	{

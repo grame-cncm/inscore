@@ -49,10 +49,10 @@ class ICurve extends IObject
     
     _getPoints(): GetArrayMethod        { return () => this.fPoints; }
 
-    set(msg: IMessage): msgStatus	{
+    set(msg: IMessage): eMsgStatus	{
         let status = super.set(msg);
         
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status; 
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status; 
 
         if ( (msg.size() > 1) && ( (msg.size() % 8)==2 ) ) {
             //Build the vector of points reading the message.
@@ -65,7 +65,7 @@ class ICurve extends IObject
                 
                 if (!ax.correct	|| !ay.correct || !bx.correct || !by.correct ||
                     !cx.correct || !cy.correct || !dx.correct || !dy.correct) {
-                        return msgStatus.kBadParameters;
+                        return eMsgStatus.kBadParameters;
                 }                
                 let bezierCurve = new BezierCurve( ax.value, ay.value, bx.value, by.value, cx.value, cy.value, dx.value, dy.value );    
                 curveData.push( bezierCurve );
@@ -75,17 +75,17 @@ class ICurve extends IObject
             if ( curveData.length != this.getPoints().length ) {
                 this.setPoints(curveData);
                 this.newData(true);
-                return msgStatus.kProcessed;
+                return eMsgStatus.kProcessed;
             }
             for (let i = 0 ; i < curveData.length ; i++ ) {
                 if (curveData[i] != this.getPoints()[i]) {
                     this.setPoints(curveData);
                     this.newData(true);
-                    return msgStatus.kProcessed;
+                    return eMsgStatus.kProcessed;
                 }
             }
         }
-        return msgStatus.kBadParameters;
+        return eMsgStatus.kBadParameters;
     }
 
     toArray(): Array<number> {

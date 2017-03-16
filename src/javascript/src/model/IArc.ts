@@ -18,7 +18,7 @@ class IArc extends IRectShape
         this.fRange  = 0;
         this.fClose  = 0;
         this.fPenControl.setPenWidth(1);
-        this.fBrushStyle.fBrush = brushStyle.kNone;
+        this.fBrushStyle.fBrush = eBrushStyle.kNone;
     }
 
 // HANDLERS
@@ -32,19 +32,19 @@ class IArc extends IRectShape
         this.fMsgHandlerMap[kdstart_SetMethod]      = new TMsgHandlerNum  (this._setDStart());
     }
 
-    set(msg: IMessage): msgStatus
+    set(msg: IMessage): eMsgStatus
     {
         let status = super.set(msg);
         // Cas ou le type est différent, le proxy est utilisé dans super.set()
-         if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+         if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
 
         // Vérification des paramêtres du message "set"
         if (msg.size() == 6)
         {
             let width  =  msg.paramNum(2), height = msg.paramNum(3);
-            if (!width.correct || !height.correct) { return msgStatus.kBadParameters; }
+            if (!width.correct || !height.correct) { return eMsgStatus.kBadParameters; }
             let start  =  msg.paramNum(4), range  = msg.paramNum(5);
-            if (!start.correct || !range.correct) { return msgStatus.kBadParameters; }
+            if (!start.correct || !range.correct) { return eMsgStatus.kBadParameters; }
 
             // Si les valeurs des attributs ne sont pas les mêmes
             if ( (width.value != this.fPosition.getWidth()) || (height.value != this.fPosition.getHeight())
@@ -55,11 +55,11 @@ class IArc extends IRectShape
                 this.fStart = start.value;
                 this.fRange = range.value;
                 this.newData(true);
-                status = msgStatus.kProcessed;
+                status = eMsgStatus.kProcessed;
             }
-            else status = msgStatus.kProcessedNoChange;
+            else status = eMsgStatus.kProcessedNoChange;
         }
-        else status = msgStatus.kBadParameters;
+        else status = eMsgStatus.kBadParameters;
         return status;
     }
 

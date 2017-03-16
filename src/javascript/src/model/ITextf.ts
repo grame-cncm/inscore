@@ -23,10 +23,10 @@ class ITextf extends IText {
 
 // SET HANDLER
 //--------------------------------------------------------------    
-   set(msg: IMessage): msgStatus { 
+   set(msg: IMessage): eMsgStatus { 
 		        console.log("ITextf set: " + msg);
         let status = super.set(msg);
-        if (status != msgStatus.kProcessed) return status; 
+        if (status != eMsgStatus.kProcessed) return status; 
 
         let n = msg.size();
         if (n == 3) {
@@ -38,9 +38,9 @@ class ITextf extends IText {
 		        console.log("readAsText: " + b);
         		reader.onloadend = this._setText(reader);
 		        reader.readAsText(b);
-	            status = msgStatus.kProcessed;
+	            status = eMsgStatus.kProcessed;
         	}
-	        else status = msgStatus.kBadParameters;        	
+	        else status = eMsgStatus.kBadParameters;        	
         }
         return status;
     }

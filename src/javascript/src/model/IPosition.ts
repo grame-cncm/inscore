@@ -172,9 +172,9 @@ class IPosition {
     _setRotateY(): SetNumMethod 	{ return (n) => this.setRotateY(n); };
     _setRotateZ(): SetNumMethod 	{ return (n) => this.setRotateZ(n); };
     
-    setShear(a:Array<number>): msgStatus {
-        if(a.length != 2) return msgStatus.kBadParameters;
+    setShear(a:Array<number>): eMsgStatus {
+        if(a.length != 2) return eMsgStatus.kBadParameters;
         this.fShear = a; this.fModified = true;
-        return msgStatus.kProcessed }
+        return eMsgStatus.kProcessed }
     _setShear(): SetNumArrayMethod  { return (a: Array<number>) => this.setShear(a)};
 }

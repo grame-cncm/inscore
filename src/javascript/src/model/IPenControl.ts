@@ -6,17 +6,17 @@
 class IPenControl {
     fPenWidth: number;
     fPenColor: IColor;
-    fPenStyle: penStyle;
+    fPenStyle: ePenStyle;
     protected fModified : boolean; 
     
-    private static fPenStyleStr2Num: { [id: string] : penStyle; } = {};
+    private static fPenStyleStr2Num: { [id: string] : ePenStyle; } = {};
     private static fPenStyleNum2Str: { [id: number] : string; } = {};
     
     constructor(type: string) {
         this.fPenWidth = 0;
         if (type == kLineType) { this.fPenWidth = 1; }
         this.fPenColor = new IColor([0, 0, 0, 255]);
-        this.fPenStyle = penStyle.kSolid;
+        this.fPenStyle = ePenStyle.kSolid;
         IPenControl.buildPenStyle();
     }
    
@@ -27,17 +27,17 @@ class IPenControl {
    	modify()  : void 	{ this.fModified = true; }
    
     static buildPenStyle(): void {
-        IPenControl.fPenStyleStr2Num["solid"]         = penStyle.kSolid;
-        IPenControl.fPenStyleStr2Num["dash"]          = penStyle.kDash;
-        IPenControl.fPenStyleStr2Num["dot"]           = penStyle.kDot;
-        IPenControl.fPenStyleStr2Num["dashDot"]       = penStyle.kDashDot;
-        IPenControl.fPenStyleStr2Num["dashDotDot"]    = penStyle.kDashDotDot;
+        IPenControl.fPenStyleStr2Num["solid"]         = ePenStyle.kSolid;
+        IPenControl.fPenStyleStr2Num["dash"]          = ePenStyle.kDash;
+        IPenControl.fPenStyleStr2Num["dot"]           = ePenStyle.kDot;
+        IPenControl.fPenStyleStr2Num["dashDot"]       = ePenStyle.kDashDot;
+        IPenControl.fPenStyleStr2Num["dashDotDot"]    = ePenStyle.kDashDotDot;
 
-        IPenControl.fPenStyleNum2Str[penStyle.kSolid]         = "solid";
-        IPenControl.fPenStyleNum2Str[penStyle.kDash]          = "dashed";
-        IPenControl.fPenStyleNum2Str[penStyle.kDot]           = "dotted";
-        IPenControl.fPenStyleNum2Str[penStyle.kDashDot]       = "dashDot";
-        IPenControl.fPenStyleNum2Str[penStyle.kDashDotDot]    = "dashDotDot";
+        IPenControl.fPenStyleNum2Str[ePenStyle.kSolid]         = "solid";
+        IPenControl.fPenStyleNum2Str[ePenStyle.kDash]          = "dashed";
+        IPenControl.fPenStyleNum2Str[ePenStyle.kDot]           = "dotted";
+        IPenControl.fPenStyleNum2Str[ePenStyle.kDashDot]       = "dashDot";
+        IPenControl.fPenStyleNum2Str[ePenStyle.kDashDotDot]    = "dashDotDot";
     }
 
     static penStyleStr2Num(str: string): { correct: boolean, val: number } {
@@ -62,9 +62,9 @@ class IPenControl {
 
     setPenWidth(penWidth : number)  : void  { this.fPenWidth = penWidth; this.modify(); }
     setPenColor(penColor : IColor)  : void  { this.fPenColor.set(penColor); this.modify();}
-    setPenStyle(penStyle : string)  : void  { 
-        let style = IPenControl.penStyleStr2Num (penStyle);
-        if (!style.correct) { ITLError.badParameter("penStyle", penStyle);}
+    setPenStyle(ePenStyle : string)  : void  { 
+        let style = IPenControl.penStyleStr2Num (ePenStyle);
+        if (!style.correct) { ITLError.badParameter("ePenStyle", ePenStyle);}
         else { this.fPenStyle = style.val; this.modify(); }
     }
     setPenAlpha(penAlpha : number)  : void  { this.fPenColor.setA(penAlpha); this.modify(); }

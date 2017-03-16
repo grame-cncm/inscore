@@ -15,7 +15,7 @@ class INScoreImpl extends INScoreInterface
 	private fGlue: IGlue;
 	private fErrStrings = new Array<string>();
 
-	protected status2string (err: msgStatus) : string {
+	protected status2string (err: eMsgStatus) : string {
 		let str = this.fErrStrings[err];
 		return (str ? str : "unknown error " + err);
 	}
@@ -23,11 +23,11 @@ class INScoreImpl extends INScoreInterface
 	// ------------------------------------------------------------
 	constructor ()		{ 
 		super();
-		this.fErrStrings[msgStatus.kBadAddress] = "bad OSC address";
-		this.fErrStrings[msgStatus.kProcessed] = "processed";
-		this.fErrStrings[msgStatus.kProcessedNoChange] = "processed without change";
-		this.fErrStrings[msgStatus.kBadParameters] = "bad parameter";
-		this.fErrStrings[msgStatus.kCreateFailure] = "create failed";
+		this.fErrStrings[eMsgStatus.kBadAddress] = "bad OSC address";
+		this.fErrStrings[eMsgStatus.kProcessed] = "processed";
+		this.fErrStrings[eMsgStatus.kProcessedNoChange] = "processed without change";
+		this.fErrStrings[eMsgStatus.kBadParameters] = "bad parameter";
+		this.fErrStrings[eMsgStatus.kCreateFailure] = "create failed";
 	}
 
 	// ------------------------------------------------------------
@@ -46,8 +46,8 @@ class INScoreImpl extends INScoreInterface
 
 	getRoot() : IObject		{ return this.fGlue.getRoot(); }
 
-	checkStatus (status: msgStatus, msg: IMessage) : void {
-    	if (!(status & msgStatus.kProcessed + msgStatus.kProcessedNoChange))
+	checkStatus (status: eMsgStatus, msg: IMessage) : void {
+    	if (!(status & eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange))
     		ITLError.write (msg.toString() + ": " + this.status2string(status));
 	}
 

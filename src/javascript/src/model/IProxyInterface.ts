@@ -7,5 +7,5 @@
 var IProxy : IProxyInterface;
 
 abstract class IProxyInterface {
-	abstract execute (msg: IMessage, objName: string, parent: IObject): { status: msgStatus, obj?: IObject };
+	abstract execute (msg: IMessage, objName: string, parent: IObject): { status: eMsgStatus, obj?: IObject };
 }

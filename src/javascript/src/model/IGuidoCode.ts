@@ -56,20 +56,20 @@ class IGuidoCode extends IObject {
 	    return svg;
     }
     
-    set(msg: IMessage): msgStatus {
+    set(msg: IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
 
-		if (msg.size() != 3) return msgStatus.kBadParameters;
+		if (msg.size() != 3) return eMsgStatus.kBadParameters;
         let gmn = msg.paramStr(2);
-		if (!gmn.correct) return msgStatus.kBadParameters;
+		if (!gmn.correct) return eMsgStatus.kBadParameters;
         let ar = this.str2AR (gmn.value);
-		if (!ar) return msgStatus.kBadParameters;
+		if (!ar) return eMsgStatus.kBadParameters;
 		
 		this.fGMN = gmn.value;
 		this.fSVG = this.AR2SVG (ar);
 		IGuidoCode.fGuidoEngine.freeAR (ar);
-        return msgStatus.kProcessed;
+        return eMsgStatus.kProcessed;
     }
     
     getSet(): IMessage	{ 

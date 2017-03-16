@@ -57,20 +57,20 @@ class IWebSocket extends IObject {
 
 
 
-    set(msg: IMessage): msgStatus {
+    set(msg: IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
 
         // Two parameters are mandatory : port and notification time.
-        if (msg.size() != 3) return msgStatus.kBadParameters;
+        if (msg.size() != 3) return eMsgStatus.kBadParameters;
 
         let port = -1;
         let frequency = -1;
 
         let a = msg.paramNum(3), b = msg.paramNum(4);
 
-        if (!a.correct  ||  !b.correct)     { return msgStatus.kBadParameters; }
-        if (!a.value    ||  !b.value)       { return msgStatus.kBadParameters; }
+        if (!a.correct  ||  !b.correct)     { return eMsgStatus.kBadParameters; }
+        if (!a.value    ||  !b.value)       { return eMsgStatus.kBadParameters; }
 
         let restart = false;
         if (frequency != this.fFrequency) {
@@ -86,10 +86,10 @@ class IWebSocket extends IObject {
         if(restart) {
             if ( !this.start(port) ) {
                 //ITLErr << "Cannot create web socket server on port " << this.fPort << ITLEndl;
-                return msgStatus.kCreateFailure;
+                return eMsgStatus.kCreateFailure;
             }
         }
-        return msgStatus.kProcessed;
+        return eMsgStatus.kProcessed;
     }
 
 

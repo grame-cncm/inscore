@@ -22,9 +22,9 @@ class IPolygon extends IObject {
     
     _getPoints(): GetArrayMethod        { return () => this.fPoints; }
     
-    set(msg: IMessage): msgStatus {
+    set(msg: IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status; 
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status; 
 
         if ( (msg.size() > 1) && ( ((msg.size()-1) % 2)==1 ) ) {
 
@@ -32,7 +32,7 @@ class IPolygon extends IObject {
             let points = new Array<TPoint>();
             for (let i = 2 ; i < msg.size() ; i+=2 ) {
                 let a = msg.paramNum(i), b = msg.paramNum(i+1);
-                if (!a.correct || !b.correct) { return msgStatus.kBadParameters; }
+                if (!a.correct || !b.correct) { return eMsgStatus.kBadParameters; }
                 points.push( new TPoint(a.value, b.value) );
             }
 
@@ -40,18 +40,18 @@ class IPolygon extends IObject {
             if ( points.length != this.getPoints().length ) {
                 this.setPoints(points);
                 this.newData(true);
-                return msgStatus.kProcessed;
+                return eMsgStatus.kProcessed;
             }
             for (let i = 0 ; i < points.length ; i++ ) {
                 if (points[i] != this.getPoints()[i]) {
                     this.setPoints(points);
                     this.newData(true);
-                    return msgStatus.kProcessed;
+                    return eMsgStatus.kProcessed;
                 }
             }
-            return msgStatus.kProcessedNoChange;
+            return eMsgStatus.kProcessedNoChange;
         }
-        return msgStatus.kBadParameters;
+        return eMsgStatus.kBadParameters;
     }
     
     getSet(): IMessage	{ 

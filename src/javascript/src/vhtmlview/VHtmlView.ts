@@ -147,11 +147,11 @@ class VHtmlView extends VObjectView {
 
 		let elt = this.getHtml();
 		switch (obj.fEffect.type()) {
-			case effect.kNone : 	this.setNone();
+			case eEffect.kNone : 	this.setNone();
 				break;
-			case effect.kBlur :		this.setBlur( obj.fEffect.param(0) );
+			case eEffect.kBlur :		this.setBlur( obj.fEffect.param(0) );
 				break;
-			case effect.kShadow : 	this.setShadow ( obj.fEffect.params() );
+			case eEffect.kShadow : 	this.setShadow ( obj.fEffect.params() );
 				break;
 		}
 	}
