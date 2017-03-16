@@ -3,12 +3,13 @@
 ///<reference path="IRectShape.ts"/>
 ///<reference path="../lib/TEnums.ts"/>
 
-const kabsolute : string = "absolute";
-const krelative : string = "relative";
 
 class IScene extends IRectShape {
 
-        fAbsolutePos          : boolean;
+	private static kAbsolute : string = "absolute";
+	private static kRelative : string = "relative";
+
+    	fAbsolutePos          : boolean;
         fPositionTypeModified : boolean;
 
     constructor(name: string, parent: IObject) {
@@ -24,17 +25,18 @@ class IScene extends IRectShape {
         this.fGetMsgHandlerMap[kposition_GetSetMethod]  = new TGetMsgHandlerText(this._getPositionStyle());
     }
 
-    getPositionStyle()   : string 	    	{ if (this.fAbsolutePos) return kabsolute;
-                                              else return krelative;}
+    getPositionStyle()   : string 	    	{ return this.fAbsolutePos ? IScene.kAbsolute : IScene.kRelative; }
     _getPositionStyle() : GetStringMethod 	{ return () => this.getPositionStyle(); }
 
     setPositionStyle (position : string): void 	{
         switch (position){
-            case kabsolute : this.fAbsolutePos = true;
-            break;
-            case krelative : this.fAbsolutePos = false;
-            break;
-            default : ITLError.badParameter("position", position);}}
+            case IScene.kAbsolute : this.fAbsolutePos = true;
+            	break;
+            case IScene.kRelative : this.fAbsolutePos = false;
+            	break;
+            default : ITLError.badParameter("position", position);
+        }
+    }
     _setPositionStyle(): SetStringMethod    { return (type : string) => this.setPositionStyle(type) }
 
     getRScale(): number 		{ return this.fPosition.getScale(); }    
