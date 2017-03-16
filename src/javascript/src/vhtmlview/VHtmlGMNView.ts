@@ -6,7 +6,7 @@
 interface RefreshMethod 	{ (): void; }
 
 class VHtmlGMNView extends VHtmlSvg {
-	static fGMNScale = 2.6;		// scaling applied to get homogeneous size with inscore app
+	static fGMNScale = 2.3;		// scaling applied to get homogeneous size with inscore app
     
     constructor(parent: VHtmlView) {
         super(parent); 
@@ -16,13 +16,17 @@ class VHtmlGMNView extends VHtmlSvg {
 
 	getViewScale (obj: IObject): number {
 		// this is to ensure a size similar to the native app version
-		return super.getViewScale(obj) * 2.3; 
+		return super.getViewScale(obj) * VHtmlGMNView.fGMNScale; 
 	}
 
 	getSize (obj: IObject):  {w: number, h: number } {
+        let bbox = this.fSVG.getBoundingClientRect();
+		var cw = bbox.right - bbox.left;
+		var ch = bbox.bottom - bbox.top;
+
 		let strokeWidth = obj.fPenControl.getPenWidth();
-        let w = this.fSVG.clientWidth + strokeWidth;
-        let h = this.fSVG.clientHeight + strokeWidth;
+        let w = cw + strokeWidth;
+        let h = ch + strokeWidth;
 		return { w: (w ? w : 1), h: (h ? h : 1) };
 	}
       
@@ -38,7 +42,7 @@ class VHtmlGMNView extends VHtmlSvg {
 
 	updatePenControl(obj:IObject): void 	{ this.basePenControl (obj); }
 	
-	getFirstSVGGroup (root: Node): SVGSVGElement {
+	private getFirstSVGGroup (root: Node): SVGSVGElement {
 		let g : Node;
 	    let childs = root.childNodes;
 		for (let i = 0; i < childs.length && !g; i++) {
@@ -68,8 +72,14 @@ class VHtmlGMNView extends VHtmlSvg {
 	_updateView	( obj: IObject) : RefreshMethod { return () => this.updateView (obj); }
 
 	updateObjectSize ( obj: IObject) : void {
-        let w = this.scene2RelativeWidth(this.fSVG.clientWidth);
-        let h = this.scene2RelativeHeight(this.fSVG.clientHeight);
+//		let cw = this.fSVG.clientWidth;
+//		let ch = this.fSVG.clientHeight;
+
+        let bbox = this.fSVG.getBoundingClientRect();
+		var cw = bbox.right - bbox.left;
+		var ch = bbox.bottom - bbox.top;
+        let w = this.scene2RelativeWidth (cw);
+        let h = this.scene2RelativeHeight(ch);
 		obj.fPosition.setWidth (w);
 		obj.fPosition.setHeight (h);
 		if (!w || !h)  setTimeout (this._updateView(obj), 50) ;		
