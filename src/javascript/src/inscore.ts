@@ -75,6 +75,3 @@ class INScoreImpl extends INScoreInterface
 }
 
 INScore = new INScoreImpl();
-function StartINScore(scene?: string) : void { 
-	INScore.start(scene); 
-}
