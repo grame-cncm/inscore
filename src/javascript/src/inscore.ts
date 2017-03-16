@@ -35,12 +35,12 @@ class INScoreImpl extends INScoreInterface
 	// ------------------------------------------------------------
 	version () : number { return this.fVersion; }
 
-	start (scene?: string) : void {
+	start (scene: string, position?: string) : void {
 		if (!this.fGlue) {
 			this.fGlue = new IGlue();
 			this.fGlue.initEventHandlers();
 		}
-		this.fGlue.start(scene);
+		this.fGlue.start(scene, position ? position : "absolute");
 		ITLOut.write ("INScore version " + this.version());
 	}
 
