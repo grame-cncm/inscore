@@ -1,4 +1,0 @@
-/ITL/scene/rect set rect 1.5 0.7;
-/ITL/scene/rect color 255 255 255 255;
-
-/ITL/scene/myObject set pianoroll "[ a b g ]";

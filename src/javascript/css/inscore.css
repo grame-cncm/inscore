@@ -15,6 +15,13 @@
     border-radius: 10px;
 }
 
+.inscore-scene {
+	border: 1px black solid;
+    box-shadow: 2px 2px 4px gray;
+    border-radius: 8px;
+    background-color: rgb(250,250,250);
+}
+
 .inscore-arc {
 	border: 0px blue solid;
 	fill:none;
@@ -22,25 +29,13 @@
 	stroke-width:6
 }
 
-.inscore-line {
-}
-
-.inscore-polygon {
-	border: 0px blue solid;
-}
-
-.inscore-img {
-	border: 0px blue solid;
-}
-
-.inscore-video {
-	border: 0px blue solid;
-}
-
+.inscore-line 		{ }
+.inscore-polygon 	{ }
+.inscore-img 		{ border: 0px blue solid; }
+.inscore-video 		{ border: 0px blue solid; }
 .inscore-ellipse 	{ }
 .inscore-curve 		{ }
 .inscore-txt 	{ 
-	border: 0px blue solid;
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
 	font-style: normal; 
@@ -53,7 +48,6 @@
 	font-weight: normal; 
 	font-style: normal; 
 	font-size: 14px;
-	border: 0px green solid;
 }
 
 .inscore-log 	{ 
@@ -63,10 +57,7 @@
 	color: rgb(120,120,120); 
 }
 
-.inscore-gmn {
-	border: 0px blue solid;
-}
-
+.inscore-gmn 		{ border: 0px blue solid; }
 .inscore-pianoroll 	{ }
 .inscore-svg 		{ }
 

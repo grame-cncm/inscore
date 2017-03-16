@@ -1,8 +1,0 @@
-/ITL/scene/ell set ellipse 1.5 1;
-/ITL/scene/ell color 100 100 100 100;
-
-/ITL/scene/point set ellipse 0.02 0.02;
-/ITL/scene/point color 255 0 0 255;
-
-/ITL/scene/arc set arc 1.5 1 -30 230;
-/ITL/scene/arc close 1;
