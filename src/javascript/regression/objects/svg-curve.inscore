@@ -1,4 +1,0 @@
-/ITL/scene/curve set curve -0.75 0.75 0.75 0.75 -0.75 -0.75 0.75 -0.75;
-
-/ITL/scene/curve2 set curve -0.75 0.75 0.75 0.75 -0.75 -0.75 0.75 -0.75;
-/ITL/scene/curve2 rotatez 90;
