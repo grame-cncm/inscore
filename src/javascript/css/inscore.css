@@ -12,13 +12,10 @@
 }
 
 .inscore-rect {
-	position: absolute;
-    border-radius: 4px;
-/*    background-color: rgba(220,220,250,200);*/
+    border-radius: 10px;
 }
 
 .inscore-arc {
-	position: absolute;
 	border: 0px blue solid;
 	fill:none;
 	stroke:red;
@@ -26,28 +23,23 @@
 }
 
 .inscore-line {
-	position: absolute;
 }
 
 .inscore-polygon {
-	position: absolute;
 	border: 0px blue solid;
 }
 
 .inscore-img {
-	position: absolute;
 	border: 0px blue solid;
 }
 
 .inscore-video {
-	position: absolute;
 	border: 0px blue solid;
 }
 
-.inscore-ellipse 	{ position: absolute; }
-.inscore-curve 		{ position: absolute; }
+.inscore-ellipse 	{ }
+.inscore-curve 		{ }
 .inscore-txt 	{ 
-	position: absolute; 
 	border: 0px blue solid;
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
@@ -57,7 +49,6 @@
 }
 
 .inscore-html 	{ 
-	position: absolute; 
 	font-family: 'CarlitoRegular'; 
 	font-weight: normal; 
 	font-style: normal; 
@@ -73,17 +64,9 @@
 }
 
 .inscore-gmn {
-	position: absolute;
 	border: 0px blue solid;
 }
 
-.inscore-pianoroll {
-	position: absolute;
-	border: 0px blue solid;
-}
-
-.inscore-svg {
-	position: absolute;
-	border: 0px blue solid;
-}
+.inscore-pianoroll 	{ }
+.inscore-svg 		{ }
 

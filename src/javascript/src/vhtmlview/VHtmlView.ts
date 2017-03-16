@@ -13,6 +13,7 @@ class VHtmlView extends VObjectView {
     	this.fParent = parent;
     	this.setPos(0, 0, 100, 100);
     	this.fHtmlElt = elt; 
+    	this.fHtmlElt.style.position = "absolute";		// absolute position enforced for all elements
     	if (parent) parent.getHtml().appendChild (elt);
    }
 
