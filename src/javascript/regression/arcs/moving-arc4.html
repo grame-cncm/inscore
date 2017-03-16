@@ -9,7 +9,6 @@
 
     <script src="../../inscore.js"></script>
     <script src="../../libGUIDOEngine.js"></script>
-    <script src="../../html/inscore-code.js"></script>
 
     <script>
         function showlog(v) {
@@ -24,7 +23,6 @@
 <h1>INScore</h1>
 <p><a title="Open INScore log" onclick='showlog(1)', style="cursor:pointer;">INScore log</a></p>
 
-<script> StartINScore(); </script>
 <inscore-code>
     &lt;?javascript
 
@@ -54,14 +52,17 @@
     /ITL/scene/elli set ellipse $w $h;
     /ITL/scene/elli color 0 0 0 50;
 
+    /ITL/scene/arc* brushStyle solid;
+
     &lt;?javascript turnArc(); ?>
 
 </inscore-code>
 
+	<script> 
+		INScore.start(); 
+		INScore.register("inscore-code"); 
+	</script>
 
-<script> start_inscore_code(); </script>
-
-<script type="text/javascript"> StartINScore() </script>
 </body>
 
 </html>

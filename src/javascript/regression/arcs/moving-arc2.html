@@ -9,7 +9,6 @@
 
     <script src="../../inscore.js"></script>
     <script src="../../libGUIDOEngine.js"></script>
-    <script src="../../html/inscore-code.js"></script>
 
     <script>
         function showlog(v) {
@@ -51,10 +50,11 @@
 
 </inscore-code>
 
-
-<script> start_inscore_code(); </script>
-
-<script type="text/javascript"> StartINScore() </script>
+	<script> 
+		INScore.start(); 
+		INScore.register("inscore-code"); 
+	</script>
+    
 </body>
 
 </html>
