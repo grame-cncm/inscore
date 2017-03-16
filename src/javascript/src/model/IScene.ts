@@ -27,13 +27,15 @@ class IScene extends IRectShape {
                                               else return krelative;}
     _getPositionStyle() : GetStringMethod 	{ return () => this.getPositionStyle(); }
 
-    setPositionStyle (position : string): void 	{
+    setPositionStyle (position : string): eMsgStatus 	{
         switch (position){
             case kabsolute : this.fAbsolutePos = true;
+            return eMsgStatus.kProcessed;
             break;
             case krelative : this.fAbsolutePos = false;
+            return eMsgStatus.kProcessed;
             break;
-            default : ITLError.badParameter("position", position);}}
+            default : return eMsgStatus.kBadParameters}}
     _setPositionStyle(): SetStringMethod    { return (type : string) => this.setPositionStyle(type) }
 
     getRScale(): number 		{ return this.fPosition.getScale(); }    
