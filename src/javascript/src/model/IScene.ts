@@ -1,7 +1,6 @@
 ///<reference path="Methods.ts"/>
 ///<reference path="MethodsJS.ts"/>
 ///<reference path="IRectShape.ts"/>
-///<reference path="../lib/TEnums.ts"/>
 
 const kabsolute : string = "absolute";
 const krelative : string = "relative";
