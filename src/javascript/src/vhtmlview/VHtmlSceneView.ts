@@ -43,7 +43,7 @@ class VHtmlSceneView extends VHtmlView {
 	    this.fAbsolutePos = (style.position === 'absolute');
     }
 
-	getViewScale (obj: IObject): number 			{ return Math.min(obj.fPosition.getWidth(), obj.fPosition.getHeight()); }
+	getViewScale (obj: IObject): number 			{ return Math.min(obj.fPosition.getWidth(), obj.fPosition.getHeight()) * obj.fPosition.getScale(); }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }
 	relative2SceneY(y: number) : number 			{ return this.fParent.fTop + super.relative2SceneY(y); }
