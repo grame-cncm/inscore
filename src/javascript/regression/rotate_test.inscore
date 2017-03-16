@@ -8,3 +8,5 @@
 
 /ITL/scene/rect3 set rect 0.25 0.25;
 /ITL/scene/rect3 rotatex 45;
+
+/ITL/scene/rect* alpha 100;
