@@ -5,8 +5,8 @@
 
 class IScene extends IRectShape {
 
-	private static kAbsolute : string = "absolute";
-	private static kRelative : string = "relative";
+	static kAbsolute : string = "absolute";
+	static kRelative : string = "relative";
 
     	fAbsolutePos          : boolean;
         fPositionTypeModified : boolean;
@@ -27,7 +27,9 @@ class IScene extends IRectShape {
     getPositionStyle()   : string 	    	{ return this.fAbsolutePos ? IScene.kAbsolute : IScene.kRelative; }
     _getPositionStyle() : GetStringMethod 	{ return () => this.getPositionStyle(); }
 
-    setPositionStyle (position : string): void 	{
+    getAbsolutePos (): boolean 				{ return this.fAbsolutePos; }
+
+    setPositionStyle (position : string): void 	{ 
         switch (position){
             case IScene.kAbsolute : this.fAbsolutePos = true;
             	break;
