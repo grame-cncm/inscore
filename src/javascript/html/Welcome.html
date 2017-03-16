@@ -19,8 +19,9 @@
 	</div-->
 
 	<table>
-	<tr><td width="30%">un peu de texte ici</td>
-    <td><script> INScore.start(); </script></td>
+	<tr>
+		<td width="30%">un peu de texte ici</td>
+    	<td><script> INScore.start(); </script></td>
     </tr>
 	</table>
 
@@ -32,6 +33,7 @@
 		w=0.8;
 		/ITL/scene width $w;
 		/ITL/scene height $w;
+
 		/ITL/scene/welcome set txt "Welcome to INScore";
 		/ITL/scene/welcome color $color;
 		/ITL/scene/welcome fontSize 40;
@@ -71,23 +73,19 @@
 		/ITL/scene/* dy -0.12;
 	</inscore-code>
 
-<!--
 	<div>
+	<script> INScore.start("toto"); </script>	
 	</div>
-	<br />
-	<div>
-	<script> StartINScore("toto"); </script>	
 	<inscore-code>
 		color = 20 0 150;
+		/ITL/toto width 0.8;
+		/ITL/toto height 0.8;
+		/ITL/toto scale 0.8;
 		/ITL/toto/welcome set txt "Welcome to toto";
 		/ITL/toto/welcome color $color;
 		/ITL/toto/welcome fontSize 40;
 		/ITL/toto/welcome fontWeight bold;
-		/ITL/toto width 1.5;
-		/ITL/toto height 1.5;
 	</inscore-code>
-	</div>
--->
     <script type="text/javascript"> 
     	INScore.register("inscore-code");
     </script>
