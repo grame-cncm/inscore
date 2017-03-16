@@ -1,0 +1,8 @@
+/ITL/scene/vid set video "imgs/small.mp4";
+/ITL/scene/vid effect shadow 10 7 100 100 100 100 10;
+
+__END__
+
+/ITL/scene/vid effect blur 80;
+/ITL/scene/vid effect colorize 0 255 0 255;
+/ITL/scene/vid effect none;
