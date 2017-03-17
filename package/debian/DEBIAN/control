@@ -3,7 +3,7 @@ Version: 1.2.1
 Section: sound
 Priority: optional
 Architecture: amd64
-Depends: libqt5svg5, libqt5printsupport5, libqt5multimediawidgets5, libqt5widgets5, libqt5multimedia5, libqt5gui5, libqt5qml5, libqt5network5, libqt5core5a, libQt5sensors5, libc6, libstdc++6, libgcc1, libmicrohttpd10
+Depends: libqt5svg5 (>=  5.3.0), libqt5printsupport5 (>=  5.3.0), libqt5multimediawidgets5 (>=  5.3.0), libqt5websockets5 (>=  5.3.0), libqt5widgets5 (>=  5.3.0), libqt5quickwidgets5 (>=  5.3.0), libqt5multimedia5 (>=  5.3.0), libqt5gui5 (>=  5.3.0), libqt5qml5 (>=  5.3.0), libqt5network5 (>=  5.3.0), libqt5core5a (>=  5.3.0), libQt5sensors5 (>=  5.3.0), libc6, libstdc++6, libgcc1, libmicrohttpd10 (>=  0.9.36)
 Installed-Size: 210988
 Conflicts: guidoengine-devel (<< 1.6.2)
 Replaces: guidoengine-devel
