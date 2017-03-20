@@ -21,15 +21,16 @@ abstract class VHtmlSvg extends VHtmlView {
 
     constructor(parent: VHtmlView) {
     	super (document.createElement('div'), parent);
-		if (this.isChrome()){//this works on chrome
-        this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
-        this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-        this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
-        this.fSVG.setAttribute('version', "1.1");
+		if (this.isChrome()) { //this works on chrome
+			this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
+			this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+			this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
+			this.fSVG.setAttribute('version', "1.1");
 		}
-		else{//this works on IE and FireFox
-			this.fSVG = document.createElement('div');}
-
+		else {	//this works on IE and FireFox
+			this.fSVG = this.getHtml();
+//			this.fSVG = document.createElement('div');
+		}
     	this.getHtml().appendChild(this.fSVG);
 	}
 
