@@ -24,7 +24,8 @@ class IGuidoCode extends IObject {
         this.fCurrentPagesCount = 1; 
         this.fPage = 1; 
         //this.fPageFormat = [21.0f, 29.7f]; 
-	    
+        this.fPosition.setWidth (0);
+        this.fPosition.setHeight (0);
         super.setHandlers();
     }
     
