@@ -1,3 +1,5 @@
+/ITL/scene/* del;
+
 /ITL/scene/txt1 set txt "original";
 /ITL/scene/txt1 x -0.5;
 /ITL/scene/txt1 y -0.8;
