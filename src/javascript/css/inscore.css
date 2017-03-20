@@ -11,7 +11,9 @@
     font-style: normal;
 }
 
-.inscore-rect { }
+.inscore-rect {
+    border-radius: 10px;
+}
 
 .inscore-scene {
 	border: 1px black solid;
@@ -20,7 +22,13 @@
     background-color: rgb(250,250,250);
 }
 
-.inscore-arc 		{ }
+.inscore-arc {
+	border: 0px blue solid;
+	fill:none;
+	stroke:red;
+	stroke-width:6
+}
+
 .inscore-line 		{ }
 .inscore-polygon 	{ }
 .inscore-img 		{ border: 0px blue solid; }

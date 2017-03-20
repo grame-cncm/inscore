@@ -2,7 +2,6 @@
 /ITL/scene/rect color 255 255 255 255;
 
 /ITL/scene/gmn1 set gmn "[ a b g e ]";
-/ITL/scene/gmn1 scale 2;
 
-/ITL/scene/txt set txt "gmn scale : 2";
+/ITL/scene/txt set txt "gmn test";
 /ITL/scene/txt y -0.25;

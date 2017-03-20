@@ -37,7 +37,6 @@ class VHtmlGMNView extends VHtmlSvg {
 		let strokeWidth = obj.fPenControl.getPenWidth();
         let w = size.w + strokeWidth;
         let h = size.h + strokeWidth;
-        let scale = obj.fPosition.getScale();
 		return { w: (w ? w : 1), h: (h ? h : 1) };
 	}
       
@@ -53,7 +52,7 @@ class VHtmlGMNView extends VHtmlSvg {
 
 	updatePenControl(obj:IObject): void 	{ this.basePenControl (obj); }
 	
-	private getFirstSVGGroup (root: Node): SVGSVGElement {
+	getFirstSVGGroup (root: Node): SVGSVGElement {
 		let g : Node;
 	    let childs = root.childNodes;
 		for (let i = 0; i < childs.length && !g; i++) {

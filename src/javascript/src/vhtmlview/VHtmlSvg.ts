@@ -16,18 +16,26 @@ interface SVGShape {
 }
 
 abstract class VHtmlSvg extends VHtmlView {
-    protected fSVG:SVGSVGElement;
-   
+   // protected fSVG:SVGSVGElement;
+       protected fSVG : SVGSVGElement | HTMLElement;
+
     constructor(parent: VHtmlView) {
     	super (document.createElement('div'), parent);
+		if (this.isChrome()){//this works on chrome
         this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
         this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
         this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
         this.fSVG.setAttribute('version', "1.1");
+		}
+		else{//this works on IE and FireFox
+			this.fSVG = document.createElement('div');}
+
     	this.getHtml().appendChild(this.fSVG);
 	}
 
     abstract getSVGTarget() : SVGShape;
+
+	isChrome() { return navigator.userAgent.indexOf("Chrome") != -1;}
 
 	updateColor (obj: IObject): void {
 		let target = this.getSVGTarget();
@@ -55,7 +63,7 @@ abstract class VHtmlSvg extends VHtmlView {
         this.fSVG.style.verticalAlign = "top";
 	}
 
-	basePenControl(obj:IObject): void {		// provided to bypass the SVG behavior
+	basePenControl(obj:IObject): void {	// provided to bypass the SVG behavior
 		super.updatePenControl (obj);
 	}
 
@@ -68,7 +76,7 @@ abstract class VHtmlSvg extends VHtmlView {
 		}
 	}
 
-	getViewScale (obj: IObject): number 	{ return obj.fPosition.getScale(); }
+	getViewScale (obj: IObject): number { return obj.fPosition.getScale(); }
 
 	updateCommonSVG (obj: IObject, w: number, h: number) : void {
        	let target = this.getSVGTarget();

@@ -2,13 +2,12 @@
 ///<reference path="MethodsJS.ts"/>
 ///<reference path="IRectShape.ts"/>
 
+const kabsolute : string = "absolute";
+const krelative : string = "relative";
 
 class IScene extends IRectShape {
 
-	static kAbsolute : string = "absolute";
-	static kRelative : string = "relative";
-
-    	fAbsolutePos          : boolean;
+        fAbsolutePos          : boolean;
         fPositionTypeModified : boolean;
 
     constructor(name: string, parent: IObject) {
@@ -24,20 +23,19 @@ class IScene extends IRectShape {
         this.fGetMsgHandlerMap[kposition_GetSetMethod]  = new TGetMsgHandlerText(this._getPositionStyle());
     }
 
-    getPositionStyle()   : string 	    	{ return this.fAbsolutePos ? IScene.kAbsolute : IScene.kRelative; }
+    getPositionStyle()   : string 	    	{ if (this.fAbsolutePos) return kabsolute;
+                                              else return krelative;}
     _getPositionStyle() : GetStringMethod 	{ return () => this.getPositionStyle(); }
 
-    getAbsolutePos (): boolean 				{ return this.fAbsolutePos; }
-
-    setPositionStyle (position : string): void 	{ 
+    setPositionStyle (position : string): eMsgStatus 	{
         switch (position){
-            case IScene.kAbsolute : this.fAbsolutePos = true;
-            	break;
-            case IScene.kRelative : this.fAbsolutePos = false;
-            	break;
-            default : ITLError.badParameter("position", position);
-        }
-    }
+            case kabsolute : this.fAbsolutePos = true;
+            return eMsgStatus.kProcessed;
+            break;
+            case krelative : this.fAbsolutePos = false;
+            return eMsgStatus.kProcessed;
+            break;
+            default : return eMsgStatus.kBadParameters}}
     _setPositionStyle(): SetStringMethod    { return (type : string) => this.setPositionStyle(type) }
 
     getRScale(): number 		{ return this.fPosition.getScale(); }    

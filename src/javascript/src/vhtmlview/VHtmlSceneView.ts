@@ -40,6 +40,9 @@ class VHtmlSceneView extends VHtmlView {
 		div.addEventListener("drop", inscore_dropEvent, false);
 		div.addEventListener("dragover", inscore_dragOverEvent, false);		
 		this.fAbsolutePos = false;
+
+		let style = window.getComputedStyle(div);
+	    this.fAbsolutePos = (style.position === 'absolute');
     }
 
 	getViewScale (obj: IObject): number 			{ return Math.min(obj.fPosition.getWidth(), obj.fPosition.getHeight()) * obj.fPosition.getScale(); }
@@ -52,8 +55,9 @@ class VHtmlSceneView extends VHtmlView {
 	getTranslate (obj: IObject): string 			{ return this.fAbsolutePos ? super.getTranslate(obj) : ""; }
 	scenePosition(obj: IObject): void{
 		let scene = <IScene>obj;
-		this.fAbsolutePos = scene.getAbsolutePos();
-		this.getHtml().style.position = scene.getPositionStyle();
+		let div = this.getHtml();
+		if (scene.fAbsolutePos) div.style.position = kabsolute;
+		else div.style.position = krelative;
 	}
 
 	updateView	( obj: IObject) : void {
@@ -62,9 +66,5 @@ class VHtmlSceneView extends VHtmlView {
 		this.fWidth = this.fDoc.fWidth;
 		this.fHeight = this.fDoc.fHeight;
 		super.updateView(obj);
-		if (!this.fAbsolutePos) {
-			this.getHtml().style.left = "";
-        	this.getHtml().style.top = "";
-		}
 	}
 }
