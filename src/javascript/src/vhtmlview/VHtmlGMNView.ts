@@ -66,7 +66,7 @@ class VHtmlGMNView extends VHtmlSvg {
 	}
 	
 	updateColor (obj: IObject): void {
-        if (obj.fColor.modified()) {
+//        if (obj.fColor.modified()) {
 	        let color = obj.fColor.getRGBString();
 	        let alpha = obj.fColor.getSVGA();
 	        let g = this.getFirstSVGGroup (this.fSVG);
@@ -75,7 +75,7 @@ class VHtmlGMNView extends VHtmlSvg {
    	       		g.style.strokeOpacity = alpha.toString(); 
     	        g.style.fill = color; 
     	        g.style.fillOpacity = alpha.toString(); 
-	        }
+//	        }
         }
     }
 
