@@ -23,19 +23,13 @@ class IAppl extends IObject {
 		this.fGetMsgHandlerMap[kfullscreen_GetSetMethod] = new TGetMsgHandlerNum(this._getFullScreen());
     } 
 
-	getFullScreen()  : number 	    	{ if (this.fFullScreen) return 1;
-                                          else return 0;}
+	getFullScreen()  : number 	    	{ return this.fFullScreen ? 1 : 0; }
     _getFullScreen() : GetNumMethod 	{ return () => this.getFullScreen(); }
 
     setFullScreen (full : number): eMsgStatus {
-		switch (full){
-            case 0 : this.fFullScreen = false;
-            return eMsgStatus.kProcessed
-                break;
-            case 1 : this.fFullScreen = true;
-            return eMsgStatus.kProcessed;
-                break;
-            default : eMsgStatus.kBadParameters}};
+		this.fFullScreen = full ? true : false;
+		return eMsgStatus.kProcessed
+	}
     _setFullScreen() : SetNumMethod   { return (full : number) => this.setFullScreen(full) }
 
     createStaticNodes() : void {
