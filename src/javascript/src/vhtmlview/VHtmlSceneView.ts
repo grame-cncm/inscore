@@ -56,8 +56,7 @@ class VHtmlSceneView extends VHtmlView {
 	scenePosition(obj: IObject): void{
 		let scene = <IScene>obj;
 		let div = this.getHtml();
-		if (scene.fAbsolutePos) div.style.position = kabsolute;
-		else div.style.position = krelative;
+		div.style.position = (scene.fAbsolutePos) ? IScene.kAbsolute : IScene.kRelative;
 	}
 
 	updateView	( obj: IObject) : void {

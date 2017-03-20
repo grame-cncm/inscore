@@ -2,10 +2,10 @@
 ///<reference path="MethodsJS.ts"/>
 ///<reference path="IRectShape.ts"/>
 
-const kabsolute : string = "absolute";
-const krelative : string = "relative";
 
 class IScene extends IRectShape {
+		static kAbsolute : string = "absolute";
+		static kRelative : string = "relative";
 
         fAbsolutePos          : boolean;
         fPositionTypeModified : boolean;
@@ -21,21 +21,24 @@ class IScene extends IRectShape {
         this.fMsgHandlerMap["redraw"]	= new TMsgHandlerVoid(this._redraw());
         this.fMsgHandlerMap[kposition_GetSetMethod] = new TMsgHandlerText(this._setPositionStyle());
         this.fGetMsgHandlerMap[kposition_GetSetMethod]  = new TGetMsgHandlerText(this._getPositionStyle());
+//        this.fGetMsgHandlerMap[kposition_GetSetMethod]  = new TGetMsgHandlerText ( function(){ return () => this.getPositionStyle();} );
     }
 
-    getPositionStyle()   : string 	    	{ if (this.fAbsolutePos) return kabsolute;
-                                              else return krelative;}
+    getPositionStyle()   : string 	    	{ return this.fAbsolutePos ? IScene.kAbsolute : IScene.kRelative;}
     _getPositionStyle() : GetStringMethod 	{ return () => this.getPositionStyle(); }
 
-    setPositionStyle (position : string): eMsgStatus 	{
+    setPositionStyle (position : string): eMsgStatus {
         switch (position){
-            case kabsolute : this.fAbsolutePos = true;
-            return eMsgStatus.kProcessed;
-            break;
-            case krelative : this.fAbsolutePos = false;
-            return eMsgStatus.kProcessed;
-            break;
-            default : return eMsgStatus.kBadParameters}}
+            case IScene.kAbsolute : 
+            	this.fAbsolutePos = true;
+            	return eMsgStatus.kProcessed;
+            case IScene.kRelative : 
+            	this.fAbsolutePos = false;
+	            return eMsgStatus.kProcessed;
+            default : 
+            	return eMsgStatus.kBadParameters
+            }
+    }
     _setPositionStyle(): SetStringMethod    { return (type : string) => this.setPositionStyle(type) }
 
     getRScale(): number 		{ return this.fPosition.getScale(); }    
