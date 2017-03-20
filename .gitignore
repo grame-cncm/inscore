@@ -17,6 +17,9 @@ package/doc/WebAPI.tgz
 
 src/libmapping/doc/html/
 src/libmapping/doc/latex/
+src/javascript/rsrc/
+src/javascript/build/refs.*
+
 tmp/
 .qmake.stash
 tools/QtOSCController/QtOSCController.build/
