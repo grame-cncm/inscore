@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>INScore Grid</title>
+
+    <link href="../css/inscore.css" rel="stylesheet">
+    <link href="../css/inscore-scene.css" rel="stylesheet">
+	<script src="../libGUIDOEngine.js"></script>
+	<script src="../inscore.js"></script>
+</head>
+
+<script>
+	var huespan = 45;
+	var hue = 0;
+
+	function makemsg (msg, index, w, x, y, hue) {
+		msg = msg.replace(/\?/g, index) ;
+		msg = msg.replace(/width/g, w) ;
+		msg = msg.replace("xpos", x) ;
+		msg = msg.replace("ypos", y) ;
+		return msg.replace("hue", hue) ;
+	}
+
+	function grid (size) {
+		var j=1;
+		var border = 0.005;
+		var w = 1.9 / size - border;
+		var huestep = huespan / (size * size);
+		var msg = "/ITL/scene/r_? set rect width width; \
+			/ITL/scene/r_? x xpos; \
+			/ITL/scene/r_? y ypos; \
+			/ITL/scene/r_? hsb hue 100 100;";
+		var out = "";
+		for (i=1; i <= size; i++) {
+			x = (i-(size/2)-0.5) * (w + border);
+			 for (j=1; j <= size; j++) {
+				y = (j-(size/2)-0.5) * (w + border);
+				index = i+"_"+j;
+				out += makemsg (msg, index, w, x, y, Math.round(hue));
+				hue += huestep;
+			}
+		}
+		return out;
+	}
+</script>
+
+
+<body style="margin: 20px">
+	<h4> INScore Grid </h4>
+	<p> quelques explications </p>
+	
+	<inscore-code> 
+		/ITL/scene width 0.9; 
+		/ITL/scene height 0.9; 
+		#/ITL/scene/javascript run "grid(20)";
+	</inscore-code>
+	
+	<script> 
+		INScore.start(); 
+		INScore.register("inscore-code"); 
+ 		INScore.load (grid(20));
+	</script>
+</body>
+</html>

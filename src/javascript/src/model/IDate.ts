@@ -20,7 +20,16 @@ class IDate {
         this.fDateChanged = true; 
         this.fDurationChanged= true;  
     }
- 
+
+// PROPERTIES COPY
+//--------------------------------------------------------------    
+    set (date: IDate) {
+        this.fDate = new Fraction(date.fDate); 
+        this.fDuration = new Fraction(date.fDuration); 
+        this.fDateChanged = true;
+        this.fDurationChanged = true;
+   }
+
 // GETS VALUES
 //--------------------------------------------------------------   
     getDate(): 		Fraction 		{ return this.fDate; } 

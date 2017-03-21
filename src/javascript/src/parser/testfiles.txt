@@ -195,7 +195,6 @@
 ../../../../scripts/Standalone/watch-infiniteloop.inscore
 ../../../../scripts/Standalone/watch-timebased.inscore
 ../../../../scripts/Standalone/Web/http-server.inscore
-../../../../scripts/Standalone/Web/http-server2.inscore
 ../../../../scripts/Standalone/Web/online-samples.inscore
 ../../../../scripts/Standalone/Web/urls-rsrc.inscore
 ../../../../scripts/Standalone/Web/websocket.inscore

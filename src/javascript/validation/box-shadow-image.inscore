@@ -1,0 +1,14 @@
+/ITL/scene/* del;
+
+/ITL/scene/img set img "imgs/Graphic1.png";
+/ITL/scene/* effect shadow 10 10 100 100 100 200 5;
+
+__END__
+
+/ITL/scene/* effect blur 5;
+/ITL/scene/img effect colorize 0 255 0 200;
+/ITL/scene/img effect none;
+
+/ITL/log show 1;
+/ITL/log level 2;
+/ITL/scene/* get effect;

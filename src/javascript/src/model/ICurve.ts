@@ -1,45 +1,58 @@
 ///<reference path="IObject.ts"/>
+///<reference path="../lib/TPoint.ts"/>
 
 class BezierCurve {
-    protected fPoints: Array<number>;
+    protected fPoints: Array<TPoint>;
         
     constructor(ax: number, ay: number, bx: number, by: number, cx: number, cy: number, dx: number, dy: number ) {
-        this.fPoints = [ax, ay, bx, by, cx, cy, dx, dy];
+        this.fPoints = new Array<TPoint>();
+        this.fPoints.push (new TPoint(ax, ay));
+        this.fPoints.push (new TPoint(bx, by));
+        this.fPoints.push (new TPoint(cx, cy));
+        this.fPoints.push (new TPoint(dx, dy));
     }
 		
 	equal (other: BezierCurve) {
-		return this.fPoints.every ( ( val: number, index: number) => { return val == other.fPoints[index]; } );
+		return this.fPoints.every ( ( p: TPoint, index: number) => { return p.equal (other.fPoints[index]); } );
 	}
 
-	points(): Array<number> { return this.fPoints; }
+	points(): Array<TPoint> { return this.fPoints; }
+
+    toArray(): Array<number> {
+    	let a = new Array<number>();
+    	for ( let i=1; i< this.fPoints.length; i++) 
+    		a = a.concat(this.fPoints[i].toArray());
+    	return a;
+    }
 }  
     
 
-class ICurve extends IObject {
-    
-    protected kCurveType: string;
+class ICurve extends IObject 
+{
     protected fPoints: Array<BezierCurve>;
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kCurveType = 'curve';
-        this.fTypeString = this.kCurveType;
+        this.fTypeString = kCurveType;
         this.fPoints = new Array<BezierCurve>();
-        
+        this.fPenControl.setPenWidth(1);
+    }
+
+    setHandlers(){
         super.setHandlers();
+        this.brushAble();
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
     }
 
-    setHandlers()                   		 { super.setHandlers(); }
     setPoints(points: Array<BezierCurve>)    { this.fPoints = points; }
     getPoints(): Array<BezierCurve>          { return this.fPoints; }
     
     _getPoints(): GetArrayMethod        { return () => this.fPoints; }
 
-    set(msg: IMessage): msgStatus	{
+    set(msg: IMessage): eMsgStatus	{
         let status = super.set(msg);
         
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status; 
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status; 
 
         if ( (msg.size() > 1) && ( (msg.size() % 8)==2 ) ) {
             //Build the vector of points reading the message.
@@ -50,11 +63,9 @@ class ICurve extends IObject {
                 let cx = msg.paramNum(i+4), cy = msg.paramNum(i+5);
                 let dx = msg.paramNum(i+6), dy = msg.paramNum(i+7);
                 
-                if (!ax.correct	|| !ay.correct ||
-                    !bx.correct || !by.correct ||
-                    !cx.correct || !cy.correct ||
-                    !dx.correct || !dy.correct) {
-                        return msgStatus.kBadParameters;
+                if (!ax.correct	|| !ay.correct || !bx.correct || !by.correct ||
+                    !cx.correct || !cy.correct || !dx.correct || !dy.correct) {
+                        return eMsgStatus.kBadParameters;
                 }                
                 let bezierCurve = new BezierCurve( ax.value, ay.value, bx.value, by.value, cx.value, cy.value, dx.value, dy.value );    
                 curveData.push( bezierCurve );
@@ -64,28 +75,35 @@ class ICurve extends IObject {
             if ( curveData.length != this.getPoints().length ) {
                 this.setPoints(curveData);
                 this.newData(true);
-                return msgStatus.kProcessed;
+                return eMsgStatus.kProcessed;
             }
             for (let i = 0 ; i < curveData.length ; i++ ) {
                 if (curveData[i] != this.getPoints()[i]) {
                     this.setPoints(curveData);
                     this.newData(true);
-                    return msgStatus.kProcessed;
+                    return eMsgStatus.kProcessed;
                 }
             }
         }
-        return msgStatus.kBadParameters;
+        return eMsgStatus.kBadParameters;
     }
 
     toArray(): Array<number> {
-    	let a = this.fPoints[0].points();
-    	for ( let i=1; i<this.fPoints.length; i++) 
-    		a = a.concat(this.fPoints[i].points());
+    	let a = new Array<number>();
+    	for ( let i=0; i < this.fPoints.length; i++)
+    		a = a.concat(this.fPoints[i].toArray());
     	return a;
     }
 
+    toString(): string {
+    	let str = "";
+    	for ( let i=0; i < this.fPoints.length; i++)
+    		str += this.fPoints[i].toString();
+    	return str;
+    }
+
     getSet(): IMessage	{ 
-    	let a: Array<any> = [kset_SetMethod, this.kCurveType];
+    	let a: Array<any> = [kset_SetMethod, this.fTypeString];
     	return new IMessage(this.getOSCAddress(), a.concat (this.toArray()) ); 
     }
 }

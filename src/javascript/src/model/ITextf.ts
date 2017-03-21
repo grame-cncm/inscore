@@ -4,12 +4,12 @@ interface TTxtfLoadEndHandler 		{ (): void; }
 
 class ITextf extends IText {
     protected fTextFile: string;
-    protected kTextfType: string;
+    //protected kTextfType: string;
         
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kTextfType = 'txtf';
-        this.fTypeString = this.kTextfType;
+        //this.kTextfType = 'txtf';
+        this.fTypeString = kTextfType;
 
         super.setHandlers();
      	this.fGetMsgHandlerMap[""] = new TGetMsgHandlerText(this._getTextFile());
@@ -23,10 +23,10 @@ class ITextf extends IText {
 
 // SET HANDLER
 //--------------------------------------------------------------    
-   set(msg: IMessage): msgStatus { 
+   set(msg: IMessage): eMsgStatus { 
 		        console.log("ITextf set: " + msg);
         let status = super.set(msg);
-        if (status != msgStatus.kProcessed) return status; 
+        if (status != eMsgStatus.kProcessed) return status; 
 
         let n = msg.size();
         if (n == 3) {
@@ -38,9 +38,9 @@ class ITextf extends IText {
 		        console.log("readAsText: " + b);
         		reader.onloadend = this._setText(reader);
 		        reader.readAsText(b);
-	            status = msgStatus.kProcessed;
+	            status = eMsgStatus.kProcessed;
         	}
-	        else status = msgStatus.kBadParameters;        	
+	        else status = eMsgStatus.kBadParameters;        	
         }
         return status;
     }
@@ -50,7 +50,7 @@ class ITextf extends IText {
 // GETSET METHOD
 //--------------------------------------------------------------    
     getSet(): IMessage	{ 
-    	let a: Array<any> = [kset_SetMethod, this.kTextfType];
+    	let a: Array<any> = [kset_SetMethod, this.fTypeString];
     	return new IMessage(this.getOSCAddress(), a.concat ("'"+this.fTextFile+"'") ); 
     }
 }

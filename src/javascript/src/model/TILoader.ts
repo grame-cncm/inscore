@@ -1,7 +1,6 @@
 
 ///<reference path="IObject.ts"/>
-///<reference path="../inscore.ts"/>
-//<reference path="../parser/INScoreParser.js"/>
+///<reference path="../globals.ts"/>
 
 declare var INScoreParser: any;
 

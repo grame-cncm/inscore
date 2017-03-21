@@ -41,6 +41,26 @@ class IPosition {
         this.fShear =  [0,0];
         this.fModified = true;
     } 
+
+// PROPERTIES COPY
+//--------------------------------------------------------------    
+    set (pos: IPosition) {
+        this.fXPos 		= pos.fXPos; 
+        this.fYPos 		= pos.fYPos;
+        this.fXOrigin 	= pos.fXOrigin;
+        this.fYOrigin 	= pos.fYOrigin;
+//        this.fWidth 	= pos.fWidth; 
+//        this.fHeight 	= pos.fHeight;
+        this.fZOrder 	= pos.fZOrder;
+        this.fVisible 	= pos.fVisible; 
+        this.fScale 	= pos.fScale;  
+        this.fXAngle 	= pos.fXAngle;
+        this.fYAngle 	= pos.fYAngle; 
+        this.fZAngle 	= pos.fZAngle;
+        this.fShear[0] 	= pos.fShear[0];
+        this.fShear[1] 	= pos.fShear[1];
+        this.fModified 	= true;
+    }
     
 // MODIFIED STATUS
 //--------------------------------------------------------------          
@@ -99,7 +119,7 @@ class IPosition {
         this.setRotateY	( p.getRotateY() );
         this.setRotateZ	( p.getRotateZ() );
         this.setWidth	( p.getWidth() );
-        this.setHeight	( p.getHeight() );
+        this.setHeight ( p.getHeight() );
         this.setVisible	( p.getVisible() );
     }
     
@@ -145,13 +165,16 @@ class IPosition {
     _addXAngle(): SetNumMethod 		{ return (n) => this.addXAngle(n); };
     _addYAngle(): SetNumMethod 		{ return (n) => this.addYAngle(n); };
         
-    setRotateX(a:number): void 		{ this.fXAngle = a; }
-    setRotateY(a:number): void 		{ this.fYAngle = a; }
-    setRotateZ(a:number): void 		{ this.fZAngle = a; }   
+    setRotateX(a:number): void 		{ this.fXAngle = a; this.fModified = true; }
+    setRotateY(a:number): void 		{ this.fYAngle = a; this.fModified = true; }
+    setRotateZ(a:number): void 		{ this.fZAngle = a; this.fModified = true; }   
     _setRotateX(): SetNumMethod 	{ return (n) => this.setRotateX(n); };
     _setRotateY(): SetNumMethod 	{ return (n) => this.setRotateY(n); };
     _setRotateZ(): SetNumMethod 	{ return (n) => this.setRotateZ(n); };
     
-    setShear(s:Array<number>): void { this.fShear = s; }           
-       
+    setShear(a:Array<number>): eMsgStatus {
+        if(a.length != 2) return eMsgStatus.kBadParameters;
+        this.fShear = a; this.fModified = true;
+        return eMsgStatus.kProcessed }
+    _setShear(): SetNumArrayMethod  { return (a: Array<number>) => this.setShear(a)};
 }

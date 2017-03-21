@@ -3,7 +3,7 @@
 
 class ILine extends IObject {
     
-    protected kLineType: string;
+    //protected kLineType: string;
     protected fPoint: TPoint;
     protected fWAMode: boolean;
     protected fLWidth: number
@@ -11,28 +11,31 @@ class ILine extends IObject {
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kLineType = 'line';
-        this.fTypeString = this.kLineType;
-        
-        super.setHandlers();
+        this.fTypeString = kLineType;
+        this.fPenControl.setPenWidth(1);
         this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
     }
     
-    setPoint(p: TPoint)		{ this.fPoint = p; }
-    getPoint() : TPoint		{ return this.fPoint; }
-    _getPoint(): GetArrayMethod        { return () => this.fPoint.toArray(); }
+    setPoint(p: TPoint)		{ 
+    	this.fPoint = p; 
+    	this.fPosition.setWidth  (Math.abs(p.getX())); 
+    	this.fPosition.setHeight (Math.abs(p.getY())); 
+    }
+     getPoint(): TPoint	        	{ return this.fPoint; }
+    _getPoint(): GetArrayMethod     { return () => this.fPoint.toArray(); }
 
-
-    set(msg:IMessage): msgStatus {
+    getColorTarget(): IColor 		{ return this.fPenControl.fPenColor; };
+    
+    set(msg:IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
         
         if (msg.size() == 5) {
             let mode = msg.paramStr(2); 
             let a = msg.paramNum(3), b = msg.paramNum(4); 
             
-            if (!mode.correct)				return msgStatus.kBadParameters;
-            if (!a.correct || !b.correct) 	return msgStatus.kBadParameters;
+            if (!mode.correct)				return eMsgStatus.kBadParameters;
+            if (!a.correct || !b.correct) 	return eMsgStatus.kBadParameters;
                
             if (mode.value == "xy") {
                 this.fWAMode = false;
@@ -42,33 +45,27 @@ class ILine extends IObject {
                 this.fWAMode = true;
                 this.fLWidth = a.value;
                 this.fLAngle = b.value;
-                let x = a.value * Math.cos(Math.PI * b.value / 180);
-                let y = a.value * Math.sin(Math.PI * b.value / 180);
+                
+                if (this.fLAngle < 0) { this.fLAngle += 360; }
+                if ( 180 <= Math.abs(this.fLAngle) && Math.abs(this.fLAngle) <= 360) { this.fLAngle -= 180; }                 
+
+                let x = Math.round(a.value * Math.cos(Math.PI * this.fLAngle / 180) * 1000) / 1000;
+                let y = Math.round(a.value * Math.sin(Math.PI * this.fLAngle / 180) * 1000) / 1000;
                 this.setPoint( new TPoint(x, y) );
             }
-            else return msgStatus.kBadParameters;
+            else return eMsgStatus.kBadParameters;
             this.newData(true);
-            status = msgStatus.kProcessed;
+            status = eMsgStatus.kProcessed;
         }
-        else status = msgStatus.kBadParameters;
+        else status = eMsgStatus.kBadParameters;
         return status;
     }
 
     getSetLine(p: Array<any>): Array<any>	{
-    	if (this.fWAMode) {
-    		p.push ("wa");
-    		p.push (this.fLWidth);
-    		p.push (this.fLAngle);
-    	}
-    	else {
-    		p.push ("xy");
-    		p.push (this.fPoint.getX());
-    		p.push (this.fPoint.getY());
-    	}
-    	return p; 
+    	return this.fWAMode ? ["wa", this.fLWidth, this.fLAngle] : ["xy", this.fPoint.getX(), this.fPoint.getY()];
     }
 
     getSet(): IMessage	{
-    	return new IMessage(this.getOSCAddress(), this.getSetLine([kset_SetMethod, this.kLineType])); 
+    	return new IMessage(this.getOSCAddress(), this.getSetLine([kset_SetMethod, this.fTypeString])); 
     }
 }

@@ -1,0 +1,19 @@
+/ITL/scene new;
+gray = 240;
+/ITL/scene color $gray $gray $gray ;
+
+
+/ITL/scene/title set txt "Welcome to JavaScript";
+/ITL/scene/r_*1* show 1;
+/ITL/scene show 1;
+/ITL/log show 0;
+/ITL/log show 1;
+/ITL/log y -1;
+
+/ITL/scene/title y -0.3;
+/ITL/scene/title scale 2;
+
+/ITL/scene/rect set rect 1 1;
+
+/ITL/scene/* get;
+

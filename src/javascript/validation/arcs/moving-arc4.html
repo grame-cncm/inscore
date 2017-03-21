@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>INScore</title>
+
+    <link href="../../css/inscore.css" rel="stylesheet">
+    <link href="../../css/inscore-scene.css" rel="stylesheet">
+
+    <script src="../../inscore.js"></script>
+    <script src="../../libGUIDOEngine.js"></script>
+
+    <script>
+        function showlog(v) {
+            INScore.postMessage("/ITL/log", ["show", v]);
+        }
+    </script>
+
+    <script src="../../src/inscore.ts"></script>
+</head>
+
+<body style="margin: 20px">
+<h1>INScore</h1>
+<p><a title="Open INScore log" onclick='showlog(1)', style="cursor:pointer;">INScore log</a></p>
+
+<inscore-code>
+    &lt;?javascript
+
+    function turnArc () {
+    INScore.postMessage("/ITL/scene/arc*", ["dstart", -1]);
+    var timer = setTimeout (turnArc, 20);
+    }
+    ?>
+    range=90;
+    w=1;
+    h=0.5;
+    /ITL/scene/* del;
+
+    /ITL/scene/arc1 set arc $w $h 30 $range;
+
+    /ITL/scene/arc2 set arc $w $h 120 $range;
+    /ITL/scene/arc2 color 250 0 0;
+    /ITL/scene/arc2 close 1;
+
+    /ITL/scene/arc3 set arc $w $h 210 $range;
+    /ITL/scene/arc3 color 0 250 0;
+
+    /ITL/scene/arc4 set arc $w $h 300 $range;
+    /ITL/scene/arc4 color 0 0 250;
+    /ITL/scene/arc4 close 1;
+
+    /ITL/scene/elli set ellipse $w $h;
+    /ITL/scene/elli color 0 0 0 50;
+
+    /ITL/scene/arc* brushStyle solid;
+
+    &lt;?javascript turnArc(); ?>
+
+</inscore-code>
+
+	<script> 
+		INScore.start(); 
+		INScore.register("inscore-code"); 
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+#---------------Color------------------------
+/ITL/scene/* del;
+
+/ITL/scene/* alpha 0;
+/ITL/scene/* alpha 100;
+/ITL/scene/* alpha 200;
+/ITL/scene/* alpha 250;
+
+/ITL/scene/* color 0 0 0 255;
+/ITL/scene/* color 255 0 0;
+/ITL/scene/* color 0 255 0;
+/ITL/scene/* color 0 0 255;
+
+/ITL/scene/* color 255 0 0 0;
+/ITL/scene/* color 255 0 0 150;
+/ITL/scene/* color 255 0 0 255;
+
+/ITL/scene/* red 255;
+/ITL/scene/* green 255;
+/ITL/scene/* blue 255;
+
+/ITL/scene/* red 0;
+/ITL/scene/* green 0;
+/ITL/scene/* blue 0;
+
+/ITL/scene/* dalpha -50;
+/ITL/scene/* dalpha 50;
+
+/ITL/scene/* dcolor 20 20 20;
+/ITL/scene/* dcolor -20 -20 -20;
+
+/ITL/scene/* dred 20;
+/ITL/scene/* dgreen 20;
+/ITL/scene/* dblue 20;
+
+/ITL/scene/* dred -20;
+/ITL/scene/* dgreen -20;
+/ITL/scene/* dblue -20;
+
+/ITL/scene/* hue 0;
+/ITL/scene/* hue 180;
+/ITL/scene/* hue 360;
+
+/ITL/scene/* saturation 0;
+/ITL/scene/* saturation 50;
+/ITL/scene/* saturation 100;
+
+/ITL/scene/* brightness 0;
+/ITL/scene/* brightness 50;
+/ITL/scene/* brightness 100;
+
+/ITL/scene/* hsb 0 0 0;
+/ITL/scene/* hsb 0 50 50;
+/ITL/scene/* hsb 0 100 0;
+/ITL/scene/* hsb 0 0 100;
+
+/ITL/scene/* hsb 0 0 0 0;
+/ITL/scene/* hsb 0 0 0 150;
+/ITL/scene/* hsb 0 0 0 255;
+
+---------------Error------------------------
+
+/ITL/scene/* alpha a;
+/ITL/scene/* alpha 0 0;
+/ITL/scene/* alpha;
+
+/ITL/scene/* dalpha a;
+/ITL/scene/* dalpha 0 0;
+/ITL/scene/* dalpha;
+
+/ITL/scene/* red a;
+/ITL/scene/* red 0 0;
+/ITL/scene/* red;
+
+/ITL/scene/* green a;
+/ITL/scene/* green 0 0;
+/ITL/scene/* green;
+
+/ITL/scene/* blue a;
+/ITL/scene/* blue 0 0;
+/ITL/scene/* blue;
+
+/ITL/scene/* dred a;
+/ITL/scene/* dred 0 0;
+/ITL/scene/* dred;
+
+/ITL/scene/* dgreen a;
+/ITL/scene/* dgreen 0 0;
+/ITL/scene/* dgreen;
+
+/ITL/scene/* dblue a;
+/ITL/scene/* dblue 0 0;
+/ITL/scene/* dblue;
+
+/ITL/scene/* hue a;
+/ITL/scene/* hue 0 0;
+/ITL/scene/* hue;
+
+/ITL/scene/* saturation a;
+/ITL/scene/* saturation 0 0;
+/ITL/scene/* saturation;
+
+/ITL/scene/* brightness a;
+/ITL/scene/* brightness 0 0;
+/ITL/scene/* brightness;
+
+/ITL/scene/* color 0 0;
+/ITL/scene/* color 0 0 a;
+/ITL/scene/* color 0 0 0 0 0;
+
+/ITL/scene/* dcolor 0 0;
+/ITL/scene/* dcolor 0 0 a;
+/ITL/scene/* dcolor 0 0 0 0 0;
+
+/ITL/scene/* hsb 0 0;
+/ITL/scene/* hsb 0 0 a;
+/ITL/scene/* hsb 0 0 0 0 0;

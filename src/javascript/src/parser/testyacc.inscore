@@ -6,7 +6,7 @@
 # followed by another one
 #---------------------------------------------
 
-<?javascript	a javascript section ?>
+#<?javascript	a javascript section ?>
 a = toto;
 
 /test "a -> " $a;

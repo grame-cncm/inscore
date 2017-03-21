@@ -1,10 +1,13 @@
 
 NAME = INScoreParser
+RUN  = runparser.js
 OUT  = $(NAME).js
+SCRIPTS = ../../../../scripts
 
 files 	= $(shell grep -v '^\#' testfiles.txt)
-out    := $(patsubst ../../../scripts/%.inscore, checkout/%.txt, $(files))
+out    := $(patsubst $(SCRIPTS)/%.inscore, checkout/%.txt, $(files))
 
+.PHONY: code check clean
 
 code : $(OUT)
 
@@ -14,13 +17,13 @@ $(OUT) : $(NAME).l.jison $(NAME).y.jison
 clean:
 	rm -f $(OUT)
 
-tcheck: 
-	@echo $(out)
-
 check: $(out)
 
 
-checkout/%.txt: ../../../scripts/%.inscore
+checkout/%.txt: $(SCRIPTS)/%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	@echo "== checking $<"
-	@node $(NAME).js $< > $@
+	@node $(RUN) $< > $@
+
+test: 
+	@echo $(out)

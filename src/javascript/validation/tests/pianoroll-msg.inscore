@@ -1,0 +1,50 @@
+---------------PianoRoll-------------------
+
+/ITL/scene/* keyboard 0;
+/ITL/scene/* keyboard 4;
+
+/ITL/scene/* autoVoicesColoration 0;
+/ITL/scene/* autoVoicesColoration 2;
+
+/ITL/scene/* measureBars 0;
+/ITL/scene/* measureBars 4;
+
+/ITL/scene/* voiceColor 2 255 0 0 255;
+/ITL/scene/* voiceColor 3;
+
+/ITL/scene/* pitchLines "";
+/ITL/scene/* pitchLines "A" "C";
+
+/ITL/scene/* clipTime;
+/ITL/scene/* clipTime 2 2;
+
+/ITL/scene/* clipPitch;
+/ITL/scene/* clipPitch 2 3;
+
+---------------Error-------------------
+/ITL/scene/* keyboard a;
+/ITL/scene/* keyboard 0 0;
+/ITL/scene/* keyboard;
+
+/ITL/scene/* autoVoicesColoration a;
+/ITL/scene/* autoVoicesColoration 0 0;
+/ITL/scene/* autoVoicesColoration;
+
+/ITL/scene/* measureBars a;
+/ITL/scene/* measureBars 0 0;
+/ITL/scene/* measureBars;
+
+/ITL/scene/* voiceColor a;
+/ITL/scene/* voiceColor 2 255 0 0 255 0;
+/ITL/scene/* voiceColor;
+
+/ITL/scene/* pitchLines a;
+/ITL/scene/* pitchLines 0;
+/ITL/scene/* pitchLines "" 0;
+/ITL/scene/* pitchLines;
+
+/ITL/scene/* clipTime 3 2 3 2 0;
+/ITL/scene/* clipTime 3;
+
+/ITL/scene/* clipPitch 0;
+/ITL/scene/* clipPitch 0 0 0;

@@ -1,10 +1,21 @@
 
 ///<reference path="../controller/THandlersPrototypes.ts"/>
+///<reference path="Constants.ts"/>
+
+enum color {
+    kHue     = 0,
+    kSat     = 1,
+    kVal     = 2,
+    kRed     = 3,
+    kGreen   = 4,
+    kBlue    = 5,
+    kAlpha   = 6,
+}
 
 class IColor {
 
 // ATTRIBUTES
-//-------------------------------------------------------------- 
+//--------------------------------------------------------------     
     protected fRGB : Array<number>;
     protected fHSB : Array<number>;
     
@@ -15,14 +26,13 @@ class IColor {
 //--------------------------------------------------------------    
     constructor(input : Array<number>|IColor) {
         if (input instanceof Array) { 
-        	this.fRGB = input; 
+        	this.fRGB = input.slice(0,3);
+        	if (input.length == 4) this.fA = input[3]; 
         }
         else if (input instanceof IColor) {
-            this.fRGB = input.fRGB;
-            this.fA = input.fA;
+            this.set (input);
         }
         this.fHSB = new Array<number>();
-        this.fModified = false;
         this.updateHSB();         
     }
   
@@ -30,14 +40,24 @@ class IColor {
 //--------------------------------------------------------------      
    cleanup(): void { this.fModified = false; }   
    modified(): boolean { return this.fModified; }   
-   
+
+
+// PROPERTIES COPY
+//--------------------------------------------------------------    
+   set (color: IColor) {
+        this.fRGB = color.fRGB.slice(0);
+        this.fHSB = color.fHSB.slice(0);
+        this.fA = color.fA;
+        this.fModified = true;
+   }
 
 // GETS VALUES
 //-------------------------------------------------------------- 
-    getRGB(): Array<number> { return this.fRGB; }
-    getHSB(): Array<number> { return this.fHSB; }
+    getRGB(): Array<number> { return this.fRGB.concat(this.fA); }
+    getHSB(): Array<number> { return this.fHSB.concat(this.fA); }
   
-	getRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.fRGB[3]})`; }
+	getRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.fA})`; }
+	getCSSRGBAString(): string { return `rgba(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]}, ${this.getSVGA()})`; }
 	getRGBString(): string { return `rgb(${this.fRGB[0]}, ${this.fRGB[1]}, ${this.fRGB[2]})`; }
 
     
@@ -50,11 +70,12 @@ class IColor {
     getV(): number { return this.fHSB[2]; }      
         
     getA(): number { return this.fA; }
+    getSVGA(): number { return this.fA/255; }
 
 // GETS VALUES CLOSURES
 //-------------------------------------------------------------- 
-    _getRGB(): GetArrayMethod { return () => this.fRGB; }
-    _getHSB(): GetArrayMethod { return () => this.fHSB; }
+    _getRGB(): GetArrayMethod { return () => this.getRGB(); }
+    _getHSB(): GetArrayMethod { return () => this.getHSB(); }
     
     _getR(): GetNumMethod { return () => this.fRGB[0]; }
     _getG(): GetNumMethod { return () => this.fRGB[1]; } 
@@ -69,16 +90,16 @@ class IColor {
 // SETS VALUES
 //--------------------------------------------------------------         
     
-    setParam( param: string , value:number , min:number , max:number , isHSV:boolean ) {
+    setParam( param: number , value:number , min:number , max:number , isHSV:boolean ) {
         if ( min <= value && value <= max ) {  
             switch(param) {
-                case "fH" : this.fHSB[0] = value; break;
-                case "fS" : this.fHSB[1] = value; break;
-                case "fV" : this.fHSB[2] = value; break;
-                case "fR" : this.fRGB[0] = value; break;
-                case "fG" : this.fRGB[1] = value; break;
-                case "fB" : this.fRGB[2] = value; break;
-                case "fA" : this.fA = value; break;
+                case color.kHue      : this.fHSB[0] = value; break;
+                case color.kSat      : this.fHSB[1] = value; break;
+                case color.kVal      : this.fHSB[2] = value; break;
+                case color.kRed      : this.fRGB[0] = value; break;
+                case color.kGreen    : this.fRGB[1] = value; break;
+                case color.kBlue     : this.fRGB[2] = value; break;
+                case color.kAlpha    : this.fA = value; break;
                 default: console.log ("IColor setParam " + param + " not found");
             }
             this.fModified = true;
@@ -87,26 +108,36 @@ class IColor {
         }
     }
     
-    setRGB(val: Array<number>): void 	{ this.fRGB = val; this.updateHSB(); this.fModified = true; }
-    setHSB(val: Array<number>): void 	{ this.fHSB = val; this.updateRGB(); this.fModified = true; }
+    setRGB(val: Array<number>): void { 
+    	this.fRGB = val.slice(0,3);
+        if (val.length == 4) this.fA = val[3]; 
+		this.updateHSB(); 
+		this.fModified = true; 
+    }
+    setHSB(val: Array<number>): void  {
+    	this.fHSB = val.slice(0,3); 
+        if (val.length == 4) this.fA = val[3]; 
+    	this.updateRGB(); 
+    	this.fModified = true; 
+    }
     _setRGB()	: SetColorMethod 		{ return (n) => this.setRGB(n); };
     _setHSB()	: SetColorMethod 		{ return (n) => this.setHSB(n); };
     
-    setH(h:number): void 		{ this.setParam("fH" , Math.floor(h), 0, 360, true); }  
-    setS(s:number): void 		{ this.setParam("fS", Math.floor(s), 0, 100, true); }
-    setV(b:number): void 		{ this.setParam("fV", Math.floor(b), 0, 100, true); }
+    setH(h:number): void 		{ this.setParam(color.kHue , Math.floor(h), 0, 360, true); }  
+    setS(s:number): void 		{ this.setParam(color.kSat , Math.floor(s), 0, 100, true); }
+    setV(b:number): void 		{ this.setParam(color.kVal , Math.floor(b), 0, 100, true); }
     _setH()	: SetNumMethod 		{ return (n) => this.setH(n); };
     _setS()	: SetNumMethod 		{ return (n) => this.setS(n); };
     _setV()	: SetNumMethod 		{ return (n) => this.setV(n); };
 
-    setR(r:number): void 		{ this.setParam("fR", Math.floor(r), 0, 255, false); }
-    setG(g:number): void 		{ this.setParam("fG", Math.floor(g), 0, 255, false); }
-	setB(b:number): void 		{ this.setParam("fB", Math.floor(b), 0, 255, false); }
+    setR(r:number): void 		{ this.setParam(color.kRed   , Math.floor(r), 0, 255, false); }
+    setG(g:number): void 		{ this.setParam(color.kGreen , Math.floor(g), 0, 255, false); }
+	setB(b:number): void 		{ this.setParam(color.kBlue  , Math.floor(b), 0, 255, false); }
     _setR()	: SetNumMethod 		{ return (n) => this.setR(n); };
     _setG()	: SetNumMethod 		{ return (n) => this.setG(n); };
     _setB()	: SetNumMethod 		{ return (n) => this.setB(n); };
 				
-	setA(a:number): void 		{ this.setParam("fA", Math.floor(a), 0, 255, false); }	
+	setA(a:number): void 		{ this.setParam(color.kAlpha , Math.floor(a), 0, 255, false); }	
     _setA()	: SetNumMethod 		{ return (n) => this.setA(n); };
 		
 	dA(a:number): void 			{ this.setA( this.getA() + Math.floor(a) ); }	

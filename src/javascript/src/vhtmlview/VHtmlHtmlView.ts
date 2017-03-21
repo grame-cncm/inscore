@@ -1,9 +1,9 @@
 
-///<reference path="VHtmlView.ts"/>
+///<reference path="VHtmlAutoSize.ts"/>
 ///<reference path="../model/IHtml.ts"/>
 ///<reference path="../model/IText.ts"/>
 
-class VHtmlHtmlView extends VHtmlView {
+class VHtmlHtmlView extends VHtmlAutoSize {
 
     constructor(parent: VHtmlView) {
 		super( document.createElement('div'), parent); 
@@ -12,22 +12,15 @@ class VHtmlHtmlView extends VHtmlView {
 
 	getText	( obj: IText) : string { return obj.getText(); }
 
-	// scaling is applied as a transform only
-	getScale (obj: IObject): number { return 1; }
-	updateColor (obj: IObject): void {
-        if (obj.fColor.modified())
-	        this.getHtml().style.color = obj.fColor.getRGBString();
-	}
-
 	// CSS weight are used as numbers
-	fontWeight2Num	( weight: string) : number {
+	static fontWeight2Num	( weight: string) : string {
 		switch (weight) {
-			case IText.kWeightNormal: 		return 400;
-			case IText.kWeightLight:		return 200;
-			case IText.kWeightDemiBold:		return 550;
-			case IText.kWeightBold:			return 700;
-			case IText.kWeightBlack:		return 900;
-			default: return 400;
+			case IText.kWeightNormal: 		return "400";
+			case IText.kWeightLight:		return "200";
+			case IText.kWeightDemiBold:		return "550";
+			case IText.kWeightBold:			return "700";
+			case IText.kWeightBlack:		return "900";
+			default: return "400";
 		}
 	}
 
@@ -36,23 +29,23 @@ class VHtmlHtmlView extends VHtmlView {
         elt.style.fontSize 		= t.getFontSize()+"px";
         elt.style.fontFamily 	= t.getFontFamily();
         elt.style.fontStyle 	= t.getFontStyle();
-        elt.style.fontWeight 	= this.fontWeight2Num(t.getFontWeight()).toString();
+        elt.style.fontWeight 	= VHtmlHtmlView.fontWeight2Num(t.getFontWeight());
     }
+
+	setNone () : void 				{ this.getHtml().style.textShadow = "0px 0px 0px";  }
+	setBlur (val: number) : void 	{ this.getHtml().style.textShadow = "0px 0px " + val + "px"; }
+	setShadow (params: Array<number>) : void {
+		let color = new IColor( params.slice(2,6) );
+		this.getHtml().style.textShadow = color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px";
+	}
 
 	updateView	( obj: IObject) : void {
 		let t = <IText>obj;
     	let elt = this.getHtml();
         elt.innerHTML  = this.getText(t);
-        elt.style.height = "auto";
-        elt.style.width = "auto";
-		this.updateObjectSize (obj);
 		if (t.fontModified()) this.setFont (t);
 		super.updateView(obj);
 	}
 
-	getTransform (obj: IObject): string {
-		let scale 	= this.autoScale(obj);
-		return super.getTransform(obj) + ` scale(${scale})`;
-	}
-
+	getAutoElement() : HTMLElement 	{ return this.getHtml(); }
 }

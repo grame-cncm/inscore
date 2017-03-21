@@ -1,0 +1,36 @@
+/ITL/scene/* del;
+/ITL/scene penWidth 1;
+
+/ITL/scene/text set txt Le pen Control;
+/ITL/scene/text scale 4;
+/ITL/scene/text y -0.5;
+/ITL/scene/text2 set txt dash;
+/ITL/scene/text2 y 0.4;
+/ITL/scene/text2 x -0.65;
+/ITL/scene/text3 set txt solid;
+/ITL/scene/text3 y 0.4;
+/ITL/scene/text3 x 0;
+/ITL/scene/text4 set txt dot;
+/ITL/scene/text4 y 0.4;
+/ITL/scene/text4 x 0.65;
+/ITL/scene/text* scale 3;
+/ITL/scene/text* blue 150;
+
+/ITL/scene/rect set rect 1 1;
+/ITL/scene/rect scale 0.5;
+/ITL/scene/rect x -0.65;
+/ITL/scene/rect1 set rect 1 1;
+/ITL/scene/rect1 scale 0.5;
+/ITL/scene/rect2 set rect 1 1;
+/ITL/scene/rect2 scale 0.5;
+/ITL/scene/rect2 x 0.65;
+/ITL/scene/rect1 penWidth 6;
+/ITL/scene/rect1 penColor 250 130 40;
+/ITL/scene/rect2 penWidth 6;
+/ITL/scene/rect2 penStyle dot;
+/ITL/scene/rect2 penAlpha 0.5;
+/ITL/scene/rect penWidth 4;
+/ITL/scene/rect penStyle dash;
+
+/ITL/scene/rect* color 220 220 220;
+

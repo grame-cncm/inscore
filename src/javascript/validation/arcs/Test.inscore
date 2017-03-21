@@ -1,0 +1,154 @@
+
+//test de comportement par segment de 90°
+
+
+
+
+---------------------------------------------------------------------
+//test de comportement par segment de 120°
+
+range=120;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 30 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/c set arc $w $h 150 $range;
+/ITL/scene/c color 0 250 0;
+
+/ITL/scene/d set arc $w $h 270 $range;
+/ITL/scene/d color 0 0 250;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 180°
+
+range=180;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 30 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/c set arc $w $h 210 $range;
+/ITL/scene/c color 0 250 0;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 270°
+
+range=270;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 45 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/b drange -90;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 359°
+
+range=359;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 1 $range;
+/ITL/scene/b color 250 0 0;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+---------------------------------------------------------------------
+//test de comportement par segment de 120° avec close sur un seul segment
+
+range=225;
+w=1;
+h=0.5;
+/ITL/scene/* del;
+
+/ITL/scene/b set arc $w $h 30 $range;
+/ITL/scene/b color 250 0 0;
+/ITL/scene/b close 1;
+/ITL/scene/b penColor 0 255 0;
+/ITL/scene/b get penColor;
+/ITL/scene/b penAlpha 100;
+/ITL/scene/b penWidth 25;
+/ITL/scene/b get penAlpha;
+
+/ITL/scene/b get penWidth;
+/ITL/scene/b penStyle dot;
+/ITL/scene/b get penStyle;
+/ITL/scene/b penStyle dash;
+/ITL/scene/b get penStyle;
+/ITL/scene/b penStyle dashDot;
+/ITL/scene/b get penStyle;
+/ITL/scene/b penStyle dashDotDot;
+/ITL/scene/b get penStyle;
+/ITL/scene/b penStyle solid;
+/ITL/scene/b get penStyle;
+
+/ITL/scene/c set arc $w $h 150 $range;
+/ITL/scene/c color 0 250 0;
+/ITL/scene/c close 1;
+
+/ITL/scene/d set arc $w $h 270 $range;
+/ITL/scene/d color 0 0 250;
+
+
+/ITL/scene/elli set ellipse 1 0.;
+
+/ITL/scene/* del;
+/ITL/scene/rect set line 1 0.5;
+/ITL/scene/rect color 255 0 0 100;
+/ITL/scene/rect penColor 0 0 0;
+/ITL/scene/rect penWidth 5;
+/ITL/scene/rect penAlpha 255;
+
+/ITL/scene/elli penStyle dot;
+
+/ITL/scene/b drange 25;
+/ITL/scene/b dstart 2;
+
+
+---------------------------------------------------------------------
+//test des attributs du pen control
+
+
+/ITL/scene/c set arc $w $h 150 $range;
+/ITL/scene/c color 0 250 0;
+/ITL/scene/c close 1;
+/ITL/scene/c penColor 255 255 255;
+/ITL/scene/c penAlpha 50;
+
+/ITL/scene/d set arc $w $h 270 $range;
+/ITL/scene/d color 0 0 250;
+/ITL/scene/d penWidth 500;
+
+/ITL/scene/elli set ellipse $w $h;
+/ITL/scene/elli color 0 0 0 50;
+
+/ITL/scene/d drange 25;
+/ITL/scene/b dstart 2;
+
+/ITL/scene/* del;
+/ITL/scene/r set line wa 1 0;
+/ITL/scene/r color 0 250 0;
+/ITL/scene/r penColor 255 0 0;
+/ITL/scene/r penWidth 100;
+
+/ITL/scene/r get penColor penWidth;
+/ITL/scene/r penAlpha 100;
+

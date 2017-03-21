@@ -1,6 +1,7 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="IObject.ts"/>
+///<reference path="Constants.ts"/>
 ///<reference path="IProxy.ts"/>
 ///<reference path="IApplStaticNodes.ts"/>
 
@@ -9,14 +10,27 @@ class IAppl extends IObject {
     protected kApplType: string;
     protected fReceivedMsgs: number;
     protected fRate: number;
-    
+    fFullScreen : boolean;
+
     constructor() {
         super('ITL');
-        this.kApplType = 'IAppl';
-        this.fTypeString = 'IAppl';
+        this.kApplType = kApplType;
+        this.fTypeString = kApplType;
         this.fReceivedMsgs = 0;
         this.fRate = 100;
+
+		this.fMsgHandlerMap[kfullscreen_GetSetMethod]    = new TMsgHandlerNum(this._setFullScreen());
+		this.fGetMsgHandlerMap[kfullscreen_GetSetMethod] = new TGetMsgHandlerNum(this._getFullScreen());
     } 
+
+	getFullScreen()  : number 	    	{ return this.fFullScreen ? 1 : 0; }
+    _getFullScreen() : GetNumMethod 	{ return () => this.getFullScreen(); }
+
+    setFullScreen (full : number): eMsgStatus {
+		this.fFullScreen = full ? true : false;
+		return eMsgStatus.kProcessed
+	}
+    _setFullScreen() : SetNumMethod   { return (full : number) => this.setFullScreen(full) }
 
     createStaticNodes() : void {
     	let log = new IApplLog ("log", this);
@@ -34,10 +48,10 @@ class IAppl extends IObject {
 	positionAble(): void	{}
 	timeAble() : void		{}
 
-    processMsg (address: string, addressTail: string , msg: IMessage): msgStatus {
+    processMsg (address: string, addressTail: string , msg: IMessage): eMsgStatus {
     	this.fReceivedMsgs++;
 
-		let status = msgStatus.kBadAddress;
+		let status = eMsgStatus.kBadAddress;
 		let head = address;
 		let tail = addressTail;
 
@@ -58,15 +72,16 @@ class IAppl extends IObject {
 	
 		else if (this.match(head)) {		// the message is for the application itself
 			status = this.execute(msg);
-			if (status & msgStatus.kProcessed)
-				this.setState(objState.kModified);
+			if (status & eMsgStatus.kProcessed)
+				this.setState(eObjState.kModified);
 		}
-//		if ((status == msgStatus.kProcessed) || (status == msgStatus.kProcessedNoChange))
-			return status;
+		return status;
     }
 
-	protected newObj (msg: IMessage, name: string): { status: msgStatus, obj?: IObject } 
+/*
+	protected newObj (msg: IMessage, name: string): { status: eMsgStatus, obj?: IObject } 
     				{ return this.proxy_create(msg, name, this); }                
-    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject }	
+    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: eMsgStatus, obj?: IObject }	
     				{ return IProxy.execute (msg, name, parent); }
+*/
 }

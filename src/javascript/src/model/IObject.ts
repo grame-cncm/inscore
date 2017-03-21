@@ -3,17 +3,24 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../externals/fraction.ts"/>
-///<reference path="../lib/ITLError.ts"/>
-///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/OSCRegexp.ts"/>
 ///<reference path="../lib/Tools.ts"/>
+///<reference path="../lib/ITLError.ts"/>
+///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
+///<reference path="Constants.ts"/>
 ///<reference path="Methods.ts"/>
-///<reference path="Icolor.ts"/>
+///<reference path="MethodsJS.ts"/>
+///<reference path="IColor.ts"/>
 ///<reference path="IDate.ts"/>
 ///<reference path="IPosition.ts"/>
+///<reference path="IBrushStyle.ts"/>
+///<reference path="IEffect.ts"/>
+///<reference path="IPenControl.ts"/>
+///<reference path="ITempo.ts"/>
+///<reference path="IProxyInterface.ts"/>
 
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -28,27 +35,27 @@ abstract class IObject implements Tree<IObject> {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
+    private   fState: 		eObjState;
     protected fTypeString:	string;
     protected fName: 		string;
-    protected fState: 		objState;
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
-    protected fView: 		VObjectView;
     protected fParent: 		IObject;
-    
+    protected fObjectView:	VObjectView;
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
     
-    protected fObjectView: VObjectView;
-    
-    fPosition: 	IPosition;
-    fDate: 		IDate;
-    fColor: 	IColor;
+    fPosition: 	 IPosition;
+    fDate: 		 IDate;
+    fTempo:      ITempo;
+    fColor: 	 IColor;
+    fPenControl: IPenControl;
+    fBrushStyle: IBrushStyle;
+    fEffect:     IEffect;
 
-    
 // CONSTRUCTOR
 //--------------------------------------------------------------       
     constructor(name: string, parent?: IObject) {
@@ -57,19 +64,24 @@ abstract class IObject implements Tree<IObject> {
         
         this.fDelete = false;
         this.fLock = false;
-        this.fState = objState.kNewObject;
+        this.fState = eObjState.kNewObject;
         this.fNewData = true;        
         this.fParent = parent; 
 
         this.fPosition = new IPosition;
         this.fDate = new IDate;
+        this.fTempo = new ITempo;
 		this.fColor = new IColor([0,0,0]);
+        
+        this.fPenControl = new IPenControl(kObjType);
+        this.fBrushStyle = new IBrushStyle();
+        this.fEffect     = new IEffect();
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
         this.setHandlers();
         this.createStaticNodes();
-    } 
+    }
     
     createStaticNodes() : void {}
 
@@ -84,37 +96,42 @@ abstract class IObject implements Tree<IObject> {
  	    this.colorAble();
 	    this.positionAble();
 	    this.timeAble();
+        this.penControlAble();
+        this.effectAble();
     }
+
+    // intended for ILine : the target is always the pen color
+    getColorTarget(): IColor 				{ return this.fColor; };
     
     colorAble(): void {
-        this.fMsgHandlerMap[kcolor_GetSetMethod] 		= new TMsgHandlerColor(this.fColor._setRGB());
-        this.fMsgHandlerMap[khsb_SetMethod] 			= new TMsgHandlerColor(this.fColor._setHSB());
+        let target = this.getColorTarget();
+        this.fMsgHandlerMap[kcolor_GetSetMethod] 		= new TMsgHandlerColor(target._setRGB());
+        this.fMsgHandlerMap[khsb_SetMethod] 			= new TMsgHandlerColor(target._setHSB());
+        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum(target._setR());
+	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum(target._setG());
+	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum(target._setB());
+        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum(target._setA());
+	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum(target._setH());
+	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum(target._setS());
+        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum(target._setV());
 
-        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum(this.fColor._setR());
-	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum(this.fColor._setG());
-	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum(this.fColor._setB());
-        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum(this.fColor._setA());
-	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum(this.fColor._setH());
-	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum(this.fColor._setS());
-        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum(this.fColor._setV());
+        this.fMsgHandlerMap[kdred_SetMethod] 			= new TMsgHandlerNum(target._dR());
+	    this.fMsgHandlerMap[kdgreen_SetMethod] 			= new TMsgHandlerNum(target._dG());
+	    this.fMsgHandlerMap[kdblue_SetMethod]			= new TMsgHandlerNum(target._dB());
+        this.fMsgHandlerMap[kdalpha_SetMethod] 			= new TMsgHandlerNum(target._dA());
+	    this.fMsgHandlerMap[kdhue_SetMethod] 			= new TMsgHandlerNum(target._dH());
+	    this.fMsgHandlerMap[kdsaturation_SetMethod]		= new TMsgHandlerNum(target._dS());
+        this.fMsgHandlerMap[kdbrightness_SetMethod]		= new TMsgHandlerNum(target._dV());
 
-        this.fMsgHandlerMap[kdred_SetMethod] 			= new TMsgHandlerNum(this.fColor._dR());
-	    this.fMsgHandlerMap[kdgreen_SetMethod] 			= new TMsgHandlerNum(this.fColor._dG());
-	    this.fMsgHandlerMap[kdblue_SetMethod]			= new TMsgHandlerNum(this.fColor._dB());
-        this.fMsgHandlerMap[kdalpha_SetMethod] 			= new TMsgHandlerNum(this.fColor._dA());
-	    this.fMsgHandlerMap[kdhue_SetMethod] 			= new TMsgHandlerNum(this.fColor._dH());
-	    this.fMsgHandlerMap[kdsaturation_SetMethod]		= new TMsgHandlerNum(this.fColor._dS());
-        this.fMsgHandlerMap[kdbrightness_SetMethod]		= new TMsgHandlerNum(this.fColor._dV());
-
-        this.fGetMsgHandlerMap[kcolor_GetSetMethod] 	= new TGetMsgHandlerArray(this.fColor._getRGB());
-        this.fGetMsgHandlerMap[khsb_SetMethod] 			= new TGetMsgHandlerArray(this.fColor._getHSB());
-        this.fGetMsgHandlerMap[kred_GetSetMethod] 		= new TGetMsgHandlerNum(this.fColor._getR());
-        this.fGetMsgHandlerMap[kgreen_GetSetMethod] 	= new TGetMsgHandlerNum(this.fColor._getG());
-	    this.fGetMsgHandlerMap[kblue_GetSetMethod] 		= new TGetMsgHandlerNum(this.fColor._getB());
-        this.fGetMsgHandlerMap[kalpha_GetSetMethod] 	= new TGetMsgHandlerNum(this.fColor._getA());
-        this.fGetMsgHandlerMap[khue_GetSetMethod] 		= new TGetMsgHandlerNum(this.fColor._getH());
-	    this.fGetMsgHandlerMap[ksaturation_GetSetMethod] = new TGetMsgHandlerNum(this.fColor._getS());
-	    this.fGetMsgHandlerMap[kbrightness_GetSetMethod] = new TGetMsgHandlerNum(this.fColor._getV());    
+        this.fGetMsgHandlerMap[kcolor_GetSetMethod] 	= new TGetMsgHandlerArray(target._getRGB());
+        this.fGetMsgHandlerMap[khsb_SetMethod] 			= new TGetMsgHandlerArray(target._getHSB());
+        this.fGetMsgHandlerMap[kred_GetSetMethod] 		= new TGetMsgHandlerNum(target._getR());
+        this.fGetMsgHandlerMap[kgreen_GetSetMethod] 	= new TGetMsgHandlerNum(target._getG());
+	    this.fGetMsgHandlerMap[kblue_GetSetMethod] 		= new TGetMsgHandlerNum(target._getB());
+        this.fGetMsgHandlerMap[kalpha_GetSetMethod] 	= new TGetMsgHandlerNum(target._getA());
+        this.fGetMsgHandlerMap[khue_GetSetMethod] 		= new TGetMsgHandlerNum(target._getH());
+	    this.fGetMsgHandlerMap[ksaturation_GetSetMethod] = new TGetMsgHandlerNum(target._getS());
+	    this.fGetMsgHandlerMap[kbrightness_GetSetMethod] = new TGetMsgHandlerNum(target._getV());    
     }
     
     positionAble() {
@@ -125,11 +142,11 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kz_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setZOrder());
         this.fMsgHandlerMap[kangle_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ());
         this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum(this._setScale());
-//        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TSetMethodMsgHandler(this.fPosition._setShear());
+        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TMsgHandlerNumArray(this.fPosition._setShear());
         this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateX()); 
         this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateY()); 
         this.fMsgHandlerMap[krotatez_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ()); 
-        
+
         this.fMsgHandlerMap[kdx_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addXPos());
         this.fMsgHandlerMap[kdy_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addYPos());
         this.fMsgHandlerMap[kdxorigin_SetMethod] 	= new TMsgHandlerNum(this.fPosition._addXOrigin());
@@ -137,6 +154,9 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kdz_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addZOrder());
         this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum(this.fPosition._addAngle());
         this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum(this.fPosition._multScale());
+        this.fMsgHandlerMap[kdrotatex_SetMethod]    = new TMsgHandlerNum(this.fPosition._addXAngle());
+        this.fMsgHandlerMap[kdrotatey_SetMethod]    = new TMsgHandlerNum(this.fPosition._addYAngle());
+        this.fMsgHandlerMap[kdrotatez_SetMethod]    = new TMsgHandlerNum(this.fPosition._addAngle());
         this.fMsgHandlerMap[kshow_GetSetMethod]		= new TMsgHandlerNum(this.fPosition._setVisible());
 
         this.fGetMsgHandlerMap[kx_GetSetMethod]			= new TGetMsgHandlerNum(this.fPosition._getXPos());
@@ -162,9 +182,35 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime(this.fDate._addDuration());        
         this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid(this.fDate._clock());
         this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid(this.fDate._durclock());
+        this.fMsgHandlerMap[ktempo_GetSetMethod] 	= new TMsgHandlerNum(this.fTempo._setTempo());
+        this.fMsgHandlerMap[kdtempo_SetMethod] 	    = new TMsgHandlerNum(this.fTempo._addTempo());
 
-        this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
+
+        this.fGetMsgHandlerMap[ktempo_GetSetMethod] 	= new TGetMsgHandlerNum(this.fTempo._getTempo());
         this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime(this.fDate._getDuration());
+        this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
+    }
+
+    penControlAble() {
+        this.fMsgHandlerMap[kpenWidth_GetSetMethod]     = new TMsgHandlerNum(this.fPenControl._setPenWidth());
+        this.fMsgHandlerMap[kpenColor_GetSetMethod] 	= new TMsgHandlerColor(this.fPenControl._setPenColor());
+        this.fMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TMsgHandlerText(this.fPenControl._setPenStyle());
+        this.fMsgHandlerMap[kpenAlpha_GetSetMethod] 	= new TMsgHandlerNum(this.fPenControl._setPenAlpha());
+
+        this.fGetMsgHandlerMap[kpenWidth_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPenControl._getPenWidth());
+        this.fGetMsgHandlerMap[kpenColor_GetSetMethod] 	= new TGetMsgHandlerArray(this.fPenControl._getPenColor());
+        this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerText(this.fPenControl._getPenStyle());
+        this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum(this.fPenControl._getPenAlpha());
+    }
+    
+    brushAble() {
+        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this.fBrushStyle._getBrushStyle());
+        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this.fBrushStyle._setBrushStyle());
+	}
+
+	effectAble(){
+        this.fGetMsgHandlerMap[keffect_GetSetMethod]     = new TGetMsgHandlerArray(this.fEffect._getEffect());
+        this.fMsgHandlerMap[keffect_GetSetMethod]        = new TMsgHandlerAnyArray(this.fEffect._setEffect());
     }
     
 //--------------------------------------------------------------  
@@ -179,14 +225,14 @@ abstract class IObject implements Tree<IObject> {
     _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
     _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
 	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
-	posModified() : void 			{ this.fPosition.modify(); this.addState (objState.kModified + objState.kSubModified); }
+	posModified() : void 			{ this.fPosition.modify(); this.addState (eObjState.kModified + eObjState.kSubModified); }
    
     
 // METHODS
 //--------------------------------------------------------------  
     addChild(obj: IObject): void { 
         this.fSubNodes.push(obj);
-        this.setState(objState.kSubModified);
+        this.addState(eObjState.kSubModified);
     } 
     
     setParent(parent: IObject): void { this.fParent = parent; }    
@@ -203,8 +249,8 @@ abstract class IObject implements Tree<IObject> {
     	return size / 2 * this.fParent.getRSizeAsScale(); 
     }
 
-    getPosition(): {x: number, y: number } 			{ return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
-    getSize():     {w: number, h: number } 			{ return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
+    getPosition(): {x: number, y: number } 		     { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
+    getSize():     {w: number, h: number } 			 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
 
     toString(): string 				{ 
@@ -258,18 +304,18 @@ abstract class IObject implements Tree<IObject> {
     newData     (state: boolean): void  { this.fNewData = state; /*triggerEvent(kNewData, true)*/; }
     isNewData   (): boolean             { return this.fNewData; }
     
-    setState (s: objState): void 	{ this.fState = s; }
-    addState (s: objState): void 	{ this.fState |= s; }
-    getState(): objState 			{ return this.fState; }
+    setState (s: eObjState): void 	{ this.fState = s; }
+    addState (s: eObjState): void 	{ this.fState |= s; }
+    getState(): eObjState 			{ return this.fState; }
     
     getPos(): IPosition 		{ return this.fPosition; }
     getColor(): IColor 			{ return this.fColor; }
     getOSCAddress(): string 	{ return this.fParent.getOSCAddress() + "/" + this.fName; }
 
     transferAttributes(dest: IObject): IObject {
-        dest.fPosition 	= this.fPosition;
-        dest.fColor		= this.fColor;
-        dest.fDate		= this.fDate;
+        dest.fPosition.set	( this.fPosition );
+        dest.fColor.set 	( this.fColor );
+        dest.fDate.set 		( this.fDate );
 
         //dest.fPosition.setPenWidth(getPenWidth());
         //dest.fPosition.setPenColor(getPenColor());
@@ -284,7 +330,7 @@ abstract class IObject implements Tree<IObject> {
     
     //-----------------------------
     execute (msg: IMessage): number {
-    	if (msg.size() == 0) return msgStatus.kBadParameters;
+    	if (msg.size() == 0) return eMsgStatus.kBadParameters;
     	let method = msg.message();
     	if (method.correct) {
        		let handler = this.messageHandler(method.value);
@@ -295,11 +341,11 @@ abstract class IObject implements Tree<IObject> {
 
 	        //handler = this.messageHandler("*");
 	        //if (handler) return ;
-	        //return msgStatus.kBadParameters;		
+	        //return eMsgStatus.kBadParameters;		
     	}
     	else {			// sig handler 
     	}
-		return msgStatus.kBadParameters;
+		return eMsgStatus.kBadParameters;
     }
     
     //-----------------------------
@@ -325,9 +371,9 @@ abstract class IObject implements Tree<IObject> {
 		return this.processMsg(beg, tail, msg);
     }
 
-    processMsg (address: string, addressTail: string , msg: IMessage): msgStatus {
+    processMsg (address: string, addressTail: string , msg: IMessage): eMsgStatus {
 
-        let result: number = msgStatus.kBadAddress;
+        let result: number = eMsgStatus.kBadAddress;
         if (this.match(address)) {
             let beg: string = OSCAddress.addressFirst(addressTail);	
             let tail: string = OSCAddress.addressTail(addressTail);
@@ -344,46 +390,45 @@ abstract class IObject implements Tree<IObject> {
                     for (let i = 0; i < n; i++) {
                         let target = targets[i];
                         result |= target.execute(msg);	
-                        if (result & msgStatus.kProcessed) { target.addState(objState.kModified); }
+                        if (result & eMsgStatus.kProcessed) { target.addState(eObjState.kModified); }
                     }
                 }               
-                else if (Tools.regexp(beg)) { result = msgStatus.kProcessedNoChange; }                    
-                else { result = this.proxy_create (msg, beg, this).status; }
+                else if (Tools.regexp(beg)) { result = eMsgStatus.kProcessedNoChange; }                    
+                else  { result = this.proxy_create (msg, beg, this).status; }
             }
         }
             
-        if (result & msgStatus.kProcessed) { this.addState(objState.kSubModified); }
+        if (result & (eMsgStatus.kProcessed + eObjState.kSubModified)) { this.addState(eObjState.kSubModified); }
     	return result;     
     }
     
     //-------------------------------------------------------------
     // the basic 'set' handler
     //-------------------------------------------------------------
-    set(msg: IMessage): msgStatus	{
+    set(msg: IMessage): eMsgStatus	{
         let type = msg.paramStr(1);
-        if (!type.correct) { return msgStatus.kBadParameters; }
+        if (!type.correct) { return eMsgStatus.kBadParameters; }
 
         if (type.value != this.getTypeString()) {
 			let out = this.proxy_create (msg, this.fName, this.getParent());
-            if (out.status & msgStatus.kProcessed) {
+            if (out.status & eMsgStatus.kProcessed) {
 	            // todo: transfer this attributes to new object
 	            this.transferAttributes (out.obj);
-            	this.del();
-            	this.fParent.addChild (out.obj);
 //				this.fParent.cleanupSync();
+            	this.del();
                 return out.status;		
             }
             
-            return msgStatus.kProcessedNoChange;
+            return eMsgStatus.kProcessedNoChange;
         }
-        return msgStatus.kBadParameters;
+        return eMsgStatus.kBadParameters;
     }
     _set(): SetMsgMethod	{ return (m) => this.set(m); }
     
      //-------------------------------------------------------------
     // the basic 'get' handler
     //-------------------------------------------------------------
-    get(msg: IMessage): msgStatus {
+    get(msg: IMessage): eMsgStatus {
         let n = msg.size();
         if ( n == 1 ) {				// get without param should give a 'set' msg
 			let outmsg = this.getSet();
@@ -399,21 +444,21 @@ abstract class IObject implements Tree<IObject> {
         	}
         	else {
         		ITLError.badParameter (msg.toString(), msg.param(i));
-         		return msgStatus.kBadParameters;
+         		return eMsgStatus.kBadParameters;
        		}        	
         }
-        return msgStatus.kProcessedNoChange;
+        return eMsgStatus.kProcessedNoChange;
     }
     _get(): SetMsgMethod	{ return (m) => this.get(m); }
     
      //-------------------------------------------------------------
     // the 'save' handler
     //-------------------------------------------------------------
-    save(msg: IMessage): msgStatus {
+    save(msg: IMessage): eMsgStatus {
     	let out = this.getSetRecurse();
 	    for (let i=0; i < out.length; i++)
         	ITLOut.write (out[i].toString() + ";");
-    	return msgStatus.kProcessedNoChange;
+    	return eMsgStatus.kProcessedNoChange;
     }
     _save(): SetMsgMethod	{ return (m) => this.save(m); }
 
@@ -425,7 +470,7 @@ abstract class IObject implements Tree<IObject> {
     //-------------------------------------------------------------
     // get 1 message for 1 attribute
     get1AttributeMsg(attribute: string): IMessage {
-        let outmsg : IMessage
+        let outmsg : IMessage;
         let h = this.fGetMsgHandlerMap[attribute];
         if (h) { 
         	outmsg = new IMessage (this.getOSCAddress(), attribute);
@@ -465,17 +510,16 @@ abstract class IObject implements Tree<IObject> {
     }
  
     //-----------------------------    
-    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: msgStatus, obj?: IObject } 
-    				{ return this.getAppl().proxy_create(msg, name, parent); }                
+    protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: eMsgStatus, obj?: IObject } 
+    				{ return IProxy.execute (msg, name, parent); }         
     
     //-----------------------------    
     getDeleted(): boolean 	{ return this.fDelete; }
     del(): void {
     	this.fDelete = true;
+        if (this.getView()) this.getView().remove();
         let array = this.fParent.getSubNodes();
         array.splice(array.indexOf(this), 1);
-        if (this.getView()) this.getView().remove();
-        delete this;    
     }
     _del() : SetVoidMethod { return () => this.del(); }
 
@@ -484,10 +528,25 @@ abstract class IObject implements Tree<IObject> {
 		this.fPosition.cleanup(); 
 		this.fDate.cleanup(); 
 		this.fColor.cleanup();
-		this.setState(objState.kClean);
+		this.fPenControl.cleanup();
+		this.setState(eObjState.kClean);
+        this.fBrushStyle.cleanup();
+        this.fEffect.cleanup();
+    }
+
+	//-----------------------------    
+	static timeTaskCleanup(obj: IObject) : void { 
+		let state = obj.getState();
+		if (state & (eObjState.kNewObject + eObjState.kModified)) obj.cleanup();		
+		if (state & eObjState.kSubModified) {
+			obj.setState (eObjState.kClean);
+			let nodes = obj.getSubNodes();
+			for (let i=0; i<nodes.length; i++) {
+				IObject.timeTaskCleanup(nodes[i]);
+			}
+		}
 	}
 }
-
 
 class IObjectTreeApply implements TreeApply<IObject> {
 	apply (f: TApplyFunction<IObject>, t: IObject) {

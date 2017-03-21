@@ -2,11 +2,11 @@
 
 class IHtml extends IText {
 
-    protected kHtmlType: string;
+    //protected kHtmlType: string;
         
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kTextType = 'html';
-        this.fTypeString = this.kTextType;
+        //this.kHtmlType = 'html';
+        this.fTypeString = kHtmlType;
     }
 }

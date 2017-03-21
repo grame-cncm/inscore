@@ -1,20 +1,45 @@
 ///<reference path="Methods.ts"/>
+///<reference path="MethodsJS.ts"/>
 ///<reference path="IRectShape.ts"/>
 
+
 class IScene extends IRectShape {
-    
-    protected kSceneType: string;
-    
+		static kAbsolute : string = "absolute";
+		static kRelative : string = "relative";
+
+        fAbsolutePos          : boolean;
+        fPositionTypeModified : boolean;
+
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kSceneType = 'scene';
-        this.fTypeString = this.kSceneType;        
+        this.fTypeString = kSceneType;        
+        this.fAbsolutePos = false;
 
-        this.fPosition.setWidth (2);
-        this.fPosition.setHeight (2);
+        this.fPosition.setWidth (1);
+        this.fPosition.setHeight (1);
         this.fMsgHandlerMap[knew_SetMethod] = new TMsgHandlerVoid(this._newScene());
         this.fMsgHandlerMap["redraw"]	= new TMsgHandlerVoid(this._redraw());
+        this.fMsgHandlerMap[kposition_GetSetMethod] = new TMsgHandlerText(this._setPositionStyle());
+        this.fGetMsgHandlerMap[kposition_GetSetMethod]  = new TGetMsgHandlerText(this._getPositionStyle());
+//        this.fGetMsgHandlerMap[kposition_GetSetMethod]  = new TGetMsgHandlerText ( function(){ return () => this.getPositionStyle();} );
     }
+
+    getPositionStyle()   : string 	    	{ return this.fAbsolutePos ? IScene.kAbsolute : IScene.kRelative;}
+    _getPositionStyle() : GetStringMethod 	{ return () => this.getPositionStyle(); }
+
+    setPositionStyle (position : string): eMsgStatus {
+        switch (position){
+            case IScene.kAbsolute : 
+            	this.fAbsolutePos = true;
+            	return eMsgStatus.kProcessed;
+            case IScene.kRelative : 
+            	this.fAbsolutePos = false;
+	            return eMsgStatus.kProcessed;
+            default : 
+            	return eMsgStatus.kBadParameters
+            }
+    }
+    _setPositionStyle(): SetStringMethod    { return (type : string) => this.setPositionStyle(type) }
 
     getRScale(): number 		{ return this.fPosition.getScale(); }    
     getRSizeAsScale(): number 	{ return Math.min(this.fPosition.getWidth(), this.fPosition.getHeight()) / 2; }

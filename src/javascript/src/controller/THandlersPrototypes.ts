@@ -1,5 +1,5 @@
 
-///<reference path="./IMessage.ts"/>
+///<reference path="IMessage.ts"/>
 ///<reference path="../lib/TEnums.ts"/>
 ///<reference path="../externals/fraction.ts"/>
 
@@ -8,20 +8,22 @@
 // ------------------------------------------------------------------------------
 // the set message handler types
 // ------------------------------------------------------------------------------
-interface TSetHandler { handle(msg: IMessage): msgStatus; }
+interface TSetHandler { handle(msg: IMessage): eMsgStatus; }
 
 abstract class SetMsgHandler<T> implements TSetHandler { 
     protected fMethod: T;
     constructor(method: T) { this.fMethod = method; }    
-	abstract handle(msg: IMessage): msgStatus;
+	abstract handle(msg: IMessage): eMsgStatus;
 }
 
-interface SetMsgMethod  	{ (msg: IMessage): msgStatus; }
+interface SetMsgMethod  	{ (msg: IMessage): eMsgStatus; }
 interface SetVoidMethod 	{ (): void; }
 interface SetNumMethod 		{ (val: number): void; }
 interface SetStringMethod 	{ (val: string): void; }
 interface SetTimeMethod 	{ (val: Fraction): void; }
 interface SetColorMethod 	{ (val: Array<number>): void; }
+interface SetNumArrayMethod	{ (val: Array<number>): eMsgStatus; }
+interface SetAnyArrayMethod	{ (val: Array<any>): eMsgStatus; }
 
 // ------------------------------------------------------------------------------
 // the get message handler types

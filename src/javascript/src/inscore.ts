@@ -1,59 +1,77 @@
 
+///<reference path="inscore-interface.ts"/>
 ///<reference path="controller/IMessage.ts"/>
-///<reference path="controller/THandlersPrototypes.ts"/>
 ///<reference path="controller/IGlue.ts"/>
 ///<reference path="lib/ITLError.ts"/>
 ///<reference path="lib/ITLOut.ts"/>
 ///<reference path="lib/TEnums.ts"/>
-///<reference path="model/IAppl.ts"/>
+///<reference path="model/IObject.ts"/>
+///<reference path="model/TILoader.ts"/>
 
 
-class INScore {
-	private static fVersion: number = 0.5;
-	private static fAppl: IAppl;
-	private static fGlue: IGlue;
-	private static fErrStrings = new Array<string>();
+class INScoreImpl extends INScoreInterface 
+{
+	private fVersion: number = 0.6;
+	private fGlue: IGlue;
+	private fErrStrings = new Array<string>();
 
-	protected static status2string (err: msgStatus) : string {
+	protected status2string (err: eMsgStatus) : string {
 		let str = this.fErrStrings[err];
 		return (str ? str : "unknown error " + err);
 	}
-	
+
 	// ------------------------------------------------------------
-	constructor (root: IAppl)		{ 
-		INScore.fAppl = root; 
-		INScore.fErrStrings[msgStatus.kBadAddress] = "bad OSC address";
-		INScore.fErrStrings[msgStatus.kProcessed] = "processed";
-		INScore.fErrStrings[msgStatus.kProcessedNoChange] = "processed without change";
-		INScore.fErrStrings[msgStatus.kBadParameters] = "bad parameter";
-		INScore.fErrStrings[msgStatus.kCreateFailure] = "create failed";
+	constructor ()		{ 
+		super();
+		this.fErrStrings[eMsgStatus.kBadAddress] = "bad OSC address";
+		this.fErrStrings[eMsgStatus.kProcessed] = "processed";
+		this.fErrStrings[eMsgStatus.kProcessedNoChange] = "processed without change";
+		this.fErrStrings[eMsgStatus.kBadParameters] = "bad parameter";
+		this.fErrStrings[eMsgStatus.kCreateFailure] = "create failed";
 	}
 
 	// ------------------------------------------------------------
 	// static methods
 	// ------------------------------------------------------------
-	static version () : number { return INScore.fVersion; }
+	version () : number { return this.fVersion; }
 
-	static start (scene?: string) : void {
-		if (!INScore.fGlue) {
-			INScore.fGlue = new IGlue();
-			INScore.fGlue.initEventHandlers();
+	start (scene: string, position?: string) : void {
+		if (!this.fGlue) {
+			this.fGlue = new IGlue();
+			this.fGlue.initEventHandlers();
 		}
-		INScore.fGlue.start(scene);
-		ITLOut.write ("INScore version " + INScore.version());
+		this.fGlue.start(scene, position ? position : "relative");
+		ITLOut.write ("INScore version " + this.version());
 	}
 
-	static getRoot() : IAppl		{ return this.fAppl; }
+	getRoot() : IObject		{ return this.fGlue.getRoot(); }
 
-	static checkStatus (status: msgStatus, msg: IMessage) : void {
-    	if (!(status & msgStatus.kProcessed + msgStatus.kProcessedNoChange))
+	checkStatus (status: eMsgStatus, msg: IMessage) : void {
+    	if (!(status & eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange))
     		ITLError.write (msg.toString() + ": " + this.status2string(status));
 	}
 
-	static postMessage (address: string, params: Array<any>) : void {
+	postMessage (address: string, params: Array<any>) : void {
     	let msg = new IMessage (address, params);
-    	INScore.checkStatus (this.fAppl.process (msg), msg);
+    	this.checkStatus (this.getRoot().process (msg), msg);
+	}
+
+	load (data: any): void {
+		let loader = new TILoader;
+		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
+		else 							{ loader.load (data, this.getRoot()); }		
+	}
+
+	register (tag : string): void {
+		var elts = document.getElementsByTagName (tag);
+		for (var i= 0 ; i < elts.length; i++) {
+			var icode = elts[i].textContent;
+			INScore.load (icode);
+			elts[i].textContent = "";
+		}
+		while (elts.length)
+			elts[0].parentElement.removeChild (elts[0]);
 	}
 }
 
-function StartINScore(scene?: string) : void { INScore.start(scene); }
+INScore = new INScoreImpl();

@@ -1,5 +1,5 @@
 
-///<reference path="../inscore.ts"/>
+///<reference path="../inscore-interface.ts"/>
 
 class ITLError {
     

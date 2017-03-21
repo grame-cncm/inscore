@@ -1,0 +1,86 @@
+---------------Transformation-------------------
+/ITL/scene/* rotatex 0;
+/ITL/scene/* rotatex 45;
+/ITL/scene/* rotatex 90;
+/ITL/scene/* rotatex 135;
+
+/ITL/scene/* rotatex -45;
+/ITL/scene/* rotatex -90;
+/ITL/scene/* rotatex -135;
+
+/ITL/scene/* rotatey 0;
+/ITL/scene/* rotatey 45;
+/ITL/scene/* rotatey 90;
+/ITL/scene/* rotatey 135;
+
+/ITL/scene/* rotatey -45;
+/ITL/scene/* rotatey -90;
+/ITL/scene/* rotatey -135;
+
+/ITL/scene/* rotatez 0;
+/ITL/scene/* rotatez 45;
+/ITL/scene/* rotatez 90;
+/ITL/scene/* rotatez 135;
+
+/ITL/scene/* rotatez -45;
+/ITL/scene/* rotatez -90;
+/ITL/scene/* rotatez -135;
+
+/ITL/scene/* drotatex 10;
+/ITL/scene/* drotatey 10;
+/ITL/scene/* drotatez 10;
+
+/ITL/scene/* drotatex -10;
+/ITL/scene/* drotatey -10;
+/ITL/scene/* drotatez -10;
+
+/ITL/scene/* shear 0 0;
+/ITL/scene/* shear 15 15;
+/ITL/scene/* shear 0 15;
+/ITL/scene/* shear 15 0;
+
+/ITL/scene/* shear -45 -45;
+/ITL/scene/* shear 0 -45;
+/ITL/scene/* shear -45 0;
+
+/ITL/scene/* width 0.1;
+
+/ITL/scene/* height 0.5;
+/ITL/scene/* height 0.1;
+
+---------------Error-------------------
+/ITL/scene/* rotatex a;
+/ITL/scene/* rotatex 0 0;
+/ITL/scene/* rotatex;
+
+/ITL/scene/* rotatey a;
+/ITL/scene/* rotatey 0 0;
+/ITL/scene/* rotatey;
+
+/ITL/scene/* rotatez a;
+/ITL/scene/* rotatez 0 0;
+/ITL/scene/* rotatez;
+
+/ITL/scene/* drotatex a;
+/ITL/scene/* drotatex 0 0;
+/ITL/scene/* drotatex;
+
+/ITL/scene/* drotatey a;
+/ITL/scene/* drotatey 0 0;
+/ITL/scene/* drotatey;
+
+/ITL/scene/* drotatez a;
+/ITL/scene/* drotatez 0 0;
+/ITL/scene/* drotatez;
+
+/ITL/scene/* shear a 0;
+/ITL/scene/* shear 0 0 0;
+/ITL/scene/* shear 0;
+
+/ITL/scene/* width a;
+/ITL/scene/* width 100 0;
+/ITL/scene/* width;
+
+/ITL/scene/* height a;
+/ITL/scene/* height 100 0;
+/ITL/scene/* height;

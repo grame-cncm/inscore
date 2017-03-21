@@ -1,78 +1,79 @@
 ///<reference path="IObject.ts"/>
+///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
-
+///<reference path="../externals/libGUIDOEngine.ts"/>
 
 class IGuidoCode extends IObject { 
-    protected kGuidoCodeType: string;
-    
-    protected fGMNsvg: string;
+	static fGuidoEngine: GuidoEngineAdapter;
+
+    protected fGMN: string;
+    protected fSVG: string;
     protected fPage: number;
-    protected fPageFormat: Array<number>;
-    
+    protected fPageFormat: Array<number>;    
     protected fCurrentPagesCount: number;
-    
     
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kGuidoCodeType = 'gmn';
-        this.fTypeString = this.kGuidoCodeType;
         
+        if (!IGuidoCode.fGuidoEngine) {
+        	IGuidoCode.fGuidoEngine = new Module.GuidoEngineAdapter;
+        	IGuidoCode.fGuidoEngine.init();
+        }
+        
+        this.fTypeString = kGuidoCodeType;
         this.fCurrentPagesCount = 1; 
         this.fPage = 1; 
         //this.fPageFormat = [21.0f, 29.7f]; 
-	    
+        this.fPosition.setWidth (0);
+        this.fPosition.setHeight (0);
         super.setHandlers();
     }
     
-    setGMNsvg(gmn: string): void				        { this.fGMNsvg = gmn; /*localMapModified(true);*/ }
+    setSVG(gmn: string): void				        { this.fSVG = gmn; /*localMapModified(true);*/ }
 	setPage(page: number): void							{ this.fPage = page; /*localMapModified(true);*/ }
 	setPageFormat(pageFormat: Array<number>): void	    { this.fPageFormat = pageFormat; /*localMapModified(true);*/ }
     //setdPage(dpage: number): void                       {}
     
-    getGMNsvg(): string			        { return this.fGMNsvg; }
+    getSVG(): string			        { return this.fSVG; }
 	getPage(): number					{ return this.fPage; }
 	getPageFormat(): Array<number>		{ return this.fPageFormat; }
 	//getPageCount(): number              {return}
     
-    set(msg: IMessage): msgStatus {
+    str2AR(gmn: string): ARHandler {
+        let p = IGuidoCode.fGuidoEngine.openParser();
+	    let ar = IGuidoCode.fGuidoEngine.string2AR(p, gmn);
+	    if (!ar) {
+			let error = IGuidoCode.fGuidoEngine.parserGetErrorCode(p);
+			ITLError.write ("Error line " + error.line + " column " + error.col + ": " + error.msg);
+	    }
+        IGuidoCode.fGuidoEngine.closeParser(p);
+	    return ar;
+    }
+    
+    AR2SVG(ar: ARHandler): string {
+        let gr = IGuidoCode.fGuidoEngine.ar2gr(ar);
+        let svg = IGuidoCode.fGuidoEngine.gr2SVG(gr, 1, false, 0);
+        IGuidoCode.fGuidoEngine.freeGR(gr);
+	    return svg;
+    }
+    
+    set(msg: IMessage): eMsgStatus {
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status;
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
 
+		if (msg.size() != 3) return eMsgStatus.kBadParameters;
         let gmn = msg.paramStr(2);
-        
-        // test if the parsing works
-        let guidoEngine = new Module.GuidoEngineAdapter;
-        guidoEngine.init();        
-        let p = guidoEngine.openParser();
-	    let ar = guidoEngine.string2AR(p, gmn.value);
-        
-        if ((msg.size() == 3) && gmn.correct && ar) {
-            /*
-            if(expr){
-                if(!fExprHandler.composeExpr(expr, t))
-                    return msgStatus.kBadParameters;
-            }
-            else
-                    fExprHandler.clearExpr();
-            */
-            if (gmn.value != this.getGMNsvg()) {
-                let gr = guidoEngine.ar2gr(ar);
-                this.setGMNsvg(guidoEngine.gr2SVG(gr, 1, false, 0));
-                guidoEngine.freeGR(gr);
-                
-                status = msgStatus.kProcessed;
-                this.newData(true);
-            }
-            else status = msgStatus.kProcessedNoChange;
-
-        }
-        else status = msgStatus.kBadParameters;
-        guidoEngine.freeAR(ar);
-        guidoEngine.closeParser(p);
-        return status;
+		if (!gmn.correct) return eMsgStatus.kBadParameters;
+        let ar = this.str2AR (gmn.value);
+		if (!ar) return eMsgStatus.kBadParameters;
+		
+		this.fGMN = gmn.value;
+		this.fSVG = this.AR2SVG (ar);
+		IGuidoCode.fGuidoEngine.freeAR (ar);
+        return eMsgStatus.kProcessed;
     }
     
     getSet(): IMessage	{ 
-    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, 'todo']); 
+    	return new IMessage(this.getOSCAddress(), [kset_SetMethod, this.fTypeString, this.fGMN]); 
     }    
 }

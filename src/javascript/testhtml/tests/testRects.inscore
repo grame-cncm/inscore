@@ -1,0 +1,16 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/rect set rect 0.5 0.5;
+/ITL/scene/rect radius 10 10;
+/ITL/scene/rect get radius;
+/ITL/scene/rect radius 20 10;
+/ITL/scene/rect get radius;
+/ITL/scene/rect radius 20 30;
+/ITL/scene/rect get radius;
+
+/ITL/scene/rect color 200 200 200;
+/ITL/scene/rect get color;
+
+/ITL/scene/rect/rect set rect 0.5 0.5;
+/ITL/scene/rect/rect alpha 100;

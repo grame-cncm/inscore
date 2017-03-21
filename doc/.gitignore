@@ -5,6 +5,7 @@
 *.aux
 *.idx
 *.bbl
+*.bcf
 *.blg
 *.ilg
 *.ind
@@ -26,5 +27,5 @@ doxygen/*latex
 doxygen/html/
 doxygen/latex/
 doxygen/INScore-*
-in progress/
 rsrc/
+papers/in progress/

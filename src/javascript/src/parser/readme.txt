@@ -8,3 +8,8 @@ See at http://zaa.ch/jison/ for instructions.
 
 To test the parser, run:
 > node INScoreParser.js  anyscript.inscore
+
+or
+> node runparser anyscript.inscore
+(print the messages on output)
+

@@ -9,40 +9,60 @@
 ///<reference path="VHtmlSceneView.ts"/>
 ///<reference path="VHtmlTextView.ts"/>
 ///<reference path="VHtmlGMNView.ts"/>
+///<reference path="VHtmlPianoRollView.ts"/>
+///<reference path="VHtmlSvgView.ts"/>
+///<reference path="VHtmlArcView.ts"/>
+///<reference path="VHtmlPolygonView.ts"/>
+///<reference path="VHtmlVideoView.ts"/>
 ///<reference path="VHtmlView.ts"/>
 
 class HtmlViewFactory implements ViewFactory {
     
     create (type: string, parent?: VHtmlView, name?: string): VObjectView {   
         switch (type) {
-            case "ellipse":
+            case kEllipseType:
                 return new VHtmlEllipseView (parent);
                             
-            case "rect":
+            case kRectType:
                 return new VHtmlRectView (parent);
                 
-            case "curve":
+            case kCurveType:
                 return new VHtmlCurveView (parent);
                 
-            case "line":
+            case kLineType:
                 return new VHtmlLineView (parent);
+                
+            case kPolygonType:
+                return new VHtmlPolygonView (parent);                
 
-            case "txt":
-            case "txtf":
+            case kTextType:
+            case kTextfType:
                 return new VHtmlTextView (parent);
 
-            case "html":
+            case kHtmlType:
                 return new VHtmlHtmlView (parent);
             
-            case "scene":
+            case kSceneType:
                 return new VHtmlSceneView (name);
             
-            case "img":
+            case kImgType:
                 return new VHtmlImageView (parent);
                 
-            case "gmn":
+            case kArcType:
+                return new VHtmlArcView (parent);
+
+            case kVideoType:
+                return new VHtmlVideoView (parent);    
+                            
+            case kGuidoCodeType:
                     return new VHtmlGMNView (parent);
-                
+                    
+            case kGuidoPianoRollType:
+                    return new VHtmlPianoRollView (parent);                    
+
+            case kSvgType:
+                    return new VHtmlSvgView (parent);
+                                    
             default:
                 return null;
         }

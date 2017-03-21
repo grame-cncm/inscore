@@ -1,122 +1,153 @@
 
 ///<reference path="../inscore.ts"/>
-///<reference path="../model/TILoader.ts"/>
+///<reference path="../model/Constants.ts"/>
 ///<reference path="../vhtmlview/VHtmlTools.ts"/>
 
-function dropEvent(e: any) {
-    dragOverEvent(e);
-	var targetScene = e.target.getAttribute("name");
-	console.log(targetScene);
+class dropLoader {
+	protected fTarget 		: any;
+	protected fTargetType	: string;
+	protected fTargetScene	: string;
 
-    let data = e.dataTransfer.getData("Text");
-	if (data) {			// check if text has been dropped
-		let loader = new TILoader;
-		loader.process (data, INScore.getRoot());
-	}
-
-	else {				// check if files have been dropped
-		let filelist = e.dataTransfer.files;
-		if (!filelist) return;
+	protected fExtHandlers: { [id: string] : string; } = {};
+	
+	constructor (target: any) {
+		this.fTarget 		= target;
+		this.fTargetType 	= target.getAttribute("class");	
 		
-		let filecount = filelist.length;
-		if (filecount > 0) {
+		this.buildObjectExtensions();	
+	}
+	
+    buildObjectExtensions(): void {
+        this.fExtHandlers["txt"] 		= kTextType;
+        this.fExtHandlers["text"] 		= kTextType;
+        this.fExtHandlers["svg"]		= kSvgType;
+        this.fExtHandlers["html"] 		= kHtmlType;
+		this.fExtHandlers["htm"] 		= kHtmlType;
+		this.fExtHandlers["gmn"] 		= kGuidoCodeType;
+		this.fExtHandlers["jpg"] 		= kImgType;
+		this.fExtHandlers["jpeg"] 		= kImgType;
+		this.fExtHandlers["gif"] 		= kImgType;
+		this.fExtHandlers["png"] 		= kImgType;
+		this.fExtHandlers["bmp"] 		= kImgType;
+		this.fExtHandlers["tiff"] 		= kImgType;
+		this.fExtHandlers["wmv"] 		= kVideoType;
+		this.fExtHandlers["avi"] 		= kVideoType;
+		this.fExtHandlers["mpg"] 		= kVideoType;
+		this.fExtHandlers["mpeg"] 		= kVideoType;
+		this.fExtHandlers["mp4"] 		= kVideoType;
+		this.fExtHandlers["m4v"] 		= kVideoType;
+		this.fExtHandlers["mov"] 		= kVideoType;
+		this.fExtHandlers["vob"] 		= kVideoType;		
+    }
+		
+	processLoader (e: any) {
+		this.fTargetScene = this.targetScene();	
+
+		// check if text has been dropped
+		let data = e.dataTransfer.getData("Text");
+		if (data) { INScore.load(data); }
+
+		// check if files have been dropped
+		else {	
+			let filelist = e.dataTransfer.files;
+			if (!filelist) return;
+			
+			let filecount = filelist.length;
 			for (let i = 0; i < filecount; i++ ) {
-				let file: string = filelist[i].name;
-				let properties = getFileProperties(file);
+				let file 	= <Blob>filelist[i]
+				let fileName: string = filelist[i].name;
+				let properties = this.getFileProperties(fileName);
 				let name 	= properties.name;
-				let ext 	= properties.ext;
+				let ext 	= properties.ext.toLocaleLowerCase();
+/*
+console.log("relative path: " + filelist[i].webkitRelativePath);
+console.log("doc url: " + document.URL);
+*/				
+				let reader: FileReader = new FileReader();				
+				if (ext == kInscoreFile) { INScore.load (file); }
 				
-				if ( ext == "inscore" ) {
-					let loader = new TILoader;
-					loader.load(filelist[i], INScore.getRoot());	
-				}
-				
-				else if ( ext == "png" || ext == "jpeg" ) {
-					post("/ITL/"+ targetScene + "/" + name, ["set", "img", file]);	
+				else if (this.fExtHandlers[ext] == kImgType || this.fExtHandlers[ext] == kVideoType ) {
+					INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
 				}
 				
 				else {
-					let file = <Blob>filelist[i]
-					let reader: FileReader = new FileReader();
 					reader.readAsText(file);
-					reader.onloadend = _process(reader, targetScene);
-				}
+					if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTextType; }
+					reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
+				}	
+				// to do : xml, faust		
 			}
 		}
 	}
-}	
+
+	// take target scene
+	targetScene() {
+		let targetScene	: string; 
+		let targetType = this.fTargetType
+		let target = this.fTarget;
+		if (targetType == "inscore-scene") { targetScene = this.fTarget.getAttribute("name"); }
+		
+		else {
+			while (targetType != "inscore-scene") {
+				target = target.parentNode;
+				targetType = target.getAttribute("class");
+			}
+			targetScene = target.getAttribute("name"); 	 
+		}
+		
+		return targetScene;
+	}
+
+
+	// take the name and the extension of the dropped file
+	getFileProperties(file: string): { name: string, ext: string } {
+		let ext 	= file.substring(file.lastIndexOf('.')+1, file.length);
+		let name 	= file.substring(0, file.lastIndexOf('.'));
+		name = this.buildCorrectName(name);
+		return { name: name, ext: ext }	
+	}
+
+	// build a receivable name for an INScore object
+	buildCorrectName(name: string): string {
+		let myRegex = /^[a-zA-Z-_][-_a-zA-Z0-9]+$/.test(name);
+		if (!myRegex) {
+			let first: string = name[0];
+			let myRegex = /^[0-9]$/.test(first);
+			if (myRegex) {
+				name = '_' + name;
+			}
+			for (let i =1; i < name.length; i++ ) {
+				let myRegex = /^[-_a-zA-Z0-9]$/.test(name[i]);
+				if (!myRegex) {
+					name = name.replace(name[i], "_");
+				}	
+			}			
+		}	
+		return name	
+	}
 	
-function _process(reader : FileReader, targetScene: string) : TLoadEndHandler { 
-   		return () => {
-       		let data: string = reader.result;
-			post("/ITL/"+ targetScene + "/" + name, ["set", "txt", data]);
-   		}
+	_processMsg(reader : FileReader, targetScene: string, name: string, type: string) : TLoadEndHandler { 
+		return () => {
+			let data: string = reader.result;
+			INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", type, data]);
+		}
+	}	
+	
 }
 
-function post(address: string, params: Array<any>) {
-	INScore.postMessage (address, params)	
+
+// Event functions
+//--------------------------------
+function inscore_dropEvent(e: any) {
+    inscore_dragOverEvent(e);
+	let loader = new dropLoader(e.target);
+	loader.processLoader(e);
 }
 
 
-function dragOverEvent(e: any) {
+function inscore_dragOverEvent(e: any) {
     e.stopPropagation();
     e.preventDefault();
 }
 
-function resizeDocument() { INScore.postMessage ("/ITL/*", ["redraw"]); }
-
-function getFileProperties(file: string): { name: string, ext: string } {
-	let ext 	= file.substring(file.lastIndexOf('.')+1, file.length);
-	let name 	= file.substring(0, file.lastIndexOf('.'));
-	name = buildCorrectName(name);
-	return { name: name, ext: ext }	
-}
-
-function buildCorrectName(name: string): string {
-	let myRegex = /^[a-zA-Z-_][-_a-zA-Z0-9]+$/.test(name);
-	if (!myRegex) {
-		let first: string = name.substring(0, 1);
-		let myRegex = /^[a-zA-Z-_]$/.test(first);
-		if (!myRegex) {
-			name = name.substring(1, name.length)
-		}
-		for (let i =1; i < name.length; i++ ) {
-		let myRegex = /^[-_a-zA-Z0-9]$/.test(name[i]);
-		if (!myRegex) {
-			name = name.replace(name[i], "")
-		}	
-		}			
-	}	
-	console.log(name);
-	return name	
-}
-
-// controller le nom avec regExp
-// 
-
-
-
-
-/*
-function dropEvent(e: any) {
-    dragOverEvent(e);
-
-    let data = e.dataTransfer.getData("Text");
-	if (data) {			// check if text has been dropped
-		let loader = new TILoader;
-		loader.process (data, INScore.getRoot());
-	}
-	else {				// check if files have been dropped
-	    let filelist =  e.dataTransfer.files;
-    	if (!filelist) return; 
-
-		let filecount = filelist.length;
-		if (filecount > 0) {                
-			for (let i=0; i < filecount; i++) {
-				let loader = new TILoader;
-				loader.load(filelist[i], INScore.getRoot());      
-			} 
-		} 
-    }
-}
-*/
+function inscore_resizeDocument() { INScore.postMessage ("/ITL/*", ["redraw"]); }

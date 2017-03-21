@@ -1,0 +1,32 @@
+/ITL/scene/* del;
+
+/ITL/scene/txt1 set txt "Original";
+/ITL/scene/txt1 x -0.5;
+/ITL/scene/txt1 y -0.5;
+
+/ITL/scene/txt2 set txt "Light";
+/ITL/scene/txt2 x 0.5;
+/ITL/scene/txt2 y -0.5;
+/ITL/scene/txt2 fontWeight light;
+
+/ITL/scene/txt3 set txt "Demibold";
+/ITL/scene/txt3 x -0.5;
+/ITL/scene/txt3 y 0;
+/ITL/scene/txt3 fontWeight demibold;
+
+/ITL/scene/txt4 set txt "Bold";
+/ITL/scene/txt4 x 0.5;
+/ITL/scene/txt4 y 0;
+/ITL/scene/txt4 fontWeight bold;
+
+/ITL/scene/txt5 set txt "Black";
+/ITL/scene/txt5 x -0.5;
+/ITL/scene/txt5 y 0.5;
+/ITL/scene/txt5 fontWeight black;
+
+/ITL/scene/txt6 set txt "Normal";
+/ITL/scene/txt6 x 0.5;
+/ITL/scene/txt6 y 0.5;
+/ITL/scene/txt6 fontWeight normal;
+
+/ITL/scene/txt* fontSize 30;

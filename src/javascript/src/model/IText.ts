@@ -8,7 +8,7 @@ class IText extends IObject {
 	protected fFontStyle: string;
 	protected fFontModified: boolean
     
-    protected kTextType: string;
+    //protected kTextType: string;
 
     // Constants for font style and font weight.
 	static kStyleNormal = "normal" ;
@@ -22,8 +22,8 @@ class IText extends IObject {
         
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        this.kTextType = 'txt';
-        this.fTypeString = this.kTextType;
+        //this.kTextType = 'txt';
+        this.fTypeString = kTextType;
         
         //Default Parameters
         this.fColor.setRGB([0, 0, 0]);
@@ -53,7 +53,7 @@ class IText extends IObject {
 
 // GETS / SETS VALUES 
 //--------------------------------------------------------------    
-    fontModified(): boolean         { return this.fFontModified; }
+    fontModified(): boolean         { if(this.fFontModified == false)return this.fEffect.effectModified();else return this.fFontModified; }
     getText(): string               { return this.fText; }
     setText(txt: string): void      { this.fText = txt; }
     
@@ -64,7 +64,7 @@ class IText extends IObject {
     setFontFamily(f: string): void  { this.fFontFamily = f; this.fFontModified = true; }
     
     getFontStyle(): string          { return this.fFontStyle; } 
-    setFontStyle(msg: IMessage): msgStatus {
+    setFontStyle(msg: IMessage): eMsgStatus {
         let n = msg.size();
         if (n == 2) {
             let fontStyle = msg.paramStr(1);
@@ -72,15 +72,15 @@ class IText extends IObject {
                 if(fontStyle.value == IText.kStyleNormal || fontStyle.value == IText.kStyleItalic	|| fontStyle.value == IText.kStyleOblique) {
                     this.fFontStyle = fontStyle.value;
                     this.fFontModified = true;
-                    return msgStatus.kProcessed;
+                    return eMsgStatus.kProcessed;
                 }
             }
         }
-        return msgStatus.kBadParameters;
+        return eMsgStatus.kBadParameters;
     }       
     
     getFontWeight(): string         { return this.fFontWeight; }
-    setFontWeight(msg: IMessage): msgStatus {
+    setFontWeight(msg: IMessage): eMsgStatus {
         let n = msg.size();
         if (n == 2) {
             let fontWeight = msg.paramStr(1);
@@ -89,11 +89,11 @@ class IText extends IObject {
                         || fontWeight.value == IText.kWeightDemiBold || fontWeight.value == IText.kWeightBold || fontWeight.value == IText.kWeightBlack) {
                     this.fFontWeight = fontWeight.value;
                     this.fFontModified = true;
-                    return msgStatus.kProcessed;
+                    return eMsgStatus.kProcessed;
                 }
             }
         }
-        return msgStatus.kBadParameters;
+        return eMsgStatus.kBadParameters;
     }
     
 // GETS / SETS VALUES CLOSURES
@@ -114,9 +114,9 @@ class IText extends IObject {
 
 // SET HANDLER
 //--------------------------------------------------------------    
-   set(msg: IMessage): msgStatus { 
+   set(msg: IMessage): eMsgStatus { 
         let status = super.set(msg);
-        if (status & (msgStatus.kProcessed + msgStatus.kProcessedNoChange)) return status; 
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status; 
 
         let n = msg.size();
         if (n > 2) {
@@ -129,16 +129,16 @@ class IText extends IObject {
             }
             this.setText(str);
             this.newData(true);
-            status = msgStatus.kProcessed;
+            status = eMsgStatus.kProcessed;
         }
-        else status = msgStatus.kBadParameters;
+        else status = eMsgStatus.kBadParameters;
         return status;
     }
 
 // GETSET METHOD
 //--------------------------------------------------------------    
     getSet(): IMessage	{ 
-    	let a: Array<any> = [kset_SetMethod, this.kTextType];
+    	let a: Array<any> = [kset_SetMethod, this.fTypeString];
     	return new IMessage(this.getOSCAddress(), a.concat (this.fText) ); 
     }
 }
