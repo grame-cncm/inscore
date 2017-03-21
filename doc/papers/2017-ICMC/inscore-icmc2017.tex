@@ -25,7 +25,7 @@
 % ====================================================
 \definecolor{mygrey}{gray}{0.95}
 
-\newcommand{\OSC}[1]	{{\fontsize{9pt}{9pt} \selectfont\texttt{#1}}}
+\newcommand{\OSC}[1]	{{\fontsize{8.5pt}{8pt} \selectfont\texttt{#1}}}
 \newcommand{\note}[1]	{\textcolor{red}{(#1)}}
 
 \newcommand{\lowTilde}{\texttildelow}
@@ -174,7 +174,7 @@ More recently, these reactive aspects have also been introduced in OpenMusic \ci
 
 Time in INScore \cite{Fober:12a} is \emph{static}: all objects have a date and duration expressed in musical time that are fixed by the score description. The common temporal dimension of all objects of a score allows to represent their temporal relations in the graphical space \cite{fober:10b}. The \emph{animation} of the time (i.e. the modification of the temporal attributes of an object) occurs on OSC messages receipt. These messages are necessarily transmitted from an external application.
 
-The choice of a \emph{static} time was due to a design originally turned to uses coupled with sound production software (e.g. Max/MSP, Pure Data), that have strict real-time constraints and offer effective and accurate time management mechanisms. Nevertheless, the reactive aspects were quickly taken into account with the introduction of \textit{events}, which allow to interact with the music score \cite{fober13a}. Initially, the typology of these events includes classical user interactions events (e.g. mouse events), and introduces events in the temporal domain (notably time intervals monitoring). This mechanism of \textit{events} paved the way for an original approach to music score programming by providing the user with the ability to place messages - and thus interactions - in the temporal space. Nevertheless, as time was always \emph{static}, the use of an external application remained necessary to actuate it.
+The choice of a \emph{static} time was due to a design originally turned to uses coupled with sound production software (e.g. Max/MSP, Pure Data), that have strict real-time constraints and offer effective and accurate time management mechanisms. Nevertheless, the reactive aspects were quickly taken into account with the introduction of \textit{events}, which allow to interact with the music score \cite{Fober:13b}. Initially, the typology of these events includes classical user interactions events (e.g. mouse events), and introduces events in the temporal domain (notably time intervals monitoring). This mechanism of \textit{events} paved the way for an original approach to music score programming by providing the user with the ability to place messages - and thus interactions - in the temporal space. Nevertheless, as time was always \emph{static}, the use of an external application remained necessary to actuate it.
 
 The need for a \emph{dynamic} time has thus emerged. It has been solved in a simple way, with the introduction of an additional attribute to the objects of a score: the \emph{tempo}. This simple addition, however, has an important impact on the design of the time in INScore and on the dynamic aspects of the score. We will first present the musical time model, which is controlled by the tempo. We will then see how this time combines with event-based time, and allows to program \emph{autonomous} dynamic scores. We will finally show some use cases before concluding and giving some perspectives for the extension of the temporal dimensions of the objects of a score.
 
@@ -194,7 +194,7 @@ Let $t_0$ be the time of activation of an object time and $v$ the value of its t
 \end{equation}
 where $d_i$ is the date of the object at time $t_i$ and $k$ a constant to convert absolute time to musical time. In practice, the absolute time is expressed in milliseconds and the unit of musical time is the whole note. Therefore, the value of the constant $k$ is $1/1000 \times 60 \times 4$.
 
-Each object of a score has an independent tempo. The tempo value is signed, meaning that an object can move in any direction of time (forward or backward). There are few environments allowing to express this reversal of time in a simple and natural way, we can quote IanniX \cite{iannix14}, a graphical sequencer inspired by the work of Iannis Xenakis and that can viewed as a \emph{time writing system}.
+Each object of a score has an independent tempo. The tempo value is signed, meaning that an object can move in any direction of time (forward or backward). There are few environments allowing to express this reversal of time in a simple and natural way, we can quote IanniX \cite{coduys04}, a graphical sequencer inspired by the work of Iannis Xenakis and that can viewed as a \emph{time writing system}.
 
 
 %=======================================
@@ -207,7 +207,7 @@ In the other hand, the frequency of the time task can be variable:
 \item by default, it is performed every 10 ms but the user can freely change this value by sending the \OSC{rate} message to the application, followed by a value in milliseconds.
 \item the time task is not reentrant and the complexity of the display can potentially slow it down.
 \end{itemize}
-Thus, and at each task of time, the system measures the time actually elapsed. Then, objects whose tempo is non-zero use this value to compute an offset expressed in musical time as indicated in (\ref{timeeq}), then self-send a \OSC{ddate} message (moving the date in relative mode) with the corresponding value.
+Thus, and at each time task, the system measures the time actually elapsed. Then, objects whose tempo is non-zero use this value to compute an offset expressed in musical time as indicated in (\ref{timeeq}), then self-send a \OSC{ddate} message (moving the date in relative mode) with the corresponding value.
 
 \begin{figure}[h]
    \centering
@@ -227,7 +227,7 @@ To be consistent with the overall system, this implementation is entirely messag
 %==============================================================
 \section{The events-based time.}\label{evtime}
 
-The \emph{events-based} approach of time in INScore preceded the musical time model and was first presented in \cite{fober13a}. As a reminder, the process of event interaction relies on the association of messages with events of the system. These messages are sent when the event they are associated with occurs. The general message format for creating such associations is described in figure \ref{fig: watch}.
+The \emph{events-based} approach of time in INScore preceded the musical time model and was first presented in \cite{fober13b}. As a reminder, the process of event interaction relies on the association of messages with events of the system. These messages are sent when the event they are associated with occurs. The general message format for creating such associations is described in figure \ref{fig:watch}.
 
 \begin{figure}[htbp]
 \centerline{
@@ -236,7 +236,7 @@ The \emph{events-based} approach of time in INScore preceded the musical time mo
 \label{fig:watch}
 \end{figure}
 
-With first version presented, the event's typology was limited to classical UI events (such as mouse clicks), extended in the time domain (see table \ref{tbl:evts}). 
+With the first version presented, the event's typology was limited to classical UI events (such as mouse clicks), extended in the time domain (see table \ref{tbl:evts}). 
 
 \begin{table}[htp]
 \begin{center}
@@ -256,13 +256,13 @@ mouseMove		&				\\
 
 This typology has been significantly extended to include:
 \begin{itemize}
-\item any attribute of an object: the modification of an attribute value may generate the corresponding event, that carries the name of the attribute (e.g. \ OSC {x, y date}, etc. .).
-\item the intrinsic data of an object, i.e. those defined by a \OSC{set} message. That's the \OSC{newData} event, introduced for the purpose of symbolic scores composition \cite{lepetit16}.
+\item any attribute of an object: the modification of an attribute value may generate the corresponding event, that carries the name of the attribute (e.g. \OSC{x, y date}, etc. .).
+\item the intrinsic data of an object, i.e. those defined by a \OSC{set} message. That's the \OSC{newData} event, introduced for the purpose of symbolic scores composition \cite{Lepetit-Aimon_tenor2016}.
 \item arbitrary events defined by the user.
 \end{itemize}
 
-Any event can be arbitrarily triggered by sending an \OSC{event} message followed by its parameters. Conceptually, this message  is equivalent to calling a parameterized function that generates OSC messages as output.
-This logic is particularly consistent for user events, which can take a variable number of parameters, that are then available to the associated messages under the form of variables named $\$1 ... \$n$. Figure \ref{fig:uevent} show a 2-arguments user event example.
+Any event can be triggered by sending an \OSC{event} message followed by its parameters. Conceptually, this message  is equivalent to calling a parameterized function that generates OSC messages as output.
+This logic is particularly consistent for user events, which can take a variable number of parameters, that are then available to the associated messages under the form of variables named $\$1 ... \$n$. Figure \ref{fig:uevent} shows a 2-arguments user event example.
 
 \begin{figure}[h]
    \centering
@@ -278,7 +278,7 @@ This logic is particularly consistent for user events, which can take a variable
    \label{fig:uevent}
 \end{figure}
 
-The temporal dimension of this \emph{event-based} logic allows to place \emph{functions} in the time space, under the form of events that activate messages which can modify the state of the system and/or be addressed to external applications using INScore extended OSC addressing scheme. The figure \ref{fig:events} gives an example.
+The temporal dimension of this \emph{event-based} logic allows to place \emph{functions} in the time space, under the form of events that activate messages, which can modify the state of the system and/or be addressed to external applications using INScore extended OSC addressing scheme. Figure \ref{fig:events} gives an example.
   
 \begin{figure}[h]
    \centering
@@ -291,7 +291,7 @@ The temporal dimension of this \emph{event-based} logic allows to place \emph{fu
 %==============================================================
 \subsection{Implementation}
 
-Each object of a score handles relationships between a set of events $\ mathbb{E}$ and a set of messages $\mathbb{M}$. The set of events $\mathbb{E}_o$of an object $o$ is a polymorphic set defined as:
+Each object of a score handles relationships between a set of events $\mathbb{E}$ and a set of messages $\mathbb{M}$. The set of events $\mathbb{E}_o$ of an object $o$ is a polymorphic set defined as:
 \[
 	\mathbb{E}_o = \mathbb{A}_o \cup \mathbb{U}_o \cup \mathbb{T}_o \cup \mathbb{T'}_o \cup \mathbb{K}  
 \] 
@@ -299,7 +299,7 @@ where:
 \begin{itemize}
 \item[-] $\mathbb{A}_o$ is the set of the object attributes, 
 \item[-] $\mathbb{U}_o$ is the set of the object user defined events, 
-\item[-] $\mathbb{T}_o$ and $\mathbb{T'}_o$ are respectively the set of time intervals monitored at input and output,
+\item[-] $\mathbb{T}_o$ and $\mathbb{T'}_o$ are respectively the set of time intervals monitored at input and at output,
 \item[-] $\mathbb{K}$ is the set of UI events (\OSC{mousexxx, touchxxx}).
 \end{itemize}
 
@@ -322,7 +322,7 @@ or $\exists i \in \mathbb{T'}_o\ |\ (x \not \in i\ \land\ d \in i)$,
 %==============================================================
 \section{Dynamic music scores}
 
-The combination of musical and event time allows to design autonomous dynamic scores. In the following example, 3 objects \OSC{o1, o2} and \OSC{o3} activate each other (figure \ref{fig:ex1}) according to the time diagram described in figure \ref{fig:sample}. It makes use of the 2 \emph{user} events \OSC{START} and \OSC{STOP}, that are described in figure \ref{fig:ex2}.
+The combination of musical and event time allows to design autonomous dynamic scores. In the following example, 3 objects \OSC{o1, o2} and \OSC{o3} activate each other (figure~\ref{fig:ex1}) according to the time diagram described in figure~\ref{fig:sample}. It makes use of the 2 \emph{user} events \OSC{START} and \OSC{STOP}, that are described in figure \ref{fig:ex2}.
 
 \begin{figure}[h]
    \centering
@@ -341,7 +341,7 @@ The combination of musical and event time allows to design autonomous dynamic sc
    \label{fig:ex1}
 \end{figure}
 
-The variables \OSC{\$t1, \$d1, \$d2} and \OSC{\$d3} are instantiated with values corresponding to the figure \ref{fig:sample}. Note that the object \OSC{o3} loops the system by trigering the \OSC{START} event of the object \OSC{o1}.
+The variables \OSC{\$t1, \$d1, \$d2} and \OSC{\$d3} are instantiated with values corresponding to the figure \ref{fig:sample}. Note that the object \OSC{o3} loops the system by triggering the \OSC{START} event of the object \OSC{o1}.
 
 \begin{figure}[h]
    \centering
@@ -372,27 +372,28 @@ The \OSC{START} and \OSC{STOP} events respectively activate and deactivate the r
 %==============================================================
 \subsection{Jeu est un autre}
 
-\emph{Jeu est un autre} from Vincent Carinola is a pedagogical music piece for computer and a variable number of performers, where Max/MSP is used to compute sound processes and activate a dynamic music score intended to performers. 
+\emph{Jeu est un autre} from Vincent Carinola is a pedagogical music piece for computer and a variable number of performers, where Max/MSP is used to compute sound processes and to activate a dynamic music score intended to performers. 
 
-The music score (figure \ref{fig:sample}) consists of a set of figures with labels (sculpture, zebra, pace, texture, turn) connected by \emph{paths}. To each figure (which we will call \emph{stations}) is associated an instrumental play mode as well as specific sound processes, based on materials prepared by the students. For example, the path \emph{whisper} indicates that \emph{the passage from one figure to another is done by crossing a path inhabited by whispers. It is necessary to find here, in the instrumental and vocal play, what would be most like a story that would be told very softly, whispering.} \footnote{extract from the instructions given with the score}.
+The music score (figure \ref{fig:sample}) consists of a set of graphics with labels (sculpture, zebra, pace, texture, turn) connected by \emph{paths}. Each graphic (that we will call \emph{stations}) is associated to an instrumental play mode and to specific sound processes, based on materials prepared by the students. For example, the path \emph{whisper} indicates that \emph{the passage from one graphic to another is done by crossing a path inhabited by whispers. It is necessary to find here, in the instrumental and vocal play, what would be most like a story that would be told very softly, whispering.}\footnote{excerpt from the instructions given with the score}
 
 In a given way, the computer plays the role of conductor: it computes sound sequences based on pre-recorded materials and activates \emph{paths} or \emph{stations} for variable durations, dynamically computed. The \emph{paths} and possible \emph{stations} are indicated in the figure \ref{fig:sample} by the labels P1 to P13.
 
-The dynamic aspects of the score are defined with user events that carry the names of the corresponding labels. These events take a duration as parameter, so that to activate a \emph{path} or a emph{station}, it is enough to send the message:
+The dynamic aspects of the score are defined with user events that carry the name of the corresponding labels. These events take a duration as parameter, so that the following message is enough to activate a \emph{path} or a \emph{station}:\\
 \tab \tab \OSC{/ITL/scene Px d} \\
 where \OSC{Px} is the user event name (\OSC{P1...P13})\\
- and \OSC{d} the corresponding duration. \\
-It is therefore a high-level approach which, on Max/MSP side, makes it possible to \emph{conduct} the score in real time.
+ and \OSC{d} the corresponding duration. 
+ 
+Thus, it's a high-level approach that allows to \emph{conduct} the score in real time from Max/MSP side.
 
 Visually, the score accounts for these events in the graphic space in two ways:
 \begin{itemize}
-\item for \emph{stations} (events \ OSC {P1 ... P4} and \ OSC {P13}): using the alpha channel of the corresponding figure to indicate its activation.
+\item for \emph{stations} (events \ OSC {P1 ... P4} and \ OSC {P13}): using the alpha channel of the corresponding graphic to indicate its activation.
 \item for \emph{paths} (events \ OSC {P5 ... P12}): by moving a cursor along the path, in the corresponding direction.
 \end{itemize}
 
-Schematically, the implementation of these events relies on an object named \OSC{cursor} which moves in time at a given tempo, depending on the time unit adopted by Max/MSP.
+Schematically, the implementation of these events relies on an object named \OSC{cursor} that moves in time at a given tempo, depending on a time unit fixed by convention.
 
-For \emph{stations}, it consists in changing the alpha channel of the corresponding figure, activating the cursor time and instantiating an event for the end of the duration computed by Max/MSP (figure \ref{fig:station}).
+Activation of a \emph{stations} consists in changing the alpha channel of the corresponding graphic, activating the cursor time and instantiating an event for the end of the duration computed by Max/MSP (figure \ref{fig:station}).
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene watch P1 ( \\
@@ -421,15 +422,15 @@ stop\_s = ( \\
    \label{fig:station}
 \end{figure}
 
-For \emph{paths}, the duration of the corresponding arc is set to the duration of the event, the cursor is synchronized to that arc in \OSC{syncframe} mode (which consists of synchronizing an object on the border of another), its time is activated and an event is instantiated for the end of the arc duration (figure \ref{fig:path}).
+For \emph{paths} activation, the duration of the corresponding arc is set to the duration of the event, the cursor is synchronized to that arc in \OSC{syncframe} mode (which consists of synchronizing an object on the border of another), its time is activated and an event is instantiated for the end of the arc duration (figure \ref{fig:path}).
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene watch P5 ( \\
 \tab/ITL/scene/a3 duration '\$1', \\
-\tab/ITL/scene event CHEMIN a3 \$tempo '\$1' \\
+\tab/ITL/scene event PATH a3 \$tempo '\$1' \\
 ); \\
 \\
-/ITL/scene watch CHEMIN ( \\
+/ITL/scene watch PATH ( \\
 \tab/ITL/scene/cursor show 1,\\
 \tab/ITL/scene/sync cursor '\$1' syncFrame,\\
 \tab/ITL/scene/cursor watch timeLeave \\
