@@ -14,6 +14,19 @@ class VHtmlGMNView extends VHtmlSvg {
         super(parent); 
         this.getHtml().className = "inscore-gmn";
     }
+
+	createSVG(){
+		if(this.isChrome()){
+			this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
+			this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+			this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
+			this.fSVG.setAttribute('version', "1.1");
+		}else this.fSVG = document.createElement('div');
+		super.getHtml().appendChild(this.fSVG);
+	}
+
+	isChrome() { return navigator.userAgent.indexOf("Chrome") != -1;}
+
     getSVGTarget() : SVGShape  { return this.fSVG; }
 
 	getViewScale (obj: IObject): number {
