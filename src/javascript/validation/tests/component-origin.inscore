@@ -1,4 +1,4 @@
----------------Component-Origin-------------------
+#---------------Component-Origin-------------------
 /ITL/scene/* xorigin -1;
 /ITL/scene/* yorigin -1;
 
@@ -14,7 +14,7 @@
 /ITL/scene/* dyorigin 0.5;
 /ITL/scene/* dyorigin -0.5;
 
----------------Error-------------------
+#---------------Error-------------------
 /ITL/scene/* xorigin a;
 /ITL/scene/* xorigin 0 0;
 /ITL/scene/* xorigin;

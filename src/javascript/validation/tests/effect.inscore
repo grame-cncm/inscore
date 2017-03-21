@@ -1,4 +1,4 @@
----------------Effect------------------------
+#---------------Effect------------------------
 /ITL/scene/* effect none;
 
 /ITL/scene/* effect blur 0;
@@ -18,7 +18,7 @@
 /ITL/scene/* brushStyle solid;
 /ITL/scene/* brushStyle none;
 
----------------Effect------------------------
+#---------------Effect------------------------
 /ITL/scene/* effect none 0;
 /ITL/scene/* effect none a;
 

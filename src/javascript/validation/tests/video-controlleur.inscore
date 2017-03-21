@@ -1,4 +1,4 @@
----------------Video-Controlleur-------------------
+#---------------Video-Controlleur-------------------
 /ITL/scene/* play 0;
 /ITL/scene/* play 1;
 
@@ -13,7 +13,7 @@
 /ITL/scene/* vdate 0;
 /ITL/scene/* vdate 30;
 
----------------Video-Controlleur-------------------
+#---------------Video-Controlleur-------------------
 /ITL/scene/* play a;
 /ITL/scene/* play 0 0;
 /ITL/scene/* play;
