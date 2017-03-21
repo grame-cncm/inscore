@@ -1,6 +1,3 @@
-/ITL/scene/rect set rect 1.5 0.7;
-/ITL/scene/rect color 255 255 255 255;
-
 /ITL/scene/gmn1 set gmn "[ a b g e ]";
 
 /ITL/scene/txt set txt "gmn test";
