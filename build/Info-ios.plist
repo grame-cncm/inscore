@@ -83,15 +83,15 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.21</string>
+	<string>1.23</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.21</string>
+	<string>1.23</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2009-2016 Grame</string>
+	<string>Copyright 2009-2017 Grame</string>
 	<key>NSMainNibFile</key>
 	<string>LaunchScreen</string>
 	<key>NSMainNibFile~ipad</key>
@@ -129,6 +129,10 @@
 			<string>{768, 1024}</string>
 		</dict>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>No access to the photo library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>No access to the camera.</string>
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>UIFileSharingEnabled</key>

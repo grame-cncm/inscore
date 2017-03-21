@@ -1,0 +1,59 @@
+
+/ITL/scene/* del;
+
+w 		= 0.3;
+gap 	= 0.08;
+alpha	= 100;
+/ITL/scene/o1 set rect $w $w;
+/ITL/scene/o2 set rect $w $w;
+/ITL/scene/o3 set rect $w $w;
+/ITL/scene/o1 dx -$w - $gap;
+/ITL/scene/o3 dx $w + $gap;
+
+/ITL/scene/o1 color 100 200 100 $alpha;
+/ITL/scene/o2 color 200 100 100 $alpha;
+/ITL/scene/o3 color 100 100 200 $alpha;
+/ITL/scene/o* radius 20 20;
+
+d1	= 2;
+t2	= 1;
+d2	= 2;
+d3	= 1;
+
+/ITL/scene/o* watch STOP (
+	 /ITL/scene/$self tempo 0,
+	 /ITL/scene/$self alpha $alpha	 
+);
+
+/ITL/scene/o* watch START (
+	 /ITL/scene/$self tempo 300,
+	 /ITL/scene/$self alpha 255,
+	 /ITL/scene/$self date 0	 
+);
+
+/ITL/scene/o1 watch timeLeave 0 $t2 ( /ITL/scene/o2 event START );
+/ITL/scene/o1 watch timeLeave 0 $d1 ( /ITL/scene/o1 event STOP );
+/ITL/scene/o2 watch timeLeave 0 $d2 ( /ITL/scene/o2 event STOP, /ITL/scene/o3 event START );
+/ITL/scene/o3 watch timeLeave 0 $d3 ( /ITL/scene/o3 event STOP, /ITL/scene/o1 event START );
+
+/ITL/scene/ctrl set txt "Start";
+/ITL/scene/ctrl fontSize 32;
+/ITL/scene/ctrl y 0.5;
+/ITL/scene/ctrl alpha 100;
+/ITL/scene/ctrl watch mouseEnter (/ITL/scene/ctrl alpha 255);
+/ITL/scene/ctrl watch mouseLeave (/ITL/scene/ctrl alpha 100);
+/ITL/scene/ctrl watch mouseDown (
+	/ITL/scene/ctrl push,
+	/ITL/scene/o1 event START,
+	/ITL/scene/ctrl set txt "Stop",
+	/ITL/scene/ctrl watch mouseDown (
+		/ITL/scene/ctrl set txt "Start",
+		/ITL/scene/o* event STOP,
+		/ITL/scene/ctrl pop
+	)
+);
+
+__END__
+
+/ITL/log level 2;
+/ITL/scene/o1 event START;

@@ -97,8 +97,12 @@ class TouchEventFilter : public WindowEventFilter
 		Q_OBJECT
 	public:
         TouchEventFilter(const std::string& address, ZoomingGraphicsView* parent=0 );
-        bool running() const { return fIsRunning; }
-    protected:
+        bool running() const 	{ return fIsRunning; }
+
+	public slots:
+		void noDoubleTap() 	{ fDoubleTap = false; }
+
+   protected:
         bool eventFilter(QObject *obj, QEvent *event);
 	protected slots:
 		virtual void updateModel();
@@ -107,7 +111,7 @@ class TouchEventFilter : public WindowEventFilter
 		virtual bool isStartTimer(const QEvent *event);
 
         bool fIsRunning;
-		bool fDoubleTap = false;
+	bool fDoubleTap = false;
 };
 /*!@} */
 

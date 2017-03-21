@@ -139,7 +139,7 @@ void VExport::exportToPdf( QGraphicsItem * item , const QString& fileName , floa
         pdf.setPageMargins(QMarginsF(0,0,0,0));
         paintOnDevice( &pdf , item , xScaleFactor , xScaleFactor, dx, dy, drawChildren );
     } else {
-#ifndef IOS
+#ifndef __MOBILE__
         QPrinter printer;
         printer.setColorMode(QPrinter::Color);
         printer.setFullPage(true);
@@ -218,7 +218,7 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
             pdf.setPageMargins(QMarginsF(0,0,0,0));
             paintOnDevice( &pdf, view);
         } else {
-#ifndef IOS
+#ifndef __MOBILE__
             QPrinter printer (QPrinter::HighResolution);
             printer.setOutputFileName( QString(fileName) );
             printer.setOutputFormat( QPrinter::PdfFormat );

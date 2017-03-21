@@ -1,3 +1,4 @@
+*.bcf
 *.dvi
 *.log
 *.tmp
@@ -25,3 +26,5 @@ doxygen/*latex
 doxygen/html/
 doxygen/latex/
 doxygen/INScore-*
+in progress/
+rsrc/

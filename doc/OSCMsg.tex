@@ -87,7 +87,7 @@
 
 \begin{document}
 
-\title{INScore \\ OSC Messages Reference \\v.1.21}
+\title{INScore \\ OSC Messages Reference \\v.1.23}
 
 \author{D. Fober\\ GRAME\\ Centre national de cr\'eation musicale\\
 {\small <fober@grame.fr>} \\
@@ -2033,6 +2033,20 @@ Setting a scene to fullscreen:
 Creating a new score named \OSC{myScore}:
 \sample{/ITL/myScore new;}
 
+%===============================
+%:  OpenGl rendering
+\sublevel{OpenGl rendering}
+A scene supports optional OpenGl rendering.
+\begin{rail}
+openglMsg :  'opengl' int32
+\end{rail}
+\index{Scene messages!opengl}
+\begin{itemize}
+\item \OSC{opengl}: requests the scene to switch to OpenGl or normal rendering.  The parameter is interpreted as a boolean value. Default value is \values{0}. 
+\end{itemize}
+
+\note \\
+OpenGl rendering improves significantly the performance of graphic operations but at the cost of dirty rendering for text and scores.
 
 %===============================
 %:  Scene queries
@@ -3101,12 +3115,9 @@ specificEvent : 	  'pageCount'
 \item the \OSC{pageCount} event is supported by all the symbolic score components (\OSC{gmn(f)}, \OSC{gmnstream}, \OSC{musicxml(f)}). It is triggered when the page count of the score changes. It is mainly intended to manage variable scores like \OSC{gmnstream}.
 \item the \OSC{newElement} event is supported at scene level only and triggered when a new element is added to the scene.
 \item the \OSC{endPaint} event is supported at scene level only and triggered after a scene has been painted.
-\item the \OSC{error} event is supported at application level and triggered when an error occurs while receiving messages. Note that syntax errors are also triggering the event but the event handler must be set at the time of the script reading i.e. that the sequence \\
-\OSC{ /ITL watch error (a message lists);}\\
-\OSC{ /ITL/scene incorrect syntax}\\
-won't trigger the error the first time it is loaded. \\
+\item the \OSC{error} event is supported at application level and triggered when an error occurs while receiving messages. 
 Typically you can use of this event to open the log window (\OSC{/ITL/log show 1}) 
-\item the \OSC{ready} event is supported by \OSC{video} objects. It is triggered when a video data (duration, graphic dimensions) are available.
+\item the \OSC{ready} event is supported by \OSC{video} objects. It is triggered when video data (duration, graphic dimensions) are available.
 \item the \OSC{end} event is supported by \OSC{video} objects. It is triggered when a video is playing and reaches the end of the media. In this case, the object \OSC{play} status is automatically switched to 0 to reflect the actual player state.
 \end{itemize}
 

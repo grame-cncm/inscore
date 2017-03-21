@@ -919,8 +919,10 @@ SIMessageList IObject::nonRecursiveGetAll () const
 {
 	SIMessageList outMsgs = IMessageList::create();
 	SIMessageList setMsgs = getSetMsg();
-	outMsgs->list().push_back(setMsgs->list()[0]);		// getSetMsg is recursive: push only the first msg
-	outMsgs->list().push_back(getParams()->list());
+	if (setMsgs->list().size()) {
+		outMsgs->list().push_back(setMsgs->list()[0]);		// getSetMsg is recursive: push only the first msg
+		outMsgs->list().push_back(getParams()->list());
+	}
 	return outMsgs;
 }
 
@@ -1385,7 +1387,12 @@ MsgHandler::msgStatus IObject::exportMsg(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::exportAllMsg(const IMessage* msg)
 {
+#ifdef __MOBILE__
+	ITLErr<< getOSCAddress()<< "export is not supported on mobile platforms."<<ITLEndl;
+
+#else
 	return genericExport(msg, true);
+#endif
 }
 
 //--------------------------------------------------------------------------
@@ -1650,7 +1657,8 @@ MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
 			SIMessageList msgs = nonRecursiveGetAll();
 			msgs->list().set("", "\n");
 			stringstream sstr;
-			sstr <<  msgs->list();			// and print it to the string stream
+			if (msgs->list().size())
+				sstr <<  msgs->list();		// and print it to the string stream
 			setEditString(sstr.str());		// finally fill the edit string (will appear in the dialog box)
 		}
 	}

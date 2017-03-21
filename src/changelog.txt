@@ -12,7 +12,19 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
-Version 1.21
+Version 1.23
+- fix synchronization issue with arcs (not visible when synchronized)
+
+----------------------------------------------------
+Version 1.22
+- new opengl message supported at scene level for optional OpenGl graphics rendering 
+  improves significantly the cpu use for graphics operations but at the cost of dirty rendering
+  for text and symbolic scores 
+- fix potential issue with dates: dates expressed with big values for the numerator or the 
+  denominator may result in overflow
+
+----------------------------------------------------
+Version 1.21 - 2017-01-12
 - new set of sensor objects 
 - update to guido engine 1.63
 - new 'preprocess' message supported at application and scene level

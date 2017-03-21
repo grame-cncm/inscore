@@ -9,13 +9,19 @@
 
 namespace qarchive{
 
+#ifdef QT_LESS_55
+#define QDataStreamVERSION QDataStream::Qt_5_3
+#else
+#define QDataStreamVERSION QDataStream::Qt_5_5
+#endif
+
+
 QArchiveError QArchiveHeader::readHeader(QIODevice *input)
 {
 	if(!input->open(QIODevice::ReadOnly))
 		return FILE_NOT_FOUND;
 	QDataStream d(input);
-	d.setVersion(QDataStream::Qt_5_5);
-
+	d.setVersion(QDataStreamVERSION);
 	quint8 fieldID;
 	QList<QSubIODevice*> files;
 
@@ -103,7 +109,7 @@ QByteArray QArchiveHeader::generateHeader() const
 	QBuffer buffer;
 	buffer.open(QIODevice::ReadWrite);
 	QDataStream out(&buffer);
-	out.setVersion(QDataStream::Qt_5_5);
+	out.setVersion(QDataStreamVERSION);
 
 	//Writing PROPERTIES
 	out << (quint8) HEADER_PROPERTIES;

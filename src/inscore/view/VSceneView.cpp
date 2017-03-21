@@ -35,6 +35,9 @@
 #include <QGestureEvent>
 #include <QPinchGesture>
 #include <QGraphicsSceneMouseEvent>
+#ifndef __MOBILE__
+#include <QGLWidget>
+#endif
 
 #ifdef WIN32
 #include <windows.h>
@@ -55,6 +58,7 @@
 #include "INScore.h"
 #include "WindowEventFilter.h"
 
+using namespace std;
 
 namespace inscore
 {
@@ -266,6 +270,7 @@ VSceneView::VSceneView()
 {
 	fImage = 0;
 	fGraphicsView = 0;
+	fOpenGlRendering = false;
 	fResizeMoveEventFilter = 0;
 	fDataScreenShotSize = 0;
 	fUpdateScreenShot = false;
@@ -279,7 +284,7 @@ void VSceneView::initializeView(const std::string& address, QGraphicsScene * sce
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = createGraphicsView(scene, address.c_str());
-		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
 		fGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);
@@ -316,6 +321,22 @@ VSceneView::~VSceneView()
 
 //------------------------------------------------------------------------------------------------------------------------
 QGraphicsScene * VSceneView::scene() const		{ return fScene; }
+
+//------------------------------------------------------------------------------------------------------------------------
+void VSceneView::swapViewPort(bool opengl)
+{
+#ifndef __MOBILE__
+	if (opengl) {
+		QGLWidget* glw = new QGLWidget(QGLFormat(QGL::SampleBuffers));
+		fGraphicsView->setViewport(glw);
+		fOpenGlRendering = true;
+	}
+	else {
+		fGraphicsView->setViewport(new QWidget());
+		fOpenGlRendering = false;
+	}
+#endif
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 void VSceneView::postEvent( QGraphicsItem* item, QEvent::Type e )
@@ -496,6 +517,13 @@ bool VSceneView::copy(unsigned int* dest, int w, int h, bool /*smooth*/ )
 void VSceneView::updateView( IScene * scene )
 {
     if (scene->getDeleted()) return;
+
+	if (scene->getOpenGl()) {
+		if (!fOpenGlRendering) swapViewPort(true);
+	}
+	else {
+		if (fOpenGlRendering) swapViewPort(false);
+	}
 
 	if (fGraphicsView) updateOnScreen (scene);
 	else updateOffScreen (scene);

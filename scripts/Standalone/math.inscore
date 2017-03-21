@@ -24,17 +24,12 @@ size = $size / 1.5;
 /ITL/scene/rect4 set rect $size;
 /ITL/scene/rect4 color $grey;
 
-circles = (
-	/ITL/scene/o1 set ellipse $size,
-	/ITL/scene/o1 x 0.5,
-	/ITL/scene/o2 set ellipse $size,
-	/ITL/scene/o2 x -0.5,
-	/ITL/scene/o? color "$(/ITL/scene/rect get color)",
-	/ITL/scene watch endPaint,
-	/ITL/scene/* watch doubleClick (/ITL/scene/$self edit )
-);
-
-/ITL/scene watch endPaint $circles;
+/ITL/scene/o1 set ellipse $size;
+/ITL/scene/o1 x 0.5;
+/ITL/scene/o2 set ellipse $size;
+/ITL/scene/o2 x -0.5;
+/ITL/scene/o? color $(/ITL/scene/rect get color);
+/ITL/scene/* watch doubleClick (/ITL/scene/$self edit );
 
 
 __END__

@@ -1,0 +1,17 @@
+
+/ITL/scene/* del;
+w = 0.2;
+/ITL/scene/obj set rect $w $w ;
+/ITL/scene/obj2 set rect $w $w ;
+/ITL/scene/obj x 0.5;
+/ITL/scene/obj2 y 0.3;
+/ITL/scene/obj2 x $(/ITL/scene/obj get x);
+
+ox = $(/ITL/scene/obj get x);
+/ITL/scene/obj2 y $ox;
+
+__END__
+
+/ITL/log level 2;
+w = 0.2;
+/ITL/scene/obj x ($w ? $w / 2 : 0);

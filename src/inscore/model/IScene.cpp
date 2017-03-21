@@ -63,7 +63,7 @@ IScene::~IScene()
 }
 
 IScene::IScene(const std::string& name, IObject * parent)
-		: IRectShape(name, parent), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false),
+		: IRectShape(name, parent), fOpenGl(false), fFullScreen(false), fFrameless(false), fAbsoluteCoordinates(false),
 		fWindowOpacity(false), fUpdateVersion(false), fJavascript(getAppl()->getJSEngine())
 {
 	fTypeString = kSceneType;
@@ -75,6 +75,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kreset_SetMethod]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
 	fMsgHandlerMap[kforeground_SetMethod]		= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::foreground);
 	fMsgHandlerMap[kfullscreen_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFullScreen);
+	fMsgHandlerMap[kopengl_GetSetMethod]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setOpenGl);
 	fMsgHandlerMap[kframeless_GetSetMethod]		= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setFrameless);
 	fMsgHandlerMap[kabsolutexy_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setAbsoluteCoordinates);
 	fMsgHandlerMap[kwindowOpacity_GetSetMethod]	= TSetMethodMsgHandler<IScene,bool>::create(this,&IScene::setWindowOpacity);
@@ -83,6 +84,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::setRootPath);
 	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::forward);
 
+	fGetMsgHandlerMap[kopengl_GetSetMethod]		= TGetParamMsgHandler<bool>::create(fOpenGl);
 	fGetMsgHandlerMap[kfullscreen_GetSetMethod] = TGetParamMsgHandler<bool>::create(fFullScreen);
 	fGetMsgHandlerMap[kframeless_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fFrameless);
 	fGetMsgHandlerMap[kabsolutexy_GetSetMethod] = TGetParamMsgHandler<bool>::create(fAbsoluteCoordinates);
@@ -133,6 +135,17 @@ void IScene::reset ()
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
+}
+
+//--------------------------------------------------------------------------
+void IScene::setOpenGl(bool state)
+{
+#ifdef __MOBILE__
+	if (state)
+		ITLErr << "OpenGL is not (yet) supported on mobile platforms" << ITLEndl;
+#else
+	fOpenGl = state;
+#endif
 }
 
 //--------------------------------------------------------------------------

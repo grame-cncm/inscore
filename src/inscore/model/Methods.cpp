@@ -125,6 +125,7 @@ const char* kmls_GetMethod			= "mls";			// Get
 const char* kmouse_SetMethod		= "mouse";			// Set
 const char* kname_GetSetMethod		= "name";			// Get Set
 const char* knew_SetMethod			= "new";			// Set
+const char* kopengl_GetSetMethod	= "opengl";			// Get Set
 const char* korder_GetSetMethod		= "order";			// Get Set
 const char* kosc_GetSetMethod		= "osc";			// Get Set
 const char* kout_GetMethod			= "out";			// Get
