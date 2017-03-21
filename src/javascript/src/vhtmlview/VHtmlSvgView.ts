@@ -1,23 +1,18 @@
 
 ///<reference path="VHtmlView.ts"/>
-///<reference path="VHtmlSvg.ts"/>
-///<reference path="VHtmlGMNView.ts"/>
 ///<reference path="../model/ISvg.ts"/>
 
-class VHtmlSvgView extends VHtmlSvg {
+class VHtmlSvgView extends VHtmlView {
 
     constructor(parent: VHtmlView) {
-        super(parent); 
+        super(document.createElement('div'), parent); 
     	this.getHtml().className = "inscore-svg";
     } 
-
-    getSVGTarget() : SVGShape  { return this.fSVG; }
     
     updateView	(obj: IObject) : void {           	
-        // si le code gmn a changé, on le charge
         if (obj.isNewData()) {
             let svg = <ISVG>obj;
-            this.fSVG.innerHTML = svg.getSvg();
+            this.getHtml().innerHTML = svg.getSvg();
             this.updateObjectSize(obj);
         }
     	super.updateView(obj);
@@ -25,8 +20,8 @@ class VHtmlSvgView extends VHtmlSvg {
 
 	getSize (obj: IObject):  {w: number, h: number } {
 		let strokeWidth = obj.fPenControl.getPenWidth();
-        let w = this.fSVG.clientWidth + strokeWidth;
-        let h = this.fSVG.clientHeight + strokeWidth;
+        let w = this.getHtml().clientWidth + strokeWidth;
+        let h = this.getHtml().clientHeight + strokeWidth;
 		return { w: (w ? w : 1), h: (h ? h : 1) };
 	}
 }

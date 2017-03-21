@@ -1,33 +1,19 @@
 
-///<reference path="VHtmlSvg.ts"/>
+///<reference path="VHtmlView.ts"/>
 ///<reference path="../model/IGuidoCode.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
 
 interface RefreshMethod 	{ (): void; }
 
-class VHtmlGMNView extends VHtmlSvg {
+class VHtmlGMNView extends VHtmlView {
 	static fGMNScale = 2.3;		// scaling applied to get homogeneous size with inscore app
 	protected fClientWidth = 0;
 	protected fClientHeight = 0;
     
     constructor(parent: VHtmlView) {
-        super(parent); 
+        super(document.createElement('div'), parent); 
         this.getHtml().className = "inscore-gmn";
     }
-
-	createSVG(){
-		if(this.isChrome()){
-			this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
-			this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-			this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
-			this.fSVG.setAttribute('version', "1.1");
-		}else this.fSVG = document.createElement('div');
-		super.getHtml().appendChild(this.fSVG);
-	}
-
-	isChrome() { return navigator.userAgent.indexOf("Chrome") != -1;}
-
-    getSVGTarget() : SVGShape  { return this.fSVG; }
 
 	getViewScale (obj: IObject): number {
 		// apply scaling to get a size similar to native application
@@ -35,15 +21,15 @@ class VHtmlGMNView extends VHtmlSvg {
 	}
 
 	getClientSize (obj: IObject):  {w: number, h: number } {
-//		let cw = this.fSVG.clientWidth;		// works on Chrome but not on Firefox
-//		let ch = this.fSVG.clientHeight;
 		if (!this.fClientWidth) {
-        	let bbox = this.fSVG.getBoundingClientRect();
-        	this.fClientWidth = bbox.right - bbox.left;
-        	this.fClientHeight = bbox.bottom - bbox.top;
+	        let svg = this.getsvg(this.getHtml());
+	        let box = svg.viewBox.baseVal;
+        	this.fClientWidth = box.width;
+        	this.fClientHeight = box.height;
         }
 		return  { w: this.fClientWidth, h: this.fClientHeight };
 	}
+
 
 	getSize (obj: IObject):  {w: number, h: number } {
         let size = this.getClientSize (obj);
@@ -57,13 +43,23 @@ class VHtmlGMNView extends VHtmlSvg {
         // si le code gmn a changé, on le charge
 		if (obj.isNewData()) {
             let gmn = <IGuidoCode>obj;
-            this.fSVG.innerHTML = gmn.getSVG();    
+            this.getHtml().innerHTML = gmn.getSVG();    
         }   
     	this.updateObjectSize (obj);     
     	super.updateView(obj);
 	}
-
-	updatePenControl(obj:IObject): void 	{ this.basePenControl (obj); }
+	
+	getsvg (root: Node): SVGSVGElement {
+		let g : Node;
+	    let childs = root.childNodes;
+		for (let i = 0; i < childs.length && !g; i++) {
+			if (childs[i].nodeName == 'svg') {
+				g = childs[i];
+				break;
+			}
+        }
+        return <SVGSVGElement>g;
+	}
 	
 	getFirstSVGGroup (root: Node): SVGSVGElement {
 		let g : Node;
@@ -79,16 +75,14 @@ class VHtmlGMNView extends VHtmlSvg {
 	}
 	
 	updateColor (obj: IObject): void {
-//        if (obj.fColor.modified()) {
-	        let color = obj.fColor.getRGBString();
-	        let alpha = obj.fColor.getSVGA();
-	        let g = this.getFirstSVGGroup (this.fSVG);
-	        if (g) {
-   	       		g.style.stroke = color; 
-   	       		g.style.strokeOpacity = alpha.toString(); 
-    	        g.style.fill = color; 
-    	        g.style.fillOpacity = alpha.toString(); 
-//	        }
+		let color = obj.fColor.getRGBString();
+		let alpha = obj.fColor.getSVGA();
+		let g = this.getFirstSVGGroup (this.getHtml());
+		if (g) {
+			g.style.stroke = color; 
+			g.style.strokeOpacity = alpha.toString(); 
+			g.style.fill = color; 
+			g.style.fillOpacity = alpha.toString(); 
         }
     }
 
