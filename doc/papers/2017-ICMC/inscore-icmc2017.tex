@@ -185,7 +185,7 @@ The need for a \emph{dynamic} time has thus emerged. It has been solved in a sim
 From the user point of view and for a given object, time is active when its tempo attribute is non-zero: a non-zero tempo value moves the object in musical time, according to its tempo and the flow of absolute time. \\
 We will talk about \emph{date} to refer to the musical time of an object, and about \emph{time} to refer to a point in the flow of absolute time. \\
 
-Let $t_0$ be the time of activation of an object time and $v$ the value of its tempo, the date $d_t$ of the object at a time $t$ is given by a time function $f$ Such that:
+Let $t_0$ be the time of activation of an object time and $v$ the value of its tempo, the date $d_t$ of the object at a time $t$ is given by a time function $f$ such that:
 \begin{equation}
 %\[
 	 f(t) \to d_t = d_t{_0} + (t - t_0) \times v \times k , \quad t \geqq t_0
@@ -227,7 +227,7 @@ To be consistent with the overall system, this implementation is entirely messag
 %==============================================================
 \section{The events-based time.}\label{evtime}
 
-The \emph{events-based} approach of time in INScore preceded the musical time model and was first presented in \cite{fober13b}. As a reminder, the process of event interaction relies on the association of messages with events of the system. These messages are sent when the event they are associated with occurs. The general message format for creating such associations is described in figure \ref{fig:watch}.
+The \emph{events-based} approach of time in INScore preceded the musical time model and was first presented in \cite{Fober:13b}. As a reminder, the process of event interaction relies on the association of messages and events of the system. These messages are sent when the events they are associated with occur. The general message format for creating such associations is described in figure \ref{fig:watch}.
 
 \begin{figure}[htbp]
 \centerline{
@@ -393,7 +393,7 @@ Visually, the score accounts for these events in the graphic space in two ways:
 
 Schematically, the implementation of these events relies on an object named \OSC{cursor} that moves in time at a given tempo, depending on a time unit fixed by convention.
 
-Activation of a \emph{stations} consists in changing the alpha channel of the corresponding graphic, activating the cursor time and instantiating an event for the end of the duration computed by Max/MSP (figure \ref{fig:station}).
+Activation of a \emph{station} consists in changing the alpha channel of the corresponding graphic, activating the cursor time and instantiating an event for the end of the duration computed by Max/MSP (figure \ref{fig:station}).
 \begin{figure}[h]
    \centering
 \sample{/ITL/scene watch P1 ( \\
