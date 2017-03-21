@@ -9,6 +9,10 @@ interface Document {
 	mozCancelFullScreen(): void;
 	msExitFullscreen(): void;
 }
+interface HTMLElement {
+	mozRequestFullScreen(): void;
+	msRequestFullscreen(): void;
+}
 
 class IAppl extends IObject {
 
@@ -35,18 +39,9 @@ class IAppl extends IObject {
 	_getFullScreen(): GetNumMethod { return () => this.getFullScreen(); }
 
 	setFullScreen(full: number): eMsgStatus {
-		switch (full) {
-			case 0: this.fFullScreen = false;
-				this.enableDisableFullScreen();
-				return eMsgStatus.kProcessed
-				break;
-			case 1: this.fFullScreen = true;
-				this.enableDisableFullScreen();
-				return eMsgStatus.kProcessed;
-				break;
-			default: eMsgStatus.kBadParameters
-		}
-	};
+		this.fFullScreen = full ? true : false;
+		return eMsgStatus.kProcessed;
+	}
 	_setFullScreen(): SetNumMethod { return (full: number) => this.setFullScreen(full) }
 
 	createStaticNodes(): void {
@@ -97,21 +92,14 @@ class IAppl extends IObject {
 	}
 
 	enableDisableFullScreen() {
-		if (this.fFullScreen) this.launchFullscreen(document.documentElement);
+		if (this.fFullScreen) this.launchFullscreen (document.documentElement);
 		else this.exitFullscreen();
 	}
-
-	/*
-		protected newObj (msg: IMessage, name: string): { status: eMsgStatus, obj?: IObject } 
-						{ return this.proxy_create(msg, name, this); }                
-		protected proxy_create (msg: IMessage, name: string, parent: IObject): { status: eMsgStatus, obj?: IObject }	
-						{ return IProxy.execute (msg, name, parent); }
-	*/
 
 	//-------------------FullScreenManagement---------------------
 
 	// Find the right method, call on correct element
-	launchFullscreen(element) {
+	launchFullscreen(element: HTMLElement) : void {
 		console.log("IAppl launchFullscreen fullscreenEnabled : " + document.fullscreenEnabled);
 		if (element.requestFullscreen) {
 			//Standard
@@ -132,7 +120,7 @@ class IAppl extends IObject {
 		}
 	}
 
-	exitFullscreen() {
+	exitFullscreen() : void {
 		if (document.exitFullscreen) {
 			//Standard
 			console.log("IAppl launchFullscreen exitFullscreen");
