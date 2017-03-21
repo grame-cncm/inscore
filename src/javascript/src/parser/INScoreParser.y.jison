@@ -1,9 +1,7 @@
 
 /* INScore lexical grammar */
 
-%{
-	var __testparser = false;
-	
+%{	
 	function debugyacc(str){
 //		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
@@ -36,6 +34,13 @@
 		var gInscoreParserContext = this;
 		this['print'] = function (s) { console.log(s); }
 		return gInscoreParserContext.eval( context_vars() + str);
+	}
+
+	var __testparser = false;
+	if (typeof ITLError === 'undefined') {		// we're in a test context
+		ITLError = [];
+		ITLError['write'] = function (s) { console.log(s); }
+		function context_eval(str) { return ""; }
 	}
 %}
 
@@ -163,7 +168,5 @@ parser.get = (function () {
 	return msgs;
 })
 
-parser.parseError = function(str, hash) {
-	if (__testparser)	typeof console !== 'undefined' ? console.log(str) : print(str);
-	else ITLError.write(str);
-}
+parser.parseError = function(str, hash) { ITLError.write(str); }
+
