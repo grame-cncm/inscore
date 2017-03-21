@@ -2,9 +2,12 @@
 /* INScore lexical grammar */
 
 %{
+	var __testparser = false;
+	
 	function debugyacc(str){
 //		typeof console !== 'undefined' ? console.log(str) : print(str);
 	}
+
 	function array2string(a){
 		if (typeof a == "string") return a;
 		if (typeof a == "object") {
@@ -27,7 +30,9 @@
 			out += "var " + key + "=" + vars[key][0].toString() + ";\n";
 		return out;
 	}
-	function context_eval(str){
+	function context_eval(str) {
+		if (__testparser) return "";
+
 		var gInscoreParserContext = this;
 		this['print'] = function (s) { console.log(s); }
 		return gInscoreParserContext.eval( context_vars() + str);
@@ -159,6 +164,6 @@ parser.get = (function () {
 })
 
 parser.parseError = function(str, hash) {
-	ITLError.write(str);
-//	typeof console !== 'undefined' ? console.log(str) : print(str);
+	if (__testparser)	typeof console !== 'undefined' ? console.log(str) : print(str);
+	else ITLError.write(str);
 }
