@@ -43,7 +43,6 @@ class VHtmlSceneView extends VHtmlView {
 		div.addEventListener("drop", inscore_dropEvent, false);
 		div.addEventListener("dragover", inscore_dragOverEvent, false);	
 		this.fAbsolutePos = false;
-        div.setAttribute("fullscreen", "yes");
 
 		let style = window.getComputedStyle(div);
 	    this.fAbsolutePos = (style.position === 'absolute');
