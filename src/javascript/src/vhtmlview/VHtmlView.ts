@@ -47,7 +47,7 @@ class VHtmlView extends VObjectView {
 	updatePenControl (obj: IObject) {
 		let penWidth = obj.fPenControl.getPenWidth();
 		let penColor = obj.fPenControl.getPenColor().getRGBString();
-		let penStyle = obj.fPenControl.getPenStyle();
+		let penStyle = VHtmlView.penStyle2Dash(obj.fPenControl.getPenStyleNum());
 		let penAlpha = obj.fPenControl.getPenColor().getA();
     	
 		let elt = this.getHtml();
@@ -167,6 +167,16 @@ class VHtmlView extends VObjectView {
 		let color = new IColor( params.slice(2,6) );
 		this.getHtml().style.boxShadow = color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px";
 		this.getHtml().style.filter = "blur(0)";
+	}
+
+	static penStyle2Dash(style : number) : string
+	{
+		switch(style) {
+			case 0 :	return "solid";
+			case 2 :	return "dotted";
+			case 1 :	return "dashed";
+			default : 	return "solid";
+		}
 	}
 
 	positionString() : string { return `top: ${this.fTop} left: ${this.fLeft} w: ${this.fWidth} h: ${this.fHeight}`; }
