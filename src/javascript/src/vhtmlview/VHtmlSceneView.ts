@@ -16,6 +16,8 @@ class VHtmlSceneContainer extends VHtmlView {
 	}
 
     constructor() 	{ super (VHtmlSceneContainer.getHtml()); }   
+	setDefaultPositionStyle() : void 				{ /* do not change position style */ }
+
 	updatePos() : void {
     	let size = TWindow.getSize();
         let w = Math.min(size.w, size.h);
@@ -44,10 +46,11 @@ class VHtmlSceneView extends VHtmlView {
 		div.addEventListener("dragover", inscore_dragOverEvent, false);	
 		this.fAbsolutePos = false;
 
-		let style = window.getComputedStyle(div);
-	    this.fAbsolutePos = (style.position === 'absolute');
+//		let style = window.getComputedStyle(div);
+//	    this.fAbsolutePos = (style.position === 'absolute');
     }
 
+	setDefaultPositionStyle() : void 				{ /* none: default is relative */ }
 	getViewScale (obj: IObject): number 			{ return Math.min(obj.fPosition.getWidth(), obj.fPosition.getHeight()) * obj.fPosition.getScale(); }
 
 	relative2SceneX(x: number) : number 			{ return this.fParent.fLeft + super.relative2SceneX(x); }
@@ -58,16 +61,20 @@ class VHtmlSceneView extends VHtmlView {
 	getTranslate (obj: IObject): string 			{ return this.fAbsolutePos ? super.getTranslate(obj) : ""; }
 	scenePosition(obj: IObject): void{
 		let scene = <IScene>obj;
-		let div = this.getHtml();
-		div.style.position = (scene.fAbsolutePos) ? IScene.kAbsolute : IScene.kRelative;
+		this.fAbsolutePos = scene.fAbsolutePos;
+		if (this.fAbsolutePos) this.getHtml().style.position = IScene.kAbsolute;
 	}
 
 	updateView	( obj: IObject) : void {
 		this.scenePosition(obj);
-		this.fDoc.updatePos();
-		this.fWidth = this.fDoc.fWidth;
-		this.fHeight = this.fDoc.fHeight;
+		this.fDoc.updatePos();			// not necessary
+		this.fWidth = this.fHeight = this.fDoc.fWidth;
 		super.updateView(obj);
+		if (!this.fAbsolutePos) {
+			let elt = this.getHtml();
+			elt.style.left   = "";
+        	elt.style.top 	 = "";
+		}
         this.enableDisableFullScreen(obj);
 	}
 
