@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<title>Inscore JavaScript Doc</title>
+
+<xmp theme="readable" style="display:none;">
+**JavaScript Only**
+-----------------------
+
+Nothing to notice actually.
+
+**Differences**
+-----------------------
+
+* About shear: in the original App, shear has a maximum value. In JavaScript version no maximum and rotations are based on angles in radian.
+* About color: all browser's color are different (saturation and/or brithness).
+* About fontSize: font size aren't support by some browsers, or a part of them.
+* About shadow and blur: shadow and blur aren't support by all browser, filter attribute don't exist in IE for example.  
+
+**Some notes about different browsers :** (it'll apdated every time i notice a new difference)
+1. Edge and Internet Explorer don't support Effects on GMN and SVG
+2. FireFox and Chrome consume text when drop but ie and edge
+3. Fullscreen only work with user gesture, drag'n drop is not allowed (maybe another way)
+4. Problem with Penwidth and it SVG translate on Edge
+5. Line with penWidth 1 are invisible in Mozilla
+
+
+**Not Implemented in JavaScript**
+-----------------------
+
+* Effect Colorize
+* Layer
+* Export
+* Export all
+* Save
+* MouseEvent (up, down, enter, leave, move, dblclick)
+* TouchEvent (begin, start, update)
+* TimeEvent (timeEnte, timeLeave, durEnter, durLeave)
+* URLEvent (success, error, cancel)
+* MiscellaneousEvent (export, new data)
+* SpecificsEvent (pageCount, new element, endPoint, error, ready, end)
+
+**TODO**
+-----------------------
+
+- [ ] Solve fullscreen problem.
+- [ ] JavaScript event.
+- [x] EventList.
+- [ ] Update documentation as possible.
+- [ ] Create other tests for GMN and PianoRoll
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>
