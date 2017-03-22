@@ -220,9 +220,6 @@ abstract class IObject implements Tree<IObject> {
 	setWidth (width: number) : void { this.fPosition.setWidth( width ); this.posPropagate(); }
 	setHeight(height:number): void 	{ this.fPosition.setHeight( height); this.posPropagate(); }
     setScale (scale:number): void 	{ this.fPosition.setScale( scale); this.posPropagate(); }
-//    _setWidth()	: SetNumMethod 		{ return (n) => this.setWidth(n); };
-//    _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
-//    _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
 	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
 	posModified() : void 			{ this.fPosition.modify(); this.addState (eObjState.kModified + eObjState.kSubModified); }
    
