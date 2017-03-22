@@ -72,20 +72,6 @@ class IColor {
     getA(): number { return this.fA; }
     getSVGA(): number { return this.fA/255; }
 
-// GETS VALUES CLOSURES
-//-------------------------------------------------------------- 
-    _getRGB(): GetArrayMethod { return () => this.getRGB(); }
-    _getHSB(): GetArrayMethod { return () => this.getHSB(); }
-    
-    _getR(): GetNumMethod { return () => this.fRGB[0]; }
-    _getG(): GetNumMethod { return () => this.fRGB[1]; } 
-    _getB(): GetNumMethod { return () => this.fRGB[2]; } 
-       
-    _getH(): GetNumMethod { return () => this.fHSB[0]; } 
-    _getS(): GetNumMethod { return () => this.fHSB[1]; } 
-    _getV(): GetNumMethod { return () => this.fHSB[2]; }      
-        
-    _getA(): GetNumMethod { return () => this.fA; }
         
 // SETS VALUES
 //--------------------------------------------------------------         
@@ -120,25 +106,15 @@ class IColor {
     	this.updateRGB(); 
     	this.fModified = true; 
     }
-    _setRGB()	: SetColorMethod 		{ return (n) => this.setRGB(n); };
-    _setHSB()	: SetColorMethod 		{ return (n) => this.setHSB(n); };
     
     setH(h:number): void 		{ this.setParam(color.kHue , Math.floor(h), 0, 360, true); }  
     setS(s:number): void 		{ this.setParam(color.kSat , Math.floor(s), 0, 100, true); }
     setV(b:number): void 		{ this.setParam(color.kVal , Math.floor(b), 0, 100, true); }
-    _setH()	: SetNumMethod 		{ return (n) => this.setH(n); };
-    _setS()	: SetNumMethod 		{ return (n) => this.setS(n); };
-    _setV()	: SetNumMethod 		{ return (n) => this.setV(n); };
 
     setR(r:number): void 		{ this.setParam(color.kRed   , Math.floor(r), 0, 255, false); }
     setG(g:number): void 		{ this.setParam(color.kGreen , Math.floor(g), 0, 255, false); }
 	setB(b:number): void 		{ this.setParam(color.kBlue  , Math.floor(b), 0, 255, false); }
-    _setR()	: SetNumMethod 		{ return (n) => this.setR(n); };
-    _setG()	: SetNumMethod 		{ return (n) => this.setG(n); };
-    _setB()	: SetNumMethod 		{ return (n) => this.setB(n); };
-				
 	setA(a:number): void 		{ this.setParam(color.kAlpha , Math.floor(a), 0, 255, false); }	
-    _setA()	: SetNumMethod 		{ return (n) => this.setA(n); };
 		
 	dA(a:number): void 			{ this.setA( this.getA() + Math.floor(a) ); }	
 	dR(r:number): void 			{ this.setR( this.getR() + Math.floor(r) ); }
@@ -147,14 +123,6 @@ class IColor {
     dH(h:number): void 			{ this.setH( this.getH() + Math.floor(h) ); }
     dS(s:number): void 			{ this.setS( this.getS() + Math.floor(s) ); }
     dV(b:number): void 			{ this.setB( this.getB() + Math.floor(b) ); }
-    _dA()	: SetNumMethod 		{ return (n) => this.dA(n); };
-    _dR()	: SetNumMethod 		{ return (n) => this.dR(n); };
-    _dG()	: SetNumMethod 		{ return (n) => this.dG(n); };
-    _dB()	: SetNumMethod 		{ return (n) => this.dB(n); };
-    _dH()	: SetNumMethod 		{ return (n) => this.dH(n); };
-    _dS()	: SetNumMethod 		{ return (n) => this.dS(n); };
-    _dV()	: SetNumMethod 		{ return (n) => this.dV(n); };
-  
     		
 // UPDATE COLORS
 //--------------------------------------------------------------
@@ -171,6 +139,7 @@ class IColor {
         
         let F:number; let M:number;  let N:number;  let K:number; let I:number; 
         if ( S == 0 ) {
+            B = Math.floor(B);
             this.fRGB[0] = B;
             this.fRGB[1] = B;
             this.fRGB[2] = B;
