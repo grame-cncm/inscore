@@ -28,6 +28,9 @@ class VHtmlSceneView extends VHtmlView {
 	protected fAbsolutePos: boolean;
 	protected fReferenceWidth: number;
 
+    //-----------name for document getElementById-------------
+    protected fName : string
+
     constructor(name: string) {
     	let parent = new VHtmlSceneContainer();
     	super (document.createElement('div'), parent);
@@ -38,8 +41,9 @@ class VHtmlSceneView extends VHtmlView {
 		div.className = "inscore-scene";
 		div.setAttribute("name", name); 
 		div.addEventListener("drop", inscore_dropEvent, false);
-		div.addEventListener("dragover", inscore_dragOverEvent, false);		
+		div.addEventListener("dragover", inscore_dragOverEvent, false);	
 		this.fAbsolutePos = false;
+        div.setAttribute("fullscreen", "yes");
 
 		let style = window.getComputedStyle(div);
 	    this.fAbsolutePos = (style.position === 'absolute');
@@ -65,5 +69,46 @@ class VHtmlSceneView extends VHtmlView {
 		this.fWidth = this.fDoc.fWidth;
 		this.fHeight = this.fDoc.fHeight;
 		super.updateView(obj);
+        this.enableDisableFullScreen(obj);
 	}
+
+	   //-------------------FullScreenManagement---------------------
+    enableDisableFullScreen(obj: IObject) {
+		let scene = <IScene>obj;
+        if (scene.fFullScreen) this.launchFullscreen(this.getHtml());
+        else this.exitFullscreen();
+    }
+
+    // Find the right method, call on correct element
+    launchFullscreen(element: HTMLElement): void {
+        if (element.requestFullscreen) {
+            //Standard
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            //Mozilla
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+            //Chrome - Edge
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            //IE
+            element.msRequestFullscreen();
+        }
+    }
+
+    exitFullscreen(): void {
+        if (document.exitFullscreen) {
+            //Standard
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            //Mozilla
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            //Chrome - Edge
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            //IE
+            document.msExitFullscreen();
+        }
+    }
 }

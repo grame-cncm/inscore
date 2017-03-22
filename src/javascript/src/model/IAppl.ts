@@ -5,21 +5,11 @@
 ///<reference path="IProxy.ts"/>
 ///<reference path="IApplStaticNodes.ts"/>
 
-interface Document {
-	mozCancelFullScreen(): void;
-	msExitFullscreen(): void;
-}
-interface HTMLElement {
-	mozRequestFullScreen(): void;
-	msRequestFullscreen(): void;
-}
-
 class IAppl extends IObject {
 
 	protected kApplType: string;
 	protected fReceivedMsgs: number;
 	protected fRate: number;
-	fFullScreen: boolean;
 
 	constructor() {
 		super('ITL');
@@ -27,22 +17,7 @@ class IAppl extends IObject {
 		this.fTypeString = kApplType;
 		this.fReceivedMsgs = 0;
 		this.fRate = 100;
-
-		this.fMsgHandlerMap[kfullscreen_GetSetMethod] = new TMsgHandlerNum(this._setFullScreen());
-		this.fGetMsgHandlerMap[kfullscreen_GetSetMethod] = new TGetMsgHandlerNum(this._getFullScreen());
 	}
-
-	getFullScreen(): number {
-		if (this.fFullScreen) return 1;
-		else return 0;
-	}
-	_getFullScreen(): GetNumMethod { return () => this.getFullScreen(); }
-
-	setFullScreen(full: number): eMsgStatus {
-		this.fFullScreen = full ? true : false;
-		return eMsgStatus.kProcessed;
-	}
-	_setFullScreen(): SetNumMethod { return (full: number) => this.setFullScreen(full) }
 
 	createStaticNodes(): void {
 		let log = new IApplLog("log", this);
@@ -89,54 +64,5 @@ class IAppl extends IObject {
 				this.setState(eObjState.kModified);
 		}
 		return status;
-	}
-
-	enableDisableFullScreen() {
-		if (this.fFullScreen) this.launchFullscreen (document.documentElement);
-		else this.exitFullscreen();
-	}
-
-	//-------------------FullScreenManagement---------------------
-
-	// Find the right method, call on correct element
-	launchFullscreen(element: HTMLElement) : void {
-		console.log("IAppl launchFullscreen fullscreenEnabled : " + document.fullscreenEnabled);
-		if (element.requestFullscreen) {
-			//Standard
-			console.log("IAppl launchFullscreen requestFullscreen");
-			element.requestFullscreen();
-		} else if (element.mozRequestFullScreen) {
-			//Mozilla
-			console.log("IAppl launchFullscreen mozRequestFullScreen");
-			element.mozRequestFullScreen();
-		} else if (element.webkitRequestFullscreen) {
-			//Chrome - Edge
-			console.log("IAppl launchFullscreen webkitRequestFullscreen");
-			element.webkitRequestFullscreen();
-		} else if (element.msRequestFullscreen) {
-			//IE
-			console.log("IAppl launchFullscreen msRequestFullscreen");
-			element.msRequestFullscreen();
-		}
-	}
-
-	exitFullscreen() : void {
-		if (document.exitFullscreen) {
-			//Standard
-			console.log("IAppl launchFullscreen exitFullscreen");
-			document.exitFullscreen();
-		} else if (document.mozCancelFullScreen) {
-			//Mozilla
-			console.log("IAppl launchFullscreen mozCancelFullScreen");
-			document.mozCancelFullScreen();
-		} else if (document.webkitExitFullscreen) {
-			//Chrome - Edge
-			console.log("IAppl launchFullscreen webkitExitFullscreen");
-			document.webkitExitFullscreen();
-		} else if (document.msExitFullscreen) {
-			//IE
-			console.log("IAppl launchFullscreen msExitFullscreen");
-			document.msExitFullscreen();
-		}
 	}
 }
