@@ -88,10 +88,10 @@ abstract class IObject implements Tree<IObject> {
 // HANDLERS
 //--------------------------------------------------------------  
     setHandlers(): void {
-        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler(this._set());
-        this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler(this._get());
-        this.fMsgHandlerMap[ksave_SetMethod]= new TMethodHandler(this._save());
-        this.fMsgHandlerMap[kdel_SetMethod] = new TMsgHandlerVoid(this._del());
+        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.set(msg); } );
+        this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.get(msg); } );
+        this.fMsgHandlerMap[ksave_SetMethod]= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.save(msg); } );
+        this.fMsgHandlerMap[kdel_SetMethod] = new TMsgHandlerVoid( (): void => { this.del(); } );
 
  	    this.colorAble();
 	    this.positionAble();
@@ -105,112 +105,111 @@ abstract class IObject implements Tree<IObject> {
     
     colorAble(): void {
         let target = this.getColorTarget();
-        this.fMsgHandlerMap[kcolor_GetSetMethod] 		= new TMsgHandlerColor(target._setRGB());
-        this.fMsgHandlerMap[khsb_SetMethod] 			= new TMsgHandlerColor(target._setHSB());
-        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum(target._setR());
-	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum(target._setG());
-	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum(target._setB());
-        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum(target._setA());
-	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum(target._setH());
-	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum(target._setS());
-        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum(target._setV());
+        this.fMsgHandlerMap[kcolor_GetSetMethod] 		= new TMsgHandlerColor( (a: Array<number>): void => { target.setRGB(a); } );
+        this.fMsgHandlerMap[khsb_SetMethod] 			= new TMsgHandlerColor( (a: Array<number>): void => { target.setHSB(a); } );
+        this.fMsgHandlerMap[kred_GetSetMethod] 			= new TMsgHandlerNum( (n: number): void => { target.setR(n); } );
+	    this.fMsgHandlerMap[kgreen_GetSetMethod] 		= new TMsgHandlerNum( (n: number): void => { target.setG(n); } );
+	    this.fMsgHandlerMap[kblue_GetSetMethod]			= new TMsgHandlerNum( (n: number): void => { target.setB(n); } );
+        this.fMsgHandlerMap[kalpha_GetSetMethod] 		= new TMsgHandlerNum( (n: number): void => { target.setA(n); } );
+	    this.fMsgHandlerMap[khue_GetSetMethod] 			= new TMsgHandlerNum( (n: number): void => { target.setH(n); } );
+	    this.fMsgHandlerMap[ksaturation_GetSetMethod]	= new TMsgHandlerNum( (n: number): void => { target.setS(n); } );
+        this.fMsgHandlerMap[kbrightness_GetSetMethod]	= new TMsgHandlerNum( (n: number): void => { target.setV(n); } );
 
-        this.fMsgHandlerMap[kdred_SetMethod] 			= new TMsgHandlerNum(target._dR());
-	    this.fMsgHandlerMap[kdgreen_SetMethod] 			= new TMsgHandlerNum(target._dG());
-	    this.fMsgHandlerMap[kdblue_SetMethod]			= new TMsgHandlerNum(target._dB());
-        this.fMsgHandlerMap[kdalpha_SetMethod] 			= new TMsgHandlerNum(target._dA());
-	    this.fMsgHandlerMap[kdhue_SetMethod] 			= new TMsgHandlerNum(target._dH());
-	    this.fMsgHandlerMap[kdsaturation_SetMethod]		= new TMsgHandlerNum(target._dS());
-        this.fMsgHandlerMap[kdbrightness_SetMethod]		= new TMsgHandlerNum(target._dV());
+        this.fMsgHandlerMap[kdred_SetMethod] 			= new TMsgHandlerNum( (n: number): void => { target.dR(n); } );
+	    this.fMsgHandlerMap[kdgreen_SetMethod] 			= new TMsgHandlerNum( (n: number): void => { target.dG(n); } );
+	    this.fMsgHandlerMap[kdblue_SetMethod]			= new TMsgHandlerNum( (n: number): void => { target.dB(n); } );
+        this.fMsgHandlerMap[kdalpha_SetMethod] 			= new TMsgHandlerNum( (n: number): void => { target.dA(n); } );
+	    this.fMsgHandlerMap[kdhue_SetMethod] 			= new TMsgHandlerNum( (n: number): void => { target.dH(n); } );
+	    this.fMsgHandlerMap[kdsaturation_SetMethod]		= new TMsgHandlerNum( (n: number): void => { target.dS(n); } );
+        this.fMsgHandlerMap[kdbrightness_SetMethod]		= new TMsgHandlerNum( (n: number): void => { target.dV(n); } );
 
-        this.fGetMsgHandlerMap[kcolor_GetSetMethod] 	= new TGetMsgHandlerArray(target._getRGB());
-        this.fGetMsgHandlerMap[khsb_SetMethod] 			= new TGetMsgHandlerArray(target._getHSB());
-        this.fGetMsgHandlerMap[kred_GetSetMethod] 		= new TGetMsgHandlerNum(target._getR());
-        this.fGetMsgHandlerMap[kgreen_GetSetMethod] 	= new TGetMsgHandlerNum(target._getG());
-	    this.fGetMsgHandlerMap[kblue_GetSetMethod] 		= new TGetMsgHandlerNum(target._getB());
-        this.fGetMsgHandlerMap[kalpha_GetSetMethod] 	= new TGetMsgHandlerNum(target._getA());
-        this.fGetMsgHandlerMap[khue_GetSetMethod] 		= new TGetMsgHandlerNum(target._getH());
-	    this.fGetMsgHandlerMap[ksaturation_GetSetMethod] = new TGetMsgHandlerNum(target._getS());
-	    this.fGetMsgHandlerMap[kbrightness_GetSetMethod] = new TGetMsgHandlerNum(target._getV());    
+        this.fGetMsgHandlerMap[kcolor_GetSetMethod] 	= new TGetMsgHandlerArray( (): Array<number> => { return target.getRGB(); } );
+        this.fGetMsgHandlerMap[khsb_SetMethod] 			= new TGetMsgHandlerArray( (): Array<number> => { return target.getHSB(); } );
+        this.fGetMsgHandlerMap[kred_GetSetMethod] 		= new TGetMsgHandlerNum( (): number => { return target.getR(); } );
+        this.fGetMsgHandlerMap[kgreen_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return target.getG(); } );
+	    this.fGetMsgHandlerMap[kblue_GetSetMethod] 		= new TGetMsgHandlerNum( (): number => { return target.getB(); } );
+        this.fGetMsgHandlerMap[kalpha_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return target.getA(); } );
+        this.fGetMsgHandlerMap[khue_GetSetMethod] 		= new TGetMsgHandlerNum( (): number => { return target.getH(); } );
+	    this.fGetMsgHandlerMap[ksaturation_GetSetMethod] = new TGetMsgHandlerNum( (): number => { return target.getS(); } );
+	    this.fGetMsgHandlerMap[kbrightness_GetSetMethod] = new TGetMsgHandlerNum( (): number => { return target.getV(); } );    
     }
     
     positionAble() {
-        this.fMsgHandlerMap[kx_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setXPos());
-        this.fMsgHandlerMap[ky_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setYPos());
-        this.fMsgHandlerMap[kxorigin_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setXOrigin());
-        this.fMsgHandlerMap[kyorigin_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setYOrigin());
-        this.fMsgHandlerMap[kz_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setZOrder());
-        this.fMsgHandlerMap[kangle_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ());
-        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum(this._setScale());
-        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TMsgHandlerNumArray(this.fPosition._setShear());
-        this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateX()); 
-        this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateY()); 
-        this.fMsgHandlerMap[krotatez_GetSetMethod] 	= new TMsgHandlerNum(this.fPosition._setRotateZ()); 
+        this.fMsgHandlerMap[kx_GetSetMethod] 		= new TMsgHandlerNum( (n: number): void => { this.fPosition.setXPos(n); });
+        this.fMsgHandlerMap[ky_GetSetMethod] 		= new TMsgHandlerNum( (n: number): void => { this.fPosition.setYPos(n); });
+        this.fMsgHandlerMap[kxorigin_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.setXOrigin(n); });
+        this.fMsgHandlerMap[kyorigin_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.setYOrigin(n); });
+        this.fMsgHandlerMap[kz_GetSetMethod] 		= new TMsgHandlerNum( (n: number): void => { this.fPosition.setZOrder(n); });
+        this.fMsgHandlerMap[kangle_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.setRotateZ(n); });
+        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.setScale(n); });
+        this.fMsgHandlerMap[krotatex_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.setRotateX(n); }); 
+        this.fMsgHandlerMap[krotatey_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.setRotateY(n); }); 
+        this.fMsgHandlerMap[krotatez_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.setRotateZ(n); }); 
+        this.fMsgHandlerMap[kshear_GetSetMethod] 	= new TMsgHandlerNumArray( (a: Array<number>): eMsgStatus => { return this.fPosition.setShear(a); });
 
-        this.fMsgHandlerMap[kdx_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addXPos());
-        this.fMsgHandlerMap[kdy_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addYPos());
-        this.fMsgHandlerMap[kdxorigin_SetMethod] 	= new TMsgHandlerNum(this.fPosition._addXOrigin());
-        this.fMsgHandlerMap[kdyorigin_SetMethod] 	= new TMsgHandlerNum(this.fPosition._addYOrigin());
-        this.fMsgHandlerMap[kdz_SetMethod] 			= new TMsgHandlerNum(this.fPosition._addZOrder());
-        this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum(this.fPosition._addAngle());
-        this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum(this.fPosition._multScale());
-        this.fMsgHandlerMap[kdrotatex_SetMethod]    = new TMsgHandlerNum(this.fPosition._addXAngle());
-        this.fMsgHandlerMap[kdrotatey_SetMethod]    = new TMsgHandlerNum(this.fPosition._addYAngle());
-        this.fMsgHandlerMap[kdrotatez_SetMethod]    = new TMsgHandlerNum(this.fPosition._addAngle());
-        this.fMsgHandlerMap[kshow_GetSetMethod]		= new TMsgHandlerNum(this.fPosition._setVisible());
+        this.fMsgHandlerMap[kdx_SetMethod] 			= new TMsgHandlerNum( (n: number): void => { this.fPosition.addXPos(n); });
+        this.fMsgHandlerMap[kdy_SetMethod] 			= new TMsgHandlerNum( (n: number): void => { this.fPosition.addYPos(n); });
+        this.fMsgHandlerMap[kdxorigin_SetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.addXOrigin(n); });
+        this.fMsgHandlerMap[kdyorigin_SetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.fPosition.addYOrigin(n); });
+        this.fMsgHandlerMap[kdz_SetMethod] 			= new TMsgHandlerNum( (n: number): void => { this.fPosition.addZOrder(n); });
+        this.fMsgHandlerMap[kdangle_SetMethod] 		= new TMsgHandlerNum( (n: number): void => { this.fPosition.addAngle(n); });
+        this.fMsgHandlerMap[kdscale_SetMethod] 		= new TMsgHandlerNum( (n: number): void => { this.fPosition.multScale(n); });
+        this.fMsgHandlerMap[kdrotatex_SetMethod]    = new TMsgHandlerNum( (n: number): void => { this.fPosition.addXAngle(n); });
+        this.fMsgHandlerMap[kdrotatey_SetMethod]    = new TMsgHandlerNum( (n: number): void => { this.fPosition.addYAngle(n); });
+        this.fMsgHandlerMap[kdrotatez_SetMethod]    = new TMsgHandlerNum( (n: number): void => { this.fPosition.addAngle(n); });
+        this.fMsgHandlerMap[kshow_GetSetMethod]		= new TMsgHandlerNum( (n: number): void => { this.fPosition.setVisible(n); });
 
-        this.fGetMsgHandlerMap[kx_GetSetMethod]			= new TGetMsgHandlerNum(this.fPosition._getXPos());
-        this.fGetMsgHandlerMap[ky_GetSetMethod]			= new TGetMsgHandlerNum(this.fPosition._getYPos());
-        this.fGetMsgHandlerMap[kxorigin_GetSetMethod]	= new TGetMsgHandlerNum(this.fPosition._getXOrigin());
-        this.fGetMsgHandlerMap[kyorigin_GetSetMethod]	= new TGetMsgHandlerNum(this.fPosition._getYOrigin());
-        this.fGetMsgHandlerMap[kz_GetSetMethod]			= new TGetMsgHandlerNum(this.fPosition._getZOrder());
-        this.fGetMsgHandlerMap[kangle_GetSetMethod]		= new TGetMsgHandlerNum(this.fPosition._getRotateZ());
-        this.fGetMsgHandlerMap[kscale_GetSetMethod]		= new TGetMsgHandlerNum(this.fPosition._getScale());
-        this.fGetMsgHandlerMap[kshow_GetSetMethod]		= new TGetMsgHandlerNum(this.fPosition._getVisible());
-        this.fGetMsgHandlerMap[kwidth_GetSetMethod]		= new TGetMsgHandlerNum(this.fPosition._getWidth());
-        this.fGetMsgHandlerMap[kheight_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPosition._getHeight());
-        this.fGetMsgHandlerMap[kshear_GetSetMethod]	 	= new TGetMsgHandlerArray(this.fPosition._getShear());
-        this.fGetMsgHandlerMap[krotatex_GetSetMethod]	= new TGetMsgHandlerNum(this.fPosition._getRotateX());
-        this.fGetMsgHandlerMap[krotatey_GetSetMethod]	= new TGetMsgHandlerNum(this.fPosition._getRotateY());
-        this.fGetMsgHandlerMap[krotatez_GetSetMethod]	= new TGetMsgHandlerNum(this.fPosition._getRotateZ());
+        this.fGetMsgHandlerMap[kx_GetSetMethod]			= new TGetMsgHandlerNum( (): number => { return this.fPosition.getXPos(); });
+        this.fGetMsgHandlerMap[ky_GetSetMethod]			= new TGetMsgHandlerNum( (): number => { return this.fPosition.getYPos(); });
+        this.fGetMsgHandlerMap[kxorigin_GetSetMethod]	= new TGetMsgHandlerNum( (): number => { return this.fPosition.getXOrigin(); });
+        this.fGetMsgHandlerMap[kyorigin_GetSetMethod]	= new TGetMsgHandlerNum( (): number => { return this.fPosition.getYOrigin(); });
+        this.fGetMsgHandlerMap[kz_GetSetMethod]			= new TGetMsgHandlerNum( (): number => { return this.fPosition.getZOrder(); });
+        this.fGetMsgHandlerMap[kangle_GetSetMethod]		= new TGetMsgHandlerNum( (): number => { return this.fPosition.getRotateZ(); });
+        this.fGetMsgHandlerMap[kscale_GetSetMethod]		= new TGetMsgHandlerNum( (): number => { return this.fPosition.getScale(); });
+        this.fGetMsgHandlerMap[kshow_GetSetMethod]		= new TGetMsgHandlerNum( (): number => { return this.fPosition.getVisible(); });
+        this.fGetMsgHandlerMap[kwidth_GetSetMethod]		= new TGetMsgHandlerNum( (): number => { return this.fPosition.getWidth(); });
+        this.fGetMsgHandlerMap[kheight_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.fPosition.getHeight(); });
+        this.fGetMsgHandlerMap[krotatex_GetSetMethod]	= new TGetMsgHandlerNum( (): number => { return this.fPosition.getRotateX(); });
+        this.fGetMsgHandlerMap[krotatey_GetSetMethod]	= new TGetMsgHandlerNum( (): number => { return this.fPosition.getRotateY(); });
+        this.fGetMsgHandlerMap[krotatez_GetSetMethod]	= new TGetMsgHandlerNum( (): number => { return this.fPosition.getRotateZ(); });
+        this.fGetMsgHandlerMap[kshear_GetSetMethod]	 	= new TGetMsgHandlerArray( (): Array<number> => { return this.fPosition.getShear(); });
     }
     
     timeAble() {
-        this.fMsgHandlerMap[kdate_GetSetMethod] 	= new TMsgHandlerTime(this.fDate._setDate());
-        this.fMsgHandlerMap[kduration_GetSetMethod]	= new TMsgHandlerTime(this.fDate._setDuration);
-        this.fMsgHandlerMap[kddate_SetMethod] 		= new TMsgHandlerTime(this.fDate._addDate());
-        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime(this.fDate._addDuration());        
-        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid(this.fDate._clock());
-        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid(this.fDate._durclock());
+        this.fMsgHandlerMap[kdate_GetSetMethod] 	= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.setDate(d); });
+        this.fMsgHandlerMap[kduration_GetSetMethod]	= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.setDuration(d); });
+        this.fMsgHandlerMap[kddate_SetMethod] 		= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.addDate(d); });
+        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.addDuration(d); });        
+        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid( (): void => { this.fDate.clock(); });
+        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid( (): void => { this.fDate.durclock(); });
         this.fMsgHandlerMap[ktempo_GetSetMethod] 	= new TMsgHandlerNum(this.fTempo._setTempo());
         this.fMsgHandlerMap[kdtempo_SetMethod] 	    = new TMsgHandlerNum(this.fTempo._addTempo());
 
-
         this.fGetMsgHandlerMap[ktempo_GetSetMethod] 	= new TGetMsgHandlerNum(this.fTempo._getTempo());
-        this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime(this.fDate._getDuration());
-        this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime(this.fDate._getDate());
+        this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime( (): Fraction => { return this.fDate.getDuration(); });
+        this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime( (): Fraction => { return this.fDate.getDate(); });
     }
 
     penControlAble() {
-        this.fMsgHandlerMap[kpenWidth_GetSetMethod]     = new TMsgHandlerNum(this.fPenControl._setPenWidth());
-        this.fMsgHandlerMap[kpenColor_GetSetMethod] 	= new TMsgHandlerColor(this.fPenControl._setPenColor());
-        this.fMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TMsgHandlerText(this.fPenControl._setPenStyle());
-        this.fMsgHandlerMap[kpenAlpha_GetSetMethod] 	= new TMsgHandlerNum(this.fPenControl._setPenAlpha());
+        this.fMsgHandlerMap[kpenWidth_GetSetMethod]     = new TMsgHandlerNum  ( (n: number): void => { this.fPenControl.setPenWidth(n); });
+        this.fMsgHandlerMap[kpenColor_GetSetMethod] 	= new TMsgHandlerColor( (c: Array<number>): void => { this.fPenControl.setPenColor(new IColor(c)); });
+        this.fMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TMsgHandlerText ( (s: string): void => { this.fPenControl.setPenStyle(s); });
+        this.fMsgHandlerMap[kpenAlpha_GetSetMethod] 	= new TMsgHandlerNum  ( (n: number): void => { this.fPenControl.setPenAlpha(n); });
 
-        this.fGetMsgHandlerMap[kpenWidth_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPenControl._getPenWidth());
-        this.fGetMsgHandlerMap[kpenColor_GetSetMethod] 	= new TGetMsgHandlerArray(this.fPenControl._getPenColor());
-        this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerText(this.fPenControl._getPenStyle());
-        this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum(this.fPenControl._getPenAlpha());
+        this.fGetMsgHandlerMap[kpenWidth_GetSetMethod] 	= new TGetMsgHandlerNum  ( (): number 		=> { return this.fPenControl.getPenWidth(); });
+        this.fGetMsgHandlerMap[kpenColor_GetSetMethod] 	= new TGetMsgHandlerArray( (): Array<number> => { return this.fPenControl.getPenColor().getRGB(); });
+        this.fGetMsgHandlerMap[kpenStyle_GetSetMethod] 	= new TGetMsgHandlerText ( (): string 		=> { return this.fPenControl.getPenStyle(); });
+        this.fGetMsgHandlerMap[kpenAlpha_GetSetMethod]  = new TGetMsgHandlerNum  ( (): number 		=> { return this.fPenControl.getPenAlpha(); });
     }
     
     brushAble() {
-        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText(this.fBrushStyle._getBrushStyle());
-        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText(this.fBrushStyle._setBrushStyle());
+        this.fGetMsgHandlerMap[kbrushStyle_GetSetMethod] = new TGetMsgHandlerText( (): string 		=> { return this.fBrushStyle.getBrushStyleStr(); });
+        this.fMsgHandlerMap[kbrushStyle_GetSetMethod]    = new TMsgHandlerText	 ( (s: string): void => { this.fBrushStyle.setBrushStyle(s); } );
 	}
 
 	effectAble(){
-        this.fGetMsgHandlerMap[keffect_GetSetMethod]     = new TGetMsgHandlerArray(this.fEffect._getEffect());
-        this.fMsgHandlerMap[keffect_GetSetMethod]        = new TMsgHandlerAnyArray(this.fEffect._setEffect());
+        this.fGetMsgHandlerMap[keffect_GetSetMethod]     = new TGetMsgHandlerArray( () : Array<any> => { return this.fEffect.getEffect(); } );
+        this.fMsgHandlerMap[keffect_GetSetMethod]        = new TMsgHandlerAnyArray( (e: Array<any>) : eMsgStatus => { return this.fEffect.setEffect(e); } )
     }
     
 //--------------------------------------------------------------  
@@ -221,9 +220,9 @@ abstract class IObject implements Tree<IObject> {
 	setWidth (width: number) : void { this.fPosition.setWidth( width ); this.posPropagate(); }
 	setHeight(height:number): void 	{ this.fPosition.setHeight( height); this.posPropagate(); }
     setScale (scale:number): void 	{ this.fPosition.setScale( scale); this.posPropagate(); }
-    _setWidth()	: SetNumMethod 		{ return (n) => this.setWidth(n); };
-    _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
-    _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
+//    _setWidth()	: SetNumMethod 		{ return (n) => this.setWidth(n); };
+//    _setHeight(): SetNumMethod 		{ return (n) => this.setHeight(n); };
+//    _setScale(): SetNumMethod 		{ return (n) => this.setScale(n); };
 	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
 	posModified() : void 			{ this.fPosition.modify(); this.addState (eObjState.kModified + eObjState.kSubModified); }
    
@@ -423,7 +422,7 @@ abstract class IObject implements Tree<IObject> {
         }
         return eMsgStatus.kBadParameters;
     }
-    _set(): SetMsgMethod	{ return (m) => this.set(m); }
+//    _set(): SetMsgMethod	{ return (m) => this.set(m); }
     
      //-------------------------------------------------------------
     // the basic 'get' handler
@@ -449,7 +448,6 @@ abstract class IObject implements Tree<IObject> {
         }
         return eMsgStatus.kProcessedNoChange;
     }
-    _get(): SetMsgMethod	{ return (m) => this.get(m); }
     
      //-------------------------------------------------------------
     // the 'save' handler
@@ -460,7 +458,6 @@ abstract class IObject implements Tree<IObject> {
         	ITLOut.write (out[i].toString() + ";");
     	return eMsgStatus.kProcessedNoChange;
     }
-    _save(): SetMsgMethod	{ return (m) => this.save(m); }
 
     //-------------------------------------------------------------
     // the specific 'get' methods - must be implemented by inherited objects
@@ -521,7 +518,6 @@ abstract class IObject implements Tree<IObject> {
         let array = this.fParent.getSubNodes();
         array.splice(array.indexOf(this), 1);
     }
-    _del() : SetVoidMethod { return () => this.del(); }
 
 	//-----------------------------    
 	cleanup() : void { 

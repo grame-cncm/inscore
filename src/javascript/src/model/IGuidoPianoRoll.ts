@@ -38,8 +38,8 @@ class IGuidoPianoRoll extends IGuidoCode {
         this.setWidth(1);
         this.setHeight(0.5);
         super.setHandlers();
-        this.fMsgHandlerMap[kwidth_GetSetMethod]		= new TMsgHandlerNum(this._setWidth());
-        this.fMsgHandlerMap[kheight_GetSetMethod]		= new TMsgHandlerNum(this._setHeight());
+        this.fMsgHandlerMap[kwidth_GetSetMethod]  = new TMsgHandlerNum( (n: number): void => { this.setWidth(n); });
+        this.fMsgHandlerMap[kheight_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setHeight(n); });
     }      
     
     AR2SVG(ar: ARHandler): string {

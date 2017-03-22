@@ -11,8 +11,8 @@ class IRectShape extends IObject {
     setHandlers() {
     	super.setHandlers(); 
     	this.brushAble();
-        this.fMsgHandlerMap[kwidth_GetSetMethod]  = new TMsgHandlerNum(this._setWidth());
-        this.fMsgHandlerMap[kheight_GetSetMethod] = new TMsgHandlerNum(this._setHeight());
+        this.fMsgHandlerMap[kwidth_GetSetMethod]  = new TMsgHandlerNum( (n: number): void => { this.setWidth(n); });
+        this.fMsgHandlerMap[kheight_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setHeight(n); });
     }
    
     set(msg: IMessage): eMsgStatus {
