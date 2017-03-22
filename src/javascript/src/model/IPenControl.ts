@@ -51,13 +51,13 @@ class IPenControl {
     
     getPenWidth()   : number   { return this.fPenWidth; }
     getPenColor()   : IColor   { return this.fPenColor; }
-    getPenStyle()   : string   { return ""; } //this.fPenStyleNum2Str[this.fPenStyle]; }
+    getPenStyle()   : string   { return IPenControl.penStyleNum2Str(this.fPenStyle).val; }
     getPenStyleNum(): number   { return this.fPenStyle; }
     getPenAlpha()   : number   { return this.fPenColor.getA(); }
 
     setPenWidth(penWidth : number)  : void  { this.fPenWidth = penWidth; this.modify(); }
     setPenColor(penColor : IColor)  : void  { this.fPenColor.set(penColor); this.modify();}
-    setPenStyle(ePenStyle : string)  : void  { 
+    setPenStyle(ePenStyle : string) : void  { 
         let style = IPenControl.penStyleStr2Num (ePenStyle);
         if (!style.correct) { ITLError.badParameter("ePenStyle", ePenStyle);}
         else { this.fPenStyle = style.val; this.modify(); }
