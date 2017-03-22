@@ -296,7 +296,7 @@ Les aspects dynamiques de la partition sont définis avec des événements utili
 \tab \tab \OSC{/ITL/scene Px d} \\
 où \OSC{Px} est le nom de l'événement (\OSC{P1...P13})\\
  et \OSC{d} la durée correspondante. \\
-C'est donc une approche de haut niveau qui, du côté de Max/MSP, permet de \emph{conduire} la partition en temps réel.
+C'est donc une approche de haut niveau qui permet de \emph{conduire} la partition en temps réel depuis Max/MSP.
 
 \vspace{2mm}
 Visuellement, la partition rend compte de ces événements dans l'espace graphique de deux manières :
@@ -305,7 +305,7 @@ Visuellement, la partition rend compte de ces événements dans l'espace graphiq
 \item pour les chemins (événements \OSC{P5...P12}): en déplaçant un curseur le long du chemin, dans le sens correspondant.
 \end{itemize}
 
-Schématiquement, l'implémentation de ces événements repose sur un objet nommé \OSC{cursor} qui se déplace dans le temps à un tempo fixe, dépendant de l'unité de temps adoptée par Max/MSP. 
+L'implémentation des événements utilisateur repose sur un objet nommé \OSC{cursor} qui se déplace dans le temps à un tempo fixé de manière conventionnelle. 
 
 Pour les stations, elle consiste à changer le canal alpha de la figure correspondant, à activer le temps du curseur et à instancier un événement pour la fin de la durée calculée par Max/MSP (figure \ref{fig:station}). 
 \begin{figure}[h]
@@ -314,6 +314,7 @@ Pour les stations, elle consiste à changer le canal alpha de la figure correspo
 \tab/ITL/scene/g1 alpha 255, \\
 \tab/ITL/scene event STATION \$tempo '\$1' \\
 ); \\
+\vspace*{-2mm}
 \\
 /ITL/scene watch STATION ( \\
 \tab/ITL/scene/cursor show 0,\\
@@ -343,6 +344,7 @@ Pour les chemins, la durée de l'arc correspondant est fixée à la durée de l'
 \tab/ITL/scene/a3 duration '\$1', \\
 \tab/ITL/scene event CHEMIN a3 \$tempo '\$1' \\
 ); \\
+\vspace*{-2mm}
 \\
 /ITL/scene watch CHEMIN ( \\
 \tab/ITL/scene/cursor show 1,\\
@@ -366,6 +368,15 @@ stop\_c = ( \\
 \end{figure}
 
 
+\begin{figure}[ht]
+   \centering
+%   \includegraphics[width=0.5\textwidth]{imgs/jeu}
+   \includegraphics[width=1.0\columnwidth]{imgs/jeu}
+   \caption{Partition de \emph{"Jeu est un autre"} annotée (en rouge) avec les chemins et les stations possibles. Ces annotations sont implémentées comme des événements utilisateur d'INScore, elles ne figurent pas sur la partition de l'instrumentiste.}
+   \label{fig:sample}
+\end{figure}
+
+
 
 %==============================================================
 \section{Conclusions}
@@ -375,15 +386,6 @@ Elle reste toutefois limitée : à la différence d'environnements comme Antesco
 \balance
 \bibliographystyle{plain}
 \bibliography{../interlude}
-
-
-\begin{figure*}[ht]
-   \centering
-   \includegraphics[width=0.8\textwidth]{imgs/jeu}
-%   \includegraphics[width=1.0\columnwidth]{imgs/jeu}
-   \caption{Partition de \emph{"Jeu est un autre"} annotée (en rouge) avec les chemins et les stations possibles. Ces annotations sont implémentées comme des événements utilisateur d'INScore, elles ne figurent pas sur la partition de l'instrumentiste.}
-   \label{fig:sample}
-\end{figure*}
 
 
 \end{document}
