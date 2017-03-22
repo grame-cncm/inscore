@@ -33,23 +33,22 @@ class IText extends IObject {
         this.fFontWeight = IText.kWeightNormal;
 	    this.fFontStyle = IText.kStyleNormal;
 	    this.fFontModified = false;
-
-     	this.fGetMsgHandlerMap[""] = new TGetMsgHandlerText(this._getText());
+    }
+      
+    setHandlers(): void {
         super.setHandlers();
-        
-        // Method to manage font
-        this.fGetMsgHandlerMap[kfontSize_GetSetMethod]      = new TGetMsgHandlerNum(this._getFontSize());
-        this.fMsgHandlerMap[kfontSize_GetSetMethod] 	    = new TMsgHandlerNum(this._setFontSize());
 
-        this.fGetMsgHandlerMap[kfontFamily_GetSetMethod]	= new TGetMsgHandlerText(this._getFontFamily());
-        this.fMsgHandlerMap[kfontFamily_GetSetMethod]	    = new TMsgHandlerText(this._setFontFamily());
+        this.fMsgHandlerMap[kfontSize_GetSetMethod] 	    = new TMsgHandlerNum ( (n: number): void => { this.setFontSize(n); });
+        this.fMsgHandlerMap[kfontFamily_GetSetMethod]	    = new TMsgHandlerText( (s: string): void => { this.setFontFamily(s); });
+        this.fMsgHandlerMap[kfontStyle_GetSetMethod]	    = new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.setFontStyle(msg); });
+        this.fMsgHandlerMap[kfontWeight_GetSetMethod]	    = new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.setFontWeight(msg); });
 
-        this.fGetMsgHandlerMap[kfontStyle_GetSetMethod]	    = new TGetMsgHandlerText(this._getFontStyle());
-        this.fMsgHandlerMap[kfontStyle_GetSetMethod]	    = new TMethodHandler(this._setFontStyle());
-
-        this.fGetMsgHandlerMap[kfontWeight_GetSetMethod]	= new TGetMsgHandlerText(this._getFontWeight());
-        this.fMsgHandlerMap[kfontWeight_GetSetMethod]	    = new TMethodHandler(this._setFontWeight());
-    }    
+     	this.fGetMsgHandlerMap[""] 							= new TGetMsgHandlerText( (): string => { return this.getText(); });
+        this.fGetMsgHandlerMap[kfontSize_GetSetMethod]      = new TGetMsgHandlerNum ( (): number => { return this.getFontSize(); });
+        this.fGetMsgHandlerMap[kfontFamily_GetSetMethod]	= new TGetMsgHandlerText( (): string => { return this.getFontFamily(); });
+        this.fGetMsgHandlerMap[kfontStyle_GetSetMethod]	    = new TGetMsgHandlerText( (): string => { return this.getFontStyle(); });
+        this.fGetMsgHandlerMap[kfontWeight_GetSetMethod]	= new TGetMsgHandlerText( (): string => { return this.getFontWeight(); });
+    }
 
 // GETS / SETS VALUES 
 //--------------------------------------------------------------    
@@ -96,22 +95,6 @@ class IText extends IObject {
         return eMsgStatus.kBadParameters;
     }
     
-// GETS / SETS VALUES CLOSURES
-//--------------------------------------------------------------    
-    _getText(): GetStringMethod         { return () => this.fText; }
-    
-    _getFontSize() : GetNumMethod       { return () => this.fFontSize; }
-    _setFontSize() : SetNumMethod       { return (n) => this.setFontSize(n); }
-    
-    _getFontFamily() : GetStringMethod  { return () => this.fFontFamily; }
-    _setFontFamily() : SetStringMethod  { return (s) => this.setFontFamily(s); }
-    
-    _getFontStyle() : GetStringMethod   { return () => this.fFontStyle; }
-    _setFontStyle() : SetMsgMethod   	{ return (m) => this.setFontStyle(m); }
-
-    _getFontWeight() : GetStringMethod  { return () => this.fFontWeight; }
-    _setFontWeight() : SetMsgMethod  	{ return (m) => this.setFontWeight(m); }
-
 // SET HANDLER
 //--------------------------------------------------------------    
    set(msg: IMessage): eMsgStatus { 

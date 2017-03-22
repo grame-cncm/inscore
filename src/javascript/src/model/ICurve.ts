@@ -41,13 +41,11 @@ class ICurve extends IObject
     setHandlers(){
         super.setHandlers();
         this.brushAble();
-        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoints());
+        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray( (): Array<BezierCurve> => { return this.getPoints(); });
     }
 
     setPoints(points: Array<BezierCurve>)    { this.fPoints = points; }
     getPoints(): Array<BezierCurve>          { return this.fPoints; }
-    
-    _getPoints(): GetArrayMethod        { return () => this.fPoints; }
 
     set(msg: IMessage): eMsgStatus	{
         let status = super.set(msg);

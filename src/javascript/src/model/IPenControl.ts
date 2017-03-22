@@ -55,11 +55,6 @@ class IPenControl {
     getPenStyleNum(): number   { return this.fPenStyle; }
     getPenAlpha()   : number   { return this.fPenColor.getA(); }
 
-    _getPenWidth(): GetNumMethod    { return () => this.getPenWidth(); }
-    _getPenColor(): GetArrayMethod  { return () => this.getPenColor().getRGB(); }
-    _getPenStyle(): GetStringMethod { return () => this.getPenStyle(); }
-    _getPenAlpha(): GetNumMethod    { return () => this.getPenAlpha(); }
-
     setPenWidth(penWidth : number)  : void  { this.fPenWidth = penWidth; this.modify(); }
     setPenColor(penColor : IColor)  : void  { this.fPenColor.set(penColor); this.modify();}
     setPenStyle(ePenStyle : string)  : void  { 
@@ -68,9 +63,4 @@ class IPenControl {
         else { this.fPenStyle = style.val; this.modify(); }
     }
     setPenAlpha(penAlpha : number)  : void  { this.fPenColor.setA(penAlpha); this.modify(); }
-
-    _setPenColor(): SetColorMethod  	{ return (n) => this.setPenColor(new IColor(n)); }
-    _setPenAlpha(): SetNumMethod    	{ return (n) => this.setPenAlpha(n); }
-    _setPenWidth(): SetNumMethod    	{ return (n) => this.setPenWidth(n); }
-    _setPenStyle(): SetStringMethod 	{ return (n) => this.setPenStyle(n); }
 }

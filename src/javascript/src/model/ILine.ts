@@ -13,7 +13,7 @@ class ILine extends IObject {
         super(name, parent);
         this.fTypeString = kLineType;
         this.fPenControl.setPenWidth(1);
-        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray(this._getPoint());
+        this.fGetMsgHandlerMap[""] = new TGetMsgHandlerArray( (): Array<number> => { return this.fPoint.toArray(); } );
     }
     
     setPoint(p: TPoint)		{ 
@@ -21,9 +21,7 @@ class ILine extends IObject {
     	this.fPosition.setWidth  (Math.abs(p.getX())); 
     	this.fPosition.setHeight (Math.abs(p.getY())); 
     }
-     getPoint(): TPoint	        	{ return this.fPoint; }
-    _getPoint(): GetArrayMethod     { return () => this.fPoint.toArray(); }
-
+    getPoint(): TPoint	        	{ return this.fPoint; }
     getColorTarget(): IColor 		{ return this.fPenControl.fPenColor; };
     
     set(msg:IMessage): eMsgStatus {

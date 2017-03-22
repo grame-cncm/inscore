@@ -4,21 +4,20 @@ interface TTxtfLoadEndHandler 		{ (): void; }
 
 class ITextf extends IText {
     protected fTextFile: string;
-    //protected kTextfType: string;
         
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        //this.kTextfType = 'txtf';
         this.fTypeString = kTextfType;
-
+    }
+    
+    setHandlers() : void {
         super.setHandlers();
-     	this.fGetMsgHandlerMap[""] = new TGetMsgHandlerText(this._getTextFile());
-    }    
+     	this.fGetMsgHandlerMap[""] = new TGetMsgHandlerText( (): string => { return this.getTextFile(); });
+    }
 
 // GETS / SETS VALUES 
 //--------------------------------------------------------------    
     getTextFile(): string           { return this.fTextFile; }
-    _getTextFile(): GetStringMethod { return () => this.fTextFile; }
     setTextFile(file: string): void	{ this.fTextFile = file; }
 
 // SET HANDLER
@@ -44,8 +43,9 @@ class ITextf extends IText {
         }
         return status;
     }
-    _setText(reader: FileReader) : TTxtfLoadEndHandler { return () => { console.log("_setText: " +reader.result); this.setText(reader.result); }
-}
+    _setText(reader: FileReader) : TTxtfLoadEndHandler { 
+    	return () => { console.log("_setText: " +reader.result); this.setText(reader.result); }
+	}
 
 // GETSET METHOD
 //--------------------------------------------------------------    

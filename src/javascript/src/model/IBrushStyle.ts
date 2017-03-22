@@ -34,12 +34,11 @@ class IBrushStyle {
     brushModified(): boolean 	{ return this.fBrushModified; }
     modify()  : void 			{ this.fBrushModified = true; }
 
-    getBrushStyle()  : eBrushStyle 				{ return this.fBrush;}
-    _getBrushStyle() : GetStringMethod 			{ return () => IBrushStyle.brushStyleNum2Str(this.getBrushStyle()).val; }
+    getBrushStyle()  : eBrushStyle 		{ return this.fBrush;}
+    getBrushStyleStr() : string 		{ return IBrushStyle.brushStyleNum2Str(this.fBrush).val; }
 
     setBrushStyle (brushStyle : string): void 	{
         let style = IBrushStyle.brushStyleStr2Num(brushStyle);
         if (!style.correct) { ITLError.badParameter("brushStyle", brushStyle);}
         else { this.fBrush = style.val; this.fBrushModified = true; }}
-    _setBrushStyle(): SetStringMethod 			{ return (brush : string) => this.setBrushStyle(brush) }
 }
