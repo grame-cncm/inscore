@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<title>Internal INScore JavaScript</title>
+</header>
+
+<xmp theme="readable" style="display:none;">
+# Personal Comments About INScoreJS Version
+-------------------------------------------
+
+This document describe some specifics part of developpement and work on INScoreJS.
+
+- [Objects](#objects)
+  - [SVGObjects](#objSVGObjects)
+  - [SVG](#objSVG)
+  - [Media](#objMedia)
+  - [Textual](#objTextual)
+  - [Signals](#objSignals)
+- [Browsers Differences](#browsers)
+- [TODO](#todo)
+
+-----------------------
+
+<h2 id="objects">Objects</h2>
+
+-----------------------
+
+Lists of objects can be created in InscoreJS, their functions and traitement.
+
+<h3 id="objSVGObjects">SVGObjects</h3>
+
+-----------------------
+
+1. **GMN**
+  - **Creation :**
+    * Model: receive string and send it to Guido Engine to be tranforn in a string who contained SVG.
+    * View: tring from model is parse in IGuidoCode and insterting in a div container.  
+  
+
+2. **PianoRoll**
+  - **Creation :**
+    * Model: receive string and send it to Guido PianoRollAdapter to be parse, create a string to contain SVG.
+    * View: is a extend from GMNView, same traitement, juste div's container name is changed.
+
+
+3. **SVG file**
+  - **Creation :**
+    * Model: transform svg file in a string who contained the svg.
+    * View: insert svg string in a div container.  
+
+
+<h3 id="objSVG">SVG</h3>
+
+-----------------------
+
+1. Arc
+Model:
+View:
+
+2. Curve
+Model:
+View:
+
+3. Ellipse
+Model:
+View:
+
+4. Line
+Model:
+View:
+
+5. Polygon
+Model:
+View:
+
+6. Rect
+Model:
+View:
+
+
+<h3 id="objMedia">Media</h3>
+
+-----------------------
+
+1. Image
+Model:
+View:
+
+2. Video
+Model:
+View:
+
+
+<h3 id="objTextual">Textual</h3>
+
+-----------------------
+
+1. Text
+Model:
+View:
+
+2. HTML
+Model:
+View:
+
+
+<h3 id="objSignals">Signals</h3>
+
+-----------------------
+
+* Not implemented yet
+
+<h2 id="browsers">Browsers Differences</h2>
+
+-----------------------
+
+**Some notes about different browsers :** (it'll apdated every time i notice a new difference)
+
+1. Edge and Internet Explorer don't support Effects on GMN and SVG
+2. FireFox and Chrome consume text when drop but ie and edge
+3. Fullscreen only work with user gesture, drag'n drop is not allowed (maybe another way)
+4. Problem with Penwidth and it SVG translate on Edge
+5. Line with penWidth 1 are invisible in Mozilla
+
+<h2 id="todo">TODO</h2>
+
+-----------------------
+
+- [ ] Solve fullscreen problem.
+- [ ] JavaScript event.
+- [ ] Update documentation as possible.
+- [ ] Create other tests for GMN and PianoRoll
+
+</xmp>
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>

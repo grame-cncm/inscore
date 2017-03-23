@@ -43,13 +43,9 @@ This document describes the current state of the development as well as the spec
 * About fontSize: font size aren't support by some browsers, or a part of them.
 * About shadow and blur: shadow and blur aren't support by all browser, filter attribute don't exist in IE for example.  
 
-**Some notes about different browsers :** (it'll apdated every time i notice a new difference)
-
-1. Edge and Internet Explorer don't support Effects on GMN and SVG
-2. FireFox and Chrome consume text when drop but ie and edge
-3. Fullscreen only work with user gesture, drag'n drop is not allowed (maybe another way)
-4. Problem with Penwidth and it SVG translate on Edge
-5. Line with penWidth 1 are invisible in Mozilla
+* PenStyle works diffently on div than SVG. On SVG solid, dot, dash, dashDot, dashDotDot, have fix size and comportement.
+But on div, ther is only solid, dash and dot, other value make penStroke solid, and dot or dash size are based on the div size.
+So, a small object don't have the same dot than a big one in div.
 
 
 <h2 id="notyet">Not yet supported</h2>
@@ -78,16 +74,6 @@ This document describes the current state of the development as well as the spec
 
 <h2 id="unsupported">Unsupported</h2>
 
------------------------
-
-## TODO
------------------------
-
-- [ ] Solve fullscreen problem.
-- [ ] JavaScript event.
-- [x] EventList.
-- [ ] Update documentation as possible.
-- [ ] Create other tests for GMN and PianoRoll
 
 <h2 id="browsers">Supported browsers</h2>
 
@@ -101,10 +87,10 @@ The current version of INScoreJS has been tested on the following platforms and 
 * **Firefox** - Version 53.0  
 
 ### Windows 10
-* **Chrome** - Version 
-* **Internet Explorer** - Version  
-* **Edge** - Version   
-* **Firefox** - Version   
+* **Chrome** - Version 56.0.2924.87
+* **Internet Explorer** - Version  11.953.14393.0
+* **Edge** - Version 38.14393.0.0
+* **Firefox** - Version 52.0.1
 
 ### Linux 
 * **Firefox** - Version   
