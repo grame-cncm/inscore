@@ -17,8 +17,8 @@ help :
 	@echo "  all    : (default) build inscore.js using tsc"
 	@echo "  check  : check that individual ts files are correctly compiled"
 	@echo "  minify : build a minified version of inscore.js"
-	@echo "  refs   : builds a dependencies graph using the reference paths"
-	@echo "           output file is refs.pdf"
+	@echo "  refs   : builds a dependencies graph using the reference paths for the model and the view"
+	@echo "           output files are modelrefs.pdf and viewrefs.pdf (requires 'dot')"
 
 ../inscore.js : $(SRC)
 	make -C ../src/parser
@@ -40,7 +40,19 @@ minify : ../inscore.min.js ../libGUIDOEngine.min.js
 	sh minify ../libGUIDOEngine
 
 refs: 
-	./makerefs > refs.dot
+	make modelrefs
+	make viewrefs
+
+modelrefs: 
+	./makerefs ../src/model > modelrefs.dot
+	dot -Tpdf modelrefs.dot -o modelrefs.pdf
+
+viewrefs: 
+	./makerefs ../src/vhtmlview > viewrefs.dot
+	dot -Tpdf viewrefs.dot -o viewrefs.pdf
+
+allrefs: 
+	./makerefs ../src > refs.dot
 	dot -Tpdf refs.dot -o refs.pdf
 
 _check : $(DEPS) $(OUT)
