@@ -11,16 +11,16 @@
 ///<reference path="../view/VObjectView.ts"/>
 
 ///<reference path="Constants.ts"/>
-///<reference path="Methods.ts"/>
-///<reference path="MethodsJS.ts"/>
+///<reference path="IBrushStyle.ts"/>
 ///<reference path="IColor.ts"/>
 ///<reference path="IDate.ts"/>
-///<reference path="IPosition.ts"/>
-///<reference path="IBrushStyle.ts"/>
 ///<reference path="IEffect.ts"/>
+///<reference path="IEventAble.ts"/>
 ///<reference path="IPenControl.ts"/>
-///<reference path="ITempo.ts"/>
+///<reference path="IPosition.ts"/>
 ///<reference path="IProxyInterface.ts"/>
+///<reference path="Methods.ts"/>
+///<reference path="MethodsJS.ts"/>
 
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -50,11 +50,11 @@ abstract class IObject implements Tree<IObject> {
     
     fPosition: 	 IPosition;
     fDate: 		 IDate;
-    fTempo:      ITempo;
     fColor: 	 IColor;
     fPenControl: IPenControl;
     fBrushStyle: IBrushStyle;
     fEffect:     IEffect;
+    fEvents:	 IEventAble;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -70,12 +70,12 @@ abstract class IObject implements Tree<IObject> {
 
         this.fPosition = new IPosition;
         this.fDate = new IDate;
-        this.fTempo = new ITempo;
 		this.fColor = new IColor([0,0,0]);
         
         this.fPenControl = new IPenControl(kObjType);
         this.fBrushStyle = new IBrushStyle();
         this.fEffect     = new IEffect();
+        this.fEvents     = new IEventAble();
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
@@ -93,6 +93,7 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[ksave_SetMethod]= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.save(msg); } );
         this.fMsgHandlerMap[kdel_SetMethod] = new TMsgHandlerVoid( (): void => { this.del(); } );
 
+ 	    this.eventAble();
  	    this.colorAble();
 	    this.positionAble();
 	    this.timeAble();
@@ -102,6 +103,11 @@ abstract class IObject implements Tree<IObject> {
 
     // intended for ILine : the target is always the pen color
     getColorTarget(): IColor 				{ return this.fColor; };
+    
+    eventAble(): void {
+        this.fMsgHandlerMap[kwatch_GetSetMethod] 	= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.fEvents.watch (msg); } );
+        this.fMsgHandlerMap[kevent_SetMethod] 		= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.fEvents.event (msg); } );
+    }
     
     colorAble(): void {
         let target = this.getColorTarget();
@@ -182,10 +188,10 @@ abstract class IObject implements Tree<IObject> {
         this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.addDuration(d); });        
         this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid( (): void => { this.fDate.clock(); });
         this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid( (): void => { this.fDate.durclock(); });
-        this.fMsgHandlerMap[ktempo_GetSetMethod] 	= new TMsgHandlerNum(this.fTempo._setTempo());
-        this.fMsgHandlerMap[kdtempo_SetMethod] 	    = new TMsgHandlerNum(this.fTempo._addTempo());
+        this.fMsgHandlerMap[ktempo_GetSetMethod] 	= new TMsgHandlerNum ( (n: number): void => { this.fDate.setTempo(n); });
+        this.fMsgHandlerMap[kdtempo_SetMethod] 	    = new TMsgHandlerNum ( (n: number): void => { this.fDate.addTempo(n); });
 
-        this.fGetMsgHandlerMap[ktempo_GetSetMethod] 	= new TGetMsgHandlerNum(this.fTempo._getTempo());
+        this.fGetMsgHandlerMap[ktempo_GetSetMethod] 	= new TGetMsgHandlerNum ( (): number =>   { return this.fDate.getTempo(); });
         this.fGetMsgHandlerMap[kduration_GetSetMethod] 	= new TGetMsgHandlerTime( (): Fraction => { return this.fDate.getDuration(); });
         this.fGetMsgHandlerMap[kdate_GetSetMethod] 		= new TGetMsgHandlerTime( (): Fraction => { return this.fDate.getDate(); });
     }
