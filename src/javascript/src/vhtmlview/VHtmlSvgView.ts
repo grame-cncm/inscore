@@ -14,7 +14,7 @@ class VHtmlSvgView extends VHtmlView {
 
     updateView(obj: IObject): void {
         if (obj.isNewData()) {
-            this.getHtml().innerHTML = this.getSVGCode(obj);;
+            this.getHtml().innerHTML = this.getSVGCode(obj);
             this.updateObjectSize(obj);
         }
         super.updateView(obj);
