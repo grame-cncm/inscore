@@ -173,8 +173,8 @@ class VHtmlView extends VObjectView {
 	{
 		switch(style) {
 			case 0 :	return "solid";
-			case 2 :	return "dotted";
 			case 1 :	return "dashed";
+			case 2 :	return "dotted";
 			default : 	return "solid";
 		}
 	}
