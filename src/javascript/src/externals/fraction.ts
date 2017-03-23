@@ -46,7 +46,8 @@ class Fraction {
     
 // CONVERT NUMERIC FRACTION TO A STRING
 //-------------------------------------------------------------- 
-    toString() { return `${this.numerator}/${this.denominator}`; }
+    toString() 			{ return `${this.numerator}/${this.denominator}`; }
+    toNum() : number	{ return this.numerator / this.denominator; }
 
 // OPERATORS FONCTIONS
 //-------------------------------------------------------------- 
@@ -85,6 +86,17 @@ class Fraction {
     inverse(): Fraction {
         return new Fraction(this.denominator, this.numerator).reduce();
     }
+    
+     // comparisons
+    eq(f: Fraction): boolean {
+    	let f1 = new Fraction(this.denominator, this.numerator).reduce();
+    	let f2 = new Fraction(f).reduce();
+        return (f1.denominator == f2.denominator) && (f1.numerator == f2.numerator);
+    }
+    gt (f: Fraction): boolean { return this.toNum() > f.toNum(); }
+    geq(f: Fraction): boolean { return this.toNum() >= f.toNum(); }
+    lt (f: Fraction): boolean { return this.toNum() < f.toNum(); }
+    leq(f: Fraction): boolean { return this.toNum() <= f.toNum(); }
     
     // reduce a fraction : Euclide algorithme
     reduce(): Fraction {
