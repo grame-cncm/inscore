@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
-<title>Inscore JavaScript Doc</title>
+<header>
+	<title>INScore JavaScript</title>
+</header>
 
 <xmp theme="readable" style="display:none;">
-**JavaScript Only**
------------------------
 
-Nothing to notice actually.
+<img src="./imgs/INScoreJS.png" width=90 alt="INScoreJS" style="float: left;" />
+# Introduction to INScoreJS
+----------------------------
+    
+INScoreJS is a JavaScript library that provides [INScore](http://inscore.sf.net) features in a web page. 
+This document describes the current state of the development as well as the specific methods that are available in JavaScript only. It includes also a summary of the differences found with different browsers.
 
-**Differences**
+- [JavaScript specific methods](#javaspecific)
+- [Differences](#differences)
+- [Not yet supported](#notyet)
+	- [Common messages](#notyetcommon)
+	- [Specific messages](#notyetspec)
+- [Unsupported](#unsupported)
+- [Supported browsers](#browsers)
+
+
+----------------------------
+
+<h2 id="overview">JavaScript specific methods</h2>
+
+----------------------------
+
+* `position`: supported at scene level  
+   arguments: `relative` | `absolute` , default: `relative`  
+   translates into css as: `style="position: absolute;"` when the position is absolute.
+    
+
+
+<h2 id="differences">Differences</h2>
+
 -----------------------
 
 * About shear: in the original App, shear has a maximum value. In JavaScript version no maximum and rotations are based on angles in radian.
@@ -17,6 +44,7 @@ Nothing to notice actually.
 * About shadow and blur: shadow and blur aren't support by all browser, filter attribute don't exist in IE for example.  
 
 **Some notes about different browsers :** (it'll apdated every time i notice a new difference)
+
 1. Edge and Internet Explorer don't support Effects on GMN and SVG
 2. FireFox and Chrome consume text when drop but ie and edge
 3. Fullscreen only work with user gesture, drag'n drop is not allowed (maybe another way)
@@ -24,7 +52,16 @@ Nothing to notice actually.
 5. Line with penWidth 1 are invisible in Mozilla
 
 
-**Not Implemented in JavaScript**
+<h2 id="notyet">Not yet supported</h2>
+
+-----------------------
+
+<h3 id="notyetcommon">Common messages</h3>
+
+-----------------------
+
+<h3 id="notyetspec">Specific messages</h3>
+
 -----------------------
 
 * Effect Colorize
@@ -39,7 +76,11 @@ Nothing to notice actually.
 * MiscellaneousEvent (export, new data)
 * SpecificsEvent (pageCount, new element, endPoint, error, ready, end)
 
-**TODO**
+<h2 id="unsupported">Unsupported</h2>
+
+-----------------------
+
+## TODO
 -----------------------
 
 - [ ] Solve fullscreen problem.
@@ -47,6 +88,27 @@ Nothing to notice actually.
 - [x] EventList.
 - [ ] Update documentation as possible.
 - [ ] Create other tests for GMN and PianoRoll
+
+<h2 id="browsers">Supported browsers</h2>
+
+----------------------------
+The current version of INScoreJS has been tested on the following platforms and browsers:
+
+### MacOS 10.11
+* **Chrome** - Version 56.0 
+* **Safari** - Version 10.0.1
+* **Opera** - Version 44.0
+* **Firefox** - Version 53.0  
+
+### Windows 10
+* **Chrome** - Version 
+* **Internet Explorer** - Version  
+* **Edge** - Version   
+* **Firefox** - Version   
+
+### Linux 
+* **Firefox** - Version   
+
 </xmp>
 
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
