@@ -2,6 +2,8 @@
 ///<reference path="VHtmlView.ts"/>
 ///<reference path="../model/ISvg.ts"/>
 
+interface RefreshMethod { (): void; }
+
 class VHtmlSvgView extends VHtmlView {
 
     protected fClientWidth = 0;
