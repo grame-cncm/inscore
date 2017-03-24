@@ -4,3 +4,4 @@ src/parser/checkout
 rsrc
 build/*.dot
 build/*.pdf
+sandbox
