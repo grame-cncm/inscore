@@ -7,6 +7,11 @@
 interface TAttributesTable 		{ [index: string]: any; }
 interface TStringEventsTable 	{ [index: string]: Array<IMessage>; }
 interface TTimeEventsTable 		{ [index: number]: Array<IMessage>; }
+interface TEventSender 			{ postMessage (address: string, params: Array<any>) : void; }
+
+interface TRawMessage 			{ address: string; params: Array<any> }
+
+var INScore : INScoreInterface;
 
 class IEventAble {
 
@@ -60,7 +65,7 @@ class IEventAble {
     attributeEvent 	(event: string): boolean 	{ return IEventAble.find (this.fAttributesEvents, event); }
 
     //---------------------------------------------------------------
-    protected clear (): void {
+    private clear (): void {
 		this.fUserEvents 		= {} as TStringEventsTable;
 		this.fInternalEvents 	= {} as TStringEventsTable;
 		this.fAttributeEvents 	= {} as TStringEventsTable;
@@ -71,8 +76,7 @@ class IEventAble {
     
     //---------------------------------------------------------------
     private send (msgs: Array<IMessage>): void {
-console.log ("IEventAble send: ")
-		msgs.forEach(function(msg: IMessage) { console.log(" -> " + msg); })
+		msgs.forEach(function(msg: IMessage) { INScore.postMessage (msg.address(), msg.params()) })
     }
     
     //---------------------------------------------------------------
@@ -85,41 +89,40 @@ console.log ("IEventAble send: ")
     }
 
     //---------------------------------------------------------------
-    private msg2msgsArray (msg: IMessage, startindex: number):  Array<IMessage> {
-    	let n = msg.size();
+    private msg2msgsArray (list: Array<any>):  Array<IMessage> {
     	let out : Array<IMessage> = []
-    	console.log ("msg2msgsArray : " + (n - startindex) + " msgs")
-    	for (var i=startindex; i < n; i++) {
-	    	let arg = msg.paramArray (i);
-	    	if (arg.correct) {
-	    		let msg = arg.value;
-			    console.log ("  -> " + msg);
-	    		for (var j=0; j<msg.length; j++)
-			    	console.log ("       " + msg[j]);
-		    }
-		    else 
-		    	console.log ("incorrect argument: " + msg.param(i));
-    	}
-    	return out;
+    	for (var i=0; i < list.length; i++) {
+			console.log ("msg2msgsArray  -> " + list[i]);
+ 	    	let m = <TRawMessage>list[i];
+	    	let address = m.address;
+	    	let params = m.params;
+	    	out.push (new IMessage (address.toString(), params));
+ 		    console.log ("  -> address: " + address + " : " + params );
+  		}
+		return out;
     }
 
     //---------------------------------------------------------------
     watch (msg:IMessage): eMsgStatus {
-    	let n = msg.size() - 1;				// first param is 'watch'
-console.log ("IEventAble watch " + n);
-    	if (!n) {
-    		this.clear();		// no parameter: clear the tables
-    	}
+    	let n = msg.size() - 1;			// first param is 'watch'
+    	if (!n)  this.clear();			// no parameter: clear the tables
     	else {
     		let event = msg.paramStr(1);
 	    	if (!event.correct) return eMsgStatus.kBadParameters;
 	    	let a = this.event2StringArray (event.value);
 	    	if (a.find) {
-	    		if (n == 1) 					// no massociated message
+	    		if (n == 1) 					// no associated message
 	    			a.tbl[event.value] = [];	// clear the corresponding entry
-				else {
-					let msgs = this.msg2msgsArray (msg, 2);
-					a.tbl[event.value] = [ new IMessage ("/ITL/userEvent", msg.params().slice(1)) ];
+				else if (n== 2) {				// a single array of messages is expected
+	    			let arg = msg.paramArray (2);
+	    			if (arg.correct) {
+						let msgs = this.msg2msgsArray (arg.value);
+						if (msgs.length) {
+							a.tbl[event.value] = msgs;
+							return eMsgStatus.kProcessedNoChange;
+						}
+					}
+					return eMsgStatus.kBadParameters; 
 				}
 	    	}
 	    	else {
