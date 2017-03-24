@@ -81,6 +81,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
         this.setHandlers();
         this.createStaticNodes();
+        this.fEvents.attributes (this.fMsgHandlerMap);
     }
     
     createStaticNodes() : void {}
