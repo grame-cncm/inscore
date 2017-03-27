@@ -46,8 +46,9 @@ class Fraction {
     
 // CONVERT NUMERIC FRACTION TO A STRING
 //-------------------------------------------------------------- 
-    toString() 			{ return `${this.numerator}/${this.denominator}`; }
-    toNum() : number	{ return this.numerator / this.denominator; }
+    toString() 					{ return `${this.numerator}/${this.denominator}`; }
+    toNum() : number			{ return this.numerator / this.denominator; }
+    toArray() : Array<number>	{ return [this.numerator, this.denominator]; }
 
 // OPERATORS FONCTIONS
 //-------------------------------------------------------------- 
