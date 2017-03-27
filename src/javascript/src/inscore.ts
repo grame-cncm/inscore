@@ -44,8 +44,6 @@ class INScoreImpl extends INScoreInterface
 		ITLOut.write ("INScore version " + this.version());
 	}
 
-	getRoot() : IObject		{ return this.fGlue.getRoot(); }
-
 	checkStatus (status: eMsgStatus, msg: IMessage) : void {
     	if (!(status & eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange))
     		ITLError.write (msg.toString() + ": " + this.status2string(status));
@@ -53,13 +51,13 @@ class INScoreImpl extends INScoreInterface
 
 	postMessage (address: string, params: Array<any>) : void {
     	let msg = new IMessage (address, params);
-    	this.checkStatus (this.getRoot().process (msg), msg);
+    	this.checkStatus (this.fGlue.getRoot().process (msg), msg);
 	}
 
 	load (data: any): void {
 		let loader = new TILoader;
-		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
-		else 							{ loader.load (data, this.getRoot()); }		
+		if (typeof data == "string") 	{ loader.process (data, this.fGlue.getRoot()); }
+		else 							{ loader.load (data, this.fGlue.getRoot()); }		
 	}
 
 	register (tag : string): void {
