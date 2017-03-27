@@ -47,6 +47,7 @@ abstract class IObject implements Tree<IObject> {
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
+    protected fGetMsgsHandlerMap : 	TGetMsgHandler<TGetMultiHandler>; 
     
     fPosition: 	 IPosition;
     fDate: 		 IDate;
@@ -79,6 +80,8 @@ abstract class IObject implements Tree<IObject> {
 
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
+		this.fGetMsgsHandlerMap = new TGetMsgHandler<TGetMultiHandler>();
+
         this.setHandlers();
         this.createStaticNodes();
         this.fEvents.attributes (this.fMsgHandlerMap);
@@ -108,6 +111,8 @@ abstract class IObject implements Tree<IObject> {
     eventAble(): void {
         this.fMsgHandlerMap[kwatch_GetSetMethod] 	= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.fEvents.watch (msg); } );
         this.fMsgHandlerMap[kevent_SetMethod] 		= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.fEvents.event (msg); } );
+
+        this.fGetMsgsHandlerMap[kwatch_GetSetMethod] = new TGetMsgsHandler( (): IMessageList => { let osc= this.getOSCAddress(); return this.fEvents.getWatch(osc); } );
     }
     
     colorAble(): void {
@@ -440,10 +445,8 @@ abstract class IObject implements Tree<IObject> {
         else for (let i=1; i< n; i++) {
         	let attribute = msg.paramStr(i);
         	if (attribute.correct) {
-        		let outmsg = this.get1AttributeMsg (attribute.value);
-        		if (outmsg) { 
-        			ITLOut.write (outmsg.toString());
-        		}
+        		let msgs = this.get1AttributeMsg (attribute.value);
+        		if (msgs) msgs.forEach ( function(msg: IMessage) { ITLOut.write (msg.toString()); } );
         	}
         	else {
         		ITLError.badParameter (msg.toString(), msg.param(i));
@@ -470,31 +473,33 @@ abstract class IObject implements Tree<IObject> {
       
     //-------------------------------------------------------------
     // get 1 message for 1 attribute
-    get1AttributeMsg(attribute: string): IMessage {
-        let outmsg : IMessage;
+    get1AttributeMsg(attribute: string): IMessageList {
         let h = this.fGetMsgHandlerMap[attribute];
         if (h) { 
-        	outmsg = new IMessage (this.getOSCAddress(), attribute);
-        	h.fill (outmsg);
+        	let msg = new IMessage (this.getOSCAddress(), attribute);
+        	h.fill (msg);
+        	return [msg];
         }
-        return outmsg;
+    	let hm = this.fGetMsgsHandlerMap[attribute];
+        if (hm) return hm.getMsgs ();
+        return [];
     }
 
     //-------------------------------------------------------------
     // get a message for all attributes
-    getAttributesMsg(): Array<IMessage> {
-    	let out = new Array<IMessage>();
+    getAttributesMsg(): IMessageList {
+    	let out = new IMessageList();
 		for (let key in this.fMsgHandlerMap) {
 			let msg = this.get1AttributeMsg(key);
-	    	if (msg) out.push (msg);
+	    	if (msg) out = out.concat (msg);
 		}
 		return out;
     }
 
     //-------------------------------------------------------------
     // get objects state messages recursively
-    getSetRecurse(): Array<IMessage> {
-    	let out = new Array<IMessage>();
+    getSetRecurse(): IMessageList {
+    	let out = new IMessageList();
     	let msg =  this.getSet ();			// get the 'set' msg first
     	if (msg) out.push (msg);			// and push to the output list
     	let p = this.getAttributesMsg();	// next all the messages for the object attributes

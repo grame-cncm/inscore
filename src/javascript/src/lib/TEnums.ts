@@ -15,23 +15,19 @@ enum eObjState {
     kMasterModified = 8, 
 }
 
-enum ePenStyle {
-    kSolid = 0,
-    kDash,
-    kDot,
-    kDashDot,
-    kDashDotDot,
-    kLast
-}
+enum ePenStyle  	{ kSolid, kDash, kDot, kDashDot, kDashDotDot, kLast }
+enum eBrushStyle	{ kNone, kSolid,}
+enum eEffect 		{ kNone, kBlur, kColorize,kShadow, }
 
-enum eBrushStyle{
-    kNone,
-    kSolid,
-}
-
-enum eEffect {
-    kNone,
-    kBlur,
-    kColorize,
-    kShadow,
+// WARNING: changing the enum order requires to change IEventAble too
+enum eUIEvents { 
+    kMouseDown = 1,
+	kMouseMove = 2,
+	kMmouseUp  = 4,
+	kMouseEnter= 8,
+	kMouseLeave= 16,
+	kDoubleClick= 32,
+	kTouchBegin = 64,
+	kTouchEnd	= 128,
+	kTouchUpdate= 256
 }

@@ -50,3 +50,11 @@ class TGetMsgHandlerArray extends GetMsgHandler<GetArrayMethod> {
     	return msg;
     }
 }
+
+// ------------------------------------------------------------------------------
+// return a message list 
+// ------------------------------------------------------------------------------
+class TGetMsgsHandler extends GetMsgsHandler<GetMultiMethod> {
+    constructor(method: GetMultiMethod) { super (method); }    
+    getMsgs (): IMessageList { return this.fMethod (); }
+}
