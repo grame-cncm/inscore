@@ -29,7 +29,7 @@ interface SetAnyArrayMethod	{ (val: Array<any>): eMsgStatus; }
 // the get message handler types
 // ------------------------------------------------------------------------------
 interface TGetHandler 		{ fill(msg: IMessage): IMessage; }
-interface TGetMultiHandler 	{ fill(msg: IMessageList): IMessageList; }
+interface TGetMultiHandler 	{ getMsgs(): IMessageList; }
 
 abstract class GetMsgHandler<T> implements TGetHandler { 
     protected fMethod: T;
@@ -37,7 +37,14 @@ abstract class GetMsgHandler<T> implements TGetHandler {
 	abstract fill(msg: IMessage): IMessage;
 }
 
+abstract class GetMsgsHandler<T> implements TGetMultiHandler { 
+    protected fMethod: T;
+    constructor(method: T) { this.fMethod = method; }    
+	abstract getMsgs(): IMessageList;
+}
+
 interface GetNumMethod 			{ (): number; }
 interface GetStringMethod 		{ (): string; }
 interface GetArrayMethod 		{ (): Array<any>; }
 interface GetTimeMethod 		{ (): Fraction; }
+interface GetMultiMethod 		{ (): IMessageList; }
