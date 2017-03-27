@@ -12,10 +12,12 @@ class IGlue {
 	protected fAppl: IAppl;
 	protected fTimer: number;		// this is to catch multiple defs in nodes and in browser contexts
 	private   fStack: Array<IMessage>;
+	private   fModelUpdater: ModelUpdater;
 
     constructor() 			{ 
-    	this.fAppl = new IAppl(); 
+    	this.fAppl = new IAppl();
 		this.fStack = new Array<IMessage>();
+		this.fModelUpdater = new ModelUpdater(this.fAppl);
     }
 
 	getStack(): Array<IMessage> 	{ return this.fStack; }
@@ -45,7 +47,7 @@ class IGlue {
 	timetask() : void {
 		let stack = this.fStack;
 		this.fStack = [];
-		ModelUpdater.update (stack);
+		this.fModelUpdater.update (stack);
 		ViewUpdater.update (this.fAppl);
 		IObject.timeTaskCleanup (this.fAppl);
     	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
