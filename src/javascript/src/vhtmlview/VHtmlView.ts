@@ -29,6 +29,7 @@ class VHtmlView extends VObjectView {
 		this.updateColor(obj);
 		this.updatePenControl(obj);
 		this.updateEffects(obj);
+		//test
 		this.eventManager(obj, "mouseenter");
 	}
 
@@ -218,14 +219,14 @@ class VHtmlView extends VObjectView {
 	// Manage and set or delete event listener
 	eventManager(obj: IObject, eventName: string) : void{
 		// Create Event on Object
-		this.getHtml().addEventListener(eventName, () => {
-			this.eventAction(event);
+		this.getHtml().addEventListener(eventName, (event) => {
+			this.eventAction(event || window.event);
 		});
 	}
 
 	// send datas to model
 	eventAction(ev: any): void {
-		ev = event || window.event;
+		ev = ev || window.event;
 
 		// get position's datas
 		let pageCoord = this.getPxCoord(ev);
@@ -234,7 +235,6 @@ class VHtmlView extends VObjectView {
 
 		this.fPoss = [pageCoord, parentCoord, sceneCoord];
 		this.sendPositions(this.fPoss);
-		console.log("VHtmlView eventAction fPoss : " + this.fPoss);
 	}
 
 	//get event coordinate in px
@@ -285,7 +285,7 @@ class VHtmlView extends VObjectView {
 		let scene = this.getScene(this.getHtml());
 		// value in px
 		let xs = ev.pageX - (scene.offsetLeft + scene.parentElement.offsetLeft);
-		let ys = ev.pageY - (scene.offsetTop + scene.parentElement.offsetTop);
+		let ys = ev.pageY - (scene.offsetTop  + scene.parentElement.offsetTop);
 		// value : [-1,1]
 		xs = xs / (scene.clientWidth / 2) - 1;
 		ys = ys / (scene.clientHeight / 2) - 1;
