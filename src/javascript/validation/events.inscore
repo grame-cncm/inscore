@@ -3,8 +3,10 @@
 
 /ITL/scene/o set rect 0.5 0.5;
 
-/ITL/scene/o watch timeEnter 1 2 ( /ITL/scene/o x 0 );
-/ITL/scene/o watch timeLeave 0 4 3 4 ( /ITL/scene/o y 0 );
+/ITL/scene/o watch timeEnter 1 2 ( /ITL/scene/o dx 0.1 );
+/ITL/scene/o watch timeLeave 1 2 ( /ITL/scene/o dy 0.1 );
+/ITL/scene/o watch durEnter 1 2 ( /ITL/scene/o dx -0.1 );
+/ITL/scene/o watch durLeave 1 2 ( /ITL/scene/o dy -0.1 );
 /ITL/scene/o watch mouseEnter ( /ITL/scene/o color 0 0 250);
 /ITL/scene/o watch mouseLeave ( /ITL/scene/o color 250 0 0);
 /ITL/scene/o watch mouseDown (
@@ -28,12 +30,21 @@
 	) 
 );
 
+/ITL/scene/o watch x ( /ITL/scene/o dalpha -10 );
+
 __END__
 
 /ITL/scene/* get watch;
 /ITL/scene/* event TOTO;
 /ITL/scene/* event date;
 /ITL/scene/* event mouseDown;
+/ITL/scene/* x 0.2;
+/ITL/scene/* date 1;
+/ITL/scene/* date 0.1;
+/ITL/scene/* date 1;
+/ITL/scene/* duration 0.1;
+/ITL/scene/* duration 1.2;
+/ITL/scene/* duration 2;
 /ITL/scene/* watch ;
 /ITL/scene/* push ;
 /ITL/scene/* pop ;
