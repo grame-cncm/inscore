@@ -24,10 +24,20 @@ class TTimeEvent  {
 
 //-----------------------------------------------------------------------------------
 class TTimeEventsTable {
-	fTable: Array<TTimeEvent>
-	fEvent: string;
+	private fTable: Array<TTimeEvent>
+			fEvent: string;
 
-	constructor (event: string) { this.fEvent = event; this.fTable = [] }
+	constructor (arg: string | TTimeEventsTable) { 
+		if (typeof arg === "string") {
+			this.fEvent = arg; 
+			this.fTable = [];
+		}
+		else {
+			let tbl = <TTimeEventsTable>arg;
+			this.fEvent = tbl.fEvent; 
+			this.fTable = tbl.fTable.slice(0);
+		}
+	}
 	clear(): void				{ this.fTable = []; }
 	size(): number				{ return this.fTable.length; }
 
@@ -63,38 +73,128 @@ class TTimeEventsTable {
 };
 
 //-----------------------------------------------------------------------------------
+class InteractionState {
+    //---------------------------------------------------------------
+    // tables that associates events to messages
+    //---------------------------------------------------------------
+	fUserEvents: 		TStringEventsTable; 
+	fInternalEvents:	TStringEventsTable;
+	fAttributeEvents:	TStringEventsTable;
+	fTimeEnterEvents:	TTimeEventsTable
+	fTimeLeaveEvents:	TTimeEventsTable
+	fDurEnterEvents: 	TTimeEventsTable
+	fDurLeaveEvents: 	TTimeEventsTable
+
+   //---------------------------------------------------------------
+	constructor (state? : InteractionState) { 
+		if (typeof state === "undefined") {
+			this.fTimeEnterEvents	= new TTimeEventsTable("timeEnter");
+			this.fTimeLeaveEvents	= new TTimeEventsTable("timeLeave");
+			this.fDurEnterEvents	= new TTimeEventsTable("durEnter");
+			this.fDurLeaveEvents	= new TTimeEventsTable("durLeave");
+			this.clear();  
+		}
+		else {
+			this.fUserEvents = {};
+			this.fInternalEvents = {};
+			this.fAttributeEvents = {};
+			for (var key in state.fUserEvents)  	this.fUserEvents[key] = state.fUserEvents[key];
+			for (var key in state.fInternalEvents)  this.fInternalEvents[key] = state.fInternalEvents[key];
+			for (var key in state.fAttributeEvents) this.fAttributeEvents[key] = state.fAttributeEvents[key];
+			
+			this.fTimeEnterEvents	= new TTimeEventsTable (state.fTimeEnterEvents);
+			this.fTimeLeaveEvents	= new TTimeEventsTable (state.fTimeLeaveEvents);
+			this.fDurEnterEvents	= new TTimeEventsTable (state.fDurEnterEvents);
+			this.fDurLeaveEvents	= new TTimeEventsTable (state.fDurLeaveEvents);
+		}
+	}
+	
+   //---------------------------------------------------------------
+    size (): number { 
+    	return this.fTimeEnterEvents.size() + this.fTimeLeaveEvents.size() + 
+    		this.fDurEnterEvents.size() + this.fDurLeaveEvents.size();
+	}
+	
+   //---------------------------------------------------------------
+    clear (): void {
+		this.fUserEvents 		= {};
+		this.fInternalEvents 	= {};
+		this.fAttributeEvents 	= {};
+
+		this.fTimeEnterEvents.clear();
+		this.fTimeLeaveEvents.clear();
+		this.fDurEnterEvents.clear();
+		this.fDurLeaveEvents.clear();
+    }
+
+   //---------------------------------------------------------------
+    event2TimeArray (event:string): { find: boolean, tbl?: TTimeEventsTable } {
+		if (event === this.fTimeEnterEvents.fEvent) return { find: true, tbl: this.fTimeEnterEvents};
+		if (event === this.fTimeLeaveEvents.fEvent) return { find: true, tbl: this.fTimeLeaveEvents};
+		if (event === this.fDurEnterEvents.fEvent)  return { find: true, tbl: this.fDurEnterEvents};
+		if (event === this.fDurLeaveEvents.fEvent)  return { find: true, tbl: this.fDurLeaveEvents};
+		return { find: false };
+    }
+
+   	//---------------------------------------------------------------
+    getWatch(addr: string): IMessageList	{ 
+		let out: IMessageList = [];
+		out = out.concat ( this.makeMsgs (this.fInternalEvents, addr) );
+		out = out.concat ( this.makeMsgs (this.fAttributeEvents, addr) );
+		out = out.concat ( this.makeMsgs (this.fUserEvents, addr) );
+		out = out.concat ( this.fTimeEnterEvents.toMsgs (addr) );
+		out = out.concat ( this.fTimeLeaveEvents.toMsgs (addr) );
+		out = out.concat ( this.fDurEnterEvents.toMsgs (addr) );
+		out = out.concat ( this.fDurLeaveEvents.toMsgs (addr) );
+		if (!out.length)
+			out.push (new IMessage (addr, [kwatch_GetSetMethod]));
+    	return out; 
+    }
+
+   //---------------------------------------------------------------
+    hasUIEvents (): number {
+		var efield = 0;
+    	for (var i=0; i <  IEventAble.fUIEvents.length; i++) {
+			let msgs: Array<IMessage> = this.fInternalEvents[IEventAble.fUIEvents[i]];
+			if (msgs && msgs.length) efield |= 1 << i;
+    	}
+    	return efield;
+    }
+	
+   //---------------------------------------------------------------
+	private makeMsgs (tbl: TStringEventsTable, addr: string) : IMessageList {
+		let out: IMessageList = [];
+		for (var key in tbl) {
+			let msg = tbl[key];
+			if (msg) {
+				let params : Array<any> = [ kwatch_GetSetMethod, key, "(", msg.toString(), ");"  ];
+				out.push ( new IMessage (addr, params) );
+			}
+		}
+		return out;
+	} 
+}
+
+//-----------------------------------------------------------------------------------
 class IEventAble {
 
     //---------------------------------------------------------------
     // events definitions
     //---------------------------------------------------------------
 	// WARNING: changing the events order requires to change the eUIEvents enum too
-	protected static fUIEvents	: Array<string> = [ "mouseDown", "mouseMove", "mouseUp", 
+	static fUIEvents	: Array<string> 		= [ "mouseDown", "mouseMove", "mouseUp", 
 													"mouseEnter", "mouseLeave",
 													"doubleClick",
 													"touchBegin", "touchEnd", "touchUpdate"];
 	protected fAttributesEvents: Array<string> 	= [ ];
 	protected fSpecificEvents: Array<string> 	= [ "newData" ];
 
-    //---------------------------------------------------------------
-    // tables that associates events to messages
-    //---------------------------------------------------------------
-	protected fUserEvents: 		TStringEventsTable; 
-	protected fInternalEvents:  TStringEventsTable;
-	protected fAttributeEvents: TStringEventsTable;
-	protected fTimeEnterEvents: TTimeEventsTable
-	protected fTimeLeaveEvents: TTimeEventsTable
-	protected fDurEnterEvents: 	TTimeEventsTable
-	protected fDurLeaveEvents: 	TTimeEventsTable
+    private fState: InteractionState;				// the current interaction state
+    private fStatesStack: Array<InteractionState>;	// the interaction states stack
 	
     //---------------------------------------------------------------
-	constructor () {  
-		this.fTimeEnterEvents	= new TTimeEventsTable("timeEnter");
-		this.fTimeLeaveEvents	= new TTimeEventsTable("timeLeave");
-		this.fDurEnterEvents	= new TTimeEventsTable("durEnter");
-		this.fDurLeaveEvents	= new TTimeEventsTable("durLeave");
-		this.clear();  
-	}
+	constructor () {  this.fState = new InteractionState(); this.fStatesStack = []; }
+
 	specifics (evslist: Array<string>) 	{ this.fSpecificEvents = this.fSpecificEvents.concat(evslist); }
 	attributes (a: TAttributesTable) 	{ for (var key in a)  this.fAttributesEvents.push(key); }
 
@@ -105,20 +205,13 @@ class IEventAble {
 
     //---------------------------------------------------------------
     // give the active UI events as a bit field
-    hasUIEvents (): number {
-		var efield = 0;
-    	for (var i=0; i <  IEventAble.fUIEvents.length; i++) {
-			let msgs: Array<IMessage> = this.fInternalEvents[IEventAble.fUIEvents[i]];
-			if (msgs && msgs.length) efield |= 1 << i;
-    	}
-    	return efield;
-    }
+    hasUIEvents (): number { return this.fState.hasUIEvents(); }
 
     //---------------------------------------------------------------
     watch (msg:IMessage): eMsgStatus {
     	let n = msg.size() - 1;				// first param is 'watch'
     	if (!n) {
-    		this.clear();					// no parameter: clear all the tables
+    		this.fState.clear();			// no parameter: clear the interaction state
     		return  eMsgStatus.kProcessed;
     	}
 
@@ -169,31 +262,17 @@ class IEventAble {
 
 // GET WATCH METHOD
 //--------------------------------------------------------------    
-	private makeMsgs (tbl: TStringEventsTable, addr: string) : IMessageList {
-		let out: IMessageList = [];
-		for (var key in tbl) {
-			let msg = tbl[key];
-			if (msg) {
-				let params : Array<any> = [ kwatch_GetSetMethod, key, "(", msg.toString(), ");"  ];
-				out.push ( new IMessage (addr, params) );
-			}
-		}
-		return out;
-	} 
+    getWatch(addr: string): IMessageList	{  return this.fState. getWatch (addr); }
 
-	// gives the messages parameters only, msg addressing is IObject responsibility 
-    getWatch(addr: string): IMessageList	{ 
-		let out: IMessageList = [];
-		out = out.concat ( this.makeMsgs (this.fInternalEvents, addr) );
-		out = out.concat ( this.makeMsgs (this.fAttributeEvents, addr) );
-		out = out.concat ( this.makeMsgs (this.fUserEvents, addr) );
-		out = out.concat ( this.fTimeEnterEvents.toMsgs (addr) );
-		out = out.concat ( this.fTimeLeaveEvents.toMsgs (addr) );
-		out = out.concat ( this.fDurEnterEvents.toMsgs (addr) );
-		out = out.concat ( this.fDurLeaveEvents.toMsgs (addr) );
-		if (!out.length)
-			out.push (new IMessage (addr, [kwatch_GetSetMethod]));
-    	return out; 
+// PUSH & POP METHOD
+//--------------------------------------------------------------    
+    push(): void	{
+    	let copy = new InteractionState (this.fState);
+    	this.fStatesStack.push (copy);
+    }
+    pop(): void		{ 
+    	if (this.fStatesStack.length)
+    		this.fState = this.fStatesStack.pop();
     }
 
 // STATIC METHODS
@@ -213,47 +292,25 @@ class IEventAble {
 
 // PRIVATE METHOD
 //--------------------------------------------------------------    
-     private clear (): void {
-		this.fUserEvents 		= {};
-		this.fInternalEvents 	= {};
-		this.fAttributeEvents 	= {};
-
-		this.fTimeEnterEvents.clear();
-		this.fTimeLeaveEvents.clear();
-		this.fDurEnterEvents.clear();
-		this.fDurLeaveEvents.clear();
-    }
     
     //---------------------------------------------------------------
     private send (msgs: Array<IMessage>): void {
 		msgs.forEach(function(msg: IMessage) { INScore.postMessage (msg.address(), msg.params()) })
     }
-    
-    //---------------------------------------------------------------
-    private event2TimeArray (event:string): { find: boolean, tbl?: TTimeEventsTable } {
-		if (event === this.fTimeEnterEvents.fEvent) return { find: true, tbl: this.fTimeEnterEvents};
-		if (event === this.fTimeLeaveEvents.fEvent) return { find: true, tbl: this.fTimeLeaveEvents};
-		if (event === this.fDurEnterEvents.fEvent)  return { find: true, tbl: this.fDurEnterEvents};
-		if (event === this.fDurLeaveEvents.fEvent)  return { find: true, tbl: this.fDurLeaveEvents};
-		return { find: false };
-    }
-    
+        
     //---------------------------------------------------------------
     private event2StringArray (event:string): { find: boolean, tbl?: TStringEventsTable } {
-		if (IEventAble.uiEvent(event)) 		return { find: true, tbl: this.fInternalEvents};
-		if (IEventAble.userEvent(event)) 	return { find: true, tbl: this.fUserEvents};
-		if (this.attributeEvent(event)) 	return { find: true, tbl: this.fAttributeEvents};
-		if (this.attributeEvent(event)) 	return { find: true, tbl: this.fAttributeEvents};
+		if (IEventAble.uiEvent(event)) 		return { find: true, tbl: this.fState.fInternalEvents};
+		if (IEventAble.userEvent(event)) 	return { find: true, tbl: this.fState.fUserEvents};
+		if (this.attributeEvent(event)) 	return { find: true, tbl: this.fState.fAttributeEvents};
+		if (this.attributeEvent(event)) 	return { find: true, tbl: this.fState.fAttributeEvents};
 		return { find: false };
     }
-
     //---------------------------------------------------------------
     private msg2msgsArray (list: Array<any>):  IMessageList {
     	let out : IMessageList = []
     	for (var i=0; i < list.length; i++) {
  	    	let m = <TRawMessage>list[i];
-//	    	let address = m.address;
-//	    	let params = m.params;
 	    	out.push (new IMessage (m.address.toString(), m.params));
   		}
 		return out;
@@ -266,7 +323,7 @@ class IEventAble {
 	    if (a.find)						// look for a string indexed table
 	    	a.tbl[event] = [];			// clear the corresponding entry
 	    else {
-	    	let t = this.event2TimeArray (event);
+	    	let t = this.fState.event2TimeArray (event);
 	    	if (t.find)					// look for a time table
 		    	t.tbl.clear();			// clear the corresponding table
 		    else return eMsgStatus.kBadParameters; 
@@ -308,7 +365,7 @@ class IEventAble {
     // param event: the event name, decoded by watch
     //---------------------------------------------------------------
     private timewatch (event: string, msg:IMessage): eMsgStatus {
-	    let a = this.event2TimeArray (event);
+	    let a = this.fState.event2TimeArray (event);
 	    let i = this.params2intervals (msg);
 	    if (a.find && i.argi) {
 	    	let arg = msg.paramArray (i.argi);

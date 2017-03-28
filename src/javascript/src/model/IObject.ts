@@ -111,6 +111,8 @@ abstract class IObject implements Tree<IObject> {
     eventAble(): void {
         this.fMsgHandlerMap[kwatch_GetSetMethod] 	= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.fEvents.watch (msg); } );
         this.fMsgHandlerMap[kevent_SetMethod] 		= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.fEvents.event (msg); } );
+        this.fMsgHandlerMap[kpush_SetMethod] 		= new TMsgHandlerVoid( (): void => { this.fEvents.push (); } );
+        this.fMsgHandlerMap[kpop_SetMethod] 		= new TMsgHandlerVoid( (): void => { this.fEvents.pop (); } );
 
         this.fGetMsgsHandlerMap[kwatch_GetSetMethod] = new TGetMsgsHandler( (): IMessageList => { let osc= this.getOSCAddress(); return this.fEvents.getWatch(osc); } );
     }
