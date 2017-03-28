@@ -122,6 +122,7 @@ class InteractionState {
     getTimeLeave (d: Fraction): TTimeEventValue 		{ return this.fTimeLeaveEvents.contains(d.toNum()); }
     getDurEnter (d: Fraction): TTimeEventValue 			{ return this.fDurEnterEvents.contains(d.toNum()); }
     getDurLeave (d: Fraction): TTimeEventValue 			{ return this.fDurLeaveEvents.contains(d.toNum()); }
+    getMouseMsgs (type: string): IMessageList 			{  return this.fInternalEvents[type]; }
 	
    //---------------------------------------------------------------
     clear (): void {
@@ -246,6 +247,13 @@ class IEventAble {
 			t = this.fState.getDurLeave (d1);
 			if (t.find)  this.checkTimeEvent(t.event, d2.toNum())
 		}
+	}
+	
+	private event2evStr (ev: eUIEvents) : string { return IEventAble.fUIEvents [Math.floor(ev/2)]; }
+	handleMouseEvent (type: eUIEvents) : void {
+		let str = this.event2evStr (type);
+    	let msgs = this.fState.getMouseMsgs (str);
+    	if (msgs && msgs.length)  this.send ( msgs );
 	}
 	
    //---------------------------------------------------------------

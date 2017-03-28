@@ -227,7 +227,7 @@ abstract class IObject implements Tree<IObject> {
     }
     
 //--------------------------------------------------------------  
-// Special position handlers
+// Special handlers
 //--------------------------------------------------------------  
 // size change requires the modification state to be 
 // recursively propagated to all subnodes
@@ -246,6 +246,12 @@ abstract class IObject implements Tree<IObject> {
 	setDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.setDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
 	addDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.addDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
 	durclock() : void				{ let previous = this.fDate.getDuration(); this.fDate.durclock(); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }   
+
+//-------------------------------------------------------------- 
+// UI events management
+//--------------------------------------------------------------  
+	hasUIEvents (): number 						{ return this.fEvents.hasUIEvents(); }
+	handleMouseEvent (type: eUIEvents) : void	{ this.fEvents.handleMouseEvent (type); }
     
 // METHODS
 //--------------------------------------------------------------  
