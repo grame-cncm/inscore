@@ -29,7 +29,8 @@ class VHtmlView extends VObjectView {
 		this.updateColor(obj);
 		this.updatePenControl(obj);
 		this.updateEffects(obj);
-		//	this.eventManager(obj, "mouseenter");
+		//test
+		this.eventManager(obj, "mouseenter");
 	}
 
 	//------------------------------------------------------------------------------------
@@ -216,16 +217,16 @@ class VHtmlView extends VObjectView {
 
 	//---------------Events-----------------------
 	// Manage and set or delete event listener
-	eventManager(obj: IObject, eventName: string) {
+	eventManager(obj: IObject, eventName: string) : void{
 		// Create Event on Object
-		this.getHtml().addEventListener(eventName, () => {
-			this.eventAction(event);
+		this.getHtml().addEventListener(eventName, (event) => {
+			this.eventAction(event || window.event);
 		});
 	}
 
 	// send datas to model
 	eventAction(ev: any): void {
-		ev = event || window.event;
+		ev = ev || window.event;
 
 		// get position's datas
 		let pageCoord = this.getPxCoord(ev);
@@ -233,11 +234,11 @@ class VHtmlView extends VObjectView {
 		let sceneCoord = this.getSceneRelativeCoord(ev);
 
 		this.fPoss = [pageCoord, parentCoord, sceneCoord];
-		this.sendPositions();
+		this.sendPositions(this.fPoss);
 	}
 
 	//get event coordinate in px
-	getPxCoord(ev): Array<number> {
+	getPxCoord(ev : any): Array<number> {
 		// get event position
 		let x = ev.pageX;
 		let y = ev.pageY;
@@ -245,28 +246,46 @@ class VHtmlView extends VObjectView {
 	}
 
 	// get relative to object event position
-	getParentRelativeCoord(ev): Array<number> {
+	getParentRelativeCoord(ev :any): Array<number> {
 		let target = ev.target || ev.srcElement;
 		// value in px
-		let xp = ev.pageX - (target.offsetLeft + target.parentElement.offsetLeft);
-		let yp = ev.pageY - (target.offsetTop + target.parentElement.offsetTop);
+		let parentOffset = this.getParentsOffset(target, [target.offsetLeft, target.offsetTop])[1];
+		let xp = ev.pageX - parentOffset[0];
+		let yp = ev.pageY - parentOffset[1];
+
 		// value : [-1,1]
-		if (this.getHtml().className != "inscore-scene") {
-			xp = xp / (this.getHtml().clientWidth / 2);
-			yp = yp / (this.getHtml().clientHeight / 2);
-		} else {
+		if (target.className != "inscore-scene"){
+			xp = xp / (target.clientWidth / 2);
+			yp = yp / (target.clientHeight / 2);
+		}else {
 			xp = xp / (target.clientWidth / 2) - 1;
 			yp = yp / (target.clientHeight / 2) - 1;
 		}
 		return [xp, yp];
 	}
 
+		// get parent's offset
+	getParentsOffset(elt: HTMLElement, xy : Array<number>):[HTMLElement, Array<number>] {
+		let parent = elt.parentElement;
+		if (parent){
+			if (elt.className != "inscore-scene" && parent.className != "inscore-scene"){
+				xy[0] += (parent.offsetLeft - (parent.clientWidth + 1)/2);
+				xy[1] += (parent.offsetTop - (parent.clientHeight + 1)/2);
+				return this.getParentsOffset(parent, xy);
+			}else {
+				xy[0] += (parent.offsetLeft);
+				xy[1] += (parent.offsetTop);
+				return [elt, xy];
+			}
+		} return [elt, xy];
+	}
+
 	// get relative to scene event position
-	getSceneRelativeCoord(ev): Array<number> {
+	getSceneRelativeCoord(ev : any): Array<number> {
 		let scene = this.getScene(this.getHtml());
 		// value in px
 		let xs = ev.pageX - (scene.offsetLeft + scene.parentElement.offsetLeft);
-		let ys = ev.pageY - (scene.offsetTop + scene.parentElement.offsetTop);
+		let ys = ev.pageY - (scene.offsetTop  + scene.parentElement.offsetTop);
 		// value : [-1,1]
 		xs = xs / (scene.clientWidth / 2) - 1;
 		ys = ys / (scene.clientHeight / 2) - 1;
@@ -284,7 +303,7 @@ class VHtmlView extends VObjectView {
 		this.getHtml().removeEventListener(event, this.eventAction);
 	}
 
-	sendPositions(): void {
-		//	console.log("VHtmlView sendPositions pos : " + this.fPoss);
+	sendPositions(poss : Array<Array<number>>): void {
+	//	console.log("VHtmlView sendPositions poss : " + this.fPoss[1]);
 	}
 }
