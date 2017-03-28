@@ -190,12 +190,12 @@ abstract class IObject implements Tree<IObject> {
     }
     
     timeAble() {
-        this.fMsgHandlerMap[kdate_GetSetMethod] 	= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.setDate(d); });
-        this.fMsgHandlerMap[kduration_GetSetMethod]	= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.setDuration(d); });
-        this.fMsgHandlerMap[kddate_SetMethod] 		= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.addDate(d); });
-        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime( (d: Fraction): void => { this.fDate.addDuration(d); });        
-        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid( (): void => { this.fDate.clock(); });
-        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid( (): void => { this.fDate.durclock(); });
+        this.fMsgHandlerMap[kdate_GetSetMethod] 	= new TMsgHandlerTime( (d: Fraction): void => { this.setDate(d); });
+        this.fMsgHandlerMap[kduration_GetSetMethod]	= new TMsgHandlerTime( (d: Fraction): void => { this.setDuration(d); });
+        this.fMsgHandlerMap[kddate_SetMethod] 		= new TMsgHandlerTime( (d: Fraction): void => { this.addDate(d); });
+        this.fMsgHandlerMap[kdduration_SetMethod] 	= new TMsgHandlerTime( (d: Fraction): void => { this.addDuration(d); });        
+        this.fMsgHandlerMap[kclock_SetMethod] 		= new TMsgHandlerVoid( (): void => { this.clock(); });
+        this.fMsgHandlerMap[kdurClock_SetMethod] 	= new TMsgHandlerVoid( (): void => { this.durclock(); });
         this.fMsgHandlerMap[ktempo_GetSetMethod] 	= new TMsgHandlerNum ( (n: number): void => { this.fDate.setTempo(n); });
         this.fMsgHandlerMap[kdtempo_SetMethod] 	    = new TMsgHandlerNum ( (n: number): void => { this.fDate.addTempo(n); });
 
@@ -228,6 +228,7 @@ abstract class IObject implements Tree<IObject> {
     
 //--------------------------------------------------------------  
 // Special position handlers
+//--------------------------------------------------------------  
 // size change requires the modification state to be 
 // recursively propagated to all subnodes
 //--------------------------------------------------------------  
@@ -236,7 +237,15 @@ abstract class IObject implements Tree<IObject> {
     setScale (scale:number): void 	{ this.fPosition.setScale( scale); this.posPropagate(); }
 	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
 	posModified() : void 			{ this.fPosition.modify(); this.addState (eObjState.kModified + eObjState.kSubModified); }
-   
+//-------------------------------------------------------------- 
+// decorate date and duration messages to handle time events
+//--------------------------------------------------------------  
+	setDate(d: Fraction) : void 	{ let previous = this.fDate.getDate(); this.fDate.setDate(d); this.fEvents.handleTimeChange(previous, this.fDate.getDate()); }
+	addDate(d: Fraction) : void 	{ let previous = this.fDate.getDate(); this.fDate.addDate(d); this.fEvents.handleTimeChange(previous, this.fDate.getDate());  }
+	clock() : void					{ let previous = this.fDate.getDate(); this.fDate.clock(); this.fEvents.handleTimeChange(previous, this.fDate.getDate()); }
+	setDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.setDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
+	addDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.addDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
+	durclock() : void				{ let previous = this.fDate.getDuration(); this.fDate.durclock(); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }   
     
 // METHODS
 //--------------------------------------------------------------  
@@ -339,12 +348,17 @@ abstract class IObject implements Tree<IObject> {
     getView(): VObjectView 				{ return this.fObjectView }
     
     //-----------------------------
-    execute (msg: IMessage): number {
+    execute (msg: IMessage): eMsgStatus {
     	if (msg.size() == 0) return eMsgStatus.kBadParameters;
     	let method = msg.message();
     	if (method.correct) {
        		let handler = this.messageHandler(method.value);
-        	if (handler) { return handler.handle(msg) }
+        	if (handler) { 
+        		let status = handler.handle(msg);
+        		if (status & (eMsgStatus.kProcessed | eMsgStatus.kProcessedNoChange))
+        			this.fEvents.handleAttributeChange (method.value);
+				return status;
+        	}
 
 	        //handler = this.messageHandler(msg.message(), true);
 	        //if (handler) return ;

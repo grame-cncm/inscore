@@ -9,6 +9,7 @@ interface TAttributesTable 		{ [index: string]: any; }
 interface TRawMessage 			{ address: string; params: Array<any> }
 
 type TStringEventsTable =       { [index: string]: IMessageList };
+type TTimeEventValue 	=       { find: boolean, event?: TTimeEvent };
 
 //-----------------------------------------------------------------------------------
 class TTimeEvent  {
@@ -52,6 +53,12 @@ class TTimeEventsTable {
 		let te = new TTimeEvent (interval, msgs);
 		if (i.find) this.fTable[i.index] = te;
 		else this.fTable.push (te);
+	}
+
+	contains (d: number):  TTimeEventValue {
+		for (var i=0; i < this.fTable.length; i++)
+			if (this.fTable[i].fInterval.includeLocation(d)) return { find: true, event: this.fTable[i] };
+		return { find: false };
 	}
 	
 	toMsgs (addr: string) : IMessageList {
@@ -110,10 +117,11 @@ class InteractionState {
 	}
 	
    //---------------------------------------------------------------
-    size (): number { 
-    	return this.fTimeEnterEvents.size() + this.fTimeLeaveEvents.size() + 
-    		this.fDurEnterEvents.size() + this.fDurLeaveEvents.size();
-	}
+    getAttributeMsgs (attribute: string): IMessageList 	{  return this.fAttributeEvents[attribute]; }
+    getTimeEnter (d: Fraction): TTimeEventValue 		{ return this.fTimeEnterEvents.contains(d.toNum()); }
+    getTimeLeave (d: Fraction): TTimeEventValue 		{ return this.fTimeLeaveEvents.contains(d.toNum()); }
+    getDurEnter (d: Fraction): TTimeEventValue 			{ return this.fDurEnterEvents.contains(d.toNum()); }
+    getDurLeave (d: Fraction): TTimeEventValue 			{ return this.fDurLeaveEvents.contains(d.toNum()); }
 	
    //---------------------------------------------------------------
     clear (): void {
@@ -207,6 +215,43 @@ class IEventAble {
     // give the active UI events as a bit field
     hasUIEvents (): number { return this.fState.hasUIEvents(); }
 
+     //---------------------------------------------------------------
+    // interface for triggering events 
+    //---------------------------------------------------------------
+    handleAttributeChange (attribute: string): void {
+    	let msgs = this.fState.getAttributeMsgs (attribute);
+    	if (msgs && msgs.length)  this.send ( msgs );
+    }
+	
+	checkTimeEvent(ev: TTimeEvent, d: number) : void {
+		if (!ev.fInterval.includeLocation(d)) {
+	    	let msgs = ev.fMsgs;
+    		if (msgs && msgs.length)  this.send ( msgs );
+		}
+	}
+	
+	handleTimeChange(d1: Fraction, d2: Fraction) : void {
+		let t = this.fState.getTimeEnter (d2);
+		if (t.find) this.checkTimeEvent(t.event, d1.toNum());
+		else {
+			t = this.fState.getTimeLeave (d1);
+			if (t.find)  this.checkTimeEvent(t.event, d2.toNum())
+		}
+	}
+	
+	handleDurChange(d1: Fraction, d2: Fraction) : void {
+		let t = this.fState.getDurEnter (d2);
+		if (t.find) this.checkTimeEvent(t.event, d1.toNum());
+		else {
+			t = this.fState.getDurLeave (d1);
+			if (t.find)  this.checkTimeEvent(t.event, d2.toNum())
+		}
+	}
+	
+   //---------------------------------------------------------------
+    // interface for messages handling
+    //---------------------------------------------------------------
+	// WATCH METHOD
     //---------------------------------------------------------------
     watch (msg:IMessage): eMsgStatus {
     	let n = msg.size() - 1;				// first param is 'watch'
@@ -236,7 +281,6 @@ class IEventAble {
     }
 
     //---------------------------------------------------------------
-    //---------------------------------------------------------------
     // internal event msg handling
     private ievent (ev: string, args: Array<any>): eMsgStatus {
 	    let a = this.event2StringArray (ev);			// look for the table containing the event
@@ -251,7 +295,8 @@ class IEventAble {
     }
 
     //---------------------------------------------------------------
-    // event msg handling
+    // EVENT METHOD
+    //---------------------------------------------------------------
     event (msg:IMessage): eMsgStatus {
     	let ui = this.hasUIEvents();
     	if (msg.size() < 2) return eMsgStatus.kBadParameters;
@@ -260,12 +305,12 @@ class IEventAble {
 	    return this.ievent (event.value, msg.params().slice(2));
     }
 
-// GET WATCH METHOD
-//--------------------------------------------------------------    
+	// GET WATCH METHOD
+	//--------------------------------------------------------------    
     getWatch(addr: string): IMessageList	{  return this.fState. getWatch (addr); }
 
-// PUSH & POP METHOD
-//--------------------------------------------------------------    
+	// PUSH & POP METHOD
+	//--------------------------------------------------------------    
     push(): void	{
     	let copy = new InteractionState (this.fState);
     	this.fStatesStack.push (copy);
@@ -275,8 +320,9 @@ class IEventAble {
     		this.fState = this.fStatesStack.pop();
     }
 
-// STATIC METHODS
-//--------------------------------------------------------------    
+	//--------------------------------------------------------------    
+	// STATIC METHODS
+	//--------------------------------------------------------------    
     static find(a: Array<string>, s: string) : boolean { 
     	for (var i=0; i < a.length; i++) if (a[i] === s) return true;
     	return false; 
