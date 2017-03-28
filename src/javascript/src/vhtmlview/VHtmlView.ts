@@ -29,10 +29,50 @@ class VHtmlView extends VObjectView {
 		this.updateColor(obj);
 		this.updatePenControl(obj);
 		this.updateEffects(obj);
+		this.updateEvents(obj);
 		//test
-		this.eventManager(obj, "mouseenter");
+//		this.eventManager(obj, "click");
 	}
 
+	//------------------------------------------------------------------------------------
+	mouseDown (obj: IObject, ev: MouseEvent) : any {
+		obj.handleMouseEvent (eUIEvents.kMouseDown);
+/*
+		let div = this.getHtml();
+		let x = ev.pageX - div.offsetLeft;
+		let y = ev.pageY - div.offsetTop;
+		ev.stopPropagation();
+		console.log ("mouseDown on " + obj.getName() + " " + x + " " + y);
+*/
+	}
+
+	removeAll(div: HTMLElement) : void {
+		div.onmousedown = null; 
+		div.onmouseup = null; 
+		div.onmouseenter = null; 
+		div.onmouseleave = null; 
+		div.ondblclick = null; 
+	}
+	
+	updateEvents(obj: IObject) : void {
+		let evs = obj.hasUIEvents();
+		let div = this.getHtml();
+		if (evs) {
+			if (evs & eUIEvents.kMouseDown) { 
+				div.onmousedown = (ev: MouseEvent): any => { return this.mouseDown(obj, ev); }; 
+			}
+			else {
+//				div.removeEventListener("mousedown", div.onmousedown);
+				div.onmousedown = null; 
+			}
+			if (evs & eUIEvents.kMouseMove) { }
+			if (evs & eUIEvents.kMmouseUp) { }
+			if (evs & eUIEvents.kMouseEnter) { }
+			if (evs & eUIEvents.kMouseLeave) { }
+		}
+		else this.removeAll (div); 
+	}
+	
 	//------------------------------------------------------------------------------------
 	// update color
 	// target of color style depend on the html element implementation 
@@ -217,18 +257,17 @@ class VHtmlView extends VObjectView {
 
 	//---------------Events-----------------------
 	// Manage and set or delete event listener
-	eventManager(obj: IObject, eventName: string) : void{
+	eventManager (obj: IObject, eventName: string) : void {
 		// Create Event on Object
-		this.getHtml().addEventListener(eventName, (event) => {
-			this.eventAction(event || window.event);
-		});
+		this.getHtml().addEventListener(eventName, (event) => { this.eventAction(event || window.event);}, true);
 	}
 
 	// send datas to model
 	eventAction(ev: any): void {
+console.log ("eventAction: " + ev);
 		ev = ev || window.event;
 
-		// get position's datas
+		// get position datas
 		let pageCoord = this.getPxCoord(ev);
 		let parentCoord = this.getParentRelativeCoord(ev);
 		let sceneCoord = this.getSceneRelativeCoord(ev);
