@@ -13,6 +13,7 @@
 );
 
 /ITL/scene/o watch TOTO (
+	/ITL/scene/o push,
 	/ITL/scene/o color 250 0 0,
 	/ITL/scene/o scale 1,
 	/ITL/scene/o dangle 45,
@@ -21,7 +22,8 @@
 		/ITL/scene/o dangle 45,
 		/ITL/scene/* watch TOTO (
 			/ITL/scene/o scale 0.7,
-			/ITL/scene/o dangle 45
+			/ITL/scene/o dangle 45,
+			/ITL/scene/o pop
 		) 
 	) 
 );
@@ -33,3 +35,5 @@ __END__
 /ITL/scene/* event date;
 /ITL/scene/* event mouseDown;
 /ITL/scene/* watch ;
+/ITL/scene/* push ;
+/ITL/scene/* pop ;
