@@ -3,6 +3,7 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../externals/fraction.ts"/>
+///<reference path="../inscore-interface.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/OSCRegexp.ts"/>
 ///<reference path="../lib/Tools.ts"/>
@@ -29,7 +30,7 @@ interface Tree<T>				{ getSubNodes() : Array<Tree<T> >; }
 interface TApplyFunction<T> 	{ (arg: T) : void; }
 interface TreeApply<T>			{ apply (f: TApplyFunction<T>, t: Tree<T>) : void; } 
 interface IObjectTreeApply extends TreeApply<IObject> {}
-
+interface IAppl					{ fRealRate: number; };
 
 abstract class IObject implements Tree<IObject> {
     
@@ -559,7 +560,12 @@ abstract class IObject implements Tree<IObject> {
 		this.setState(eObjState.kClean);
         this.fBrushStyle.cleanup();
         this.fEffect.cleanup();
+		if (this.fDate.getTempo()) this.move();
     }
+
+	//-----------------------------    
+	move(): void {  INScore.postMessage (this.getOSCAddress(), [kddate_SetMethod, IAppl.fRealRate * this.fDate.getTempo(), 60000 * 4]); }
+
 
 	//-----------------------------    
 	static timeTaskCleanup(obj: IObject) : void { 
