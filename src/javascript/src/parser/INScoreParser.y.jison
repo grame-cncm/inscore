@@ -21,6 +21,14 @@
 		if (!str.length) return;
 		INScoreParser.parse (str);
 	}
+	function getvar(v){
+		let vars = parser.vars;
+		let out  = "";
+		for (let key in vars)
+			if (key === v) return vars[key];
+		console.log("Warning! variable $" + v + " is undefined");
+		return "$"+v;
+	}
 	function context_vars(){
 		let vars = parser.vars;
 		let out  = "";
@@ -89,8 +97,8 @@ messagelistseparator	: COMMA
 //_______________________________________________
 // address specification (extends osc spec.)
 //_______________________________________________
-address		: OSCADDRESS			{ $$ = new Address("", 0, $1); debugyacc("OSCADDRESS: -"+$1+"-"); }
-			| relativeaddress		{ $$ = new Address("", 0, $1);}
+address		: OSCADDRESS			{ $$ = new Address("", 0, $1); }
+			| relativeaddress		{ $$ = new Address("", 0, $1); }
 			| urlprefix OSCADDRESS	{ $1.osc = $2; $$ = $1; }
 			;
 
@@ -113,13 +121,13 @@ identifier	: IDENTIFIER			{ $$ = $1; }
 // parameters definitions
 // eval need a special case since messages are expected as argument
 //_______________________________________________
-params		: param					{ $$ = new Array(); $$.push($1); }
-			| variable				{ $$ = $1; }
+params		: param					{ $$ = [$1]; }
+			| variable				{ $$ = [$1]; }
 			| params variable		{ $$ = $1.concat($2); }
 			| params param			{ $1.push($2); $$ = $1; }
 			;
 
-variable	: VARSTART varname					{ $$ = parser.vars[$2]; }
+variable	: VARSTART varname					{ $$ = getvar($2); }
 			| VARSTART LEFTPAR message RIGHTPAR { $$ = new Array($3); }
 			;
 

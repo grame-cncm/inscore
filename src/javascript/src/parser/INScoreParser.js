@@ -107,17 +107,14 @@ break;
 case 11:
  $$[$0].unshift($$[$0-1]); this.$ = new Message($$[$0-2], $$[$0]); 
 break;
-case 12: case 26:
+case 12:
  this.$ = new Array(); this.$.push($$[$0]); 
 break;
 case 13:
  $$[$0-2].push($$[$0]); this.$ = $$[$0-2]; 
 break;
-case 16:
- this.$ = new Address("", 0, $$[$0]); debugyacc("OSCADDRESS: -"+$$[$0]+"-"); 
-break;
-case 17:
- this.$ = new Address("", 0, $$[$0]);
+case 16: case 17:
+ this.$ = new Address("", 0, $$[$0]); 
 break;
 case 18:
  $$[$0-1].osc = $$[$0]; this.$ = $$[$0-1]; 
@@ -128,8 +125,11 @@ break;
 case 20: case 21:
  this.$ = new Address($$[$0-2], parseInt($$[$0]), ""); 
 break;
-case 22: case 23: case 24: case 25: case 27: case 35: case 36: case 37: case 38: case 40: case 42:
+case 22: case 23: case 24: case 25: case 35: case 36: case 37: case 38: case 40: case 42:
  this.$ = $$[$0]; 
+break;
+case 26: case 27:
+ this.$ = [$$[$0]]; 
 break;
 case 28:
  this.$ = $$[$0-1].concat($$[$0]); 
@@ -138,7 +138,7 @@ case 29:
  $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
 break;
 case 30:
- this.$ = parser.vars[$$[$0]]; 
+ this.$ = getvar($$[$0]); 
 break;
 case 31:
  this.$ = new Array($$[$0-1]); 
@@ -328,6 +328,14 @@ parse: function parse(input) {
 	function rparse(str){
 		if (!str.length) return;
 		INScoreParser.parse (str);
+	}
+	function getvar(v){
+		let vars = parser.vars;
+		let out  = "";
+		for (let key in vars)
+			if (key === v) return vars[key];
+		console.log("Warning! variable $" + v + " is undefined");
+		return "$"+v;
 	}
 	function context_vars(){
 		let vars = parser.vars;
