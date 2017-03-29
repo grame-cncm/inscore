@@ -23,7 +23,7 @@ enum eEffect 		{ kNone, kBlur, kColorize,kShadow, }
 enum eUIEvents { 
     kMouseDown = 1,
 	kMouseMove = 2,
-	kMmouseUp  = 4,
+	kMouseUp  = 4,
 	kMouseEnter= 8,
 	kMouseLeave= 16,
 	kDoubleClick= 32,
