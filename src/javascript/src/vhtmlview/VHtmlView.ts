@@ -8,12 +8,14 @@ class VHtmlView extends VObjectView {
 
 	fTop: number; fLeft: number;
 	fWidth: number; fHeight: number;
+	fTranslateX: number; fTranslateY: number
 
 	constructor(elt: HTMLElement, parent?: VHtmlView) {
 		super();
 		this.fParent = parent;
 		this.setPos(0, 0, 100, 100);
 		this.fHtmlElt = elt;
+		this.fTranslateX = this.fTranslateY = 0;
 		if (parent) parent.getHtml().appendChild(elt);
 		this.setDefaultPositionStyle();
 		this.fPoss = [];
@@ -33,17 +35,18 @@ class VHtmlView extends VObjectView {
 		//test
 //		this.eventManager(obj, "click");
 	}
-
+	
 	//------------------------------------------------------------------------------------
-	mouseDown (obj: IObject, ev: MouseEvent) : any {
-		obj.handleMouseEvent (eUIEvents.kMouseDown);
-/*
+	mouseEvent (obj: IObject, type: eUIEvents, ev: MouseEvent) : any {
+//		obj.handleMouseEvent (eUIEvents.kMouseDown);
+
 		let div = this.getHtml();
-		let x = ev.pageX - div.offsetLeft;
-		let y = ev.pageY - div.offsetTop;
+		let r = div.getBoundingClientRect();
+		let x = ev.pageX - r.left;
+		let y = ev.pageY - r.top;
 		ev.stopPropagation();
-		console.log ("mouseDown on " + obj.getName() + " " + x + " " + y);
-*/
+		console.log ("mouseEvent on " + obj.getName() + " " + x + " " + y + " w/h: " + this.fWidth + " " + this.fHeight);
+		console.log ("mouseEvent on type: " + type);
 	}
 
 	removeAll(div: HTMLElement) : void {
@@ -59,14 +62,18 @@ class VHtmlView extends VObjectView {
 		let div = this.getHtml();
 		if (evs) {
 			if (evs & eUIEvents.kMouseDown) { 
-				div.onmousedown = (ev: MouseEvent): any => { return this.mouseDown(obj, ev); }; 
+				div.onmousedown = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseDown, ev); }; 
 			}
-			else {
-//				div.removeEventListener("mousedown", div.onmousedown);
-				div.onmousedown = null; 
+			else { div.onmousedown = null; }
+			if (evs & eUIEvents.kMouseMove) { 
+				div.onmousemove = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseMove, ev); }; 
 			}
-			if (evs & eUIEvents.kMouseMove) { }
-			if (evs & eUIEvents.kMmouseUp) { }
+			else { div.onmousemove = null; }
+			if (evs & eUIEvents.kMouseUp) { 
+				div.onmouseup = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseUp, ev); }; 
+			}
+			else { div.onmouseup = null; }
+
 			if (evs & eUIEvents.kMouseEnter) { }
 			if (evs & eUIEvents.kMouseLeave) { }
 		}
@@ -153,9 +160,9 @@ class VHtmlView extends VObjectView {
 		let scale = obj.fPosition.getScale();
 		let xo = obj.fPosition.getXOrigin() * scale;
 		let yo = obj.fPosition.getYOrigin() * scale;
-		let tx = -this.fWidth * (1 + xo) / 2.0;
-		let ty = -this.fHeight * (1 + yo) / 2.0;
-		return (tx || ty) ? `translate(${tx}px,${ty}px) ` : " ";
+		this.fTranslateX = -this.fWidth * (1 + xo) / 2.0;
+		this.fTranslateY = -this.fHeight * (1 + yo) / 2.0;
+		return (this.fTranslateX || this.fTranslateY) ? `translate(${this.fTranslateX}px,${this.fTranslateY}px) ` : " ";
 	}
 
 
