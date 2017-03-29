@@ -9,6 +9,8 @@
 interface TTimerTask  	{ (): void; }
 
 class IGlue { 
+	private   fCurrentTime: number;
+
 	protected fAppl: IAppl;
 	protected fTimer: number;		// this is to catch multiple defs in nodes and in browser contexts
 	private   fStack: Array<IMessage>;
@@ -18,6 +20,7 @@ class IGlue {
     	this.fAppl = new IAppl();
 		this.fStack = new Array<IMessage>();
 		this.fModelUpdater = new ModelUpdater(this.fAppl);
+		this.fCurrentTime = 0;
     }
 
 	getStack(): Array<IMessage> 	{ return this.fStack; }
@@ -45,6 +48,11 @@ class IGlue {
     getRoot(): IAppl { return this.fAppl; }
 
 	timetask() : void {
+		let d= new Date();
+		let now = d.getTime();
+		if (this.fCurrentTime)
+			IAppl.fRealRate = now - this.fCurrentTime;
+		this.fCurrentTime = now;
 		let stack = this.fStack;
 		this.fStack = [];
 		this.fModelUpdater.update (stack);
