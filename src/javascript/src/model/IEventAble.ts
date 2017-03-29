@@ -249,7 +249,20 @@ class IEventAble {
 		}
 	}
 	
-	private event2evStr (ev: eUIEvents) : string { return IEventAble.fUIEvents [Math.floor(ev/2)]; }
+	private event2evStr (ev: eUIEvents) : string { 
+		switch (ev) {
+			case eUIEvents.kMouseDown: 		return IEventAble.fUIEvents[0];
+			case eUIEvents.kMouseMove: 		return IEventAble.fUIEvents[1];
+			case eUIEvents.kMouseUp: 		return IEventAble.fUIEvents[2];
+			case eUIEvents.kMouseEnter: 	return IEventAble.fUIEvents[3];
+			case eUIEvents.kMouseLeave: 	return IEventAble.fUIEvents[4];
+			case eUIEvents.kDoubleClick: 	return IEventAble.fUIEvents[5];
+			case eUIEvents.kTouchBegin: 	return IEventAble.fUIEvents[6];
+			case eUIEvents.kTouchEnd: 		return IEventAble.fUIEvents[7];
+			case eUIEvents.kTouchUpdate: 	return IEventAble.fUIEvents[8];
+		}
+		return ""; 
+	}
 	handleMouseEvent (type: eUIEvents) : void {
 		let str = this.event2evStr (type);
     	let msgs = this.fState.getMouseMsgs (str);
