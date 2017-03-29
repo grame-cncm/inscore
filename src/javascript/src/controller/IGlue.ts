@@ -5,6 +5,7 @@
 ///<reference path="../events/documentEvents.ts"/>
 ///<reference path="../view/ViewUpdater.ts"/>
 ///<reference path="../model/ModelUpdater.ts"/>
+///<reference path="../globals.ts"/>
 
 interface TTimerTask  	{ (): void; }
 
@@ -51,7 +52,7 @@ class IGlue {
 		let d= new Date();
 		let now = d.getTime();
 		if (this.fCurrentTime)
-			IAppl.fRealRate = now - this.fCurrentTime;
+			gINScoreRealRate = now - this.fCurrentTime;
 		this.fCurrentTime = now;
 		let stack = this.fStack;
 		this.fStack = [];

@@ -22,3 +22,5 @@ const kApplType             : string	= "IAppl";
 
 // inscore type for inscore scripts
 const kInscoreFile  : string	= "inscore";
+
+var kDefaultRate:			 number = 50;	// the default inscore time task rate in ms
