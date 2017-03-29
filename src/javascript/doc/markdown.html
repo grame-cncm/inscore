@@ -17,6 +17,7 @@ This document describes the current state of the development as well as the spec
 - [Differences](#differences)
 - [Not yet supported](#notyet)
 	- [Common messages](#notyetcommon)
+  - [Objects](#notyetobj)
 	- [Specific messages](#notyetspec)
 - [Unsupported](#unsupported)
 - [Supported browsers](#browsers)
@@ -47,201 +48,61 @@ This document describes the current state of the development as well as the spec
 But on div, ther is only solid, dash and dot, other value make penStroke solid, and dot or dash size are based on the div size.
 So, a small object don't have the same dot than a big one in div.
 
+* Mouse move event function differently. Needs mouse down in the object before et mouse up in the object to finish.
+ In case of move out of target objet : 
+   - if mouse keep down, or mouse enter after mouse down : same action than application.
+   - if mouse up out of the object : stop the action but do nothing for mouse up.
+
 
 <h2 id="notyet">Not yet supported</h2>
 
 -----------------------
 
-[ ] _Unrecognize message_  
-[x] _No error but nothing happened_
-
 <h3 id="notyetcommon">Common messages</h3>
 
 -----------------------
 
-  * Application Management
-    * [ ] quit
-    * [ ] rootPath
-    * [ ] preprocess
-    * [ ] mouse
-    * [ ] defaultShow
-    * [ ] load
-    * [ ] read
-    * [ ] require
-    * [ ] compatibility
-    * [ ] time
-    * [ ] ticks
-    * [ ] rate
-    * [ ] hello
+  - Application Management : quit, rootPath, preprocess, mouse, defaultShow, load, read, require, compatibility, time, ticks, rate, hello
+  - Common Message : lock, export, export all, save, fullscreen
+  - Forward : forward
+  - Miscellaneaous : layer, grid 
+  - Miscellaneaous Messages : eval, watch, push, pop, map
+  - Node Debug : map, name
+  - Port Management : port, outport, errorport
+  - Scene Control : reset, foreground, rootPath, preprocess, load, fullscreen, frameless, absolutexy, windowOpacity
 
-  
-  * Common Message
-    * [ ] lock
-    * [ ] export
-    * [ ] export all
-    * [x] save - works but error are generated
-    * [x] fullscreen
 
-  
-  * Date & Duration ?
-    * [x] clock
-    * [x] durClock
-    * [x] date
-    * [x] duration
-    * [x] ddate
-    * [x] dduration
-    * [x] tempo
-    * [x] dtempo
+<h3 id="notyetobj">Objects</h3>
 
-  
-  * Forward
-    * forward - Parser error
+-----------------------
 
-  
-  * Miscellaneaous
-	  * [x] layer - create failed
-	  * [x] grid - create failed
-
-  
-  * Miscellaneaous Messages
-    * [ ] eval
-    * [ ] watch
-    * [ ] push
-    * [ ] pop
-    * [ ] map
-
-  
-  * Node Debug
-	  * [ ] map
-	  * [ ] name
-
-  
-  * Pianoroll
-	  * [ ] pianorollf
-	  * [ ] pianorollstream
-    * [ ] pianoroll expr
-
-  
-  * Port Management
-    * [ ] port
-    * [ ] outport
-    * [ ] errorport
-  
-  * Scene Control
-    * [x] new ?
-    * [ ] reset
-    * [ ] foreground
-    * [ ] rootPath
-    * [ ] preprocess
-    * [ ] load
-    * [x] fullscreen
-    * [ ] frameless
-    * [ ] absolutexy
-    * [ ] windowOpacity
-
-  
-  * Signals ?
-	  * graph
-	  * fastgraph
-	  * faust
-	  * faustdsp
-	  * faustdspf
-
-  
-  * SVG
-	  * [ ] svgf
-
-  
-  * Symbolic Music Notation
-    * [ ] gmnstream
-    * [ ] gmnf
-    * [ ] gmn expr
-    * [ ] musicxmlf
-    * [ ] musicxml
-
-  
-  * Symbolic Score
-    * [ ] page
-    * [ ] dpage
-    * [ ] pageFormat
-    * [ ] columns
-    * [ ] rows
-    * [x] get pageCount
-    * [x] get systemCount
-
-  
-  * Text
-	  * [ ] txtf
-	  * [ ] htmlf
-
-  
-  * Web Objects ?
-	  * websocket
-	  * httpd
+  - Pianoroll : pianorollf, pianorollstream, pianoroll expr
+  - Signals : graph, fastgraph, faust, faustdsp, faustdspf
+  - SVG : svgf
+  - Symbolic Music Notation : gmnstream, gmnf, gmn expr, musicxmlf, musicxml
+  - Symbolic Score : page, dpage, pageFormat, columns, rows, get pageCount, get systemCount
+  - Text : txtf, htmlf
+  - Web Objects : websocket, httpd
 
   
 <h3 id="notyetspec">Specific messages</h3>
 
 -----------------------
 
-  
-  * gmnstream and pianorollstream
-    * [ ] write
-    * [ ] clear
-
-  
-  * grid - create failed
-    * [ ] columns
-    * [ ] rows
-    * [ ] xborder
-    * [ ] yborder
-    * [ ] order leftright
-    * [ ] order topbottom
-
-  
-  * line
-    * [ ] arrows none
-    * [ ] arrows triangle
-    * [ ] arrows diamond
-    * [ ] arrows disk
-
-  
-  * svg
-    * [ ] animate
-    * [x] get animate
-
-  
-  * Pianoroll
-    * [ ] keyboard
-    * [ ] autoVoicesColorations
-    * [ ] mesureBar
-    * [ ] voiceColor
-    * [ ] pitchLines
-    * [ ] clipTime
-    * [ ] clipPitch
-
-  
-  * txt and html
-	  * [ ] write
-
-  
-  * video
-    * [ ] play
-    * [ ] volume
-    * [ ] rate
-    * [ ] vdate
-    * [ ] mls
-    * [ ] vduration
+  - gmnstream and pianorollstream : write, clear
+  - grid : columns, rows, xborder, yborder, order leftright, order topbottom
+  - line : arrows none, arrows triangle, arrows diamond, arrows disk
+  - svg : animate, get animate
+  - Pianoroll : keyboard, autoVoicesColorations, mesureBar, voiceColor, pitchLines, clipTime, clipPitch
+  - txt and html : write
+  - video : play, volume, rate, vdate, mls, vduration
 
   
 <h2 id="unsupported">Unsupported</h2>
 
 ----------------------------
 
-  
-  * Media
-    * menning
-
+  - Media : menning
   
 
 <h2 id="browsers">Supported browsers</h2>
