@@ -10,13 +10,16 @@ class IAppl extends IObject {
 	protected kApplType: string;
 	protected fReceivedMsgs: number;
 	protected fRate: number;
+	protected fCurrentTime: number;
+	
+	static fRealRate: number = 50;		// the current time task real rate in ms
 
 	constructor() {
 		super('ITL');
 		this.kApplType = kApplType;
 		this.fTypeString = kApplType;
 		this.fReceivedMsgs = 0;
-		this.fRate = 100;
+		this.fRate = 50;
 	}
 
 	createStaticNodes(): void {
