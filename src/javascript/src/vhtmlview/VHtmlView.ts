@@ -32,8 +32,6 @@ class VHtmlView extends VObjectView {
 		this.updatePenControl(obj);
 		this.updateEffects(obj);
 		this.updateEvents(obj);
-		//test
-//		this.eventManager(obj, "click");
 	}
 	
 	//------------------------------------------------------------------------------------
@@ -45,8 +43,39 @@ class VHtmlView extends VObjectView {
 		let x = ev.pageX - (r.left + window.scrollX);
 		let y = ev.pageY - (r.top + window.scrollY);
 		ev.stopPropagation();
+		let parent = this.getRelativeParent(x,y);
+		let scene = this.getSceneRelativeCoord(ev);
 		console.log ("mouseEvent on " + obj.getName() + " " + x + " " + y + " w/h: " + this.fWidth + " " + this.fHeight);
 		console.log ("mouseEvent on type: " + type);
+		// get relative parent
+		console.log ("mouseEvent relative to parent xy : " + parent.xp + ", " + parent.yp);
+		console.log ("mouseEvent relative to scene xy : " + scene.xs + ", " + scene.ys);
+	}
+
+	getRelativeParent(x: number, y: number): {xp: number, yp: number}{
+		let xp = x/(this.fWidth/2)-1;
+		let yp = y/(this.fHeight/2)-1;
+		return {xp, yp};
+	}
+
+		// get relative to scene event position
+	getSceneRelativeCoord(ev : MouseEvent): {xs: number, ys: number} {
+		let scene = this.getScene(this.getHtml());
+		let sceneBox = scene.getBoundingClientRect();
+	
+		// value in px
+		let xs = ev.pageX - sceneBox.left;
+		let ys = ev.pageY - sceneBox.top;
+		// value : [-1,1]
+		xs = xs / (sceneBox.width / 2) - 1;
+		ys = ys / (sceneBox.height / 2) - 1;
+
+		return {xs, ys};
+	}
+
+	getScene(elt: HTMLElement): HTMLElement {
+		if (elt.className != "inscore-scene") return this.getScene(elt.parentElement);
+		else return elt;
 	}
 
 	removeAll(div: HTMLElement) : void {
@@ -270,7 +299,7 @@ class VHtmlView extends VObjectView {
 	// initialize an object view (do nothing at IObject level)
 	initialize(obj: IObject): void { }
 
-
+/*
 	//---------------Events-----------------------
 	// Manage and set or delete event listener
 	eventManager (obj: IObject, eventName: string) : void {
@@ -360,5 +389,6 @@ console.log ("eventAction: " + ev);
 
 	sendPositions(poss : Array<Array<number>>): void {
 	//	console.log("VHtmlView sendPositions poss : " + this.fPoss[1]);
-	}
+}
+*/
 }
