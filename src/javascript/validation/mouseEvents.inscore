@@ -1,0 +1,35 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/o1 set ellipse 0.2 0.2;
+/ITL/scene/o1 x 0.2;
+/ITL/scene/r1 set rect 0.5 0.5;
+/ITL/scene/r1 x -0.2;
+/ITL/scene/r1/sr set rect 0.6 0.6;
+/ITL/scene/r1/sr color 250 0 0;
+/ITL/scene/r1/sr/ssr set rect 0.6 0.6;
+/ITL/scene/r1/sr/ssr color 0 0 250;
+
+/ITL/scene/o1 watch mouseDown (
+	/ITL/scene/o1 dblue 25,
+	/ITL/scene/o1 dy -0.1
+);
+
+/ITL/scene/o1 watch mouseUp ( /ITL/scene/o1 dblue 25 );
+/ITL/scene/o1 watch mouseMove ( /ITL/scene/o1 dblue 25 );
+/ITL/scene/r1 watch mouseDown (
+	/ITL/scene/r1 dred 25,
+	/ITL/scene/r1 dy -0.1
+);
+
+/ITL/scene/r1/sr 		watch mouseDown ( /ITL/scene/r1/sr dred -25);
+/ITL/scene/r1/sr/ssr 	watch mouseDown ( /ITL/scene/r1/sr/ssr dblue -25);
+
+/ITL/scene watch mouseDown (
+	/ITL/scene/o color 0 0 250,
+	/ITL/scene/o dy -0.1
+);
+
+__END__
+/ITL/scene/r1 scale 1.5;
+/ITL/scene/r1 scale 1;
