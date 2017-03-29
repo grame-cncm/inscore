@@ -10,6 +10,7 @@
 ///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
+///<reference path="../globals.ts"/>
 
 ///<reference path="Constants.ts"/>
 ///<reference path="IBrushStyle.ts"/>
@@ -30,7 +31,7 @@ interface Tree<T>				{ getSubNodes() : Array<Tree<T> >; }
 interface TApplyFunction<T> 	{ (arg: T) : void; }
 interface TreeApply<T>			{ apply (f: TApplyFunction<T>, t: Tree<T>) : void; } 
 interface IObjectTreeApply extends TreeApply<IObject> {}
-interface IAppl					{ fRealRate: number; };
+
 
 abstract class IObject implements Tree<IObject> {
     
@@ -564,7 +565,7 @@ abstract class IObject implements Tree<IObject> {
     }
 
 	//-----------------------------    
-	move(): void {  INScore.postMessage (this.getOSCAddress(), [kddate_SetMethod, IAppl.fRealRate * this.fDate.getTempo(), 60000 * 4]); }
+	move(): void {  INScore.postMessage (this.getOSCAddress(), [kddate_SetMethod, gINScoreRealRate * this.fDate.getTempo(), 60000 * 4]); }
 
 
 	//-----------------------------    
