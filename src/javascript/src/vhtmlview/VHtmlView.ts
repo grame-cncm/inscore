@@ -42,8 +42,8 @@ class VHtmlView extends VObjectView {
 
 		let div = this.getHtml();
 		let r = div.getBoundingClientRect();
-		let x = ev.pageX - r.left;
-		let y = ev.pageY - r.top;
+		let x = ev.pageX - (r.left + window.scrollX);
+		let y = ev.pageY - (r.top + window.scrollY);
 		ev.stopPropagation();
 		console.log ("mouseEvent on " + obj.getName() + " " + x + " " + y + " w/h: " + this.fWidth + " " + this.fHeight);
 		console.log ("mouseEvent on type: " + type);
@@ -66,16 +66,25 @@ class VHtmlView extends VObjectView {
 			}
 			else { div.onmousedown = null; }
 			if (evs & eUIEvents.kMouseMove) { 
-				div.onmousemove = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseMove, ev); }; 
+				div.onmousedown = (ev: MouseEvent): any => {
+					div.onmousemove = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseMove, ev);}
+					div.onmouseup = (ev: MouseEvent): any => { div.onmousemove = null}
+				}
+			//	div.onmousemove = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseMove, ev); }; 
 			}
 			else { div.onmousemove = null; }
 			if (evs & eUIEvents.kMouseUp) { 
 				div.onmouseup = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseUp, ev); }; 
 			}
 			else { div.onmouseup = null; }
-
-			if (evs & eUIEvents.kMouseEnter) { }
-			if (evs & eUIEvents.kMouseLeave) { }
+			if (evs & eUIEvents.kMouseEnter) {
+				div.onmouseenter = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseEnter, ev); }; 
+			 }
+			else { div.onmouseenter = null; }
+			if (evs & eUIEvents.kMouseLeave) {
+				div.onmouseleave = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseLeave, ev); }; 
+			 }
+			else { div.onmouseleave = null; }
 		}
 		else this.removeAll (div); 
 	}
