@@ -10,20 +10,16 @@
 /ITL/scene/r1/sr/ssr set rect 0.6 0.6;
 /ITL/scene/r1/sr/ssr color 0 0 250;
 
-/ITL/scene/o1 watch mouseDown (
-	/ITL/scene/o1 dblue 25,
-	/ITL/scene/o1 dy -0.1
-);
+/ITL/scene/o1 watch mouseEnter ( /ITL/scene/o1 blue 250 );
+/ITL/scene/o1 watch mouseLeave ( /ITL/scene/o1 blue 0 );
+/ITL/scene/o1 watch mouseMove ( /ITL/scene/o1 dblue -10 );
+/ITL/scene/o1 watch mouseUp ( /ITL/scene/o1 red 0 );
+/ITL/scene/o1 watch mouseDown ( /ITL/scene/o1 red 250 );
 
-/ITL/scene/o1 watch mouseUp ( /ITL/scene/o1 dblue 25 );
-/ITL/scene/o1 watch mouseMove ( /ITL/scene/o1 dblue 25 );
-/ITL/scene/r1 watch mouseDown (
-	/ITL/scene/r1 dred 25,
-	/ITL/scene/r1 dy -0.1
-);
 
-/ITL/scene/r1/sr 		watch mouseDown ( /ITL/scene/r1/sr dred -25);
-/ITL/scene/r1/sr/ssr 	watch mouseDown ( /ITL/scene/r1/sr/ssr dblue -25);
+/ITL/scene/r1 			watch mouseDown ( /ITL/scene/r1 date 0);
+/ITL/scene/r1/sr 		watch mouseDown ( /ITL/scene/r1/sr date 0);
+/ITL/scene/r1/sr/ssr 	watch mouseDown ( /ITL/scene/r1/sr/ssr date 0);
 
 /ITL/scene watch mouseDown (
 	/ITL/scene/o color 0 0 250,
@@ -31,5 +27,6 @@
 );
 
 __END__
+/ITL/scene/o1 get watch;
 /ITL/scene/r1 scale 1.5;
 /ITL/scene/r1 scale 1;
