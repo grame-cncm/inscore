@@ -3,6 +3,8 @@
 ///<reference path="../lib/TEnums.ts"/>
 ///<reference path="../lib/TInterval.ts"/>
 ///<reference path="../controller/IMessage.ts"/>
+///<reference path="../scripting/TEnv.ts"/>
+///<reference path="../scripting/TMessageEvaluator.ts"/>
 ///<reference path="Methods.ts"/>
 
 interface TAttributesTable 		{ [index: string]: any; }
@@ -263,10 +265,11 @@ class IEventAble {
 		}
 		return ""; 
 	}
-	handleMouseEvent (type: eUIEvents) : void {
+	handleMouseEvent (type: eUIEvents, env: TEnv) : void {
 		let str = this.event2evStr (type);
     	let msgs = this.fState.getMouseMsgs (str);
-    	if (msgs && msgs.length)  this.send ( msgs );
+    	if (msgs && msgs.length) 
+			this.evalAndSend ( msgs, env );
 	}
 	
    //---------------------------------------------------------------
@@ -303,12 +306,12 @@ class IEventAble {
 
     //---------------------------------------------------------------
     // internal event msg handling
-    private ievent (ev: string, args: Array<any>): eMsgStatus {
+    private ievent (ev: string, env: TEnv): eMsgStatus {
 	    let a = this.event2StringArray (ev);			// look for the table containing the event
 	    if (a.find) {
 	    	let msgs = a.tbl[ev];
 	    	if (msgs && msgs.length) {					// check if the event is set
-				this.send ( msgs );						// and the associated messages if any
+				this.evalAndSend ( msgs, env);			// request to eval and send the messages
 			}
 	    }
 		else return eMsgStatus.kBadParameters;			// there is no support for time events at this level
@@ -320,10 +323,14 @@ class IEventAble {
     //---------------------------------------------------------------
     event (msg:IMessage): eMsgStatus {
     	let ui = this.hasUIEvents();
-    	if (msg.size() < 2) return eMsgStatus.kBadParameters;
+    	if ( msg.size() < 2) return eMsgStatus.kBadParameters;
+
     	let event = msg.paramStr(1);
     	if (!event.correct) return eMsgStatus.kBadParameters;
-	    return this.ievent (event.value, msg.params().slice(2));
+    	
+    	let m : TMouseEnv; let d: Fraction;
+    	let env = new TEnv (msg.address(), m, d, d, msg.params().slice(2));
+ 	    return this.ievent (event.value, env);
     }
 
 	// GET WATCH METHOD
@@ -362,7 +369,12 @@ class IEventAble {
     
     //---------------------------------------------------------------
     private send (msgs: Array<IMessage>): void {
-		msgs.forEach(function(msg: IMessage) { INScore.postMessage (msg.address(), msg.params()) })
+		msgs.forEach ( function(msg: IMessage) { INScore.postMessage (msg.address(), msg.params()) })
+    }
+    private evalAndSend (msgs: Array<IMessage>, env: TEnv): void {
+    	let me = new TMessageEvaluator(env);
+    	msgs = me.eval(msgs);
+		msgs.forEach( function(msg: IMessage) { INScore.postMessage (msg.address(), msg.params()) })
     }
         
     //---------------------------------------------------------------
