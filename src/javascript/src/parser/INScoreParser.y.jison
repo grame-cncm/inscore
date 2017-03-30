@@ -128,6 +128,7 @@ params		: param					{ $$ = [$1]; }
 			;
 
 variable	: VARSTART varname					{ $$ = getvar($2); }
+			| VARSTART UINT						{ $$ = "$"+$2; }
 			| VARSTART LEFTPAR message RIGHTPAR { $$ = new Array($3); }
 			;
 
