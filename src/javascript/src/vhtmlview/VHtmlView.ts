@@ -1,10 +1,11 @@
+///<reference path="../lib/TTypes.ts"/>
 ///<reference path="../model/IObject.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 
 class VHtmlView extends VObjectView {
+//	static fClickTarget: IObject;
 	protected fHtmlElt: HTMLElement;
 	protected fParent: VHtmlView;
-	protected fPoss: Array<Array<number>>;
 
 	fTop: number; fLeft: number;
 	fWidth: number; fHeight: number;
@@ -16,9 +17,9 @@ class VHtmlView extends VObjectView {
 		this.setPos(0, 0, 100, 100);
 		this.fHtmlElt = elt;
 		this.fTranslateX = this.fTranslateY = 0;
+//		VHtmlView.fClickTarget = null;
 		if (parent) parent.getHtml().appendChild(elt);
 		this.setDefaultPositionStyle();
-		this.fPoss = [];
 	}
 
 	setDefaultPositionStyle(): void { this.fHtmlElt.style.position = "absolute"; }
@@ -47,7 +48,7 @@ class VHtmlView extends VObjectView {
 		let p = this.getRelativeCoord (ev, div.parentElement);
 		let sx = p.rx; //this.scene2RelativeX (x );
 		let sy = p.ry; //this.scene2RelativeY (y);
-		obj.handleMouseEvent (type);
+		obj.handleMouseEvent (type, {x: rx, y: ry, ax: x, ay: y, sx: sx, sy: sy});
 		
 //		if (type == eUIEvents.kMouseDown)
 //			console.log ("mouseEvent on " + obj.getName() + " => " + x + " " + y + " rel: " +rx + " " + ry + " srel: " + sx + " " + sy );
@@ -79,24 +80,24 @@ class VHtmlView extends VObjectView {
 		let div = this.getHtml();
 		if (evs) {
 			if (evs & eUIEvents.kMouseDown)
-				div.onmousedown = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseDown, ev); }; 
-			else { div.onmousedown = null; }
+				div.onmousedown = (ev: MouseEvent): any => { /*if (!VHtmlView.fClickTarget) VHtmlView.fClickTarget = obj;*/ return this.mouseEvent(obj, eUIEvents.kMouseDown, ev); }; 
+			else div.onmousedown = null;
 
 			if (evs & eUIEvents.kMouseMove) 
-				div.onmousemove = (ev: MouseEvent): any => { return (ev.which == 1) ? this.mouseEvent(obj, eUIEvents.kMouseMove, ev) : null; }
-			else { div.onmousemove = null; }
+				div.onmousemove = (ev: MouseEvent): any => { return (ev.which == 1) /*&& (VHtmlView.fClickTarget == obj)*/ ? this.mouseEvent(obj, eUIEvents.kMouseMove, ev) : null; }
+			else div.onmousemove = null;
 
 			if (evs & eUIEvents.kMouseUp)
-				div.onmouseup = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseUp, ev); }; 
-			else { div.onmouseup = null; }
+				div.onmouseup = (ev: MouseEvent): any => { /*VHtmlView.fClickTarget = null;*/ return this.mouseEvent(obj, eUIEvents.kMouseUp, ev); }; 
+			else div.onmouseup = null;
 
 			if (evs & eUIEvents.kMouseEnter)
 				div.onmouseenter = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseEnter, ev); }; 
-			else { div.onmouseenter = null; }
+			else div.onmouseenter = null;
 
 			if (evs & eUIEvents.kMouseLeave)
 				div.onmouseleave = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseLeave, ev); }; 
-			else { div.onmouseleave = null; }
+			else div.onmouseleave = null;
 		}
 		else this.removeAll (div); 
 	}
