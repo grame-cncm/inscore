@@ -3,10 +3,12 @@
 ///<reference path="../controller/THandlersPrototypes.ts"/>
 ///<reference path="../controller/TSetMessageHandlers.ts"/>
 ///<reference path="../externals/fraction.ts"/>
+///<reference path="../scripting/TEnv.ts"/>
 ///<reference path="../inscore-interface.ts"/>
 ///<reference path="../lib/OSCAddress.ts"/>
 ///<reference path="../lib/OSCRegexp.ts"/>
 ///<reference path="../lib/Tools.ts"/>
+///<reference path="../lib/TTypes.ts"/>
 ///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../lib/ITLOut.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
@@ -252,8 +254,11 @@ abstract class IObject implements Tree<IObject> {
 //-------------------------------------------------------------- 
 // UI events management
 //--------------------------------------------------------------  
-	hasUIEvents (): number 						{ return this.fEvents.hasUIEvents(); }
-	handleMouseEvent (type: eUIEvents) : void	{ this.fEvents.handleMouseEvent (type); }
+	hasUIEvents (): number 										{ return this.fEvents.hasUIEvents(); }
+	handleMouseEvent (type: eUIEvents, mouse: TMouseEnv) : void	{ 
+		let env = new TEnv (this.getOSCAddress(), mouse, this.fDate.getDate());
+		this.fEvents.handleMouseEvent (type, env); 
+	}
     
 // METHODS
 //--------------------------------------------------------------  
