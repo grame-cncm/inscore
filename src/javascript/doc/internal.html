@@ -11,11 +11,10 @@
 This document describe some specifics part of developpement and work on INScoreJS.
 
 - [Objects](#objects)
-  - [SVGObjects](#objSVGObjects)
   - [SVG](#objSVG)
-  - [Media](#objMedia)
-  - [Textual](#objTextual)
-  - [Signals](#objSignals)
+    - [SVG Create in View](#SVGView)
+    - [SVG Imported in div](#SVGDiv)
+  - [Auto-Size Objects](#autoSize)
 - [Browsers Differences](#browsers)
 - [TODO](#todo)
 
@@ -25,90 +24,37 @@ This document describe some specifics part of developpement and work on INScoreJ
 
 -----------------------
 
-Lists of objects can be created in InscoreJS, their functions and traitement.
 
-<h3 id="objSVGObjects">SVGObjects</h3>
-
------------------------
-
-1. **GMN**
-  - **Creation :**
-    * Model: receive string and send it to Guido Engine to be tranforn in a string who contained SVG.
-    * View: tring from model is parse in IGuidoCode and insterting in a div container.  
-  
-
-2. **PianoRoll**
-  - **Creation :**
-    * Model: receive string and send it to Guido PianoRollAdapter to be parse, create a string to contain SVG.
-    * View: is a extend from GMNView, same traitement, juste div's container name is changed.
-
-
-3. **SVG file**
-  - **Creation :**
-    * Model: transform svg file in a string who contained the svg.
-    * View: insert svg string in a div container.  
-
-
-<h3 id="objSVG">SVG</h3>
+<h3 id="objSVGObjects">SVG</h3>
 
 -----------------------
 
-1. Arc
-Model:
-View:
-
-2. Curve
-Model:
-View:
-
-3. Ellipse
-Model:
-View:
-
-4. Line
-Model:
-View:
-
-5. Polygon
-Model:
-View:
-
-6. Rect
-Model:
-View:
 
 
-<h3 id="objMedia">Media</h3>
+<h4 id="SVGView">SVG Create in View</h4>
+
 
 -----------------------
 
-1. Image
-Model:
-View:
-
-2. Video
-Model:
-View:
+Cumpute SVG with INScore data. SVG is create in View.
+Size is compute with BoundingBox.
 
 
-<h3 id="objTextual">Textual</h3>
+<h4 id="SVGDiv">SVG Imported in div</h4>
 
 -----------------------
 
-1. Text
-Model:
-View:
-
-2. HTML
-Model:
-View:
+SVG already existe or is compute out of View or Model. Drag SVG Data are get back in a div.
+Size is compute with BoundingBox.
 
 
-<h3 id="objSignals">Signals</h3>
+<h3 id="autoSize">Auto-Size Objects</h3>
 
 -----------------------
 
-* Not implemented yet
+Object is injected in a Div.
+Size depend of the object.
+
 
 <h2 id="inscoretodom">INScore to DOM</h2>
 
