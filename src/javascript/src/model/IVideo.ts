@@ -66,8 +66,8 @@ class IVideo extends IObject {
     getVolume()   : number             { return this.fVolume}    
     getRate()     : number             { return this.fRate  }
     getVDate()    : Fraction           { return this.fVDate }
-    getMLS()      : number             {console.log("IVideo getMLS : " + this.fMLS); return this.fMLS   }
-    getVDuration(): number             {console.log("IVideo getVDuration : " + this.fVDuration); return this.fVDuration }
+    getMLS()      : number             {return this.fMLS   }
+    getVDuration(): number             {return this.fVDuration }
 
     setPlay  (play   : number )  : void  { this.fPlay   = play;   this.modify()}
     setVolume(volume : number )  : void  { this.fVolume = volume; this.modify()}
