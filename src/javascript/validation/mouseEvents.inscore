@@ -16,10 +16,21 @@
 /ITL/scene/o1 watch mouseUp ( /ITL/scene/o1 red 0 );
 /ITL/scene/o1 watch mouseDown ( /ITL/scene/o1 red 250 );
 
+move = ( /ITL/scene/$self x $sx,
+		/ITL/scene/$self y $sy);
 
-/ITL/scene/r1 			watch mouseDown ( /ITL/scene/r1 date 0);
-/ITL/scene/r1/sr 		watch mouseDown ( /ITL/scene/r1/sr date 0);
-/ITL/scene/r1/sr/ssr 	watch mouseDown ( /ITL/scene/r1/sr/ssr date 0);
+/ITL/scene/* watch mouseDown $move;
+/ITL/scene/* watch mouseMove $move;
+
+move = ( /ITL/scene x $sx,
+		/ITL/scene y $sy);
+/ITL/scene watch mouseMove $move;
+
+submove = ( /ITL/scene/r1/$self x $sx,
+			/ITL/scene/r1/$self y $sy);
+/ITL/scene/r1/sr watch mouseDown $submove;
+/ITL/scene/r1/sr watch mouseMove $submove;
+#/ITL/scene/r1/sr watch ;
 
 /ITL/scene watch mouseDown (
 	/ITL/scene/o color 0 0 250,
@@ -27,6 +38,10 @@
 );
 
 __END__
-/ITL/scene/o1 get watch;
+/ITL/scene position absolute;
+/ITL/scene/* watch;
+/ITL/scene x 0;
+/ITL/scene y 0;
+/ITL/scene get x y ;
 /ITL/scene/r1 scale 1.5;
 /ITL/scene/r1 scale 1;
