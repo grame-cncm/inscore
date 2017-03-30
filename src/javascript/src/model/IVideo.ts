@@ -6,8 +6,10 @@ class IVideo extends IObject {
     fPlay: number;
     fRate: number;
     fVolume: number;
-    fVDate: number;
+    fVDate: Fraction;
     fModified: boolean;
+    fMLS: number;
+    fVDuration: number;
 
     constructor(name: string, parent: IObject) {
         super(name, parent);
@@ -15,17 +17,21 @@ class IVideo extends IObject {
         this.fPlay = 0;
         this.fRate = 1;
         this.fVolume = 1;
-        this.fVDate = 0;   
+        this.fVDate = new Fraction(0,1);
+        this.fMLS = 0;
+        this.fVDuration = 0;
 
-        this.fMsgHandlerMap[kplay_GetSetMethod]          = new TMsgHandlerNum((n: number): void => { this.setPlay(n)  });
-        this.fMsgHandlerMap[krate_GetSetMethod]          = new TMsgHandlerNum((n: number): void => { this.setRate(n)  });
-        this.fMsgHandlerMap[kvolume_GetSetMethod]        = new TMsgHandlerNum((n: number): void => { this.setVolume(n)});
-        this.fMsgHandlerMap[kvdate_GetSetMethod]         = new TMsgHandlerNum((n: number): void => { this.setVDate(n) });
+        this.fMsgHandlerMap[kplay_GetSetMethod]      = new TMsgHandlerNum ((n: number)  : void => { this.setPlay(n)  });
+        this.fMsgHandlerMap[krate_GetSetMethod]      = new TMsgHandlerNum ((n: number)  : void => { this.setRate(n)  });
+        this.fMsgHandlerMap[kvolume_GetSetMethod]    = new TMsgHandlerNum ((n: number)  : void => { this.setVolume(n)});
+        this.fMsgHandlerMap[kvdate_GetSetMethod]     = new TMsgHandlerTime((n: Fraction): void => { this.setVDate(n) });
 
-        this.fGetMsgHandlerMap[kplay_GetSetMethod]       = new TGetMsgHandlerNum( () : number => { return this.fPlay  });
-        this.fGetMsgHandlerMap[krate_GetSetMethod]       = new TGetMsgHandlerNum( () : number => { return this.fRate  });
-        this.fGetMsgHandlerMap[kvolume_GetSetMethod]     = new TGetMsgHandlerNum( () : number => { return this.fVolume});
-        this.fGetMsgHandlerMap[kvdate_GetSetMethod]      = new TGetMsgHandlerNum( () : number => { return this.fVDate });
+        this.fGetMsgHandlerMap[kplay_GetSetMethod]   = new TGetMsgHandlerNum ( () : number   => { return this.getPlay  ()});
+        this.fGetMsgHandlerMap[krate_GetSetMethod]   = new TGetMsgHandlerNum ( () : number   => { return this.getRate  ()});
+        this.fGetMsgHandlerMap[kvolume_GetSetMethod] = new TGetMsgHandlerNum ( () : number   => { return this.getVolume()});
+        this.fGetMsgHandlerMap[kvdate_GetSetMethod]  = new TGetMsgHandlerTime( () : Fraction => { return this.getVDate ()});
+        this.fGetMsgHandlerMap[kmls_GetMethod]       = new TGetMsgHandlerNum ( () : number   => { return this.getMLS()   });
+        this.fGetMsgHandlerMap[kvduration_GetMethod] = new TGetMsgHandlerNum ( () : number   => { return this.getVDuration()});
     }    
 
     // MODIFIED STATUS
@@ -59,11 +65,18 @@ class IVideo extends IObject {
     getPlay()     : number             { return this.fPlay  }
     getVolume()   : number             { return this.fVolume}    
     getRate()     : number             { return this.fRate  }
-    getVDate()    : number             { return this.fVDate }
+    getVDate()    : Fraction           { return this.fVDate }
+    getMLS()      : number             {console.log("IVideo getMLS : " + this.fMLS); return this.fMLS   }
+    getVDuration(): number             {console.log("IVideo getVDuration : " + this.fVDuration); return this.fVDuration }
 
-    setPlay  (play   : number ): void  { this.fPlay   = play;   this.modify()}
-    setVolume(volume : number ): void  { this.fVolume = volume; this.modify()}
-    setRate  (rate   : number ): void  { this.fRate   = rate;   this.modify()}
-    setVDate (vDate  : number ): void  { this.fVDate  = vDate;  this.modify()}
+    setPlay  (play   : number )  : void  { this.fPlay   = play;   this.modify()}
+    setVolume(volume : number )  : void  { this.fVolume = volume; this.modify()}
+    setRate  (rate   : number )  : void  { this.fRate   = rate;   this.modify()}
+    setVDate (vDate  : Fraction ): void  {       
+          if (vDate.getDenominator() == 0) {this.fVDate = new Fraction (this.fVDate.getNumerator()/1000, 1);return}
+          if (this.fVDate != vDate) {
+           this.fVDate = vDate;
+           this.modify();
+          }
+    }
 }
-

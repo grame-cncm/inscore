@@ -25,19 +25,21 @@ class VHtmlVideoView extends VHtmlAutoSize {
 		this.updateVideoControl(video);
 	}
  
-	setShadow (params: Array<number>) : void {
+	setShadow (params: Array<number>): void {
 		let color = new IColor( params.slice(2,6) );
 		this.getHtml().style.filter = "drop-shadow(" + color.getCSSRGBAString() + " "+ params[0] +"px " + params[1] +"px " + params[6] +"px)";
 	}
    
 	getAutoElement() : HTMLElement 	{ return this.fVideo; }
 
-	updateVideoControl(video: IVideo) : void {
+	updateVideoControl(video: IVideo): void {
 		if (video.modified()){
 			video.fPlay ? this.fVideo.play() : this.fVideo.pause();
 			this.fVideo.volume = video.fVolume;
 			this.fVideo.playbackRate = video.fRate;
-			this.fVideo.currentTime += video.fVDate;
+			this.fVideo.currentTime += video.fVDate.getNumerator() / video.fVDate.getDenominator();
+			video.fMLS       = this.fVideo.duration * 1000;
+			video.fVDuration = this.fVideo.duration / this.fVideo.playbackRate;
 		}
 	}
 }
