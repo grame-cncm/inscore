@@ -26,10 +26,9 @@ class IGlue {
 
 	getStack(): Array<IMessage> 	{ return this.fStack; }
 	popStack(): IMessage 			{ return this.fStack.shift(); }
-	setStack(msg: IMessage): void 	{ this.fStack.push(msg); }
+    pushStack(msg: IMessage): void 	{ this.fStack.push(msg); }
 
     initEventHandlers(): void {
-		//document.addEventListener("dragover", inscore_dragOverEvent, false);
 		window.addEventListener("resize", inscore_resizeDocument);
     }
     
@@ -46,7 +45,7 @@ class IGlue {
     	clearTimeout (this.fTimer) ;		
     }
 
-    getRoot(): IAppl { return this.fAppl; }
+    getRoot(): IAppl 			{ return this.fAppl; }
 
 	timetask() : void {
 		let d= new Date();
