@@ -4,6 +4,9 @@
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="TEnv.ts"/>
 
+
+interface ScalingFunction 			{ (n: number): number; }
+
 //-------------------------------------------------------------- 
 // Message evaluation:
 // consists in:
@@ -57,7 +60,7 @@ class TMessageEvaluator
 	}
 
 	//----------------------------------------
-	private dateVar (env: TEnv, scale: TPosition, relative: boolean, float: boolean) : number | number[] {
+	private dateVar (env: TEnv, scale: TPair<number>, relative: boolean, float: boolean) : number | number[] {
 		let d = env.fTimePos;
 		if (relative) d = d.add (env.fDate);
 		return (float) ? d.toNum() : d.toArray();
@@ -74,15 +77,16 @@ class TMessageEvaluator
 			if (user) return user;
 
 			let scale = this.getScaling (str);				// get scaling option
+			let f = this.getScalingFunction (scale);
 			let float =  str.replace(/..*%/, "%") == "%f";	// get the float option from the variable
 			str = str.replace(/[\[%].*/, "");				// get the variable name only
 			switch (str) {
-				case "absx": 	return env.fMouse.ax * scale.x;
-				case "absy": 	return env.fMouse.ax * scale.y;
-				case "sx": 		return env.fMouse.sx * scale.x;
-				case "sy": 		return env.fMouse.sy * scale.y;
-				case "x": 		return env.fMouse.x * scale.x;
-				case "y":		return env.fMouse.y * scale.y;
+				case "absx": 	return f (env.fMouse.ax);
+				case "absy": 	return f (env.fMouse.ax);
+				case "sx": 		return f (env.fMouse.sx);
+				case "sy": 		return f (env.fMouse.sy);
+				case "x": 		return f (env.fMouse.x);
+				case "y":		return f (env.fMouse.y);
 				case "date":	return this.dateVar (env, scale, false, float);
 				case "rdate":	return this.dateVar (env, scale, true, float);
 			}
@@ -91,15 +95,23 @@ class TMessageEvaluator
 	}
 
 	//----------------------------------------
-	private getScaling (param) : TPosition {
+	private getScaling (param: string) : TPair<number> {
+		let none : TPair<number>;
 		let m = param.replace(/.*\[/, "").replace(/\](%f)?/, "")	// extract the part enclosed in []
-		if (m.match (/[^0-9.,]/)) return { x: 1, y: 1 }; 			// check for non numeric chars
+		if (m.match (/[^0-9.,-]/)) return none; 				// check for non numeric chars
 	
 		let t = m.split(',');
 		let a = parseFloat (t[0]);
 		let b = parseFloat (t[1]);
-		if (!isNaN(a) && !isNaN(b)) return { x: -a, y: b };
-		return { x: 1, y: 1 };
+		if (!isNaN(a) && !isNaN(b)) return { first: a, second: b };
+		return none;
+	}
+
+	//----------------------------------------
+	private getScalingFunction (p: TPair<number>) : ScalingFunction {
+		let identity = function (n: number): number { return n; }
+		if (p) return function (n: number): number { return p.first + (n + 1)/2 * (p.second-p.first) };
+		return identity;
 	}
 
 	//----------------------------------------
