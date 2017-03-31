@@ -9,6 +9,12 @@ class ModelUpdater {
     constructor(root: IObject) { this.fRoot = root; }
 
 	update (stack: Array<IMessage>) : void {
+        let n = stack.length;
+		for (let i = 0; i < n; i++) {
+			let msg = stack[i];
+			INScore.checkStatus ( this.fRoot.process(msg), msg)
+		}
+/*
         let elt = stack.length;
         if (elt != 0) {
             for (let i = elt; i > 0; i--) {
@@ -16,5 +22,6 @@ class ModelUpdater {
                 INScore.checkStatus ( this.fRoot.process(msg), msg)
             }
         } 
+*/
 	}	
 }
