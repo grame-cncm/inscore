@@ -41,7 +41,7 @@ class INScoreImpl extends INScoreInterface
 			this.fGlue.initEventHandlers();
 		}
 		this.fGlue.start(scene, position ? position : "relative");
-		ITLOut.write ("INScore version " + this.version());
+		ITLOut.write ("INScoreJS version " + this.version());
 	}
 
 	checkStatus (status: eMsgStatus, msg: IMessage) : void {
