@@ -1,6 +1,7 @@
 
 ///<reference path="IObject.ts"/>
 ///<reference path="../globals.ts"/>
+///<reference path="../parser/MessageInterface.ts"/>
 
 declare var INScoreParser: any;
 
@@ -9,7 +10,7 @@ interface TLoadEndHandler 		{ (): void; }
 
 class TILoader {
         
-    protected parse(msg: string): Array<any> {
+    protected parse(msg: string): Array<Message> {
         try {
 	        INScoreParser.parse(msg);
         	return INScoreParser.get();  
