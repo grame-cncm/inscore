@@ -1,10 +1,15 @@
 
 ///<reference path="../controller/IMessage.ts"/>
 ///<reference path="../externals/fraction.ts"/>
+///<reference path="../model/Methods.ts"/>
+///<reference path="../inscore-interface.ts"/>
+///<reference path="../parser/MessageInterface.ts"/>
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="TEnv.ts"/>
 
-
+// interface of Messages as build by the parser
+//interface Address					{ ip: string, port: number, osc: string; }; 
+//interface Message					{ address: Address, params: Array<any> }; 
 interface ScalingFunction 			{ (n: number): number; }
 
 //-------------------------------------------------------------- 
@@ -91,6 +96,9 @@ class TMessageEvaluator
 				case "rdate":	return this.dateVar (env, scale, true, float);
 			}
 		}
+		else if (p.address) {		// this is a message based parameter
+			return this.evalGetMsg (<Message>p, env);
+		}
 		return p;
 	}
 
@@ -115,6 +123,21 @@ class TMessageEvaluator
 	}
 
 	//----------------------------------------
+	private evalGetMsg (msg: Message, env: TEnv) : Array<any> {
+		let out: Array<any> = [];
+		let params = msg.params;
+		if ((params.length > 0) && (params[0] === kget_SetMethod)) {
+			let addr = this.evalOSCAddr (msg.address.osc, this.fEnv);
+			let msgs = INScore.getMessage (addr, params.slice(1));
+			msgs.forEach ( function(msg: IMessage) {
+				let p = msg.params();
+				if (p.length > 1) out = out.concat ( p.slice( (p[0] == kset_SetMethod) ? 2 : 1) )
+				} );
+		}
+		return out;
+	}
+
+	//----------------------------------------
 	private evalParams (params: Array<any>, env: TEnv) : Array<any> {
 		let out: Array<any> = [];
 		for (var i=0; i < params.length; i++) {
@@ -122,8 +145,7 @@ class TMessageEvaluator
 			if (p instanceof Array) 	out.push(p);
 			
 			p = this.evalParam (p, env);
-			if (p instanceof Array)
-				out.concat(p);
+			if (p instanceof Array) out = out.concat(p);
 			else out.push (p);
 		}
 		return out;
