@@ -42,4 +42,11 @@ class VHtmlVideoView extends VHtmlAutoSize {
 			video.fVDuration = this.fVideo.duration / this.fVideo.playbackRate;
 		}
 	}
+		getClientSize(video: IVideo): { w: number, h: number } {
+      	  if (!this.fClientWidth) {
+            this.fClientWidth  = this.fVideo.videoWidth;
+            this.fClientHeight = this.fVideo.videoHeight;
+     	   }
+       	 return { w: this.fClientWidth, h: this.fClientHeight };
+    }
 }
