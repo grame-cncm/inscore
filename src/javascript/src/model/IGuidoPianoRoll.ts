@@ -17,7 +17,8 @@ const kAutoLines    : number =  0;
 const kNoLine       : number = -1;
 
 class IGuidoPianoRoll extends IGuidoCode {
- 
+ 	static fEngine: GUIDOPianoRollAdapter
+
 	protected fLimits: LimitParams;
 	protected fKeyboard: boolean;
 	protected fAutoVoiceColor: boolean;
@@ -27,6 +28,9 @@ class IGuidoPianoRoll extends IGuidoCode {
    
     constructor(name: string, parent: IObject) {
         super(name, parent);
+        if (!IGuidoPianoRoll.fEngine)
+        	IGuidoPianoRoll.fEngine  = new Module.GUIDOPianoRollAdapter;
+
         this.fTypeString 	= kGuidoPianoRollType;
         this.fKeyboard 		= false;
         this.fAutoVoiceColor= false;
@@ -41,14 +45,19 @@ class IGuidoPianoRoll extends IGuidoCode {
         this.fMsgHandlerMap[kwidth_GetSetMethod]  = new TMsgHandlerNum( (n: number): void => { this.setWidth(n); });
         this.fMsgHandlerMap[kheight_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setHeight(n); });
     }      
+
+    getPRollMap(pr: PianoRoll): void {
+		this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getPianoRollMap(pr, 1, 1));
+		console.log ("IGuidoPianoRoll getMap: " + this.fMapping );
+    }
     
     AR2SVG(ar: ARHandler): string {
-        let guidoPianoRoll  = new Module.GUIDOPianoRollAdapter;
-        let pr = guidoPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
+        let pr = IGuidoPianoRoll.fEngine.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
         let w = this.getView().relative2SceneWidth (this.fPosition.getWidth());
         let h = this.getView().relative2SceneHeight (this.fPosition.getHeight());
-        let svg = guidoPianoRoll.svgExport(pr, w, h);
-        guidoPianoRoll.destroyPianoRoll(pr);                                     
+        let svg = IGuidoPianoRoll.fEngine.svgExport(pr, w, h);
+        this.getPRollMap (pr);
+        IGuidoPianoRoll.fEngine.destroyPianoRoll(pr);                                     
 	    return svg;
     }
 }

@@ -11,6 +11,7 @@
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../lib/ITLOut.ts"/>
+///<reference path="../mapping/TTime2GraphicMap.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 ///<reference path="../globals.ts"/>
 
@@ -60,6 +61,7 @@ abstract class IObject implements Tree<IObject> {
     fBrushStyle: IBrushStyle;
     fEffect:     IEffect;
     fEvents:	 IEventAble;
+    fMapping:	 TTime2GraphicMap;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -89,6 +91,11 @@ abstract class IObject implements Tree<IObject> {
         this.setHandlers();
         this.createStaticNodes();
         this.fEvents.attributes (this.fMsgHandlerMap);
+
+        this.fMapping = new TTime2GraphicMap();
+        let defaultTimeSegment = new TimeInterval (new Fraction(0,1), this.fDate.getDuration());
+        let defaultGraphicSegment = new TGraphicSegment (new NumberInterval(0,1), new NumberInterval(0,1));
+		this.fMapping.addElt ( new TTime2GraphicRelation(defaultTimeSegment, defaultGraphicSegment));
     }
     
     createStaticNodes() : void {}
