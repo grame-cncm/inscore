@@ -7,9 +7,6 @@
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="TEnv.ts"/>
 
-// interface of Messages as build by the parser
-//interface Address					{ ip: string, port: number, osc: string; }; 
-//interface Message					{ address: Address, params: Array<any> }; 
 interface ScalingFunction 			{ (n: number): number; }
 
 //-------------------------------------------------------------- 
@@ -19,7 +16,7 @@ interface ScalingFunction 			{ (n: number): number; }
 //	  supports scaling using a [x,y] suffix (position values are expected in the range [-1, 1])
 // 	- evaluation of time variables ($date, $rdate)
 //	  supports quantification using a [n,d] suffix 
-//	  supports output control using a %f suffix 
+//	  supports date output control using a %f suffix 
 // 	- evaluation of the target variables : $name, $scene, $address
 // 	- evaluation of variables inside the msg address: $self, $scene)
 //-------------------------------------------------------------- 

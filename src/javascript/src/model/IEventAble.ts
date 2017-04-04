@@ -335,7 +335,7 @@ class IEventAble {
 
 	// GET WATCH METHOD
 	//--------------------------------------------------------------    
-    getWatch(addr: string): IMessageList	{  return this.fState. getWatch (addr); }
+    getWatch(addr: string): IMessageList	{  return this.fState.getWatch (addr); }
 
 	// PUSH & POP METHOD
 	//--------------------------------------------------------------    
