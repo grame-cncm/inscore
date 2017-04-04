@@ -23,6 +23,13 @@ class VHtmlGMNView extends VHtmlSvgView {
 		return gmn.getSVG();
 	}
 
+/*    updateView(obj: IObject): void {
+        super.updateView(obj);
+        if (obj.isNewData()) {
+        	
+        }
+    }
+*/
 	getFirstSVGGroup(root: Node): SVGSVGElement {
 		let g: Node;
 		let childs = root.childNodes;

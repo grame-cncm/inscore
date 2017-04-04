@@ -5,6 +5,7 @@
 
 class IGuidoCode extends IObject { 
 	static fGuidoEngine: GuidoEngineAdapter;
+	static fGuidoMap: GuidoScoreMapAdapter;
 
     protected fGMN: string;
     protected fSVG: string;
@@ -17,6 +18,7 @@ class IGuidoCode extends IObject {
         
         if (!IGuidoCode.fGuidoEngine) {
         	IGuidoCode.fGuidoEngine = new Module.GuidoEngineAdapter;
+//        	IGuidoCode.fGuidoMap = new Module.GuidoScoreMapAdapter;
         	IGuidoCode.fGuidoEngine.init();
         }
         
@@ -38,7 +40,13 @@ class IGuidoCode extends IObject {
 	getPage(): number					{ return this.fPage; }
 	getPageFormat(): Array<number>		{ return this.fPageFormat; }
 	//getPageCount(): number              {return}
-    
+
+/*    
+    getMap(gr: GRHandler): void {
+		let map = IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 100, 100);
+console.log ("IGuidoCode getMap: " + map.map.length + " elements");
+    }
+*/
     str2AR(gmn: string): ARHandler {
         let p = IGuidoCode.fGuidoEngine.openParser();
 	    let ar = IGuidoCode.fGuidoEngine.string2AR(p, gmn);
@@ -53,6 +61,7 @@ class IGuidoCode extends IObject {
     AR2SVG(ar: ARHandler): string {
         let gr = IGuidoCode.fGuidoEngine.ar2gr(ar);
         let svg = IGuidoCode.fGuidoEngine.gr2SVG(gr, 1, false, 0);
+//        this.getMap (gr);
         IGuidoCode.fGuidoEngine.freeGR(gr);
 	    return svg;
     }
