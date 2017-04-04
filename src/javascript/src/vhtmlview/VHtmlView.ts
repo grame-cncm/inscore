@@ -49,17 +49,23 @@ class VHtmlView extends VObjectView {
 		let sx = p.rx; //this.scene2RelativeX (x );
 		let sy = p.ry; //this.scene2RelativeY (y);
 		obj.handleMouseEvent (type, {x: rx, y: ry, ax: x, ay: y, sx: sx, sy: sy});
-		
+
 //		if (type == eUIEvents.kMouseDown)
 //			console.log ("mouseEvent on " + obj.getName() + " => " + x + " " + y + " rel: " +rx + " " + ry + " srel: " + sx + " " + sy );
 	}
 
 	// get coordinates relative to an HTMLElement
 	getRelativeCoord(ev : MouseEvent, elt: HTMLElement): {x: number, y: number, rx: number, ry: number} {
+		
 		let r = elt.getBoundingClientRect();
 		let x = ev.pageX - (r.left + window.scrollX);
 		let y = ev.pageY - (r.top + window.scrollY);
-		return {x: x, y: y, rx: x / (r.width / 2) - 1, ry: y / (r.height / 2) - 1};
+		let ry : number;
+		let body = document.body, html = document.documentElement;
+		let height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ); 
+		elt.tagName == "BODY" ? ry = y / (height / 2 ) - 1 : ry = y / (r.height / 2) -1;
+
+		return {x: x, y: y, rx: x / (r.width / 2) - 1, ry: ry};
 	}
 /*
 	getScene(elt: HTMLElement): HTMLElement {
