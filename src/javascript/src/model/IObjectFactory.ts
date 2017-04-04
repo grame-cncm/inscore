@@ -15,6 +15,7 @@
 ///<reference path="IGuidoPianoRoll.ts"/>
 ///<reference path="IWebSocket.ts"/>
 ///<reference path="ISVG.ts"/>
+///<reference path="ISVGf.ts"/>
 ///<reference path="Methods.ts"/>
 
 class IObjectFactory {	
