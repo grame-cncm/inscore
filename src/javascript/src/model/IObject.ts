@@ -308,27 +308,19 @@ abstract class IObject implements Tree<IObject> {
         if (!Tools.regexp(expr)) {
             return this.exactfind(expr);
         }
-        else {
-        	let re = new OSCRegexp(expr);
-	        let out: Array<IObject> = [];
-            let n 	 = this.getSubNodesCount();
-            for (let i = 0; i < n; i++) {
-                let elt = this.fSubNodes[i];
-                if (!elt.getDeleted() && re.match(elt.fName)) { out.push(elt); }       
-            }
-            return out;
-        }
+
+		let re = new OSCRegexp(expr);
+		let out: Array<IObject> = [];
+		this.fSubNodes.forEach ( function (obj: IObject) 
+			{ if (!obj.getDeleted() && re.match(obj.fName)) out.push(obj); } );
+        return out;
     }
     
     //-----------------------------
     exactfind(name:string): Array<IObject> {
         let out: Array<IObject> = [];
-        let n: number = this.fSubNodes.length;
-        for (let i = 0; i < n; i++) {
-            let elt = this.fSubNodes[i];
-            if ((!elt.getDeleted()) && (elt.fName == name))
-                out.push(this.fSubNodes[i]);
-        }
+        this.fSubNodes.forEach ( function (obj: IObject) 
+        	{ if (!obj.getDeleted() && (obj.fName == name)) out.push(obj); } );
         return out;
     }
     
@@ -402,43 +394,57 @@ abstract class IObject implements Tree<IObject> {
     
 // MESSAGES PROCESSING
 //--------------------------------------------------------------     
-    process (msg: IMessage): number {
-		let beg: string = OSCAddress.addressFirst(msg.address());
-		let tail: string = OSCAddress.addressTail(msg.address());
-		return this.processMsg(beg, tail, msg);
+// get objects by OSC address
+//--------------------------------------------------------------     
+	// find objects that match an osc address
+	// the address is provide as a head and a tail
+	// tail is shifted to the left for subnodes
+    //-----------------------------
+	getTargetObjects (osc: TPair<string>): Array<IObject> {
+
+		let out: Array<IObject> = [];
+		if ( this.match(osc.first) ) {			// is the address on my branch ?
+			osc = OSCAddress.shift (osc.second);
+			if (osc.second.length) {			// tail is not empty
+				this.fSubNodes.forEach ( function (obj: IObject) 
+					{ out = out.concat (obj.getTargetObjects (osc)); } );
+			}
+			else out = out.concat (this.find (osc.first));
+		}
+		return out;
+	}
+
+//--------------------------------------------------------------     
+    process (msg: IMessage): eMsgStatus {
+		let osc = OSCAddress.shift (msg.address());
+		return this.processMsg(osc.first, osc.second, msg);
     }
 
-    processMsg (address: string, addressTail: string , msg: IMessage): eMsgStatus {
+    processMsg (head: string, tail: string , msg: IMessage): eMsgStatus {
 
         let result: number = eMsgStatus.kBadAddress;
-        if (this.match(address)) {
-            let beg: string = OSCAddress.addressFirst(addressTail);	
-            let tail: string = OSCAddress.addressTail(addressTail);
-                
-            if (tail.length) {
-                let n: number = this.fSubNodes.length;
-                for (let i: number = 0; i < n; i++) { result |= this.fSubNodes[i].processMsg (beg, tail, msg); }
-            }
-
+        if (this.match(head)) {
+            let osc = OSCAddress.shift (tail);
+            if (osc.second.length)
+                this.fSubNodes.forEach ( function (obj: IObject) { result |= obj.processMsg (osc.first, osc.second, msg);} );
             else {										
-                let targets = this.find (beg);
+                let targets = this.find (osc.first);
                 let n = targets.length;
-                if (n) {	
-                    for (let i = 0; i < n; i++) {
-                        let target = targets[i];
-                        result |= target.execute(msg);	
-                        if (result & eMsgStatus.kProcessed) { target.addState(eObjState.kModified); }
-                    }
+                if (n) {
+                	targets.forEach( function (obj: IObject) { 
+                			result |= obj.execute(msg); 
+                			if (result & eMsgStatus.kProcessed) obj.addState(eObjState.kModified);
+                		} );
                 }               
-                else if (Tools.regexp(beg)) { result = eMsgStatus.kProcessedNoChange; }                    
-                else  { result = this.proxy_create (msg, beg, this).status; }
+                else if (Tools.regexp(osc.first)) { result = eMsgStatus.kProcessedNoChange; }                    
+                else  { result = this.proxy_create (msg, osc.first, this).status; }
             }
         }
             
         if (result & (eMsgStatus.kProcessed + eObjState.kSubModified)) { this.addState(eObjState.kSubModified); }
     	return result;     
     }
-    
+
     //-------------------------------------------------------------
     // the basic 'set' handler
     //-------------------------------------------------------------
@@ -460,38 +466,39 @@ abstract class IObject implements Tree<IObject> {
         }
         return eMsgStatus.kBadParameters;
     }
-//    _set(): SetMsgMethod	{ return (m) => this.set(m); }
     
-     //-------------------------------------------------------------
-    // the basic 'get' handler
     //-------------------------------------------------------------
-    get(msg: IMessage): eMsgStatus {
+    // internal 'get' : gives a messagelist as output
+    //-------------------------------------------------------------
+    getCall(msg: IMessage): IMessageList {
+    	let out: IMessageList = [];
+
         let n = msg.size();
-        if ( n == 1 ) {				// get without param should give a 'set' msg
-			let outmsg = this.getSet();
-			if (outmsg) ITLOut.write (outmsg.toString() + ";");
-        }
+        if ( n == 1 ) out.push (this.getSet());			// get without param should give a 'set' msg
         else for (let i=1; i< n; i++) {
         	let attribute = msg.paramStr(i);
-        	if (attribute.correct) {
-        		let msgs = this.get1AttributeMsg (attribute.value);
-        		if (msgs) msgs.forEach ( function(msg: IMessage) { ITLOut.write (msg.toString()); } );
-        	}
-        	else {
-        		ITLError.badParameter (msg.toString(), msg.param(i));
-         		return eMsgStatus.kBadParameters;
-       		}        	
+        	if (attribute.correct)
+        		out = out.concat (this.get1AttributeMsg (attribute.value));
+        	else ITLError.badParameter (msg.toString(), msg.param(i));
         }
+        return out;
+    }
+
+    //-------------------------------------------------------------
+    // the basic 'get' handler
+    //-------------------------------------------------------------
+     get(msg: IMessage): eMsgStatus {
+        let msgs = this.getCall (msg);
+        msgs.forEach ( function(msg: IMessage) { ITLOut.write (msg.toString() + ";" ); } );
         return eMsgStatus.kProcessedNoChange;
     }
     
-     //-------------------------------------------------------------
+    //-------------------------------------------------------------
     // the 'save' handler
     //-------------------------------------------------------------
     save(msg: IMessage): eMsgStatus {
-    	let out = this.getSetRecurse();
-	    for (let i=0; i < out.length; i++)
-        	ITLOut.write (out[i].toString() + ";");
+    	let msgs = this.getSetRecurse();
+     	msgs.forEach ( function(msg: IMessage) { ITLOut.write (msg.toString() + ";" ); } );
     	return eMsgStatus.kProcessedNoChange;
     }
 
