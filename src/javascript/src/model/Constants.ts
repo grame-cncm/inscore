@@ -18,6 +18,7 @@ const kSvgType              : string	= "svg";
 const kSvgfType             : string    = "svgf";
 const kWebSocketType        : string	= "websocket";
 
+const kDebugType            : string	= "debug";
 const kObjType              : string	= "obj";
 const kApplType             : string	= "IAppl";
 

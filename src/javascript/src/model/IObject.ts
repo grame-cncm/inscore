@@ -36,7 +36,10 @@ interface TreeApply<T>			{ apply (f: TApplyFunction<T>, t: Tree<T>) : void; }
 interface IObjectTreeApply extends TreeApply<IObject> {}
 
 
-abstract class IObject implements Tree<IObject> {
+//-------------------------------------------------------------- 
+// IObject - the base class of inscore model
+//-------------------------------------------------------------- 
+class IObject implements Tree<IObject> {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
@@ -62,6 +65,7 @@ abstract class IObject implements Tree<IObject> {
     fEffect:     IEffect;
     fEvents:	 IEventAble;
     fMapping:	 TTime2GraphicMap;
+    fDebug:	 	 IDebug;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -98,7 +102,7 @@ abstract class IObject implements Tree<IObject> {
 		this.fMapping.addElt ( new TTime2GraphicRelation(defaultTimeSegment, defaultGraphicSegment));
     }
     
-    createStaticNodes() : void {}
+    createStaticNodes() : void { this.fDebug = new IDebug("debug", this); this.addChild(this.fDebug); }
 
 // HANDLERS
 //--------------------------------------------------------------  
@@ -481,7 +485,10 @@ abstract class IObject implements Tree<IObject> {
     	let out: IMessageList = [];
 
         let n = msg.size();
-        if ( n == 1 ) out.push (this.getSet());			// get without param should give a 'set' msg
+        if ( n == 1 ) {
+	    	let msg =  this.getSet ();			// get without param should give a 'set' msg	    
+        	if (msg) out.push (msg);
+        }
         else for (let i=1; i< n; i++) {
         	let attribute = msg.paramStr(i);
         	if (attribute.correct)
@@ -512,7 +519,7 @@ abstract class IObject implements Tree<IObject> {
     //-------------------------------------------------------------
     // the specific 'get' methods - must be implemented by inherited objects
     //-------------------------------------------------------------
-    abstract getSet(): IMessage;
+    getSet(): IMessage		{ return null; };
       
     //-------------------------------------------------------------
     // get 1 message for 1 attribute
@@ -613,3 +620,37 @@ class IObjectTreeApply implements TreeApply<IObject> {
 	posModified (t: IObject) : void 		{ t.posModified(); }
 	applyPosModified (t: IObject): void 	{ this.apply ((o) => this.posModified (o), t); }
 }
+
+
+//-------------------------------------------------------------- 
+// Debug node of IObject
+//-------------------------------------------------------------- 
+class IDebug extends IObject {
+    fShowMap : 	boolean; 
+    fShowName : boolean;
+    
+    constructor(name: string, parent: IObject) { 
+        super( name, parent );
+        this.fTypeString = kDebugType;
+        this.fShowMap = false; 
+        this.fShowName = false; 
+    }
+
+    setHandlers(): void {
+        this.fMsgHandlerMap[kname_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setShowName(n); } );
+        this.fMsgHandlerMap[kmap_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.setShowMap(n);  } );
+        this.fMsgHandlerMap[kget_SetMethod] 	= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.get(msg); } );
+
+        this.fGetMsgHandlerMap[kname_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.getShowName(); } );
+        this.fGetMsgHandlerMap[kmap_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.getShowMap(); } );
+    }
+
+	getShowMap() : number 		{ return this.fShowMap ? 1 : 0; }
+	getShowName() : number 		{ return this.fShowName ? 1 : 0; }
+
+	setShowMap(val: number) : void 		{ this.fShowMap = val ? true : false; }
+	setShowName(val: number) : void 	{ this.fShowName = val ? true : false; }
+
+    createStaticNodes() : void {}
+}
+
