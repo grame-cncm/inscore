@@ -33,8 +33,8 @@ submove = ( /ITL/scene/r1/$self x $sx,
 #/ITL/scene/r1/sr watch ;
 
 /ITL/scene watch mouseDown (
-	/ITL/scene/o color 0 0 250,
-	/ITL/scene/o dy -0.1
+	/ITL/scene/o1 color 0 0 250,
+	/ITL/scene/o1 dy -0.1
 );
 
 __END__
