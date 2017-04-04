@@ -106,6 +106,11 @@ class IObjectFactory {
                 obj = new ISVG(name, parent);
                 this.createView(obj, parent.getView());  
                 break;  
+                
+            case kSvgfType:
+                obj = new ISVGf(name, parent);
+                this.createView(obj, parent.getView());  
+                break;
 
             case kWebSocketType:
                 obj = new IWebSocket(name, parent);

@@ -45,6 +45,9 @@ class HtmlViewFactory implements ViewFactory {
             case kSceneType:
                 return new VHtmlSceneView (name);
             
+            case kSvgfType :
+                return new VHtmlSVGfView (parent);
+
             case kImgType:
                 return new VHtmlImageView (parent);
                 
