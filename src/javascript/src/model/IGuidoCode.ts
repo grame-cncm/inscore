@@ -2,6 +2,8 @@
 ///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
 ///<reference path="../externals/libGUIDOEngine.ts"/>
+///<reference path="../mapping/TTime2GraphicMap.ts"/>
+
 
 class IGuidoCode extends IObject { 
 	static fGuidoEngine: GuidoEngineAdapter;
@@ -18,8 +20,8 @@ class IGuidoCode extends IObject {
         
         if (!IGuidoCode.fGuidoEngine) {
         	IGuidoCode.fGuidoEngine = new Module.GuidoEngineAdapter;
-//        	IGuidoCode.fGuidoMap = new Module.GuidoScoreMapAdapter;
         	IGuidoCode.fGuidoEngine.init();
+        	IGuidoCode.fGuidoMap = new Module.GUIDOScoreMap;
         }
         
         this.fTypeString = kGuidoCodeType;
@@ -41,12 +43,23 @@ class IGuidoCode extends IObject {
 	getPageFormat(): Array<number>		{ return this.fPageFormat; }
 	//getPageCount(): number              {return}
 
-/*    
+    
+    guidoMap2inscoreMap(json: string): void {
+		let map: Time2GraphicMap = eval(json);
+		if (map.length) this.fMapping.clear();
+
+		map.forEach( (elt: Time2GraphicElt) : void => {
+        	let timeSegment = new TimeInterval (new Fraction(elt.time.start), new Fraction(elt.time.end));
+        	let graphicSegment = new TGraphicSegment (new NumberInterval(elt.graph.left, elt.graph.right), new NumberInterval(elt.graph.top, elt.graph.bottom));
+			this.fMapping.addElt ( new TTime2GraphicRelation(timeSegment, graphicSegment));
+		} );
+	}
+    
     getMap(gr: GRHandler): void {
-		let map = IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 100, 100);
-console.log ("IGuidoCode getMap: " + map.map.length + " elements");
+		this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 1, 1));
+		console.log ("IGuidoCode getMap: " + this.fMapping );
     }
-*/
+
     str2AR(gmn: string): ARHandler {
         let p = IGuidoCode.fGuidoEngine.openParser();
 	    let ar = IGuidoCode.fGuidoEngine.string2AR(p, gmn);
@@ -61,7 +74,7 @@ console.log ("IGuidoCode getMap: " + map.map.length + " elements");
     AR2SVG(ar: ARHandler): string {
         let gr = IGuidoCode.fGuidoEngine.ar2gr(ar);
         let svg = IGuidoCode.fGuidoEngine.gr2SVG(gr, 1, false, 0);
-//        this.getMap (gr);
+        this.getMap (gr);
         IGuidoCode.fGuidoEngine.freeGR(gr);
 	    return svg;
     }

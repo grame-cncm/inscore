@@ -1,7 +1,7 @@
 
 /ITL/scene/* del;
 
-/ITL/scene/o1 set ellipse 0.2 0.2;
+/ITL/scene/o1 set rect 1 1;
 /ITL/scene/o1 x 0.2;
 /ITL/scene/r1 set rect 0.5 0.5;
 /ITL/scene/r1 x -0.2;
@@ -15,6 +15,14 @@
 /ITL/scene/o1 watch mouseMove ( /ITL/scene/o1 dblue -10 );
 /ITL/scene/o1 watch mouseUp ( /ITL/scene/o1 red 0 );
 /ITL/scene/o1 watch mouseDown ( /ITL/scene/o1 red 250 );
+
+/ITL/scene/o1 set rect 1 1.2;
+/ITL/scene/o1 color 200 200 200;
+/ITL/scene/o2 set rect 1.2 0.8;
+/ITL/scene/o2 color 180 180 180 100;
+/ITL/scene/o2 watch mouseDown ( /ITL/scene/txt set txt "o* width" $(/ITL/scene/o* get width));
+/ITL/scene/o1 watch mouseDown ( /ITL/scene/txt set txt "o* params" $(/ITL/scene/o* get ));
+/ITL/scene/o1 watch mouseDown ( /ITL/log write "x scaled" '$x[100,200]' $x );
 
 move = ( /ITL/scene/$self x $sx,
 		/ITL/scene/$self y $sy);

@@ -1,4 +1,4 @@
-///<reference path="VHtmlSvg.ts"/>
+///<reference path="VHtmlSVG.ts"/>
 ///<reference path="../lib/TPoint.ts"/>
 ///<reference path="../model/IArc.ts"/>
 

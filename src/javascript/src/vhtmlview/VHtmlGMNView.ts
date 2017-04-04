@@ -1,5 +1,5 @@
 
-///<reference path="VHtmlSvgView.ts"/>
+///<reference path="VHtmlSVGView.ts"/>
 ///<reference path="../model/IGuidoCode.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
 

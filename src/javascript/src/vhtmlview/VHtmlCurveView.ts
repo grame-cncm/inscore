@@ -1,5 +1,5 @@
 
-///<reference path="VHtmlSvg.ts"/>
+///<reference path="VHtmlSVG.ts"/>
 ///<reference path="../model/ICurve.ts"/>
 ///<reference path="../lib/TPoint.ts"/>
 

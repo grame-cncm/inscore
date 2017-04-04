@@ -1,7 +1,7 @@
 
 ///<reference path="../model/ILine.ts"/>
 ///<reference path="../lib/TPoint.ts"/>
-///<reference path="VHtmlSvg.ts"/>
+///<reference path="VHtmlSVG.ts"/>
 
 class VHtmlLineView extends VHtmlSvg {
 

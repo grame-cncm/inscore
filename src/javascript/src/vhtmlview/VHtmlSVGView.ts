@@ -1,6 +1,6 @@
 
 ///<reference path="VHtmlView.ts"/>
-///<reference path="../model/ISvg.ts"/>
+///<reference path="../model/ISVG.ts"/>
 
 interface RefreshMethod { (): void; }
 

@@ -24,6 +24,7 @@ abstract class TInterval<T>	{
 	second(): T 	{ return this.fSecond; }
 
 	abstract	empty () : boolean;
+	abstract	size(): T;
 	abstract	eq (i: TInterval<T>) : boolean;
 				neq (i: TInterval<T>) : boolean 	{ return !this.eq(i); };
 	abstract	includeLocation (loc: T) : boolean;
@@ -38,6 +39,7 @@ class NumberInterval extends TInterval<number> {
 	eq (i: NumberInterval) 			: boolean	{ return (this.fFirst == i.first()) && (this.fSecond == i.second()); }
 	empty () 						: boolean	{ return this.fFirst == this.fSecond; }
 	includeLocation (loc: number) 	: boolean	{ return (this.fFirst <= loc) && (this.fSecond > loc); }
+	size()							: number 	{ return this.fSecond - this.fFirst; }
 	toArray () 					: Array<number>	{ return [ this.fFirst, this.fSecond ]; }
 }
 
@@ -51,6 +53,7 @@ class TimeInterval extends TInterval<Fraction> {
 	toNumInterval () 		: NumberInterval  	{ return new NumberInterval(this.fFirst.toNum(), this.fSecond.toNum()); }
 	eq (i: TimeInterval) 			: boolean	{ return (this.fFirst.eq(i.first())) && (this.fSecond.eq(i.second())); }
 	empty () 						: boolean	{ return this.fFirst.eq(this.fSecond) }
+	size()							: Fraction 	{ return this.fSecond.sub (this.fFirst); }
 	includeLocation (loc: Fraction) : boolean	{ return this.fFirst.leq(loc) && this.fSecond.gt(loc); }
 	toArray () 					: Array<number>	{ return this.fFirst.toArray().concat(this.fSecond.toArray()); }
 }
