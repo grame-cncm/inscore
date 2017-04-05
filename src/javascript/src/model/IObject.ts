@@ -91,6 +91,9 @@ class IObject implements Tree<IObject> {
         this.fMsgHandlerMap 	= new TMsgHandler<TSetHandler>();
 		this.fGetMsgHandlerMap	= new TGetMsgHandler<TGetHandler>();
 		this.fGetMsgsHandlerMap = new TGetMsgHandler<TGetMultiHandler>();
+		this.fMsgHandlerMap["watch"] = null;			// !!! firefox hack
+		this.fGetMsgHandlerMap["watch"] = null;			// !!! firefox hack
+		this.fGetMsgsHandlerMap["watch"] = null;		// !!! firefox hack
 
         this.setHandlers();
         this.createStaticNodes();
