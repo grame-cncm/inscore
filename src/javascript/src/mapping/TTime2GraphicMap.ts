@@ -3,6 +3,8 @@
 ///<reference path="TSegment.ts"/>
 ///<reference path="../lib/TTypes.ts"/>
 
+interface TArrayFunction 			{ (elt: TTime2GraphicRelation): void; }
+
 //--------------------------------------------------------------------
 // Segmentation class
 //--------------------------------------------------------------------
@@ -20,7 +22,9 @@ class TTime2GraphicMap {
 	addElt(elt: TTime2GraphicRelation)			{ this.fRelations.push(elt); }
 	addElts(elts: Array<TTime2GraphicRelation>)	{ elts.forEach ( function (elt: TTime2GraphicRelation) { this.fRelations.push(elt); } ); }
 
-	clear()	: void		{ this.fRelations = []; }
+	forEach(f: TArrayFunction)						{ this.fRelations.forEach ( f ); }
+	clear()	: void									{ this.fRelations = []; }
+	getRelations(): Array<TTime2GraphicRelation> 	{ return this.fRelations; }
 
 	time2Relation (loc: Fraction) : TTime2GraphicRelation {
 		for (var i=0; i < this.fRelations.length; i++)
