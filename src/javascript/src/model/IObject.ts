@@ -648,8 +648,8 @@ class IDebug extends IObject {
 	getShowMap() : number 		{ return this.fShowMap ? 1 : 0; }
 	getShowName() : number 		{ return this.fShowName ? 1 : 0; }
 
-	setShowMap(val: number) : void 		{ this.fShowMap = val ? true : false; }
-	setShowName(val: number) : void 	{ this.fShowName = val ? true : false; }
+	setShowMap(val: number) : void 		{ this.fShowMap  = val ? true : false; this.fParent.addState(eObjState.kModified); }
+	setShowName(val: number) : void 	{ this.fShowName = val ? true : false; this.fParent.addState(eObjState.kModified); }
 
     createStaticNodes() : void {}
 }
