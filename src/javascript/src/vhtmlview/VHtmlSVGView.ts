@@ -69,4 +69,12 @@ class VHtmlSvgView extends VHtmlView {
         obj.fPosition.setHeight(h);
         if (!w || !h) setTimeout(this._updateView(obj), 50);
     }
+
+    setNone () : void 				{ this.getsvg(this.getHtml()).setAttribute("filter", "blur(0px)");  }
+	setBlur (val: number) : void 	{ this.getsvg(this.getHtml()).setAttribute("filter", "blur(" + val + "px)"); }
+	setShadow (params: Array<number>) : void {
+		let color = new IColor( params.slice(2,6) );
+		this.getsvg(this.getHtml()).setAttribute("filter", "drop-shadow(" + color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px)");
+	}
+
 }
