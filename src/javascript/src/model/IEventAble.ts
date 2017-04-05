@@ -119,18 +119,19 @@ class InteractionState {
 	}
 	
    //---------------------------------------------------------------
-    getAttributeMsgs (attribute: string): IMessageList 	{  return this.fAttributeEvents[attribute]; }
+    getAttributeMsgs (attribute: string): IMessageList 	{ return this.fAttributeEvents[attribute]; }
     getTimeEnter (d: Fraction): TTimeEventValue 		{ return this.fTimeEnterEvents.contains(d.toNum()); }
     getTimeLeave (d: Fraction): TTimeEventValue 		{ return this.fTimeLeaveEvents.contains(d.toNum()); }
     getDurEnter (d: Fraction): TTimeEventValue 			{ return this.fDurEnterEvents.contains(d.toNum()); }
     getDurLeave (d: Fraction): TTimeEventValue 			{ return this.fDurLeaveEvents.contains(d.toNum()); }
-    getMouseMsgs (type: string): IMessageList 			{  return this.fInternalEvents[type]; }
+    getMouseMsgs (type: string): IMessageList 			{ return this.fInternalEvents[type]; }
 	
    //---------------------------------------------------------------
     clear (): void {
-		this.fUserEvents 		= {};
-		this.fInternalEvents 	= {};
-		this.fAttributeEvents 	= {};
+		this.fUserEvents 		= {} as TStringEventsTable;
+		this.fInternalEvents 	= {} as TStringEventsTable;
+		this.fAttributeEvents 	= {} as TStringEventsTable;
+		this.fAttributeEvents["watch"] = null;		// this is for firefox !!!
 
 		this.fTimeEnterEvents.clear();
 		this.fTimeLeaveEvents.clear();
@@ -197,7 +198,7 @@ class IEventAble {
 													"mouseEnter", "mouseLeave",
 													"doubleClick",
 													"touchBegin", "touchEnd", "touchUpdate"];
-	protected fAttributesEvents: Array<string> 	= [ ];
+	protected fAttributesNames: Array<string> 	= [ ];
 	protected fSpecificEvents: Array<string> 	= [ "newData" ];
 
     private fState: InteractionState;				// the current interaction state
@@ -207,12 +208,12 @@ class IEventAble {
 	constructor () {  this.fState = new InteractionState(); this.fStatesStack = []; }
 
 	specifics (evslist: Array<string>) 	{ this.fSpecificEvents = this.fSpecificEvents.concat(evslist); }
-	attributes (a: TAttributesTable) 	{ for (var key in a)  this.fAttributesEvents.push(key); }
+	attributes (a: TAttributesTable) 	{ for (var key in a)  this.fAttributesNames.push(key); }
 
     //---------------------------------------------------------------
     // check the type of an event
     specificEvent 	(event: string): boolean 	{ return IEventAble.find (this.fSpecificEvents, event); }
-    attributeEvent 	(event: string): boolean 	{ return IEventAble.find (this.fAttributesEvents, event); }
+    attributeEvent 	(event: string): boolean 	{ return IEventAble.find (this.fAttributesNames, event); }
 
     //---------------------------------------------------------------
     // give the active UI events as a bit field
