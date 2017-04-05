@@ -1,6 +1,7 @@
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="../model/IObject.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
+///<reference path="../mapping/TTime2GraphicRelation.ts"/>
 
 class VHtmlView extends VObjectView {
 //	static fClickTarget: IObject;
@@ -27,14 +28,51 @@ class VHtmlView extends VObjectView {
 	getHtml(): HTMLElement { return this.fHtmlElt; }
 	remove(): void { this.fHtmlElt.parentNode.removeChild(this.fHtmlElt); }
 
+	//------------------------------------------------------------------------------------
 	updateView(obj: IObject): void {
 		this.updatePos(obj);
 		this.updateColor(obj);
 		this.updatePenControl(obj);
 		this.updateEffects(obj);
 		this.updateEvents(obj);
+		if (obj.fDebug.fShowName) 	this.showName (obj);
+		if (obj.fDebug.fShowMap) 	this.showMap (obj);
 	}
 	
+	//------------------------------------------------------------------------------------
+	showName(obj: IObject): void {
+		let div = document.createElement('div');
+        div.className = "inscore-debug";
+        div.innerHTML  = obj.getName();
+        this.getHtml().appendChild (div);
+	}
+
+	//------------------------------------------------------------------------------------
+	private addMap(seg: TGraphicSegment, i: number): void {
+		let colors = [ "DarkOrange", "ForestGreen"];
+		let x = this.fWidth * seg.first().first();
+		let w = this.fWidth * seg.first().size();
+		let y = this.fHeight * seg.second().first();
+		let h = this.fHeight * seg.second().size();
+		let div = document.createElement('div');
+		div.style.position = "absolute";
+		div.style.width = w +"px";
+		div.style.height = h +"px";
+		div.style.left = x + "px";
+		div.style.top = y + "px";
+		div.style.backgroundColor = colors[i%2];
+		div.style.opacity = "0.4";
+        this.getHtml().appendChild (div);
+	}
+
+	//------------------------------------------------------------------------------------
+	showMap(obj: IObject): void {
+		let color = [ "DarkOrange", "rgb(10 200 10)"];
+		let map : Array<TTime2GraphicRelation> = obj.fMapping.getRelations();
+		for (var i=0; i<map.length; i++)
+			this.addMap (map[i].fGraph, i);
+	}
+
 	//------------------------------------------------------------------------------------
 	mouseEvent (obj: IObject, type: eUIEvents, ev: MouseEvent) : any {
 		ev.stopPropagation();
@@ -61,13 +99,8 @@ class VHtmlView extends VObjectView {
 		let y = ev.pageY - (r.top + window.scrollY);
 		return {x: x, y: y, rx: x / (r.width / 2) - 1, ry: y / (r.height / 2) - 1};
 	}
-/*
-	getScene(elt: HTMLElement): HTMLElement {
-		if (elt.className != "inscore-scene") return this.getScene(elt.parentElement);
-		else return elt;
-	}
-*/
-	removeAll(div: HTMLElement) : void {
+
+	removeAllEvents(div: HTMLElement) : void {
 		div.onmousedown = null; 
 		div.onmouseup = null; 
 		div.onmouseenter = null; 
@@ -99,7 +132,7 @@ class VHtmlView extends VObjectView {
 				div.onmouseleave = (ev: MouseEvent): any => { return this.mouseEvent(obj, eUIEvents.kMouseLeave, ev); }; 
 			else div.onmouseleave = null;
 		}
-		else this.removeAll (div); 
+		else this.removeAllEvents (div); 
 	}
 	
 	//------------------------------------------------------------------------------------
