@@ -54,7 +54,7 @@ class IGuidoCode extends IObject {
 			this.fMapping.addElt ( new TTime2GraphicRelation(timeSegment, graphicSegment));
 		} );
 	}    
-    getMap(gr: GRHandler): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 1, 1));
+    getMap(gr: GRHandler): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 1, 1)) };
 
     str2AR(gmn: string): ARHandler {
         let p = IGuidoCode.fGuidoEngine.openParser();

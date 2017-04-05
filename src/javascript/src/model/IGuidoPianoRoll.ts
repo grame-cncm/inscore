@@ -46,7 +46,7 @@ class IGuidoPianoRoll extends IGuidoCode {
         this.fMsgHandlerMap[kheight_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setHeight(n); });
     }      
 
-    getPRollMap(pr: PianoRoll): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getPianoRollMap(pr, 1, 1));
+    getPRollMap(pr: PianoRoll): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getPianoRollMap(pr, 1, 1)) };
     
     AR2SVG(ar: ARHandler): string {
         let pr = IGuidoPianoRoll.fEngine.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
