@@ -53,12 +53,8 @@ class IGuidoCode extends IObject {
         	let graphicSegment = new TGraphicSegment (new NumberInterval(elt.graph.left, elt.graph.right), new NumberInterval(elt.graph.top, elt.graph.bottom));
 			this.fMapping.addElt ( new TTime2GraphicRelation(timeSegment, graphicSegment));
 		} );
-	}
-    
-    getMap(gr: GRHandler): void {
-		this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 1, 1));
-		console.log ("IGuidoCode getMap: " + this.fMapping );
-    }
+	}    
+    getMap(gr: GRHandler): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 1, 1));
 
     str2AR(gmn: string): ARHandler {
         let p = IGuidoCode.fGuidoEngine.openParser();
