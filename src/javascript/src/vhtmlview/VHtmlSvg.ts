@@ -53,6 +53,7 @@ abstract class VHtmlSvg extends VHtmlView {
 		this.fSVG.style.width = this.fWidth + "px";
         this.fSVG.style.height = this.fHeight + "px";
         this.fSVG.style.verticalAlign = "top";
+		this.fSVG.style.overflow = "visible";
 	}
 
 	basePenControl(obj:IObject): void {	// provided to bypass the SVG behavior
