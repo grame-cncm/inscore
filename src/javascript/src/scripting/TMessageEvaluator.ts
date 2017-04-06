@@ -64,8 +64,9 @@ class TMessageEvaluator
 	//----------------------------------------
 	private dateVar (env: TEnv, scale: TPair<number>, relative: boolean, float: boolean) : number | number[] {
 		let d = env.fTimePos;
-		if (relative) d = d.add (env.fDate);
-		return (float) ? d.toNum() : d.toArray();
+		if (relative) 	d = d.add (env.fDate);
+		if (scale)		d = d.quantize (scale.first, scale.second);
+		return float ? d.toNum() : d.toArray();
 	}
 
 	//----------------------------------------
@@ -80,15 +81,15 @@ class TMessageEvaluator
 
 			let scale = this.getScaling (str);				// get scaling option
 			let f = this.getScalingFunction (scale);
-			let float =  str.replace(/..*%/, "%") == "%f";	// get the float option from the variable
+			let float =  str.match(/..*%f/) != null;		// get the float option from the variable
 			str = str.replace(/[\[%].*/, "");				// get the variable name only
 			switch (str) {
-				case "absx": 	return f (env.fMouse.ax);
-				case "absy": 	return f (env.fMouse.ax);
-				case "sx": 		return f (env.fMouse.sx);
-				case "sy": 		return f (env.fMouse.sy);
-				case "x": 		return f (env.fMouse.x);
-				case "y":		return f (env.fMouse.y);
+				case "absx": 	return f (env.fMouse.abs.x);
+				case "absy": 	return f (env.fMouse.abs.y);
+				case "sx": 		return f (env.fMouse.parent.x);
+				case "sy": 		return f (env.fMouse.parent.y);
+				case "x": 		return f (env.fMouse.rel.x);
+				case "y":		return f (env.fMouse.rel.y);
 				case "date":	return this.dateVar (env, scale, false, float);
 				case "rdate":	return this.dateVar (env, scale, true, float);
 			}
@@ -101,15 +102,14 @@ class TMessageEvaluator
 
 	//----------------------------------------
 	private getScaling (param: string) : TPair<number> {
-		let none : TPair<number>;
 		let m = param.replace(/.*\[/, "").replace(/\](%f)?/, "")	// extract the part enclosed in []
-		if (m.match (/[^0-9.,-]/)) return none; 				// check for non numeric chars
+		if (m.match (/[^0-9.,-]/)) return null; 					// check for non numeric chars
 	
 		let t = m.split(',');
 		let a = parseFloat (t[0]);
 		let b = parseFloat (t[1]);
 		if (!isNaN(a) && !isNaN(b)) return { first: a, second: b };
-		return none;
+		return null;
 	}
 
 	//----------------------------------------

@@ -269,10 +269,11 @@ class IObject implements Tree<IObject> {
 // UI events management
 //--------------------------------------------------------------  
 	hasUIEvents (): number 										{ return this.fEvents.hasUIEvents(); }
-	handleMouseEvent (type: eUIEvents, mouse: TMouseEnv) : void	{ 
-		let env = new TEnv (this.getOSCAddress(), mouse, this.fDate.getDate());
+	handleMouseEvent (type: eUIEvents, mouse: TMouseEnv, date: Fraction) : void	{ 
+		let env = new TEnv (this.getOSCAddress(), mouse, this.fDate.getDate(), date);
 		this.fEvents.handleMouseEvent (type, env); 
 	}
+	mapPoint2Date (point: TPosition) : Fraction				{ return this.fMapping.mapPoint2Date (point); }
     
 // METHODS
 //--------------------------------------------------------------  

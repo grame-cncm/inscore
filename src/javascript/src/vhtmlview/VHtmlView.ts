@@ -70,32 +70,20 @@ class VHtmlView extends VObjectView {
 	}
 
 	//------------------------------------------------------------------------------------
-	mouseEvent (obj: IObject, type: eUIEvents, ev: MouseEvent) : any {
+	private mouseEvent (obj: IObject, type: eUIEvents, ev: MouseEvent) : any {
 		ev.stopPropagation();
 
 		let div = this.getHtml();
 		let o = this.getRelativeCoord (ev, div);
-
-		console.log ("mouseEvent on " + obj.getName() + " => " + x + " " + y + " rel: " +rx + " " + ry + " srel: " + sx + " " + sy );
-
-/*
-		let x = o.x;
-		let y = o.y;
-		let rx = o.rx;
-		let ry = o.ry;
-*/
+		let mx = this.scene2MapX (o.abs.x) / obj.fPosition.getScale();
+		let my = this.scene2MapY (o.abs.y) / obj.fPosition.getScale();
+		let date = obj.mapPoint2Date ({x: mx, y: my});
 		let p = this.getRelativeCoord (ev, div.parentElement);
-//		let sx = p.rx; 
-//		let sy = p.ry; 
-		obj.handleMouseEvent (type, {x: o.rx, y: o.ry, ax: o.x, ay: o.y, sx: p.rx, sy: p.ry});
-
-//		if (type == eUIEvents.kMouseDown)
-//			console.log ("mouseEvent on " + obj.getName() + " => " + x + " " + y + " rel: " +rx + " " + ry + " srel: " + sx + " " + sy );
+		obj.handleMouseEvent (type, {rel: o.rel, abs: o.abs, parent: p.rel}, date);
 	}
 
 	// get coordinates relative to an HTMLElement
-	getRelativeCoord(ev : MouseEvent, elt: HTMLElement): {x: number, y: number, rx: number, ry: number} {
-		
+	private getRelativeCoord(ev : MouseEvent, elt: HTMLElement): {abs: TPosition, rel: TPosition} {		
 		let r = elt.getBoundingClientRect();
 		let x = ev.pageX - (r.left + window.scrollX);
 		let y = ev.pageY - (r.top + window.scrollY);
@@ -103,8 +91,7 @@ class VHtmlView extends VObjectView {
 		let body = document.body, html = document.documentElement;
 		let height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ); 
 		elt.tagName == "BODY" ? ry = y / (height / 2 ) - 1 : ry = y / (r.height / 2) -1;
-
-		return {x: x, y: y, rx: x / (r.width / 2) - 1, ry: ry};
+		return { abs: {x: x, y: y}, rel: {x: x / (r.width / 2) - 1, y: ry} };
 	}
 
 	removeAllEvents(div: HTMLElement) : void {
