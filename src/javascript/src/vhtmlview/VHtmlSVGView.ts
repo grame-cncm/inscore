@@ -39,7 +39,7 @@ class VHtmlSvgView extends VHtmlView {
         return <SVGSVGElement>g;
     }
 
-    getClientSize(obj: IObject): { w: number, h: number } {
+    private getClientSize(obj: IObject): { w: number, h: number } {
         if (!this.fClientWidth) {
             let svg = this.getsvg(this.getHtml());
             let box = svg.viewBox.baseVal;
