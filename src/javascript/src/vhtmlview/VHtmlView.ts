@@ -40,7 +40,7 @@ class VHtmlView extends VObjectView {
 	}
 	
 	//------------------------------------------------------------------------------------
-	showName(obj: IObject): void {
+	private showName(obj: IObject): void {
 		let div = document.createElement('div');
         div.className = "inscore-debug";
         div.innerHTML  = obj.getName();
@@ -50,23 +50,19 @@ class VHtmlView extends VObjectView {
 	//------------------------------------------------------------------------------------
 	private addMap(seg: TGraphicSegment, i: number): void {
 		let colors = [ "DarkOrange", "ForestGreen"];
-		let x = this.fWidth * seg.first().first();
-		let w = this.fWidth * seg.first().size();
-		let y = this.fHeight * seg.second().first();
-		let h = this.fHeight * seg.second().size();
 		let div = document.createElement('div');
 		div.style.position = "absolute";
-		div.style.width = w +"px";
-		div.style.height = h +"px";
-		div.style.left = x + "px";
-		div.style.top = y + "px";
+		div.style.width 	= this.map2SceneX(seg.first().size()) +"px";
+		div.style.height 	= this.map2SceneY(seg.second().size()) +"px";
+		div.style.left 		= this.map2SceneX(seg.first().first()) + "px";
+		div.style.top 		= this.map2SceneY(seg.second().first()) + "px";
 		div.style.backgroundColor = colors[i%2];
 		div.style.opacity = "0.4";
         this.getHtml().appendChild (div);
 	}
 
 	//------------------------------------------------------------------------------------
-	showMap(obj: IObject): void {
+	private showMap(obj: IObject): void {
 		let color = [ "DarkOrange", "rgb(10 200 10)"];
 		let map : Array<TTime2GraphicRelation> = obj.fMapping.getRelations();
 		for (var i=0; i<map.length; i++)
@@ -79,14 +75,19 @@ class VHtmlView extends VObjectView {
 
 		let div = this.getHtml();
 		let o = this.getRelativeCoord (ev, div);
+
+		console.log ("mouseEvent on " + obj.getName() + " => " + x + " " + y + " rel: " +rx + " " + ry + " srel: " + sx + " " + sy );
+
+/*
 		let x = o.x;
 		let y = o.y;
 		let rx = o.rx;
 		let ry = o.ry;
+*/
 		let p = this.getRelativeCoord (ev, div.parentElement);
-		let sx = p.rx; //this.scene2RelativeX (x );
-		let sy = p.ry; //this.scene2RelativeY (y);
-		obj.handleMouseEvent (type, {x: rx, y: ry, ax: x, ay: y, sx: sx, sy: sy});
+//		let sx = p.rx; 
+//		let sy = p.ry; 
+		obj.handleMouseEvent (type, {x: o.rx, y: o.ry, ax: o.x, ay: o.y, sx: p.rx, sy: p.ry});
 
 //		if (type == eUIEvents.kMouseDown)
 //			console.log ("mouseEvent on " + obj.getName() + " => " + x + " " + y + " rel: " +rx + " " + ry + " srel: " + sx + " " + sy );
@@ -315,6 +316,16 @@ class VHtmlView extends VObjectView {
 
 	// Maps the referenceRect() y value to the corresponding [-1,1] value.
 	scene2RelativeY(y: number): number { return y / (this.fParent.fHeight / 2.0) - 1; }
+
+	// Maps the IObject map [0,1] x coordinate to the referenceRect().
+	map2SceneX(x: number): number 		{ return this.fWidth * x; }
+	// Maps the IObject map [0,1] y coordinate to the referenceRect().
+	map2SceneY(y: number): number 		{ return this.fHeight * y; }
+
+	//  Maps a pixel x value to the IObject map [0,1] coordinate.
+	scene2MapX(x: number): number 		{ return x / this.fWidth; }
+	// Maps a pixel y value to the IObject map [0,1] coordinate.
+	scene2MapY(y: number): number 		{ return y / this.fHeight; }
 
 	// updates the local mapping (do nothing at IObject level) 
 	//	updateLocalMapping (obj: IObject ): void;
