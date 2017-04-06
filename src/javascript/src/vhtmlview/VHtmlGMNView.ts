@@ -60,11 +60,11 @@ class VHtmlGMNView extends VHtmlSvgView {
 	
 	//  specific map functions: on model side, a guido map is computed as a square box.
 	//  while rendering is not almost never square.
-	map2SceneX(x: number): number 		{ return this.fWidth * x * this.fMapScaleX; }
+	map2SceneX(x: number): number 		{ return this.fWidth  * x * this.fMapScaleX; }
 	map2SceneY(y: number): number 		{ return this.fHeight * y * this.fMapScaleY; }
 
-	scene2MapX(x: number): number 		{ return x / this.fWidth / this.fMapScaleX; }
-	scene2MapY(y: number): number 		{ return y / this.fHeight/ this.fMapScaleY; }
+	scene2MapX(x: number): number 		{ return x / this.fWidth / this.fMapScaleX / VHtmlGMNView.fGMNScale; }
+	scene2MapY(y: number): number 		{ return y / this.fHeight/ this.fMapScaleY / VHtmlGMNView.fGMNScale; }
 
 	// updates the local mapping (do nothing at IObject level) 
 	//	updateLocalMapping (obj: IObject ): void;
