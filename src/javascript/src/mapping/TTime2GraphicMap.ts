@@ -38,5 +38,22 @@ class TTime2GraphicMap {
 		return null;
 	}
 
+	mapPoint2Date (point: TPosition) : Fraction	{
+		let relation = this.point2Relation (point);
+		if (relation) {
+			let xinterval = relation.fGraph.first();
+			let offset = point.x - xinterval.first();
+			if (offset >= 0) {
+				let relativepos = offset / xinterval.size();
+				let start = relation.fTime.first().toNum();		// computations on fractions are made on numeric values
+				let end = relation.fTime.second().toNum();
+				let timeoffset = (end - start) * relativepos;
+				return Fraction.approximate (start + timeoffset, 1000000);
+			}
+			else console.log ("Unexpected offset " + offset + " in TTime2GraphicMap.mapPoint2Date");
+		}
+		return null; 
+	}
+
 	size() : number			{ return this.fRelations.length; }
 }
