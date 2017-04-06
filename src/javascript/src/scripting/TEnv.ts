@@ -16,7 +16,7 @@ class TEnv
 	
 	constructor (target: string, mouse?: TMouseEnv, date?: Fraction, timepos?: Fraction, user?:  Array<any>) {
 		this.fTarget = target; 
-		this.fMouse = mouse ? mouse : {x:0, y:0, ax:0, ay:0, sx:0, sy:0}; 
+		this.fMouse = mouse ? mouse : {rel: {x:0, y:0}, abs: {x:0, y:0}, parent: {x:0, y:0}}; 
 		this.fDate = date ? date : new Fraction(0, 1);
 		this.fTimePos = timepos ? timepos : new Fraction(0, 1);
 		this.fUser = user ? user : [];
