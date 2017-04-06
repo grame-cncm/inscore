@@ -12,13 +12,14 @@ class Fraction {
             this.numerator = a.numerator;
             this.denominator = a.denominator;
         } 
-        else if (typeof a === "number" && b === undefined) {
-            this.rational2fraction(a);
+        else if (typeof a === "number") {
+        	if (b === undefined)
+	            this.rational2fraction(a);
+	        else {
+    	        this.numerator = a;
+	            this.denominator = b;
+	        }
         } 
-        else if (typeof a === "number" && b !== undefined) {
-            this.numerator = a;
-            this.denominator = b;
-        }
         else if (typeof a === "string" && b === undefined) {
             let myRegex = /^([0-9]+)\/([0-9]+)$/.test(a);
             if (myRegex) {
@@ -28,6 +29,12 @@ class Fraction {
         }
     
         if (this.denominator == 0) { this.numerator = undefined; this.denominator = undefined}     // undefined if denominator = 0
+    }
+
+// APPROXIMATE A RATIONAL AS A FRACTION
+//-------------------------------------------------------------- 
+    static approximate (value: number, precision: number): Fraction {
+    	return new Fraction(Math.floor (value * precision), precision).reduce();
     }
 
 // CONVERTION RATIONAL TO A FRACTION
@@ -99,15 +106,21 @@ class Fraction {
     lt (f: Fraction): boolean { return this.toNum() < f.toNum(); }
     leq(f: Fraction): boolean { return this.toNum() <= f.toNum(); }
     
+	//-----------------------------------------
+    // quantification
+    quantize (num: number, dnum: number): Fraction {
+    	let d = this.denominator * num;
+    	if (!d) return new Fraction(this);
+    	let n = Math.floor (this.numerator * dnum / d);
+    	return new Fraction (num * n, dnum);
+    }
+    
+	//-----------------------------------------
     // reduce a fraction : Euclide algorithme
     reduce(): Fraction {
-        let n = this.numerator;
-        let d = this.denominator;
-        let that: Fraction = new Fraction(n, d);
-        
-        let a = Math.max (n, d);
-        let b = Math.min (n, d);
-        if (b == 0) return that;
+        let a = Math.max (this.numerator, this.denominator);
+        let b = Math.min (this.numerator, this.denominator);
+        if ((a == 0) || (b == 0)) return new Fraction (this);
         
         let rest = a%b;        
         while (rest != 0) {
@@ -115,22 +128,16 @@ class Fraction {
             b = rest;                               // var b is the PGCD if the rest is equal to 0
             rest = a%b;
         }
-        
-        that.numerator = this.numerator/b;
-        that.denominator = this.denominator/b;
-        return that;      
+        return new Fraction(this.numerator/b, this.denominator/b);     
     }
     
 // GETS AND SETS VALUES
 //--------------------------------------------------------------
     getDenominator(): number { return this.denominator; }
-    
     getNumerator(): number { return this.numerator; }
     
-    setDenominator(value: number): void { this.denominator = value; }
-        
+    setDenominator(value: number): void { this.denominator = value; }   
     setNumerator(value: number): void { this.numerator = value; }
-    
 }
 
 //export default Fraction;
