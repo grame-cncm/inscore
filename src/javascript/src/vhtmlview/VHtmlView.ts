@@ -123,7 +123,7 @@ class VHtmlView extends VObjectView {
 			else div.onmousedown = null;
 
 			if (evs & eUIEvents.kMouseMove) 
-				div.onmousemove = (ev: MouseEvent): any => { return (ev.which == 1) /*&& (VHtmlView.fClickTarget == obj)*/ ? this.mouseEvent(obj, eUIEvents.kMouseMove, ev) : null; }
+				div.onmousemove = (ev: MouseEvent): any => {return (ev.buttons == 1) /*&& (VHtmlView.fClickTarget == obj)*/ ? this.mouseEvent(obj, eUIEvents.kMouseMove, ev) : null; }
 			else div.onmousemove = null;
 
 			if (evs & eUIEvents.kMouseUp)
