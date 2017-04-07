@@ -1,6 +1,8 @@
 
 ///<reference path="../lib/ITLError.ts"/>
+///<reference path="../lib/OSCRegexp.ts"/>
 ///<reference path="../lib/TEnums.ts"/>
+///<reference path="../lib/Tools.ts"/>
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="IObject.ts"/>
 
@@ -27,6 +29,13 @@ class TSyncInfo  {
 		this.fPosition	= eSyncPosition.kSyncOver;
 		this.fStretch	= eSyncStretch.kSyncDate;
     }
+
+	//---------------------------------------------
+	update (info: TSyncInfo) : void {
+		this.fMode		= info.fMode;
+		this.fPosition	= info.fPosition;
+		this.fStretch	= info.fStretch;
+	}
 
 	//---------------------------------------------
 	set (msg: IMessage) : boolean {
@@ -97,8 +106,12 @@ class TSyncNode  {
     constructor(slave: IObject, master: IObject, info: TSyncInfo) { 
 		this.fSlave		= slave;
 		this.fMaster	= master;
-		this.fInfos		= info;
+		this.fInfos		= new TSyncInfo();
+		this.fInfos.update (info);		
     }
+
+   //---------------------------------------------
+	update (infos: TSyncInfo): void 	{  this.fInfos.update (infos); }
 
    //---------------------------------------------
    // conversion methods
@@ -111,7 +124,7 @@ class TSyncNode  {
     	return out;
     }   
 }
-	
+
 
 //--------------------------------------------------------------  
 // synchronisation management
@@ -128,65 +141,81 @@ class ISync extends IObject  {
     //------------------------------------
 	private findSyncByName (name: string): Array<TSyncNode> {
 		let out : Array<TSyncNode> = [];
-		this.fSyncList.forEach( function (sync: TSyncNode) { if (sync.fSlave.getName() === name) out.push(sync); } );
+		let f = (sync: TSyncNode): void => { if (sync.fSlave.getName() === name) out.push(sync); }
+		if (Tools.regexp(name)) {
+			let re = new OSCRegexp(name);
+			f = (sync: TSyncNode): void => { if (re.match(sync.fSlave.getName())) out.push(sync); }
+		}
+		this.fSyncList.forEach( f );
 		return out;
 	}
-	
     //------------------------------------
-     private clearSync (obj: IObject): eMsgStatus {
-console.log ("ISync clearSync " + obj.getName());
-        return eMsgStatus.kProcessedNoChange;
-    }
+	private findSyncNodes (slave: string, master: string): Array<TSyncNode> {
+		let out : Array<TSyncNode> = [];
+
+		let sync : Array<TSyncNode> = this.findSyncByName (slave);
+		if (!sync.length) return out;
+		
+		let f = (name: string): boolean => { return name === master; };
+		if (Tools.regexp(master)) {
+			let re = new OSCRegexp(master);
+			let f = (name: string): boolean => { return re.match(name); };
+		}
+		for (var i=0; i < sync.length; i++)
+			if (f (sync[i].fMaster.getName())) out.push (sync[i]);
+		return out;
+	}
 
     //------------------------------------
+     removeSync (obj: IObject): void {	this.clearName (obj.getName()); }
      private clearName (obj: string): eMsgStatus {
-     	for (var i=0; i < this.fSyncList.length; ) {
-     		let sync = this.fSyncList[i];
-     		if (sync.fSlave.getName() == obj) {
-console.log ("ISync clearName " + obj + " at index " + i);
-     			this.fSyncList.splice(i, 1);
-     		}
-     		else i++;
-     	}
+     	let targets = this.findSyncByName (obj);
+		targets.forEach ( (sync: TSyncNode): void => { 
+			let i=this.fSyncList.indexOf (sync);
+			if (i>=0) this.fSyncList.splice(i, 1);
+		} );
         return eMsgStatus.kProcessedNoChange;
     }
 
     //------------------------------------
      private getOne(name: string): IMessageList {
-console.log ("ISync getOne " + name);
+		let out : IMessageList = []
 		let syncs = this.findSyncByName (name);
-		syncs.forEach( function (sync: TSyncNode) { console.log ("sync " + sync);} );
-        return null;
+		syncs.forEach( (sync: TSyncNode) : void => { out.push( new IMessage(this.getOSCAddress(), sync.toArray())); } );
+        return out;
     }
 
     //------------------------------------
     private getAll(): IMessageList {
-console.log ("ISync getAll ");
 		let out : IMessageList = []
-		this.fSyncList.forEach( function (sync: TSyncNode) { console.log ("sync " + sync);} );
 		this.fSyncList.forEach( (sync: TSyncNode) : void => { out.push( new IMessage(this.getOSCAddress(), sync.toArray())); } );
         return out;
     }
 
     //------------------------------------
     private setSync(msg: IMessage): eMsgStatus {
-console.log ("ISync setSync ");
 		let slaveName = msg.paramStr(0);
 		let masterName = msg.paramStr(1);
 		if (!slaveName.correct || !masterName.correct) return eMsgStatus.kBadParameters;
 
 		let syncparams = new TSyncInfo();
 		if (! syncparams.set (msg))  return eMsgStatus.kBadParameters;
-		
-		let slaves = this.fParent.find (slaveName.value);
-		if (!slaves.length) { ITLError.write (slaveName.value + ": no such object!"); return eMsgStatus.kBadParameters; }
-		let masters = this.fParent.find (masterName.value);
-		if (!masters.length) { ITLError.write (masterName.value + ": no such object!"); return eMsgStatus.kBadParameters; }
 
-		for (var i = 0; i < slaves.length; i++) {
-			for (var j = 0; j < masters.length; j++)
-				if ((slaves[i].fTypeString != kSyncType) && (masters[j].fTypeString != kSyncType))
-					this.fSyncList.push (new TSyncNode(slaves[i], masters[j], syncparams));
+		let nodes = this.findSyncNodes (slaveName.value, masterName.value);
+		if (nodes.length) {			// update existing nodes
+			nodes.forEach( function(node: TSyncNode) { node.update (syncparams) } );
+		}
+		else {
+			let slaves = this.fParent.find (slaveName.value);
+			if (!slaves.length) { ITLError.write (slaveName.value + ": no such object!"); return eMsgStatus.kBadParameters; }
+			let masters = this.fParent.find (masterName.value);
+			if (!masters.length) { ITLError.write (masterName.value + ": no such object!"); return eMsgStatus.kBadParameters; }
+
+			for (var i = 0; i < slaves.length; i++) {
+				for (var j = 0; j < masters.length; j++)
+					if ((slaves[i].fTypeString != kSyncType) && (masters[j].fTypeString != kSyncType))
+						this.fSyncList.push (new TSyncNode(slaves[i], masters[j], syncparams));
+			}
 		}
         return eMsgStatus.kProcessedNoChange;
     }
@@ -222,6 +251,18 @@ console.log ("ISync setSync ");
         if (n == 1) return this.clearName (p1.value);
 		return this.setSync (msg);
 	}
+
+    //------------------------------------
+    // delNotify : notifications activated by nodes
+    //------------------------------------
+    delNotify(obj: IObject): void 	{ 
+		for (var i=0; i < this.fSyncList.length; ) {
+			let sync = this.fSyncList[i];
+			if (sync.fMaster.getDeleted() || sync.fSlave.getDeleted()) 
+				this.fSyncList.splice(i,1);
+			else i++
+		}
+    }
 	
     createStaticNodes() : void {}
 }

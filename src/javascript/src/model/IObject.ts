@@ -579,9 +579,11 @@ class IObject implements Tree<IObject> {
     				{ return IProxy.execute (msg, name, parent); }         
     
     //-----------------------------    
+    delNotify(obj: IObject): void 	{}
     getDeleted(): boolean 	{ return this.fDelete; }
     del(): void {
     	this.fDelete = true;
+    	this.fParent.fSync.delNotify (this);
         if (this.getView()) this.getView().remove();
         let array = this.fParent.getSubNodes();
         array.splice(array.indexOf(this), 1);
