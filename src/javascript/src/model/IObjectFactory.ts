@@ -15,6 +15,7 @@
 ///<reference path="IScene.ts"/>
 ///<reference path="ISVG.ts"/>
 ///<reference path="ISVGf.ts"/>
+///<reference path="ISync.ts"/>
 ///<reference path="IText.ts"/>
 ///<reference path="ITextf.ts"/>
 ///<reference path="IWebSocket.ts"/>
@@ -39,6 +40,9 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
         switch (type) {
         	case kDebugType:
                 obj = new IDebug(name, parent);
+                break
+        	case kSyncType:
+                obj = new ISync(name, parent);
                 break
         		
             case kEllipseType:

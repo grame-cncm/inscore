@@ -19,7 +19,12 @@ enum ePenStyle  	{ kSolid, kDash, kDot, kDashDot, kDashDotDot, kLast }
 enum eBrushStyle	{ kNone, kSolid,}
 enum eEffect 		{ kNone, kBlur, kColorize,kShadow, }
 
-// WARNING: changing the enum order requires to change IEventAble too
+
+enum eSyncModes 	{ kRelative, kAbsolute }
+enum eSyncPosition 	{ kSyncOver, kSyncTop, kSyncBottom, kSyncFrame }
+enum eSyncStretch 	{ kSyncDate = 0, kSyncV=1, kSyncH=2 }
+
+
 enum eUIEvents { 
     kMouseDown = 1,
 	kMouseMove = 2,

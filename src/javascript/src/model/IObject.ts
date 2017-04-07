@@ -45,7 +45,6 @@ class IObject implements Tree<IObject> {
 // ATTRIBUTES
 //-------------------------------------------------------------- 
     private   fState: 		eObjState;
-    protected fTypeString:	string;
     protected fName: 		string;
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
@@ -58,6 +57,7 @@ class IObject implements Tree<IObject> {
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
     protected fGetMsgsHandlerMap : 	TGetMsgHandler<TGetMultiHandler>; 
     
+    fTypeString: string;
     fPosition: 	 IPosition;
     fDate: 		 IDate;
     fColor: 	 IColor;
@@ -67,6 +67,7 @@ class IObject implements Tree<IObject> {
     fEvents:	 IEventAble;
     fMapping:	 TTime2GraphicMap;
     fDebug:	 	 IObject;
+    fSync:	 	 IObject;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -108,7 +109,9 @@ class IObject implements Tree<IObject> {
     
     createStaticNodes() : void {
     	this.fDebug = IObjectFactory.createObj ("debug", kDebugType, this);
-    	if (this.fDebug) this.addChild (this.fDebug);
+    	this.addChild (this.fDebug);
+    	this.fSync = IObjectFactory.createObj ("sync", kSyncType, this);
+    	this.addChild (this.fSync);
     }
 
 // HANDLERS
