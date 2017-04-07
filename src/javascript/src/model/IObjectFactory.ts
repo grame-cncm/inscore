@@ -1,38 +1,46 @@
 ///<reference path="../globals.ts"/>
+///<reference path="../lib/ITLError.ts"/>
 ///<reference path="../vhtmlview/HtmlViewFactory.ts"/>
-///<reference path="ICurve.ts"/>
-///<reference path="IEllipse.ts"/>
 ///<reference path="IArc.ts"/>
+///<reference path="ICurve.ts"/>
+///<reference path="IDebug.ts"/>
+///<reference path="IEllipse.ts"/>
+///<reference path="IGuidoCode.ts"/>
+///<reference path="IGuidoPianoRoll.ts"/>
 ///<reference path="IHtml.ts"/>
 ///<reference path="IImage.ts"/>
 ///<reference path="ILine.ts"/>
 ///<reference path="IPolygon.ts"/>
 ///<reference path="IRect.ts"/>
 ///<reference path="IScene.ts"/>
-///<reference path="IText.ts"/>
-///<reference path="ITextf.ts"/>
-///<reference path="IGuidoCode.ts"/>
-///<reference path="IGuidoPianoRoll.ts"/>
-///<reference path="IWebSocket.ts"/>
 ///<reference path="ISVG.ts"/>
 ///<reference path="ISVGf.ts"/>
+///<reference path="IText.ts"/>
+///<reference path="ITextf.ts"/>
+///<reference path="IWebSocket.ts"/>
 ///<reference path="Methods.ts"/>
 
-class IObjectFactory {	
-	static fViewFactory = new HtmlViewFactory();
+///<reference path="IObjectFactory-interface.ts"/>
+
+class IObjectFactoryImpl extends IObjectFactoryInterface {	
+	fViewFactory = new HtmlViewFactory();
     
-	static createView(obj: IObject, parent?: VObjectView): void {
+	createView(obj: IObject, parent?: VObjectView): void {
 		if (gCreateView) {
 			let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent, obj.getName());
 			obj.setView (view);
 		}
     }
         
-    static createObj (name: string , type: string, parent: IObject): IObject {
+    createObj (name: string , type: string, parent: IObject): IObject {
 //        console.log("IObjetFactory createObj " + type);
 
         let obj: IObject;
         switch (type) {
+        	case kDebugType:
+                obj = new IDebug(name, parent);
+                break
+        		
             case kEllipseType:
                 obj = new IEllipse(name, parent);
                 this.createView(obj, parent.getView());  
@@ -119,19 +127,17 @@ class IObjectFactory {
                 break;                        
                           
             default:
+	            ITLError.write ( "IObjectFactory: unknown object type: " + type);
                 break;
         }
 
-
-        /*else
-            ITLErr << "unknown object type: " << type << ITLEndl;
-
         if (obj) {
-            obj.setHandlers();
-            obj.createVirtualNodes();
-            obj.setVisible(IAppl.fDefaultShow);
-        } */
-        
+//            obj.setHandlers();
+//            obj.createStaticNodes();
+//            obj.setVisible(IAppl.fDefaultShow);
+        }        
         return obj; 
     }
 }
+
+IObjectFactory = new IObjectFactoryImpl();
