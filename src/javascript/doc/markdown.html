@@ -52,11 +52,8 @@ So, a small object don't have the same dot than a big one in div.
 
 * Video mls and vduration don't exist before first video play.
 
-* Mouse move event function differently. Needs mouse down in the object before et mouse up in the object to finish.
- In case of move out of target objet : 
-   - if mouse keep down, or mouse enter after mouse down : same action than application.
-   - if mouse up out of the object : stop the action but do nothing for mouse up.
-And while mouse move, need to rest in the object, don't work out of the object.
+* While mouse move, need to rest in the object, move slowly to don't lose target focus.
+  While mouse move if two objects have move event, and one is over the other, focus is on the upper object. If the upper object is static focus is lose.
 
 
 <h2 id="notyet">Not yet supported</h2>
