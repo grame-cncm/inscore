@@ -16,6 +16,7 @@ const kImgType              : string	= "img";
 const kVideoType            : string	= "video";
 const kSvgType              : string	= "svg";
 const kSvgfType             : string    = "svgf";
+const kSyncType             : string	= "sync";
 const kWebSocketType        : string	= "websocket";
 
 const kDebugType            : string	= "debug";
