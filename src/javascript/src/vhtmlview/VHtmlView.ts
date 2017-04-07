@@ -1,10 +1,14 @@
 ///<reference path="../lib/TTypes.ts"/>
+///<reference path="../model/IDebug.ts"/>
 ///<reference path="../model/IObject.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 ///<reference path="../mapping/TTime2GraphicRelation.ts"/>
 
 class VHtmlView extends VObjectView {
 //	static fClickTarget: IObject;
+	private	fDisplayMap: boolean = false;
+	private	fDisplayName: boolean = false;
+
 	protected fHtmlElt: HTMLElement;
 	protected fParent: VHtmlView;
 
@@ -35,22 +39,35 @@ class VHtmlView extends VObjectView {
 		this.updatePenControl(obj);
 		this.updateEffects(obj);
 		this.updateEvents(obj);
-		if (obj.fDebug.fShowName) 	this.showName (obj);
-		if (obj.fDebug.fShowMap) 	this.showMap (obj);
+		let debug = <IDebug>obj.fDebug;
+		if (debug.fShowName) 		this.showName (obj);
+		else if (this.fDisplayName) this.removeName ();
+		if (debug.fShowMap) 		this.showMap (obj);
+		else if (this.fDisplayMap) 	this.removeMap ();
 	}
 	
 	//------------------------------------------------------------------------------------
 	private showName(obj: IObject): void {
 		let div = document.createElement('div');
         div.className = "inscore-debug";
+		div.id = "_name_";
         div.innerHTML  = obj.getName();
         this.getHtml().appendChild (div);
+        this.fDisplayName = true;
+	}
+
+	//------------------------------------------------------------------------------------
+	private removeName(): void {
+		let childs = this.getHtml().querySelectorAll('#_name_');
+        if (childs && childs.length) this.getHtml().removeChild (childs[0]);
+        this.fDisplayName = false;
 	}
 
 	//------------------------------------------------------------------------------------
 	private addMap(seg: TGraphicSegment, i: number): void {
 		let colors = [ "DarkOrange", "ForestGreen"];
 		let div = document.createElement('div');
+		div.id = "_map_";
 		div.style.position = "absolute";
 		div.style.width 	= this.map2SceneX(seg.first().size()) +"px";
 		div.style.height 	= this.map2SceneY(seg.second().size()) +"px";
@@ -59,6 +76,15 @@ class VHtmlView extends VObjectView {
 		div.style.backgroundColor = colors[i%2];
 		div.style.opacity = "0.4";
         this.getHtml().appendChild (div);
+        this.fDisplayMap = true;
+	}
+
+	//------------------------------------------------------------------------------------
+	private removeMap(): void {
+		let childs = this.getHtml().querySelectorAll('#_map_');
+		let n = childs.length;
+        for (var i=0; i<n; i++) this.getHtml().removeChild (childs[i]);
+        this.fDisplayMap = false;
 	}
 
 	//------------------------------------------------------------------------------------
