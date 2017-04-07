@@ -21,6 +21,7 @@
 ///<reference path="IDate.ts"/>
 ///<reference path="IEffect.ts"/>
 ///<reference path="IEventAble.ts"/>
+///<reference path="IObjectFactory-interface.ts"/>
 ///<reference path="IPenControl.ts"/>
 ///<reference path="IPosition.ts"/>
 ///<reference path="IProxyInterface.ts"/>
@@ -65,7 +66,7 @@ class IObject implements Tree<IObject> {
     fEffect:     IEffect;
     fEvents:	 IEventAble;
     fMapping:	 TTime2GraphicMap;
-    fDebug:	 	 IDebug;
+    fDebug:	 	 IObject;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -105,7 +106,10 @@ class IObject implements Tree<IObject> {
 		this.fMapping.addElt ( new TTime2GraphicRelation(defaultTimeSegment, defaultGraphicSegment));
     }
     
-    createStaticNodes() : void { this.fDebug = new IDebug("debug", this); this.addChild(this.fDebug); }
+    createStaticNodes() : void {
+    	this.fDebug = IObjectFactory.createObj ("debug", kDebugType, this);
+    	if (this.fDebug) this.addChild (this.fDebug);
+    }
 
 // HANDLERS
 //--------------------------------------------------------------  
@@ -313,16 +317,14 @@ class IObject implements Tree<IObject> {
     
     
     //-----------------------------
-    match(address: string): boolean
-    {
+    match(address: string): boolean  {
         let re = new OSCRegexp(address);
         return re.match (this.fName);
     }
 
     find(expr: string): Array<IObject> {
-        if (!Tools.regexp(expr)) {
+        if (!Tools.regexp(expr))
             return this.exactfind(expr);
-        }
 
 		let re = new OSCRegexp(expr);
 		let out: Array<IObject> = [];
@@ -624,37 +626,3 @@ class IObjectTreeApply implements TreeApply<IObject> {
 	posModified (t: IObject) : void 		{ t.posModified(); }
 	applyPosModified (t: IObject): void 	{ this.apply ((o) => this.posModified (o), t); }
 }
-
-
-//-------------------------------------------------------------- 
-// Debug node of IObject
-//-------------------------------------------------------------- 
-class IDebug extends IObject {
-    fShowMap : 	boolean; 
-    fShowName : boolean;
-    
-    constructor(name: string, parent: IObject) { 
-        super( name, parent );
-        this.fTypeString = kDebugType;
-        this.fShowMap = false; 
-        this.fShowName = false; 
-    }
-
-    setHandlers(): void {
-        this.fMsgHandlerMap[kname_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setShowName(n); } );
-        this.fMsgHandlerMap[kmap_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.setShowMap(n);  } );
-        this.fMsgHandlerMap[kget_SetMethod] 	= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.get(msg); } );
-
-        this.fGetMsgHandlerMap[kname_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.getShowName(); } );
-        this.fGetMsgHandlerMap[kmap_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.getShowMap(); } );
-    }
-
-	getShowMap() : number 		{ return this.fShowMap ? 1 : 0; }
-	getShowName() : number 		{ return this.fShowName ? 1 : 0; }
-
-	setShowMap(val: number) : void 		{ this.fShowMap  = val ? true : false; this.fParent.addState(eObjState.kModified); }
-	setShowName(val: number) : void 	{ this.fShowName = val ? true : false; this.fParent.addState(eObjState.kModified); }
-
-    createStaticNodes() : void {}
-}
-
