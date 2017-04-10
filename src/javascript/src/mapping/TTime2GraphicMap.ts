@@ -1,6 +1,7 @@
 
 ///<reference path="TTime2GraphicRelation.ts"/>
 ///<reference path="TSegment.ts"/>
+///<reference path="../lib/TEnums.ts"/>
 ///<reference path="../lib/TTypes.ts"/>
 
 interface TArrayFunction 			{ (elt: TTime2GraphicRelation): void; }

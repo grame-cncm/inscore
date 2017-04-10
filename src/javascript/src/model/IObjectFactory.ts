@@ -32,16 +32,16 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
 		return view;
     }
 	createViews(obj: IObject, parent: Array<VObjectView>): Array<VObjectView> {
+		let out: Array<VObjectView> = []
 		if (gCreateView) {
-			let out: Array<VObjectView> = []
 			for (var i=0; i < parent.length; i++) {
 				let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent[i], obj.getName());
 				view.setPositionHandler ( () : TPosition => { return obj.getPosition() });
 				out.push (view);
 			}
 //			obj.setView (view);
-			return out;
 		}
+		return out;
     }
         
     createObj (name: string , type: string, parent: IObject): IObject {
