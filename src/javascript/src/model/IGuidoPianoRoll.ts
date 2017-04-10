@@ -50,9 +50,10 @@ class IGuidoPianoRoll extends IGuidoCode {
     
     AR2SVG(ar: ARHandler): string {
         let pr = IGuidoPianoRoll.fEngine.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
-        let w = this.getView().relative2SceneWidth (this.fPosition.getWidth());
-        let h = this.getView().relative2SceneHeight (this.fPosition.getHeight());
-        let svg = IGuidoPianoRoll.fEngine.svgExport(pr, w, h);
+//        let w = this.getView().relative2SceneWidth (this.fPosition.getWidth());
+//        let h = this.getView().relative2SceneHeight (this.fPosition.getHeight());
+//        let svg = IGuidoPianoRoll.fEngine.svgExport(pr, w, h);
+        let svg = IGuidoPianoRoll.fEngine.svgExport(pr, 1, 1);
         this.getPRollMap (pr);
         IGuidoPianoRoll.fEngine.destroyPianoRoll(pr);                                     
 	    return svg;
