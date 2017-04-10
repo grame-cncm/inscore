@@ -50,7 +50,7 @@ class IObject implements Tree<IObject> {
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
     protected fParent: 		IObject;
-    protected fObjectView:	VObjectView;
+    protected fObjectView:	Array<VObjectView>;
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
@@ -75,6 +75,7 @@ class IObject implements Tree<IObject> {
         this.fName = name;
         this.fTypeString = 'obj'; 
         
+        this.fObjectView = [];
         this.fDelete = false;
         this.fLock = false;
         this.fState = eObjState.kNewObject;
@@ -260,8 +261,19 @@ class IObject implements Tree<IObject> {
 	setWidth (width: number) : void { this.fPosition.setWidth( width ); this.posPropagate(); }
 	setHeight(height:number): void 	{ this.fPosition.setHeight( height); this.posPropagate(); }
     setScale (scale:number): void 	{ this.fPosition.setScale( scale); this.posPropagate(); }
+	subModPropagate(obj: IObject) : void 	{ if (obj) { obj.addState (eObjState.kSubModified); this.subModPropagate(obj.fParent) ;} }
 	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
 	posModified() : void 			{ this.fPosition.modify(); this.addState (eObjState.kModified + eObjState.kSubModified); }
+	allModified() : void {
+		this.addState (eObjState.kModified);
+		this.fPosition.modify(); 
+		this.fDate.modify(); 
+		this.fColor.modify(); 
+		this.fPenControl.modify(); 
+		this.fBrushStyle.modify(); 
+		this.fEffect.modify(); 
+	}
+	
 //-------------------------------------------------------------- 
 // decorate date and duration messages to handle time events
 //--------------------------------------------------------------  
@@ -280,8 +292,14 @@ class IObject implements Tree<IObject> {
 		let env = new TEnv (this.getOSCAddress(), mouse, this.fDate.getDate(), date);
 		this.fEvents.handleMouseEvent (type, env); 
 	}
-	mapPoint2Date (point: TPosition) : Fraction				{ return this.fMapping.mapPoint2Date (point); }
-    
+
+//-------------------------------------------------------------- 
+// Mappings
+//--------------------------------------------------------------  
+	mapPoint2Date (point: TPosition) : Fraction							{ return this.fMapping.mapPoint2Date (point); }
+	date2MapLocation (date: Fraction) : { x: number, y: NumberInterval}	{ return this.fMapping.date2MapLocation (date); }
+
+
 // METHODS
 //--------------------------------------------------------------  
     addChild(obj: IObject): void { 
@@ -303,9 +321,13 @@ class IObject implements Tree<IObject> {
     	return size / 2 * this.fParent.getRSizeAsScale(); 
     }
 
-    getPosition(): {x: number, y: number } 		     { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
+    getPosition(): TPosition 		     			 { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
     getSize():     {w: number, h: number } 			 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
+    getSlavePosition (master: IObject): TPosition  	 { 
+    	let pos = master.date2MapLocation ( this.fDate.getDate() );
+    	return { x: pos.x, y: pos.y.first() + pos.y.size()/2 }; 
+    }
 
     toString(): string 				{ 
     	let n=this.fSubNodes.length; 
@@ -367,11 +389,28 @@ class IObject implements Tree<IObject> {
         return dest;
     }   
 
-    // View
     //-----------------------------    
-    setView(view: VObjectView): void 	{ this.fObjectView = view }
-    getView(): VObjectView 				{ return this.fObjectView }
+    // Views management
+    //-----------------------------    
+    setView(view: VObjectView): void 			{ this.fObjectView = [view]; }
+    addView(view: VObjectView): void 			{ this.fObjectView.push (view); }
+    addViews(views: Array<VObjectView>): void 	{ this.fObjectView = this.fObjectView.concat(views); }
+    getViews(): Array<VObjectView> 				{ return this.fObjectView; }
+    removeView(view: VObjectView): void 	{ 
+    	let i= this.fObjectView.indexOf (view);
+		if (i>=0) {
+	    	view.remove();
+			this.fObjectView.splice(i, 1);
+		}
+    }
+    removeViews(): void 	{ 
+    	this.fObjectView.forEach ( function (view: VObjectView) { view.remove(); });
+    	this.fObjectView = []
+    }
     
+
+    //-----------------------------    
+    // Msgs execution
     //-----------------------------
     execute (msg: IMessage): eMsgStatus {
     	if (msg.size() == 0) return eMsgStatus.kBadParameters;
@@ -584,7 +623,7 @@ class IObject implements Tree<IObject> {
     del(): void {
     	this.fDelete = true;
     	this.fParent.fSync.delNotify (this);
-        if (this.getView()) this.getView().remove();
+        this.removeViews();
         let array = this.fParent.getSubNodes();
         array.splice(array.indexOf(this), 1);
     }
