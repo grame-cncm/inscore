@@ -4,15 +4,11 @@
 class ViewUpdater {
     
 	static update ( obj: IObject) : void {
-		if (obj.getDeleted()) {
-//			if (obj.getView()) 
-//			obj.getView().remove();
-		}
-		else {
+		if (!obj.getDeleted()) {
 			let state = obj.getState();
 			if (state & (eObjState.kNewObject + eObjState.kModified)) {
-				let view = obj.getView();
-				if (view) view.updateView(obj);
+				let views = obj.getViews();
+				views.forEach ( function(view: VObjectView) { view.updateView(obj); } );
 			}
 			if (state & eObjState.kSubModified) {
 				let subnodes = obj.getSubNodes();
