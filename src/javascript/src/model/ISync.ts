@@ -101,12 +101,14 @@ class TSyncInfo  {
 class TSyncNode  {
 	fSlave	: IObject;
 	fMaster	: IObject;
+	fViews	: Array<VObjectView>;
 	fInfos	: TSyncInfo;
 
-    constructor(slave: IObject, master: IObject, info: TSyncInfo) { 
+    constructor(slave: IObject, master: IObject, info: TSyncInfo, views: Array<VObjectView>) { 
 		this.fSlave		= slave;
 		this.fMaster	= master;
 		this.fInfos		= new TSyncInfo();
+		this.fViews		= views;
 		this.fInfos.update (info);		
     }
 
@@ -167,14 +169,42 @@ class ISync extends IObject  {
 	}
 
     //------------------------------------
-     removeSync (obj: IObject): void {	this.clearName (obj.getName()); }
+	private restoreDefaultView (obj: IObject) {
+     	let views = IObjectFactory.createViews (obj, obj.getParent().getViews());
+     	views.forEach ( function(view: VObjectView): void { obj.setView (view); });
+     	obj.subModPropagate (obj.getParent());
+     	obj.allModified ();
+	}
+
+    //------------------------------------
+     private removeSync (obj: IObject): void {	this.clearName (obj.getName()); }
      private clearName (obj: string): eMsgStatus {
      	let targets = this.findSyncByName (obj);
 		targets.forEach ( (sync: TSyncNode): void => { 
 			let i=this.fSyncList.indexOf (sync);
-			if (i>=0) this.fSyncList.splice(i, 1);
+			if (i>=0) {
+				sync.fViews.forEach( function(view: VObjectView): void { sync.fSlave.removeView(view); } );
+				if (!sync.fSlave.getViews().length) this.restoreDefaultView (sync.fSlave);
+				this.fSyncList.splice(i, 1);
+			}
 		} );
         return eMsgStatus.kProcessedNoChange;
+    }
+
+    //------------------------------------
+     private createSync (slave: IObject, master: IObject, syncparams: TSyncInfo): void {
+     	let n = this.findSyncByName(slave.getName()).length;
+     	if (!n) {					// first synchronisation
+     		slave.removeViews();	// remove the standard view
+     	}
+     	let views = IObjectFactory.createViews (slave, master.getViews());
+     	views.forEach ( function(view: VObjectView): void { 
+     		slave.addView (view);
+     		view.setPositionHandler( () : TPosition => { return slave.getSlavePosition (master); }) } 
+     	);
+     	this.fSyncList.push (new TSyncNode(slave, master, syncparams, views));
+     	slave.subModPropagate (master);
+     	slave.allModified ();
     }
 
     //------------------------------------
@@ -214,7 +244,7 @@ class ISync extends IObject  {
 			for (var i = 0; i < slaves.length; i++) {
 				for (var j = 0; j < masters.length; j++)
 					if ((slaves[i].fTypeString != kSyncType) && (masters[j].fTypeString != kSyncType))
-						this.fSyncList.push (new TSyncNode(slaves[i], masters[j], syncparams));
+						this.createSync (slaves[i], masters[j], syncparams);
 			}
 		}
         return eMsgStatus.kProcessedNoChange;
@@ -258,8 +288,13 @@ class ISync extends IObject  {
     delNotify(obj: IObject): void 	{ 
 		for (var i=0; i < this.fSyncList.length; ) {
 			let sync = this.fSyncList[i];
-			if (sync.fMaster.getDeleted() || sync.fSlave.getDeleted()) 
+			if (sync.fSlave.getDeleted()) 
 				this.fSyncList.splice(i,1);
+			else if (sync.fMaster.getDeleted()) {
+				sync.fViews.forEach( function(view: VObjectView): void { sync.fSlave.removeView(view); } );
+				if (!sync.fSlave.getViews().length) this.restoreDefaultView (sync.fSlave);
+				this.fSyncList.splice(i,1);
+			}
 			else i++
 		}
     }

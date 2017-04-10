@@ -38,6 +38,31 @@ class TTime2GraphicMap {
 		return null;
 	}
 
+	date2Relation (d: Fraction ) : TTime2GraphicRelation {
+		for (var i=0; i < this.fRelations.length; i++)
+			if ( this.fRelations[i].includeTime(d)) return this.fRelations[i];
+		return null;
+	}
+
+	private pos2IObjectPos (n: number) :  number							{ return (n * 2) - 1 }
+	private interval2IObjectInterval (i: NumberInterval) :  NumberInterval	{ 
+					return new NumberInterval(this.pos2IObjectPos(i.first()), this.pos2IObjectPos(i.second())); }
+
+	date2MapLocation (date: Fraction) :  { x: number, y: NumberInterval }	{
+		let relation = this.date2Relation (date);
+		if (relation) {
+			let timeinterval = relation.fTime;
+			let offset = date.toNum() - timeinterval.first().toNum();
+			if (offset >= 0) {
+				let relativepos = offset / (timeinterval.second().toNum() - timeinterval.first().toNum());
+				let xpos = this.pos2IObjectPos ((relation.fGraph.first().second() - relation.fGraph.first().first()) * relativepos);
+				return { x: xpos, y: this.interval2IObjectInterval(relation.fGraph.second()) };
+			}
+			else console.log ("Unexpected offset " + offset + " in TTime2GraphicMap.date2MapPoint");
+		}
+		return { x: kNoPosition, y: new NumberInterval(0,0) };
+	}
+
 	mapPoint2Date (point: TPosition) : Fraction	{
 		let relation = this.point2Relation (point);
 		if (relation) {
