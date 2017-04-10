@@ -1,10 +1,12 @@
 
+///<reference path="../lib/TTypes.ts"/>
 ///<reference path="../model/IObject.ts"/>
 
 abstract class VObjectView {
     
 	abstract updateView			( obj: IObject) 		: void;
 	abstract updateObjectSize	( obj: IObject ) 		: void;
+	abstract setPositionHandler	( fpos: TPositionHandler) : void;
 
 	// Removes an element
 	abstract remove() : void;

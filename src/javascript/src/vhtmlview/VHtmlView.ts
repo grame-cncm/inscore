@@ -15,6 +15,7 @@ class VHtmlView extends VObjectView {
 	fTop: number; fLeft: number;
 	fWidth: number; fHeight: number;
 	fTranslateX: number; fTranslateY: number
+	fPositionHandler: TPositionHandler;
 
 	constructor(elt: HTMLElement, parent?: VHtmlView) {
 		super();
@@ -22,11 +23,13 @@ class VHtmlView extends VObjectView {
 		this.setPos(0, 0, 100, 100);
 		this.fHtmlElt = elt;
 		this.fTranslateX = this.fTranslateY = 0;
+		this.fPositionHandler = null;
 //		VHtmlView.fClickTarget = null;
 		if (parent) parent.getHtml().appendChild(elt);
 		this.setDefaultPositionStyle();
 	}
 
+	setPositionHandler(fpos: TPositionHandler): void { this.fPositionHandler = fpos; }
 	setDefaultPositionStyle(): void { this.fHtmlElt.style.position = "absolute"; }
 	getParent(): VObjectView { return this.fParent; }
 	getHtml(): HTMLElement { return this.fHtmlElt; }
@@ -193,7 +196,7 @@ class VHtmlView extends VObjectView {
 	}
 
 	updatePos(obj: IObject): void {
-		let pos = obj.getPosition();
+		let pos = this.fPositionHandler();  // obj.getPosition();
 		let size = this.getSize(obj);
 		let z = obj.fPosition.getZOrder();
 		let left = this.relative2SceneX(pos.x);
