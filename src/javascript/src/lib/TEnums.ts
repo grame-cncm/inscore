@@ -23,6 +23,8 @@ enum eEffect 		{ kNone, kBlur, kColorize,kShadow, }
 enum eSyncModes 	{ kRelative, kAbsolute }
 enum eSyncPosition 	{ kSyncOver, kSyncTop, kSyncBottom, kSyncFrame }
 enum eSyncStretch 	{ kSyncDate = 0, kSyncV=1, kSyncH=2 }
+const kNoPosition = 0xfffffff;
+
 
 
 enum eUIEvents { 
