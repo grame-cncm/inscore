@@ -41,6 +41,8 @@ class VHtmlLog extends VObjectView {
 		}
 	}
 
+	setPositionHandler	( fpos: TPositionHandler) : void {};
+
 	writelog ( log: IApplLog ) : void {
 		if (log.cleared())
 			this.fWindow.document.body.innerHTML = "";
