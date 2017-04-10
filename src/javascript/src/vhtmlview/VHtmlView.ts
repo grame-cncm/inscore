@@ -1,3 +1,4 @@
+///<reference path="../lib/TEnums.ts"/>
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="../model/IDebug.ts"/>
 ///<reference path="../model/IObject.ts"/>
@@ -196,7 +197,12 @@ class VHtmlView extends VObjectView {
 	}
 
 	updatePos(obj: IObject): void {
-		let pos = this.fPositionHandler();  // obj.getPosition();
+		let pos = this.fPositionHandler();
+		if (pos.x == kNoPosition) {
+			this.getHtml().style.visibility = "hidden";
+			return;
+		}
+
 		let size = this.getSize(obj);
 		let z = obj.fPosition.getZOrder();
 		let left = this.relative2SceneX(pos.x);
