@@ -26,10 +26,21 @@
 class IObjectFactoryImpl extends IObjectFactoryInterface {	
 	fViewFactory = new HtmlViewFactory();
     
-	createView(obj: IObject, parent?: VObjectView): void {
+	createView(obj: IObject): VObjectView {		// this is for the scene only
+		let view = this.fViewFactory.create (obj.getTypeString(), null, obj.getName());
+		view.setPositionHandler ( () : TPosition => { return obj.getPosition() });
+		return view;
+    }
+	createViews(obj: IObject, parent: Array<VObjectView>): Array<VObjectView> {
 		if (gCreateView) {
-			let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent, obj.getName());
-			obj.setView (view);
+			let out: Array<VObjectView> = []
+			for (var i=0; i < parent.length; i++) {
+				let view = this.fViewFactory.create (obj.getTypeString(), <VHtmlView>parent[i], obj.getName());
+				view.setPositionHandler ( () : TPosition => { return obj.getPosition() });
+				out.push (view);
+			}
+//			obj.setView (view);
+			return out;
 		}
     }
         
@@ -38,108 +49,54 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
 
         let obj: IObject;
         switch (type) {
-        	case kDebugType:
-                obj = new IDebug(name, parent);
-                break
-        	case kSyncType:
-                obj = new ISync(name, parent);
-                break
-        		
-            case kEllipseType:
-                obj = new IEllipse(name, parent);
-                this.createView(obj, parent.getView());  
+        	case kDebugType:	return new IDebug(name, parent);
+        	case kSyncType:		return new ISync(name, parent);
+                      
+            case kSceneType:	obj = new IScene(name, parent);
+               					obj.setView (this.createView(obj));
+               					return obj;
+     		
+            case kEllipseType:		obj = new IEllipse(name, parent);
                 break;
-            
-            case kRectType:
-                obj = new IRect(name, parent);
-                this.createView(obj, parent.getView());    
+            case kRectType:			obj = new IRect(name, parent);
                 break;
-                
-            case kCurveType:
-                obj = new ICurve(name, parent);                
-                this.createView(obj, parent.getView());    
+            case kCurveType:		obj = new ICurve(name, parent);                
                 break;
-                
-            case kLineType:
-                obj = new ILine(name, parent);                
-                this.createView(obj, parent.getView());    
+            case kLineType:			obj = new ILine(name, parent);                
                 break;
-                
-            case kGuidoCodeType:
-                obj = new IGuidoCode(name, parent); 
-                this.createView(obj, parent.getView());    
+            case kGuidoCodeType:	obj = new IGuidoCode(name, parent); 
                 break;   
-                
-            case kGuidoPianoRollType:
-                obj = new IGuidoPianoRoll(name, parent); 
-                this.createView(obj, parent.getView());    
+            case kGuidoPianoRollType:	obj = new IGuidoPianoRoll(name, parent); 
                 break;                              
-                   
-            case kSceneType:
-                obj = new IScene(name, parent);
-                this.createView(obj);  
+            case kPolygonType:		obj = new IPolygon(name, parent);
                 break;
-                
-            case kPolygonType:
-                obj = new IPolygon(name, parent);
-                this.createView(obj, parent.getView());  
+            case kTextType:			obj = new IText(name, parent);
+                break;    
+            case kTextfType:		obj = new ITextf(name, parent);
+                break;    
+            case kHtmlType:			obj = new IHtml(name, parent);
+                break;                
+            case kImgType:			obj = new IImage(name, parent);
                 break;
-                
-            case kTextType:
-                obj = new IText(name, parent);
-                this.createView(obj, parent.getView());  
-                break;    
-                
-            case kTextfType:
-                obj = new ITextf(name, parent);
-                this.createView(obj, parent.getView());  
-                break;    
-                
-            case kHtmlType:
-                obj = new IHtml(name, parent);
-                this.createView(obj, parent.getView());  
-                break;    
-                
-            case kImgType:
-                obj = new IImage(name, parent);
-                this.createView(obj, parent.getView());  
+            case kArcType:			obj = new IArc(name, parent);
                 break;
-
-            case kArcType:
-                obj = new IArc(name, parent);
-                this.createView(obj, parent.getView());
-                break;
-
-            case kVideoType:
-                obj = new IVideo(name, parent);
-                this.createView(obj, parent.getView());  
-                break;    
-                                  
-            case kSvgType:
-                obj = new ISVG(name, parent);
-                this.createView(obj, parent.getView());  
+            case kVideoType:		obj = new IVideo(name, parent);
+                break;                                      
+            case kSvgType:			obj = new ISVG(name, parent);
                 break;  
-                
-            case kSvgfType:
-                obj = new ISVGf(name, parent);
-                this.createView(obj, parent.getView());  
+            case kSvgfType:			obj = new ISVGf(name, parent);
                 break;
-
-            case kWebSocketType:
-                obj = new IWebSocket(name, parent);
-                this.createView(obj, parent.getView());  
+            case kWebSocketType:	obj = new IWebSocket(name, parent);
                 break;                        
                           
             default:
 	            ITLError.write ( "IObjectFactory: unknown object type: " + type);
-                break;
+                return null;
         }
 
-        if (obj) {
-//            obj.setHandlers();
-//            obj.createStaticNodes();
-//            obj.setVisible(IAppl.fDefaultShow);
-        }        
+//        parent.getViews().forEach ( (pview: VObjectView): void => { obj.addView (this.createView (obj, pview)); } );
+//        this.createView(obj, parent.getViews()); 
+		obj.addViews (this.createViews (obj,  parent.getViews())); 
         return obj; 
     }
 }

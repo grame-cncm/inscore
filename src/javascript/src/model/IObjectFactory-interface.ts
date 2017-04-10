@@ -3,6 +3,6 @@
 
 var IObjectFactory : IObjectFactoryInterface;
 abstract class  IObjectFactoryInterface {
-	abstract createView(obj: IObject, parent?: VObjectView): void
+	abstract createViews(obj: IObject, parent: Array<VObjectView>): Array<VObjectView>
     abstract createObj (name: string , type: string, parent: IObject): IObject
 }
