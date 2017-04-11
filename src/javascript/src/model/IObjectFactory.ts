@@ -4,7 +4,6 @@
 ///<reference path="IEllipse.ts"/>
 ///<reference path="IArc.ts"/>
 ///<reference path="IHtml.ts"/>
-///<reference path="IHtmlf.ts"/>
 ///<reference path="IImage.ts"/>
 ///<reference path="ILine.ts"/>
 ///<reference path="IPolygon.ts"/>
@@ -17,7 +16,6 @@
 ///<reference path="IWebSocket.ts"/>
 ///<reference path="ISVG.ts"/>
 ///<reference path="ISVGf.ts"/>
-///<reference path="IFile.ts"/>
 ///<reference path="Methods.ts"/>
 
 class IObjectFactory {	
@@ -90,11 +88,6 @@ class IObjectFactory {
                 this.createView(obj, parent.getView());  
                 break;    
                 
-            case kHtmlfType:
-                obj = new IHtmlf(name, parent);
-                this.createView(obj, parent.getView());  
-                break;  
-
             case kImgType:
                 obj = new IImage(name, parent);
                 this.createView(obj, parent.getView());  
@@ -117,11 +110,6 @@ class IObjectFactory {
                 
             case kSvgfType:
                 obj = new ISVGf(name, parent);
-                this.createView(obj, parent.getView());  
-                break;
-
-            case kFileType:
-                obj = new IFile(name, parent);
                 this.createView(obj, parent.getView());  
                 break;
 
