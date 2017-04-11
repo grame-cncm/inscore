@@ -3,23 +3,17 @@
 ///<reference path="../model/IGuidoCode.ts"/>
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
 
-interface RefreshMethod { (): void; }
-
 class VHtmlGMNView extends VHtmlSvgView {
-	static fGMNScale = 2.3;		// scaling applied to get homogeneous size with inscore app
 
-	fMapScaleX: number = 1;
-	fMapScaleY: number = 1;
+	fMapScale: scaleMethod;
 
 	constructor(parent: VHtmlView) {
 		super(parent);
 		this.getHtml().className = "inscore-gmn";
+		this.fMapScale = null;
 	}
 
-	getViewScale(obj: IObject): number {
-		// apply scaling to get a size similar to native application
-		return super.getViewScale(obj) * VHtmlGMNView.fGMNScale;
-	}
+	setMapScaleHandler	( f: scaleMethod ) : void { this.fMapScale = f; }
 
 	getSVGCode(obj: IObject): string {
 		let gmn = <IGuidoCode>obj;
@@ -39,11 +33,17 @@ class VHtmlGMNView extends VHtmlSvgView {
 		return <SVGSVGElement>g;
 	}
 
-	updateView(obj: IObject): void {
-		super.updateView (obj);
-		this.fMapScaleX = (this.fWidth >= this.fHeight) ? 1 : this.fHeight / this.fWidth;
-		this.fMapScaleY = (this.fWidth >= this.fHeight) ? this.fWidth / this.fHeight : 1;
-		
+	//------------------------------------------------------------------------------------
+	setPos(top: number, left: number, width: number, height: number): void {
+		super.setPos (top, left, width, height);
+		if (this.fMapScale) {
+			let x = 1;
+			let y = 1;
+			if (this.fWidth > this.fHeight) 		y = this.fWidth / this.fHeight;
+			else if (this.fWidth < this.fHeight) 	x =  this.fHeight / this.fWidth;
+			this.fMapScale(x, y);
+			this.fMapScale = null;
+		}
 	}
 
 	updateColor(obj: IObject): void {
@@ -57,14 +57,6 @@ class VHtmlGMNView extends VHtmlSvgView {
 			g.style.fillOpacity = alpha.toString();
 		}
 	}
-	
-	//  specific map functions: on model side, a guido map is computed as a square box.
-	//  while rendering is not almost never square.
-	map2SceneX(x: number): number 		{ return this.fWidth  * x * this.fMapScaleX; }
-	map2SceneY(y: number): number 		{ return this.fHeight * y * this.fMapScaleY; }
-
-	scene2MapX(x: number): number 		{ return x / this.fWidth / this.fMapScaleX / VHtmlGMNView.fGMNScale; }
-	scene2MapY(y: number): number 		{ return y / this.fHeight/ this.fMapScaleY / VHtmlGMNView.fGMNScale; }
 
 	// updates the local mapping (do nothing at IObject level) 
 	//	updateLocalMapping (obj: IObject ): void;
