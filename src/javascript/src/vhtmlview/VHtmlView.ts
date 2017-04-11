@@ -77,12 +77,6 @@ class VHtmlView extends VObjectView {
 		div.style.height 	= this.map2SceneY(seg.second().size()) +"px";
 		div.style.left 		= this.map2SceneX(seg.first().first()) + "px";
 		div.style.top 		= this.map2SceneY(seg.second().first()) + "px";
-/*
-		div.style.width 	= this.map2SceneX(seg.first().size()) +"px";
-		div.style.height 	= this.map2SceneY(seg.second().size()) +"px";
-		div.style.left 		= this.map2SceneX(seg.first().first()) + "px";
-		div.style.top 		= this.map2SceneY(seg.second().first()) + "px";
-*/
 		div.style.backgroundColor = colors[i%2];
 		div.style.opacity = "0.4";
         this.getHtml().appendChild (div);
