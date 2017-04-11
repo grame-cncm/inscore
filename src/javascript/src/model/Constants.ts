@@ -12,10 +12,12 @@ const kPolygonType          : string	= "polygon";
 const kTextType             : string	= "txt";
 const kTextfType            : string	= "txtf";
 const kHtmlType             : string	= "html";
+const kHtmlfType            : string	= "htmlf";
 const kImgType              : string	= "img";
 const kVideoType            : string	= "video";
 const kSvgType              : string	= "svg";
 const kSvgfType             : string    = "svgf";
+const kFileType             : string    = "file";
 const kWebSocketType        : string	= "websocket";
 
 const kDebugType            : string	= "debug";
