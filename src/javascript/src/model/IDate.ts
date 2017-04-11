@@ -68,6 +68,7 @@ class IDate {
 
 // CLOCK
 //--------------------------------------------------------------
-    clock():void 		{ this.addDate ( new Fraction(1, 96) ); }
-    durclock(): void 	{ this.addDuration ( new Fraction(1, 96) ); }
+    clockDur():Fraction { return new Fraction(1, 96); }
+    clock():void 		{ this.addDate ( this.clockDur() ); }
+    durclock(): void 	{ this.addDuration ( this.clockDur() ); }
 }
