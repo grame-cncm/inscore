@@ -27,6 +27,7 @@
 ///<reference path="IProxyInterface.ts"/>
 ///<reference path="Methods.ts"/>
 ///<reference path="MethodsJS.ts"/>
+///<reference path="TSyncInfo.ts"/>
 
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -329,9 +330,19 @@ class IObject implements Tree<IObject> {
     getPosition(): TPosition 		     			 { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
     getSize():     {w: number, h: number } 			 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
-    getSlavePosition (master: IObject): TPosition  	 { 
+    getSlavePosition (master: IObject, syncparams: TSyncInfo): TPosition  	 { 
     	let pos = master.date2MapLocation ( this.fDate.getDate() );
-    	return { x: pos.x, y: pos.y.first() + pos.y.size()/2 }; 
+    	let y = 0;
+    	switch (syncparams.fPosition) {
+    		case eSyncPosition.kSyncTop:		y = pos.y.first();
+    			break;
+    		case eSyncPosition.kSyncBottom:		y = pos.y.second();
+    			break;
+    		case eSyncPosition.kSyncFrame:
+    		case eSyncPosition.kSyncOver:
+    		default:							y = pos.y.first() + pos.y.size()/2;
+    	}
+    	return { x: pos.x, y: y }; 
     }
 
     toString(): string 				{ 

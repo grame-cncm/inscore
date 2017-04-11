@@ -5,95 +5,7 @@
 ///<reference path="../lib/Tools.ts"/>
 ///<reference path="../lib/TTypes.ts"/>
 ///<reference path="IObject.ts"/>
-
-//--------------------------------------------------------------  
-// synchronisation management
-//--------------------------------------------------------------  
-class TSyncInfo  {
-	static kSyncHStr 	= "h";
-	static kSyncVStr 	= "v";
-	static kSyncHVStr 	= "hv";
-	static kSyncOverStr 	= "syncOver";
-	static kSyncTopStr 		= "syncTop";
-	static kSyncBottomStr 	= "syncBottom";
-	static kSyncFrameStr 	= "syncFrame";
-	static kSyncAbsoluteStr = "absolute";
-	static kSyncRelativeStr = "relative";
-
-	fMode		: eSyncModes;
-	fPosition	: eSyncPosition;
-	fStretch	: eSyncStretch;
-
-    constructor() { 
-		this.fMode		= eSyncModes.kAbsolute;
-		this.fPosition	= eSyncPosition.kSyncOver;
-		this.fStretch	= eSyncStretch.kSyncDate;
-    }
-
-	//---------------------------------------------
-	update (info: TSyncInfo) : void {
-		this.fMode		= info.fMode;
-		this.fPosition	= info.fPosition;
-		this.fStretch	= info.fStretch;
-	}
-
-	//---------------------------------------------
-	set (msg: IMessage) : boolean {
-		for (var i=2; i<msg.size(); i++) {
-			let param = msg.paramStr(i);
-			if (!param.correct) return false;
-			switch (param.value) {
-				case TSyncInfo.kSyncHStr	:	this.fStretch = eSyncStretch.kSyncH; break;
-				case TSyncInfo.kSyncVStr	:	this.fStretch = eSyncStretch.kSyncV; break;
-				case TSyncInfo.kSyncHVStr	:	this.fStretch = eSyncStretch.kSyncH + eSyncStretch.kSyncV; break;
-				case TSyncInfo.kSyncOverStr :	this.fPosition = eSyncPosition.kSyncOver; break;
-				case TSyncInfo.kSyncTopStr :	this.fPosition = eSyncPosition.kSyncTop; break;
-				case TSyncInfo.kSyncBottomStr:	this.fPosition = eSyncPosition.kSyncBottom; break;
-				case TSyncInfo.kSyncFrameStr:		this.fPosition = eSyncPosition.kSyncFrame; break;
-				case TSyncInfo.kSyncRelativeStr:	this.fMode = eSyncModes.kRelative; break;
-				case TSyncInfo.kSyncAbsoluteStr:	this.fMode = eSyncModes.kAbsolute; break;
-				default: return false;
-			}
-		}
-		return true;
-	}
-     
-   //---------------------------------------------
-   // conversion methods
-   //---------------------------------------------
-    toString(): string { 
-    	return TSyncInfo.stretch2String(this.fStretch) + " " + TSyncInfo.mode2String(this.fMode) 
-    			+ " " + TSyncInfo.pos2String(this.fPosition); 
-    }
-    
-    toArray(): Array<string> { 
-    	let out = [];
-    	if (this.fStretch != eSyncStretch.kSyncDate) 	out.push (TSyncInfo.stretch2String(this.fStretch));
-    	if (this.fMode == eSyncModes.kRelative) 		out.push (TSyncInfo.mode2String(this.fMode));
-    	if (this.fPosition != eSyncPosition.kSyncOver) 	out.push (TSyncInfo.pos2String(this.fPosition));
-    	return out;
-    }
-   
-   //---------------------------------------------
-   // static methods
-   //---------------------------------------------
-    static mode2String (mode: eSyncModes) : string	{ return mode == eSyncModes.kRelative ? "relative" : ""; }
-    static pos2String (pos: eSyncPosition): string	{ 
-    	switch (pos) {
-    		case eSyncPosition.kSyncOver:	return "";			// default mode
-    		case eSyncPosition.kSyncTop:	return "syncTop";
-    		case eSyncPosition.kSyncBottom: return "syncBottom";
-    		case eSyncPosition.kSyncFrame:	return "syncFrame";
-    	}
-    	return ""; 
-    }
-    static stretch2String (v: eSyncStretch): string	{ 
-    	let out = "";
-    	if (v & eSyncStretch.kSyncH) out += "h";
-    	if (v & eSyncStretch.kSyncV) out += "v";
-    	return out; 
-    }
-}
+///<reference path="TSyncInfo.ts"/>
 
 //--------------------------------------------------------------  
 // glue between slave, master and sync params
@@ -129,7 +41,7 @@ class TSyncNode  {
 
 
 //--------------------------------------------------------------  
-// synchronisation management
+// synchronisation management node
 //--------------------------------------------------------------  
 class ISync extends IObject  {
 	private fSyncList: Array<TSyncNode>
@@ -192,17 +104,27 @@ class ISync extends IObject  {
     }
 
     //------------------------------------
+     private updateSync (node: TSyncNode, syncparams: TSyncInfo): void {
+     	node.update (syncparams);
+     	let slave = node.fSlave;
+      	slave.subModPropagate (node.fMaster);
+    	slave.posModified();
+     }
+
+    //------------------------------------
      private createSync (slave: IObject, master: IObject, syncparams: TSyncInfo): void {
      	let n = this.findSyncByName(slave.getName()).length;
      	if (!n) {					// first synchronisation
      		slave.removeViews();	// remove the standard view
      	}
      	let views = IObjectFactory.createViews (slave, master.getViews());
+     	let sync = new TSyncNode(slave, master, syncparams, views);
+    	this.fSyncList.push (sync);
+
      	views.forEach ( function(view: VObjectView): void { 
      		slave.addView (view);
-     		view.setPositionHandler( () : TPosition => { return slave.getSlavePosition (master); }) } 
+     		view.setPositionHandler( () : TPosition => { return slave.getSlavePosition (master, sync.fInfos); }) } 
      	);
-     	this.fSyncList.push (new TSyncNode(slave, master, syncparams, views));
      	slave.subModPropagate (master);
      	slave.allModified ();
     }
@@ -232,9 +154,8 @@ class ISync extends IObject  {
 		if (! syncparams.set (msg))  return eMsgStatus.kBadParameters;
 
 		let nodes = this.findSyncNodes (slaveName.value, masterName.value);
-		if (nodes.length) {			// update existing nodes
-			nodes.forEach( function(node: TSyncNode) { node.update (syncparams) } );
-		}
+		if (nodes.length) 			// update existing nodes
+			nodes.forEach( (node: TSyncNode): void => { this.updateSync (node, syncparams); } );
 		else {
 			let slaves = this.fParent.find (slaveName.value);
 			if (!slaves.length) { ITLError.write (slaveName.value + ": no such object!"); return eMsgStatus.kBadParameters; }
