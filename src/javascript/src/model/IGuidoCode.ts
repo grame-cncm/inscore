@@ -94,6 +94,7 @@ class IGuidoCode extends IObject {
 		this.fGMN = gmn.value;
 		this.fSVG = this.AR2SVG (ar);
 		IGuidoCode.fGuidoEngine.freeAR (ar);
+		this.fNewData = true;
         return eMsgStatus.kProcessed;
     }
     
