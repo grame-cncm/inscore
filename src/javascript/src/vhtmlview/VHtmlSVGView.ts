@@ -14,9 +14,20 @@ class VHtmlSvgView extends VHtmlView {
         this.getHtml().className = "inscore-svg";
     }
 
+    private getSVGElement (): SVGSVGElement {
+		let nodes = this.getHtml().childNodes;
+		if (nodes.length) {
+			for (var i = 0; i < nodes.length; i++)
+				if (nodes[i] instanceof SVGSVGElement) return <SVGSVGElement>nodes[i];
+		}
+		return null
+    }
+
     updateView(obj: IObject): void {
         if (obj.isNewData()) {
-            this.getHtml().innerHTML = this.getSVGCode(obj);
+        	let svg = this.getSVGElement();
+        	let target = svg ? svg : this.getHtml();
+			target.innerHTML = this.getSVGCode(obj);
             this.updateObjectSize(obj);
         }
         super.updateView(obj);
