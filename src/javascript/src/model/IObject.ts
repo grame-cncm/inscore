@@ -102,10 +102,15 @@ class IObject implements Tree<IObject> {
         this.createStaticNodes();
         this.fEvents.attributes (this.fMsgHandlerMap);
 
-        this.fMapping = new TTime2GraphicMap();
+        this.fMapping = this.createMapping();
+    }
+    
+    createMapping () : TTime2GraphicMap {
+        let map: TTime2GraphicMap = new TTime2GraphicMap();
         let defaultTimeSegment = new TimeInterval (new Fraction(0,1), this.fDate.getDuration());
         let defaultGraphicSegment = new TGraphicSegment (new NumberInterval(0,1), new NumberInterval(0,1));
-		this.fMapping.addElt ( new TTime2GraphicRelation(defaultTimeSegment, defaultGraphicSegment));
+		map.addElt ( new TTime2GraphicRelation(defaultTimeSegment, defaultGraphicSegment));
+		return map;
     }
     
     createStaticNodes() : void {
@@ -277,12 +282,12 @@ class IObject implements Tree<IObject> {
 //-------------------------------------------------------------- 
 // decorate date and duration messages to handle time events
 //--------------------------------------------------------------  
-	setDate(d: Fraction) : void 	{ let previous = this.fDate.getDate(); this.fDate.setDate(d); this.fEvents.handleTimeChange(previous, this.fDate.getDate()); }
-	addDate(d: Fraction) : void 	{ let previous = this.fDate.getDate(); this.fDate.addDate(d); this.fEvents.handleTimeChange(previous, this.fDate.getDate());  }
-	clock() : void					{ let previous = this.fDate.getDate(); this.fDate.clock(); this.fEvents.handleTimeChange(previous, this.fDate.getDate()); }
-	setDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.setDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
-	addDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.addDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
-	durclock() : void				{ let previous = this.fDate.getDuration(); this.fDate.durclock(); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }   
+	setDate(d: Fraction) : void 	{ this.fEvents.handleTimeChange(this.fDate.getDate(), d); this.fDate.setDate(d); }
+	addDate(d: Fraction) : void 	{ this.setDate (this.fDate.getDate().add (d)); }
+	clock() : void					{ this.setDate (this.fDate.getDate().add (this.fDate.clockDur())); }
+	setDuration(d: Fraction) : void { this.fEvents.handleDurChange(this.fDate.getDuration(), d); this.fDate.setDuration(d); }
+	addDuration(d: Fraction) : void { this.setDuration (this.fDate.getDuration().add (d)); }
+	durclock() : void				{ this.setDuration (this.fDate.getDuration().add (this.fDate.clockDur())); }   
 
 //-------------------------------------------------------------- 
 // UI events management
@@ -637,6 +642,7 @@ class IObject implements Tree<IObject> {
 		this.setState(eObjState.kClean);
         this.fBrushStyle.cleanup();
         this.fEffect.cleanup();
+        this.fNewData = false;
 		if (this.fDate.getTempo()) this.move();
     }
 
