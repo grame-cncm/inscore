@@ -39,7 +39,6 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
 				view.setPositionHandler ( () : TPosition => { return obj.getPosition() });
 				out.push (view);
 			}
-//			obj.setView (view);
 		}
 		return out;
     }
@@ -93,9 +92,6 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
 	            ITLError.write ( "IObjectFactory: unknown object type: " + type);
                 return null;
         }
-
-//        parent.getViews().forEach ( (pview: VObjectView): void => { obj.addView (this.createView (obj, pview)); } );
-//        this.createView(obj, parent.getViews()); 
 		obj.addViews (this.createViews (obj,  parent.getViews())); 
         return obj; 
     }
