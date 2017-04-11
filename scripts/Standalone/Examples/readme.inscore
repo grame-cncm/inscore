@@ -1,0 +1,21 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/comment set txt 
+"All the scripts included in this folder
+correspond to the examples given with
+the 'INScore introduction' available from";
+
+/ITL/scene/url set txt "http://www.grame.fr/MusicNotation/Introduction-to-INScore/";
+
+/ITL/scene/comment y -0.1;
+/ITL/scene/comment fontSize 32;
+/ITL/scene/url y 0.15;
+/ITL/scene/url fontSize 24;
+
+color = 0 0 250;
+/ITL/scene/url color $color;
+/ITL/scene/url watch mouseEnter ( /ITL/scene/url color 250 0 0);
+/ITL/scene/url watch mouseLeave ( /ITL/scene/url color $color);
+/ITL/scene/url watch mouseDown ( /ITL browse "http://www.grame.fr/MusicNotation/Introduction-to-INScore/");
+

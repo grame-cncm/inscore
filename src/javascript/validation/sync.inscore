@@ -1,0 +1,71 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/s1 set rect 0.3 0.3;
+/ITL/scene/s1 x -0.2;
+/ITL/scene/s1 color 200 10 0;
+/ITL/scene/s2 set rect 0.3 0.3;
+/ITL/scene/s2 x 0.2;
+/ITL/scene/s2 color 10 0 200;
+/ITL/scene/s2 date 1 2;
+/ITL/scene/s* y 0.2;
+
+/ITL/scene/m1 set rect 0.3 0.3;
+/ITL/scene/m1 x -0.2;
+/ITL/scene/m2 set rect 0.3 0.3;
+/ITL/scene/m2 x 0.2;
+/ITL/scene/m* y -0.2;
+/ITL/scene/m* color 200 200 200;
+
+/ITL/scene/sync s* m*;
+
+/ITL/scene/get set txt "GET";
+/ITL/scene/get y 0.45;
+/ITL/scene/get scale 2;
+/ITL/scene/get watch mouseEnter ( /ITL/scene/get red 250 );
+/ITL/scene/get watch mouseLeave ( /ITL/scene/get red 0 );
+/ITL/scene/get watch mouseDown 	( /ITL/scene/sync get );
+
+#======
+/ITL/scene/* del;
+
+/ITL/scene/cursor set ellipse 0.2 0.2;
+/ITL/scene/cursor color 0 0 255 100;
+/ITL/scene/score set gmn '[ \meter<"4/4"> g e f d e/8 e f/16 g a b a/2]';
+/ITL/scene/cursor watch ;
+/ITL/scene/cursor watch timeLeave 0 2 (/ITL/scene/cursor tempo -120);
+/ITL/scene/cursor watch timeEnter -1 0 (/ITL/scene/cursor tempo 120);
+
+/ITL/scene/sync cursor score;
+/ITL/scene/cursor tempo 120;
+/ITL/scene/cursor tempo 0;
+/ITL/scene/cursor date 0;
+
+
+__END__
+/ITL/scene/sync s1 m1;
+/ITL/scene/sync s1 m2;
+/ITL/scene/s* tempo 0;
+/ITL/scene/s* tempo 120;
+/ITL/scene/s1 watch timeLeave 0 1 (/ITL/scene/s1 tempo -120);
+/ITL/scene/s1 watch timeEnter -1 0 (/ITL/scene/s1 tempo 120);
+/ITL/scene/s2 watch timeLeave 0 1 (/ITL/scene/s2 tempo -120);
+/ITL/scene/s2 watch timeEnter -1 0 (/ITL/scene/s2 tempo 120);
+/ITL/scene/s1 tempo 0;
+/ITL/scene/s1 date 1 4;
+/ITL/scene/sync s* m1 syncFrame;
+/ITL/scene/sync s1 m* syncFrame;
+/ITL/scene/sync s* m*;
+/ITL/scene/sync get s1;
+/ITL/scene/sync get s*;
+/ITL/scene/sync get;
+/ITL/scene/* get;
+
+/ITL/scene/sync s1 m*  v syncTop;
+/ITL/scene/m1 del;
+/ITL/scene/m2 del;
+/ITL/scene/s2 del;
+
+/ITL/scene/sync s1 ;
+/ITL/scene/sync s2 ;
+/ITL/scene/sync s* ;

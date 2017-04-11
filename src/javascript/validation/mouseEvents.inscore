@@ -27,7 +27,13 @@
 move = ( /ITL/scene/$self x $sx,
 		/ITL/scene/$self y $sy);
 
-/ITL/scene/* watch mouseDown $move;
+/ITL/scene/* watch mouseDown (
+	/ITL/scene/$self x $sx,
+	/ITL/scene/$self y $sy);
+
+/ITL/scene/debug get watch;
+
+
 /ITL/scene/* watch mouseMove $move;
 
 move = ( /ITL/scene x $sx,
@@ -44,6 +50,10 @@ submove = ( /ITL/scene/r1/$self x $sx,
 	/ITL/scene/o1 color 0 0 250,
 	/ITL/scene/o1 dy -0.1
 );
+
+/ITL/scene watch TOTO ( /ITL/scene color 200 0 0 );
+/ITL/scene event TOTO 250 150 150;
+
 
 __END__
 /ITL/scene position absolute;
