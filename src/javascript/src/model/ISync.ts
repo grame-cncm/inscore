@@ -39,6 +39,7 @@ class TSyncNode  {
     }   
 }
 
+interface getNameHandler { (sync: TSyncNode): string; }
 
 //--------------------------------------------------------------  
 // synchronisation management node
@@ -53,30 +54,39 @@ class ISync extends IObject  {
     }
 
     //------------------------------------
-	private findSyncByName (name: string): Array<TSyncNode> {
+	private findSync (name: string, syncname: getNameHandler): Array<TSyncNode> {
 		let out : Array<TSyncNode> = [];
-		let f = (sync: TSyncNode): void => { if (sync.fSlave.getName() === name) out.push(sync); }
+		let f = (sync: TSyncNode): void => { if (syncname(sync) === name) out.push(sync); }
 		if (Tools.regexp(name)) {
 			let re = new OSCRegexp(name);
-			f = (sync: TSyncNode): void => { if (re.match(sync.fSlave.getName())) out.push(sync); }
+			f = (sync: TSyncNode): void => { if (re.match(syncname(sync))) out.push(sync); }
 		}
 		this.fSyncList.forEach( f );
 		return out;
 	}
+
+    //------------------------------------
+	private findSyncBySlaveName (name: string): Array<TSyncNode> {
+		return this.findSync (name, function (sync: TSyncNode) { return sync.fSlave.getName(); } );
+	}
+    //------------------------------------
+	private findSyncByMasterName (name: string): Array<TSyncNode> {
+		return this.findSync (name, function (sync: TSyncNode) { return sync.fMaster.getName(); } );
+	}
+	
     //------------------------------------
 	private findSyncNodes (slave: string, master: string): Array<TSyncNode> {
 		let out : Array<TSyncNode> = [];
 
-		let sync : Array<TSyncNode> = this.findSyncByName (slave);
+		let sync : Array<TSyncNode> = this.findSyncBySlaveName (slave);
 		if (!sync.length) return out;
 		
 		let f = (name: string): boolean => { return name === master; };
 		if (Tools.regexp(master)) {
 			let re = new OSCRegexp(master);
-			let f = (name: string): boolean => { return re.match(name); };
+			f = (name: string): boolean => { return re.match(name); };
 		}
-		for (var i=0; i < sync.length; i++)
-			if (f (sync[i].fMaster.getName())) out.push (sync[i]);
+		sync.forEach( function (node: TSyncNode) : void { if (f (node.fMaster.getName())) out.push (node); });
 		return out;
 	}
 
@@ -91,7 +101,7 @@ class ISync extends IObject  {
     //------------------------------------
      private removeSync (obj: IObject): void {	this.clearName (obj.getName()); }
      private clearName (obj: string): eMsgStatus {
-     	let targets = this.findSyncByName (obj);
+     	let targets = this.findSyncBySlaveName (obj);
 		targets.forEach ( (sync: TSyncNode): void => { 
 			let i=this.fSyncList.indexOf (sync);
 			if (i>=0) {
@@ -113,7 +123,7 @@ class ISync extends IObject  {
 
     //------------------------------------
      private createSync (slave: IObject, master: IObject, syncparams: TSyncInfo): void {
-     	let n = this.findSyncByName(slave.getName()).length;
+     	let n = this.findSyncBySlaveName(slave.getName()).length;
      	if (!n) {					// first synchronisation
      		slave.removeViews();	// remove the standard view
      	}
@@ -132,7 +142,7 @@ class ISync extends IObject  {
     //------------------------------------
      private getOne(name: string): IMessageList {
 		let out : IMessageList = []
-		let syncs = this.findSyncByName (name);
+		let syncs = this.findSyncBySlaveName (name);
 		syncs.forEach( (sync: TSyncNode) : void => { out.push( new IMessage(this.getOSCAddress(), sync.toArray())); } );
         return out;
     }
