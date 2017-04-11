@@ -50,7 +50,8 @@ class IGuidoCode extends IObject {
 
 		map.forEach( (elt: Time2GraphicElt) : void => {
         	let timeSegment = new TimeInterval (new Fraction(elt.time.start), new Fraction(elt.time.end));
-        	let graphicSegment = new TGraphicSegment (new NumberInterval(elt.graph.left, elt.graph.right), new NumberInterval(elt.graph.top, elt.graph.bottom));
+        	let graphicSegment = new TGraphicSegment (new NumberInterval(elt.graph.left, elt.graph.right), 
+        		new NumberInterval(elt.graph.top, elt.graph.bottom));
 			this.fMapping.addElt ( new TTime2GraphicRelation(timeSegment, graphicSegment));
 		} );
 	}    
@@ -67,10 +68,15 @@ class IGuidoCode extends IObject {
 	    return ar;
     }
     
+    mapScale (xscale: number, yscale: number): void {
+		this.fMapping.forEach (function (elt: TTime2GraphicRelation) { elt.fGraph.scale(xscale, yscale) } );
+    }
+    
     AR2SVG(ar: ARHandler): string {
         let gr = IGuidoCode.fGuidoEngine.ar2gr(ar);
         let svg = IGuidoCode.fGuidoEngine.gr2SVG(gr, 1, false, 0);
         this.getMap (gr);
+        this.getViews()[0].setMapScaleHandler ((x: number, y: number): void => { this.mapScale(x, y); }) 
         IGuidoCode.fGuidoEngine.freeGR(gr);
 	    return svg;
     }
