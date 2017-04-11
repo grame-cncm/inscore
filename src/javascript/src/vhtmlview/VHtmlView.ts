@@ -77,6 +77,12 @@ class VHtmlView extends VObjectView {
 		div.style.height 	= this.map2SceneY(seg.second().size()) +"px";
 		div.style.left 		= this.map2SceneX(seg.first().first()) + "px";
 		div.style.top 		= this.map2SceneY(seg.second().first()) + "px";
+/*
+		div.style.width 	= this.map2SceneX(seg.first().size()) +"px";
+		div.style.height 	= this.map2SceneY(seg.second().size()) +"px";
+		div.style.left 		= this.map2SceneX(seg.first().first()) + "px";
+		div.style.top 		= this.map2SceneY(seg.second().first()) + "px";
+*/
 		div.style.backgroundColor = colors[i%2];
 		div.style.opacity = "0.4";
         this.getHtml().appendChild (div);
@@ -92,7 +98,7 @@ class VHtmlView extends VObjectView {
 	}
 
 	//------------------------------------------------------------------------------------
-	private showMap(obj: IObject): void {
+	protected showMap(obj: IObject): void {
 		let color = [ "DarkOrange", "rgb(10 200 10)"];
 		let map : Array<TTime2GraphicRelation> = obj.fMapping.getRelations();
 		for (var i=0; i<map.length; i++)
