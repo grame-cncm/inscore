@@ -53,10 +53,12 @@ class TTime2GraphicMap {
 		let relation = this.date2Relation (date);
 		if (relation) {
 			let timeinterval = relation.fTime;
+			// compute the date offset inside the time interval
 			let offset = date.toNum() - timeinterval.first().toNum();
 			if (offset >= 0) {
 				let relativepos = offset / (timeinterval.second().toNum() - timeinterval.first().toNum());
-				let xpos = this.pos2IObjectPos ((relation.fGraph.first().second() - relation.fGraph.first().first()) * relativepos);
+				let segx = relation.fGraph.first().first();
+				let xpos = this.pos2IObjectPos (segx + (relation.fGraph.first().size() * relativepos));
 				return { x: xpos, y: this.interval2IObjectInterval(relation.fGraph.second()) };
 			}
 			else console.log ("Unexpected offset " + offset + " in TTime2GraphicMap.date2MapPoint");
