@@ -3,7 +3,6 @@
 ///<reference path="VHtmlArcView.ts"/>
 ///<reference path="VHtmlCurveView.ts"/>
 ///<reference path="VHtmlEllipseView.ts"/>
-///<reference path="VHtmlFileView.ts"/>
 ///<reference path="VHtmlGMNView.ts"/>
 ///<reference path="VHtmlHtmlView.ts"/>
 ///<reference path="VHtmlImageView.ts"/>
@@ -67,9 +66,6 @@ class HtmlViewFactory implements ViewFactory {
 
             case kSvgType:
                     return new VHtmlSvgView (parent);
-            
-            case kFileType:
-                    return new VHtmlFilefView(parent);
                                     
             default:
                 return null;
