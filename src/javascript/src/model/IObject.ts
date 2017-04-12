@@ -304,7 +304,22 @@ class IObject implements Tree<IObject> {
 //--------------------------------------------------------------  
 	mapPoint2Date (point: TPosition) : Fraction							{ return this.fMapping.mapPoint2Date (point); }
 	date2MapLocation (date: Fraction) : { x: number, y: NumberInterval}	{ return this.fMapping.date2MapLocation (date); }
+	date2FramePoint (date: Fraction) : TPosition {		// default method
+		let dur = this.fDate.getDuration().toNum();
+		let dnum = date.toNum();
+		if (dnum > dur) return { x: kNoPosition, y: 0};
 
+		// the length corresponding to the date
+		// 8 is 4 x 2 where 2 is the internal dimension of an object
+		let dlen = kObjectSize * 4 * dnum / dur;	
+		if (dlen <= kObjectSize) 	return { x: dlen - 1, y: -1 };
+		dlen -= kObjectSize;
+		if (dlen <= kObjectSize) 	return { x: 1, y: dlen -1 };
+		dlen -= kObjectSize;
+		if (dlen <= kObjectSize) 	return { x: 1 - dlen, y: 1 };
+		dlen -= kObjectSize;
+		return  { x: -1, y: 1 - dlen };
+	}
 
 // METHODS
 //--------------------------------------------------------------  
@@ -331,6 +346,11 @@ class IObject implements Tree<IObject> {
     getSize():     {w: number, h: number } 			 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
     getSlavePosition (master: IObject, syncparams: TSyncInfo): TPosition  	 { 
+     	if (syncparams.fPosition == eSyncPosition.kSyncFrame) {
+     		let pos = this.date2FramePoint ( this.fDate.getDate() );
+     		return pos;
+     	}
+
     	let pos = master.date2MapLocation ( this.fDate.getDate() );
     	let y = 0;
     	switch (syncparams.fPosition) {
@@ -338,7 +358,6 @@ class IObject implements Tree<IObject> {
     			break;
     		case eSyncPosition.kSyncBottom:		y = pos.y.second();
     			break;
-    		case eSyncPosition.kSyncFrame:
     		case eSyncPosition.kSyncOver:
     		default:							y = pos.y.first() + pos.y.size()/2;
     	}
