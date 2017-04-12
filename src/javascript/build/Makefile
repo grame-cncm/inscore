@@ -31,7 +31,7 @@ check :
 	rm -rf $(BUILDIR)
 	make -j $(TASKS) _check
 
-minify : ../inscore.min.js ../libGUIDOEngine.min.js
+minify : ../inscore.min.js # ../libGUIDOEngine.min.js
 
 ../inscore.min.js : ../inscore.js
 	sh minify ../inscore
