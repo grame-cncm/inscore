@@ -38,6 +38,7 @@ class IGlue {
     	INScore.postMessage (target, ["position", position]);	
 		if (gCreateView)
 	    	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
+		window.onbeforeunload = (): void => { INScore.postMessage ( "/ITL/log", ["show", 0]); };
     }
 
     stop(): void {
