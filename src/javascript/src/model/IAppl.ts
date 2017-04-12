@@ -8,14 +8,12 @@
 
 class IAppl extends IObject {
 
-	protected kApplType: string;
 	protected fReceivedMsgs: number;
 	protected fRate: number;
 	protected fCurrentTime: number;
 	
 	constructor() {
 		super('ITL');
-		this.kApplType = kApplType;
 		this.fTypeString = kApplType;
 		this.fReceivedMsgs = 0;
 		this.fRate = kDefaultRate;
@@ -26,16 +24,18 @@ class IAppl extends IObject {
 		this.addChild(log);
 	}
 
+    setHandlers(): void {
+ 	    this.eventAble();
+        this.fMsgHandlerMap[kget_SetMethod] 		= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.get(msg); } );
+        this.fMsgHandlerMap[krate_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.setRate(n); } );
+		this.fGetMsgHandlerMap[krate_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.getRate(); } );
+	}
+
 	getAppl(): IObject { return this; }
 	getSet(): IMessage { let msg: IMessage; return msg; }
 	getOSCAddress(): string { return "/ITL"; }
 	getRate(): number { return this.fRate; }
 	setRate(rate: number): void { this.fRate = rate; }
-
-	// prevent the output of color, position and time data at application level
-	colorAble(): void { }
-	positionAble(): void { }
-	timeAble(): void { }
 
 	processMsg(address: string, addressTail: string, msg: IMessage): eMsgStatus {
 		this.fReceivedMsgs++;
