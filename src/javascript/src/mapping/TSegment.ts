@@ -28,6 +28,7 @@ class TGraphicSegment	{
 	second(): NumberInterval		{ return this.fYInterval; }
 	size(): number 					{ return this.fXInterval.size() * this.fYInterval.size(); }
 	empty() : boolean				{ return this.fXInterval.empty() || this.fYInterval.empty(); } 
+	scale(x: number, y: number): void	{ this.fXInterval.mult(x); this.fYInterval.mult(y); } 
 
 	eq (s: TGraphicSegment) : boolean	{ return this.fXInterval.eq(s.fXInterval) && this.fYInterval.eq(s.fYInterval); }
 	neq (s: TGraphicSegment) : boolean 	{ return !this.eq(s); };

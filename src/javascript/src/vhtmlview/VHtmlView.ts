@@ -1,16 +1,22 @@
+///<reference path="../lib/TEnums.ts"/>
 ///<reference path="../lib/TTypes.ts"/>
+///<reference path="../model/IDebug.ts"/>
 ///<reference path="../model/IObject.ts"/>
 ///<reference path="../view/VObjectView.ts"/>
 ///<reference path="../mapping/TTime2GraphicRelation.ts"/>
 
 class VHtmlView extends VObjectView {
 //	static fClickTarget: IObject;
+	private	fDisplayMap: boolean = false;
+	private	fDisplayName: boolean = false;
+
 	protected fHtmlElt: HTMLElement;
 	protected fParent: VHtmlView;
 
 	fTop: number; fLeft: number;
 	fWidth: number; fHeight: number;
 	fTranslateX: number; fTranslateY: number
+	fPositionHandler: TPositionHandler;
 
 	constructor(elt: HTMLElement, parent?: VHtmlView) {
 		super();
@@ -18,11 +24,13 @@ class VHtmlView extends VObjectView {
 		this.setPos(0, 0, 100, 100);
 		this.fHtmlElt = elt;
 		this.fTranslateX = this.fTranslateY = 0;
+		this.fPositionHandler = null;
 //		VHtmlView.fClickTarget = null;
 		if (parent) parent.getHtml().appendChild(elt);
 		this.setDefaultPositionStyle();
 	}
 
+	setPositionHandler(fpos: TPositionHandler): void { this.fPositionHandler = fpos; }
 	setDefaultPositionStyle(): void { this.fHtmlElt.style.position = "absolute"; }
 	getParent(): VObjectView { return this.fParent; }
 	getHtml(): HTMLElement { return this.fHtmlElt; }
@@ -35,22 +43,35 @@ class VHtmlView extends VObjectView {
 		this.updatePenControl(obj);
 		this.updateEffects(obj);
 		this.updateEvents(obj);
-		if (obj.fDebug.fShowName) 	this.showName (obj);
-		if (obj.fDebug.fShowMap) 	this.showMap (obj);
+		let debug = <IDebug>obj.fDebug;
+		if (debug.fShowName) 		this.showName (obj);
+		else if (this.fDisplayName) this.removeName ();
+		if (debug.fShowMap) 		this.showMap (obj);
+		else if (this.fDisplayMap) 	this.removeMap ();
 	}
 	
 	//------------------------------------------------------------------------------------
 	private showName(obj: IObject): void {
 		let div = document.createElement('div');
         div.className = "inscore-debug";
+		div.id = "_name_";
         div.innerHTML  = obj.getName();
         this.getHtml().appendChild (div);
+        this.fDisplayName = true;
+	}
+
+	//------------------------------------------------------------------------------------
+	private removeName(): void {
+		let childs = this.getHtml().querySelectorAll('#_name_');
+        if (childs && childs.length) this.getHtml().removeChild (childs[0]);
+        this.fDisplayName = false;
 	}
 
 	//------------------------------------------------------------------------------------
 	private addMap(seg: TGraphicSegment, i: number): void {
 		let colors = [ "DarkOrange", "ForestGreen"];
 		let div = document.createElement('div');
+		div.id = "_map_";
 		div.style.position = "absolute";
 		div.style.width 	= this.map2SceneX(seg.first().size()) +"px";
 		div.style.height 	= this.map2SceneY(seg.second().size()) +"px";
@@ -59,10 +80,19 @@ class VHtmlView extends VObjectView {
 		div.style.backgroundColor = colors[i%2];
 		div.style.opacity = "0.4";
         this.getHtml().appendChild (div);
+        this.fDisplayMap = true;
 	}
 
 	//------------------------------------------------------------------------------------
-	private showMap(obj: IObject): void {
+	private removeMap(): void {
+		let childs = this.getHtml().querySelectorAll('#_map_');
+		let n = childs.length;
+        for (var i=0; i<n; i++) this.getHtml().removeChild (childs[i]);
+        this.fDisplayMap = false;
+	}
+
+	//------------------------------------------------------------------------------------
+	protected showMap(obj: IObject): void {
 		let color = [ "DarkOrange", "rgb(10 200 10)"];
 		let map : Array<TTime2GraphicRelation> = obj.fMapping.getRelations();
 		for (var i=0; i<map.length; i++)
@@ -167,7 +197,12 @@ class VHtmlView extends VObjectView {
 	}
 
 	updatePos(obj: IObject): void {
-		let pos = obj.getPosition();
+		let pos = this.fPositionHandler();
+		if (pos.x == kNoPosition) {
+			this.getHtml().style.visibility = "hidden";
+			return;
+		}
+
 		let size = this.getSize(obj);
 		let z = obj.fPosition.getZOrder();
 		let left = this.relative2SceneX(pos.x);

@@ -13,7 +13,7 @@ abstract class TInterval<T>	{
 		this.fSecond = second;
 	}
 
-	toString(): string  { return "[" + this.fFirst + ", " + this.fSecond + "]"; }
+	toString(): string  { return "[" + this.fFirst + ", " + this.fSecond + "["; }
 
 	set( i: TInterval<T>): void  { 
 		this.fFirst = i.first();
@@ -40,7 +40,8 @@ class NumberInterval extends TInterval<number> {
 	empty () 						: boolean	{ return this.fFirst == this.fSecond; }
 	includeLocation (loc: number) 	: boolean	{ return (this.fFirst <= loc) && (this.fSecond > loc); }
 	size()							: number 	{ return this.fSecond - this.fFirst; }
-	toArray () 					: Array<number>	{ return [ this.fFirst, this.fSecond ]; }
+	mult(n : number) 	: void 	{ this.fFirst *= n; this.fSecond *= n; }
+	toArray () 			: Array<number>	{ return [ this.fFirst, this.fSecond ]; }
 }
 
 //--------------------------------------------------------------------

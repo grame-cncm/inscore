@@ -41,13 +41,16 @@ class VHtmlLog extends VObjectView {
 		}
 	}
 
+	setPositionHandler	( fpos: TPositionHandler) : void {};
+
 	writelog ( log: IApplLog ) : void {
 		if (log.cleared())
 			this.fWindow.document.body.innerHTML = "";
 		let content = log.content();
-		for (let i=0; i < content.length; i++)
+		for (let i=0; i < content.length; i++) {
 			this.fWindow.document.write(content[i] + "<br />\n");
-//			this.fWindow.document.write("<pre>"+content[i] + "</pre>");
+			this.fWindow.window.scrollBy(0, 50);
+		}
 		log.done();
 	}
 

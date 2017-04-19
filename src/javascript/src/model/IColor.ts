@@ -38,8 +38,9 @@ class IColor {
   
 // MODIFIED STATUS
 //--------------------------------------------------------------      
-   cleanup(): void { this.fModified = false; }   
-   modified(): boolean { return this.fModified; }   
+   cleanup(): void 		{ this.fModified = false; }   
+   modify(): void 		{ this.fModified = true; }   
+   modified(): boolean	{ return this.fModified; }   
 
 
 // PROPERTIES COPY

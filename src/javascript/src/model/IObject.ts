@@ -21,11 +21,13 @@
 ///<reference path="IDate.ts"/>
 ///<reference path="IEffect.ts"/>
 ///<reference path="IEventAble.ts"/>
+///<reference path="IObjectFactory-interface.ts"/>
 ///<reference path="IPenControl.ts"/>
 ///<reference path="IPosition.ts"/>
 ///<reference path="IProxyInterface.ts"/>
 ///<reference path="Methods.ts"/>
 ///<reference path="MethodsJS.ts"/>
+///<reference path="TSyncInfo.ts"/>
 
 
 class TMsgHandler<T> 			{ [index: string]: T; }
@@ -44,19 +46,19 @@ class IObject implements Tree<IObject> {
 // ATTRIBUTES
 //-------------------------------------------------------------- 
     private   fState: 		eObjState;
-    protected fTypeString:	string;
     protected fName: 		string;
     protected fNewData: 	boolean;
     protected fDelete: 		boolean;
     protected fLock: 		boolean;
     protected fParent: 		IObject;
-    protected fObjectView:	VObjectView;
+    protected fObjectView:	Array<VObjectView>;
     protected fSubNodes: Array<IObject> = new Array;
     
     protected fMsgHandlerMap : 		TMsgHandler<TSetHandler>; 
     protected fGetMsgHandlerMap : 	TGetMsgHandler<TGetHandler>; 
     protected fGetMsgsHandlerMap : 	TGetMsgHandler<TGetMultiHandler>; 
     
+    fTypeString: string;
     fPosition: 	 IPosition;
     fDate: 		 IDate;
     fColor: 	 IColor;
@@ -65,7 +67,8 @@ class IObject implements Tree<IObject> {
     fEffect:     IEffect;
     fEvents:	 IEventAble;
     fMapping:	 TTime2GraphicMap;
-    fDebug:	 	 IDebug;
+    fDebug:	 	 IObject;
+    fSync:	 	 IObject;
 
 // CONSTRUCTOR
 //--------------------------------------------------------------       
@@ -73,6 +76,7 @@ class IObject implements Tree<IObject> {
         this.fName = name;
         this.fTypeString = 'obj'; 
         
+        this.fObjectView = [];
         this.fDelete = false;
         this.fLock = false;
         this.fState = eObjState.kNewObject;
@@ -99,13 +103,23 @@ class IObject implements Tree<IObject> {
         this.createStaticNodes();
         this.fEvents.attributes (this.fMsgHandlerMap);
 
-        this.fMapping = new TTime2GraphicMap();
-        let defaultTimeSegment = new TimeInterval (new Fraction(0,1), this.fDate.getDuration());
-        let defaultGraphicSegment = new TGraphicSegment (new NumberInterval(0,1), new NumberInterval(0,1));
-		this.fMapping.addElt ( new TTime2GraphicRelation(defaultTimeSegment, defaultGraphicSegment));
+        this.fMapping = this.createMapping();
     }
     
-    createStaticNodes() : void { this.fDebug = new IDebug("debug", this); this.addChild(this.fDebug); }
+    createMapping () : TTime2GraphicMap {
+        let map: TTime2GraphicMap = new TTime2GraphicMap();
+        let defaultTimeSegment = new TimeInterval (new Fraction(0,1), this.fDate.getDuration());
+        let defaultGraphicSegment = new TGraphicSegment (new NumberInterval(0,1), new NumberInterval(0,1));
+		map.addElt ( new TTime2GraphicRelation(defaultTimeSegment, defaultGraphicSegment));
+		return map;
+    }
+    
+    createStaticNodes() : void {
+    	this.fDebug = IObjectFactory.createObj ("debug", kDebugType, this);
+    	this.addChild (this.fDebug);
+    	this.fSync = IObjectFactory.createObj ("sync", kSyncType, this);
+    	this.addChild (this.fSync);
+    }
 
 // HANDLERS
 //--------------------------------------------------------------  
@@ -253,17 +267,28 @@ class IObject implements Tree<IObject> {
 	setWidth (width: number) : void { this.fPosition.setWidth( width ); this.posPropagate(); }
 	setHeight(height:number): void 	{ this.fPosition.setHeight( height); this.posPropagate(); }
     setScale (scale:number): void 	{ this.fPosition.setScale( scale); this.posPropagate(); }
+	subModPropagate(obj: IObject) : void 	{ if (obj) { obj.addState (eObjState.kSubModified); this.subModPropagate(obj.fParent) ;} }
 	posPropagate() : void 			{ let a = new IObjectTreeApply(); a.applyPosModified(this); }
 	posModified() : void 			{ this.fPosition.modify(); this.addState (eObjState.kModified + eObjState.kSubModified); }
+	allModified() : void {
+		this.addState (eObjState.kModified);
+		this.fPosition.modify(); 
+		this.fDate.modify(); 
+		this.fColor.modify(); 
+		this.fPenControl.modify(); 
+		this.fBrushStyle.modify(); 
+		this.fEffect.modify(); 
+	}
+	
 //-------------------------------------------------------------- 
 // decorate date and duration messages to handle time events
 //--------------------------------------------------------------  
-	setDate(d: Fraction) : void 	{ let previous = this.fDate.getDate(); this.fDate.setDate(d); this.fEvents.handleTimeChange(previous, this.fDate.getDate()); }
-	addDate(d: Fraction) : void 	{ let previous = this.fDate.getDate(); this.fDate.addDate(d); this.fEvents.handleTimeChange(previous, this.fDate.getDate());  }
-	clock() : void					{ let previous = this.fDate.getDate(); this.fDate.clock(); this.fEvents.handleTimeChange(previous, this.fDate.getDate()); }
-	setDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.setDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
-	addDuration(d: Fraction) : void { let previous = this.fDate.getDuration(); this.fDate.addDuration(d); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }
-	durclock() : void				{ let previous = this.fDate.getDuration(); this.fDate.durclock(); this.fEvents.handleDurChange(previous, this.fDate.getDuration()); }   
+	setDate(d: Fraction) : void 	{ this.fEvents.handleTimeChange(this.fDate.getDate(), d); this.fDate.setDate(d); }
+	addDate(d: Fraction) : void 	{ this.setDate (this.fDate.getDate().add (d)); }
+	clock() : void					{ this.setDate (this.fDate.getDate().add (this.fDate.clockDur())); }
+	setDuration(d: Fraction) : void { this.fEvents.handleDurChange(this.fDate.getDuration(), d); this.fDate.setDuration(d); }
+	addDuration(d: Fraction) : void { this.setDuration (this.fDate.getDuration().add (d)); }
+	durclock() : void				{ this.setDuration (this.fDate.getDuration().add (this.fDate.clockDur())); }   
 
 //-------------------------------------------------------------- 
 // UI events management
@@ -273,8 +298,29 @@ class IObject implements Tree<IObject> {
 		let env = new TEnv (this.getOSCAddress(), mouse, this.fDate.getDate(), date);
 		this.fEvents.handleMouseEvent (type, env); 
 	}
-	mapPoint2Date (point: TPosition) : Fraction				{ return this.fMapping.mapPoint2Date (point); }
-    
+
+//-------------------------------------------------------------- 
+// Mappings
+//--------------------------------------------------------------  
+	mapPoint2Date (point: TPosition) : Fraction							{ return this.fMapping.mapPoint2Date (point); }
+	date2MapLocation (date: Fraction) : { x: number, y: NumberInterval}	{ return this.fMapping.date2MapLocation (date); }
+	date2FramePoint (date: Fraction) : TPosition {		// default method
+		let dur = this.fDate.getDuration().toNum();
+		let dnum = date.toNum();
+		if (dnum > dur) return { x: kNoPosition, y: 0};
+
+		// the length corresponding to the date
+		// 8 is 4 x 2 where 2 is the internal dimension of an object
+		let dlen = kObjectSize * 4 * dnum / dur;	
+		if (dlen <= kObjectSize) 	return { x: dlen - 1, y: -1 };
+		dlen -= kObjectSize;
+		if (dlen <= kObjectSize) 	return { x: 1, y: dlen -1 };
+		dlen -= kObjectSize;
+		if (dlen <= kObjectSize) 	return { x: 1 - dlen, y: 1 };
+		dlen -= kObjectSize;
+		return  { x: -1, y: 1 - dlen };
+	}
+
 // METHODS
 //--------------------------------------------------------------  
     addChild(obj: IObject): void { 
@@ -296,9 +342,27 @@ class IObject implements Tree<IObject> {
     	return size / 2 * this.fParent.getRSizeAsScale(); 
     }
 
-    getPosition(): {x: number, y: number } 		     { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
+    getPosition(): TPosition 		     			 { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
     getSize():     {w: number, h: number } 			 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
+    getSlavePosition (master: IObject, syncparams: TSyncInfo): TPosition  	 { 
+     	if (syncparams.fPosition == eSyncPosition.kSyncFrame) {
+     		let pos = this.date2FramePoint ( this.fDate.getDate() );
+     		return pos;
+     	}
+
+    	let pos = master.date2MapLocation ( this.fDate.getDate() );
+    	let y = 0;
+    	switch (syncparams.fPosition) {
+    		case eSyncPosition.kSyncTop:		y = pos.y.first();
+    			break;
+    		case eSyncPosition.kSyncBottom:		y = pos.y.second();
+    			break;
+    		case eSyncPosition.kSyncOver:
+    		default:							y = pos.y.first() + pos.y.size()/2;
+    	}
+    	return { x: pos.x, y: y }; 
+    }
 
     toString(): string 				{ 
     	let n=this.fSubNodes.length; 
@@ -313,16 +377,14 @@ class IObject implements Tree<IObject> {
     
     
     //-----------------------------
-    match(address: string): boolean
-    {
+    match(address: string): boolean  {
         let re = new OSCRegexp(address);
         return re.match (this.fName);
     }
 
     find(expr: string): Array<IObject> {
-        if (!Tools.regexp(expr)) {
+        if (!Tools.regexp(expr))
             return this.exactfind(expr);
-        }
 
 		let re = new OSCRegexp(expr);
 		let out: Array<IObject> = [];
@@ -362,11 +424,28 @@ class IObject implements Tree<IObject> {
         return dest;
     }   
 
-    // View
     //-----------------------------    
-    setView(view: VObjectView): void 	{ this.fObjectView = view }
-    getView(): VObjectView 				{ return this.fObjectView }
+    // Views management
+    //-----------------------------    
+    setView(view: VObjectView): void 			{ this.fObjectView = [view]; }
+    addView(view: VObjectView): void 			{ this.fObjectView.push (view); }
+    addViews(views: Array<VObjectView>): void 	{ this.fObjectView = this.fObjectView.concat(views); }
+    getViews(): Array<VObjectView> 				{ return this.fObjectView; }
+    removeView(view: VObjectView): void 	{ 
+    	let i= this.fObjectView.indexOf (view);
+		if (i>=0) {
+	    	view.remove();
+			this.fObjectView.splice(i, 1);
+		}
+    }
+    removeViews(): void 	{ 
+    	this.fObjectView.forEach ( function (view: VObjectView) { view.remove(); });
+    	this.fObjectView = []
+    }
     
+
+    //-----------------------------    
+    // Msgs execution
     //-----------------------------
     execute (msg: IMessage): eMsgStatus {
     	if (msg.size() == 0) return eMsgStatus.kBadParameters;
@@ -574,10 +653,12 @@ class IObject implements Tree<IObject> {
     				{ return IProxy.execute (msg, name, parent); }         
     
     //-----------------------------    
+    delNotify(obj: IObject): void 	{}
     getDeleted(): boolean 	{ return this.fDelete; }
     del(): void {
     	this.fDelete = true;
-        if (this.getView()) this.getView().remove();
+    	this.fParent.fSync.delNotify (this);
+        this.removeViews();
         let array = this.fParent.getSubNodes();
         array.splice(array.indexOf(this), 1);
     }
@@ -591,6 +672,7 @@ class IObject implements Tree<IObject> {
 		this.setState(eObjState.kClean);
         this.fBrushStyle.cleanup();
         this.fEffect.cleanup();
+        this.fNewData = false;
 		if (this.fDate.getTempo()) this.move();
     }
 
@@ -624,37 +706,3 @@ class IObjectTreeApply implements TreeApply<IObject> {
 	posModified (t: IObject) : void 		{ t.posModified(); }
 	applyPosModified (t: IObject): void 	{ this.apply ((o) => this.posModified (o), t); }
 }
-
-
-//-------------------------------------------------------------- 
-// Debug node of IObject
-//-------------------------------------------------------------- 
-class IDebug extends IObject {
-    fShowMap : 	boolean; 
-    fShowName : boolean;
-    
-    constructor(name: string, parent: IObject) { 
-        super( name, parent );
-        this.fTypeString = kDebugType;
-        this.fShowMap = false; 
-        this.fShowName = false; 
-    }
-
-    setHandlers(): void {
-        this.fMsgHandlerMap[kname_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setShowName(n); } );
-        this.fMsgHandlerMap[kmap_GetSetMethod] 	= new TMsgHandlerNum( (n: number): void => { this.setShowMap(n);  } );
-        this.fMsgHandlerMap[kget_SetMethod] 	= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.get(msg); } );
-
-        this.fGetMsgHandlerMap[kname_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.getShowName(); } );
-        this.fGetMsgHandlerMap[kmap_GetSetMethod] 	= new TGetMsgHandlerNum( (): number => { return this.getShowMap(); } );
-    }
-
-	getShowMap() : number 		{ return this.fShowMap ? 1 : 0; }
-	getShowName() : number 		{ return this.fShowName ? 1 : 0; }
-
-	setShowMap(val: number) : void 		{ this.fShowMap  = val ? true : false; this.fParent.addState(eObjState.kModified); }
-	setShowName(val: number) : void 	{ this.fShowName = val ? true : false; this.fParent.addState(eObjState.kModified); }
-
-    createStaticNodes() : void {}
-}
-

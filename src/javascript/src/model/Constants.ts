@@ -16,6 +16,7 @@ const kImgType              : string	= "img";
 const kVideoType            : string	= "video";
 const kSvgType              : string	= "svg";
 const kSvgfType             : string    = "svgf";
+const kSyncType             : string	= "sync";
 const kWebSocketType        : string	= "websocket";
 
 const kDebugType            : string	= "debug";
@@ -25,4 +26,5 @@ const kApplType             : string	= "IAppl";
 // inscore type for inscore scripts
 const kInscoreFile  : string	= "inscore";
 
-var kDefaultRate:			 number = 50;	// the default inscore time task rate in ms
+var kDefaultRate:			 number = 10;	// the default inscore time task rate in ms
+var kObjectSize:			 number = 2;	// an object size in internal representation
