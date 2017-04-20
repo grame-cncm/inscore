@@ -44,18 +44,23 @@ class IFaust extends IObject {
 		}
 	}
 
+    propagateMsg (osc: TPair<string> , msg: IMessage): eMsgStatus {
+    }
+
+	private buildUIItems(items: Array<TFaustUIItem>): void {
+		items.forEach( function (item: TFaustUIItem) {console.log(item.address+" min: " +item.min+ " max: "+item.max)});
+	}
 
 	private buildUIFromJSON(json: string): void {
-		let ui: TFaustJSONDesc;
-		eval ("ui="+json);
-	}
+		let desc: TFaustJSONDesc;
+		eval ("desc="+json);
+		desc.ui.forEach ( (elt: TFaustUIElement): void => { this.buildUIItems (elt.items); });
 /*
-	buildUI (ui.ui);
-		buildItems (ui[i].items, ui[i].label);
-	for (var i=0; i< items.length; i++) {
-		console.log ("item: " + items[i].type + " path: " + items[i].address + " min: " + items[i].min + " max: " + items[i].max);
-	}
+		for (var i=0; i < desc.ui.length; i++)
+			this.buildUIItems (desc.ui[i].items);
 */
+	}
+
     private instanceReady (dsp: TFaustDSP): void {
 		if (this.fDsp) {
 			this.fDsp.disconnect(IFaust.fAudio.destination);
@@ -74,13 +79,15 @@ class IFaust extends IObject {
 			if (this.fFactory)
 				faust.deleteDSPFactory (this.fFactory);
 			this.fFactory = factory;
-			faust.createDSPInstance(factory, IFaust.fAudio, this.fBufferSize, this.instanceReady);
+			faust.createDSPInstance(factory, IFaust.fAudio, this.fBufferSize, 
+				(arg: TFaustDSP) : void => this.instanceReady(arg));
 		}
     }
    
     private createDsp(code: string): boolean { 
-        console.log ("createDsp " + code);
-		faust.createDSPFactory (code, ["-I", "http://127.0.0.1:8000/libraries/"], this.factoryReady);
+//        console.log ("createDsp " + code);
+		faust.createDSPFactory (code, ["-I", "http://127.0.0.1:8000/libraries/"], 
+			(arg: TFaustFactory) : void => this.factoryReady(arg));
 		return true;
     }
    
