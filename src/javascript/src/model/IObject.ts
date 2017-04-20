@@ -343,7 +343,7 @@ class IObject implements Tree<IObject> {
     }
 
     getPosition(): TPosition 		     			 { return { x: this.fPosition.getXPos(), y: this.fPosition.getYPos() }; }
-    getSize():     {w: number, h: number } 			 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
+    getSize():     TSize 							 { return { w: this.fPosition.getWidth(), h: this.fPosition.getHeight() }; }
     getRotate():   {x: number, y: number, z: number} { return { x: this.fPosition.getRotateX(), y: this.fPosition.getRotateY(), z: this.fPosition.getRotateZ() }; }
     getSlavePosition (master: IObject, syncparams: TSyncInfo): TPosition  	 { 
      	if (syncparams.fPosition == eSyncPosition.kSyncFrame) {
@@ -514,13 +514,19 @@ class IObject implements Tree<IObject> {
 		return this.processMsg(osc.first, osc.second, msg);
     }
 
+    propagateMsg (osc: TPair<string> , msg: IMessage): eMsgStatus {
+        let result: number = eMsgStatus.kBadAddress;
+        this.fSubNodes.forEach ( function (obj: IObject) { result |= obj.processMsg (osc.first, osc.second, msg);} );
+        return result;
+    }
     processMsg (head: string, tail: string , msg: IMessage): eMsgStatus {
 
         let result: number = eMsgStatus.kBadAddress;
         if (this.match(head)) {
             let osc = OSCAddress.shift (tail);
             if (osc.second.length)
-                this.fSubNodes.forEach ( function (obj: IObject) { result |= obj.processMsg (osc.first, osc.second, msg);} );
+            	result = this.propagateMsg (osc, msg);
+//                this.fSubNodes.forEach ( function (obj: IObject) { result |= obj.processMsg (osc.first, osc.second, msg);} );
             else {										
                 let targets = this.find (osc.first);
                 let n = targets.length;
