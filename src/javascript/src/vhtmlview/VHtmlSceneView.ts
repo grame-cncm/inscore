@@ -37,7 +37,8 @@ class VHtmlSceneView extends VHtmlView {
 		let parent = new VHtmlSceneContainer();
 		super(document.createElement('div'), parent);
 		this.fDoc = parent;
-		this.fReferenceWidth = Math.min(screen.width, screen.height);
+		let wsize = TWindow.getSize();
+		this.fReferenceWidth = Math.min(Math.max(screen.width, wsize.w), Math.max(screen.height, wsize.h));
 
 		let div = this.getHtml();
 		div.className = "inscore-scene";
