@@ -45,6 +45,7 @@ class IFaust extends IObject {
 	}
 
     propagateMsg (osc: TPair<string> , msg: IMessage): eMsgStatus {
+        return eMsgStatus.kProcessed;
     }
 
 	private buildUIItems(items: Array<TFaustUIItem>): void {
