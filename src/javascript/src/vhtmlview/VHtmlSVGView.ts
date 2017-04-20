@@ -80,6 +80,11 @@ class VHtmlSvgView extends VHtmlView {
         obj.fPosition.setHeight(h);
         if (!w || !h) setTimeout(this._updateView(obj), 50);
     }
+    
+    relative2SceneSize(obj: IObject): TSize {
+		let size = obj.getSize();
+		return { w: this.relative2SceneWidth (size.w), h: this.relative2SceneHeight (size.h) };
+    }
 
     setNone () : void 				{ this.getsvg(this.getHtml()).setAttribute("filter", "blur(0px)");  }
 	setBlur (val: number) : void 	{ this.getsvg(this.getHtml()).setAttribute("filter", "blur(" + val + "px)"); }
