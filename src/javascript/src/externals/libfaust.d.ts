@@ -1,6 +1,7 @@
 
 
 declare var Module: any;
+declare var webkitAudioContext: any; 
 
 type TFaustFactory = any;
 
@@ -35,7 +36,7 @@ interface TAudioContext {
 }
 
 interface TFaustDSP	extends TAudioContext { 
-	setParamValue(address: string, val: number);
+	setParamValue(address: string, val: number) : void;
 	json () : string;
 	getNumInputs()	: number;
 	getNumOutputs()	: number;

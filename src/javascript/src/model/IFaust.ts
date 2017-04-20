@@ -5,10 +5,11 @@
 ///<reference path="IObject.ts"/>
 
 class IFaust extends IObject {
-	static fAudio: TAudioContext;
+	static fAudio: TAudioContext = null;
 	private fDspCode 	: string;
 	private fFactory 	: TFaustFactory;
 	private fDsp 		: TFaustDSP;
+	private fUI			: Array<TFaustUIItem>;
 	
 	fBufferSize	: number;
 	        
@@ -19,6 +20,10 @@ class IFaust extends IObject {
         this.fFactory = null;
         this.fDsp = null;
         this.fBufferSize = 1024;
+        if (!IFaust.fAudio) {
+			let isWebKitAudio = (typeof webkitAudioContext !== "undefined");
+			IFaust.fAudio = (isWebKitAudio) ? new webkitAudioContext() : new AudioContext();
+        }
     }
 
 	del(): void {
@@ -44,7 +49,13 @@ class IFaust extends IObject {
 		let ui: TFaustJSONDesc;
 		eval ("ui="+json);
 	}
-
+/*
+	buildUI (ui.ui);
+		buildItems (ui[i].items, ui[i].label);
+	for (var i=0; i< items.length; i++) {
+		console.log ("item: " + items[i].type + " path: " + items[i].address + " min: " + items[i].min + " max: " + items[i].max);
+	}
+*/
     private instanceReady (dsp: TFaustDSP): void {
 		if (this.fDsp) {
 			this.fDsp.disconnect(IFaust.fAudio.destination);
