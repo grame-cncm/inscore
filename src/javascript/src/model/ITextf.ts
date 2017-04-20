@@ -30,7 +30,7 @@ class ITextf extends IText {
         if (n == 3) {
         	let file = msg.paramStr(2);
         	if (file.correct) {
-        		Tools.readFile(file.value, this.success, this.error);
+                Tools.readFile(file.value, (arg: string): void => this.success(arg), (arg: string): void => this.error(arg));
 		        let reader = new FileReader();
 		        let b = new Blob([file.value]);
         		reader.onloadend = this._setText(reader);
@@ -41,9 +41,14 @@ class ITextf extends IText {
         }
         return status;
     }
+
     _setText(reader: FileReader) : TTxtfLoadEndHandler { 
-    	return () => { this.setText(reader.result); }
+    	return () => { this.setText(this.fTextFile); }
 	}
+    getText(): string { 
+       if (this.fText !== "") return this.fText
+       else return this.fTextFile; 
+    }
 
 // GETSET METHOD
 //--------------------------------------------------------------    
@@ -55,8 +60,9 @@ class ITextf extends IText {
 // READER METHOD
 //--------------------------------------------------------------    
     success(content: string): void{
-        this.fTextFile = content;
-        console.log("ITextf success content : " + this.fTextFile);
+        this.fText = content;
+        this.newData;
+        console.log("ITextf success content : " + this.fText);
     }
 
     error(content: string): void{
