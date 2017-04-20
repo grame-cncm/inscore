@@ -56,9 +56,14 @@ class IGlue {
 		this.fCurrentTime = now;
 		let stack = this.fStack;
 		this.fStack = [];
+	try {
 		this.fModelUpdater.update (stack);
 		ViewUpdater.update (this.fAppl);
 		IObject.timeTaskCleanup (this.fAppl);
+	}
+	catch (e) { 
+		console.log ("Warning: " + e);
+	}
     	this.fTimer = setTimeout (this._timetask(), this.fAppl.getRate()) ;		
 	}
     _timetask()	: TTimerTask 			{ return () => this.timetask(); };

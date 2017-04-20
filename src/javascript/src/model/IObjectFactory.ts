@@ -5,6 +5,7 @@
 ///<reference path="ICurve.ts"/>
 ///<reference path="IDebug.ts"/>
 ///<reference path="IEllipse.ts"/>
+///<reference path="IFaust.ts"/>
 ///<reference path="IGuidoCode.ts"/>
 ///<reference path="IGuidoPianoRoll.ts"/>
 ///<reference path="IHtml.ts"/>
@@ -50,11 +51,12 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
         switch (type) {
         	case kDebugType:	return new IDebug(name, parent);
         	case kSyncType:		return new ISync(name, parent);
+            case kFaustType:	return new IFaust(name, parent);
                       
             case kSceneType:	obj = new IScene(name, parent);
                					obj.setView (this.createView(obj));
                					return obj;
-     		
+    		
             case kEllipseType:		obj = new IEllipse(name, parent);
                 break;
             case kRectType:			obj = new IRect(name, parent);
@@ -75,8 +77,8 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
                 break;    
             case kHtmlType:			obj = new IHtml(name, parent);
                 break;                
-            case kImgType:			obj = new IImage(name, parent);
-                break;
+            case kHtmlType:			obj = new IHtml(name, parent);
+                break;                
             case kArcType:			obj = new IArc(name, parent);
                 break;
             case kVideoType:		obj = new IVideo(name, parent);
