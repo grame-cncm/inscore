@@ -17,7 +17,7 @@ class VHtmlGMNView extends VHtmlSvgView {
 
 	getSVGCode(obj: IObject): string {
 		let gmn = <IGuidoCode>obj;
-		return gmn.getSVG();
+		return gmn.getSVG (this.relative2SceneSize(obj) );
 	}
 
 	getFirstSVGGroup(root: Node): SVGSVGElement {
