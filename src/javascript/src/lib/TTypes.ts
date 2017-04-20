@@ -5,3 +5,4 @@ type TSize 		=	{ w: number, h: number };
 type TPair<T> 	=	{ first: T, second: T };
 
 interface TPositionHandler  { (): TPosition; }
+interface TReadHandler      { (content: string): void; }
