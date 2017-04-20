@@ -30,7 +30,7 @@ abstract class VHtmlAutoSize extends VHtmlView {
 	}
 
 	getClientSize(obj: IObject): { w: number, h: number } {
-        if (!this.fClientWidth) {
+        if (!this.fClientWidth || obj.isNewData()) {
             let target = this.getAutoElement();
             this.fClientWidth = target.clientWidth;
             this.fClientHeight = target.clientHeight;
