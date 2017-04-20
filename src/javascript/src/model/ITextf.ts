@@ -61,7 +61,9 @@ class ITextf extends IText {
 //--------------------------------------------------------------    
     success(content: string): void{
         this.fText = content;
-        this.newData;
+        this.newData(true);
+        this.addState (eObjState.kModified);
+        this.subModPropagate (this.fParent);
         console.log("ITextf success content : " + this.fText);
     }
 
