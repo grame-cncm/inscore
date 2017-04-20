@@ -10,6 +10,8 @@ class IGuidoCode extends IObject {
 	static fGuidoMap: GuidoScoreMapAdapter;
 
     protected fGMN: string;
+    protected fAR: ARHandler;
+    protected fGR: GRHandler;
     protected fSVG: string;
     protected fPage: number;
     protected fPageFormat: Array<number>;    
@@ -27,18 +29,25 @@ class IGuidoCode extends IObject {
         this.fTypeString = kGuidoCodeType;
         this.fCurrentPagesCount = 1; 
         this.fPage = 1; 
+        this.fSVG = "";
+        this.fAR = null;
         //this.fPageFormat = [21.0f, 29.7f]; 
         this.fPosition.setWidth (0);
         this.fPosition.setHeight (0);
         super.setHandlers();
     }
-    
+
+	del(): void {
+		if (this.fAR) 	IGuidoCode.fGuidoEngine.freeAR (this.fAR);
+		super.del();
+    }
+   
     setSVG(gmn: string): void				        { this.fSVG = gmn; /*localMapModified(true);*/ }
 	setPage(page: number): void							{ this.fPage = page; /*localMapModified(true);*/ }
 	setPageFormat(pageFormat: Array<number>): void	    { this.fPageFormat = pageFormat; /*localMapModified(true);*/ }
     //setdPage(dpage: number): void                       {}
     
-    getSVG(): string			        { return this.fSVG; }
+    getSVG(size: TSize): string			{ return this.fSVG.length ? this.fSVG : this.AR2SVG (size); }
 	getPage(): number					{ return this.fPage; }
 	getPageFormat(): Array<number>		{ return this.fPageFormat; }
 	//getPageCount(): number              {return}
@@ -72,13 +81,15 @@ class IGuidoCode extends IObject {
 		this.fMapping.forEach (function (elt: TTime2GraphicRelation) { elt.fGraph.scale(xscale, yscale) } );
     }
     
-    AR2SVG(ar: ARHandler): string {
-        let gr = IGuidoCode.fGuidoEngine.ar2gr(ar);
-        let svg = IGuidoCode.fGuidoEngine.gr2SVG(gr, 1, false, 0);
-        this.getMap (gr);
-        this.getViews()[0].setMapScaleHandler ((x: number, y: number): void => { this.mapScale(x, y); }) 
-        IGuidoCode.fGuidoEngine.freeGR(gr);
-	    return svg;
+    AR2SVG(size: TSize): string {
+        if (this.fAR) {
+        	let gr = IGuidoCode.fGuidoEngine.ar2gr(this.fAR);
+        	this.fSVG = IGuidoCode.fGuidoEngine.gr2SVG(gr, 1, false, 0);
+        	this.getMap (gr);
+        	this.getViews()[0].setMapScaleHandler ((x: number, y: number): void => { this.mapScale(x, y); }) 
+       		IGuidoCode.fGuidoEngine.freeGR(gr);
+       	}
+	    return this.fSVG;
     }
     
     set(msg: IMessage): eMsgStatus {
@@ -88,12 +99,10 @@ class IGuidoCode extends IObject {
 		if (msg.size() != 3) return eMsgStatus.kBadParameters;
         let gmn = msg.paramStr(2);
 		if (!gmn.correct) return eMsgStatus.kBadParameters;
-        let ar = this.str2AR (gmn.value);
-		if (!ar) return eMsgStatus.kBadParameters;
+        this.fAR = this.str2AR (gmn.value);
+		if (!this.fAR) return eMsgStatus.kBadParameters;
 		
 		this.fGMN = gmn.value;
-		this.fSVG = this.AR2SVG (ar);
-		IGuidoCode.fGuidoEngine.freeAR (ar);
 		this.fNewData = true;
         return eMsgStatus.kProcessed;
     }

@@ -1,4 +1,5 @@
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
+///<reference path="../vhtmlview/VHtmlTools.ts"/>
 ///<reference path="IGuidoCode.ts"/>
 
 const kCLine        : number =  1;
@@ -48,14 +49,13 @@ class IGuidoPianoRoll extends IGuidoCode {
 
     getPRollMap(pr: PianoRoll): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getPianoRollMap(pr, 1, 1)) };
     
-    AR2SVG(ar: ARHandler): string {
-        let pr = IGuidoPianoRoll.fEngine.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
-//        let w = this.getView().relative2SceneWidth (this.fPosition.getWidth());
-//        let h = this.getView().relative2SceneHeight (this.fPosition.getHeight());
-//        let svg = IGuidoPianoRoll.fEngine.svgExport(pr, w, h);
-        let svg = IGuidoPianoRoll.fEngine.svgExport(pr, 1, 1);
-        this.getPRollMap (pr);
-        IGuidoPianoRoll.fEngine.destroyPianoRoll(pr);                                     
-	    return svg;
+    AR2SVG(size: TSize): string {
+        if (this.fAR) {
+			let pr = IGuidoPianoRoll.fEngine.ar2PianoRoll(PianoRollType.kSimplePianoRoll, this.fAR);
+			this.fSVG = IGuidoPianoRoll.fEngine.svgExport(pr, size.w, size.h);
+			this.getPRollMap (pr);
+			IGuidoPianoRoll.fEngine.destroyPianoRoll(pr);
+		}
+	    return this.fSVG;
     }
 }
