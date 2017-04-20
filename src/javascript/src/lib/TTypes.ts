@@ -4,5 +4,5 @@ type TMouseEnv 	=	{ rel: TPosition, abs: TPosition, parent: TPosition };
 type TSize 		=	{ w: number, h: number };
 type TPair<T> 	=	{ first: T, second: T };
 
-interface TPositionHandler  { (): TPosition; }
-interface TReadHandler      { (content: string): void; }
+interface TPositionHandler  { (): TPosition }
+interface TReadHandler      { (content: string): void }
