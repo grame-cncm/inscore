@@ -31,10 +31,6 @@ class ITextf extends IText {
         	let file = msg.paramStr(2);
         	if (file.correct) {
                 Tools.readFile(file.value, (arg: string): void => this.success(arg), (arg: string): void => this.error(arg));
-		        let reader = new FileReader();
-		        let b = new Blob([file.value]);
-        		reader.onloadend = this._setText(reader);
-		        reader.readAsText(b);
 	            status = eMsgStatus.kProcessed;
         	}
 	        else status = eMsgStatus.kBadParameters;        	
@@ -42,9 +38,6 @@ class ITextf extends IText {
         return status;
     }
 
-    _setText(reader: FileReader) : TTxtfLoadEndHandler { 
-    	return () => { this.setText(this.fTextFile); }
-	}
     getText(): string { 
        if (this.fText !== "") return this.fText
        else return this.fTextFile; 
@@ -64,7 +57,6 @@ class ITextf extends IText {
         this.newData(true);
         this.addState (eObjState.kModified);
         this.subModPropagate (this.fParent);
-        console.log("ITextf success content : " + this.fText);
     }
 
     error(content: string): void{
