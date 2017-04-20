@@ -23,7 +23,6 @@ class ITextf extends IText {
 // SET HANDLER
 //--------------------------------------------------------------    
    set(msg: IMessage): eMsgStatus { 
-		        console.log("ITextf set: " + msg);
         let status = super.set(msg);
         if (status != eMsgStatus.kProcessed) return status; 
 
@@ -31,10 +30,9 @@ class ITextf extends IText {
         if (n == 3) {
         	let file = msg.paramStr(2);
         	if (file.correct) {
-        		this.fTextFile = file.value;
+        		Tools.readFile(file.value, this.success, this.error);
 		        let reader = new FileReader();
 		        let b = new Blob([file.value]);
-		        console.log("readAsText: " + b);
         		reader.onloadend = this._setText(reader);
 		        reader.readAsText(b);
 	            status = eMsgStatus.kProcessed;
@@ -44,13 +42,24 @@ class ITextf extends IText {
         return status;
     }
     _setText(reader: FileReader) : TTxtfLoadEndHandler { 
-    	return () => { console.log("_setText: " +reader.result); this.setText(reader.result); }
+    	return () => { this.setText(reader.result); }
 	}
 
 // GETSET METHOD
 //--------------------------------------------------------------    
     getSet(): IMessage	{ 
     	let a: Array<any> = [kset_SetMethod, this.fTypeString];
-    	return new IMessage(this.getOSCAddress(), a.concat ("'"+this.fTextFile+"'") ); 
+    	return new IMessage(this.getOSCAddress(), a.concat ("'" + this.fTextFile + "'") ); 
+    }
+
+// READER METHOD
+//--------------------------------------------------------------    
+    success(content: string): void{
+        this.fTextFile = content;
+        console.log("ITextf success content : " + this.fTextFile);
+    }
+
+    error(content: string): void{
+        console.log("Text file error !");
     }
 }
