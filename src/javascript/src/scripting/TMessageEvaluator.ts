@@ -41,7 +41,7 @@ class TMessageEvaluator
 			let params = this.evalParams (msg.params(), this.fEnv);
 //console.log ("eval: " + msg);
 			let outmsg = new IMessage (addr, params);
-//console.log (" => : " + outmsg); 
+//console.log (" => size: " + outmsg.size() + " " + outmsg); 
 			out.push (outmsg);
 		}
 		return out;
@@ -139,11 +139,12 @@ class TMessageEvaluator
 		let out: Array<any> = [];
 		for (var i=0; i < params.length; i++) {
 			let p = params[i];
-			if (p instanceof Array) 	out.push(p);
-			
-			p = this.evalParam (p, env);
-			if (p instanceof Array) out = out.concat(p);
-			else out.push (p);
+			if (p instanceof Array) 	out.push(p); // this is a message list: don't eval now
+			else {
+				p = this.evalParam (p, env);
+				if (p instanceof Array) out = out.concat(p);
+				else out.push (p);
+			}
 		}
 		return out;
 	}
