@@ -290,11 +290,11 @@ class IEventAble {
 		if (n == 1) 								// no associated message
 			return this.clear1Event (event.value);	// clear the corresponding event
 
-		if (n == 2) {
-	    	let arg = msg.paramArray (2);
-			let a = this.event2StringArray (event.value);
+		if (n == 2) {								// we have a message list
+	    	let arg = msg.paramArray (2);			// fetch the args list
+			let a = this.event2StringArray (event.value);	// get the target event array
 	    	if (arg.correct && a.find) {
-				let msgs = this.msg2msgsArray (arg.value);
+				let msgs = this.msg2msgsArray (arg.value);	// converts the array 
 				if (msgs.length) {
 					a.tbl[event.value] = msgs;
 					return eMsgStatus.kProcessed;
