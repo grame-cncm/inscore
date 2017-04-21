@@ -2,12 +2,8 @@
 
 // Need those interfaces for readFile method
 // Document.document and Window.getElementsByTagName recognized by browsers, but not in typescript
-interface Document {
-    document : Document;
-}
-interface Window {
-    getElementsByTagName(tag: string): any;
-}
+interface Document 	{ document : Document; }
+interface Window 	{ getElementsByTagName(tag: string): any; }
 
 class Tools {
     
@@ -26,18 +22,17 @@ class Tools {
     // Actually error doesn't catch anything
     static readFile(src: string, success: TReadHandler, error: TReadHandler): void {
         let content: string = "";
-        let x = document.createElement("iframe");
-        x.style.display = "none";
-        x.src = src;
-        window.frames.length
-        x.onload = () => {
-            let y = x.contentWindow || x.contentDocument;
-            if (y.document) y = y.document;
-            content = y.getElementsByTagName("body")[0].innerText;
-            x.remove();
+        let receiver = document.createElement("iframe");
+        receiver.style.display = "none";
+        receiver.onload = () => {
+            let doc = receiver.contentWindow || receiver.contentDocument;
+            if (doc.document) doc = doc.document;
+            content = doc.getElementsByTagName("body")[0].innerText;
+            receiver.remove();
             if (content !== "") success(content);
             else error(content);
         }
-        document.body.appendChild(x);
+        receiver.src = src;
+        document.body.appendChild (receiver);
     }
 }
