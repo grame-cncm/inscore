@@ -6,6 +6,7 @@
 ///<reference path="IDebug.ts"/>
 ///<reference path="IEllipse.ts"/>
 ///<reference path="IFaust.ts"/>
+///<reference path="IFaustf.ts"/>
 ///<reference path="IGuidoCode.ts"/>
 ///<reference path="IGuidoPianoRoll.ts"/>
 ///<reference path="IHtml.ts"/>
@@ -52,6 +53,7 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
         	case kDebugType:	return new IDebug(name, parent);
         	case kSyncType:		return new ISync(name, parent);
             case kFaustType:	return new IFaust(name, parent);
+            case kFaustfType:	return new IFaustf(name, parent);
                       
             case kSceneType:	obj = new IScene(name, parent);
                					obj.setView (this.createView(obj));

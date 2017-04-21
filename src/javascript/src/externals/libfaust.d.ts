@@ -18,7 +18,7 @@ interface TFaustUIItem {
 interface TFaustUIElement {
 	type	: string;
 	label	: string;
-	items	: Array<TFaustUIItem>;
+	items	: Array<TFaustUIItem | TFaustUIElement>;
 }
 
 interface TFaustJSONDesc {

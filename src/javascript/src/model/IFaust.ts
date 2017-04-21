@@ -19,18 +19,28 @@ class IFaust extends IObject {
         this.fDspCode = "";
         this.fFactory = null;
         this.fDsp = null;
-        this.fBufferSize = 1024;
+        this.fBufferSize = 2048;
+        this.fUI = [];
         if (!IFaust.fAudio) {
 			let isWebKitAudio = (typeof webkitAudioContext !== "undefined");
 			IFaust.fAudio = (isWebKitAudio) ? new webkitAudioContext() : new AudioContext();
         }
     }
 
+    setHandlers(): void {
+        this.fMsgHandlerMap[kset_SetMethod] = new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.set(msg); } );
+        this.fMsgHandlerMap[kget_SetMethod] = new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.get(msg); } );
+        this.fMsgHandlerMap[ksave_SetMethod]= new TMethodHandler( (msg: IMessage): eMsgStatus => { return this.save(msg); } );
+        this.fMsgHandlerMap[kdel_SetMethod] = new TMsgHandlerVoid( (): void => { this.del(); } );
+
+ 	    this.eventAble();
+        this.fGetMsgsHandlerMap["*"] = new TGetMsgsHandler( (): IMessageList => { return this.getAllItems(); } );
+    }
+
 	del(): void {
 		this.delDSP();
 		super.del();
-    }
-   
+    }   
 
 	private delDSP(): void {
 		if (this.fDsp) {
@@ -44,22 +54,50 @@ class IFaust extends IObject {
 		}
 	}
 
-    propagateMsg (osc: TPair<string> , msg: IMessage): eMsgStatus {
-        return eMsgStatus.kProcessed;
-    }
+	private stripAddressHead(address: string): string 	{ return address.replace(/\/[^\/]*\//, ""); }
 
-	private buildUIItems(items: Array<TFaustUIItem>): void {
-		items.forEach( function (item: TFaustUIItem) {console.log(item.address+" min: " +item.min+ " max: "+item.max)});
+	private getAllItems(): IMessageList {
+		let out : IMessageList = [];
+		this.fUI.forEach( (item: TFaustUIItem) : void => { out.push (this.items2Message(item)); });
+		return out;
+	}
+
+	private items2Message(item: TFaustUIItem): IMessage {
+    	let params : Array<any> = [ this.stripAddressHead(item.address) ];
+    	if (item.init) params = params.concat([item.init, item.min, item.max ]);
+    	return new IMessage(this.getOSCAddress(), params ); 
+	}
+
+	private item2array (item: TFaustUIItem): Array<number> {
+		return item.init ? [ item.init, item.min, item.max ] : [];
+	}
+
+	private buildUIItem(i: TFaustUIItem | TFaustUIElement): void {
+			if (i.type.substr(1) == "group") {
+				let group = <TFaustUIElement>i;
+				this.buildUIItems (group.items);
+			}
+			else if (i.type == "attach") {
+				// ignore attach type
+			}
+			else {
+				let item = <TFaustUIItem>i
+				this.fUI.push (item);
+				let shortaddress = this.stripAddressHead(item.address);
+	        	this.fMsgHandlerMap[shortaddress]    = new TMsgHandlerNum( (n: number): void => { this.fDsp.setParamValue(item.address, n); });
+       			this.fGetMsgHandlerMap[shortaddress] = new TGetMsgHandlerArray( (): Array<number> => { return this.item2array(item); });
+			}
+	}
+
+	private buildUIItems(items: Array<TFaustUIItem | TFaustUIElement>): void {
+		items.forEach( (item: TFaustUIItem | TFaustUIElement): void => { this.buildUIItem (item); });
 	}
 
 	private buildUIFromJSON(json: string): void {
 		let desc: TFaustJSONDesc;
 		eval ("desc="+json);
+        this.fUI = [];
 		desc.ui.forEach ( (elt: TFaustUIElement): void => { this.buildUIItems (elt.items); });
-/*
-		for (var i=0; i < desc.ui.length; i++)
-			this.buildUIItems (desc.ui[i].items);
-*/
 	}
 
     private instanceReady (dsp: TFaustDSP): void {
@@ -85,13 +123,14 @@ class IFaust extends IObject {
 		}
     }
    
-    private createDsp(code: string): boolean { 
-//        console.log ("createDsp " + code);
-		faust.createDSPFactory (code, ["-I", "http://127.0.0.1:8000/libraries/"], 
+    protected createDsp(code: string): boolean { 
+		this.fDspCode = code;
+		faust.createDSPFactory (code, ["-I", "http://localhost/faust/libraries/"], 
 			(arg: TFaustFactory) : void => this.factoryReady(arg));
 		return true;
     }
    
+   protected objectset(msg: IMessage): eMsgStatus { return super.set(msg); }
      
 // SET HANDLER
 //--------------------------------------------------------------    
