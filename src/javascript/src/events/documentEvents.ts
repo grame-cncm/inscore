@@ -24,6 +24,7 @@ class dropLoader {
         this.fExtHandlers["html"] 		= kHtmlType;
 		this.fExtHandlers["htm"] 		= kHtmlType;
 		this.fExtHandlers["gmn"] 		= kGuidoCodeType;
+		this.fExtHandlers["dsp"] 		= kFaustfType;
 		this.fExtHandlers["jpg"] 		= kImgType;
 		this.fExtHandlers["jpeg"] 		= kImgType;
 		this.fExtHandlers["gif"] 		= kImgType;
@@ -65,8 +66,15 @@ console.log("doc url: " + document.URL);
 */				
 				let reader: FileReader = new FileReader();				
 				if (ext == kInscoreFile) { INScore.load (file); }
-				
-				else if (this.fExtHandlers[ext] == kImgType || this.fExtHandlers[ext] == kVideoType ) {
+				else {
+					let type = this.fExtHandlers[ext];
+					if (!type) type = kTextType;
+					INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", type, fileName]);
+				}
+/*				
+				else if ((this.fExtHandlers[ext] == kImgType) 
+						|| (this.fExtHandlers[ext] == kVideoType) 
+						|| (this.fExtHandlers[ext] == kFaustfType)) {
 					INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
 				}
 				
@@ -75,7 +83,7 @@ console.log("doc url: " + document.URL);
 					if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTextType; }
 					reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
 				}	
-				// to do : xml, faust		
+*/
 			}
 		}
 	}
