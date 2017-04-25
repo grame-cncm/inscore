@@ -18,7 +18,6 @@ const kAutoLines    : number =  0;
 const kNoLine       : number = -1;
 
 class IGuidoPianoRoll extends IGuidoCode {
- 	static fEngine: GUIDOPianoRollAdapter
 
 	protected fLimits: LimitParams;
 	protected fKeyboard: boolean;
@@ -29,8 +28,6 @@ class IGuidoPianoRoll extends IGuidoCode {
    
     constructor(name: string, parent: IObject) {
         super(name, parent);
-        if (!IGuidoPianoRoll.fEngine)
-        	IGuidoPianoRoll.fEngine  = new Module.GUIDOPianoRollAdapter;
 
         this.fTypeString 	= kGuidoPianoRollType;
         this.fKeyboard 		= false;
@@ -51,10 +48,10 @@ class IGuidoPianoRoll extends IGuidoCode {
     
     AR2SVG(size: TSize): string {
         if (this.fAR) {
-			let pr = IGuidoPianoRoll.fEngine.ar2PianoRoll(PianoRollType.kSimplePianoRoll, this.fAR);
-			this.fSVG = IGuidoPianoRoll.fEngine.svgExport(pr, size.w, size.h);
+			let pr = IGuidoCode.fPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, this.fAR);
+			this.fSVG = IGuidoCode.fPianoRoll.svgExport(pr, size.w, size.h);
 			this.getPRollMap (pr);
-			IGuidoPianoRoll.fEngine.destroyPianoRoll(pr);
+			IGuidoCode.fPianoRoll.destroyPianoRoll(pr);
 		}
 	    return this.fSVG;
     }

@@ -8,6 +8,7 @@
 class IGuidoCode extends IObject { 
 	static fGuidoEngine: GuidoEngineAdapter;
 	static fGuidoMap: GuidoScoreMapAdapter;
+ 	static fPianoRoll: GUIDOPianoRollAdapter
 
     protected fGMN: string;
     protected fAR: ARHandler;
@@ -21,9 +22,11 @@ class IGuidoCode extends IObject {
         super(name, parent);
         
         if (!IGuidoCode.fGuidoEngine) {
-        	IGuidoCode.fGuidoEngine = new Module.GuidoEngineAdapter;
+        	var module = GuidoModule();
+        	IGuidoCode.fGuidoEngine = new module.GuidoEngineAdapter();
+        	IGuidoCode.fGuidoMap = new module.GUIDOScoreMap();
+        	IGuidoCode.fPianoRoll  = new module.GUIDOPianoRollAdapter();
         	IGuidoCode.fGuidoEngine.init();
-        	IGuidoCode.fGuidoMap = new Module.GUIDOScoreMap;
         }
         
         this.fTypeString = kGuidoCodeType;
