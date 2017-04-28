@@ -25,8 +25,9 @@ class VHtmlSvgView extends VHtmlView {
 
     updateView(obj: IObject): void {
         if (obj.isNewData()) {
-        	let svg = this.getSVGElement();
-        	let target = svg ? svg : this.getHtml();
+//        	let svg = this.getSVGElement();
+//        	let target = svg ? svg : this.getHtml();
+	       	let target = this.getHtml();
 			target.innerHTML = this.getSVGCode(obj);
             this.updateObjectSize(obj);
         }
@@ -51,11 +52,22 @@ class VHtmlSvgView extends VHtmlView {
     }
 
     private getClientSize(obj: IObject): { w: number, h: number } {
-        if (!this.fClientWidth) {
+        if (!this.fClientWidth || obj.isNewData()) {
             let svg = this.getsvg(this.getHtml());
             let box = svg.viewBox.baseVal;
-            this.fClientWidth = box.width;
-            this.fClientHeight = box.height;
+            if (box.width) {
+	            this.fClientWidth = box.width;
+    	        this.fClientHeight = box.height;
+    	        return { w: this.fClientWidth, h: this.fClientHeight };
+    	    }
+    	    box = svg.getBBox();
+    	    let r = svg.getBoundingClientRect();
+            if (r.width) {
+	            this.fClientWidth = r.width;
+    	        this.fClientHeight = r.height;
+    	        return { w: this.fClientWidth, h: this.fClientHeight };
+    	    }
+    	    console.log ("VHtmlSvgView cannot get svg element size");
         }
         return { w: this.fClientWidth, h: this.fClientHeight };
     }
