@@ -548,7 +548,7 @@ class IObject implements Tree<IObject> {
     //-------------------------------------------------------------
     // the basic 'set' handler
     //-------------------------------------------------------------
-    set(msg: IMessage): eMsgStatus	{
+    basicSet(msg: IMessage): eMsgStatus	{
         let type = msg.paramStr(1);
         if (!type.correct) { return eMsgStatus.kBadParameters; }
 
@@ -565,6 +565,28 @@ class IObject implements Tree<IObject> {
             return eMsgStatus.kProcessedNoChange;
         }
         return eMsgStatus.kBadParameters;
+    }
+    
+    set(msg: IMessage): eMsgStatus	{
+        return this.basicSet ( msg );
+/*
+        let type = msg.paramStr(1);
+        if (!type.correct) { return eMsgStatus.kBadParameters; }
+
+        if (type.value != this.getTypeString()) {
+			let out = this.proxy_create (msg, this.fName, this.getParent());
+            if (out.status & eMsgStatus.kProcessed) {
+	            // todo: transfer this attributes to new object
+	            this.transferAttributes (out.obj);
+//				this.fParent.cleanupSync();
+            	this.del();
+                return out.status;		
+            }
+            
+            return eMsgStatus.kProcessedNoChange;
+        }
+        return eMsgStatus.kBadParameters;
+*/
     }
     
     //-------------------------------------------------------------
