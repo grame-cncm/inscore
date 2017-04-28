@@ -3,7 +3,7 @@
 interface TTxtfLoadEndHandler 		{ (): void; }
 
 class ITextf extends IText {
-    protected fTextFile: string;
+    protected fFile: string;
         
     constructor(name: string, parent: IObject) {
         super(name, parent);
@@ -17,8 +17,8 @@ class ITextf extends IText {
 
 // GETS / SETS VALUES 
 //--------------------------------------------------------------    
-    getTextFile(): string           { return this.fTextFile; }
-    setTextFile(file: string): void	{ this.fTextFile = file; }
+    getTextFile(): string           { return this.fFile; }
+    setTextFile(file: string): void	{ this.fFile = file; }
 
 // SET HANDLER
 //--------------------------------------------------------------    
@@ -26,28 +26,24 @@ class ITextf extends IText {
         let status = super.set(msg);
         if (status != eMsgStatus.kProcessed) return status; 
 
-        let n = msg.size();
-        if (n == 3) {
-        	let file = msg.paramStr(2);
-        	if (file.correct) {
-                Tools.readFile(file.value, (arg: string): void => this.success(arg), (arg: string): void => this.error(arg));
-	            status = eMsgStatus.kProcessed;
-        	}
-	        else status = eMsgStatus.kBadParameters;        	
-        }
-        return status;
+		let file = Tools.setFile (msg, (arg: string): void => this.success(arg), (arg: string): void => this.error(arg));
+		if (file) {
+			this.fFile = file;
+        	return eMsgStatus.kProcessed;
+		}
+        return eMsgStatus.kBadParameters;
     }
 
     getText(): string { 
        if (this.fText !== "") return this.fText
-       else return this.fTextFile; 
+       else return this.fFile; 
     }
 
 // GETSET METHOD
 //--------------------------------------------------------------    
     getSet(): IMessage	{ 
     	let a: Array<any> = [kset_SetMethod, this.fTypeString];
-    	return new IMessage(this.getOSCAddress(), a.concat ("'" + this.fTextFile + "'") ); 
+    	return new IMessage(this.getOSCAddress(), a.concat ("'" + this.fFile + "'") ); 
     }
 
 // READER METHOD
