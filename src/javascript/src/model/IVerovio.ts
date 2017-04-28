@@ -32,7 +32,6 @@ class IVerovio extends IObject {
 	mei2svg (data: string) : void {
 		this.fMEI = data;
 		this.fSVG = IVerovio.fVerovio.renderData (this.fMEI, {});
-console.log("mei2svg => " + this.fSVG.substr(0,500) );
 		this.fNewData = true;
 	}
 	    
