@@ -33,7 +33,6 @@ class IVeroviof extends IVerovio {
 // READER METHOD
 //--------------------------------------------------------------    
     success(content: string): void {
-console.log("verovio file: " + content.substr(0,600) );
         this.mei2svg(content);
 		this.fNewData = true;
         this.addState (eObjState.kModified);
@@ -41,6 +40,10 @@ console.log("verovio file: " + content.substr(0,600) );
     }
 
     error(content: string): void {
-        console.log("Can't read file " + this.fFile);
+        console.log(content);
+        this.fSVG = Tools.error2svg();
+		this.fNewData = true;
+        this.addState (eObjState.kModified);
+        this.subModPropagate (this.fParent);
     }
 }
