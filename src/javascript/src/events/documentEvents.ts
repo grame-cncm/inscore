@@ -20,11 +20,12 @@ class dropLoader {
     buildObjectExtensions(): void {
         this.fExtHandlers["txt"] 		= kTextType;
         this.fExtHandlers["text"] 		= kTextType;
+        this.fExtHandlers["mei"]		= kVerovioType;
         this.fExtHandlers["svg"]		= kSvgType;
         this.fExtHandlers["html"] 		= kHtmlType;
 		this.fExtHandlers["htm"] 		= kHtmlType;
 		this.fExtHandlers["gmn"] 		= kGuidoCodeType;
-		this.fExtHandlers["dsp"] 		= kFaustfType;
+		this.fExtHandlers["dsp"] 		= kFaustType;
 		this.fExtHandlers["jpg"] 		= kImgType;
 		this.fExtHandlers["jpeg"] 		= kImgType;
 		this.fExtHandlers["gif"] 		= kImgType;
@@ -46,7 +47,9 @@ class dropLoader {
 
 		// check if text has been dropped
 		let data = e.dataTransfer.getData("Text");
-		if (data) { INScore.load(data); }
+		if (data) { 
+			INScore.load(data); 
+		}
 
 		// check if files have been dropped
 		else {	
@@ -64,26 +67,27 @@ class dropLoader {
 console.log("relative path: " + filelist[i].webkitRelativePath);
 console.log("doc url: " + document.URL);
 */				
-				let reader: FileReader = new FileReader();				
 				if (ext == kInscoreFile) { INScore.load (file); }
+/*
 				else {
 					let type = this.fExtHandlers[ext];
 					if (!type) type = kTextType;
 					INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", type, fileName]);
+					console.log ("post /ITL/"+ this.fTargetScene + "/" + name + "set "+ type + " " + fileName);
 				}
-/*				
+*/
 				else if ((this.fExtHandlers[ext] == kImgType) 
 						|| (this.fExtHandlers[ext] == kVideoType) 
-						|| (this.fExtHandlers[ext] == kFaustfType)) {
+						|| (this.fExtHandlers[ext] == kFaustType)) {
 					INScore.postMessage("/ITL/"+ this.fTargetScene + "/" + name, ["set", this.fExtHandlers[ext], fileName]);
 				}
 				
 				else {
+					let reader: FileReader = new FileReader();				
 					reader.readAsText(file);
 					if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTextType; }
 					reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
 				}	
-*/
 			}
 		}
 	}
