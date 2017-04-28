@@ -20,6 +20,8 @@
 ///<reference path="ISync.ts"/>
 ///<reference path="IText.ts"/>
 ///<reference path="ITextf.ts"/>
+///<reference path="IVerovio.ts"/>
+///<reference path="IVeroviof.ts"/>
 ///<reference path="IWebSocket.ts"/>
 ///<reference path="Methods.ts"/>
 
@@ -88,6 +90,10 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
             case kSvgType:			obj = new ISVG(name, parent);
                 break;  
             case kSvgfType:			obj = new ISVGf(name, parent);
+                break;
+           	case kVerovioType:		obj = new IVerovio(name, parent);
+                break;
+           	case kVeroviofType:		obj = new IVeroviof(name, parent);
                 break;
             case kWebSocketType:	obj = new IWebSocket(name, parent);
                 break;                        

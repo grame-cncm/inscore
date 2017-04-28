@@ -40,6 +40,10 @@ class HtmlViewFactory implements ViewFactory {
             case kTextfType:
                 return new VHtmlTextView (parent);
 
+           	case kVerovioType:
+           	case kVeroviofType:
+                return new VHtmlGMNView (parent);
+
             case kHtmlType:
                 return new VHtmlHtmlView (parent);
             

@@ -18,6 +18,8 @@ const kSyncType             : string	= "sync";
 const kTextfType            : string	= "txtf";
 const kTextType             : string	= "txt";
 const kVideoType            : string	= "video";
+const kVerovioType        	: string	= "verovio";
+const kVeroviofType        	: string	= "veroviof";
 const kWebSocketType        : string	= "websocket";
 
 const kDebugType            : string	= "debug";
