@@ -17,6 +17,7 @@ const kSvgType              : string	= "svg";
 const kSyncType             : string	= "sync";
 const kTextfType            : string	= "txtf";
 const kTextType             : string	= "txt";
+const kMusicxmlType         : string	= "musicxml";
 const kVideoType            : string	= "video";
 const kVerovioType        	: string	= "verovio";
 const kVeroviofType        	: string	= "veroviof";

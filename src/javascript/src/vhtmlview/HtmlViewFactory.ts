@@ -42,7 +42,9 @@ class HtmlViewFactory implements ViewFactory {
 
            	case kVerovioType:
            	case kVeroviofType:
-                return new VHtmlGMNView (parent);
+           	case kMusicxmlType:
+           	case kGuidoCodeType:
+               return new VHtmlGMNView (parent);
 
             case kHtmlType:
                 return new VHtmlHtmlView (parent);
@@ -61,15 +63,12 @@ class HtmlViewFactory implements ViewFactory {
 
             case kVideoType:
                 return new VHtmlVideoView (parent);    
-                            
-            case kGuidoCodeType:
-                    return new VHtmlGMNView (parent);
                     
             case kGuidoPianoRollType:
-                    return new VHtmlPianoRollView (parent);                    
+                return new VHtmlPianoRollView (parent);                    
 
             case kSvgType:
-                    return new VHtmlSvgView (parent);
+                return new VHtmlSvgView (parent);
                                     
             default:
                 return null;

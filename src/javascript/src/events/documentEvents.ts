@@ -21,6 +21,7 @@ class dropLoader {
         this.fExtHandlers["txt"] 		= kTextType;
         this.fExtHandlers["text"] 		= kTextType;
         this.fExtHandlers["mei"]		= kVerovioType;
+        this.fExtHandlers["xml"]		= kMusicxmlType;
         this.fExtHandlers["svg"]		= kSvgType;
         this.fExtHandlers["html"] 		= kHtmlType;
 		this.fExtHandlers["htm"] 		= kHtmlType;
@@ -86,7 +87,7 @@ console.log("doc url: " + document.URL);
 					let reader: FileReader = new FileReader();				
 					reader.readAsText(file);
 					if (! this.fExtHandlers[ext]) { this.fExtHandlers[ext] = kTextType; }
-					reader.onloadend = this._processMsg(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
+					reader.onloadend = this.postMessage(reader, this.fTargetScene, name, this.fExtHandlers[ext]);						
 				}	
 			}
 		}
@@ -138,7 +139,7 @@ console.log("doc url: " + document.URL);
 		return name	
 	}
 	
-	_processMsg(reader : FileReader, targetScene: string, name: string, type: string) : TLoadEndHandler { 
+	postMessage (reader : FileReader, targetScene: string, name: string, type: string) : TLoadEndHandler { 
 		return () => {
 			let data: string = reader.result;
 			INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", type, data]);

@@ -69,15 +69,17 @@ class IGuidoCode extends IObject {
 	}    
     getMap(gr: GRHandler): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getSystemMap(gr, 1, 1, 1)) };
 
-    str2AR(gmn: string): ARHandler {
+    str2AR(gmn: string): boolean {
         let p = IGuidoCode.fGuidoEngine.openParser();
 	    let ar = IGuidoCode.fGuidoEngine.string2AR(p, gmn);
 	    if (!ar) {
 			let error = IGuidoCode.fGuidoEngine.parserGetErrorCode(p);
 			ITLError.write ("Error line " + error.line + " column " + error.col + ": " + error.msg);
+			 return false;
 	    }
+	    this.fAR = ar;
         IGuidoCode.fGuidoEngine.closeParser(p);
-	    return ar;
+        return true;
     }
     
     mapScale (xscale: number, yscale: number): void {
@@ -102,8 +104,8 @@ class IGuidoCode extends IObject {
 		if (msg.size() != 3) return eMsgStatus.kBadParameters;
         let gmn = msg.paramStr(2);
 		if (!gmn.correct) return eMsgStatus.kBadParameters;
-        this.fAR = this.str2AR (gmn.value);
-		if (!this.fAR) return eMsgStatus.kBadParameters;
+        if ( !this.str2AR (gmn.value))
+			return eMsgStatus.kBadParameters;
 		
 		this.fGMN = gmn.value;
 		this.fNewData = true;

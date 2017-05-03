@@ -12,6 +12,7 @@
 ///<reference path="IHtml.ts"/>
 ///<reference path="IImage.ts"/>
 ///<reference path="ILine.ts"/>
+///<reference path="IMusicXml.ts"/>
 ///<reference path="IPolygon.ts"/>
 ///<reference path="IRect.ts"/>
 ///<reference path="IScene.ts"/>
@@ -90,6 +91,8 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
             case kSvgType:			obj = new ISVG(name, parent);
                 break;  
             case kSvgfType:			obj = new ISVGf(name, parent);
+                break;
+            case kMusicxmlType:		obj = new IMusicXml(name, parent);
                 break;
            	case kVerovioType:		obj = new IVerovio(name, parent);
                 break;
