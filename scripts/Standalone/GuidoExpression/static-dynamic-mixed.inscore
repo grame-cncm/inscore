@@ -68,7 +68,7 @@ color = 154 23 23;
 
 ##########################################
 # that's where the score computation takes place
-# it makes use of an intermediate hidden object
+# it makes use of an intermediate hidden object named pscore
 /ITL/scene/pscore set gmn expr(tail &rscore (tail &rscore "[a*2/1]"));
 /ITL/scene/pscore scale 0.3;
 /ITL/scene/pscore show 0;
@@ -87,3 +87,24 @@ color = 154 23 23;
 /ITL/scene/ccomment1 y 0.4;
 /ITL/scene/ccomment2 y 0.45;
 /ITL/scene/ccomment* fontSize 18;
+
+##########################################
+# a control to switch to fullscreen
+w = 0.05;
+grey = 240 240 240;
+green = 100 255 100;
+/ITL/scene/fs set rect $w $w;
+/ITL/scene/fs penWidth 1;
+/ITL/scene/fs color $grey;
+/ITL/scene/fs radius 30 30 ;
+/ITL/scene/fs y 0.9;
+/ITL/scene/fs watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene fullscreen 1,
+	/ITL/scene/$self color $green,
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene fullscreen 0,
+		/ITL/scene/$self color $grey,
+		/ITL/scene/$self pop
+	)
+);
