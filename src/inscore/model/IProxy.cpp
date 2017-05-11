@@ -113,6 +113,8 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
             return MsgHandler::kBadAddress;
 		if (msg->size() == 0)
             return MsgHandler::kBadParameters;
+		if (parent->getTypeString() == "vnode")
+            return MsgHandler::kCreateFailure;		// creating objects in vnodes in not allowed
 		objType = msg->param(0)->value<string>("");
 	}
 
@@ -137,7 +139,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
     else
         newmsg = IMessage::create(*msg);
     
-    SIObject obj = IObjectFactory::create(objName, objType, parent);
+	SIObject obj = IObjectFactory::create(objName, objType, parent);
 	if (obj) {
 		if(previousObj) previousObj->transferAttributes(obj);
 		int status = obj->execute(newmsg);
