@@ -120,6 +120,7 @@ const kmls_GetMethod: string	= "mls";
 const kmouse_SetMethod: string	= "mouse";
 const kname_GetSetMethod: string	= "name";
 const knew_SetMethod: string	= "new";
+const kopengl_GetSetMethod: string	= "opengl";
 const korder_GetSetMethod: string	= "order";
 const kosc_GetSetMethod: string	= "osc";
 const kout_GetMethod: string	= "out";
