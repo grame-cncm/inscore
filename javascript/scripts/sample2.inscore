@@ -1,0 +1,30 @@
+/ITL/scene/* del;
+
+/ITL/scene/title set txt "This is my first score !";
+/ITL/scene/title scale 2.7;
+/ITL/scene/title y -0.6;
+/ITL/scene/title fontFamily Zapfino;
+
+/ITL/scene/frame set rect 1.5 0.5;
+/ITL/scene/frame color 230 230 230;
+
+/ITL/scene/score set gmn '[ \meter<"4/4"> \key<-1> a f g c c g a f ]';
+/ITL/scene/score scale 1.2;
+
+w = 0.16;
+/ITL/scene/cursor set ellipse $w $w;
+/ITL/scene/cursor color 100 100 250;
+/ITL/scene/cursor y 0.5;
+/ITL/scene/cursor yorigin 1;
+
+/ITL/scene/cursor watch timeEnter 2 3 ( /ITL/scene/cursor tempo -120 );
+/ITL/scene/cursor watch timeEnter -1 0 ( /ITL/scene/cursor tempo 120 );
+
+__END__
+
+/ITL/scene/sync cursor score syncTop;
+/ITL/scene/cursor dy -5;
+/ITL/scene/cursor tempo 120;
+
+/ITL/scene/sync cursor;
+/ITL/scene/cursor date 0;
