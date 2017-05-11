@@ -82,7 +82,7 @@ class IObjectFactoryImpl extends IObjectFactoryInterface {
                 break;    
             case kHtmlType:			obj = new IHtml(name, parent);
                 break;                
-            case kHtmlType:			obj = new IHtml(name, parent);
+            case kImgType:			obj = new IImage(name, parent);
                 break;                
             case kArcType:			obj = new IArc(name, parent);
                 break;
