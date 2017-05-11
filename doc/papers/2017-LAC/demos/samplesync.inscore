@@ -1,0 +1,76 @@
+
+/ITL/scene/* del;
+
+grey = 240 240 240;
+green = 100 255 100;
+
+y = 0.5;
+/ITL/scene/score set gmnf 'rsrc/sample1.gmn';
+/ITL/scene/score scale 0.5;
+/ITL/scene/score y -$y;
+
+/ITL/scene/applebaum1 set img 'rsrc/Applebaum-Metaphysics_of_Notation.jpg';
+/ITL/scene/applebaum2 set img 'rsrc/Applebaum-Metaphysics_of_Notation.jpg';
+/ITL/scene/applebaum* scale 0.35;
+/ITL/scene/applebaum* y $y;
+
+w = 0.05;
+y = 0.0;
+/ITL/scene/mapctrl set rect $w $w;
+/ITL/scene/syncctrl set rect $w $w;
+/ITL/scene/*ctrl penWidth 1;
+/ITL/scene/*ctrl color $grey;
+/ITL/scene/*ctrl radius 30 30 ;
+/ITL/scene/*ctrl x -0.9;
+/ITL/scene/mapctrl y $y;
+/ITL/scene/syncctrl y $y + $w * 1.5;
+
+
+/ITL/scene/mapctrl watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/score/debug map 1,
+	/ITL/scene/applebaum*/debug map 1,
+	/ITL/scene/$self color $green,
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/score/debug map 0,
+		/ITL/scene/applebaum*/debug map 0,
+		/ITL/scene/$self color $grey,
+		/ITL/scene/$self pop
+	)
+);
+
+/ITL/scene/syncctrl watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/sync applebaum2 score h syncBottom,
+	/ITL/scene/applebaum2 dy 0.1,
+	/ITL/scene/$self color $green,
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/sync applebaum2,
+		/ITL/scene/$self color $grey,
+		/ITL/scene/$self pop
+	)
+);
+
+/ITL/scene/map1 set txt "Map 1";
+/ITL/scene/map2 set txt "Map 2";
+/ITL/scene/map1 y $y;
+/ITL/scene/map2 y $y + $w * 1.5;
+/ITL/scene/map? x -0.8;
+/ITL/scene/map? watch mouseEnter ( /ITL/scene/$self red 240 );
+/ITL/scene/map? watch mouseLeave ( /ITL/scene/$self red 0 );
+/ITL/scene/map1 watch mouseDown  ( /ITL/scene/applebaum* mapf 'rsrc/Applebaum1.map' );
+/ITL/scene/map2 watch mouseDown  ( /ITL/scene/applebaum* mapf 'rsrc/Applebaum2.map' );
+
+
+__END__
+
+/ITL/scene/applebaum* mapf 'rsrc/Applebaum1.map';
+/ITL/scene/applebaum* mapf 'rsrc/Applebaum2.map';
+
+/ITL/scene/applebaum* mapf 'rsrc/Applebaum2.map';
+
+
+/ITL/log show 1;
+/ITL/log level 2;
+/ITL/scene/* scale 0.35;
+/ITL/scene/A* penWidth 1;

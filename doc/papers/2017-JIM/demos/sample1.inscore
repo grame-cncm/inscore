@@ -1,0 +1,70 @@
+
+/ITL/scene/* del;
+
+orange 	= 255 150 0;
+red 	= 240 0 0;
+green 	= 0 240 0;
+grey 	= 180 180 180;
+
+d1 = 0;
+d2 = 2;
+d3 = 3;
+d4 = 3.5;
+d5 = 4.5;
+w = 0.03;
+
+/ITL/scene/cursor set ellipse 0.05 0.05;
+/ITL/scene/cursor color $red;
+
+/ITL/scene/obj set ellipse 0.5 0.5;
+/ITL/scene/obj color $red ;
+
+/ITL/scene/cursor watch timeEnter $d1 $d2 ( /ITL/scene/obj color $red );
+/ITL/scene/cursor watch timeEnter $d2 $d3 ( /ITL/scene/obj color $orange);
+/ITL/scene/cursor watch timeEnter $d3 $d4 ( /ITL/scene/obj color $green);
+/ITL/scene/cursor watch timeEnter $d4 $d5 ( /ITL/scene/obj color $orange);
+/ITL/scene/cursor watch timeEnter $d5 10  ( /ITL/scene/cursor date 0);
+
+
+/ITL/scene/line set line wa 1.6 0;
+/ITL/scene/line y 0.75;
+/ITL/scene/line duration 5;
+
+/ITL/scene/m1 set txt "/ITL/scene/obj color $red";
+/ITL/scene/m2 set txt "/ITL/scene/obj color $orange";
+/ITL/scene/m3 set txt "/ITL/scene/obj color $green";
+/ITL/scene/m4 set txt "/ITL/scene/obj color $orange";
+/ITL/scene/m5 set txt "/ITL/scene/cursor date 0";
+/ITL/scene/m* xorigin -0.9;
+
+/ITL/scene/e1 set ellipse $w $w;
+/ITL/scene/e2 set ellipse $w $w;
+/ITL/scene/e3 set ellipse $w $w;
+/ITL/scene/e4 set ellipse $w $w;
+/ITL/scene/e5 set ellipse $w $w;
+/ITL/scene/e* color $grey;
+
+/ITL/scene/?1 date $d1;
+/ITL/scene/?2 date $d2;
+/ITL/scene/?3 date $d3;
+/ITL/scene/?4 date $d4;
+/ITL/scene/?5 date $d5;
+
+/ITL/scene/sync m[135] line syncTop;
+/ITL/scene/m[135] dy -5;
+/ITL/scene/sync m[24] line syncBottom;
+/ITL/scene/m[24] dy 15;
+/ITL/scene/sync e* line;
+/ITL/scene/sync cursor line;
+
+/ITL/scene/line show 0;
+
+__END__
+
+/ITL/scene/cursor tempo 0;
+/ITL/scene/cursor tempo 60;
+/ITL/scene/cursor tempo 240;
+/ITL/scene/cursor tempo 480;
+
+/ITL/scene/line show 1;
+
