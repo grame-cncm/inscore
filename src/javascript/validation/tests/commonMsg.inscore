@@ -1,4 +1,4 @@
----------------Common-Message------------------------
+#---------------Common-Message------------------------
 /ITL/scene/* show 0;
 /ITL/scene/* show 1;
 
@@ -11,7 +11,7 @@
 
 /ITL/scene save ’myScore.inscore’;
 
----------------Common-Message------------------------
+#---------------Common-Message------------------------
 /ITL/scene/* show a;
 /ITL/scene/* show 0 0;
 /ITL/scene/* show;

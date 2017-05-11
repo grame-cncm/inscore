@@ -1,4 +1,5 @@
 ///<reference path="../externals/libGUIDOEngine.d.ts"/>
+///<reference path="../vhtmlview/VHtmlTools.ts"/>
 ///<reference path="IGuidoCode.ts"/>
 
 const kCLine        : number =  1;
@@ -17,7 +18,7 @@ const kAutoLines    : number =  0;
 const kNoLine       : number = -1;
 
 class IGuidoPianoRoll extends IGuidoCode {
- 
+
 	protected fLimits: LimitParams;
 	protected fKeyboard: boolean;
 	protected fAutoVoiceColor: boolean;
@@ -27,6 +28,7 @@ class IGuidoPianoRoll extends IGuidoCode {
    
     constructor(name: string, parent: IObject) {
         super(name, parent);
+
         this.fTypeString 	= kGuidoPianoRollType;
         this.fKeyboard 		= false;
         this.fAutoVoiceColor= false;
@@ -38,17 +40,19 @@ class IGuidoPianoRoll extends IGuidoCode {
         this.setWidth(1);
         this.setHeight(0.5);
         super.setHandlers();
-        this.fMsgHandlerMap[kwidth_GetSetMethod]		= new TMsgHandlerNum(this._setWidth());
-        this.fMsgHandlerMap[kheight_GetSetMethod]		= new TMsgHandlerNum(this._setHeight());
+        this.fMsgHandlerMap[kwidth_GetSetMethod]  = new TMsgHandlerNum( (n: number): void => { this.setWidth(n); });
+        this.fMsgHandlerMap[kheight_GetSetMethod] = new TMsgHandlerNum( (n: number): void => { this.setHeight(n); });
     }      
+
+    getPRollMap(pr: PianoRoll): void { this.guidoMap2inscoreMap (IGuidoCode.fGuidoMap.getPianoRollMap(pr, 1, 1)) };
     
-    AR2SVG(ar: ARHandler): string {
-        let guidoPianoRoll  = new Module.GUIDOPianoRollAdapter;
-        let pr = guidoPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, ar)         
-        let w = this.getView().relative2SceneWidth (this.fPosition.getWidth());
-        let h = this.getView().relative2SceneHeight (this.fPosition.getHeight());
-        let svg = guidoPianoRoll.svgExport(pr, w, h);
-        guidoPianoRoll.destroyPianoRoll(pr);                                     
-	    return svg;
+    AR2SVG(size: TSize): string {
+        if (this.fAR) {
+			let pr = IGuidoCode.fPianoRoll.ar2PianoRoll(PianoRollType.kSimplePianoRoll, this.fAR);
+			this.fSVG = IGuidoCode.fPianoRoll.svgExport(pr, size.w, size.h);
+			this.getPRollMap (pr);
+			IGuidoCode.fPianoRoll.destroyPianoRoll(pr);
+		}
+	    return this.fSVG;
     }
 }

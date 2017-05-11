@@ -4,6 +4,7 @@
 ///<reference path="controller/IGlue.ts"/>
 ///<reference path="lib/ITLError.ts"/>
 ///<reference path="lib/ITLOut.ts"/>
+///<reference path="lib/OSCAddress.ts"/>
 ///<reference path="lib/TEnums.ts"/>
 ///<reference path="model/IObject.ts"/>
 ///<reference path="model/TILoader.ts"/>
@@ -41,25 +42,32 @@ class INScoreImpl extends INScoreInterface
 			this.fGlue.initEventHandlers();
 		}
 		this.fGlue.start(scene, position ? position : "relative");
-		ITLOut.write ("INScore version " + this.version());
+		ITLOut.write ("INScoreJS version " + this.version());
 	}
-
-	getRoot() : IObject		{ return this.fGlue.getRoot(); }
 
 	checkStatus (status: eMsgStatus, msg: IMessage) : void {
     	if (!(status & eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange))
     		ITLError.write (msg.toString() + ": " + this.status2string(status));
 	}
 
+	getMessage (address: string, params: Array<any>) : IMessageList {
+    	let out: IMessageList = [];
+    	let msg = new IMessage (address, ["get"].concat(params));
+    	let targets = this.fGlue.getRoot().getTargetObjects (OSCAddress.shift (address));
+    	targets.forEach ( function (obj: IObject) { out = out.concat(obj.getCall(msg)); } );
+    	return out;
+	}
+
 	postMessage (address: string, params: Array<any>) : void {
     	let msg = new IMessage (address, params);
-    	this.checkStatus (this.getRoot().process (msg), msg);
+//    	this.checkStatus (this.fGlue.getRoot().process (msg), msg);
+    	this.fGlue.pushStack (msg);
 	}
 
 	load (data: any): void {
 		let loader = new TILoader;
-		if (typeof data == "string") 	{ loader.process (data, this.getRoot()); }
-		else 							{ loader.load (data, this.getRoot()); }		
+		if (typeof data == "string") 	{ loader.process (data, this.fGlue.getRoot()); }
+		else 							{ loader.load (data, this.fGlue.getRoot()); }		
 	}
 
 	register (tag : string): void {

@@ -16,27 +16,18 @@ interface SVGShape {
 }
 
 abstract class VHtmlSvg extends VHtmlView {
-   // protected fSVG:SVGSVGElement;
-       protected fSVG : SVGSVGElement | HTMLElement;
+   	protected fSVG:SVGSVGElement;
 
     constructor(parent: VHtmlView) {
     	super (document.createElement('div'), parent);
-		if (this.isChrome()) { //this works on chrome
-			this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
-			this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-			this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
-			this.fSVG.setAttribute('version', "1.1");
-		}
-		else {	//this works on IE and FireFox
-			this.fSVG = this.getHtml();
-//			this.fSVG = document.createElement('div');
-		}
-    	this.getHtml().appendChild(this.fSVG);
+		this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
+		this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+		this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
+		this.fSVG.setAttribute('version', "1.1");
+		this.getHtml().appendChild(this.fSVG);
 	}
 
     abstract getSVGTarget() : SVGShape;
-
-	isChrome() { return navigator.userAgent.indexOf("Chrome") != -1;}
 
 	updateColor (obj: IObject): void {
 		let target = this.getSVGTarget();
@@ -60,8 +51,9 @@ abstract class VHtmlSvg extends VHtmlView {
 	updateView	( obj: IObject) : void {
 		super.updateView(obj);
 		this.fSVG.style.width = this.fWidth + "px";
-        this.fSVG.style.height  = this.fHeight  + "px";
+        this.fSVG.style.height = this.fHeight + "px";
         this.fSVG.style.verticalAlign = "top";
+		this.fSVG.style.overflow = "visible";
 	}
 
 	basePenControl(obj:IObject): void {	// provided to bypass the SVG behavior

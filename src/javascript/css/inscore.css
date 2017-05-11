@@ -57,7 +57,7 @@
 	color: rgb(120,120,120); 
 }
 
-.inscore-gmn 		{ border: 0px blue solid; }
+.inscore-gmn 		{ border: 0px blue solid; cursor: default; }
 .inscore-pianoroll 	{ }
 .inscore-svg 		{ }
 

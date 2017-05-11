@@ -5,85 +5,70 @@ class IDate {
     
 // ATTRIBUTES
 //-------------------------------------------------------------- 
-    protected fDateChanged : boolean; 
-    protected fDurationChanged : boolean;
-    
-    protected fDate : Fraction;					
-	protected fDuration : Fraction;   
+    protected fModified : 	boolean; 
+    protected fTempo: 		number;   
+    protected fDate : 		Fraction;					
+	protected fDuration : 	Fraction;   
     
 // CONSTRUTOR
 //--------------------------------------------------------------    
-    constructor(/*h:EventsAble*/) { 
-        // TimeEventAble(h), 
+    constructor() { 
         this.fDate = new Fraction(0,1); 
         this.fDuration = new Fraction(1,1); 
-        this.fDateChanged = true; 
-        this.fDurationChanged= true;  
+        this.fModified = true;
+        this.fTempo = 0;
     }
+    
+    modify() : void { this.fModified = true; }
 
 // PROPERTIES COPY
 //--------------------------------------------------------------    
-    set (date: IDate) {
-        this.fDate = new Fraction(date.fDate); 
-        this.fDuration = new Fraction(date.fDuration); 
-        this.fDateChanged = true;
-        this.fDurationChanged = true;
+    set (obj: IDate) {
+        this.setDate (obj.fDate); 
+        this.setDuration (obj.fDuration); 
+        this.setTempo (obj.fTempo);
    }
 
 // GETS VALUES
 //--------------------------------------------------------------   
     getDate(): 		Fraction 		{ return this.fDate; } 
     getDuration(): 	Fraction 		{ return this.fDuration; } 
-    _getDate(): 	GetTimeMethod 	{ return () => this.fDate; } 
-    _getDuration(): GetTimeMethod 	{ return () => this.fDuration; } 
+	getTempo() : number 			{ return this.fTempo;}
 
 // SETS VALUES
 //--------------------------------------------------------------  
     setDate (date:Fraction): void {
         if (date.getDenominator() == 0) return;
         if (this.fDate != date) {
-            //handleTimeChange(this.fDate, date);
-            this.fDate = date;
-            this.fDateChanged = true;
+           //handleTimeChange(this.fDate, date);
+           this.fDate = date;
+           this.modify();
         }    
     }
-    _setDate (): SetTimeMethod  	{ return (d) => this.setDate(d); };
 
     setDuration (dur:Fraction): void {
         if (dur.getDenominator() == 0) return;
         if (this.fDuration != dur) {
             //handleDurChange(this.fDuration, dur);
             this.fDuration = dur;
-            this.fDurationChanged = true;
+           this.modify();
         }    
     }
-    _setDuration (): SetTimeMethod  { return (d) => this.setDuration(d); };
     
-    addDate (date:Fraction): void { 
-        this.setDate(this.fDate.add(date));
-        this.fDateChanged = true;
-        }
-    _addDate (): SetTimeMethod  { return (d) => this.addDate(d); };
-        
-    addDuration (dur:Fraction): void { 
-        this.setDuration(this.fDuration.add(dur)); 
-        this.fDurationChanged = true;
-        }
-    _addDuration (): SetTimeMethod  { return (d) => this.addDuration(d); };
+    setTempo (tempo : number): void 	{ this.fTempo = tempo; this.modify(); }
+    
+    addDate (date:Fraction): void 		{ this.setDate(this.fDate.add(date)); }
+    addDuration (dur:Fraction): void 	{ this.setDuration(this.fDuration.add(dur)); }
+    addTempo (t: number): void 			{ this.setTempo (this.fTempo + t); }
 
 // MODIFIED STATUS
 //--------------------------------------------------------------
-    modified(): boolean { return this.fDateChanged || this.fDurationChanged; }
-    dateModified(): boolean { return this.fDateChanged; }
-    durationModified(): boolean { return this.fDurationChanged; }   
-
-    cleanup(): void { this.fDateChanged = this.fDurationChanged = false; }
+    modified(): boolean 			{ return this.fModified; }
+    cleanup(): void 				{ this.fModified = false; }
 
 // CLOCK
 //--------------------------------------------------------------
-    clock():void { this.addDate ( new Fraction(1, 96) ); }
-    _clock ()	: SetVoidMethod  { return () => this.clock(); };
-    durclock(): void { this.addDuration ( new Fraction(1, 96) ); }
-    _durclock (): SetVoidMethod  { return () => this.durclock(); };
-
+    clockDur():Fraction { return new Fraction(1, 96); }
+    clock():void 		{ this.addDate ( this.clockDur() ); }
+    durclock(): void 	{ this.addDuration ( this.clockDur() ); }
 }

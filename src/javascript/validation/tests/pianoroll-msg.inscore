@@ -1,4 +1,4 @@
----------------PianoRoll-------------------
+#---------------PianoRoll-------------------
 
 /ITL/scene/* keyboard 0;
 /ITL/scene/* keyboard 4;
@@ -21,7 +21,7 @@
 /ITL/scene/* clipPitch;
 /ITL/scene/* clipPitch 2 3;
 
----------------Error-------------------
+#---------------Error-------------------
 /ITL/scene/* keyboard a;
 /ITL/scene/* keyboard 0 0;
 /ITL/scene/* keyboard;

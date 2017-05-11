@@ -1,4 +1,4 @@
----------------Time------------------------
+#---------------Time------------------------
 /ITL/scene/* del;
 
 /ITL/scene/* clock;
@@ -41,7 +41,7 @@
 /ITL/scene/* dtempo 10;
 /ITL/scene/* dtempo -10;
 
----------------Error------------------------
+#---------------Error------------------------
 /ITL/scene/* clock a;
 /ITL/scene/* clock 0;
 

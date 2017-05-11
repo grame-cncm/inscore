@@ -46,7 +46,7 @@ class IEffect {
 
     // MODIFIED STATUS
 //--------------------------------------------------------------
-    type(): eEffect 				{ return this.fEffectType; }
+    type(): eEffect 			{ return this.fEffectType; }
     params(): Array<number> 	{ return this.fEffectParams; }
     param(i: number): number 	{ return this.fEffectParams[i]; }
 
@@ -59,7 +59,6 @@ class IEffect {
 	    out[0] = IEffect.fEffectNum2Str[this.fEffectType];
     	return out.concat(this.fEffectParams); 
     }
-    _getEffect() : GetArrayMethod 	 { return () => this.getEffect(); }
 
     isNumberArray(a: Array<any>): boolean 	{ 
     	for (let i=0; i< a.length; i++)
@@ -81,5 +80,4 @@ class IEffect {
         if (!style.correct) return eMsgStatus.kBadParameters;
         else return this.assignParams(style.val, params.slice(2));
     }
-    _setEffect(): SetAnyArrayMethod { return (effect : Array<any>) => this.setEffect(effect) }
 }

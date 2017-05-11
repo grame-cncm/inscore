@@ -1,4 +1,4 @@
----------------Transformation-------------------
+#---------------Transformation-------------------
 /ITL/scene/* rotatex 0;
 /ITL/scene/* rotatex 45;
 /ITL/scene/* rotatex 90;
@@ -48,7 +48,7 @@
 /ITL/scene/* height 0.5;
 /ITL/scene/* height 0.1;
 
----------------Error-------------------
+#---------------Error-------------------
 /ITL/scene/* rotatex a;
 /ITL/scene/* rotatex 0 0;
 /ITL/scene/* rotatex;

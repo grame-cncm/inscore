@@ -34,7 +34,7 @@
 
 %see lac2015.sty for how to format multiple authors!
 \author
-{Dominique Fober \and Yann Orlarey \and Stéphane Letz
+{Dominique Fober, Yann Orlarey \and Stéphane Letz
 \\ GRAME - Centre national de création musicale 
 \\ 11 cours de Verdun Gensoul
 \\ 69002 Lyon
@@ -236,7 +236,7 @@ A score expression is defined as an operator followed by two scores (Fig. \ref{f
 
 The score arguments may be:
 \begin{itemize}
-\item a litteral score description string (GMN or MusicXML formats),
+\item a literal score description string (GMN or MusicXML formats),
 \item a file (GMN or MusicXML formats),
 \item an existing score object,
 \item a score expression.
@@ -257,7 +257,7 @@ An example is presented in Fig. \ref{fig:scex1}.
 
 The score expressions language is first transformed into an internal tree representation. In a second step, this representation is evaluated to produce GMN strings as output, that are finally passed to the INScore object as specific data. 
 
-Basically, the tree is reduced using a depth first post-order traversal and the result is stored in a cache. However, the score expressions language provides a mechanism to make arbitrary parts of a tree variable using a '\&' as prefix of an argument, preventing the corresponding nodes to be reduced at cache level (Fig. \ref{fig:scex2}). 
+Basically, the tree is reduced using a depth first post-order traversal and the result is stored in a cache. However, the score expressions language provides a mechanism to make arbitrary parts of a tree variable using an ampersand (\&) as prefix of an argument, preventing the corresponding nodes to be reduced at cache level (Fig. \ref{fig:scex2}). 
     
 \begin{figure}[ht]
 \begin{center}
@@ -268,7 +268,7 @@ Basically, the tree is reduced using a depth first post-order traversal and the 
 \end{center}
 \end{figure}
 
-INScore event's system (described in section \ref{events}) provides a way to automatically trigger the re-evaluation of an expression when one  of it's variable parts has changed. These mechanisms open the door to dynamic scores composition within the INScore environment.
+INScore events system (described in section \ref{events}) provides a way to automatically trigger the re-evaluation of an expression when one  of it's variable parts has changed. These mechanisms open the door to dynamic scores composition within the INScore environment.
 More details about the score expressions language can be found in \cite{Lepetit-Aimon_tenor2016}.
 
 
@@ -482,7 +482,7 @@ The event-based interaction process relies on messages that are associated to ev
 \label{fig:watch}
 \end{figure}
 
-Initially, the events typology was limited to classical user interface events (e.g. mouse events), extended in the time domain (see table~\ref{tbl:evts}). 
+Initially, the events typology was limited to classical user interface events (e.g. mouse events), extended in the time domain (see Table~\ref{tbl:evts}). 
 
 \begin{table}[htp]
 \begin{center}
@@ -569,7 +569,7 @@ Combined with the dynamic musical time, this events system allows to describe au
 \section{Conclusion}
 
 INScore\footnote{\url{http://inscore.sf.net})} is an ongoing open source project 
-that crystallizes a significant amount of research addressing the problematics of the music notation and representation in regard of the contemporary music creation. It is used in artistic projects and many of the concrete experiences raised new issues that are reflected into some of the system extensions. The domain is quite recent and there is still a lot of opened questions that we plan to address in future work and in particular: 
+that crystallizes a significant amount of research addressing the problematics of the music notation and representation in regard of the contemporary music creation. It is used in artistic projects and many of the concrete experiences raised new issues that are reflected into some of the system extensions. The domain is quite recent and there are still a lot of open questions that we plan to address in future work and in particular: 
 \begin{itemize}
 \item turning the scripting language into a \emph{real} programming language would provide a more powerful approach to music score description. The embedded JavaScript engine may already be used for an algorithmic description of a score, but switching from one environment (INScore script) to another one (JavaScript) proved to be a bit tedious.
 \item extending the score components to give a time dimension to any of their attributes could open a set of new possibilities, including arbitrary representations of the passage of time.

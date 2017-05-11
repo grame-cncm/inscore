@@ -5,7 +5,6 @@
     <title>Welcome to INScore</title>
 
     <link href="../css/inscore.css" rel="stylesheet">
-    <link href="../css/inscore-scene-relative.css" rel="stylesheet">
 	<script src="../libGUIDOEngine.js"></script>
 	<script src="../inscore.js"></script>
 </head>
@@ -14,14 +13,19 @@
 
 	<h1  style="font-size: 18pt"> Welcome to INScore</h1>
 	
-	<!--div>
-    <script type="text/javascript"> INScore.start(); </script>
-	</div-->
-
 	<table>
 	<tr>
-		<td width="30%">un peu de texte ici</td>
-    	<td><script> INScore.start(); </script></td>
+		<td width="30%">Nam vitae orci at elit accumsan dignissim. Praesent id mauris lacinia, 
+bibendum eros non, tristique nunc. Vivamus feugiat odio id eleifend vehicula. Nam vitae diam at 
+lacus convallis aliquet ac vitae mauris. Nulla fermentum turpis ac varius lacinia. 
+Nam turpis turpis, mattis eu pretium nec, aliquet a tellus. Nulla facilisi. Donec ut felis augue. 
+Maecenas blandit augue commodo, blandit odio ac, rutrum libero. Pellentesque a dui in mi tristique 
+molestie. Vivamus ut diam lectus. Sed interdum eros sit amet consectetur maximus. 
+Phasellus sollicitudin, turpis a molestie mollis, metus libero convallis justo, nec cursus orci 
+mi id metus. Sed sit amet bibendum turpis, nec volutpat lorem. Vestibulum ante ipsum primis in 
+faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus sem leo, elementum nec nisl at, 
+vulputate mattis ligula.</td>
+    	<td><script> INScore.start("scene", "relative"); </script></td>
     </tr>
 	</table>
 
@@ -48,7 +52,7 @@
 		/ITL/scene/what* fontSize 18;
 
 		/ITL/scene/score set gmn "[ a f# g ]";
-		/ITL/scene/score effect $shadow;
+#		/ITL/scene/score effect $shadow;
 		/ITL/scene/score y 0.03;
 
 		dy = 0.05;
@@ -74,7 +78,7 @@
 	</inscore-code>
 
 	<div>
-	<script> INScore.start("toto"); </script>	
+	<script> INScore.start("toto", "relative"); </script>	
 	</div>
 	<inscore-code>
 		color = 20 0 150;
@@ -86,7 +90,7 @@
 		/ITL/toto/welcome fontSize 40;
 		/ITL/toto/welcome fontWeight bold;
 	</inscore-code>
-    <script type="text/javascript"> 
+    <script> 
     	INScore.register("inscore-code");
     </script>
 

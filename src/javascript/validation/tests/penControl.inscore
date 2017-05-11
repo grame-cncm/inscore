@@ -1,4 +1,4 @@
----------------PenControl-------------------
+#---------------PenControl-------------------
 /ITL/scene/* del;
 
 /ITL/scene/* penAlpha 0;
@@ -25,7 +25,7 @@
 /ITL/scene/* penWidth 5;
 /ITL/scene/* penWidth 10;
 
----------------Error-------------------
+#---------------Error-------------------
 /ITL/scene/* penAlpha a;
 /ITL/scene/* penAlpha 0 0;
 /ITL/scene/* penAlpha;

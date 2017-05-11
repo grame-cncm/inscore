@@ -1,10 +1,15 @@
 
+///<reference path="../lib/TTypes.ts"/>
 ///<reference path="../model/IObject.ts"/>
+
+interface scaleMethod { (x: number, y: number): void; }
 
 abstract class VObjectView {
     
 	abstract updateView			( obj: IObject) 		: void;
 	abstract updateObjectSize	( obj: IObject ) 		: void;
+	abstract setPositionHandler	( fpos: TPositionHandler) : void;
+			 setMapScaleHandler	( scale: scaleMethod ) : void {}
 
 	// Removes an element
 	abstract remove() : void;

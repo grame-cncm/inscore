@@ -1,0 +1,15 @@
+/ITL/scene/* del;
+
+/ITL/scene/title set txt "This is my first score !";
+/ITL/scene/title scale 3;
+/ITL/scene/title y -0.6;
+/ITL/scene/title fontFamily Zapfino;
+
+/ITL/scene/frame set rect 1.5 0.5;
+/ITL/scene/frame color 230 230 230;
+
+/ITL/scene/score set gmn '[ \meter<"4/4"> \key<-1> a f g c c g a f ]';
+/ITL/scene/score scale 0.6;
+
+__END__
+/ITL/scene export;

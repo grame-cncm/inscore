@@ -25,22 +25,23 @@ class IArc extends IRectShape
 //--------------------------------------------------------------  
     setHandlers(): void {
 		super.setHandlers();
-        this.fMsgHandlerMap[kstart_GetSetMethod]    = new TMsgHandlerNum  (this._setStart());
-        this.fMsgHandlerMap[krange_GetSetMethod]    = new TMsgHandlerNum  (this._setRange());
-        this.fMsgHandlerMap[kclose_GetSetMethod]    = new TMsgHandlerNum  (this._setClose());
-        this.fMsgHandlerMap[kdrange_SetMethod]      = new TMsgHandlerNum  (this._setDRange());
-        this.fMsgHandlerMap[kdstart_SetMethod]      = new TMsgHandlerNum  (this._setDStart());
+        this.fMsgHandlerMap[kstart_GetSetMethod]    = new TMsgHandlerNum  ( (n: number): void => { this.setStart(n); } );
+        this.fMsgHandlerMap[krange_GetSetMethod]    = new TMsgHandlerNum  ( (n: number): void => { this.setRange(n) } );
+        this.fMsgHandlerMap[kclose_GetSetMethod]    = new TMsgHandlerNum  ( (n: number): void => { this.setClose(n) } );
+        this.fMsgHandlerMap[kdrange_SetMethod]      = new TMsgHandlerNum  ( (n: number): void => { this.setDRange(n) } );
+        this.fMsgHandlerMap[kdstart_SetMethod]      = new TMsgHandlerNum  ( (n: number): void => { this.setDStart(n) } );
+
+        this.fGetMsgHandlerMap[kstart_GetSetMethod] = new TGetMsgHandlerNum ( (): number => { return this.getStart() } );
+        this.fGetMsgHandlerMap[krange_GetSetMethod] = new TGetMsgHandlerNum ( (): number => { return this.getRange() });
+        this.fGetMsgHandlerMap[kclose_GetSetMethod] = new TGetMsgHandlerNum ( (): number => { return this.getClose() });
     }
 
     set(msg: IMessage): eMsgStatus
     {
-        let status = super.set(msg);
-        // Cas ou le type est différent, le proxy est utilisé dans super.set()
-         if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
+        let status = super.set(msg);	// this is intended to handle type change at root level        
+        if (status & (eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange)) return status;
 
-        // Vérification des paramêtres du message "set"
-        if (msg.size() == 6)
-        {
+        if (msg.size() == 6) {
             let width  =  msg.paramNum(2), height = msg.paramNum(3);
             if (!width.correct || !height.correct) { return eMsgStatus.kBadParameters; }
             let start  =  msg.paramNum(4), range  = msg.paramNum(5);
@@ -77,14 +78,4 @@ class IArc extends IRectShape
     setClose   (close     : number): void { this.fClose    = close     }
     setDRange  (dRange    : number): void { this.setRange(this.fRange + dRange); }
     setDStart  (dStart    : number): void { this.setStart(this.fStart + dStart); }
-
-    _getStart()     { return () => this.getStart()    }
-    _getRange()     { return () => this.getRange()    }
-    _getClose()     { return () => this.getClose()    }
-
-    _setStart()     { return (start     : number) => this.setStart(start)        }
-    _setRange()     { return (range     : number) => this.setRange(range)        }
-    _setClose()     { return (close     : number) => this.setClose(close)        }
-    _setDRange()    { return (dRange    : number) => this.setDRange(dRange)      }
-    _setDStart()    { return (dStart    : number) => this.setDStart(dStart)      }
 }

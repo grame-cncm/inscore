@@ -18,7 +18,7 @@
 /ITL/scene/ell rotatez 90;
 /ITL/scene/ell color 255 100 100 100;
 /ITL/scene/ell penWidth 2;
-/ITL/scene/arc effect none;
+/ITL/scene/ell effect none;
 
 /ITL/scene/txt3 set txt "blur";
 /ITL/scene/txt3 x -0.5;

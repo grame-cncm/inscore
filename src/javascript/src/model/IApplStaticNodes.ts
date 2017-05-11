@@ -20,35 +20,33 @@ class IApplLog extends IStaticNode {
     }    
 
     setHandlers(): void {
-        this.fMsgHandlerMap[kget_SetMethod] 		= new TMethodHandler(this._get());
+        this.fMsgHandlerMap[kget_SetMethod] 		= new TMethodHandler	( (msg: IMessage): eMsgStatus => { return this.get(msg); } );
 
-        this.fMsgHandlerMap[kclear_SetMethod] 		= new TMsgHandlerVoid(this._clear());
-        this.fMsgHandlerMap[kwrite_SetMethod] 		= new TMethodHandler(this._write());
-        this.fMsgHandlerMap[kforeground_SetMethod] 	= new TMsgHandlerVoid(this._foreground());
+        this.fMsgHandlerMap[kclear_SetMethod] 		= new TMsgHandlerVoid	( (): void => { this.clear(); } );
+        this.fMsgHandlerMap[kwrite_SetMethod] 		= new TMethodHandler	( (msg: IMessage): eMsgStatus => { return this.write(msg); } );
+        this.fMsgHandlerMap[kforeground_SetMethod] 	= new TMsgHandlerVoid	( (): void => { this.foreground(); } );
 
-        this.fMsgHandlerMap[kwrap_GetSetMethod] 	= new TMsgHandlerNum(this._wrap());
-        this.fMsgHandlerMap[ksave_SetMethod] 		= new TMsgHandlerText(this._savelog());
-        this.fMsgHandlerMap[kx_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setXPos());
-        this.fMsgHandlerMap[ky_GetSetMethod] 		= new TMsgHandlerNum(this.fPosition._setYPos());
-        this.fMsgHandlerMap[kwidth_GetSetMethod]	= new TMsgHandlerNum(this._setWidth());
-        this.fMsgHandlerMap[kheight_GetSetMethod]	= new TMsgHandlerNum(this._setHeight());
-        this.fMsgHandlerMap[kshow_GetSetMethod]		= new TMsgHandlerNum(this.fPosition._setVisible());
-        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMethodHandler(this._scale());
+        this.fMsgHandlerMap[kwrap_GetSetMethod] 	= new TMsgHandlerNum	( (n: number): void => { this.wrap(n); } );
+        this.fMsgHandlerMap[ksave_SetMethod] 		= new TMsgHandlerText	( (s: string): void => { this.savelog(s); } );
+        this.fMsgHandlerMap[kx_GetSetMethod] 		= new TMsgHandlerNum	( (n: number): void => { this.fPosition.setXPos(n); } );
+        this.fMsgHandlerMap[ky_GetSetMethod] 		= new TMsgHandlerNum	( (n: number): void => { this.fPosition.setYPos(n); } );
+        this.fMsgHandlerMap[kwidth_GetSetMethod]	= new TMsgHandlerNum	( (n: number): void => { this.setWidth(n); } );
+        this.fMsgHandlerMap[kheight_GetSetMethod]	= new TMsgHandlerNum	( (n: number): void => { this.setHeight(n); } );
+        this.fMsgHandlerMap[kshow_GetSetMethod]		= new TMsgHandlerNum	( (n: number): void => { this.fPosition.setVisible(n); } );
+		// support the scale message due to the current strategy to handle window resize
+        this.fMsgHandlerMap[kscale_GetSetMethod] 	= new TMethodHandler( (m: IMessage): eMsgStatus => { return eMsgStatus.kProcessedNoChange; } );
 
-        this.fGetMsgHandlerMap[kx_GetSetMethod]		= new TGetMsgHandlerNum(this.fPosition._getXPos());
-        this.fGetMsgHandlerMap[ky_GetSetMethod]		= new TGetMsgHandlerNum(this.fPosition._getYPos());
-        this.fGetMsgHandlerMap[kwidth_GetSetMethod]	= new TGetMsgHandlerNum(this.fPosition._getWidth());
-        this.fGetMsgHandlerMap[kheight_GetSetMethod]= new TGetMsgHandlerNum(this.fPosition._getHeight());
-        this.fGetMsgHandlerMap[kshow_GetSetMethod] 	= new TGetMsgHandlerNum(this.fPosition._getVisible());
+        this.fGetMsgHandlerMap[kx_GetSetMethod]		= new TGetMsgHandlerNum	( (): number => { return this.fPosition.getXPos(); } )
+        this.fGetMsgHandlerMap[ky_GetSetMethod]		= new TGetMsgHandlerNum	( (): number => { return this.fPosition.getYPos(); } )
+        this.fGetMsgHandlerMap[kwidth_GetSetMethod]	= new TGetMsgHandlerNum	( (): number => { return this.fPosition.getWidth(); } )
+        this.fGetMsgHandlerMap[kheight_GetSetMethod]= new TGetMsgHandlerNum	( (): number => { return this.fPosition.getHeight(); } )
+        this.fGetMsgHandlerMap[kshow_GetSetMethod] 	= new TGetMsgHandlerNum	( (): number => { return this.fPosition.getVisible(); } )
     }
 
 	content(): Array<string> 	{ return this.fLog; }
 	done(): void 				{ this.fLog=[]; this.fClear = false; }
 	cleared(): boolean 			{ return this.fClear; }
 	clear(): void 				{ this.fClear = true; this.fLog=[]; }
-	_clear(): SetVoidMethod 	{ return () => this.clear(); }
-	// support the scale message due to the current strategy to handle windows resize
-	_scale(): SetMsgMethod 		{ return (m) => { return eMsgStatus.kProcessedNoChange; } }
 
 	write(msg: IMessage): eMsgStatus {
 		let p = msg.params();
@@ -58,15 +56,8 @@ class IApplLog extends IStaticNode {
 		this.fLog.push(s);
 		return eMsgStatus.kProcessed; 
 	}
-	_write(): SetMsgMethod	{ return (m) => this.write(m); }
 
-	foreground(): void 		{ }
-	_foreground(): SetVoidMethod { return () => this.foreground(); }
-
-	wrap(n: number): void 	{	}
-	_wrap(): SetNumMethod	{ return (n) => this.wrap(n); }
-
+	foreground(): void 			{ }
+	wrap(n: number): void 		{ }
 	savelog(file: string): void { }
-	_savelog(): SetStringMethod { return (f) => this.savelog(f); }
-
 }

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<title>INScore JavaScript</title>
+</header>
+
+<xmp theme="readable" style="display:none;">
+
+<img src="./imgs/INScoreJS.png" width=90 alt="INScoreJS" style="float: left;" />
+# Introduction to INScoreJS
+----------------------------
+    
+INScoreJS is a JavaScript library that provides [INScore](http://inscore.sf.net) features in a web page. 
+This document describes the current state of the development as well as the specific methods that are available in JavaScript only. It includes also a summary of the differences found with different browsers.
+
+- [JavaScript specific methods](#javaspecific)
+- [Differences](#differences)
+- [Not yet supported](#notyet)
+	- [Common messages](#notyetcommon)
+  - [Objects](#notyetobj)
+	- [Specific messages](#notyetspec)
+- [Unsupported](#unsupported)
+- [Supported browsers](#browsers)
+
+
+----------------------------
+
+<h2 id="overview">JavaScript specific methods</h2>
+
+----------------------------
+
+* `position`: supported at scene level  
+   arguments: `relative` | `absolute` , default: `relative`  
+   translates into css as: `style="position: absolute;"` when the position is absolute.
+    
+
+
+<h2 id="differences">Differences</h2>
+
+-----------------------
+
+* About shear: in the original App, shear has a maximum value. In JavaScript version no maximum and rotations are based on angles in radian.
+* About color: all browser's color are different (saturation and/or brithness).
+* About fontSize: font size aren't support by some browsers, or a part of them.
+* About shadow and blur: shadow and blur aren't support by all browser, filter attribute don't exist in IE for example.  
+
+* PenStyle works diffently on div than SVG. On SVG solid, dot, dash, dashDot, dashDotDot, have fix size and comportement.
+But on div, ther is only solid, dash and dot, other value make penStroke solid, and dot or dash size are based on the div size.
+So, a small object don't have the same dot than a big one in div.
+
+* Date format, float not supported.
+
+* Video mls and vduration don't exist before first video play.
+
+* While mouse move, need to rest in the object, move slowly to don't lose target focus.
+  While mouse move if two objects have move event, and one is over the other, focus is on the upper object. If the upper object is static focus is lose.
+
+
+<h2 id="notyet">Not yet supported</h2>
+
+-----------------------
+
+<h3 id="notyetcommon">Common messages</h3>
+
+-----------------------
+
+  - Application Management : quit, rootPath, preprocess, mouse, defaultShow, load, read, require, compatibility, time, ticks, rate, hello
+  - Common Message : lock, export, export all, save, fullscreen
+  - Forward : forward
+  - Miscellaneaous : layer, grid 
+  - Miscellaneaous Messages : eval, watch, push, pop, map
+  - Node Debug : map, name
+  - Port Management : port, outport, errorport
+  - Scene Control : reset, foreground, rootPath, preprocess, load, fullscreen, frameless, absolutexy, windowOpacity
+
+
+<h3 id="notyetobj">Objects</h3>
+
+-----------------------
+
+  - Pianoroll : pianorollf, pianorollstream, pianoroll expr
+  - Signals : graph, fastgraph, faust, faustdsp, faustdspf
+  - SVG : svgf
+  - Symbolic Music Notation : gmnstream, gmnf, gmn expr, musicxmlf, musicxml
+  - Symbolic Score : page, dpage, pageFormat, columns, rows, get pageCount, get systemCount
+  - Text : txtf, htmlf
+  - Web Objects : websocket, httpd
+
+  
+<h3 id="notyetspec">Specific messages</h3>
+
+-----------------------
+
+  - gmnstream and pianorollstream : write, clear
+  - grid : columns, rows, xborder, yborder, order leftright, order topbottom
+  - line : arrows none, arrows triangle, arrows diamond, arrows disk
+  - svg : animate, get animate
+  - Pianoroll : keyboard, autoVoicesColorations, mesureBar, voiceColor, pitchLines, clipTime, clipPitch
+  - txt and html : write
+
+  
+<h2 id="unsupported">Unsupported</h2>
+
+----------------------------
+
+  - Media : menning
+  
+
+<h2 id="browsers">Supported browsers</h2>
+
+----------------------------
+The current version of INScoreJS has been tested on the following platforms and browsers:
+
+### MacOS 10.11
+* **Chrome** - Version 56.0 
+* **Safari** - Version 10.0.1
+* **Opera** - Version 44.0
+* **Firefox** - Version 53.0  
+
+### Windows 10
+* **Chrome** - Version 56.0.2924.87
+* **Internet Explorer** - Version  11.953.14393.0
+* **Edge** - Version 38.14393.0.0
+* **Firefox** - Version 52.0.1
+
+### Linux 
+* **Firefox** - Version   
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>

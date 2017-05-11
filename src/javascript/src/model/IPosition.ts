@@ -88,26 +88,6 @@ class IPosition {
     getDimension(): Array<number> { return [this.fWidth, this.fHeight]; }
     getVisible(): 	number { return this.fVisible; }
 
-// GETS closures
-//--------------------------------------------------------------
-    _getXPos(): 	GetNumMethod { return () => this.fXPos; }
-    _getYPos(): 	GetNumMethod { return () => this.fYPos; }
-    _getXOrigin(): 	GetNumMethod { return () => this.fXOrigin; }
-    _getYOrigin(): 	GetNumMethod { return () => this.fYOrigin; }
-    _getZOrder(): 	GetNumMethod { return () => this.fZOrder; }
-    _getScale(): 	GetNumMethod { return () => this.fScale; }
-    _getShear(): 	GetArrayMethod { return () => this.fShear; }
-
-    _getRotateX(): GetNumMethod { return () => this.fXAngle; }
-    _getRotateY(): GetNumMethod { return () => this.fYAngle; }
-    _getRotateZ(): GetNumMethod { return () => this.fZAngle; } 
-       
-    _getWidth(): 	GetNumMethod { return () => this.fWidth; }
-    _getHeight(): 	GetNumMethod { return () => this.fHeight; }
-    _getDimension(): GetArrayMethod { return () => [this.fWidth , this.fHeight]; }
-    _getVisible(): 	GetNumMethod { return () => this.fVisible; }
-  
-    
 // SETS 
 //--------------------------------------------------------------    
     setPos(p:IPosition): void {
@@ -128,53 +108,35 @@ class IPosition {
     
     setXPos(x:number): void 		{ this.fXPos = x; this.fModified = true; }
     addXPos(x:number): void 		{ this.setXPos(this.fXPos + x); }
-    _setXPos(): SetNumMethod 		{ return (n) => this.setXPos(n); };
-    _addXPos(): SetNumMethod 		{ return (n) => this.addXPos(n); };
-    
+
     setXOrigin(x:number): void 		{ this.fXOrigin = x; this.fModified = true; }
     addXOrigin(x:number): void 		{ this.setXOrigin (this.fXOrigin + x); }
-    _setXOrigin(): SetNumMethod 	{ return (n) => this.setXOrigin(n); };
-    _addXOrigin(): SetNumMethod 	{ return (n) => this.addXOrigin(n); };
     
     setYPos(y:number): void 		{ this.fYPos = y; this.fModified = true; }
     addYPos(y:number): void 		{ this.setYPos(this.fYPos + y); }
-    _setYPos(): SetNumMethod 		{ return (n) => this.setYPos(n); };
-    _addYPos(): SetNumMethod 		{ return (n) => this.addYPos(n); };
     
     setYOrigin(y:number): void 		{ this.fYOrigin = y; this.fModified = true; }
     addYOrigin(y:number): void 		{ this.setYOrigin (this.fYOrigin + y); }   
-    _setYOrigin(): SetNumMethod 	{ return (n) => this.setYOrigin(n); };
-    _addYOrigin(): SetNumMethod 	{ return (n) => this.addYOrigin(n); };
  
     setScale (scale:number): void 	{ this.fScale = scale; this.fModified = true; }
     multScale (scale:number): void 	{ this.setScale(this.fScale * scale); }
-    _multScale(): SetNumMethod 		{ return (n) => this.multScale(n); };
         
     setVisible (vis:number): void 	{ this.fVisible = vis; this.fModified = true; }
-    _setVisible(): SetNumMethod 	{ return (n) => this.setVisible(n); };
 
     setZOrder(z:number): void 		{ this.fZOrder = z; this.fModified = true; }
     addZOrder(z:number): void 		{ this.setZOrder(this.fZOrder + z); }
-    _setZOrder(): SetNumMethod 		{ return (n) => this.setZOrder(n); };
-    _addZOrder(): SetNumMethod 		{ return (n) => this.addZOrder(n); };
     
     addAngle(angle:number): void 	{ this.setRotateZ(this.fZAngle + angle); }
     addXAngle(angle:number): void 	{ this.setRotateX(this.fXAngle + angle); }
     addYAngle(angle:number): void 	{ this.setRotateY(this.fYAngle + angle); }
-    _addAngle(): SetNumMethod 		{ return (n) => this.addAngle(n); };
-    _addXAngle(): SetNumMethod 		{ return (n) => this.addXAngle(n); };
-    _addYAngle(): SetNumMethod 		{ return (n) => this.addYAngle(n); };
         
     setRotateX(a:number): void 		{ this.fXAngle = a; this.fModified = true; }
     setRotateY(a:number): void 		{ this.fYAngle = a; this.fModified = true; }
     setRotateZ(a:number): void 		{ this.fZAngle = a; this.fModified = true; }   
-    _setRotateX(): SetNumMethod 	{ return (n) => this.setRotateX(n); };
-    _setRotateY(): SetNumMethod 	{ return (n) => this.setRotateY(n); };
-    _setRotateZ(): SetNumMethod 	{ return (n) => this.setRotateZ(n); };
     
     setShear(a:Array<number>): eMsgStatus {
         if(a.length != 2) return eMsgStatus.kBadParameters;
         this.fShear = a; this.fModified = true;
-        return eMsgStatus.kProcessed }
-    _setShear(): SetNumArrayMethod  { return (a: Array<number>) => this.setShear(a)};
+        return eMsgStatus.kProcessed 
+    }
 }

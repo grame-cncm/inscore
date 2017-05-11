@@ -1,6 +1,8 @@
 .DS_Store
 *.js
-testhtml/src
-build/refs.*
 src/parser/checkout
 rsrc
+build/*.dot
+build/*.pdf
+sandbox
+mei

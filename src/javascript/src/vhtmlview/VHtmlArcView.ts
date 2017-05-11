@@ -1,4 +1,4 @@
-///<reference path="VHtmlSvg.ts"/>
+///<reference path="VHtmlSVG.ts"/>
 ///<reference path="../lib/TPoint.ts"/>
 ///<reference path="../model/IArc.ts"/>
 
@@ -51,7 +51,7 @@ class VHtmlArcView extends VHtmlSvg
         let flag = VHtmlArcView.direction(arcRange);
 		let arcStr = start + " A " + rx + "," + ry + ", 0," + flag.sup + "," + flag.dir + " " + end;
 		if ( close )
-        	 return "M " + rx + "," + ry + ", L " + arcStr + " Z ";
+        	 return "M " + rx + "," + ry + " L " + arcStr + " Z ";
         else return "M " + arcStr;
     }
 

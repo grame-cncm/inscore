@@ -1,11 +1,11 @@
 
-//test de comportement par segment de 90°
+#test de comportement par segment de 90°
 
 
 
 
----------------------------------------------------------------------
-//test de comportement par segment de 120°
+#---------------------------------------------------------------------
+#test de comportement par segment de 120°
 
 range=120;
 w=1;
@@ -24,8 +24,8 @@ h=0.5;
 /ITL/scene/elli set ellipse $w $h;
 /ITL/scene/elli color 0 0 0 50;
 
----------------------------------------------------------------------
-//test de comportement par segment de 180°
+#---------------------------------------------------------------------
+#test de comportement par segment de 180°
 
 range=180;
 w=1;
@@ -41,8 +41,8 @@ h=0.5;
 /ITL/scene/elli set ellipse $w $h;
 /ITL/scene/elli color 0 0 0 50;
 
----------------------------------------------------------------------
-//test de comportement par segment de 270°
+#---------------------------------------------------------------------
+#test de comportement par segment de 270°
 
 range=270;
 w=1;
@@ -57,8 +57,8 @@ h=0.5;
 /ITL/scene/elli set ellipse $w $h;
 /ITL/scene/elli color 0 0 0 50;
 
----------------------------------------------------------------------
-//test de comportement par segment de 359°
+#---------------------------------------------------------------------
+#test de comportement par segment de 359°
 
 range=359;
 w=1;
@@ -71,8 +71,8 @@ h=0.5;
 /ITL/scene/elli set ellipse $w $h;
 /ITL/scene/elli color 0 0 0 50;
 
----------------------------------------------------------------------
-//test de comportement par segment de 120° avec close sur un seul segment
+#---------------------------------------------------------------------
+#test de comportement par segment de 120° avec close sur un seul segment
 
 range=225;
 w=1;
@@ -123,8 +123,8 @@ h=0.5;
 /ITL/scene/b dstart 2;
 
 
----------------------------------------------------------------------
-//test des attributs du pen control
+#---------------------------------------------------------------------
+#test des attributs du pen control
 
 
 /ITL/scene/c set arc $w $h 150 $range;

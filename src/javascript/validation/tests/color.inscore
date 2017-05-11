@@ -58,7 +58,7 @@
 /ITL/scene/* hsb 0 0 0 150;
 /ITL/scene/* hsb 0 0 0 255;
 
----------------Error------------------------
+#---------------Error------------------------
 
 /ITL/scene/* alpha a;
 /ITL/scene/* alpha 0 0;

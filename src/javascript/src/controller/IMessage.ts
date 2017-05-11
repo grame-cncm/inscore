@@ -75,4 +75,4 @@ class IMessage {
 }
 
 // declare a type for message lists
-interface IMessageList { [index: number]: IMessage; }
+class IMessageList extends Array<IMessage> {}
