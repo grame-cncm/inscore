@@ -24,7 +24,7 @@ help :
 	make -C ../src/parser
 	cd ../src && tsc
 
-../src/model/Methods.ts: ../../inscore/model/Methods.cpp
+../src/model/Methods.ts: ../../src/inscore/model/Methods.cpp
 	./methods2ts ../../inscore/model/Methods.cpp > ../src/model/Methods.ts
 
 check :
