@@ -61,6 +61,7 @@ y = 0.0;
 /ITL/scene/map1 watch mouseDown  ( /ITL/scene/applebaum* mapf 'rsrc/Applebaum1.map' );
 /ITL/scene/map2 watch mouseDown  ( /ITL/scene/applebaum* mapf 'rsrc/Applebaum2.map' );
 
+/ITL/scene load 'rsrc/fullscreen.inscore';
 
 __END__
 

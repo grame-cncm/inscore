@@ -1,6 +1,6 @@
 /ITL/scene/* del ;
 /ITL/scene/myGuidoFile set "gmnf" "rsrc/repeats.gmn" ;
-/ITL/scene/myGuidoFile scale 2.50000 ;
+/ITL/scene/myGuidoFile scale 0.4 ;
 /ITL/scene/car1 set "img" "rsrc/car_blue.gif" ;
 /ITL/scene/car* scale 1.40000 ;
 /ITL/scene/car* z 2.00000 ;
