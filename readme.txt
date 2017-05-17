@@ -1,7 +1,16 @@
 ----------------------------------------------------------------------
+Installation
+----------------------------------------------------------------------
+From binary packages:
+- MacOS: open the image disk and copy the application to any location
+- Windows: uncompress the zip file to any location
+- Linux: install the available package (if any) using your preferred application
+         make install if you compile from the source code (see below) 
+
+
+----------------------------------------------------------------------
 Compiling the INScore project
 ----------------------------------------------------------------------
-
 The INScore project depends on external libraries:
  - the Qt framework version 5.3 or later (see https://www.qt.io/)
  - the GuidoEngine version 1.60 or greater (see http://guidolib.sourceforge.net)
