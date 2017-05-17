@@ -7,10 +7,10 @@ before_install:
   - sudo apt-get -qq update
   - qmake --version
   - git clone https://github.com/grame-cncm/guidolib.git guidolib
-  - make -C guidolib/build
+  - make -C guidolib/build linux LINUXMIDI=no
   - sudo make -C guidolib/build/linux install
   - git clone https://github.com/grame-cncm/guidoar.git guidoar
-  - make -C guidoar/build
+  - make -C guidoar/build 
   - sudo make -C guidoar/build/linux install
   
  
