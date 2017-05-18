@@ -103,3 +103,10 @@ hlinew = 0.26;
 localhost:8000/clock 1;
 localhost:8000/bing;
 
+__END__
+/ITL/scene/signal connect sig "obj:red[0,255]";
+/ITL/scene/signal connect sig "obj:scale[0,2]";
+/ITL/scene/signal/sig get;
+/ITL/log level 2;
+
+

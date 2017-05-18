@@ -67,3 +67,32 @@
 	/ITL/scene/trigger date 0
 ) ;
 /ITL/scene/trigger tempo 100;
+
+__END__
+
+/ITL/scene/rname set txt rscore;
+/ITL/scene/cname set txt cscore;
+/ITL/scene/pname set txt "pscore is hidden";
+/ITL/scene/?name scale 3;
+/ITL/scene/?name alpha 100;
+/ITL/scene/?name color 150 150 150;
+/ITL/scene/rname y -0.6;
+/ITL/scene/rname x -0.65;
+/ITL/scene/pname y 0.6;
+/ITL/scene/pname x 0;
+/ITL/scene/cname y 0.1;
+/ITL/scene/cname x 0;
+
+/ITL/scene/pscore show 1;
+/ITL/scene/pscore y 0.75;
+
+/ITL/scene/expr set txt	"/ITL/scene/rscore watch newData (
+   /ITL/scene/[pc]score expr reeval
+);";
+/ITL/scene/expr color 100 100 100;
+/ITL/scene/expr scale 2;
+/ITL/scene/expr xorigin -1;
+/ITL/scene/expr y -0.6;
+/ITL/scene/expr x 0.;
+
+
