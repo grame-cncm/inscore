@@ -1,7 +1,7 @@
 Welcome to INScore
 ======================================================================
 
-Grame, Centre National de Creation Musicale: <http://www.grame.fr>
+[Grame](http://www.grame.fr) - Centre National de Création Musicale
 ----------------------------------------------------------------------
 
 INScore is an environment for the design of interactive augmented music scores.
@@ -44,6 +44,6 @@ to the elaboration of the project foundations.
 And of course, warmest thanks to my colleagues and friends Stéphane Letz 
 and Yann Orlarey.
 
-
+---
 [Dominique Fober](https://github.com/dfober)
 
