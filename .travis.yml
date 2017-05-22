@@ -1,5 +1,6 @@
 os: linux
-dist: xenial
+dist: trusty
+sudo: required
 language: cpp
 compiler: clang
 
