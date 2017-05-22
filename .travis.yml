@@ -16,4 +16,4 @@ branches:
   - dev
   - master
 
-script: make -C build
+script: make -C build QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
