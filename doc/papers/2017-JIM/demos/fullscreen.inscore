@@ -1,0 +1,24 @@
+
+##########################################
+# a control to switch to fullscreen
+w = 0.05;
+grey = 240 240 240;
+green = 100 255 100;
+/ITL/*/fs set rect $w $w;
+/ITL/*/fs penWidth 1;
+/ITL/*/fs color $grey;
+/ITL/*/fs radius 30 30 ;
+/ITL/*/fs y 0.9;
+/ITL/*/fs watch mouseDown (
+	/ITL/$scene/$self push,
+	/ITL/$scene fullscreen 1,
+	/ITL/$scene/$self color $green,
+	/ITL/$scene/$self watch mouseDown (
+		/ITL/$scene fullscreen 0,
+		/ITL/$scene/$self color $grey,
+		/ITL/$scene/$self pop
+	)
+);
+
+
+__END__
