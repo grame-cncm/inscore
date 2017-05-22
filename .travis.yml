@@ -5,8 +5,8 @@ compiler: clang
 
 before_install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  - sudo apt-get -qq update
-  - sudo apt-get install qtbase5-dev qt5-default qttools5-dev-tools
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq qt5-qmake qtbase5-dev
   - qmake --version
   - git clone https://github.com/grame-cncm/guidolib.git guidolib
   - make -C guidolib/build linux LINUXMIDI=no
