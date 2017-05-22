@@ -11,6 +11,12 @@ before_install:
   - sudo apt-get install qt58-meta-full  libmicrohttpd-dev
   - source /opt/qt58/bin/qt58-env.sh
   - qmake --version  
+  - git clone https://github.com/grame-cncm/guidolib.git guidolib
+  - make -C guidolib/build linux LINUXMIDI=no
+  - sudo make -C guidolib/build/linux install
+  - git clone https://github.com/grame-cncm/guidoar.git guidoar
+  - make -C guidoar/build MIDIEXPORT=no
+  - sudo make -C guidoar/build/linux install
  
 branches:
   only:
