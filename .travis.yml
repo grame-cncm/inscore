@@ -7,15 +7,13 @@ compiler: clang
 before_install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update -qq
-  - sudo apt-get install -qq qt5-qmake qtbase5-dev libqt5quick5 libqt5qml5 libqt5sensors5 libqt5multimediawidgets5 libqt5webkit5
+  - sudo apt-get install -qq qt5-qmake qtbase5-dev libqt5quick5-dev libqt5qml5-dev libqt5sensors5-dev libqt5multimediawidgets5-dev libqt5webkit5-dev
   - export QT_SELECT=qt5
-  - qmake --version
-  - /usr/lib/x86_64-linux-gnu/qt5/bin/qmake --version
-  
+  - qmake --version  
  
 branches:
   only:
   - dev
   - master
 
-script: make -C build QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
+script: make -C build 
