@@ -59,6 +59,8 @@ w = 0.03;
 
 /ITL/scene/line show 0;
 
+/ITL/scene load 'fullscreen.inscore';
+
 __END__
 
 /ITL/scene/cursor tempo 0;

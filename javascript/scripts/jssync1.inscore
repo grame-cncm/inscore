@@ -45,6 +45,6 @@ green = 100 255 100;
 
 /ITL/scene/ctrl event mouseDown 0 0;
 
-__END_
+__END__
 
 /ITL/scene/s* tempo 0;

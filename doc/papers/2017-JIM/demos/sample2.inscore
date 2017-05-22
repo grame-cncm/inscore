@@ -61,17 +61,21 @@ w = 0.08;
 
 
 /ITL/scene/line set line wa 1.6 0;
-/ITL/scene/line y 0.75;
+/ITL/scene/line y 0.6;
 /ITL/scene/line duration 3;
 
-/ITL/scene/m1 set txt "/ITL/scene/c2 tempo $mytempo
-/ITL/scene/c1 tempo 0";
-/ITL/scene/m2 set txt "/ITL/scene/c3 tempo $mytempo
-/ITL/scene/c2 tempo 0";
-/ITL/scene/m3 set txt "/ITL/scene/c1 tempo $mytempo
-/ITL/scene/c3 tempo 0";
+/ITL/scene/m1 set txt "/ITL/scene/c2 tempo 
+    '$(/ITL/scene/c1 get tempo)';
+/ITL/scene/c1 tempo 0;";
+/ITL/scene/m2 set txt "/ITL/scene/c3 tempo 
+    '$(/ITL/scene/c2 get tempo)';
+/ITL/scene/c2 tempo 0;";
+/ITL/scene/m3 set txt "/ITL/scene/c1 tempo 
+    '$(/ITL/scene/c3 get tempo)';
+/ITL/scene/c3 tempo 0;";
 /ITL/scene/m* xorigin -1;
-/ITL/scene/m* yorigin -1;
+/ITL/scene/m* yorigin -0.5;
+/ITL/scene/m? scale 1.1;
 /ITL/scene/m2 date 1;
 /ITL/scene/m3 date 2;
 
@@ -92,16 +96,21 @@ w = 0.03;
 
 /ITL/scene/line show 0;
 
+/ITL/scene load 'fullscreen.inscore';
+
 __END__
 
 /ITL/scene/line show 1;
 
 /ITL/scene/* tempo 0;
-/ITL/scene/** date 0;
+/ITL/scene/* date 0;
 
 tempo = 120;
 /ITL/scene/c1 tempo $tempo;
 /ITL/scene/mcs tempo $tempo;
+
+/ITL/scene/c2 tempo 60;
+/ITL/scene/mcs tempo 60;
 
 /ITL/log show 1;
 /ITL/log level 2;
