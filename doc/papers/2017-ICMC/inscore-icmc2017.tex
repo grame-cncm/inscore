@@ -173,14 +173,18 @@ in the frame on INScore.
 %==============================================================
 \section{Introduction}\label{sec:introduction}
 % RM: in environments
-Time manipulations in environments for musical composition can be expressed in very different ways.
+
+There are numerous non­-computer based scores that allow the performers to move around the piece in a non­linear time fashion (e.g. John Cage - Variations series \cite{cage:var}, Boucourechliev - Archipel series \cite{boucou}, Stockhausen - Refrain \cite{stockhausen-refrain},...). This approach to time and musical form had its golden age from the end of the 1950s. To some extent, it can be seen as the premises of contemporary interactive music. It is emblematic of a musical thought that breaks with the traditional approaches of time and needs to be taken into account in computer environments for musical composition.
+Time manipulations in these environments can be expressed in very different ways.
 
 In OpenMusic, there are three main types of time expression: ``musical time (i.e., time of symbolic notation, relative to a tempo), proportional time (expressed in milliseconds), and continuous time (defined by mathematical functions)"~\cite{bresson08}.
 
-In other environments such as Antescofo \cite{acont08} or iScore \cite{AllombertDA08}, time is also \textit{event based} and can be described in terms of Allen relations \cite{Allen:1983:MKT:182.358434}, which allows to introduce reactive aspects in the musical pieces.
+In other environments such as iScore \cite{AllombertDA08}, time is also \textit{event based} and can be described in terms of Allen relations \cite{Allen:1983:MKT:182.358434}, which allows to introduce reactive aspects in the musical pieces.
 More recently, these reactive aspects have also been introduced in OpenMusic \cite{bresson:hal-00965747}, testifying to their importance in contemporary compositional approaches.
 
-Time in INScore \cite{Fober:12a} is \emph{static}: all objects have a date and 
+With Antescofo \cite{acont08}, time management approach is a sophisticated combination of events, tempo, continuous functions, and allows processes synchronisation as well. 
+
+INScore differs from the above environments in that the system is only dedicated to music score design. Time in INScore \cite{Fober:12a} is \emph{static}: all objects have a date and 
 % RM: durations
 a duration expressed in musical time that are fixed by the score description. The common temporal dimension of all objects of a score allows to represent their temporal relations in the graphical space \cite{fober:10b}. The \emph{animation} 
 % RM: of time
@@ -193,7 +197,7 @@ INScore was originally designed to work with sound production software (e.g. Max
 % RM: musical score
 musical score \cite{Fober:13b}. Initially, the typology of these events includes classical user interactions events (e.g., mouse events), and introduces events in the temporal domain (notably time intervals monitoring). This mechanism of \textit{events} paved the way for an original approach to music score programming by 
 % RM: allowing to place messages
-allowing to place messages messages - and thus interactions - in the temporal space. Nevertheless, as time was always \emph{static}, the use of an external application remained necessary to actuate it.
+allowing to place messages - and thus interactions - in the temporal space. Nevertheless, as time was always \emph{static}, the use of an external application remained necessary to actuate it.
 
 % RM: "a dynamic time" sounds a bit weird to me, what about "a dynamic representation of time"?
 The need for a \emph{dynamic} representation of time has thus emerged. It has been solved in a simple way, with the introduction of an additional attribute to the objects of a % RM: the tempo -> tempo
