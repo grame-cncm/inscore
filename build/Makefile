@@ -186,7 +186,7 @@ install:
 	[ $(TARGET) = "linux" ] && make linuxinstall
 
 linuxinstall:
-	cp -d linux/libINScore.so.* $(INSTALLLIB)
+	cp -d linux/libINScore.so* $(INSTALLLIB)
 	cp linux/inscoreviewer  $(INSTALLBIN)
 	cp ../tools/IBundle/IBundle $(INSTALLBIN)
 
