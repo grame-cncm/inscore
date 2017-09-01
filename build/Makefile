@@ -159,7 +159,7 @@ DESTDIR ?= /usr
 SHARED  = $(DESTDIR)$(PREFIX)/share
 INSTALLBIN := $(DESTDIR)$(PREFIX)/bin
 INSTALLLIB := $(DESTDIR)$(PREFIX)/lib
-RSRC := ../package/debian/usr/share 
+RSRC := ../package/debian/usr/share
 
 linux :  INScoreLinux
 
@@ -194,9 +194,9 @@ linuxinstall:
 	install -m 755 ../tools/IBundle/IBundle $(INSTALLBIN)
 	mkdir -p $(SHARED)/fonts/guido
 	install -m 644 ../src/guido2.ttf $(SHARED)/fonts/guido/guido2.ttf 
-	install -m 644 $(RSRC)/applications/Inscore.desktop $(SHARED)/applications
-	install -m 644 $(RSRC)/icons/hicolor/48x48/apps/Inscore.png $(SHARED)/icons/hicolor/48x48/apps/Inscore.png
-	install -m 644 $(RSRC)/icons/hicolor/128x128/apps/Inscore.png $(SHARED)/icons/hicolor/128x128/apps/Inscore.png
+	install -m 644 $(RSRC)/applications/inscore.desktop $(SHARED)/applications
+	install -m 644 $(RSRC)/icons/hicolor/48x48/apps/inscore.png $(SHARED)/icons/hicolor/48x48/apps/inscore.png
+	install -m 644 $(RSRC)/icons/hicolor/128x128/apps/inscore.png $(SHARED)/icons/hicolor/128x128/apps/inscore.png
 
 	
 #===============================================================
