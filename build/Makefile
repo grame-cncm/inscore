@@ -155,10 +155,13 @@ uninstallAndroid :
 #===============================================================
 # building the library on linux
 #===============================================================
-INSTALLBIN := /usr/bin
-INSTALLLIB := /usr/lib
+DESTDIR ?= /usr
+SHARED  = $(DESTDIR)$(PREFIX)/share
+INSTALLBIN := $(DESTDIR)$(PREFIX)/bin
+INSTALLLIB := $(DESTDIR)$(PREFIX)/lib
+RSRC := ../package/debian/usr/share 
 
-linux : $(BUILDF)/Makefile.lib $(BUILDF)/Makefile.app INScoreLinux
+linux :  INScoreLinux
 
 linuxproj:
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)
@@ -173,7 +176,7 @@ $(BUILDF)/Makefile.app: viewer.pro
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)
 	cd $(BUILDF) && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
 
-INScoreLinux:
+INScoreLinux: $(BUILDF)/Makefile.lib $(BUILDF)/Makefile.app
 	make -j 4 -C $(BUILDF) -f Makefile.lib
 	make -j 4 -C $(BUILDF) -f Makefile.app
 	make -C ../tools/IBundle/build
@@ -187,8 +190,13 @@ install:
 
 linuxinstall:
 	cp -d linux/libINScore.so* $(INSTALLLIB)
-	cp linux/inscoreviewer  $(INSTALLBIN)
-	cp ../tools/IBundle/IBundle $(INSTALLBIN)
+	install -m 755 linux/inscoreviewer  $(INSTALLBIN)
+	install -m 755 ../tools/IBundle/IBundle $(INSTALLBIN)
+	mkdir -p $(SHARED)/fonts/guido
+	install -m 644 ../src/guido2.ttf $(SHARED)/fonts/guido/guido2.ttf 
+	install -m 644 $(RSRC)/applications/Inscore.desktop $(SHARED)/applications
+	install -m 644 $(RSRC)/icons/hicolor/48x48/apps/Inscore.png $(SHARED)/icons/hicolor/48x48/apps/Inscore.png
+	install -m 644 $(RSRC)/icons/hicolor/128x128/apps/Inscore.png $(SHARED)/icons/hicolor/128x128/apps/Inscore.png
 
 	
 #===============================================================
