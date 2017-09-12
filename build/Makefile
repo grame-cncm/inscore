@@ -5,21 +5,21 @@
 .PHONY : macos ios win32 win64 linux android installAndroid help mobileUI
 
 QMAKE ?= qmake
-
+TARGET := undefined
 
 system	:= $(shell uname -s)
+# normalizes MINGW versions
+system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
 ifeq ($(system), Darwin)
 	TARGET = macos
 	BUILDF ?= macos
 	SPEC = -spec macx-xcode
 	QMAKEIOS = qmake-ios
 else
-ifeq ($(system), MINGW32_NT-6.1)
+ifeq ($(system), MINGW)
 	TARGET = windows
 else
-ifeq ($(system), MINGW32_NT-6.2)
-	TARGET = windows
-else
+ifeq ($(system), Linux)
 	TARGET = linux
 	BUILDF ?= linux
 endif
@@ -47,6 +47,9 @@ MOBILESCRIPTS := ../scripts/mobile
 all :
 	make $(TARGET)
 
+undefined:
+	$(error System is undefined, not target available)
+
 help :
 	@echo "This makefile is intended to build INScore for differents platforms."
 	@echo "Available targets are : "
@@ -57,6 +60,7 @@ help :
 	@echo "  android : to build for android"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
 	@echo "    with XXX the device serial number (can be retrieved using 'make devandroid')"
+	@echo "    DEVICE is optional when only one Android device is connected"
 	@echo "  devandroid : to get the serial number of the connected device"
 
 #===============================================================
