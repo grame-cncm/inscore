@@ -75,6 +75,7 @@ const char* kdrange_SetMethod		= "drange";			// Set
 const char* kdrotatex_SetMethod		= "drotatex";		// Set
 const char* kdrotatey_SetMethod		= "drotatey";		// Set
 const char* kdrotatez_SetMethod		= "drotatez";		// Set
+const char* kdshear_SetMethod		= "dshear";			// Set
 
 const char* kdsaturation_SetMethod	= "dsaturation";	// Set
 const char* kdscale_SetMethod		= "dscale";			// Set

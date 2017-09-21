@@ -416,19 +416,23 @@ Setting an object graphic origin to the top left corner.
 \sublevel{Components transformations}
 \label{transform}
 
-A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation.
+A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation on x, y and z axis.
 
 \begin{rail}
 transformMsg :
-			(('rotatex' | 'rotatey' | 'rotatez') float32)
-		| 	('shear' x y)
+			(('rotatex' | 'rotatey' | 'rotatez' ) float32)
+		|	(('drotatex' | 'drotatey' | 'drotatez') float32)
+		| 	(('shear' | 'dshear') x y) 
 \end{rail}
 \index{Transform messages!rotate}
 \index{Transform messages!shear}
+\index{Transform messages!dshear}
 
 \begin{itemize}
 \item \OSC{rotatex rotatey rotatez}: rotates the component around the corresponding axis. Parameter value expresses the rotation in degrees.
-\item \OSC{shear} transforms the component in x and y dimensions. \OSC{x} and \OSC{y} are float values expressing the transformation value in the corresponding dimension.
+\item \OSC{drotatex drotatey drotatez}: relative rotations.
+\item \OSC{shear} transforms the component in x and y dimensions. \OSC{x} and \OSC{y} are float values expressing the transformation value in the corresponding dimension. Values should be in the range ]-1, 1[.
+\item \OSC{dshear} relative \OSC{shear} transformation.
 \end{itemize}
 
 \example \\

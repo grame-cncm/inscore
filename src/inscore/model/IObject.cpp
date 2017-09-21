@@ -247,6 +247,7 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdrotatex_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addXAngle);
 	fMsgHandlerMap[kdrotatey_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addYAngle);
 	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
+	fMsgHandlerMap[kdshear_SetMethod]	= TSetMethodMsgHandler<IObject,TFloatSize>::create(this, &IObject::addShear);
 
 }
 

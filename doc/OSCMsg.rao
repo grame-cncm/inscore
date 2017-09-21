@@ -207,10 +207,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {11}{ transformMsg : (('rotatex' | 'rotatey' | 'rotatez') float32) | ('shear' x y) }
+\rail@i {11}{ transformMsg : (('rotatex' | 'rotatey' | 'rotatez' ) float32) | (('drotatex' | 'drotatey' | 'drotatez') float32) | (('shear' | 'dshear') x y) }
 \rail@o {11}{
 \rail@index{transformMsg}
-\rail@begin{4}{transformMsg}
+\rail@begin{8}{transformMsg}
 \rail@bar
 \rail@bar
 \rail@term{rotatex}[]
@@ -221,7 +221,20 @@
 \rail@endbar
 \rail@token{float32}[]
 \rail@nextbar{3}
+\rail@bar
+\rail@term{drotatex}[]
+\rail@nextbar{4}
+\rail@term{drotatey}[]
+\rail@nextbar{5}
+\rail@term{drotatez}[]
+\rail@endbar
+\rail@token{float32}[]
+\rail@nextbar{6}
+\rail@bar
 \rail@term{shear}[]
+\rail@nextbar{7}
+\rail@term{dshear}[]
+\rail@endbar
 \rail@nont{x}[]
 \rail@nont{y}[]
 \rail@endbar

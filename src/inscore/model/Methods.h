@@ -80,6 +80,7 @@ extern const char* kdrotatey_SetMethod;
 extern const char* kdrotatez_SetMethod;
 extern const char* kdsaturation_SetMethod;
 extern const char* kdscale_SetMethod;
+extern const char* kdshear_SetMethod;
 extern const char* kdstart_SetMethod;
 extern const char* kdtempo_SetMethod;
 extern const char* kduration_GetSetMethod;
