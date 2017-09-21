@@ -62,7 +62,7 @@ help :
 #===============================================================
 # building INScore on Mac OS X
 #===============================================================
-macos : $(BUILDF)/INScore.xcodeproj $(BUILDF)/INScoreViewer.xcodeproj INScoreMac
+macos : INScoreMac
 
 xcodeproj: library.pro viewer.pro
 	[ -d $(BUILDF) ] || mkdir $(BUILDF)
@@ -71,7 +71,7 @@ xcodeproj: library.pro viewer.pro
 	cd $(BUILDF) && $(QMAKE) $(SPEC) ../viewer.pro 
 	touch $(BUILDF)/INScoreViewer.xcodeproj
 
-INScoreMac : 
+INScoreMac : $(BUILDF)/INScore.xcodeproj $(BUILDF)/INScoreViewer.xcodeproj
 	make -C ../lib/GuidoEngine/macosx
 	make -C ../lib/GuidoAR/macosx
 	make -C ../lib/libMusicXML/macosx
