@@ -5493,8 +5493,7 @@ var IFaust = (function (_super) {
     __extends(IFaust, _super);
     function IFaust(name, parent) {
         var _this = _super.call(this, name, parent) || this;
-        //	private fFaustLibraries : string = "http://faust.grame.fr/modules/libraries/";
-        _this.fFaustLibraries = "https://raw.githubusercontent.com/grame-cncm/faust/faust2/libraries/";
+        _this.fFaustLibraries = "http://faust.grame.fr/modules/libraries/";
         _this.fTypeString = kFaustType;
         _this.fDspCode = "";
         _this.fFactory = null;
