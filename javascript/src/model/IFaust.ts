@@ -10,6 +10,7 @@ class IFaust extends IObject {
 	private fFactory 	: TFaustFactory;
 	private fDsp 		: TFaustDSP;
 	private fUI			: Array<TFaustUIItem>;
+	private fFaustLibraries : string = "http://faust.grame.fr/modules/libraries/";
 	
 	fBufferSize	: number;
 	        
@@ -125,7 +126,7 @@ class IFaust extends IObject {
    
     protected createDsp(code: string): boolean { 
 		this.fDspCode = code;
-		faust.createDSPFactory (code, ["-I", "http://localhost/faust/libraries/"], 
+		faust.createDSPFactory (code, ["-I", this.fFaustLibraries], 
 			(arg: TFaustFactory) : void => this.factoryReady(arg));
 		return true;
     }
