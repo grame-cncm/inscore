@@ -25,7 +25,8 @@ help :
 	cd ../src && tsc
 
 ../src/model/Methods.ts: ../../src/inscore/model/Methods.cpp
-	./methods2ts ../../inscore/model/Methods.cpp > ../src/model/Methods.ts
+	echo Methods.ts commented: check the converions script 'methods2ts'
+#	./methods2ts ../../inscore/model/Methods.cpp > ../src/model/Methods.ts
 
 check :
 	rm -rf $(BUILDIR)
