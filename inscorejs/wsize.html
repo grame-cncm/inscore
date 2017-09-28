@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HTML Tests</title>
+</head>
+
+<script> 
+	function info () {
+		var out = "";
+		out += "document.documentElement : " + document.documentElement.clientWidth + " " + document.documentElement.clientHeight + "\n";
+		out += "window                   : " + window.innerWidth + " " + window.innerHeight + "\n"
+		out += "body                     : " + document.body.clientWidth + " " + document.body.clientHeight + "\n"
+		out += "screen                   : " + screen.width + " " + screen.height + "\n"
+		let width = Math.max(window.innerWidth, document.documentElement.clientWidth, document.body.clientWidth);
+		let height = Math.max(window.innerHeight, document.documentElement.clientHeight, document.body.clientHeight);
+		out += "or : " + width + " " + height + "\n"
+		var div = document.getElementById("info");
+		div.innerHTML = out;
+	}
+</script>
+
+<body style="margin: 40px">
+
+<pre id="info">
+	<script> info (); </script>
+</pre>
+
+</body>
+
+</html>
+
+

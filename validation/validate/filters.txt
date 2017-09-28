@@ -1,2 +1,0 @@
-../scripts/Standalone/forward/f1.flt
-../scripts/Standalone/forward/f2.flt

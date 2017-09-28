@@ -1,0 +1,32 @@
+
+/ITL/scene/turenas set img "Turenas/rsrc/schemaSonagram.png";
+/ITL/scene/turenas alpha 80;
+/ITL/scene/turenas map del;
+
+# Sets the 'graphic to time' mapping for the Turanas graphic analysis
+# watch the intermediate object is required otherwise the success handler is not set
+/ITL/scene watch newElement (
+	/ITL/scene/turenas watch success (
+		/ITL/scene/turenas alpha 255,
+		/ITL/scene/turenas map "( [21, 777[ [25, 207[ )  ( [0/4,225/4[ )
+								( [22, 777[ [238, 419[ ) ( [225/4,450/4[ )
+								( [22, 505[ [451, 629[ ) ( [450/4,594/4[ )",
+		/ITL/scene/sync cursor turenas v
+	)
+);
+
+/ITL/scene/turenas scale 1.0;
+/ITL/scene/turenas y 0;
+
+/ITL/scene/cursor color 204 0 48 132;
+
+# Adjust the comments position
+/ITL/scene/section* x 0.75;
+/ITL/scene/section* y 0.55;
+
+# Add controlers to other views
+/ITL/scene/view1 set txt 'Voices view';
+/ITL/scene/view2 set txt 'Struct view';
+/ITL/scene/view1 watch mouseDown ( /ITL/scene load 'Turenas/voiceView.inscore');
+/ITL/scene/view2 watch mouseDown ( /ITL/scene load 'Turenas/structView.inscore');
+

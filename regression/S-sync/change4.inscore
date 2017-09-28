@@ -1,4 +1,0 @@
-# changing the date
-/ITL/scene/cursor date 3 8;
-/ITL/scene/slave date 0 8;
-/ITL/scene/subtitle set txt "/ITL/scene/cursor date 3 8;";

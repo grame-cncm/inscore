@@ -1,9 +1,0 @@
-
-/ITL/scene load 'scripts/cursor.inscore';
-/ITL/scene/cursor duration -1 4;
-/ITL/scene/cursor ddate 1 8;
-/ITL/scene/sync 'cursor' 'score' 'h';
-
-/ITL/scene/offset set 'rect' 0.02 0.1;
-/ITL/scene/offset show 0;
-/ITL/scene/offset date 1 4;

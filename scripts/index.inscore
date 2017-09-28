@@ -1,0 +1,9 @@
+
+/ITL/scene/_index  set  txt "Index";
+/ITL/scene/_index y 0.95;
+/ITL/scene/_index x -0.92;
+
+/ITL/scene/_index  watch  mouseEnter ( /ITL/scene/_index red 240 );
+/ITL/scene/_index  watch  mouseLeave ( /ITL/scene/_index red 0 );
+/ITL/scene/_index  watch  mouseDown ( /ITL/scene load "online-samples.inscore" );
+

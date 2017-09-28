@@ -1,4 +1,0 @@
-./testparser ../../../regression/S-log/errorScript2.inscore > checkout/regression/S-log/errorScript2.inscore || rm -f checkout/regression/S-log/errorScript2.inscore
-error line 1 col 27: syntax error, unexpected ERR, expecting ENDEXPR
-./testparser ../../../regression/S-log/errorScript3.inscore > checkout/regression/S-log/errorScript3.inscore || rm -f checkout/regression/S-log/errorScript3.inscore
-error line 1 col 28: syntax error, unexpected OSCADDRESS, expecting ENDEXPR

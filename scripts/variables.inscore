@@ -1,0 +1,53 @@
+x = -0.2;
+y = -0.2;
+
+/ITL/scene/*  del;
+
+/ITL/scene/title  set  txt "These scripts illustrate variables in interaction messages.";
+/ITL/scene/title  y -0.92;
+/ITL/scene/title scale 1.7;
+
+/ITL/scene/rect  set  rect 0.316562 0.379575;
+/ITL/scene/rect  scale  1.96667;
+/ITL/scene/rect  color  254 212 76 150;
+/ITL/scene/rect  x  $x;
+/ITL/scene/rect  y  $y;
+/ITL/scene/rect  z  1.0;
+
+/ITL/scene/rep1  set  img "rsrc/repere.png";
+/ITL/scene/rep2  set  img "rsrc/repere.png";
+/ITL/scene/rep2  x  $x;
+/ITL/scene/rep2  y  $y;
+
+
+/ITL/scene/tpos  set  txt "Position ($x, $y): ";
+/ITL/scene/tapos  set  txt "Absolute position ($absx, $absy): ";
+/ITL/scene/tspos  set  txt "Scene position ($sx, $sy): ";
+/ITL/scene/tdate  set  txt "Date ($date): ";
+/ITL/scene/*{pos,date}  xorigin  1.0;
+/ITL/scene/vpos  set  txt " ";
+/ITL/scene/vapos  set  txt " ";
+/ITL/scene/vspos  set  txt " ";
+/ITL/scene/vdate  set  txt " ";
+/ITL/scene/v*{pos,date}  xorigin  -1.0;
+/ITL/scene/v*{pos,date}  color  0 0 255;
+
+/ITL/scene/*{pos,date}  scale  1.5;
+/ITL/scene/[tv]pos  y  0.4;
+/ITL/scene/[tv]apos  y  0.5;
+/ITL/scene/[tv]spos  y  0.6;
+/ITL/scene/[tv]date  y  0.7;
+
+/ITL/scene/comment1  set  txt "Click the rectangle to get the variables values.";
+/ITL/scene/comment1 y 0.855;
+
+watchMsgs = (
+	/ITL/scene/vpos set txt "$x" "$y",
+	/ITL/scene/vapos set txt "$absx" "$absy",
+	/ITL/scene/vspos set txt "$sx" "$sy",
+	/ITL/scene/vdate set txt "$date%f" );
+
+/ITL/scene/rect  watch  mouseDown $watchMsgs;
+/ITL/scene/rect  watch  mouseMove $watchMsgs;
+
+/ITL/scene load "index.inscore";

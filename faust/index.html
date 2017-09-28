@@ -1,0 +1,47 @@
+
+<!DOCTYPE html PUBLIC>
+<html>
+<head>
+    <title>INScoreJS width Faust</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache">
+
+	<link href="css/inscore.css" rel="stylesheet">
+
+	<script src="js/libGUIDOEngine.js"></script>
+	<!--script src="libGUIDOEngine.wasm.js"></script>
+	<script src="libGUIDOEngine.wasm.preload.js"></script-->
+
+	<script src="libfaust-wasm.js"></script>
+	<script src="webaudio-wasm-wrapper.js"></script>
+	<script src="inscore.js"></script>
+
+ 	<script>
+	function showlog(v) {
+		INScore.postMessage("/ITL/log", ["show", v]);
+	}
+	</script>
+
+</head>
+
+
+<body style="margin: 20px">
+	<h1>INScoreJS with Faust</h1>
+	<p><a title="Open INScore log" onclick='showlog(1)', style="cursor:pointer;">INScore log</a></p>
+ 	<pre>
+ 	This page must be delivered by a server.
+ 	You can use python: python -m SimpleHTTPServer 8000 locally
+ 	</pre>
+ 	
+
+	<script>
+		document.onselectstart=new Function ("return false");
+		document.body.style.cursor = "wait";
+		Module['onRuntimeInitialized'] = function() { 
+			INScore.start("scene"); 
+			document.body.style.cursor = "default";
+		}
+	</script>
+
+</body>
+</html>

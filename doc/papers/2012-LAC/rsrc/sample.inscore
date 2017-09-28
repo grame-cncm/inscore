@@ -1,6 +1,0 @@
-
-/ITL/scene/score  set 'gmn' '[ g e f d ]';
-/ITL/scene/score  scale 5.0;
-/ITL/scene/cursor set 'rect' 0.01 0.1;
-/ITL/scene/cursor color 255 0 0 150;
-/ITL/scene/sync 'cursor' 'score' 'v';

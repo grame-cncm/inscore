@@ -1,7 +1,0 @@
-/ITL/scene/* del;
-/ITL/scene/signal/* del;
-
-/ITL/scene/signal/plus set faustdsp "process=+;";
-/ITL/scene/signal/plus size 50;
-
-/ITL/log show 1;

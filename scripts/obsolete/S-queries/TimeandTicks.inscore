@@ -1,4 +1,0 @@
-
-/ITL/scene/out set  txt "Current INScore ticks:" $(/ITL get ticks) "
-Current INScore time:"  $(/ITL get time) ms;
-

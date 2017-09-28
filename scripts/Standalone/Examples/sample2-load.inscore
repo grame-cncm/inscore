@@ -1,9 +1,0 @@
-
-/ITL/scene load sample1.inscore;
-
-/ITL/scene/cursor set ellipse 0.06 0.06;
-/ITL/scene/cursor color 100 100 250;
-
-/ITL/scene/sync cursor score syncTop;
-/ITL/scene/cursor dy -0.1;
-/ITL/scene/cursor tempo 60;

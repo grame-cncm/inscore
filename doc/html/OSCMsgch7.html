@@ -1,0 +1,897 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>7 Type specific messages</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<!-- html,2,frames,index=3,info --> 
+<meta name="src" content="OSCMsg.tex"> 
+<link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
+</head><body 
+>
+<!--l. 1256--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch8.html" >next</a>] [<a 
+href="OSCMsgch6.html" >prev</a>] [<a 
+href="OSCMsgch6.html#tailOSCMsgch6.html" >prev-tail</a>] [<a 
+href="#tailOSCMsgch7.html">tail</a>] [<a 
+href="OSCMsg3.html#OSCMsgch7.html" >up</a>] </p></div>
+<h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;7</span><br /><a 
+ id="x11-390007"></a>Type specific messages</h2>
+<!--l. 1258--><p class="noindent" >Some of the messages are accepted only by specific components.
+<h3 class="sectionHead"><span class="titlemark">7.1    </span> <a 
+ id="x11-400007.1"></a>Brush control</h3>
+<!--l. 1266--><p class="noindent" ><hr class="figure"><div class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+ id="x11-400011"></a>
+                                                                                 
+
+                                                                                 
+                                                                                 
+
+                                                                                 
+<!--l. 1267--><p class="noindent" ><img 
+src="OSCMsg43x.png" alt="PIC" class="graphics" width="597.23125pt" height="845.15749pt" ><!--tex4ht:graphics  
+name="OSCMsg43x.png" src="imgs/brush.ps"  
+-->
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;7.1: </span><span  
+class="content">Brush styles</span></div><!--tex4ht:label?: x11-400011 -->
+                                                                                 
+
+                                                                                 
+<!--l. 1270--><p class="noindent" ></div><hr class="endfigure">
+<!--l. 1272--><p class="noindent" >Specific brush messages accepted by the following components: <span 
+class="pcrr8tn-">rect | ellipse | polygon | curve |</span>
+<span 
+class="pcrr8tn-">layer</span>.
+<a 
+ id="dx11-40002"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1275--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">brushMsg</span> <img 
+src="OSCMsg44x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-40003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">brushStyle </span>controls the brush style (see figure <a 
+href="#x11-400011">7.1<!--tex4ht:ref: brushstyle --></a>).</li></ul>
+<a 
+ id="dx11-40004"></a>
+<a 
+ id="dx11-40005"></a>
+<a 
+ id="dx11-40006"></a>
+<a 
+ id="dx11-40007"></a>
+<a 
+ id="dx11-40008"></a>
+<a 
+ id="dx11-40009"></a>
+<a 
+ id="dx11-40010"></a>
+<a 
+ id="dx11-40011"></a>
+                                                                                 
+
+                                                                                 
+<a 
+ id="dx11-40012"></a>
+<a 
+ id="dx11-40013"></a>
+<a 
+ id="dx11-40014"></a>
+<a 
+ id="dx11-40015"></a>
+<a 
+ id="dx11-40016"></a>
+<a 
+ id="dx11-40017"></a>
+<a 
+ id="dx11-40018"></a>
+<a 
+ id="dx11-40019"></a>
+<!--l. 1299--><p class="noindent" >The brush style default value is <span 
+class="pcrr8tn-">solid</span>.<br 
+class="newline" />For the <span 
+class="pcrr8tn-">layer </span>object, the brush style default value is <span 
+class="pcrr8tn-">none</span>.<br 
+class="newline" />
+<!--l. 1302--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting a rectangle style :
+<div class="center" 
+>
+<!--l. 1306--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox41"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/rect set rect 0.5 0.5 ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/rect brushStyle dense4;</span></div></div>
+</div>
+<h3 class="sectionHead"><span class="titlemark">7.2    </span> <a 
+ id="x11-410007.2"></a>Width and height control</h3>
+<!--l. 1313--><p class="noindent" ><span 
+class="pcrr8tn-">width </span>and <span 
+class="pcrr8tn-">height </span>messages are accepted by the following components: <span 
+class="pcrr8tn-">rect | ellipse | graph |</span>
+<span 
+class="pcrr8tn-">fastgraph | grid | pianoroll | pianorollf</span>.
+<a 
+ id="dx11-41001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1318--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">widthMsg</span> <img 
+src="OSCMsg45x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-41002"></a>
+<a 
+ id="dx11-41003"></a>
+<!--l. 1323--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> Q</span>uerying the <span 
+class="pcrr8tn-">width </span>and <span 
+class="pcrr8tn-">height </span>of any object is always supported, provided that the object has been graphically
+rendered.
+<!--l. 1328--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.3    </span> <a 
+ id="x11-420007.3"></a>Symbolic score</h3>
+<!--l. 1331--><p class="noindent" >The following messages are accepted by the components types <span 
+class="pcrr8tn-">gmn | gmnstream | gmnf</span>.
+<a 
+ id="dx11-42001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 1339--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">scoreMsg</span> <img 
+src="OSCMsg46x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-42002"></a>
+<a 
+ id="dx11-42003"></a>
+<a 
+ id="dx11-42004"></a>
+<a 
+ id="dx11-42005"></a>
+<a 
+ id="dx11-42006"></a>
+<a 
+ id="dx11-42007"></a>
+<a 
+ id="dx11-42008"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">page</span>: set the score current page
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">dpage</span>: moves the score current page
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">pageFormat</span>:  set  the  page  format.  The  parameters  are  the  page  width  and  height.  Note  that  the
+     message has no effect when the score already includes a <span class="obeylines-h"><span class="verb"><span 
+class="pcrr8tn-">\</span></span></span>pageformat tag.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">columns</span>: for multi pages display: set the number of columns.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">rows</span>: for multi pages display: set the number of rows.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">pageCount</span>: a read only attribute, gives the score pages count.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">systemCount</span>: a read only attribute, gives the number of systems on each of the score pages. The
+     result is given as a list systems count ordered by page number (index 0 is page 1, etc.).</li></ul>
+<!--l. 1360--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Displaying a multi-pages score on two pages starting at page 3:
+<div class="center" 
+>
+<!--l. 1364--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox42"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myScore columns 2 ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myScore page 3 ;</span></div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<a 
+ id="dx11-42009"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1370--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gmnstreamMsg</span> <img 
+src="OSCMsg47x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-42010"></a>
+<a 
+ id="dx11-42011"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">write</span>: add the gmn code to the current gmn stream
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">clear</span>: reinitialize the stream</li></ul>
+<!--l. 1380--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Writing a score in 3 steps:
+<div class="center" 
+>
+<!--l. 1385--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox43"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myScore set gmnstream "[ c"; </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myScore write " d e";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myScore write " f]";</span></div></div>
+</div>
+<!--l. 1390--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.4    </span> <a 
+ id="x11-430007.4"></a>Piano roll</h3>
+<!--l. 1393--><p class="noindent" >The following messages are accepted by the components types <span 
+class="pcrr8tn-">pianoroll | pianorollstream |</span>
+<span 
+class="pcrr8tn-">pianorollf</span>.
+<a 
+ id="dx11-43001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 1403--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">pianorollMsg</span> <img 
+src="OSCMsg48x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-43002"></a>
+<a 
+ id="dx11-43003"></a>
+<a 
+ id="dx11-43004"></a>
+<a 
+ id="dx11-43005"></a>
+<a 
+ id="dx11-43006"></a>
+<a 
+ id="dx11-43007"></a>
+<a 
+ id="dx11-43008"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">keyboard</span>: display the keyboard on left of piano roll. Default value to 0.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">autoVoicesColoration</span>:  enable  voices  automatic  coloration.  If  voiceColor  is  used  for  a  voice,
+     automatic voices coloration do nothing for it. Default value to 0.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">measureBars</span>: Display measure bars on piano roll. Default value to 0.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">voiceColor</span>: set a color to a voice. The parameters are voice number (start to 1), and RGBA color
+     (See section <a 
+href="OSCMsgch2.html#x6-120002.3">2.3<!--tex4ht:ref: colormsg --></a> p.<a 
+href="OSCMsgch2.html#x6-120002.3">16<!--tex4ht:ref: colormsg --></a>). If not color is present, voice color is reset to default color. If voice number and
+     color are not present, reset all voices to default color.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">pitchLines</span>: Display pitch lines on pianoroll. Parameters are a note list in english notation (A A# B
+     ...) with case insensitive. Default to all lines. An &#8217;<span 
+class="pcrr8tn-">empty</span>&#8217; note (i.e. the litteral &#8217;<span 
+class="pcrr8tn-">empty</span>&#8217; string) can be
+     used to not display any line.
+     </li>
+                                                                                 
+
+                                                                                 
+     <li class="itemize"><span 
+class="pcrr8tn-">clipTime</span>: set time limits for piano roll (See section <a 
+href="OSCMsgch3.html#x7-230003">3<!--tex4ht:ref: time --></a> p.<a 
+href="OSCMsgch3.html#x7-230003">30<!--tex4ht:ref: time --></a> to set a time). The two times have to be
+     wrote in the same format. If no time is present, time limits are reset to default.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">clipPitch</span>: Set pitch limits to piano roll. The pitch is in midi format. If no value is present, pitch
+     limits are reset to default.</li></ul>
+<!--l. 1424--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Set a color on voice 2 with transparency and display C and F pitch lines:
+<div class="center" 
+>
+<!--l. 1428--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox44"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myPianoroll voiceColor 2 154 234 45 100;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myPianoroll pitchLines &#8217;C&#8217; &#8217;F&#8217;;</span></div></div>
+</div>
+<!--l. 1429--><p class="noindent" >Removes the pitch lines:
+<div class="center" 
+>
+<!--l. 1431--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox45"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myPianoroll pitchLines empty;</span>
+</div></div>
+</div>
+<!--l. 1433--><p class="noindent" >Piano roll streams support the same messages than Guido streams:
+<a 
+ id="dx11-43009"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1437--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">pianorollstreamMsg</span> <img 
+src="OSCMsg49x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-43010"></a>
+<a 
+ id="dx11-43011"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">write</span>: add the gmn code to the current gmn stream
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">clear</span>: reinitialize the stream</li></ul>
+<!--l. 1447--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Writing a pianoroll in 3 steps:
+<div class="center" 
+>
+<!--l. 1452--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox46"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myPianoroll set pianorollstream "[ c"; </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myPianoroll write " d e";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myPianoroll write " f]";</span></div></div>
+                                                                                 
+
+                                                                                 
+</div>
+<!--l. 1456--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.5    </span> <a 
+ id="x11-440007.5"></a>Video</h3>
+<!--l. 1459--><p class="noindent" >A video object has an own internal time and duration that is independant from the INScore time and duration. This
+video time is controlled using specific messages.
+<a 
+ id="dx11-44001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1467--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">video</span> <img 
+src="OSCMsg50x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-44002"></a>
+<a 
+ id="dx11-44003"></a>
+<a 
+ id="dx11-44004"></a>
+<a 
+ id="dx11-44005"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">play </span>start or stop playing the video. Default value is 0.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">volume </span>sets the audio volume of the video. Default and maximum value is 1.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">rate </span>sets the video playing rate. Default value is 1.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">vdate </span>sets the current video frame. Default value is 0. Arguments are the following:
+         <ul class="itemize2">
+         <li class="itemize"><span 
+class="ptmb8t-">1 </span>: a value in milliseconds.
+         </li>
+         <li class="itemize"><span 
+class="ptmb8t-">2 </span>: a musical time expressed as a rational. Note that musical time is converted to milliseconds
+         using a tempo value of 60.
+         </li>
+         <li class="itemize"><span 
+class="ptmb8t-">3 </span>: a musical time expressed as a float.</li></ul>
+     <!--l. 1483--><p class="noindent" >The video position may be updated while the video is playing.</li></ul>
+                                                                                 
+
+                                                                                 
+<!--l. 1486--><p class="noindent" >A video object supports also specific queries:
+<a 
+ id="dx11-44006"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1490--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">videoget</span> <img 
+src="OSCMsg51x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-44007"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">mls </span>gives the video absolute duration in milliseconds.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">vduration </span>gives the video duration in musical time. The returned value is a rational computed using
+     the current rate, according to a tempo value of 60.</li></ul>
+<!--l. 1498--><p class="noindent" >A video object supports specific events (see section <a 
+href="OSCMsgch16.html#x20-11100016.1.6">16.1.6<!--tex4ht:ref: typespecevents --></a> p.<a 
+href="OSCMsgch16.html#x20-11100016.1.6">163<!--tex4ht:ref: typespecevents --></a> for more details). <br 
+class="newline" />
+<!--l. 1501--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Playing a video at half speed:
+<div class="center" 
+>
+<!--l. 1506--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox47"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/video set video "Video.mp4"; </span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/video rate 0.5;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/video play 1";</span></div></div>
+</div>
+<!--l. 1508--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" /> Depending on the video encoding and on the platform renderer, setting the video current position using the <span 
+class="pcrr8tn-">vdate</span>
+message may be aligned to key frames. <br 
+class="newline" />Supported video formats are highly dependent on the platform, as well as the video specific features (e.g. setting the
+playing rate that may or may not be supported, or may behave differently).
+<!--l. 1516--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.6    </span> <a 
+ id="x11-450007.6"></a>SVG Objects</h3>
+<!--l. 1519--><p class="noindent" >The following message is accepted by the SVG components (types <span 
+class="pcrr8tn-">svg | svgf</span>).
+<a 
+ id="dx11-45001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 1524--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">svgMsg</span> <img 
+src="OSCMsg52x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-45002"></a>
+<a 
+ id="dx11-45003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">animate</span>: start or stop the svg animation (provided the SVG is animated). The parameter is a boolean
+     value (default is 0).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">animated</span>: a <span 
+class="pcrr8tn-">get </span>parameter only: returns whether the svg is animated or not.</li></ul>
+<!--l. 1533--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" /> SVG objects are rendered using the Qt SVG Renderer and suffer the Qt limitations. For example and with Qt 5.5,
+xlinks are not supported.
+<!--l. 1539--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.7    </span> <a 
+ id="x11-460007.7"></a>Rectangles</h3>
+<!--l. 1542--><p class="noindent" >Rectangles (type <span 
+class="pcrr8tn-">rect</span>) accept a <span 
+class="pcrr8tn-">radius </span>message that can be used to draw rounded rectangles.
+<a 
+ id="dx11-46001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1545--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">radiusMsg</span> <img 
+src="OSCMsg53x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-46002"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">radius</span>: followed by 2 values that specify the radius on the x and y axis (default is 0 0). The values
+     express a percentage of the object dimensions, thus the value&#8217;s range is [0, 100].</li></ul>
+<!--l. 1555--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.8    </span> <a 
+ id="x11-470007.8"></a>Arcs</h3>
+<!--l. 1558--><p class="noindent" >Arcs are portion of ellipses. Although an arc is specified by it&#8217;s <span 
+class="pcrr8tn-">set </span>message, it supports additional messages to
+control the start angles and the arc extension individually. An additional <span 
+class="pcrr8tn-">close </span>message affects the drawing of the
+arc.
+<a 
+ id="dx11-47001"></a>
+                                                                                 
+
+                                                                                 
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1566--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">arcMsg</span> <img 
+src="OSCMsg54x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-47002"></a>
+<a 
+ id="dx11-47003"></a>
+<a 
+ id="dx11-47004"></a>
+<a 
+ id="dx11-47005"></a>
+<a 
+ id="dx11-47006"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">start</span>: set the start angle of the arc.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">range</span>: set the arc extension in degrees counter-clockwise.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">dstart</span>: move the start angle of the arc from the value given as parameter.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">drange</span>: move the arc range from the value given as parameter.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">close</span>: by default, only the curve of an arc is drawn. When the <span 
+class="pcrr8tn-">close </span>attribute is set, lines from the
+     arc borders to the center of the ellipse are also drawn. The <span 
+class="pcrr8tn-">close </span>parameter is read as a boolean
+     value.</li></ul>
+<!--l. 1580--><p class="noindent" >Angles are in degrees and express counter-clockwise directions.
+<!--l. 1584--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.9    </span> <a 
+ id="x11-480007.9"></a>The &#8217;grid&#8217; object</h3>
+<!--l. 1587--><p class="noindent" >The <span 
+class="pcrr8tn-">grid </span>object provides a pre-defined time to graphic mapping organized in columns and row. By default, it is not
+visible (white, transparent) but supports all the attributes of rectangles (color, pen, effects, etc.). Each
+element of a grid has a duration that is computed as the grid duration divided by the total number
+of elements ( columns x rows) and is placed in the time space from the date 0 to the end of the grid
+duration.
+<a 
+ id="dx11-48001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 1595--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">gridMsg</span> <img 
+src="OSCMsg55x.png" alt="PICT" >
+</div></dd></dl>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">columns </span>set the number of columns of the grid,
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">rows </span>set the number of rows of the grid,
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">xborder </span>set the horizontal spacing between the elements of the grid (default is 0.),
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">yborder </span>set the vertical spacing between the elements of the grid (default is 0.),
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">order </span>defines the time order of the elements. By default, elements are organized from left to right
+     first and from top to bottom next (<span 
+class="pcrr8tn-">leftright</span>). The <span 
+class="pcrr8tn-">topbottom </span>parameter changes this order from
+     top to bottom first and from left to right next.</li></ul>
+<!--l. 1605--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Creating a 10 x 10 grid organized from top to bottom with a border:
+<div class="center" 
+>
+<!--l. 1611--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox48"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/grid set grid 10 10 ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/grid xborder 3. ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/grid yborder 3. ;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/grid order topbottom ;</span></div></div>
+</div>
+<!--l. 1616--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.10    </span> <a 
+ id="x11-490007.10"></a>Arrows</h3>
+<!--l. 1619--><p class="noindent" >Specific arrows message is accepted by the component type <span 
+class="pcrr8tn-">line</span>. It add capability to draw arrow heads to the
+begining and the end of a line object.
+<a 
+ id="dx11-49001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+                                                                                 
+
+                                                                                 
+<!--l. 1622--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">arrowsheadMsg</span> <img 
+src="OSCMsg56x.png" alt="PICT" >
+</div> </dd></dl>
+<a 
+ id="dx11-49002"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">arrowStyleBegin </span>Set the arrow head of the begining of the line.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">arrowStyleEnd </span>Set the arrow head of the end of the line.</li></ul>
+<a 
+ id="dx11-49003"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1631--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">arrowStyle</span> <img 
+src="OSCMsg57x.png" alt="PICT" >
+</div></dd></dl>
+<!--l. 1632--><p class="noindent" >The arrow style default value is <span 
+class="pcrr8tn-">none</span>.
+<!--l. 1636--><p class="noindent" >
+<h3 class="sectionHead"><span class="titlemark">7.11    </span> <a 
+ id="x11-500007.11"></a>Textual objects</h3>
+<!--l. 1637--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">7.11.1    </span> <a 
+ id="x11-510007.11.1"></a>Font control</h4>
+<!--l. 1639--><p class="noindent" >Specific font messages are accepted by <span 
+class="pcrr8tn-">txthtmltxtf </span>and <span 
+class="pcrr8tn-">htmlf </span>components.
+<a 
+ id="dx11-51001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1645--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">fontMsg</span> <img 
+src="OSCMsg58x.png" alt="PICT" >
+</div></dd></dl>
+                                                                                 
+
+                                                                                 
+<a 
+ id="dx11-51002"></a>
+<a 
+ id="dx11-51003"></a>
+<a 
+ id="dx11-51004"></a>
+<a 
+ id="dx11-51005"></a>
+<a 
+ id="dx11-51006"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1653--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">fontStyle</span> <img 
+src="OSCMsg59x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-51007"></a>
+<a 
+ id="dx11-51008"></a>
+<a 
+ id="dx11-51009"></a>
+<a 
+ id="dx11-51010"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1660--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">fontWeight</span> <img 
+src="OSCMsg60x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-51011"></a>
+<a 
+ id="dx11-51012"></a>
+<a 
+ id="dx11-51013"></a>
+<a 
+ id="dx11-51014"></a>
+<a 
+ id="dx11-51015"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">fontSize </span>controls the font size in pixel. The default value is 13px.
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">fontFamily </span>controls the font family. The default value is &#8217;Arial&#8217;. If a non existing value is used,
+     system default font is used.
+     </li>
+                                                                                 
+
+                                                                                 
+     <li class="itemize"><span 
+class="pcrr8tn-">fontStyle </span>controls the pen style. The font style default value is <span 
+class="pcrr8tn-">normal</span>.<br 
+class="newline" />
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">weightValue </span>controls the font weight. The font weight default value is <span 
+class="pcrr8tn-">normal</span>.</li></ul>
+<!--l. 1674--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />Setting a text object with a font family Times and bold weight:
+<div class="center" 
+>
+<!--l. 1679--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox49"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/text set txt "text sample";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/text fontFamily Times;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/text fontWeight bold;</span></div></div>
+</div>
+<!--l. 1681--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">7.11.2    </span> <a 
+ id="x11-520007.11.2"></a>Writing</h4>
+<!--l. 1683--><p class="noindent" >Textual objects support writing in a stream-like way.
+<a 
+ id="dx11-52001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1686--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">txtwrite</span> <img 
+src="OSCMsg61x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-52002"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">write</span>: append the <span 
+class="pcrr8tn-">arg </span>list formatted as a string to the textual content.</li></ul>
+<!--l. 1693--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> </span><br 
+class="newline" />
+<div class="center" 
+>
+<!--l. 1696--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox50"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">/ITL/scene/text set txt "Hello";</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/text write "world!";</span></div></div>
+</div>
+<!--l. 1701--><p class="noindent" >
+                                                                                 
+
+                                                                                 
+<h3 class="sectionHead"><span class="titlemark">7.12    </span> <a 
+ id="x11-530007.12"></a>The &#8217;debug&#8217; nodes</h3>
+<!--l. 1704--><p class="noindent" >Each component includes a static <span 
+class="pcrr8tn-">debug </span>nodes provided to give information about components.
+<a 
+ id="dx11-53001"></a>
+<dl class="list1"><dt class="list">
+</dt><dd 
+class="list">
+<!--l. 1708--><p class="noindent" ><div class="minipage"><span 
+class="ptmri8t-">debugMsg</span> <img 
+src="OSCMsg62x.png" alt="PICT" >
+</div></dd></dl>
+<a 
+ id="dx11-53002"></a>
+<a 
+ id="dx11-53003"></a>
+     <ul class="itemize1">
+     <li class="itemize"><span 
+class="pcrr8tn-">map </span>is used to display the time to graphic mapping. The parameter is a int value: 0 prevents mapping
+     display, 1 displays only the bounding boxes and 2 displays also the dates along with the boxes. Default
+     is 0 (no map).
+     </li>
+     <li class="itemize"><span 
+class="pcrr8tn-">name </span>is used to display both the object name and bounding box. The parameter is a boolean value.
+     Default is 0.</li></ul>
+                                                                                 
+
+                                                                                 
+<!--l. 1720--><div class="crosslinks"><p class="noindent">[<a 
+href="OSCMsgch8.html" >next</a>] [<a 
+href="OSCMsgch6.html" >prev</a>] [<a 
+href="OSCMsgch6.html#tailOSCMsgch6.html" >prev-tail</a>] [<a 
+href="OSCMsgch7.html" >front</a>] [<a 
+href="OSCMsg3.html#OSCMsgch7.html" >up</a>] </p></div>
+<!--l. 1720--><p class="noindent" ><a 
+ id="tailOSCMsgch7.html"></a>  
+</body></html> 

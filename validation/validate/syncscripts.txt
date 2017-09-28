@@ -1,2 +1,0 @@
-../scripts/Standalone/grid/DROP-ME.inscore
-../scripts/Standalone/grid/monov.inscore

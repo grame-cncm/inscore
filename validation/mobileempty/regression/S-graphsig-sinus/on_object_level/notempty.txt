@@ -1,2 +1,0 @@
-Unused text file.
-It exist just to copy folder structure on ios device and for git repository. 

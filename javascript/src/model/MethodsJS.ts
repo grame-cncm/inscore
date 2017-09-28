@@ -1,1 +1,0 @@
-const kposition_GetSetMethod: string  = "position";

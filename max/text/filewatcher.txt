@@ -1,9 +1,0 @@
-﻿Bonjour
-Je suis le fichier 'mapping/filewatcher.txt'.
-Modifiez moi avec un éditeur de texte,
-vous devriez voir les changements
-instantanément dans Interlude
-(sous réserve de sauver le fichier !).
-Merci à '/ITL/scene/fileWatcher' :-)
-
-(idem pour la partition 'guido/filewatcher.gmn')

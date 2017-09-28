@@ -1,3 +1,0 @@
-
-/ITL/scene/out set  txt "INScore version is" $(/ITL get version);
-

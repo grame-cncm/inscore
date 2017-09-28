@@ -1,2 +1,0 @@
-../scripts/Standalone/Javascript/javascript.inscore
-../scripts/Standalone/Javascript/jsgrid.inscore

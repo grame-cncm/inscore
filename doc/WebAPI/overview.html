@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Overview &mdash; webAPI 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="webAPI 1.0 documentation" href="index.html" />
+    <link rel="next" title="Get data from the server" href="get.html" />
+    <link rel="prev" title="INScore web API documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="get.html" title="Get data from the server"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="INScore web API documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">webAPI 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>INScore scene can embed objects to provide web capabilities in order to make this score available to remote clients.</p>
+<p>Two types of objects are available :</p>
+<ul class="simple">
+<li>an HTTP server, which INScore type is &#8216;httpd&#8217; and that takes a listening port number as argument,</li>
+<li>a WebSocket server, which type is &#8216;websocket&#8217; and that takes a listening port number and a maximum rate for clients notification as arguments.</li>
+</ul>
+<p>This objects can <a class="reference internal" href="get.html"><em>Get data from the server</em></a> (like score version and screen image) or <a class="reference internal" href="post.html"><em>Post data to the server</em></a> to update the score.</p>
+<p>This is a RESTful web service with HTTP server. Each service is identified by a path and a http method. The GET HTTP method is used to retrieve data and the POST method is used to send data.</p>
+<p>As websockets don&#8217;t use path, a JSON object construct the request and is send to the server. The <cite>method</cite> field identify the service (like http path). Websocket responses are asychronous, a request id must be provided in the request. He is added in the response of the server.</p>
+<p><cite>Comparison of the request to get score image between http and websocket:</cite></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HTTP</th>
+<th class="head">websocket</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>serverURL/<tt class="docutils literal"><span class="pre">image</span></tt></td>
+<td>{ id=&#8221;1&#8221;, method=&#8221;<tt class="docutils literal"><span class="pre">image</span></tt>&#8221; }</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Websocket specificities:</strong></p>
+<p>With it&#8217;s bidirectional communication, the websocket server sends notifications with the screen version number when the score changes. Note that websocket responses are asynchronous, that&#8217;s why an &#8216;id&#8217; is introduced in JSON objects, that is send back with the response.</p>
+<dl class="docutils">
+<dt>Websocket doesn&#8217;t have a response code like http but a status field is always present in response object with one of these two values :</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">OK</span></tt> in case of success</li>
+<li><tt class="docutils literal"><span class="pre">ERROR</span></tt> in case of error.</li>
+</ul>
+</dd>
+</dl>
+<p>If an non-existing method or more generally, an incorrect json object is send to the server, the response is a generic json object error with the resquest id when available, or an empty id if it cannot be read.</p>
+<p>Example: <tt class="docutils literal"><span class="pre">{</span> <span class="pre">id:</span> <span class="pre">&quot;45612&quot;,</span> <span class="pre">status:</span> <span class="pre">&quot;ERROR&quot;,</span> <span class="pre">&quot;error&quot;</span> <span class="pre">:</span> <span class="pre">&quot;Bad</span> <span class="pre">request&quot;</span> <span class="pre">}</span></tt></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">INScore web API documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="get.html"
+                        title="next chapter">Get data from the server</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="get.html" title="Get data from the server"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="INScore web API documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">webAPI 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Grame.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
+    </div>
+  </body>
+</html>

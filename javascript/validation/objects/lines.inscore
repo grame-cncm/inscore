@@ -1,8 +1,0 @@
-/ITL/scene/test0 set line wa 0.5 30;
-/ITL/scene/test1 set line wa 1 45;
-/ITL/scene/test2 set line wa 0.5 60;
-/ITL/scene/test3 set line wa 1 90;
-/ITL/scene/test4 set line wa 0.5 120;
-/ITL/scene/test5 set line wa 1 135;
-/ITL/scene/test6 set line wa 0.5 150;
-/ITL/scene/test7 set line wa 1 180;

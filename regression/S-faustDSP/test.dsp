@@ -1,4 +1,0 @@
-import("test.lib");
-
-process 		= *;
-

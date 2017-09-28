@@ -1,9 +1,0 @@
-.DS_Store
-*.js
-src/parser/checkout
-rsrc
-build/*.dot
-build/*.pdf
-sandbox
-mei
-js

@@ -1,0 +1,80 @@
+! cleanup the scene.
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+/ITL/scene width 1.3;
+
+!-------------------------------------------------------
+! required version
+!-------------------------------------------------------
+version = 1.0;
+gray = 100;
+
+/ITL require $version  (
+	/ITL/scene/warning set txt "Warning: this script requires INScore version"  $version ,
+	/ITL/scene/warning scale 3.0 ,
+	/ITL/scene/warning color $gray $gray $gray ,
+	/ITL/scene/warning z 1.0 );
+
+!-------------------------------------------------------
+! Add a rectangle as a cursor
+/ITL/scene/cursor set rect 0.01 0.217176;
+/ITL/scene/cursor date 0 64;
+/ITL/scene/cursor duration 1 64;
+/ITL/scene/cursor color 204 0 48 132;
+/ITL/scene/cursor z 1.0;
+
+!-------------------------------------------------------
+! Load comments
+!-------------------------------------------------------
+/ITL/scene load "Turenas/scripts/sections.inscore";
+
+!-------------------------------------------------------
+! Add controlers to other views
+!-------------------------------------------------------
+gray = 140;
+/ITL/scene/view1 set txt ' ';
+/ITL/scene/view2 set txt ' ';
+/ITL/scene/view* color $gray $gray $gray;
+/ITL/scene/view* xorigin 1.3;
+/ITL/scene/view* x $(/ITL/scene get width);
+/ITL/scene/view1 y 0.90;
+/ITL/scene/view2 y 0.95;
+
+/ITL/scene/view* watch mouseEnter ( /ITL/scene/$self color 0 0 0);
+/ITL/scene/view* watch mouseLeave ( /ITL/scene/$self color $gray $gray $gray);
+
+/ITL/scene/turenas set txt " ";
+
+!-------------------------------------------------------
+! Load default layout
+!-------------------------------------------------------
+/ITL/scene load "Turenas/sonagramView.inscore";
+/ITL/scene load "index.inscore";
+
+!-------------------------------------------------------
+! Synchronize the cursor.
+/ITL/scene/sync cursor turenas v;
+
+!-------------------------------------------------------
+# Add and set the position of the title text
+/ITL/scene/title set txt "Turenas - John Chowning";
+/ITL/scene/title x -0.36;
+/ITL/scene/title y -0.86;
+/ITL/scene/title scale 3.0;
+
+# Add 'credits' text
+/ITL/scene/copyright set txt "Analyse & transcription graphique: Laurent Pottier";
+/ITL/scene/copyright y 0.95;
+
+!-------------------------------------------------------
+! control user interactions with the score
+!-------------------------------------------------------
+/ITL/scene/turenas watch mouseDown (
+	/ITL/scene/cursor date "$date[1/4]" ,
+	localhost:7100/date  "$date[1/4]" );
+
+/ITL/scene/turenas watch mouseMove (
+	/ITL/scene/cursor date "$date[1/4]" ,
+	localhost:7100/date  "$date[1/4]" );
+
+/ITL/scene/copyright watch del ( /ITL/scene width 1, /ITL/scene height 1 );

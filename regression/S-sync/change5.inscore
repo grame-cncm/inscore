@@ -1,5 +1,0 @@
-# changing the mapping of the slave
-/ITL/scene/subtitle set txt "different mapping for the slave";
-
-/ITL/scene/slave map "( [-1., 1.[ [-1., 0.[ )  ( [0/4, 2/4[ )
-( [-1., 1.[ [0., 1.[ ) ( [2/4, 4/4[ )";

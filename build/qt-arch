@@ -1,3 +1,0 @@
-# gives the architecture of the Qt installed SDK
-# values should be in 'Win32' or 'x64'
-echo x64

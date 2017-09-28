@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-
-curl -X POST -s --data-urlencode input@$1.js http://javascript-minifier.com/raw > tmp$$.min.js && mv -f tmp$$.min.js $1.min.js
-exit $?

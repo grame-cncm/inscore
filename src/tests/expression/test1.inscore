@@ -1,1 +1,0 @@
-expr(seq (tail score [a/1]) (head score [a/1]))

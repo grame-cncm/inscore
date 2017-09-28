@@ -1,4 +1,0 @@
-/ITL/scene/gmn1 set gmn "[ a b g e ]";
-
-/ITL/scene/txt set txt "gmn test";
-/ITL/scene/txt y -0.25;

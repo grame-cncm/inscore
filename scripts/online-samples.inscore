@@ -1,0 +1,73 @@
+
+root = "http://inscore.sourceforge.net/scripts";
+/ITL/scene 	rootPath $root;
+
+/ITL/scene/* del;
+
+<?javascript
+	var index=1;
+	var ypos = 0;
+	function name (path) {
+		var base = new String(path).substring(path.lastIndexOf('/') + 1); 
+		if(base.lastIndexOf(".") != -1)       
+			base = base.substring(0, base.lastIndexOf("."));
+		return base;
+	}
+	function source (link) {
+		var win = "/ITL/" + name(link);
+		var src = win + "/source";
+		return  win + " new, " +
+				win + " rootPath '$(/ITL/scene get rootPath)'," + 
+				win + " height 1.3," +
+				src + " set txtf '" + link + "', " +
+				src + " color 200 200 200, " +
+				src + " xorigin -1.05, " +
+				src + " yorigin -1.01, " +
+				src + " x -1, " +
+				src + " y -1.3, " +
+				src + " watch success (" + src + " color 0 0 0)"
+				;
+	}
+
+	function sample (label, link) {
+		var saddr 	= "/ITL/scene/sample" + index;
+		var srcaddr = "/ITL/scene/srcsample" + index;
+		var end = ";\n";
+		var msg = saddr + " set txt '" + label +"' " + end +
+				saddr + " xorigin 1" + end +
+				saddr + " y " + ypos + end +
+				saddr + " watch mouseEnter (" + saddr + " red 240 )" + end +
+				saddr + " watch mouseLeave (" + saddr + " red 0 )" + end +
+				saddr + " watch mouseDown ( /ITL/scene load '" + link + "')" + end +
+				srcaddr + " set txt  source" + end +
+				srcaddr + " xorigin -2" + end +
+				srcaddr + " y " + ypos + end +
+				srcaddr + " watch mouseEnter (" + srcaddr + " blue 240 )" + end +
+				srcaddr + " watch mouseLeave (" + srcaddr + " blue 0 )" + end +
+				srcaddr + " watch mouseDown (" + source(link) + ")" + end;
+		index++;
+		ypos += 0.1;
+		return msg;
+	}
+?>
+
+/ITL/scene/title set txt "Online Scripts";
+/ITL/scene/title y -0.8;
+/ITL/scene/title scale 3;
+
+/ITL/scene/comment1 set txt "The samples below are available as remote scripts.";
+/ITL/scene/comment2 set txt "They are located at " $root ;
+/ITL/scene/comment1 y -0.5;
+/ITL/scene/comment2 y -0.44;
+/ITL/scene/comment* scale 1.5;
+
+<?javascript sample("Score maps", "Scoremap/scoremaps.inscore") ?>
+<?javascript sample("Interaction variables", "variables.inscore") ?>
+<?javascript sample("Synchronization", "sync.inscore") ?>
+<?javascript sample("Image capture", "mem-image.inscore") ?>
+<?javascript sample("Turenas modeling", "Turenas/turenas.inscore") ?>
+
+/ITL/scene/sample* scale 1.5;
+/ITL/scene/srcsample* scale 1.2;
+
+/ITL/scene/title watch del ( /ITL/scene rootPath  );

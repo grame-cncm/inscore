@@ -1,6 +1,0 @@
-# changing the date
-/ITL/scene/slave date 2 4;
-/ITL/scene/subtitle set txt "/ITL/scene/slave date 2/4;";
-/ITL/scene/subtitle scale 2.;
-/ITL/scene/subtitle color 100 100 100 200;
-/ITL/scene/subtitle y 0.94;

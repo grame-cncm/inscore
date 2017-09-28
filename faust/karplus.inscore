@@ -1,0 +1,243 @@
+(*
+	This script creates a karplus strong faust dsp
+	and a user interface to play and to control
+	the faust dsp.
+*)
+
+/ITL/scene/* del;
+
+###########################################
+# the score title
+/ITL/scene/title set txt "Karplus"; 
+/ITL/scene/title fontSize 32; 
+/ITL/scene/title fontFamily Helvetica; 
+/ITL/scene/title color 0 30 255; 
+/ITL/scene/title y -0.8; 
+
+###########################################
+# dsp code
+dsp = '
+declare name 		"karplus";
+declare version 	"1.0";
+declare author 		"Grame";
+declare license 	"BSD";
+declare copyright 	"(c)GRAME 2006";
+
+//-----------------------------------------------
+// 				karplus-strong
+//-----------------------------------------------
+
+import("stdfaust.lib");
+
+// Excitator
+//-----------
+
+upfront(x) 	= (x-mem(x)) > 0.0;
+decay(n,x)	= x - (x>0.0)/n;
+release(n)	= + ~ decay(n);
+trigger(n) 	= upfront : release(n) : >(0.0);
+
+size 		= hslider("excitation [unit:f]", 128, 2, 512, 1);
+
+// resonator
+//------------
+
+dur 		= hslider("duration [unit:f] [midi: ctrl 7]", 128, 2, 512, 1);
+att 		= hslider("attenuation", 0.1, 0, 1, 0.01);
+average(x)	= (x+mem(x))/2;
+
+resonator(d, a) = (+ : de.delay(4096, d-1.5)) ~ (average : *(1.0-a)) ;
+
+process = no.noise * hslider("level", 0.5, 0, 1, 0.01)
+		: vgroup("excitator", *(button("play"): trigger(size)))
+		: vgroup("resonator", resonator(dur, att));';
+
+###########################################
+# faust object
+/ITL/scene/faust set faust $dsp; 
+
+###########################################
+# a shared variable (used for grey level)
+grey = 220;
+
+###########################################
+# the central pad controler
+/ITL/scene/ctrl1 set rect 1 1;
+/ITL/scene/ctrl1 color $grey $grey $grey;
+/ITL/scene/ctrl1 watch mouseEnter (/ITL/scene/ctrl1 penWidth 1);
+/ITL/scene/ctrl1 watch mouseLeave (/ITL/scene/ctrl1 penWidth 0);
+/ITL/scene/ctrl1 watch mouseUp 		(/ITL/scene/faust 'excitator/play' 0);
+/ITL/scene/ctrl1/pos set ellipse 0.06 0.06;
+
+/ITL/scene/cylabel set txt " ";
+/ITL/scene/cylabel x 0.55;
+/ITL/scene/cylabel angle 90;
+/ITL/scene/cxlabel set txt "Duration";
+/ITL/scene/cxlabel y -0.55;
+
+###########################################
+# a play button 
+/ITL/scene/ctrl2 set txt Play;
+/ITL/scene/ctrl2 scale 2;
+/ITL/scene/ctrl2 y 0.6;
+/ITL/scene/ctrl2 watch mouseEnter (/ITL/scene/ctrl2 red 250);
+/ITL/scene/ctrl2 watch mouseLeave (/ITL/scene/ctrl2 red 0);
+
+/ITL/scene/ctrl2 watch mouseDown (/ITL/scene/faust 'excitator/play' 1);
+/ITL/scene/ctrl2 watch mouseUp (/ITL/scene/faust 'excitator/play' 0);
+
+
+###########################################
+# a level slider 
+/ITL/scene/level set rect 0.02 1;
+/ITL/scene/level color $grey $grey $grey;
+/ITL/scene/level/pos set ellipse 4 4;
+/ITL/scene/ltxt set txt Level;
+/ITL/scene/ltxt y 0.55;
+/ITL/scene/lval set txt 0.5;
+/ITL/scene/lval y 0.6;
+/ITL/scene/l* x -0.7;
+
+/ITL/scene/level watch CHANGE (
+	/ITL/scene/faust level '$1',
+	/ITL/scene/level/pos y '$2',
+	/ITL/scene/lval set txt '$1'
+);
+
+/ITL/scene/level/pos watch mouseMove ( /ITL/scene/level event CHANGE '$sy[1,0]' '$sy');
+/ITL/scene/level	 watch mouseDown ( /ITL/scene/level event CHANGE '$y[1,0]' '$y');
+
+###########################################
+# play mode control
+# switch the pad vertical dimension to attenuation or excitation
+/ITL/scene/mode set txt "Mode:";
+/ITL/scene/modeAD set txt "A/D";
+/ITL/scene/modeED set txt "E/D";
+/ITL/scene/mode* y 0.75;
+/ITL/scene/mode x -0.5;
+/ITL/scene/modeAD x -0.38;
+/ITL/scene/modeED x -0.28;
+/ITL/scene/modeAD watch mouseDown (/ITL/scene event ADMODE);	# triggers the ADMODE event
+/ITL/scene/modeED watch mouseDown (/ITL/scene event EDMODE);	# triggers the EDMODE event
+
+###########################################
+# autoplay mode: when on, send 'excitator/play' 1  
+# to faust every second
+# note that the play button and playing on click on the pad remains active
+/ITL/scene/auto set txt "Auto play";
+/ITL/scene/auto y 0.75;
+/ITL/scene/auto x 0.5;
+/ITL/scene/auto watch mouseEnter (/ITL/scene/$self scale 1.1);
+/ITL/scene/auto watch mouseLeave (/ITL/scene/$self scale 1);
+/ITL/scene/auto watch timeEnter 1 32 2 32 ( /ITL/scene/faust 'excitator/play' 0 );
+/ITL/scene/auto watch timeEnter 1 4 2 4 (
+	/ITL/scene/faust 'excitator/play' 1,
+	/ITL/scene/auto date 0
+);
+/ITL/scene/auto watch mouseDown (
+	/ITL/scene/auto push,
+	/ITL/scene/faust 'excitator/play' 1,
+	/ITL/scene/auto date 0,
+	/ITL/scene/auto tempo 60,
+	/ITL/scene/auto red 240,
+	/ITL/scene/auto watch mouseDown (
+		/ITL/scene/auto tempo 0,
+		/ITL/scene/auto red 0,
+		/ITL/scene/auto pop
+	)
+);
+
+###########################################
+# user defined events 
+###########################################
+# update of the current position on the pad 
+/ITL/scene watch CTRLPOS (
+	/ITL/scene/ctrl1/pos x '$1',
+	/ITL/scene/ctrl1/pos y '$2'
+);
+
+###########################################
+# sets faust attenuation and duration  
+/ITL/scene watch FAUSTAD (
+	/ITL/scene/faust 'resonator/attenuation' '$1',
+	/ITL/scene/faust 'resonator/duration' '$2'
+);
+###########################################
+# sets faust excitation and duration  
+/ITL/scene watch FAUSTED (
+	/ITL/scene/faust 'excitator/excitation' '$1',
+	/ITL/scene/faust 'resonator/duration' '$2'
+);
+
+###########################################
+# switch to attenutation/duration  mode
+/ITL/scene watch ADMODE (
+	/ITL/scene/modeAD green 200,
+	/ITL/scene/modeED green 0,
+	/ITL/scene/modeAD scale 1.1,
+	/ITL/scene/modeED scale 1,
+	/ITL/scene/cylabel set txt "Attenuation",
+	/ITL/scene/modeED watch mouseEnter (/ITL/scene/$self scale 1.1),
+	/ITL/scene/modeED watch mouseLeave (/ITL/scene/$self scale 1),
+	/ITL/scene/modeED watch mouseDown (/ITL/scene event EDMODE),
+	/ITL/scene/modeAD watch,
+	/ITL/scene/ctrl1 watch CHANGE 	(
+		/ITL/scene/faust 'resonator/attenuation' '$1',
+		/ITL/scene/faust 'resonator/duration' '$2',
+		/ITL/scene event CTRLPOS '$3' '$4'
+	),
+	/ITL/scene/ctrl1 watch mouseDown 	(
+		/ITL/scene/ctrl1 event CHANGE '$y[0.,0.2]' '$x[2,512]' '$x' '$y',
+		/ITL/scene/faust 'excitator/play' 1
+	),
+	/ITL/scene/ctrl1 watch mouseMove ( /ITL/scene/ctrl1 event CHANGE '$y[0.,0.2]' '$x[2,512]' '$x' '$y')
+);
+
+###########################################
+# switch to excitation/duration  mode
+/ITL/scene watch EDMODE (
+	/ITL/scene/modeED green 200,
+	/ITL/scene/modeAD green 0,
+	/ITL/scene/modeED scale 1.1,
+	/ITL/scene/modeAD scale 1,
+	/ITL/scene/modeAD watch mouseEnter (/ITL/scene/$self scale 1.1),
+	/ITL/scene/modeAD watch mouseLeave (/ITL/scene/$self scale 1),
+	/ITL/scene/modeAD watch mouseDown (/ITL/scene event ADMODE),
+	/ITL/scene/modeED watch,
+	/ITL/scene/cylabel set txt "Excitation",
+	/ITL/scene/ctrl1 watch CHANGE 	(
+		/ITL/scene/faust 'excitator/excitation' '$1',
+		/ITL/scene/faust 'resonator/duration' '$2',
+		/ITL/scene event CTRLPOS '$3' '$4'
+	),
+	/ITL/scene/ctrl1 watch mouseDown 	(
+		/ITL/scene/ctrl1 event CHANGE '$y[2,512]' '$x[2,512]' '$x' '$y',
+		/ITL/scene/faust 'excitator/play' 1
+	),
+	/ITL/scene/ctrl1 watch mouseMove ( /ITL/scene/ctrl1 event CHANGE '$y[2,512]' '$x[2,512]' '$x' '$y')
+);
+
+###########################################
+# sets the initial mode to attenutation/duration
+/ITL/scene event ADMODE;
+
+
+__END__  
+this is the end of the script, the messages below are ignored
+I'm using them for test (via drag and drop)		
+
+
+/ITL/scene/cylabel set txt "Excitation";
+/ITL/scene/ctrl1 watch mouseMove 	(
+	/ITL/scene/faust 'excitator/excitation' '$y[2,512]',
+	/ITL/scene/faust 'resonator/duration' '$x[2,512]'
+);
+/ITL/scene/faust 'resonator/attenuation' 0;
+
+
+/ITL/scene/faust 'excitator/play' 1; 
+/ITL/scene/faust get 'excitator/play'; 
+/ITL/scene/faust get '*'; 
+
+/ITL/log show 1; 
+/ITL/log level 2; 

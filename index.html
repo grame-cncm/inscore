@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>INScore</title>
+
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/freelancer.css" rel="stylesheet">
+  	<link href="css/inscore.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" class="index">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#page-top">INScore</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#about">About</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#overview">Overview</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#publication">Publications</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#download">Download</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="img-responsive" src="img/INScore.png" alt="INScore">
+                    <div class="intro-text">
+                        <span class="name">INScore</span>
+                        <hr class="star-light">
+                        <span class="skills">An environmnent for the design of interactive, augmented music scores </span>
+                        <br />
+                        <br />
+						<a class="news page-scroll" href="#download">INScore version 1.21 is available</a>
+                        <br />
+                </div>
+                    </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+           <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>About</h2>
+                    <hr class="inscore">
+                    <h3>INScore</h3>
+                    <h4>An environment for the design of interactive augmented music scores.</h4>
+               </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                    <p>INscore extends the music representation to arbitrary graphic objects:
+                    <ul>
+                    <li>Symbolic music notation [ GMN, MusicXML]</li>
+                    <li>Textual elements</li>
+                    <li>Bitmaps [jpg, gif, tiff, png,...]</li>
+                    <li>Vectorial graphics (rectangles, ellipses, SVG,...)</li>
+                    <li>Video files</li>
+                    <li>Sound and gesture graphic representations</li>
+                    </ul>
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <p>Main issues addressed:
+                    <ul>
+                    <li>Open graphic and time space</li>
+                    <li>Time synchronization in the graphic space</li>
+                    <li>Sound and gesture graphic representations</li>
+                    <li>Interaction music processes representation</li>
+                    <li>Dynamic and interactive scores</li>
+                    <li>Network and web extensions</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                   <p>INScore is:
+                    <ul>
+                    <li>A standalone score viewer</li>
+                    <li>An open source C/C++ library hosted on <a href="https://sourceforge.net/projects/inscore/">sourceforge</a></li>
+                    <li>Multi-platform [MacOSX, Linux, Windows, Android, iOS]</li>
+                    <li>An Open Sound Control API</li>
+                    <li>An OSC based scripting language</li>
+                    </ul>
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <p>Embedded external components:
+                    <ul>
+                    <li><a href="http://guidolib.sf.net">GUIDO Engine</a> - [<a href="http://www.grame.fr">GRAME</a>]</li>
+                    <li><a href="http://faust.grame.fr">FAUST Compiler</a> - [<a href="http://www.grame.fr">GRAME</a>]</li> 
+                    <li><a href="http://imtr.ircam.fr/imtr/Gesture_Follower">Gesture Follower</a> - [<a href="http://www.ircam.fr">IRCAM</a>]</li>
+                    <li>The Qt Javascript engine - [<a href="http://www.qt.io/developers/">Qt</a>]</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="success" id="overview">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Overview</h2>
+                    <hr class="inscore">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2 text-center" >
+				<iframe width="322" height="175" src="https://www.youtube.com/embed/8b87N870Evw" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="col-lg-4 text-center">
+				<iframe width="322" height="175" src="http://www.youtube.com/embed/p96FVMENNtI" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+	            <h3><a href="http://www.youtube.com/user/dfober/videos">More videos</a></h3> 
+	            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+	            <h5> <a href="http://www.grame.fr/MusicNotation/Introduction-to-INScore/">Introduction to INScore programming</a></h5> 
+	            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+	            <h5> <a href="doc/html/index.html">See also INScore documentation</a></h5> 
+	            </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Publications Section -->
+    <section id="publication">
+        <div class="container">
+           <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Publications</h2>
+                    <hr class="inscore">
+               </div>
+            </div>
+<div class="row publication">
+	<ul>
+
+	<li><a href="doc/OSCMsg.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>INScore OSC Messages Reference</span>
+	<div class='author'>D. Fober</div>
+	<div class='conf'>Grame 2015</div>
+	</li>
+
+	<li><a href="doc/WebAPI"><IMG SRC=img/htmlicon.png height="22"></a> 
+	<span class='paper'>INScore Web API Reference</span>
+	<div class='author'>G. Gouilloux, D. Fober</div>
+	<div class='conf'>Grame 2015</div>
+	</li>
+
+	<li><a href="doc/INScore-refcard-1.12.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>INScore Reference Card</span>
+	<div class='author'>D. Fober</div>
+	<div class='conf'>Grame 2015</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/inscore-tenor-2016.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>INScore expressions to compose symbolic scores.</span>
+	<div class='author'>G. Lepetit-Aimon, D. Fober, Y. Orlarey, and S. Letz</div>
+	<div class='conf'>Proceedings of the International Conference on Technologies for Music Notation and Representation – TENOR - 2016</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/inscore-web-SMC15.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Distributing music scores to mobile platforms and to the internet using INScore.</span>
+	<div class='author'>D. Fober, G. Gouilloux, Y. Orlarey, and S. Letz</div>
+	<div class='conf'>Proceedings of the Sound and Music Computing conference - SMC'15 - 2015</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/inscore-processes-final.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Representation of musical computer processes.</span>
+	<div class='author'>D. Fober, Y. Orlarey, and S. Letz</div>
+	<div class='conf'>Proceedings of the ICMC/SMC 2014</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/fober-keamsac-2014-final.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Augmented Interactive Scores for Music Creation.</span>
+	<div class='author'>D. Fober, Y. Orlarey, and S. Letz</div>
+	<div class='conf'>Proceedings of Korean Electro-Acoustic Music Society's 2014 Annual Conference [KEAMSAC2014]</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/fober-smc2013-final.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Programming interactive music scores with INScore.</span>
+	<div class='author'>D. Fober, S. Letz, Y. Orlarey, and F. Bevilacqua</div>
+	<div class='conf'>Proceedings of the Sound and Music Computing conference - SMC'13 - 2013</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/TR-segmentation.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Segments and mapping for scores and signal representations.</span>
+	<div class='author'>D. Fober, F. Bevilacqua, and R. Assous</div>
+	<div class='conf'>Technical report, GRAME, 2012.</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/INScore-ID12-2.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>INScore - An Environment for the Design of Live Music Scores</span>
+	<div class='author'>D. Fober,Y. Orlarey, S. Letz</div>
+	<div class='conf'>Proceedings of the Linux Audio Conference - LAC 2012</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/Interlude-SMC2010.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Interlude - A Framework for Augmented Music Scores</span>
+	<div class='author'>D. Fober, C. Daudin, Y. Orlarey, S. Letz</div>
+	<div class='conf'>Proceedings of the Sound and Music Computing conference - SMC'10 2010</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/interlude-icmc2010.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Time Synchronization in Graphic Domain - A new paradigm for Augmented Music Scores</span>
+	<div class='author'>D. Fober, C. Daudin, Y. Orlarey, S. Letz</div>
+	<div class='conf'>Proceedings of the International Computer Music Conference ICMA 2010</div>
+	</li>
+
+	<li><a href="http://www.grame.fr/ressources/publications/Interlude-JIM10-final.pdf"><IMG SRC=img/pdficon.gif height="22"></a> 
+	<span class='paper'>Partitions musicales augmentées</span>
+	<div class='author'>D. Fober, C. Daudin, Y. Orlarey, S. Letz</div>
+	<div class='conf'>Actes des Journées d'Informatique Musicale JIM2010</div>
+	</li>
+	</ul>
+</div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download" id="download">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Download</h2>
+                    <hr class="inscore">
+                </div>
+            </div>
+            <div class="row">
+            <ul>
+                <li>INScore <a href="https://sourceforge.net/projects/inscore/files/latest/download?source=files">Package</a> (includes the viewer, full documentation and sample scripts)</li>
+                <li>INScore <a href="http://www.grame.fr/MusicNotation/Introduction-to-INScore.zip">introduction pages</a></li>
+                <li>INScore <a href="https://sourceforge.net/projects/inscore/files/doc/">documentation</a></li>
+                <li>INScore <a href="http://sourceforge.net/projects/inscore/files/resources/scripts.tgz/download">sample scripts</a></li>
+                <li>INScore <a href="http://sourceforge.net/projects/inscore/files/src/INScore-1.12-src.tgz/download">source code</a></li>
+                <li>Go to the <a href="https://sourceforge.net/projects/inscore" target=_blank>Sourceforge project</a></li>
+            </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-above">
+            <div class="container">
+                <div class="row">
+
+					<a href="http://www.grame.fr" target=_blank><img src="img/grame.png" width=200></a>
+					<br /><br /><br />
+                    <div class="footer-col">
+                        <p class="note">INScore originates from a work conducted by the <a href="http://www.grame.fr" target=_blank>Grame</a> Computer Music Research Lab. in the context of the INTERLUDE and INEDIT projects, with the support of the <a href="http://www.agence-nationale-recherche.fr/">ANR</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; Grame 2015-2017
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll visible-xs visible-sm">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/freelancer.js"></script>
+
+</body>
+
+</html>

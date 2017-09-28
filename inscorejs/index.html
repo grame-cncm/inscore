@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	
+    <title>Welcome to INScore</title>
+
+    <link href="css/inscore.css" rel="stylesheet">
+	<script src="js/libGUIDOEngine.js"></script>
+	<script src="js/inscore.min.js"></script>
+</head>
+
+<body style="margin: 40px">
+
+	<h1  style="font-size: 24pt"> Welcome to INScoreJS</h1>
+	
+	<div>
+	Nam vitae orci at elit accumsan dignissim. Praesent id mauris lacinia, 
+	bibendum eros non, tristique nunc. Vivamus feugiat odio id eleifend vehicula. Nam vitae diam at 
+	lacus convallis aliquet ac vitae mauris. Nulla fermentum turpis ac varius lacinia. 
+	Nam turpis turpis, mattis eu pretium nec, aliquet a tellus. Nulla facilisi. Donec ut felis augue. 
+	Maecenas blandit augue commodo, blandit odio ac, rutrum libero. Pellentesque a dui in mi tristique 
+	molestie. Vivamus ut diam lectus. Sed interdum eros sit amet consectetur maximus. 
+	</div>
+
+	<div><script> INScore.start("scene", "relative"); </script></div>
+	<inscore-code>
+		color  = 20 0 150;
+		shadow = shadow 5 5 0 0 0 75 10;
+
+		/ITL/scene/* del;
+		w=0.9;
+		/ITL/scene width $w;
+		/ITL/scene height $w;
+
+		/ITL/scene/welcome set txt "Welcome to INScoreJS";
+		/ITL/scene/welcome color $color;
+		/ITL/scene/welcome fontSize 36;
+		/ITL/scene/welcome fontWeight bold;
+		/ITL/scene/welcome effect $shadow;
+
+		/ITL/scene/welcome y -0.5;
+		/ITL/scene/what1 set txt "An environment for the design of";
+		/ITL/scene/what2 set txt "interactive, augmented music scores.";
+		/ITL/scene/what1 y -0.34;
+		/ITL/scene/what2 y -0.28;
+		/ITL/scene/what* fontSize 18;
+
+		/ITL/scene/score set gmn "[ a f# g ]";
+		/ITL/scene/score effect $shadow;
+		/ITL/scene/score y 0.03;
+
+		dy = 0.05;
+		/ITL/scene/c1 set txt "INScore is an open source project";
+		/ITL/scene/c2 set txt "developed by GRAME.";
+		/ITL/scene/c3 set txt "More information on";
+		/ITL/scene/c4 set html "&lt;a href='http://inscore.sf.net'&gt;inscore.sf.net&lt;/a&lt;";
+		/ITL/scene/c* y 0.28;
+		/ITL/scene/c[2-4] dy $dy;
+		/ITL/scene/c[3-4] dy $dy;
+		/ITL/scene/c4 dy $dy;
+		/ITL/scene/c4 dy 0.01;
+		/ITL/scene/c4 fontWeight bold;
+		/ITL/scene/c4 fontSize 18;
+		/ITL/scene/c4 color $color;
+		/ITL/scene/c4 effect $shadow;
+
+		/ITL/scene/logo set img 'grame.png';
+		/ITL/scene/logo y 0.8;
+		/ITL/scene/logo effect $shadow;
+
+		/ITL/scene/* dy -0.12;
+	</inscore-code>
+    <script> INScore.register("inscore-code"); </script>
+</body>
+</html>
