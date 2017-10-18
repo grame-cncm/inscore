@@ -11,6 +11,7 @@ class IFaust extends IObject {
 	private fDsp 		: TFaustDSP;
 	private fUI			: Array<TFaustUIItem>;
 	private fFaustLibraries : string = "http://faust.grame.fr/modules/libraries/";
+//	private fFaustLibraries : string = "https://raw.githubusercontent.com/grame-cncm/faust/faust2/libraries/";
 	
 	fBufferSize	: number;
 	        
