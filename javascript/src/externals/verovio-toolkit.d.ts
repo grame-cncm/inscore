@@ -62,7 +62,7 @@ interface VerovioToolkit {
 	// The page numbering is 1-based. Options for rendering can be passed as JSON objects. 
 	// The options affecting the layout (e.g., pageHeight, or ignoreLayout) cannot be modified when rendering a page 
 	// and reloading the data if necessary for this. Also, up to version 0.9.12, the JSON object had to be stringified.
-	renderPage(pageNumber, options: VerovioOption): string;
+	renderPage(pageNumber: number, options: VerovioOption): string;
 
 	// Renders a page to a base64 encoded MIDI file. There is currently not option to be passed to this method.
 	renderToMidi(options: VerovioOption): string;
