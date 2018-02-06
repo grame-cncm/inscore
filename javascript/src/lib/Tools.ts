@@ -1,4 +1,5 @@
 ///<reference path="TTypes.ts"/>
+///<reference path="../controller/IMessage.ts"/>
 
 // Need those interfaces for readFile method
 // Document.document and Window.getElementsByTagName recognized by browsers, but not in typescript
@@ -65,7 +66,7 @@ class Tools {
 			'<rect rx="4" height="14" width="34" y="26" x="17" stroke-width="0" fill="#fff"/></g></svg>';
 
 //		return '<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg"><g>' +
-			'<rect rx="5" height="124" width="124" y="2" x="2" stroke-width="4" stroke="#000" fill="#e00"/>' +
-			'<rect rx="5" height="24" width="64" y="52" x="32" stroke-width="0" fill="#fff"/></g></svg>';
+//			'<rect rx="5" height="124" width="124" y="2" x="2" stroke-width="4" stroke="#000" fill="#e00"/>' +
+//			'<rect rx="5" height="24" width="64" y="52" x="32" stroke-width="0" fill="#fff"/></g></svg>';
 	}
 }
