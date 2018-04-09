@@ -31,7 +31,7 @@ class IFaust extends IObject {
         }
 		if (typeof FAUST_LIBRARIES_PATH === 'function')
 			this.fFaustLibraries = FAUST_LIBRARIES_PATH();
-		else this.fFaustLibraries = "http://faust.grame.fr/modules/libraries/";
+		else this.fFaustLibraries = "http://faust.grame.fr/libraries/";
 		console.log ("new faust " + name + " using path: " + this.fFaustLibraries);
     }
 
