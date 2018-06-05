@@ -819,6 +819,11 @@ SIMessageList IObject::getParams(const std::vector<std::string>& attributes) con
 	SIMessageList outMsgs = IMessageList::create();
 	
 	for (unsigned int i=0; i<attributes.size(); i++) {
+		if (attributes[i] == "set") {
+			outMsgs->list().push_back (getSetMsg()->list());
+			continue;
+		}
+
 		map<std::string, SGetParamMsgHandler>::const_iterator e = fGetMsgHandlerMap.find(attributes[i]);
 		if (e != fGetMsgHandlerMap.end()) {							// attribute found in msg map
 			SIMessage msg = getParam(e->first, e->second);
@@ -1640,12 +1645,20 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
 {
+	size_t n = msg->size();
+	string str;
+	if (n == 1) {
+		if (!msg->param(0, str))
+			return MsgHandler::kBadParameters;
+		if (str == "reset") {			// 'reset' is used to clear the edit string in cache
+			fEditString = "";
+			return MsgHandler::kProcessed;
+		}
+	}
 	if (getEditString().empty()) {		// check first if there is a previous edition, in case yes, preserves the content
-		size_t n = msg->size();
 		if (n) {							// check if there is a set of attributes to be edited from the msg
 			vector<string> attributes;
 			for (size_t i=0; i<n; i++) {	// in case yes, retrieve these attributes
-				string str;
 				if (!msg->param(i, str))
 					return MsgHandler::kBadParameters;
 				attributes.push_back(str);

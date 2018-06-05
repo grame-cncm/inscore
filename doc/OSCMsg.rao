@@ -474,10 +474,10 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {25}{ effectMsg : 'edit' ( [1] | [2] ( attributes +) ) }
+\rail@i {25}{ effectMsg : 'edit' ( [1] | [2] ( attributes +) | [3] reset ) }
 \rail@o {25}{
 \rail@index{effectMsg}
-\rail@begin{3}{effectMsg}
+\rail@begin{4}{effectMsg}
 \rail@term{edit}[]
 \rail@bar
 \rail@annote[1]
@@ -487,6 +487,9 @@
 \rail@nont{attributes}[]
 \rail@nextplus{2}
 \rail@endplus
+\rail@nextbar{3}
+\rail@annote[3]
+\rail@nont{reset}[]
 \rail@endbar
 \rail@end
 }

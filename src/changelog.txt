@@ -13,6 +13,9 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.23
+- edit message: 
+  supports 'set' as argument
+  new 'reset' argument to clear the edit string in the object cache
 - new dshear method
 - fix synchronization issue with arcs (not visible when synchronized)
 - fix crash bug with 'set' messages addressed to /ITL/*/anobject

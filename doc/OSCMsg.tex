@@ -706,13 +706,15 @@ The \OSC{edit} message opens a small editor that allows to edit the target objec
 
 \begin{rail}
 effectMsg : 'edit' ( [1] | 
-					 [2] ( attributes +) )
+					 [2] ( attributes +) |
+					 [3] reset )
 \end{rail}
 \index{Common messages!edit}
 
 \begin{itemize}
-\item \textbf{1}: without argument, the editor is initalized with all the target object attributes only.
-\item \textbf{2}: using a list of attributes, the editor is initalized with the target object corresponding attributes.
+\item \textbf{1}: without argument, the editor is initalized with all the target object attributes.
+\item \textbf{2}: using a list of attributes, the editor is initalized with the target object corresponding attributes. Note that \OSC{set} as attribute can be used to edit the object \OSC{set} message.
+\item \textbf{3}: \OSC{reset} is used to clear the edit string stored in the object cache. It is equivalent to the 'clear' button in the edit dialog. Note that as long as the edit string stored in the cache is not empty, \OSC{edit} messages are ignored unless followed by a \OSC{reset} (see below).
 \end{itemize}
 
 Each object maintains the current content of the editor, that is initialized at first \OSC{edit} message or when this content is cleared. Successive call to \OSC{edit} will preserve the editor content unless it is cleared.
