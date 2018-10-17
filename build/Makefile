@@ -111,7 +111,7 @@ INScoreIos :
 	cp -rf ../rsrc/ tmp-rsc
 	make -C $(MOBILESCRIPTS)
 	xcodebuild -jobs 8 -project ios/INScore.xcodeproj -target INScore -configuration Release
-	xcodebuild -jobs 8 -project ios/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
+	xcodebuild -jobs 8 -project ios/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release -allowProvisioningUpdates
 
 ios/INScore.xcodeproj : library.pro
 	make xcodeprojios
@@ -122,7 +122,8 @@ ios/INScoreViewer.xcodeproj : viewer.pro
 #===============================================================
 # building INScore for Android
 #===============================================================
-SPECANDROID = -spec android-g++
+#SPECANDROID = -spec android-g++
+SPECANDROID = -spec android-clang
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 
 android : android/Makefile INScoreAndroid

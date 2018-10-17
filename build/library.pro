@@ -145,12 +145,12 @@ macx {
 # ios x support
 ############################## 
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 8.0
+    QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
-    DEFINES += IOS __MOBILE__
-    CONFIG+= arm64 armv7 armv7s
+    DEFINES += INSCORE_IOS __MOBILE__
+    CONFIG += arm64 x86_64   # armv7 armv7s
     CONFIG += staticlib
     LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
     LIBS += $$ROOT/lib/GuidoAR/ios/libguidoar.a
