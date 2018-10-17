@@ -21,11 +21,6 @@
 
 */
 
-#include "INScore.h"
-#include "IMessage.h"
-#include "IMessageStack.h"
-
-
 #include <QApplication>
 #include <QDir>
 #include <QThread>
@@ -35,9 +30,6 @@
 #include <iostream>
 #include <map>
 
-#include "GUIDOEngine.h"
-
-#include "IGlue.h"
 #ifdef NOVIEW
 #include "VoidUpdater.h"
 #elif defined(__MOBILE__)
@@ -49,6 +41,15 @@
 #include "VQtLocalMappingUpdater.h"
 #include "VQtUpdater.h"
 #endif
+
+#include "INScore.h"
+#include "IMessage.h"
+#include "IMessageStack.h"
+
+
+#include "GUIDOEngine.h"
+
+#include "IGlue.h"
 #include "VSceneView.h"
 #include "QGuidoImporter.h"
 
