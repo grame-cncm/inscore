@@ -48,7 +48,7 @@ const int		kOSID	= kMacOS;
 #elif defined WINDOWS
 const char *	kOSName	= kWindowsName;
 const int		kOSID	= kWindows;
-#elif defined IOS
+#elif defined INSCORE_IOS
 const char *	kOSName	= kiOSName;
 const int		kOSID	= kiOS;
 #elif defined ANDROID

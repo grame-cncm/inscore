@@ -22,6 +22,8 @@
 #include "mapparser.h"
 #include "mapping.tab.hpp"
 
+#define register
+
 #define YY_EXTRA_TYPE libmapping::mapparser*
 #define YY_USER_ACTION yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
 
