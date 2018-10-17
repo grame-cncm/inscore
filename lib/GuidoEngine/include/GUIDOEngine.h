@@ -92,8 +92,7 @@ typedef struct
 	Absence of meter is denoted with count[0] == 0.
 	
 	\note for convenience, the \c count field has a fixed and limited size
-	that should however cope with any realistic notation case. In case it
-	doesn't,
+	that should however cope with any realistic notation case.
 */
 #define kMaxGuidoMeterCounts	15
 typedef struct
@@ -103,6 +102,7 @@ typedef struct
 	//! the meter unit
     int unit;
 } GuidoMeter;
+typedef GuidoMeter* GuidoMeters;
 
 /** \brief Contains all graphic-related information required by GuidoOnDraw()
 
@@ -206,6 +206,7 @@ enum GuidoMapping {
 
 
 enum { kAutoDistrib = 1, kAlwaysDistrib = 2, kNeverDistrib = 3 };
+enum GRElement { kGRSlur=1, kGRDynamics, kGRArticulations, kGRText, kGRLyrics };
 
 /**
     Settings for the graphic score layout.
@@ -399,6 +400,15 @@ representations.
     GUIDOAPI(GuidoErrCode)	GuidoUpdateGR( GRHandler gr, const GuidoLayoutSettings* settings);
 
 	/*!
+		Show or hide notation elements.
+		\param gr the handler to the graphic representation.
+		\param elt the target element
+		\param status a boolean value to show (true) or hide (false) the target element
+		\return a Guido error code.
+    */
+    GUIDOAPI(GuidoErrCode)	GuidoShowElement( GRHandler gr, GRElement elt, bool status);
+
+	/*!
 		Gives the notes density.
 		
 		The notes density is computed on the x axis only. It represents the ratio between the space occupied 
@@ -537,8 +547,30 @@ as by date. Page numbers start at 1.
 		\return a Guido error code.
 
 		\see the GuidoMeter structure for the meter coding conventions
+		\warning since version 1.6.4 and the support of complex meters with different units, GuidoGetMeterAt may returns incorrect results. It is maintained for compatibility but will be deprecated in future releases. You should use GuidoGetMetesrAt instead.
 	*/
 	GUIDOAPI(GuidoErrCode) GuidoGetMeterAt (CARHandler inHandleAR, int voicenum, const GuidoDate &date, GuidoMeter& meter);
+
+
+	/** \brief Gives the current meters on a given date and voice.
+
+		\param inHandleAR a Guido opaque handle to a AR structure.
+		\param voicenum a voice number (starts at 1).
+		\param date the target date.
+		\param meters on output: a null terminated meters array that must be freed wih GuidoFreeMeters.
+		\return a Guido error code.
+
+		\see the GuidoMeter structure for the meter coding conventions
+	*/
+	GUIDOAPI(GuidoErrCode) GuidoGetMetersAt (CARHandler inHandleAR, int voicenum, const GuidoDate &date, GuidoMeters& meters);
+
+
+	/** \brief Releases a meters array..
+
+		\param meters: a meters array.
+		\return a Guido error code.
+	*/
+	GUIDOAPI(GuidoErrCode) GuidoFreeMeters (GuidoMeters meters);
 
 /*! @} */
 
@@ -669,6 +701,24 @@ units.
 		\param format on output: the page format
 	*/
 	GUIDOAPI(void) 	GuidoGetDefaultPageFormat( GuidoPageFormat* format );
+
+    /** \brief Gives the staves size (one staff at a time).
+        Staff will have given size until a \staffFormat tag
+        with "size" param is defined.
+        Size should be given in internal units. To convert from cm or inches
+        you should use \c GuidoCM2Unit or \c GuidoInches2Unit
+     
+        \param inHandleGR a Guido opaque handle to a GR structure.
+        \param staffNum the staff number on which will be applied new size scale
+        \param size the staff size in internal units. A negative value resets the staff size.
+     */
+    GUIDOAPI(void) 	GuidoSetStaffSize( CGRHandler inHandleGR, int staffNum, float size );
+    
+    /** \brief Get the staff size of given staff number.
+     
+        \return the staff size in internal units (-1 if not defined).
+     */
+    GUIDOAPI(float) 	GuidoGetStaffSize( CGRHandler inHandleGR, int staffNum );
 
 	/** \brief Converts internal Guido units into centimeters.
 

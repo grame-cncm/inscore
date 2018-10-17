@@ -36,13 +36,13 @@
 //------------------------------------------------------------------------------
 // graphic elements selector definitions
 typedef enum { 
-	kGuidoPage, kGuidoSystem, kGuidoSystemSlice, kGuidoStaff, /*kGuidoMeasure,*/ kGuidoBar, kGuidoEvent, 
+	kGuidoPage, kGuidoSystem, kGuidoSystemSlice, kGuidoStaff, /*kGuidoMeasure,*/ kGuidoBar, kGuidoBarAndEvent, kGuidoEvent,
 	kGuidoScoreElementEnd
 } GuidoElementSelector;
 
 // graphic elements type definitions
 typedef enum { 
-	kNote = 1, kRest, kEmpty, kBar, kRepeatBegin, kRepeatEnd, kStaff, kSystemSlice, kSystem, kPage
+	kNote = 1, kRest, kEmpty, kBar, kRepeatBegin, kRepeatEnd, kStaff, kSystemSlice, kSystem, kPage, kGraceNote
 } GuidoElementType;
 
 // elements infos struct
@@ -66,11 +66,13 @@ class_export TimeSegment: public std::pair<GuidoDate, GuidoDate>
 				 TimeSegment (const GuidoDate& a, const GuidoDate& b) : std::pair<GuidoDate, GuidoDate>(a, b) {}
 		virtual ~TimeSegment () {}
 
-		void print(std::ostream& out) const;					///< print the time segment 
+		void print(std::ostream& out) const;					///< print the time segment
+		float duration() const;									///< gives the segment duration
 		bool empty() const;										///< check for empty segment
 		bool intersect(const TimeSegment& ts) const;			///< check for segments intersection
 		bool include(const GuidoDate& date) const;				///< check for date inclusion
 		bool include(const TimeSegment& ts) const;				///< check for segment inclusion
+		bool startEqual(const TimeSegment& ts) const;			///< check if start date is the same
 		bool operator < (const TimeSegment& ts) const;			///< order relationship: the smaller is the smaller first date
 		bool operator == (const TimeSegment& ts) const;
 		TimeSegment operator & (const TimeSegment& ts) const;	///< intersection operation (may return an arbitrary empty segment)
@@ -203,7 +205,8 @@ GUIDOAPI(GuidoErrCode)	GuidoGetRAWSystemMap( CGRHandler gr, int pagenum, float w
 */
 GUIDOAPI(GuidoErrCode)	GuidoGetPageMap( CGRHandler gr, int pagenum, float w, float h, Time2GraphicMap& outmap);
 
-/** \brief Retrieves a guido staff graphic to time mapping. 
+/** \brief Retrieves a guido staff graphic to time mapping. New behaviour: if a rest is at
+    a bar start, mapping is extended toward left barline. For old behaviour, use GuidoGetStaffMapV1.
 
 	\param gr a Guido opaque handle to a GR structure.
 	\param pagenum a page index, starting from 1.
@@ -214,6 +217,18 @@ GUIDOAPI(GuidoErrCode)	GuidoGetPageMap( CGRHandler gr, int pagenum, float w, flo
 	\return an error code.
 */
 GUIDOAPI(GuidoErrCode)	GuidoGetStaffMap( CGRHandler gr, int pagenum, float w, float h, int staff, Time2GraphicMap& outmap);
+    
+/** \brief Retrieves a guido staff graphic to time mapping. To use the new behaviour, see GuidoGetStaffMap.
+     
+    \param gr a Guido opaque handle to a GR structure.
+    \param pagenum a page index, starting from 1.
+    \param w the page width.
+    \param h the page height.
+    \param staff the staff index (starting from 1).
+    \param outmap contains the mapping on output.
+    \return an error code.
+*/
+GUIDOAPI(GuidoErrCode)	GuidoGetStaffMapV1( CGRHandler gr, int pagenum, float w, float h, int staff, Time2GraphicMap& outmap);
 
 /** \brief Retrieves a guido voice graphic to time mapping. 
 
@@ -227,7 +242,8 @@ GUIDOAPI(GuidoErrCode)	GuidoGetStaffMap( CGRHandler gr, int pagenum, float w, fl
 */
 GUIDOAPI(GuidoErrCode)	GuidoGetVoiceMap( CGRHandler gr, int pagenum, float w, float h, int voice, Time2GraphicMap& outmap);
 
-/** \brief Retrieves a guido system graphic to time mapping. 
+/** \brief Retrieves a guido system graphic to time mapping. New behaviour: if all staves have a rest
+    at a same bar start, mapping is extended toward left barline. For old behaviour, use GuidoGetSystemMapV1.
 
 	\param gr a Guido opaque handle to a GR structure.
 	\param pagenum a page index, starting from 1.
@@ -238,6 +254,17 @@ GUIDOAPI(GuidoErrCode)	GuidoGetVoiceMap( CGRHandler gr, int pagenum, float w, fl
 */
 GUIDOAPI(GuidoErrCode)	GuidoGetSystemMap( CGRHandler gr, int pagenum, float w, float h, Time2GraphicMap& outmap);
 
+/** \brief Retrieves a guido system graphic to time mapping. To use the new behaviour, see GuidoGetSystemMap.
+     
+    \param gr a Guido opaque handle to a GR structure.
+    \param pagenum a page index, starting from 1.
+    \param w the page width.
+    \param h the page height.
+    \param outmap contains the mapping on output.
+    \return an error code.
+*/
+GUIDOAPI(GuidoErrCode)	GuidoGetSystemMapV1( CGRHandler gr, int pagenum, float w, float h, Time2GraphicMap& outmap);
+ 
 /** \brief Retrieves a time segment and the associated graphic segment in a mapping.
 
 	\param date a date used to select the container time segment
