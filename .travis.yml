@@ -15,7 +15,7 @@ before_install:
 #  - qmake --version  
   - git clone --depth 1 --single-branch -b dev  https://github.com/grame-cncm/guidolib.git guidolib
   - make -C guidolib/build basic CMAKEOPT="-DMIDIEXPORT=no"
-  - sudo make -C guidolib/build install
+  - sudo make -C guidolib/build/guidodir install
   - git clone --depth 1 --single-branch -b dev https://github.com/grame-cncm/guidoar.git guidoar
   - make -C guidoar/build MIDIEXPORT=no
   - sudo make -C guidoar/build/linux install
