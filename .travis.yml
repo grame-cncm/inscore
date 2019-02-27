@@ -14,8 +14,8 @@ before_install:
   - source /opt/qt58/bin/qt58-env.sh
   - qmake --version  
   - git clone https://github.com/grame-cncm/guidolib.git guidolib
-  - make -C guidolib/build linux LINUXMIDI=no
-  - sudo make -C guidolib/build/linux install
+  - make -C guidolib/build travis
+  - sudo make -C guidolib/build install
   - git clone https://github.com/grame-cncm/guidoar.git guidoar
   - make -C guidoar/build MIDIEXPORT=no
   - sudo make -C guidoar/build/linux install
