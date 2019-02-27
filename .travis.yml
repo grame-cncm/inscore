@@ -14,7 +14,7 @@ before_install:
   - source /opt/qt58/bin/qt58-env.sh
   - qmake --version  
   - git clone --depth 1 --single-branch -b dev  https://github.com/grame-cncm/guidolib.git guidolib
-  - make -C guidolib/build basic
+  - make -C guidolib/build basic CMAKEOPT="-DMIDIEXPORT=no"
   - sudo make -C guidolib/build install
   - git clone --depth 1 --single-branch -b dev https://github.com/grame-cncm/guidoar.git guidoar
   - make -C guidoar/build MIDIEXPORT=no
