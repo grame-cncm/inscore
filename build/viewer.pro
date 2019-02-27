@@ -6,6 +6,7 @@ else { TARGET = INScoreViewer }
 OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
+DESTDIR = $$PWD/bin
 
 VERSION = 1.23
 

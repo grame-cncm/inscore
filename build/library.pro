@@ -9,7 +9,7 @@ MOC_DIR = tmp
 VERSION = 1.23
 CONFIG += c++11
 CONFIG += warn_off
-
+DESTDIR = $$PWD/bin
 
 ############################## 
 # locations
@@ -145,7 +145,7 @@ macx {
 # ios x support
 ############################## 
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
+    QMAKE_IOS_DEPLOYMENT_TARGET = 11.0
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
