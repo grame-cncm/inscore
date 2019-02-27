@@ -23,6 +23,8 @@
 
 width  = 0.12;
 height = 0.12;
+dur = 2;
+
 /ITL/scene/mov1 set rect $width $height ;
 /ITL/scene/mov2 set rect $width $height ;
 /ITL/scene/mov3 set rect $width $height ;
@@ -39,7 +41,9 @@ height = 0.12;
 /ITL/scene/mov2 dy 0.1666666 ;
 /ITL/scene/mov3 dy -0.1666666 ;
 /ITL/scene/mov4 dy -0.5 ;
-/ITL/scene/mov* watch timeLeave 0 1 ( /ITL/scene/$self date 0.0001 );
+#/ITL/scene/mov* watch timeLeave 0 1 ( /ITL/scene/$self date 0.0001 );
+/ITL/scene/mov* watch timeEnter $dur 999 ( /ITL/scene/$self tempo -80 );
+/ITL/scene/mov* watch timeEnter -1 0 ( /ITL/scene/$self tempo 80 );
 
 /ITL/scene color 255 255 255 ;
 /ITL/scene/title set txt "Moving phenomena" ;
@@ -80,4 +84,6 @@ msg = ( /ITL/scene/sliderpos date $date,
 /ITL/scene/slider watch  mouseDown $msg;
 /ITL/scene/slider watch  mouseMove $msg;
 
+/ITL/scene/box duration $dur;
+/ITL/scene/mov? tempo 80;
 

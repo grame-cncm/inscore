@@ -65,7 +65,7 @@ QString CustomScripts::osname()
 #ifdef ANDROID
 	return "Android";
 #endif
-#ifdef IOS
+#ifdef INSCORE_IOS
 	return "iOS";
 #endif
 
@@ -85,7 +85,7 @@ int CustomScripts::osid()
 #ifdef ANDROID
 	return 1;
 #endif
-#ifdef IOS
+#ifdef INSCORE_IOS
 	return 2;
 #endif
 

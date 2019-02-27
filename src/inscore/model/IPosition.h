@@ -193,7 +193,8 @@ class IPosition
 		virtual void	addAngle(float angle)		{ setRotateZ(fZAngle + angle); }
 		virtual void	addXAngle(float angle)		{ setRotateX(fXAngle + angle); }
 		virtual void	addYAngle(float angle)		{ setRotateY(fYAngle + angle); }
-		
+		virtual void	addShear(const TFloatSize& s)	{ fShear += s; }
+	
 		/// \brief sets the object shear
 		virtual void	setShear(const TFloatSize& s)		{ fShear = s; }		
 		/// \brief sets the object x rotation

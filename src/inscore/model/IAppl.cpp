@@ -86,7 +86,7 @@ static string getFilePath() {
 	return path.toStdString();
 }
 
-#elif IOS
+#elif INSCORE_IOS
 static string getFilePath() {
     QString path = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0);
     QDir dir(path);

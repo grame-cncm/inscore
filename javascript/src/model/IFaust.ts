@@ -4,12 +4,16 @@
 
 ///<reference path="IObject.ts"/>
 
+declare function FAUST_LIBRARIES_PATH() : string;
+
 class IFaust extends IObject {
 	static fAudio: TAudioContext = null;
 	private fDspCode 	: string;
 	private fFactory 	: TFaustFactory;
 	private fDsp 		: TFaustDSP;
 	private fUI			: Array<TFaustUIItem>;
+	private fFaustLibraries : string; // = "http://faust.grame.fr/modules/libraries/";
+//	private fFaustLibraries : string = "https://raw.githubusercontent.com/grame-cncm/faust/faust2/libraries/";
 	
 	fBufferSize	: number;
 	        
@@ -25,6 +29,10 @@ class IFaust extends IObject {
 			let isWebKitAudio = (typeof webkitAudioContext !== "undefined");
 			IFaust.fAudio = (isWebKitAudio) ? new webkitAudioContext() : new AudioContext();
         }
+		if (typeof FAUST_LIBRARIES_PATH === 'function')
+			this.fFaustLibraries = FAUST_LIBRARIES_PATH();
+		else this.fFaustLibraries = "http://faust.grame.fr/libraries/";
+		console.log ("new faust " + name + " using path: " + this.fFaustLibraries);
     }
 
     setHandlers(): void {
@@ -125,7 +133,7 @@ class IFaust extends IObject {
    
     protected createDsp(code: string): boolean { 
 		this.fDspCode = code;
-		faust.createDSPFactory (code, ["-I", "http://localhost/faust/libraries/"], 
+		faust.createDSPFactory (code, ["-I", this.fFaustLibraries], 
 			(arg: TFaustFactory) : void => this.factoryReady(arg));
 		return true;
     }

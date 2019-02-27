@@ -6,6 +6,7 @@ else { TARGET = INScoreViewer }
 OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
+DESTDIR = $$PWD/bin
 
 VERSION = 1.23
 
@@ -63,7 +64,7 @@ macx {
 # ios support
 ##############################
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 8.0
+    QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
 	QMAKE_LFLAGS += -L Release-iphoneos
 	LIBS += -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
 	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
@@ -74,7 +75,7 @@ ios {
 	HEADERS += $$files($$SRC/mobile/ios/*.h)
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobileios.qrc
 	DEFINES += IOS __MOBILE__
-    CONFIG+= arm64 armv7 armv7s
+    CONFIG  += arm64 x86_64  # armv7 armv7s 
 }
 
 ############################## 

@@ -48,3 +48,12 @@ green = 100 255 100;
 __END__
 
 /ITL/scene/s* tempo 0;
+/ITL/scene/s* tempo 120;
+/ITL/scene/s* tempo 40;
+/ITL/scene/sync s* m* ;
+/ITL/scene/m* duration 8;
+
+w= 0.06;
+/ITL/scene/s1 set ellipse $w $w;
+/ITL/scene/s2 set ellipse $w $w;
+

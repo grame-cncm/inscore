@@ -308,8 +308,24 @@ IMessage::argslist TMessageEvaluator::evalMessage (const string& var, const Even
 }
 
 //----------------------------------------------------------------------
+static string strip (const char* ptr)
+{
+	string str;
+	while (*ptr) {
+		if ((*ptr == ' ') ||  (*ptr == '	') ||  (*ptr == ',')) break;
+		str += *ptr++;
+	}
+	return str;
+}
+
+//----------------------------------------------------------------------
 string TMessageEvaluator::getVar (const char* ptr) const
 {
+#ifndef WIN32
+#warning ("TODO: fix the TMessageEvaluator::getVar method");
+#endif
+	string datef = strip (ptr);
+	if (datef == "$date%f") return datef;
 	string str; bool scaling = false; bool inMsg = false;
 	while (*ptr) {
 		if ((*ptr == '$') || ((*ptr >= 'a') && (*ptr <= 'z')))

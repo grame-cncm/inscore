@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+BBEdit Language Module for INScore
+
+Put this file in 
+   ~/Library/Application Support/BBEdit/Language Modules
+or equivalent.
+-->
+<plist version="1.0">
+<dict>
+	<key>BBEditDocumentType</key>
+		<string>CodelessLanguageModule</string>
+	<key>BBLMLanguageDisplayName</key>
+		<string>INScore</string>
+	<key>BBLMLanguageCode</key>
+		<string>INSc</string>
+	<key>BBLMColorsSyntax</key>
+		<true/>
+	<key>BBLMScansFunctions</key>
+		<true/>
+	<key>BBLMIsCaseSensitive</key>
+		<true/>
+	<key>BBLMSupportsTextCompletion</key>
+		<true/>
+	<key>BBLMCommentLineDefault</key>
+		<string>#</string>
+	<key>BBLMKeywordList</key>
+	<array>
+		<string>absolutexy</string>
+		<string>accept</string>
+		<string>alias</string>
+		<string>alpha</string>
+		<string>angle</string>
+		<string>animate</string>
+		<string>animated</string>
+		<string>arrows</string>
+		<string>autoscale</string>
+		<string>autoVoicesColoration</string>
+		<string>blue</string>
+		<string>brightness</string>
+		<string>browse</string>
+		<string>brushStyle</string>
+		<string>calibrate</string>
+		<string>cancel</string>
+		<string>clear</string>
+		<string>clipPitch</string>
+		<string>clipTime</string>
+		<string>clock</string>
+		<string>close</string>
+		<string>color</string>
+		<string>columns</string>
+		<string>compatibility</string>
+		<string>connect</string>
+		<string>count</string>
+		<string>dalpha</string>
+		<string>dangle</string>
+		<string>date</string>
+		<string>dblue</string>
+		<string>dbrightness</string>
+		<string>dcolor</string>
+		<string>ddate</string>
+		<string>dduration</string>
+		<string>debug</string>
+		<string>default</string>
+		<string>defaultShow</string>
+		<string>del</string>
+		<string>dgreen</string>
+		<string>dhsb</string>
+		<string>dhue</string>
+		<string>dimension</string>
+		<string>disconnect</string>
+		<string>dpage</string>
+		<string>drange</string>
+		<string>dred</string>
+		<string>drotatex</string>
+		<string>drotatey</string>
+		<string>drotatez</string>
+		<string>dsaturation</string>
+		<string>dscale</string>
+		<string>dshear</string>
+		<string>dstart</string>
+		<string>dtempo</string>
+		<string>duration</string>
+		<string>durClock</string>
+		<string>dx</string>
+		<string>dxorigin</string>
+		<string>dy</string>
+		<string>dyorigin</string>
+		<string>dz</string>
+		<string>edit</string>
+		<string>effect</string>
+		<string>end</string>
+		<string>error</string>
+		<string>errport</string>
+		<string>eval</string>
+		<string>event</string>
+		<string>export</string>
+		<string>exportAll</string>
+		<string>expr</string>
+		<string>follow</string>
+		<string>fontFamily</string>
+		<string>fontSize</string>
+		<string>fontStyle</string>
+		<string>fontWeight</string>
+		<string>foreground</string>
+		<string>forward</string>
+		<string>frame</string>
+		<string>frameless</string>
+		<string>fullscreen</string>
+		<string>get</string>
+		<string>green</string>
+		<string>guido-version</string>
+		<string>hasZ</string>
+		<string>height</string>
+		<string>hello</string>
+		<string>hsb</string>
+		<string>hue</string>
+		<string>in</string>
+		<string>keyboard</string>
+		<string>learn</string>
+		<string>level</string>
+		<string>likelihoodthreshold</string>
+		<string>likelihoodwindow</string>
+		<string>load</string>
+		<string>lock</string>
+		<string>map+</string>
+		<string>map</string>
+		<string>mapf</string>
+		<string>max</string>
+		<string>measureBars</string>
+		<string>mls</string>
+		<string>mode</string>
+		<string>mouse</string>
+		<string>musicxml-version</string>
+		<string>name</string>
+		<string>new</string>
+		<string>opengl</string>
+		<string>order</string>
+		<string>osc</string>
+		<string>out</string>
+		<string>outport</string>
+		<string>page</string>
+		<string>pageCount</string>
+		<string>pageFormat</string>
+		<string>path</string>
+		<string>penAlpha</string>
+		<string>penColor</string>
+		<string>pendAlpha</string>
+		<string>penStyle</string>
+		<string>penWidth</string>
+		<string>pitchLines</string>
+		<string>play</string>
+		<string>pop</string>
+		<string>port</string>
+		<string>preprocess</string>
+		<string>push</string>
+		<string>quit</string>
+		<string>radius</string>
+		<string>range</string>
+		<string>rate</string>
+		<string>rcount</string>
+		<string>read</string>
+		<string>red</string>
+		<string>reject</string>
+		<string>require</string>
+		<string>reset</string>
+		<string>resetBench</string>
+		<string>rootPath</string>
+		<string>rotatex</string>
+		<string>rotatey</string>
+		<string>rotatez</string>
+		<string>rows</string>
+		<string>run</string>
+		<string>saturation</string>
+		<string>save</string>
+		<string>scale</string>
+		<string>set</string>
+		<string>shear</string>
+		<string>show</string>
+		<string>size</string>
+		<string>smooth</string>
+		<string>stack</string>
+		<string>start</string>
+		<string>status</string>
+		<string>stop</string>
+		<string>success</string>
+		<string>systemCount</string>
+		<string>tempo</string>
+		<string>ticks</string>
+		<string>time</string>
+		<string>tolerance</string>
+		<string>vdate</string>
+		<string>vduration</string>
+		<string>version</string>
+		<string>videoMap</string>
+		<string>videoMapf</string>
+		<string>voiceColor</string>
+		<string>volume</string>
+		<string>watch+</string>
+		<string>watch</string>
+		<string>width</string>
+		<string>windowOpacity</string>
+		<string>wrap</string>
+		<string>write</string>
+		<string>writeBench</string>
+		<string>x</string>
+		<string>xborder</string>
+		<string>xorigin</string>
+		<string>y</string>
+		<string>yborder</string>
+		<string>yorigin</string>
+		<string>z</string>
+	</array>
+	<key>BBLMSuffixMap</key>
+	<array>
+		<dict>
+			<key>BBLMLanguageSuffix</key>
+			<string>.inscore</string>
+		</dict>
+	</array>
+	<key>Language Features</key>
+	<dict>
+		<key>Identifier and Keyword Character Class</key>
+		<string>0-9A-Z_a-z</string>
+
+		<key>Open Strings 1</key>	<string>"</string>
+		<key>Close Strings 1</key>	<string>"</string>
+		<key>Open Strings 2</key> 	<string>'</string>
+		<key>Close Strings 2</key> 	<string>'</string>
+		<key>End-of-line Ends Strings 1</key>	<false/>
+		<key>End-of-line Ends Strings 2</key> 	<false/>
+
+		<key>Open Line Comments</key>	<string>#</string>
+		<key>Open Block Comments</key>	<string>(*</string>
+		<key>Close Block Comments</key>	<string>*)</string>
+
+		<key>Open Parameter Lists</key>     <string>(</string>
+		<key>Close Parameter Lists</key>    <string>)</string>
+	</dict>
+</dict>
+</plist>

@@ -416,19 +416,23 @@ Setting an object graphic origin to the top left corner.
 \sublevel{Components transformations}
 \label{transform}
 
-A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation.
+A component tranformation specifies 2D transformations of its coordinate system. It includes shear and object rotation on x, y and z axis.
 
 \begin{rail}
 transformMsg :
-			(('rotatex' | 'rotatey' | 'rotatez') float32)
-		| 	('shear' x y)
+			(('rotatex' | 'rotatey' | 'rotatez' ) float32)
+		|	(('drotatex' | 'drotatey' | 'drotatez') float32)
+		| 	(('shear' | 'dshear') x y) 
 \end{rail}
 \index{Transform messages!rotate}
 \index{Transform messages!shear}
+\index{Transform messages!dshear}
 
 \begin{itemize}
 \item \OSC{rotatex rotatey rotatez}: rotates the component around the corresponding axis. Parameter value expresses the rotation in degrees.
-\item \OSC{shear} transforms the component in x and y dimensions. \OSC{x} and \OSC{y} are float values expressing the transformation value in the corresponding dimension.
+\item \OSC{drotatex drotatey drotatez}: relative rotations.
+\item \OSC{shear} transforms the component in x and y dimensions. \OSC{x} and \OSC{y} are float values expressing the transformation value in the corresponding dimension. Values should be in the range ]-1, 1[.
+\item \OSC{dshear} relative \OSC{shear} transformation.
 \end{itemize}
 
 \example \\
@@ -702,13 +706,15 @@ The \OSC{edit} message opens a small editor that allows to edit the target objec
 
 \begin{rail}
 effectMsg : 'edit' ( [1] | 
-					 [2] ( attributes +) )
+					 [2] ( attributes +) |
+					 [3] reset )
 \end{rail}
 \index{Common messages!edit}
 
 \begin{itemize}
-\item \textbf{1}: without argument, the editor is initalized with all the target object attributes only.
-\item \textbf{2}: using a list of attributes, the editor is initalized with the target object corresponding attributes.
+\item \textbf{1}: without argument, the editor is initalized with all the target object attributes.
+\item \textbf{2}: using a list of attributes, the editor is initalized with the target object corresponding attributes. Note that \OSC{set} as attribute can be used to edit the object \OSC{set} message.
+\item \textbf{3}: \OSC{reset} is used to clear the edit string stored in the object cache. It is equivalent to the 'clear' button in the edit dialog. Note that as long as the edit string stored in the cache is not empty, \OSC{edit} messages are ignored unless followed by a \OSC{reset} (see below).
 \end{itemize}
 
 Each object maintains the current content of the editor, that is initialized at first \OSC{edit} message or when this content is cleared. Successive call to \OSC{edit} will preserve the editor content unless it is cleared.
@@ -1310,7 +1316,7 @@ Setting a rectangle style :
 %:  Width and height control
 \sublevel{Width and height control}
 
-\OSC{width} and \OSC{height} messages are accepted by the following components: \OSC{rect | ellipse | graph | fastgraph | grid | pianoroll | pianorollf}.
+\OSC{width} and \OSC{height} messages are accepted by the following components: \OSC{rect | ellipse | arc | graph | fastgraph | grid | pianoroll | pianorollf}.
 
 \begin{rail}
 widthMsg :  'width' float32

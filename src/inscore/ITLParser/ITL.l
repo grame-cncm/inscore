@@ -19,6 +19,8 @@
 
 using namespace std;
 
+#define register		// to get rid of the -Wdeprecated-register
+
 #define YY_NO_INPUT
 #define YY_EXTRA_TYPE inscore::ITLparser*
 #define YY_USER_ACTION  yyextra->fLine = yylloc->last_line = yylineno; yyextra->fColumn = yylloc->first_column += strlen(yytext); //cerr << "YY_USER_ACTION " << yyextra->fLine << endl;

@@ -22,6 +22,15 @@
     background-color: rgb(250,250,250);
 }
 
+.inscore {
+	border: 1px blue solid;
+    box-shadow: 2px 2px 4px gray;
+    border-radius: 0px;
+    background-color: rgb(250,250,250);
+    min-width: 100px;
+    min-height: 100px;
+}
+
 .inscore-arc {
 	border: 0px blue solid;
 	fill:none;

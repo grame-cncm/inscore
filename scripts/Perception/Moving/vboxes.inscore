@@ -21,6 +21,8 @@
 
 <?javascript bars(28) ?>
 
+dur = 4;
+
 /ITL/scene/rect* xorigin -1 ;
 
 width  = 0.14;
@@ -35,7 +37,9 @@ height = 0.05;
 
 /ITL/scene/sync mov1 box syncTop;
 /ITL/scene/sync mov2 box syncBottom;
-/ITL/scene/mov* watch timeLeave 0 1 ( /ITL/scene/$self date 0.0001 );
+#/ITL/scene/mov* watch timeLeave 0 $dur ( /ITL/scene/$self date 0.0001 );
+/ITL/scene/mov* watch timeEnter $dur 999 ( /ITL/scene/$self tempo -80 );
+/ITL/scene/mov* watch timeEnter -1 0 ( /ITL/scene/$self tempo 80 );
 
 /ITL/scene color 255 255 255 ;
 /ITL/scene/title set txt "Moving phenomena" ;
@@ -60,5 +64,10 @@ show = "Show bars";
 		/ITL/scene/control pop
 	)
 );
+
+/ITL/scene/box duration 4;
+/ITL/scene/mov? tempo 80;
+
+__END__
 
 
