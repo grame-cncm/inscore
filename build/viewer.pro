@@ -84,8 +84,8 @@ ios {
 ############################## 
 win32 {
 	VERSION = ""
-	CONFIG(debug,debug|release) { LIBS   += debug/INScore.lib }
-	else { LIBS   += release/INScore.lib }
+	CONFIG(debug,debug|release) { LIBS   += $$DESTDIR/INScore.lib }
+	else { LIBS   += $$DESTDIR/INScore.lib }
 	RC_FILE = $$ROOT/win32/Viewer/INScoreViewer.rc
 }
 
