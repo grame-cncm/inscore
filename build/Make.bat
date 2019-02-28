@@ -27,7 +27,10 @@ cd ..
 :COMPILE
 msbuild inscoredir/INScore.vcxproj        /p:Configuration=Release /p:Platform=x64 /maxcpucount:4
 msbuild inscoredir/INScoreViewer.vcxproj  /p:Configuration=Release /p:Platform=x64 /maxcpucount:4
-..\tools\IBundle\Make.bat
+cd ..\tools\IBundle\build
+CALL Make.bat
+cd ..\..\..\build
+xcopy /Y "..\tools\IBundle\IBundle.exe" "bin\"
 GOTO DONE
 
 :DEPLOY
