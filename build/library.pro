@@ -9,7 +9,6 @@ MOC_DIR = tmp
 VERSION = 1.23
 CONFIG += c++11
 CONFIG += warn_off
-DESTDIR = $$PWD/bin
 
 ############################## 
 # locations
@@ -92,6 +91,7 @@ NOVIEW {
 # assumes environment is MSVC
 ############################## 
 win32 {
+	DESTDIR = $$PWD/bin
 	QT += opengl
     VERSION = ""
 	DEFINES += MSVC _USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS WINDOWS 
@@ -119,6 +119,7 @@ win32 {
 # macos x support
 ############################## 
 macx {
+	DESTDIR = $$PWD/bin
 	QT += opengl
     QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
@@ -160,6 +161,7 @@ ios {
 # linux support
 ############################## 
 unix:!macx:!ios:!android {
+	DESTDIR = $$PWD/bin
 	QT += opengl
     DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
     LIBS += -lGUIDOEngine -lguidoar

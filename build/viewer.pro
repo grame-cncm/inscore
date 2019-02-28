@@ -6,7 +6,6 @@ else { TARGET = INScoreViewer }
 OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
-DESTDIR = $$PWD/bin
 
 VERSION = 1.23
 
@@ -47,6 +46,7 @@ ICON = $$ROOT/rsrc/INScoreViewer.icns
 # macos x support
 ############################## 
 macx {
+	DESTDIR = $$PWD/bin
 	QMAKE_LFLAGS += -FRelease
 	LIBS += -framework INScore
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
@@ -83,6 +83,7 @@ ios {
 # assumes environment is MSVC
 ############################## 
 win32 {
+	DESTDIR = $$PWD/bin
 	VERSION = ""
 	CONFIG(debug,debug|release) { LIBS   += $$DESTDIR/INScore.lib }
 	else { LIBS   += $$DESTDIR/INScore.lib }
@@ -92,7 +93,10 @@ win32 {
 ############################## 
 # linux support
 ############################## 
-unix:!android:!macx:!ios:LIBS += -L. -L$$DESTDIR -lINScore -lGUIDOEngine -lguidoar -lmicrohttpd
+unix:!android:!macx:!ios {
+	DESTDIR = $$PWD/bin
+	LIBS += -L. -L$$DESTDIR -lINScore -lGUIDOEngine -lguidoar -lmicrohttpd
+}
 
 ############################## 
 # android support

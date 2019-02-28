@@ -11,34 +11,12 @@ TARGET := undefined
 system	:= $(shell uname -s)
 # normalizes MINGW versions
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
-ifeq ($(system), Darwin)
-	TARGET = macos
-	BUILDF ?= macos
-	SPEC = -spec macx-xcode
-	QMAKEIOS = qmake-ios
-else
-ifeq ($(system), MINGW)
-	TARGET = windows
-else
-ifeq ($(system), Linux)
-	TARGET = linux
-	BUILDF ?= linux
-endif
-endif
-endif
 
 ifeq ($(TARGET), windows)
  WINARCH ?= $(shell ./qt-arch)
  MSVC ?= $(shell ./vs-path)
  WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
  SPEC ?= -spec win32-msvc2013
-ifeq ($(WINARCH), x64)
-	BUILDF ?= win64
-	GUIDOLIB = GUIDOEngine64.dll
- else
-	BUILDF ?= win32
-	GUIDOLIB = GUIDOEngine.dll
- endif
 endif
 
 OUT  := INScore.framework
@@ -52,7 +30,6 @@ ifeq ($(system), Darwin)
 	VIEWPROJ = INScoreViewer.xcodeproj
 	SPEC    = -spec macx-xcode
 	TARGET  = macos
-	QMAKEIOS = qmake-ios
 	PREFIX  ?= /usr/local
 endif
 
@@ -73,7 +50,7 @@ endif
 
 
 all :
-	make $(TARGET)
+	$(MAKE) $(TARGET)
 
 undefined:
 	$(error System is undefined, not target available)
@@ -117,10 +94,9 @@ ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
 
 windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScore.vcxproj $(WINOPTS)"
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScoreViewer.vcxproj $(WINOPTS)"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScoreViewer.vcxproj $(WINOPTS)"
 	$(MAKE) -C ../tools/IBundle/build
-	$(MAKE) windlls
 
 
 #===============================================================
@@ -136,7 +112,7 @@ $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
 
 #===============================================================
-# windows dll special target
+# windows dll special target 
 #===============================================================
 windlls: bin/GUIDOEngine64.dll bin/guidoar.dll in/Plugins/libmusicxml2.dll
 
@@ -154,25 +130,24 @@ bin/guidoar.dll: ../lib/GuidoAR/win64/guidoar.dll
 #===============================================================
 # building INScore for Android
 #===============================================================
-#SPECANDROID = -spec android-g++
-SPECANDROID = -spec android-clang
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 
-android : android/Makefile INScoreAndroid
-
-android/Makefile: library.pro INScore.pro
-	@which qmake-android || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
-	[ -d android ] || mkdir android
-	cd android && qmake-android $(SPECANDROID) ../INScore.pro
-
-INScoreAndroid :
+android : QMAKE=qmake-android
+android : INSCOREDIR=androiddir
+android : PLATFORM=android-22
+android : $(INSCOREDIR)/Makefile
 	cp -rf ../rsrc/ tmp-rsc
-	make -C $(MOBILESCRIPTS)
-	make -j 6 -C android -f Makefile
-	[ -d android/android-build ] || mkdir android/android-build
-	cd android && make INSTALL_ROOT=android-build install
-	cd android && androiddeployqt --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
-	cp android/android-build//build/outputs/apk/android-build-release-signed.apk INScoreViewer.apk
+	$(MAKE) -C $(MOBILESCRIPTS)
+	$(MAKE) -C $(INSCOREDIR)
+	[ -d $(INSCOREDIR)/android-build ] || mkdir $(INSCOREDIR)/android-build
+	$(MAKE) -C $(INSCOREDIR) INSTALL_ROOT=android-build install
+	cd $(INSCOREDIR) && androiddeployqt --android-platform $(PLATFORM) --release --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk bin/INScoreViewer.apk
+
+$(INSCOREDIR)/Makefile: library.pro viewer.pro INScore.pro
+	@which qmake-android || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
+	[ -d $(INSCOREDIR) ] || mkdir $(INSCOREDIR)
+	cd $(INSCOREDIR) && $(QMAKE) -spec android-clang ../INScore.pro
 
 akey: ../rsrc/inscore.keystore
 ../rsrc/inscore.keystore :
@@ -188,9 +163,8 @@ installAndroid :
 uninstallAndroid :
 	adb uninstall fr.grame.inscore
 
-
 #===============================================================
-# building the library on linux
+# install target
 #===============================================================
 SHARED  = $(DESTDIR)$(PREFIX)/share
 INSTALLBIN := $(DESTDIR)$(PREFIX)/bin
@@ -198,8 +172,8 @@ INSTALLLIB := $(DESTDIR)$(PREFIX)/lib
 RSRC := ../package/debian/usr/share
 
 install:
-	cp -d linux/libINScore.so* $(INSTALLLIB)
-	install -m 755 linux/inscoreviewer  $(INSTALLBIN)
+	cp -d bin/libINScore.so* $(INSTALLLIB)
+	install -m 755 bin/inscoreviewer  $(INSTALLBIN)
 	install -m 755 ../tools/IBundle/IBundle $(INSTALLBIN)
 	mkdir -p $(SHARED)/fonts/guido
 	install -m 644 ../src/guido2.ttf $(SHARED)/fonts/guido/guido2.ttf 
@@ -207,14 +181,12 @@ install:
 	install -m 644 $(RSRC)/icons/hicolor/48x48/apps/inscore.png $(SHARED)/icons/hicolor/48x48/apps/inscore.png
 	install -m 644 $(RSRC)/icons/hicolor/128x128/apps/inscore.png $(SHARED)/icons/hicolor/128x128/apps/inscore.png
 
-	
 #===============================================================
 # building the library with mobileUI
 #===============================================================
 mobileUI: 
 	cp -rf ../rsrc/ tmp-rsc
 	$(MAKE) QMAKE="$(QMAKE) CONFIG+=mobile_ui" INSCOREDIR="mobileUI"
-
 
 #===============================================================
 clean :
