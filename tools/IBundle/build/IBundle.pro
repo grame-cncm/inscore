@@ -4,9 +4,10 @@ CONFIG += console
 CONFIG += warn_off
 CONFIG -= app_bundle
 
-TARGET = IBundle
+TARGET      = IBundle
 OBJECTS_DIR	= tmp
 MOC_DIR		= tmp
+DESTDIR     = $$PWD/..
 
 QT -= gui;
 
