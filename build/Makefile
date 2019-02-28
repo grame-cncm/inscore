@@ -5,6 +5,7 @@
 .PHONY : macos ios win32 win64 linux android installAndroid help mobileUI
 
 QMAKE ?= qmake
+MAKE  ?= make
 TARGET := undefined
 
 system	:= $(shell uname -s)
@@ -43,6 +44,33 @@ endif
 OUT  := INScore.framework
 MOBILESCRIPTS := ../scripts/mobile
 
+INSCOREDIR  ?= inscoredir
+DESTDIR ?= 
+
+ifeq ($(system), Darwin)
+	LIBPROJ = INScore.xcodeproj
+	VIEWPROJ = INScoreViewer.xcodeproj
+	SPEC    = -spec macx-xcode
+	TARGET  = macos
+	QMAKEIOS = qmake-ios
+	PREFIX  ?= /usr/local
+endif
+
+ifeq ($(system), MINGW)
+	TARGET = windows
+	LIBPROJ = INScore.vcxproj
+	VIEWPROJ = INScoreViewer.vcxproj
+	PREFIX  ?= "C:/Program Files"
+endif
+
+ifeq ($(system), Linux)
+	TARGET   = linux
+	LIBPROJ  = Makefile.lib
+	VIEWPROJ = Makefile.app
+	PREFIX  ?= /usr/local
+endif
+
+
 
 all :
 	make $(TARGET)
@@ -64,60 +92,64 @@ help :
 	@echo "  devandroid : to get the serial number of the connected device"
 
 #===============================================================
-# building INScore on Mac OS X
+# building inscore
 #===============================================================
-macos : INScoreMac
+macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
+	$(MAKE) -C ../lib/GuidoEngine/macosx
+	$(MAKE) -C ../lib/GuidoAR/macosx
+	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
+	$(MAKE) -C ../tools/IBundle/build
 
-xcodeproj: library.pro viewer.pro
-	[ -d $(BUILDF) ] || mkdir $(BUILDF)
-	cd $(BUILDF) && $(QMAKE) $(SPEC) ../library.pro 
-	touch $(BUILDF)/INScore.xcodeproj
-	cd $(BUILDF) && $(QMAKE) $(SPEC) ../viewer.pro 
-	touch $(BUILDF)/INScoreViewer.xcodeproj
+linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
+	$(MAKE) -C $(INSCOREDIR) -f $(LIBPROJ)
+	$(MAKE) -C $(INSCOREDIR) -f $(VIEWPROJ)
+	$(MAKE) -C ../tools/IBundle/build
 
-INScoreMac : $(BUILDF)/INScore.xcodeproj $(BUILDF)/INScoreViewer.xcodeproj
-	make -C ../lib/GuidoEngine/macosx
-	make -C ../lib/GuidoAR/macosx
-#	make -C ../lib/libMusicXML/macosx
-	xcodebuild -jobs 8 -project $(BUILDF)/INScore.xcodeproj -target INScore -configuration Release
-	xcodebuild -jobs 8 -project $(BUILDF)/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release
-	make -C ../tools/IBundle/build
 
-$(BUILDF)/INScore.xcodeproj : library.pro
-	make xcodeproj
-
-$(BUILDF)/INScoreViewer.xcodeproj : viewer.pro
-	make xcodeproj
-
-# specific target to create a symbolic link to macos/Release
-# this link is required for macdeployqt
-link:
-	cd macos && ln -s Release lib
-
-#===============================================================
-# building INScore for iOS 
-#===============================================================
-ios : ios/INScore.xcodeproj ios/INScoreViewer.xcodeproj INScoreIos
-
-xcodeprojios:
-	@which $(QMAKEIOS) || (echo "### you must create an alias named '$(QMAKEIOS)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
-	[ -d ios ] || mkdir ios
-	cd ios && $(QMAKEIOS) $(SPEC) ../library.pro 
-	cd ios && $(QMAKEIOS) $(SPEC) ../viewer.pro 
-	touch ios/INScore.xcodeproj
-	touch ios/INScoreViewer.xcodeproj
-
-INScoreIos : 
+ios : QMAKE=qmake-ios
+ios : INSCOREDIR=iosdir
+ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
+	@which $(QMAKE) || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
 	cp -rf ../rsrc/ tmp-rsc
 	make -C $(MOBILESCRIPTS)
-	xcodebuild -jobs 8 -project ios/INScore.xcodeproj -target INScore -configuration Release
-	xcodebuild -jobs 8 -project ios/INScoreViewer.xcodeproj -target INScoreViewer -configuration Release -allowProvisioningUpdates
+	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
 
-ios/INScore.xcodeproj : library.pro
-	make xcodeprojios
+windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScore.vcxproj $(WINOPTS)"
+	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScoreViewer.vcxproj $(WINOPTS)"
+	$(MAKE) -C ../tools/IBundle/build
+	$(MAKE) windlls
 
-ios/INScoreViewer.xcodeproj : viewer.pro
-	make xcodeprojios
+
+#===============================================================
+# building projects
+#===============================================================
+$(INSCOREDIR)/$(LIBPROJ) : $(INSCOREDIR) library.pro
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
+
+$(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../viewer.pro -o $(VIEWPROJ)
+
+$(INSCOREDIR):
+	mkdir $(INSCOREDIR)
+
+#===============================================================
+# windows dll special target
+#===============================================================
+windlls: bin/GUIDOEngine64.dll bin/guidoar.dll in/Plugins/libmusicxml2.dll
+
+bin/GUIDOEngine64.dll: ../lib/GUIDOEngine/win64/GUIDOEngine64.dll
+	cp -f ../lib/GUIDOEngine/win64/GUIDOEngine64.dll bin
+
+bin/Plugins/libmusicxml2.dll:  ../lib/libMusicXML/win64/libmusicxml2.dll
+	[ -d bin/Plugins ] || mkdir bin/Plugins
+	cp -f ../lib/libMusicXML/win64/libmusicxml2.dll bin/Plugins
+
+bin/guidoar.dll: ../lib/GuidoAR/win64/guidoar.dll
+	cp -f ../lib/GuidoAR/win64/guidoar.dll bin
+
 
 #===============================================================
 # building INScore for Android
@@ -160,40 +192,12 @@ uninstallAndroid :
 #===============================================================
 # building the library on linux
 #===============================================================
-DESTDIR ?= /usr
 SHARED  = $(DESTDIR)$(PREFIX)/share
 INSTALLBIN := $(DESTDIR)$(PREFIX)/bin
 INSTALLLIB := $(DESTDIR)$(PREFIX)/lib
 RSRC := ../package/debian/usr/share
 
-linux :  INScoreLinux
-
-linuxproj:
-	[ -d $(BUILDF) ] || mkdir $(BUILDF)
-	cd $(BUILDF) && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
-	cd $(BUILDF) && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
-
-$(BUILDF)/Makefile.lib: library.pro
-	[ -d $(BUILDF) ] || mkdir $(BUILDF)
-	cd $(BUILDF) && $(QMAKE) ../library.pro && mv Makefile Makefile.lib 
-
-$(BUILDF)/Makefile.app: viewer.pro
-	[ -d $(BUILDF) ] || mkdir $(BUILDF)
-	cd $(BUILDF) && $(QMAKE) ../viewer.pro && mv Makefile Makefile.app
-
-INScoreLinux: $(BUILDF)/Makefile.lib $(BUILDF)/Makefile.app
-	make -j 4 -C $(BUILDF) -f Makefile.lib
-	make -j 4 -C $(BUILDF) -f Makefile.app
-	make -C ../tools/IBundle/build
-
-linuxclean:
-	make -C $(BUILDF) -f Makefile.lib clean
-	make -C $(BUILDF) -f Makefile.app clean
-
-install: 
-	[ $(TARGET) = "linux" ] && make linuxinstall
-
-linuxinstall:
+install:
 	cp -d linux/libINScore.so* $(INSTALLLIB)
 	install -m 755 linux/inscoreviewer  $(INSTALLBIN)
 	install -m 755 ../tools/IBundle/IBundle $(INSTALLBIN)
@@ -209,45 +213,10 @@ linuxinstall:
 #===============================================================
 mobileUI: 
 	cp -rf ../rsrc/ tmp-rsc
-	make QMAKE="$(QMAKE) CONFIG+=mobile_ui" BUILDF="mobileUI"
+	$(MAKE) QMAKE="$(QMAKE) CONFIG+=mobile_ui" INSCOREDIR="mobileUI"
 
-
-#===============================================================
-# building the library on windows
-#===============================================================
-WINXML := $(BUILDF)/release/Plugins/libmusicxml2.dll
-windows : $(BUILDF)/INScore.vcxproj $(BUILDF)/INScoreViewer.vcxproj INScoreWin $(BUILDF)/release/$(GUIDOLIB) $(BUILDF)/release/guidoar.dll $(WINXML)
-
-winprojects : 
-	[ -d $(BUILDF) ] || mkdir $(BUILDF)
-	cd $(BUILDF) && $(QMAKE) $(SPEC) ../library.pro
-	cd $(BUILDF) && $(QMAKE) $(SPEC) ../viewer.pro
-
-INScoreWin:
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScore.vcxproj $(WINOPTS)"
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(BUILDF)/INScoreViewer.vcxproj $(WINOPTS)"
-	make -C ../tools/IBundle/build
-
-$(BUILDF)/INScore.vcxproj : library.pro
-	make winprojects
-
-$(BUILDF)/INScoreViewer.vcxproj : viewer.pro
-	make winprojects
-
-$(BUILDF)/release/$(GUIDOLIB): ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB)
-	cp -f ../lib/GUIDOEngine/$(BUILDF)/$(GUIDOLIB) $(BUILDF)/release
-
-$(WINXML):  ../lib/libMusicXML/$(BUILDF)/libmusicxml2.dll
-	[ -d $(BUILDF)/release/Plugins ] || mkdir $(BUILDF)/release/Plugins
-	cp -f ../lib/libMusicXML/$(BUILDF)/libmusicxml2.dll $(WINXML)
-
-$(BUILDF)/release/guidoar.dll: ../lib/GuidoAR/$(BUILDF)/guidoar.dll
-	cp -f ../lib/GuidoAR/$(BUILDF)/guidoar.dll $(BUILDF)/release
-
-winclean:
-	rm -f $(BUILDF)/tmp
 
 #===============================================================
 clean :
-	rm -rf $(BUILDF)
+	rm -rf $(INSCOREDIR)
 

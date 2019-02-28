@@ -92,7 +92,7 @@ win32 {
 ############################## 
 # linux support
 ############################## 
-unix:!android:!macx:!ios:LIBS += -L. -lINScore -lGUIDOEngine -lguidoar -lmicrohttpd
+unix:!android:!macx:!ios:LIBS += -L. -L$$DESTDIR -lINScore -lGUIDOEngine -lguidoar -lmicrohttpd
 
 ############################## 
 # android support
