@@ -76,12 +76,16 @@ macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C ../lib/GuidoAR/macosx
 	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
 	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
-	$(MAKE) -C ../tools/IBundle/build
+	$(MAKE) ibundle
 
 linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(LIBPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(VIEWPROJ)
+	$(MAKE) ibundle
+
+ibundle : 
 	$(MAKE) -C ../tools/IBundle/build
+	cp ../tools/IBundle/IBundle bin
 
 
 ios : QMAKE=qmake-ios
@@ -110,21 +114,6 @@ $(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
 
 $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
-
-#===============================================================
-# windows dll special target 
-#===============================================================
-windlls: bin/GUIDOEngine64.dll bin/guidoar.dll in/Plugins/libmusicxml2.dll
-
-bin/GUIDOEngine64.dll: ../lib/GUIDOEngine/win64/GUIDOEngine64.dll
-	cp -f ../lib/GUIDOEngine/win64/GUIDOEngine64.dll bin
-
-bin/Plugins/libmusicxml2.dll:  ../lib/libMusicXML/win64/libmusicxml2.dll
-	[ -d bin/Plugins ] || mkdir bin/Plugins
-	cp -f ../lib/libMusicXML/win64/libmusicxml2.dll bin/Plugins
-
-bin/guidoar.dll: ../lib/GuidoAR/win64/guidoar.dll
-	cp -f ../lib/GuidoAR/win64/guidoar.dll bin
 
 
 #===============================================================
