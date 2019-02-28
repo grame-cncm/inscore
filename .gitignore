@@ -47,3 +47,9 @@ doc/webAPI/build
 Debug
 Release
 .DS_Store
+
+build/androiddir
+build/archive
+build/iosdir
+build/bin
+
