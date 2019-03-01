@@ -157,7 +157,7 @@
 
     \staff<1> 
 % measure 1 (voice 2) 
-      \restFormat<posy=-8hs,dx=2.5cm> _/1 
+      \restFormat<posy=-8hs, dx=17>(_/1) 
      % measure 2 (voice 2) 
        _/1
 % measure 3 (voice 2)
