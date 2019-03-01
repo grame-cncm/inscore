@@ -178,6 +178,11 @@ mobileUI:
 	$(MAKE) QMAKE="$(QMAKE) CONFIG+=mobile_ui" INSCOREDIR="mobileUI"
 
 #===============================================================
+# the link below is required by macdeployqt to correctly find the inscore framework
+link :
+	[ -h lib ] || ln -s bin lib
+	
+#===============================================================
 clean :
 	rm -rf $(INSCOREDIR)
 
