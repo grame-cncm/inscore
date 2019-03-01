@@ -2,39 +2,39 @@
 system := $(shell uname -s)
 
 ifeq ($(system), Darwin)
-LIBINSCORE :=  -F../../build/macos/Release -framework INScore
+LIBINSCORE :=  -F../../build/bin -framework INScore
 LIBOSCPACK :=  -L../../lib/oscpack -loscpack
-OPT := -mmacosx-version-min=10.6
+OPT := -mmacosx-version-min=10.9
 else
  ifeq ($(system), MINGW32_NT-6.1)
- LIBINSCORE :=  -L../../cmake/build/win32/Release -lINScore
+ LIBINSCORE :=  -L../../cmake/build/bin -lINScore
  LIBOSCPACK :=  -L../../lib/oscpack/cmake/Release -loscpack
  else
  DEPLINUX := ../libINScore.so.1
- LIBINSCORE :=  -L../../build/linux -lINScore -lmicrohttpd
+ LIBINSCORE :=  -L../../build/bin -lINScore -lmicrohttpd
  LIBOSCPACK :=  -L../../lib/oscpack/cmake -loscpack
 endif
 endif
 
 tools :=  ../forcepdfdate ../SendOSC ../INScoreVersion ../ReceiveOSC
-G++   := g++
+CXX   := g++ 
 
 all : $(tools)
 
 ../forcepdfdate: forcepdfdate.cpp
-	$(G++) forcepdfdate.cpp -o ../forcepdfdate
+	$(CXX) forcepdfdate.cpp -o ../forcepdfdate
 
 ../INScoreVersion: INScoreVersion.cpp $(DEPLINUX)
-	$(G++) INScoreVersion.cpp -I../../src/inscore/interface $(LIBINSCORE) -o ../INScoreVersion
+	$(CXX) INScoreVersion.cpp -I../../src/inscore/interface $(LIBINSCORE) -o ../INScoreVersion
 
 ../SendOSC: SendOSC.cpp
-	$(G++) SendOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
+	$(CXX) SendOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../SendOSC
 
 ../ReceiveOSC: ReceiveOSC.cpp
-	$(G++) ReceiveOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../ReceiveOSC
+	$(CXX) ReceiveOSC.cpp  $(OPT) -I../../lib/oscpack $(LIBOSCPACK) -o ../ReceiveOSC
 
 ../libINScore.so.1 : 
-	cd ../ && ln ../build/linux/libINScore.so.1.16.0 libINScore.so.1
+	cd ../ && ln ../build/bin/libINScore.so.1.16.0 libINScore.so.1
 
 clean:  
 	rm -f $(tools)
