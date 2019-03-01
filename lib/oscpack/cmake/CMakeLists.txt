@@ -13,24 +13,17 @@ else(WIN32)
 	add_definitions(-Wall -fPIC)
 endif(WIN32)
 
-if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL powerpc OR
-	${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL ppc)
-	message(STATUS "OSC host is big endian")
+
+#######################################
+# check for endianness
+include (TestBigEndian)
+TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
+if(IS_BIG_ENDIAN)
 	add_definitions(-DOSC_HOST_BIG_ENDIAN=1)
-
-elseif (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL i386 OR
-		${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL x86 OR
-		${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL x86_64 OR
-		${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL armv6l OR
-		${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL AMD64 OR
-		${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL i686)
-	message(STATUS "OSC host is little endian")
+else()
 	add_definitions(-DOSC_HOST_LITTLE_ENDIAN=1)
+endif()
 
-else(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL powerpc)
-	message(SEND_ERROR "${CMAKE_HOST_SYSTEM_PROCESSOR} unknown endianess")
-
-endif ()
 
 if(APPLE)
 #######################################
@@ -43,10 +36,9 @@ if(APPLE)
 		set (libtype STATIC)
 	else ()
 		message (STATUS "Generates Mac OS project- Use -DIOS=yes to change.")
-		set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
-		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
-		set (MACOSX_DEPLOYMENT_TARGET 10.6)
-		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+		set (MACOSX_DEPLOYMENT_TARGET 10.9)
+		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.9)
 	endif ()
 endif(APPLE)
 
