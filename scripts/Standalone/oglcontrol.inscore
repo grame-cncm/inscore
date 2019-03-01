@@ -1,0 +1,23 @@
+
+/ITL/scene opengl 0;
+
+/ITL/scene/oglcontrol set txt "OpenGL Off";
+/ITL/scene/oglcontrol xorigin 1;
+/ITL/scene/oglcontrol yorigin 1;
+/ITL/scene/oglcontrol x 0.98;
+/ITL/scene/oglcontrol y 0.98;
+/ITL/scene/oglcontrol scale 1.5;
+/ITL/scene/oglcontrol watch mouseEnter (/ITL/scene/oglcontrol red 200);
+/ITL/scene/oglcontrol watch mouseLeave (/ITL/scene/oglcontrol red 0);
+/ITL/scene/oglcontrol watch mouseDown  (
+	/ITL/scene/oglcontrol push,
+	/ITL/scene/oglcontrol set txt "OpenGL ON",
+	/ITL/scene opengl 1,
+	/ITL/scene/oglcontrol watch mouseDown  (
+		/ITL/scene/oglcontrol set txt "OpenGL Off",
+		/ITL/scene opengl 0,
+		/ITL/scene/oglcontrol pop
+	)
+);
+
+__END__
