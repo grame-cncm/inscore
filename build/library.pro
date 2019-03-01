@@ -25,8 +25,8 @@ else  { OSCIP = $$OSC/ip/posix }
 
 VERSION = $$system(cat $$ROOT/version.txt)
 
-QT += core gui widgets svg printsupport multimedia multimediawidgets websockets 
-QT += quick qml quickwidgets sensors
+QT += core gui widgets svg printsupport multimedia multimediawidgets websockets sensors
+QT += qml quick quickwidgets 
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
@@ -156,6 +156,7 @@ ios {
     CONFIG += staticlib
     LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
     LIBS += $$ROOT/lib/GuidoAR/ios/libguidoar.a
+	QT += quick quickwidgets 
 }
 
 ############################## 
@@ -179,6 +180,7 @@ android {
     LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
     LIBS += -L$$ROOT/lib/GuidoAR/android -lguidoar
     QT += androidextras
+	QT += quick quickwidgets 
 }
 
 ##############################

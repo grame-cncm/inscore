@@ -8,7 +8,8 @@ MOC_DIR		= tmp
 RCC_DIR		= tmp
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets
-QT += quick qml quickwidgets sensors
+QT += qml sensors
+#QT += quick quickwidgets
 
 ############################## 
 # locations
@@ -48,7 +49,7 @@ ICON = $$ROOT/rsrc/INScoreViewer.icns
 macx {
 	DESTDIR = $$PWD/bin
 	QMAKE_LFLAGS += -FRelease
-	LIBS += -framework INScore
+	LIBS += -F$$ROOT/bin -framework INScore
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
 	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns
 	RSRC.path 	= Contents/Resources
@@ -76,6 +77,7 @@ ios {
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobileios.qrc
 	DEFINES += IOS __MOBILE__
     CONFIG  += arm64 armv7 armv7s # x86_64
+    QT += quick quickwidgets
 }
 
 ############################## 
@@ -107,6 +109,7 @@ android {
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
 	QT += androidextras
+	QT += quick quickwidgets
 	DEFINES += ANDROID __MOBILE__
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
 }
