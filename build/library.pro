@@ -132,7 +132,7 @@ macx {
 	INCLUDEPATH += /usr/local/include
 	LIBS += -L/usr/local/lib -lmicrohttpd
     QMAKE_FRAMEWORK_VERSION = $${VERSION}
-    QMAKE_FRAMEWORK_BUNDLE_NAME = $$PWD/macos/Release/INScore
+    QMAKE_FRAMEWORK_BUNDLE_NAME = $$PWD/bin/INScore
     DEFINES += MACOS
 
 	############################## 
