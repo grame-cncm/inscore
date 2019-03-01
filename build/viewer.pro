@@ -7,8 +7,6 @@ OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
 
-VERSION = $$system(cat ../version.txt)
-
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets
 QT += quick qml quickwidgets sensors
 
@@ -23,6 +21,8 @@ LIB  = $$SRC/inscore
 OSC  = $$LOCALLIB/oscpack
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
+
+VERSION = $$system(cat $$ROOT/version.txt)
 
 CONFIG += c++11
 
@@ -64,7 +64,7 @@ macx {
 # ios support
 ##############################
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
+    QMAKE_IOS_DEPLOYMENT_TARGET = 11.0
 	QMAKE_LFLAGS += -L Release-iphoneos
 	LIBS += -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
 	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
@@ -75,7 +75,7 @@ ios {
 	HEADERS += $$files($$SRC/mobile/ios/*.h)
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobileios.qrc
 	DEFINES += IOS __MOBILE__
-    CONFIG  += arm64 x86_64  # armv7 armv7s 
+    CONFIG  += arm64 armv7 armv7s # x86_64
 }
 
 ############################## 

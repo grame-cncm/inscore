@@ -6,7 +6,6 @@ TARGET = INScore
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = $$system(cat ../version.txt)
 CONFIG += c++11
 CONFIG += warn_off
 
@@ -23,6 +22,8 @@ QRENCODE    = $$LOCALLIB/qrencode
 JSON        = $$SRC/json
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
+
+VERSION = $$system(cat $$ROOT/version.txt)
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets 
 QT += quick qml quickwidgets sensors
@@ -151,7 +152,7 @@ ios {
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += INSCORE_IOS __MOBILE__
-    CONFIG += arm64 x86_64   # armv7 armv7s
+    CONFIG += arm64 armv7 armv7s # x86_64
     CONFIG += staticlib
     LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
     LIBS += $$ROOT/lib/GuidoAR/ios/libguidoar.a
