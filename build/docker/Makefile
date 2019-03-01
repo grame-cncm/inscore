@@ -2,7 +2,8 @@
 #
 #
 
-NAME     := inscore:latest
+VERSION	 := $(shell cat ../../version.txt)
+NAME     := inscore:$(VERSION)
 
 build:
 	@echo building docker image $(NAME)...
