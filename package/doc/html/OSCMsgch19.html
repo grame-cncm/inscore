@@ -17,7 +17,7 @@ href="OSCMsgch18.html#tailOSCMsgch18.html" >prev-tail</a>] [<a
 href="#tailOSCMsgch19.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch19.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;19</span><br /><a 
- id="x24-14100019"></a>Score expressions</h2>
+ id="x24-14200019"></a>Score expressions</h2>
 <!--l. 6--><p class="noindent" ><span 
 class="ptmri8t-">Score expressions </span>allows to defines score objects (<span 
 class="pcrr8tn-">gmn </span>or <span 
@@ -47,28 +47,28 @@ class="newline" /><span
 class="pcrr8tn-x-x-90">/ITL/scene/pianoroll set pianoroll expr(score);</span></div></div>
 </div>
 <h3 class="sectionHead"><span class="titlemark">19.1    </span> <a 
- id="x24-14200019.1"></a>General Syntax</h3>
+ id="x24-14300019.1"></a>General Syntax</h3>
 <!--l. 16--><p class="noindent" >A score expression always starts with <span 
 class="pcrr8tn-">expr( </span>and ends with <span 
 class="pcrr8tn-">)</span>, then 2 syntaxes are handled:
 <a 
- id="dx24-142001"></a>
+ id="dx24-143001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 27--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">EvaluableExpression</span> <img 
-src="OSCMsg144x.png" alt="PICT" >
+src="OSCMsg145x.png" alt="PICT" >
 </div></dd></dl>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="ptmb8t-">1</span>: Define an expression as an operation combining two scores. <span 
 class="pcrr8tn-">operator </span>is the name of the operation
      used to combine them (see Section&#x00A0;<a 
-href="#x24-14300019.2">19.2<!--tex4ht:ref: operators --></a> for operators list), and <span 
+href="#x24-14400019.2">19.2<!--tex4ht:ref: operators --></a> for operators list), and <span 
 class="pcrr8tn-">score </span>are the arguments passed to
      the operator (see Section&#x00A0;<a 
-href="#x24-14400019.3">19.3<!--tex4ht:ref: arguments --></a> for arguments specification).
+href="#x24-14500019.3">19.3<!--tex4ht:ref: arguments --></a> for arguments specification).
      </li>
      <li class="itemize"><span 
 class="ptmb8t-">2</span>:  Define  on  expression  using  a  single  score.  This  syntax  is  useful  when  defining  an  object  as  a
@@ -108,7 +108,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[c d e f g h]";</span>
 </div>
 <!--l. 47--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">19.2    </span> <a 
- id="x24-14300019.2"></a>Score Operators</h3>
+ id="x24-14400019.2"></a>Score Operators</h3>
 <!--l. 49--><p class="noindent" >All the score operators of INScore make use of guido operators implemented in the GuidoAR library.
                                                                                  
 
@@ -323,22 +323,22 @@ class="td11">        </td></tr></table></div></div>
                                                                                  
 </div><hr class="endfloat" />
 <h3 class="sectionHead"><span class="titlemark">19.3    </span> <a 
- id="x24-14400019.3"></a>Score Arguments</h3>
+ id="x24-14500019.3"></a>Score Arguments</h3>
 <!--l. 79--><p class="noindent" >The syntax for arguments is quite permissive and various resources can be used as arguments for score expressions.
 In any case, when evaluating the expression, all the arguments will be reduce to GMN string so they can then be
 processed by the operators.
 <a 
- id="dx24-144001"></a>
+ id="dx24-145001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 90--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">Argument</span> <img 
-src="OSCMsg145x.png" alt="PICT" >
+src="OSCMsg146x.png" alt="PICT" >
 </div></dd></dl>
 <!--l. 92--><p class="noindent" >
 <h5 class="subsubsectionHead"><a 
- id="x24-14500019.3"></a>Arguments specification</h5>
+ id="x24-14600019.3"></a>Arguments specification</h5>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">GmnCode </span>are not evaluated, passed as they are to operators. Both GMN and MusicXML string are
@@ -362,14 +362,14 @@ class="pcrr8tn-">expr </span>token  can  be  omitted:
      parenthesis are sufficient.</li></ul>
 <!--l. 101--><p class="noindent" >
 <h5 class="subsubsectionHead"><a 
- id="x24-14600019.3"></a>Arguments prefix</h5>
+ id="x24-14700019.3"></a>Arguments prefix</h5>
                                                                                  
 
                                                                                  
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">&amp;</span>: When triggering the reevaluation of an expression (see Section&#x00A0;<a 
-href="#x24-14700019.4">19.4<!--tex4ht:ref: exprCmd --></a>) only the arguments prefixed
+href="#x24-14800019.4">19.4<!--tex4ht:ref: exprCmd --></a>) only the arguments prefixed
      with <span 
 class="pcrr8tn-">&amp; </span>are updated.
      </li>
@@ -423,12 +423,12 @@ class="newline" />
 >
 <!--l. 120--><p class="noindent" >
 <!--l. 121--><p class="noindent" ><img 
-src="OSCMsg146x.png" alt="PIC" class="graphics" width="133.70766pt" height="68.5603pt" ><!--tex4ht:graphics  
-name="OSCMsg146x.png" src="imgs/seqparEnhanced.ps"  
+src="OSCMsg147x.png" alt="PIC" class="graphics" width="133.70766pt" height="68.5603pt" ><!--tex4ht:graphics  
+name="OSCMsg147x.png" src="imgs/seqparEnhanced.ps"  
 --></div>
 <!--l. 124--><p class="noindent" >Querying for the expanded expression of <span 
 class="pcrr8tn-">/ITL/scene/score </span>(see Section&#x00A0;<a 
-href="#x24-14700019.4">19.4<!--tex4ht:ref: exprCmd --></a>) should return:
+href="#x24-14800019.4">19.4<!--tex4ht:ref: exprCmd --></a>) should return:
                                                                                  
 
                                                                                  
@@ -473,7 +473,7 @@ class="newline" />Arguments using special characters (space, tabulation, parenth
 otherwise quotes can be omitted.
 <!--l. 147--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">19.4    </span> <a 
- id="x24-14700019.4"></a><span 
+ id="x24-14800019.4"></a><span 
 class="pcrr8tn-">expr </span>commands</h3>
 <!--l. 150--><p class="noindent" >ITLObject defined using an evaluable expression gain access to these specific commands:
      <ul class="itemize1">
@@ -507,7 +507,7 @@ renewed.
 
                                                                                  
 <h3 class="sectionHead"><span class="titlemark">19.5    </span> <a 
- id="x24-14800019.5"></a>newData event</h3>
+ id="x24-14900019.5"></a>newData event</h3>
 <!--l. 170--><p class="noindent" ><span 
 class="pcrr8tn-">newData </span>is triggered by any object when its value change (generally because of a <span 
 class="pcrr8tn-">set </span>message). Neither trying to
@@ -631,16 +631,16 @@ class="pcrr8tn-x-x-90">/ITL/scene/score set gmn "[{c,e,g}]";</span></div></div>
                                                                                  
 <!--l. 207--><p class="noindent" >
 <!--l. 208--><p class="noindent" ><img 
-src="OSCMsg147x.png" alt="PIC" class="graphics" width="217.41444pt" height="76.48653pt" ><!--tex4ht:graphics  
-name="OSCMsg147x.png" src="imgs/autoSingleLine.ps"  
+src="OSCMsg148x.png" alt="PIC" class="graphics" width="217.41444pt" height="76.48653pt" ><!--tex4ht:graphics  
+name="OSCMsg148x.png" src="imgs/autoSingleLine.ps"  
 --></div>
 <!--l. 212--><p class="noindent" >All script at once:
 <div class="center" 
 >
 <!--l. 213--><p class="noindent" >
 <!--l. 214--><p class="noindent" ><img 
-src="OSCMsg148x.png" alt="PIC" class="graphics" width="217.41444pt" height="76.48653pt" ><!--tex4ht:graphics  
-name="OSCMsg148x.png" src="imgs/autoAllScript.ps"  
+src="OSCMsg149x.png" alt="PIC" class="graphics" width="217.41444pt" height="76.48653pt" ><!--tex4ht:graphics  
+name="OSCMsg149x.png" src="imgs/autoAllScript.ps"  
 --></div>
 <!--l. 219--><p class="noindent" >To avoid such undeterministic behaviour, one should, in this case, manually trigger <span 
 class="pcrr8tn-">reeval </span>after each modification
@@ -649,12 +649,12 @@ class="pcrr8tn-">score</span>.
                                                                                  
 
                                                                                  
-<!--l. 3705--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 3722--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch20.html" >next</a>] [<a 
 href="OSCMsgch18.html" >prev</a>] [<a 
 href="OSCMsgch18.html#tailOSCMsgch18.html" >prev-tail</a>] [<a 
 href="OSCMsgch19.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch19.html" >up</a>] </p></div>
-<!--l. 3705--><p class="noindent" ><a 
+<!--l. 3722--><p class="noindent" ><a 
  id="tailOSCMsgch19.html"></a>  
 </body></html> 
