@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html><html>
+<xmp theme="united" style="display:none;">
+
+INScore project
+======================================================
+###[GRAME](http://www.grame.fr) - Centre national de creation musicale
+
+-------------
+
+## General information
+
+INScore is an environment for the design of interactive, augmented music scores, oriented towards unconventional uses of music notation and representation, without excluding classical approaches like symbolic music notation. INScore is fully controllable using Open Sound Control [OSC] messages. A scripting language, designed as an extended textual version of OSC messages, allows you to describe scores and interactions in a modular and incremental way. 
+
+This package comes with a lot of sample scripts (`.inscore` files, that are actually text files) that you can try by simple drag & drop to the application window. Note that it supports also direct drag & drop of text.
+
+
+### Note about the Guido Font
+
+INScore is distributed as a standalone application and should
+work as is. However, depending on your platform and on your
+operating system version, it may fail to load the music font. 
+The symptom is strange glyphs when you display
+symbolic music notation.
+To solve the problem, you have to install the font manually:
+
+ - the music font file is 'guido2.ttf', it is located along the application
+ - to install double click the guido2.ttf file.
+   On most of the systems, a font manager will open that contains
+   an install button.
+
+Note also that to update an existing font file, it is safer to
+uninstall the previous version before installing the new one.
+
+## Links
+
+The INScore project is an open source project. 
+For more information, see at:
+
+ - http://inscore.sourceforge.net
+ - https://github.com/grame-cncm/inscore
+
+INScore makes use of the following technologies:
+
+  - the [GUIDOEngine](http://guidolib.sf.net)
+  - the GRAME [Faust compiler](https://faust.grame.fr)
+  - the IRCAM [Gesture Follower](http://imtr.ircam.fr/imtr/Gesture_Follower)
+  - the [Qt5](http://www.qt.io/) cross-platform application and UI framework
+
+Optionnal dependency:
+
+  - the [libMusicXML library](https://github.com/grame-cncm/libmusicxml)
+
+
+## Acknowledgments
+
+INScore was initiated in the Interlude project (http://interlude.ircam.fr), 
+funded by the French National Research Agency [ANR- 08-CORD-010].
+
+I would like to thank all the people who have been contributing 
+to INScore design and development, and especially:
+
+ Kevin Bardotti, 
+ Christophe Daudin, 
+ Sarah Denoux, 
+ Martin Carlé,
+ Guillaume Gouilloux,
+ Joachim Heintz,
+ Camille Le Roi,
+ Gabriel Lepetit-Aimon,
+ Arnaud Margaillan,
+ Eric Ravel.
+
+Many thanks also to the Interlude team - Frédéric Bevilacqua, Norbert Schnell, 
+Nicolas Rasamimanana, Emmanuel Fléty, Fabrice Guédy, Jean-Louis Frechin, 
+Uros Petrevski, Bernard Garabédian, Rémi Dury, Bruno Verbrugghe - who contributed
+to the elaboration of the project foundations.
+
+And of course, warmest thanks to my colleagues and friends Stéphane Letz 
+and Yann Orlarey.
+
+[Dominique Fober](mailto:fober@grame.fr)
+
+-------------
+ 
+<span style="font-size: 80%">Copyright GRAME (c) 2009-2019</span>
+
+</xmp>
+<script src=http://strapdownjs.com/v/0.2/strapdown.js></script>
+</html>
