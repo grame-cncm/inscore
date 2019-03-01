@@ -7,27 +7,16 @@ IF NOT EXIST ibundledir (
 	GOTO QMAKE
 )
 
-IF [%1]==[] GOTO COMPILE
+IF [%1]==[] GOTO IBUNDLE
 
-IF %1==-qmake GOTO QMAKE
+IF %1==-qmake GOTO IQMAKE
+GOTO IBUNDLE
 
-GOTO USAGE
-
-
-:QMAKE
+:IQMAKE
 cd ibundledir
 echo Call qmake 
 qmake ..
 cd ..
 
-:COMPILE
+:IBUNDLE
 msbuild ibundledir/IBundle.vcxproj        /p:Configuration=Release /p:Platform=x64 /maxcpucount:4
-GOTO DONE
-
-
-:USAGE
-echo Usage: %0 [OPTION]
-echo where OPTION is in:
-echo -qmake  : regenerate the qmake output
-
-:DONE
