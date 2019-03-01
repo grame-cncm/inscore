@@ -21,7 +21,7 @@
 #
 ###################################################################################
 
-version	?= $(shell ./INScoreVersion)
+version	?= $(shell cat version.txt)
 pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
 AWK = gawk		# gawk is required for strings manipulation

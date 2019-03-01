@@ -12,6 +12,16 @@ then
 fi
 
 
+if [ -d validation ] 
+then
+	echo "moving version number to $VERSION"
+else
+	echo "### This script must be called from the repository root"; 
+	exit 1
+fi
+
+
+
 ROOT=.
 VERSION=$1
 
@@ -19,21 +29,22 @@ function toNum {
 	echo $1 | sed 's/\.//' | sed 's/^0*//'
 }
 
-echo "moving version number to $VERSION"
 
-LPRO=$ROOT/build/library.pro
-echo " updating $LPRO"
-sed "s/^VERSION = ..*/VERSION = $VERSION/" $LPRO > TMP$$
-mv -f TMP$$ $LPRO
+/bin/echo -n $VERSION > version.txt
 
-IPRO=$ROOT/build/viewer.pro
-echo " updating $IPRO"
-sed "s/^VERSION = ..*/VERSION = $VERSION/" $IPRO > TMP$$
-mv -f TMP$$ $IPRO
+#LPRO=$ROOT/build/library.pro
+#echo " updating $LPRO"
+#sed "s/^VERSION = ..*/VERSION = $VERSION/" $LPRO > TMP$$
+#mv -f TMP$$ $LPRO
+
+#IPRO=$ROOT/build/viewer.pro
+#echo " updating $IPRO"
+#sed "s/^VERSION = ..*/VERSION = $VERSION/" $IPRO > TMP$$
+#mv -f TMP$$ $IPRO
 
 OSC=$ROOT/doc/OSCMsg.tex
 echo " updating $OSC"
-sed "s/\(title..*v\.*\)[0-9]*\.[0-9]*/\1$VERSION/" $OSC  > TMP$$
+sed "s/\(title..*v\.*\)[^}]*/\1$VERSION/" $OSC  > TMP$$
 mv -f TMP$$ $OSC
 
 ITL=$ROOT/src/inscore/interface/INScore.h
@@ -60,8 +71,6 @@ PKG=$ROOT/package/makefile
 echo " updating $PKG"
 sed "s/\(version := \)[0-9]*\.[0-9]*/\1$VERSION/" $PKG > TMP$$
 mv -f TMP$$ $PKG
-
-#open $ROOT/build/macos/INScore.xcodeproj
 
 echo "==> change manually info.plist, rc files in win32 folder and AndroiManifest"
 open -t build/Info.plist build/Info-ios.plist win32/INScore.rc win32/Viewer/INScoreViewer.rc rsrc/android/AndroidManifest.xml

@@ -6,7 +6,7 @@ TARGET = INScore
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-VERSION = 1.23
+VERSION = $$system(cat ../version.txt)
 CONFIG += c++11
 CONFIG += warn_off
 

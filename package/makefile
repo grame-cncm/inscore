@@ -1,4 +1,5 @@
-version := 1.23
+
+VERSION := $(shell cat ../version.txt)
 system	:= $(shell uname -s)
 ifeq ($(system), MINGW32_NT-6.1) 
 	win32 = yes
@@ -36,15 +37,15 @@ ifdef win32
 endif
 endif
 
-package:= INScore-$(version)
-rsrc   := INScore-rsrc-$(version)
+package:= INScore-$(VERSION)
+rsrc   := INScore-rsrc-$(VERSION)
 viewer := INScoreViewer
 interf := interfaces
 docsrc := ../doc
 docdst := ./doc
 
-macapp  := $(viewer)-$(version).app
-winapp  := $(viewer)-$(version).exe
+macapp  := $(viewer)-$(VERSION).app
+winapp  := $(viewer)-$(VERSION).exe
 macplug := $(macapp)/Contents/Plugins
 winplug := Plugins
 ibundle := ../tools/IBundle
@@ -248,5 +249,5 @@ wincommon:
 linux:
 	[ -d $(package) ] || mkdir -p $(package)
 	make common
-	make version=$(version) -f makedeb
+	make VERSION=$(VERSION) -f makedeb
 
