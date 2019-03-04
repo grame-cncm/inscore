@@ -5,7 +5,8 @@ system	:= $(shell uname -s)
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
 
 MAKE ?= make
-BUILDDIR    := ../build/bin
+BUILD    := build
+BUILDDIR := ../build/bin
 
 ifeq ($(system), MINGW)
   WIN32QTPATH ?= $(shell qmake --version | grep Using | sed -e 's/..*\([A-Za-z]:[^ ]*\)lib/\1/')
@@ -56,19 +57,13 @@ cleanperms:
 	@chmod -x  $(shell find $(package) -name "*.inscore")
 
 macos:
-	@[ -d $(package) ] || mkdir -p $(package)
-	@$(MAKE) -C ../build link
-	$(MAKE) common
-	-[ -d $(package)/$(macapp) ] && rm -rf $(package)/$(macapp)
-	cp -r $(BUILDDIR)/$(viewer).app $(package)/$(macapp)
-	macdeployqt $(package)/$(macapp)
-	$(MAKE) cleanperms
-	cp -f ../src/guido2.ttf $(package)
-	cd $(package) && ln -sf /Applications .
-	@[ -d $(package)/IBundle ] || mkdir $(package)/IBundle
-	cp $(ibundle)/IBundle $(package)/IBundle
-	cp $(ibundle)/readme.txt $(package)/IBundle
-	$(MAKE) dmg
+	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
+	macdeployqt $(BUILDDIR)/INScoreViewer.app
+	cd $(BUILD) && cmake ..
+	cmake --build $(BUILD) --config Release --target install
+	cd $(BUILD)/$(package) && ln -s -f /Applications . 
+	hdiutil create $(package).dmg -fs HFS+ -srcfolder $(BUILD)/$(package) -format UDBZ -ov
+
 		
 common: 
 	cp -r doc $(package)
