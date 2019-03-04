@@ -29,7 +29,9 @@ winplug := Plugins
 
 
 #########################
-.PHONY: doc rsrc
+.PHONY: doc rsrc macos linux windows
+
+package: $(TARGET)
 
 help:
 	@echo This makefile builds the INScore package.
@@ -70,4 +72,6 @@ copydoc:
 	
 dist :
 	git archive --format=tar.gz --prefix=$(package)/ HEAD > $(package).tgz
-
+	
+windows :
+	echo "Use the MakePkg.bat script to generate the inscore installer"
