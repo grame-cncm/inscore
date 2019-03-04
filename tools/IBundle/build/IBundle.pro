@@ -9,7 +9,7 @@ OBJECTS_DIR	= tmp
 MOC_DIR		= tmp
 DESTDIR     = $$PWD/..
 
-QT -= gui;
+QT = core
 
 VERSION = 1.0
 DEFINES += IBUNDLE
