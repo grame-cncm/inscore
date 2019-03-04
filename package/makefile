@@ -3,15 +3,12 @@ VERSION := $(shell cat ../version.txt)
 system	:= $(shell uname -s)
 # normalizes MINGW versions
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
-
 ifeq ($(system), Darwin)
 	TARGET  = macos
 endif
-
 ifeq ($(system), MINGW)
 	TARGET = windows
 endif
-
 ifeq ($(system), Linux)
 	TARGET = linux
 endif
@@ -25,8 +22,6 @@ package:= INScore-$(VERSION)
 docsrc := ../doc
 docdst := ./doc
 
-winplug := Plugins
-
 
 #########################
 .PHONY: doc rsrc macos linux windows
@@ -35,11 +30,13 @@ package: $(TARGET)
 
 help:
 	@echo This makefile builds the INScore package.
-	@echo usage:
-	@echo "  make macos       # for Mac OS X"
-	@echo "  make linux       # for linux systems"
-	@echo "  make dist        # makes src package"
-	@echo "  make doc         # makes doc"
+	@echo Available targets are:
+	@echo "   macos     for Mac OS X"
+	@echo "   linux     for linux systems"
+	@echo "   dist      make the src package"
+	@echo "   doc       regenerate the documentation"
+	@echo "Option:"
+	@echo "   PREFIX    the destination prefix (used on linux only)"
 
 macos:
 	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
@@ -56,9 +53,6 @@ linux:
 		
 doc:
 	$(MAKE) -C $(docsrc)/webAPI html
-	$(MAKE) copydoc
-		
-copydoc: 
 	@[ -d $(docdst)/html ] || mkdir -p $(docdst)/html
 	cp -f $(docsrc)/OSCMsg.pdf $(docdst)
 	$(MAKE) -C $(docsrc) htmlclean
