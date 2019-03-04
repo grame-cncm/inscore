@@ -1,5 +1,5 @@
     INScore Viewer
-    Copyright (C) 2009-2011 GRAME
+    Copyright (C) 2009-2019 GRAME
     Centre National de Creation Musicale
 --------------------------------------------------------------------------------------------
     This program is free software; you can redistribute it and/or modify
