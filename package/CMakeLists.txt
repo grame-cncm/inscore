@@ -15,7 +15,6 @@ set (INSDOC ${ROOT}/package/doc)
 # versions management
 file (READ ${ROOT}/version.txt VERSION)
 get_major_minor_patch( ${VERSION} )
-
 message (STATUS "Configuring version ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 
@@ -27,15 +26,22 @@ file (GLOB APP ${BINDIR}/*)
 ####################################
 # install section
 ####################################
-set (CMAKE_INSTALL_PREFIX .)
 if (WIN32)
+	set (CMAKE_INSTALL_PREFIX .)
 	set (DEST .)
+	set (DOCDEST  ${DEST})
+	set (FONTDEST ${DEST})
 elseif(APPLE)
+	set (CMAKE_INSTALL_PREFIX .)
 	set (DEST INScore-${VERSION})
+	set (DOCDEST  ${DEST})
+	set (FONTDEST ${DEST})
 else()
-	set (DEST INScore-${VERSION})
+	set (DEST ${DESTDIR}${CMAKE_INSTALL_PREFIX})
+	set (DOCDEST  ${DEST}/share/inscore)
+	set (FONTDEST ${DEST}/share/fonts/guido)
 endif()
-set (CPACKDEST INScore-${VERSION})
+message (STATUS "Install to ${DEST}")
 
 ####################################
 # install applications
@@ -62,12 +68,22 @@ install (
     	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
     PATTERN ".DS_Store" EXCLUDE
 )
+else ()
+file (GLOB INSCORELIB RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${BINDIR}/libINScore*")
+install (
+    FILE ${BINDIR}/inscoreviewer DESTINATION ${DEST}/bin
+    FILE_PERMISSIONS USE_SOURCE_PERMISSIONS
+)
+install (
+    FILE ${INSCORELIB} DESTINATION ${DEST}/lib
+    FILE_PERMISSIONS USE_SOURCE_PERMISSIONS
+)
 endif()
 
 ####################################
 # install documentation
 install (
-    DIRECTORY ${INSDOC} DESTINATION ${DEST}
+    DIRECTORY ${INSDOC} DESTINATION ${DOCDEST}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
     PATTERN ".DS_Store" EXCLUDE
@@ -76,7 +92,7 @@ install (
 ####################################
 # install interfaces
 install (
-    DIRECTORY ${ROOT}/interfaces DESTINATION ${DEST}
+    DIRECTORY ${ROOT}/interfaces DESTINATION ${DOCDEST}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
     PATTERN ".DS_Store" EXCLUDE
@@ -84,7 +100,7 @@ install (
 
 ####################################
 # install sample files
-set (SAMPLES ${DEST}/examples)
+set (SAMPLES ${DOCDEST}/examples)
 set (SSRC    ${ROOT}/scripts)
 install (
     DIRECTORY 	${SSRC}/M-signalConnection
@@ -115,7 +131,14 @@ install (
 ####################################
 # install misc files
 install (
-    FILES     ${ROOT}/src/changelog.txt ${ROOT}/package/ReadMe.html DESTINATION ${DEST}
+    FILES     ${ROOT}/src/changelog.txt ${ROOT}/package/ReadMe.html DESTINATION ${DOCDEST}
+    PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+)
+
+####################################
+# installguido font
+install (
+    FILES     ${ROOT}/src/guido2.ttf DESTINATION ${FONTDEST}
     PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 )
 
@@ -133,6 +156,7 @@ endif()
 ####################################
 # cpack section
 ####################################
+set (CPACKDEST INScore-${VERSION})
 set (CPACK_PACKAGE_NAME   "INScore")
 set (CPACK_PACKAGE_VENDOR "GRAME")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "INScore - an environment for the design of interactive augmented music scores.")
