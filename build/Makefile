@@ -155,20 +155,11 @@ uninstallAndroid :
 #===============================================================
 # install target
 #===============================================================
-SHARED  = $(DESTDIR)$(PREFIX)/share
-INSTALLBIN := $(DESTDIR)$(PREFIX)/bin
-INSTALLLIB := $(DESTDIR)$(PREFIX)/lib
-RSRC := ../package/debian/usr/share
-
 install:
-	cp -d bin/libINScore.so* $(INSTALLLIB)
-	install -m 755 bin/inscoreviewer  $(INSTALLBIN)
-	install -m 755 ../tools/IBundle/IBundle $(INSTALLBIN)
-	mkdir -p $(SHARED)/fonts/guido
-	install -m 644 ../src/guido2.ttf $(SHARED)/fonts/guido/guido2.ttf 
-	install -m 644 $(RSRC)/applications/inscore.desktop $(SHARED)/applications
-	install -m 644 $(RSRC)/icons/hicolor/48x48/apps/inscore.png $(SHARED)/icons/hicolor/48x48/apps/inscore.png
-	install -m 644 $(RSRC)/icons/hicolor/128x128/apps/inscore.png $(SHARED)/icons/hicolor/128x128/apps/inscore.png
+	make -C ../package
+
+uninstall:
+	make -C ../package uninstall
 
 #===============================================================
 # building the library with mobileUI

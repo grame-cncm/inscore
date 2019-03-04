@@ -38,18 +38,21 @@ help:
 	@echo "Option:"
 	@echo "   PREFIX    the destination prefix (used on linux only)"
 
-macos:
-	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
+macos: $(BUILD)/Makefile
 	macdeployqt $(BUILDDIR)/INScoreViewer.app
-	cd $(BUILD) && cmake ..
 	cmake --build $(BUILD) --config Release --target install
 	cd $(BUILD)/$(package) && ln -s -f /Applications . 
 	hdiutil create $(package).dmg -fs HFS+ -srcfolder $(BUILD)/$(package) -format UDBZ -ov
 
-linux:
+linux: $(BUILD)/Makefile
+	cmake --build $(BUILD) --config Release --target install
+	
+$(BUILD)/Makefile:
 	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
 	cd $(BUILD) && cmake -DCMAKE_INSTALL_PREFIX=$(PREFIX) ..
-	cmake --build $(BUILD) --config Release --target install
+
+uninstall: $(BUILD)/install_manifest.txt
+	rm -f $(shell cat $(BUILD)/install_manifest.txt)
 		
 doc:
 	$(MAKE) -C $(docsrc)/webAPI html
