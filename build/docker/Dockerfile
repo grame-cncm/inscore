@@ -5,9 +5,6 @@ RUN apt-get install -y libmicrohttpd-dev libpulse-dev
 RUN apt-get install -y libqt5svg5-dev libqt5websockets5-dev libqt5sensors5-dev qtmultimedia5-dev qtdeclarative5-dev
 
 WORKDIR /grame
-RUN git clone --single-branch -b dev --depth 1 https://github.com/grame-cncm/guidoar.git
-RUN make -C guidoar/build MIDIEXPORT=no && make -C guidoar/build/linux install
-
 RUN git clone --single-branch -b dev --depth 1 https://github.com/grame-cncm/inscore.git
 WORKDIR /grame/inscore/build
 RUN git pull
