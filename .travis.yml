@@ -16,7 +16,7 @@ before_install:
   - sudo make -C guidolib/build/guidodir install
   - git clone --depth 1 --single-branch -b dev https://github.com/grame-cncm/guidoar.git guidoar
   - make -C guidoar/build MIDIEXPORT=no
-  - sudo make -C guidoar/build install
+  - sudo make -C guidoar/build/guidoardir install
  
 branches:
   only:
