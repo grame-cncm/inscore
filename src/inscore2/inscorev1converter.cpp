@@ -66,7 +66,7 @@ const SINode v1Msg::getMethod (const SINode& node)
 //------------------------------------------------------------
 SIMessage v1Msg::getParams (const SINode& node, SIMessage msg) const
 {
-	if (!node) return;
+	if (!node) return 0;
 	if (node->address()) {
 		v1Msg msgnode (node);
 		return msgnode.toMessage ();
