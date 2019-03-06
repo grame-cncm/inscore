@@ -38,6 +38,7 @@ greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_L
 # source and headers
 ############################## 
 SOURCES  =  $$files($$SRC/inscore/*.cpp, true)
+SOURCES +=  $$files($$SRC/inscore2/*.cpp, true)
 SOURCES +=  $$files($$SRC/libmapping/src/*.cpp, true)		# libmapping source files
 SOURCES +=  $$files($$OSC/ip/*.cpp)							# oscpack files
 SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
@@ -46,6 +47,7 @@ SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
 
 HEADERS  =  $$files($$SRC/inscore/*.h, true)
+HEADERS +=  $$files($$SRC/inscore2/*.h, true)
 HEADERS +=  $$files($$SRC/inscore/*.y, true)
 HEADERS +=  $$files($$SRC/inscore/*.l, true)
 HEADERS +=  $$files($$SRC/libmapping/src/*.h, true)
@@ -61,6 +63,8 @@ include($$SRC/QArchive/qarchive.pri)
 # include directories
 ############################## 
 INCLUDEPATH  =  $$files($$SRC/inscore/[^.]*)
+INCLUDEPATH +=  $$files($$SRC/inscore2)
+INCLUDEPATH +=  $$files($$SRC/inscore2/*)
 INCLUDEPATH +=  $$files($$SRC/inscore/plugins/*)
 INCLUDEPATH +=  $$files($$SRC/inscore/signal/faust)
 INCLUDEPATH +=  $$files($$SRC/inscore/expression/parser)
