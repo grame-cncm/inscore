@@ -20,7 +20,7 @@ DEFINES += IBUNDLE
 ROOT 		= $$PWD/..
 SRC 		= $$ROOT/src
 ITLROOT		= $$ROOT/../../
-ITLSRC		= $$ITLROOT/src/inscore/
+ITLSRC		= $$ITLROOT/src
 
 win32 						{ DEFINES += NOHOSTNAME WINDOWS }
 android 					{ DEFINES += ANDROID }
@@ -40,8 +40,9 @@ SOURCES  =	$$files($$SRC/*.cpp, true)
 SOURCES +=	$$ITLROOT/src/inscore/expression/ExprInfo.cpp
 
 HEADERS  = $$files($$SRC/*.h, true)
-INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/
-INCLUDEPATH +=	$$ITLSRC/signal/
+INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/ 
+INCLUDEPATH +=	$$ITLSRC/inscore/signal/
+INCLUDEPATH +=	$$ITLSRC/inscore2
 
 include($$ITLROOT/src/QArchive/qarchive.pri)
 
