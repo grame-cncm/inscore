@@ -57,6 +57,7 @@ undefined:
 
 help :
 	@echo "This makefile is intended to build INScore for differents platforms."
+	@echo "Default target ($(TARGET)) is inferred from the current platform"
 	@echo "Available targets are : "
 	@echo "  macos : to build for Mac OS"
 	@echo "  ios : to build for iOS"
@@ -64,9 +65,10 @@ help :
 	@echo "  linux : to build for Linux"
 	@echo "  android : to build for android"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
-	@echo "    with XXX the device serial number (can be retrieved using 'make devandroid')"
-	@echo "    DEVICE is optional when only one Android device is connected"
+	@echo "       with XXX the device serial number (can be retrieved using 'make devandroid')"
+	@echo "       DEVICE is optional when only one Android device is connected"
 	@echo "  devandroid : to get the serial number of the connected device"
+	@echo "  qmake : to regenerate the projects"
 
 #===============================================================
 # building inscore
@@ -114,6 +116,10 @@ $(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
 
 $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
+
+qmake :
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../viewer.pro  -o $(VIEWPROJ)
 
 
 #===============================================================
