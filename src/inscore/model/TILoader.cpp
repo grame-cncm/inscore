@@ -40,6 +40,12 @@
 #include "QFileDownloader.h"
 #include "../QArchive/QArchive.h"
 
+#include "IParser2.h"
+#include "parseEval.h"
+#include "evaluator2.h"
+#include "inscorev1converter.h"
+
+
 using namespace std;
 
 namespace inscore
@@ -161,15 +167,69 @@ MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std
 }
 
 //--------------------------------------------------------------------------
-bool TILoader::loadString(const std::string& str, IObject* client)
+SIMessageList TILoader::inscorev2_to_inscorev1 (const inscore2::SINode& node)
 {
-	stringstream sstr (str);
-	ITLparser p (&sstr, 0, client->getAppl());
-	return p.parse();
+	SIMessageList out = IMessageList::create();
+	try {
+		inscore2::SINode e = inscore2::evaluator::eval(inscore2::parseEval::eval(node));
+		inscore2::inscorev1converter v1;
+		return v1.convert(e);
+	}
+	catch (inscore2::parseEvalException e) {
+		ITLErr << "error while evaluating parser output: " << e.what() << ITLEndl;
+	}
+	catch (inscore2::evalException e) {
+		ITLErr << "error while evaluating expression: " << e.what() << ITLEndl;
+	}
+	return out;
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus TILoader::preprocess(const IMessage* msg, IAppl* appl, const std::string& rootpath)
+SIMessageList TILoader::parsev2(std::istream* stream, int line) const
+{
+	inscore2::IParser p (stream);
+	if (p.parse()) {
+		return inscorev2_to_inscorev1 (p.tree());
+	}
+	return 0;
+}
+
+//--------------------------------------------------------------------------
+bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute) const
+{
+	if (pversion == 2) {
+		SIMessageList msgs = parsev2 (stream, line);
+		if (!msgs) return false;
+		if (execute) {
+			for (auto n: msgs->list()) root->processMsg(n);
+		}
+		return true;
+
+//		inscore2::IParser p (stream);
+//		if (p.parse()) {
+//			SIMessageList msgs = inscorev2_to_inscorev1 (p.tree());
+//			if (execute) {
+//				for (auto n: msgs->list()) root->processMsg(n);
+//			}
+//			return true;
+//		}
+//		return false;
+	}
+	else {
+		ITLparser p (stream, line, root, execute);
+		return p.parse();
+	}
+}
+
+//--------------------------------------------------------------------------
+bool TILoader::loadString(const std::string& str, IObject* client, int pversion)
+{
+	stringstream sstr (str);
+	return parse (&sstr, 0, client->getAppl(), pversion);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus TILoader::preprocess(const IMessage* msg, IAppl* appl, const std::string& rootpath, int pversion)
 {
 	if (msg->size() == 1) {
 		string srcfile;
@@ -191,12 +251,21 @@ MsgHandler::msgStatus TILoader::preprocess(const IMessage* msg, IAppl* appl, con
 				ITLErr << "can't open file" << srcfile << ITLEndl;
 				return MsgHandler::kBadParameters;		// can't open file
 			}
-			ITLparser p (&file, 0, appl, false);
-			if (!p.parse()) {
-				ITLErr << "while parsing file" << srcfile << ITLEndl;
-				return MsgHandler::kBadParameters;		// parse error
+			int fileversion = inferVersion (srcfile.c_str());
+			if (fileversion) pversion = fileversion;
+
+			if (pversion == 2) {
+				SIMessageList msgs = parsev2(&file, 0);
+				if (msgs) appl->logMsgs (msgs);
 			}
-			appl->logMsgs (p.messages());
+			else {
+				ITLparser p (&file, 0, appl, false);
+				if (!p.parse()) {
+					ITLErr << "while parsing file" << srcfile << ITLEndl;
+					return MsgHandler::kBadParameters;		// parse error
+				}
+				appl->logMsgs (p.messages());
+			}
 			return MsgHandler::kProcessedNoChange;
 		}
 	}
@@ -204,7 +273,19 @@ MsgHandler::msgStatus TILoader::preprocess(const IMessage* msg, IAppl* appl, con
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const std::string& rootpath)
+int TILoader::inferVersion (const char* file) const
+{
+	const char* ptr = Tools::getFileExtension (file);
+	if (ptr) {
+		string ext = Tools::tolower (ptr);
+		if (ext == "inscore")  return 1;
+		if (ext == "inscore2") return 2;
+	}
+	return 0;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const std::string& rootpath, int pversion)
 {
 	if (msg->size() == 1) {
 		string srcfile;
@@ -231,16 +312,21 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 			}
 			else {
 				file.open(makeAbsolutePath(rootpath, srcfile).c_str(), fstream::in);
+				int fileversion = inferVersion (srcfile.c_str());
+				if (fileversion) pversion = fileversion;
 			}
 
 			istream * stream;
 			if (file.is_open()) stream = &file;
 			else stream = &buff;
 
-			ITLparser p (stream, 0, client->getAppl());
-			if (!p.parse()) {
+			if (!parse (stream, 0, client->getAppl(), pversion)) {
 				ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
+//			ITLparser p (stream, 0, client->getAppl());
+//			if (!p.parse()) {
+//				ITLErr << "while parsing file" << srcfile << ITLEndl;
+//			}
 			else return MsgHandler::kProcessed;
 		}
 	}

@@ -78,7 +78,8 @@ class IAppl : public IObject, public TILoader
 	static float		fCompatibilityVersionNum;	// the supported version number as floating point value
 	static udpinfo		fUDP;						// udp port settings
 	static int			fRate;						// the time task rate
-	static float		fRealRate;				// the time task real rate in mls (maintained for every tick)
+	static float		fRealRate;					// the time task real rate in mls (maintained for every tick)
+	static std::string	fParseVersion;				// used to switch the parser to different versions of the language
 
 		int			fStartTime;					// the application start time
 		int			fCurrentTime;				// the application current time
@@ -93,7 +94,7 @@ class IAppl : public IObject, public TILoader
 #ifndef PARSERTEST
 		QMutex		fTimeMutex;
 #endif
-		TJSEngine		fJavascript;
+		TJSEngine	fJavascript;
 
 	public:
 		static unsigned long kUPDPort;	// Default listening port
@@ -109,11 +110,13 @@ class IAppl : public IObject, public TILoader
 			}
 		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );			//< returns the absolute path corresponding to 'path',
+		static const std::string&	parseVersion()			{ return fParseVersion; }
 
 		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
 		static void				delAliases( const std::string& address);
 		static void				getAliases( const std::string& address, std::vector<std::pair<std::string, std::string> >& aliases);
 		static void				setRootPath();
+		static int				getParseVersion	();
 
 		static bool	running() 		{ return fRunning; }
 
@@ -194,7 +197,7 @@ class IAppl : public IObject, public TILoader
 		virtual const IAppl*	getAppl() const		{ return this; }
 
 		static std::string checkRootPath (const std::string& path);
-		static std::string defaultFontName ();
+		static std::string defaultFontName ()  			{ return fDefaultFontName; }
 		static float version ()							{ return fVersionNum; }
 		static float compatibilityVersion ()			{ return fCompatibilityVersionNum; }
 				void setCompatibilityVersion (float v)	{ fCompatibilityVersionNum = v; }
@@ -203,7 +206,8 @@ class IAppl : public IObject, public TILoader
 				 IAppl(QApplication* appl, bool offscreen);
 		virtual ~IAppl();
 		
-		void		setRootPath(const std::string& s);
+		void		setRootPath		(const std::string& s);
+		void		setParseVersion	(const std::string& s);
 		static void		setUDPOutAddress(const std::string& a)	{ fUDP.fOutDstAddress = a; }
 		static void		setUDPErrAddress(const std::string& a)	{ fUDP.fErrDstAddress = a; }
 		void		setDefaultShow(bool state)				{ fDefaultShow = state; }

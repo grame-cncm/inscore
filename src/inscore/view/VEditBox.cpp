@@ -83,7 +83,8 @@ void VEditBox::edit(IObject* obj)
 //--------------------------------------------------------------------------
 void VEditBox::apply(bool) {
 	QString content = fTextEdit->toPlainText();
-	TILoader::loadString(content.toStdString(), fEdited);
+	TILoader loader;
+	loader.loadString(content.toStdString(), fEdited);
 	fEdited->setEditString(content.toStdString());
 }
 
@@ -93,7 +94,8 @@ void VEditBox::cancel(bool)	{ hide(); 	fEdited->clearEdit(); }
 void VEditBox::ok(bool)		{
 	hide();
 	QString content = fTextEdit->toPlainText();
-	TILoader::loadString(content.toStdString(), fEdited);
+	TILoader loader;
+	loader.loadString(content.toStdString(), fEdited);
 	fEdited->setEditString(content.toStdString());
 }
 

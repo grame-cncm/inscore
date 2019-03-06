@@ -39,6 +39,7 @@
 #include "INScore.h"
 #include "INScoreScene.h"
 #include "IScene.h"
+#include "Tools.h"
 
 using namespace std;
 using namespace inscore;
@@ -49,22 +50,22 @@ INScoreScene::INScoreScene (const std::string& address, inscore::IScene* scene)
 	: QGraphicsScene (), fScene(scene), fOscAddress(address) {}
 
 //_______________________________________________________________________
-static string tolower (string& str)
-{
-	for (unsigned int i=0; i<str.size(); i++)
-		str[i] = tolower(str[i]);
-	return str;
-}
+//static string tolower (string& str)
+//{
+//	for (unsigned int i=0; i<str.size(); i++)
+//		str[i] = tolower(str[i]);
+//	return str;
+//}
 
 //_______________________________________________________________________
-const char* INScoreScene::extension (const char* fullpath) const
-{
-	string file (fullpath);
-	size_t pos = file.find_last_of (".");
-	if (pos != string::npos)
-		return &fullpath[pos+1];
-	return 0;
-}
+//const char* INScoreScene::extension (const char* fullpath) const
+//{
+//	string file (fullpath);
+//	size_t pos = file.find_last_of (".");
+//	if (pos != string::npos)
+//		return &fullpath[pos+1];
+//	return 0;
+//}
 
 //_______________________________________________________________________
 string INScoreScene::makename (const char* fullpath) const
@@ -101,10 +102,11 @@ string INScoreScene::tr(const string& name) const
 //_______________________________________________________________________
 void INScoreScene::open (const char* fullpath)
 {
-	const char* ptr = extension(fullpath);
+//	const char* ptr = extension(fullpath);
+	const char* ptr = Tools::getFileExtension(fullpath);
 	string ext;
-	if (ptr) ext = ptr;
-	if (tolower(ext) == "inscore" || tolower(ext) == "ibundle")
+	if (ptr) ext = Tools::tolower (ptr);
+	if (ext == "inscore" || ext == "inscore2" || ext == "ibundle")
 		openscene (fullpath);
 	else
 		openfile (fullpath);
@@ -150,7 +152,8 @@ void INScoreScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 		event->accept();
 	}
 	else if (event->mimeData()->hasText()) {
-		TILoader::loadString(event->mimeData()->text().toStdString(), fScene);
+		TILoader loader;
+		loader.loadString(event->mimeData()->text().toStdString(), fScene, fScene->getParseVersion());
 		event->accept();
 	}
 }

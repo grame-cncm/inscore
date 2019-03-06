@@ -47,6 +47,9 @@ struct Tools
 	static unsigned long	getIP( const std::string& hostname);	///< resolves hostname to ip number, uses local host name if \c hostname is empty
 #endif
 	static std::string		ip2string (unsigned long ip);
+	static std::string		tolower (const std::string& str);
+	static const char* 		getFileExtension (const char* fullpath);
+
 
 	static libmapping::rational readRational(const IMessage *msg, bool twoPart, int startIndex = 0);
 	static RationalInterval readRationalInterval(const IMessage *msg, bool twoPart, int startIndex = 0);

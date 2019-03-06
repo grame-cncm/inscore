@@ -158,6 +158,8 @@ udpinfo IAppl::fUDP(IAppl::kUPDPort);
 string	IAppl::fDefaultFontName("Carlito");		// the default font name
 int		IAppl::fRate = 10;
 float	IAppl::fRealRate = fRate;
+std::string	IAppl::fParseVersion = "v1";
+
 
 //--------------------------------------------------------------------------
 IAppl::IAppl(QApplication* appl, bool offscreen)
@@ -190,9 +192,11 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[koutport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPortHandler);
 	fMsgHandlerMap[kerrport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPortHandler);
 	fMsgHandlerMap[kdefaultShow_GetSetMethod]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
+	fMsgHandlerMap[kparse_GetSetMethod]			= TSetMethodMsgHandler<IAppl,string>::create(this, &IAppl::setParseVersion);
 	fMsgHandlerMap[krate_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setRate);
 
 	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
+	fGetMsgHandlerMap[kparse_GetSetMethod]		= TGetParamMsgHandler<string>::create(fParseVersion);
 	fGetMsgHandlerMap[kport_GetSetMethod]		= TGetParamMsgHandler<int>::create(fUDP.fInPort);
 	fGetMsgHandlerMap[koutport_GetSetMethod]	= TGetParamMsgHandler<int>::create(fUDP.fOutPort);
 	fGetMsgHandlerMap[kerrport_GetSetMethod]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
@@ -234,13 +238,6 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 IAppl::~IAppl() {}
 bool IAppl::oscDebug() const								{ return fApplDebug->getOSCDebug(); }
 
-
-//--------------------------------------------------------------------------
-string IAppl::defaultFontName()
-{
-	return fDefaultFontName;
-}
-
 //--------------------------------------------------------------------------
 string IAppl::checkRootPath(const std::string& s)
 {
@@ -260,6 +257,21 @@ void IAppl::setReceivedOSC(int n)		{ fApplStat->count(n); }
 void IAppl::setRootPath(const std::string& s)
 {
 	IAppl::fRootPath = checkRootPath(s);
+}
+
+//--------------------------------------------------------------------------
+int IAppl::getParseVersion ()
+{
+	if (fParseVersion == "v2") return 2;
+	return 1;
+}
+
+//--------------------------------------------------------------------------
+void IAppl::setParseVersion(const std::string& s)
+{
+	if (s == "v1") 		fParseVersion = s;
+	else if (s == "v2") fParseVersion = s;
+	else ITLErr << "unknown parse version '" << s << "'" << ITLEndl;
 }
 
 //--------------------------------------------------------------------------
@@ -594,8 +606,8 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)		{ return load (msg, this, getRootPath()); }
-MsgHandler::msgStatus IAppl::preProcessMsg(const IMessage* msg) { return preprocess (msg, this, getRootPath()); }
+MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)		{ return load (msg, this, getRootPath(), getParseVersion()); }
+MsgHandler::msgStatus IAppl::preProcessMsg(const IMessage* msg) { return preprocess (msg, this, getRootPath(), getParseVersion()); }
 void IAppl::logMsgs(const SIMessageList& msgs)					{ fApplLog->write (msgs); }
 std::string IAppl::absolutePath( const std::string& path )		{ return TILoader::makeAbsolutePath (getRootPath(), path); }
 

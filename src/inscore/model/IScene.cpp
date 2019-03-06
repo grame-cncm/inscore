@@ -83,6 +83,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fMsgHandlerMap[kpreprocess_SetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::preProcessMsg);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::setRootPath);
 	fMsgHandlerMap[kforward_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::forward);
+	fMsgHandlerMap[kparse_GetSetMethod]			= TMethodMsgHandler<IScene>::create(this, &IScene::setParseVersion);
 
 	fGetMsgHandlerMap[kopengl_GetSetMethod]		= TGetParamMsgHandler<bool>::create(fOpenGl);
 	fGetMsgHandlerMap[kfullscreen_GetSetMethod] = TGetParamMsgHandler<bool>::create(fFullScreen);
@@ -91,6 +92,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fGetMsgHandlerMap[kwindowOpacity_GetSetMethod] = TGetParamMsgHandler<bool>::create(fWindowOpacity);
 	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getForwardList);
+	fGetMsgHandlerMap[kparse_GetSetMethod]		= TGetParamMethodHandler<IScene, const std::string& (IScene::*)() const>::create(this, &IScene::parseVersion);
 }
 
 //--------------------------------------------------------------------------
@@ -110,6 +112,19 @@ void IScene::setHandlers ()
 void IScene::newScene ()						{}
 void IScene::foreground()						{ getSceneView()->foreground(); }
 void IScene::setRootPath(const std::string& s)  { fRootPath = IAppl::checkRootPath(s);}
+//--------------------------------------------------------------------------
+int IScene::getParseVersion () const
+{
+	if (fParseVersion.empty()) return IAppl::getParseVersion();
+	if (fParseVersion == "v2") return 2;
+	return 1;
+}
+
+const string& IScene::parseVersion () const
+{
+	return (fParseVersion.empty()) ? IAppl::parseVersion() : fParseVersion;
+}
+
 void IScene::del()
 {
 	for(int i=0; i<size(); i++)
@@ -222,13 +237,13 @@ string IScene::address2scene (const char* addr) const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IScene::preProcessMsg(const IMessage* msg)
 {
-	return preprocess (msg, getAppl(), getRootPath());
+	return preprocess (msg, getAppl(), getRootPath(), getParseVersion());
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
 {
-	return load (msg, this, getRootPath());
+	return load (msg, this, getRootPath(), getParseVersion());
 }
 
 //--------------------------------------------------------------------------
@@ -293,6 +308,29 @@ MsgHandler::msgStatus IScene::setRootPath(const IMessage* msg)
 MsgHandler::msgStatus IScene::forward(const IMessage* msg)
 {
 	return fForwarder.processForwardMsg(msg);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::setParseVersion(const IMessage* msg)
+{
+	MsgHandler::msgStatus status = MsgHandler::kProcessedNoChange;
+	size_t n = msg->size();
+	if (!n) {
+		fParseVersion.clear();
+		return status;
+	}
+
+	string v;
+	if ((n == 1) && msg->param(0, v)) {
+		if (v == "v1") 		fParseVersion = v;
+		else if (v == "v2") fParseVersion = v;
+		else {
+			ITLErr << "unknown parse version '" << v << "'" << ITLEndl;
+			status = MsgHandler::kBadParameters;
+		}
+	}
+	else status = MsgHandler::kBadParameters;
+	return status;
 }
 
 }

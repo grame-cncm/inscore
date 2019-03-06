@@ -30,6 +30,7 @@
 #include "Tools.h"
 #include "IMessage.h"
 #include "rational.h"
+#include <ctype.h>
 
 #ifndef WIN32
 #include <unistd.h>
@@ -87,6 +88,25 @@ bool Tools::isurl (const std::string& path)
 		return true;
 	begin.assign(path, 0,5);
 	return begin == "qrc:/";
+}
+
+//--------------------------------------------------------------------------
+string Tools::tolower (const string& str)
+{
+	string out (str);
+	for (size_t i=0; i < str.size(); i++)
+		out[i] = ::tolower(str[i]);
+	return out;
+}
+
+//--------------------------------------------------------------------------
+const char* Tools::getFileExtension (const char* fullpath)
+{
+	string file (fullpath);
+	size_t pos = file.find_last_of (".");
+	if (pos != string::npos)
+		return &fullpath[pos+1];
+	return 0;
 }
 
 //--------------------------------------------------------------------------

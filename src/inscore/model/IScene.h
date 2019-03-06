@@ -76,6 +76,7 @@ class IScene : public IRectShape, public TILoader
 	TJSEngine*		fJavascript;
 	SIFilterForward	fFilterForward;
 	Forwarder		fForwarder;
+	std::string		fParseVersion;
 
 	public:		
 		static const std::string kSceneType;
@@ -113,6 +114,8 @@ class IScene : public IRectShape, public TILoader
 		
 		/// \brief adds a subnode to the object \param node the subnode
 		virtual void	add (const nodePtr& node);
+		/// \brief gives the expected script language version
+		virtual int	getParseVersion	() const;
 
 		void	setState (state s);
 		bool	isUpdateVersion() { return fUpdateVersion; }
@@ -155,6 +158,7 @@ class IScene : public IRectShape, public TILoader
 		void		foreground ();
 		void		newScene ();
 		std::string address2scene (const char* addr) const;
+		const std::string& parseVersion () const;
 		void		del ();
 		virtual		SIMessageList getAll () const;
 
@@ -164,6 +168,7 @@ class IScene : public IRectShape, public TILoader
 		 * \return
 		 */
 		MsgHandler::msgStatus forward(const IMessage* msg);
+		MsgHandler::msgStatus setParseVersion(const IMessage* msg);
 };
 
 /*!

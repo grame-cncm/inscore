@@ -135,6 +135,7 @@ extern const char* korder_GetSetMethod;
 extern const char* kosc_GetSetMethod;
 extern const char* kout_GetMethod;
 extern const char* koutport_GetSetMethod;
+extern const char* kparse_GetSetMethod;
 extern const char* kpage_GetSetMethod;
 extern const char* kpageCount_GetMethod;
 extern const char* kpageFormat_GetSetMethod;

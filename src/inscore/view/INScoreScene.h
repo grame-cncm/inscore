@@ -44,7 +44,7 @@ class INScoreScene : public QGraphicsScene
 	protected:
 		std::string	fOscAddress;
 		
-		const char*	extension ( const char* file ) const;
+//		const char*	extension ( const char* file ) const;
 		std::string	makename ( const char* file ) const;
 		std::string	tr ( const std::string& name ) const;
 

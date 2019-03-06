@@ -32,6 +32,7 @@
 
 #include "IMessageHandlers.h"
 #include "TScripting.h"
+#include "INode.h"
 
 namespace inscore
 {
@@ -46,21 +47,27 @@ class IObject;
 */
 class TILoader
 {
+				int  inferVersion (const char* file) const;
+	SIMessageList 	 parsev2(std::istream* stream, int line) const;
+				bool parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute=true) const;
 		virtual bool process(const SIMessageList& msgs, IObject* root, const std::string& baseaddress);
 
 	protected:
-				 TILoader() {}
-		virtual ~TILoader() {}
 
-		virtual MsgHandler::msgStatus	preprocess(const IMessage* msg, IAppl* client, const std::string& rootpath);
-		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath);
+		virtual MsgHandler::msgStatus	preprocess(const IMessage* msg, IAppl* client, const std::string& rootpath, int pversion);
+		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath, int pversion);
 		virtual MsgHandler::msgStatus	loadBundle(const std::string& file, const std::string& rootpath);
 
 		bool	isBundle(const std::string& file);
 
 	public:
+				 TILoader() {}
+		virtual ~TILoader() {}
+
+		bool	loadString(const std::string& str, IObject* o, int pversion=1);
+
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
-		static bool				loadString(const std::string& str, IObject* o);
+		static SIMessageList	inscorev2_to_inscorev1 (const inscore2::SINode& node);
 };
 
 } // end namespoace
