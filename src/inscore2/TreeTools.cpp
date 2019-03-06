@@ -1,4 +1,6 @@
 
+#include <algorithm>
+
 #include "TreeTools.h"
 
 using namespace std;
