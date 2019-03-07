@@ -171,7 +171,10 @@ bool IMessage::TUrl::parse (const std::string& address)
 		string portStr = address.substr (startPort+1);
 		fPort = atoi(portStr.c_str());
 	}
-	else fHostname = address;
+	else {
+		fHostname = address;
+		fPort = 7000;
+	}
 	return true;
 }
 
