@@ -729,7 +729,7 @@ extern int yylex \
 #undef yyTABLES_NAME
 #endif
 
-#line 245 "inscorev2.l"
+#line 257 "inscorev2.l"
 
 
 #line 735 "inscorelex.hpp"

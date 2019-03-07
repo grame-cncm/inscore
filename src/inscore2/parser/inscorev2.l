@@ -93,6 +93,11 @@ STARTID [_a-zA-Z]
 STARTVAR [0-9a-zA-Z]
  /* allowed character set for first identifier char */
 IDCHAR  [_a-zA-Z0-9]
+ 
+ /* allowed character set for host names
+	see RFC952 and RFC1123
+ */
+HOSTCHAR [-a-zA-Z0-9]
 
  /* allowed character for filename and path as defined for windows 7 with some specification for INScore compatibility: no = ; */
 FILECHAR [^ \t\\/?:*><|"';=]
@@ -232,6 +237,13 @@ EOL		[\x0a\x0d]
 "<?"{SPACE}*"javascript"	BEGIN JSECTION;
 <JSECTION>"?>"				BEGIN INITIAL;
 <JSECTION>({EOL}|"?"[^>]|[^?])*		yyextra->fText = unescape(yytext); return JSCRIPT;
+
+ /* ----------------------------------------- */
+ /*	hostname and IP */
+ /* ----------------------------------------- */
+{HOSTCHAR}+":"{DIGIT}+								yyextra->fText = yytext; return URLPREFIX;
+({HOSTCHAR}+\.)+{HOSTCHAR}{2,}":"{DIGIT}+			yyextra->fText = yytext; return URLPREFIX;
+({DIGIT}{1,3}\.){3}{DIGIT}{1,3}":"{DIGIT}+			yyextra->fText = yytext; return URLPREFIX;
 
 
 {SPACE}+			;   /* eat up space */

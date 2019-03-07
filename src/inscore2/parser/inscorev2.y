@@ -89,11 +89,12 @@ using namespace inscore2;
 %token TAN
 %token TANH
 %token UINT
+%token URLPREFIX
 %token VARIABLE
 %token WITH
 
 %left UINT INT FLOAT
-%left LETTERS IDENTIFIER STRING EXPANDID REGEXP VARIABLE
+%left URLPREFIX LETTERS IDENTIFIER STRING EXPANDID REGEXP VARIABLE
 %left QUEST NEG EQ GREATER GREATEREQ LESS LESSEQ MIN MAX HAS	
 %left ADD SUB MODULO DIV MULT
 %left SIN COS TAN ASIN ACOS ATAN SINH COSH TANH ASINH ACOSH ATANH 
@@ -110,7 +111,7 @@ using namespace inscore2;
 	inscore2::INode* 		treeptr;
 }
 
-%type <treeptr> 	identifier number string tree variable operator mfunction varname
+%type <treeptr> 	identifier number string tree variable operator prefix mfunction varname
 
 %start start
 
@@ -154,6 +155,7 @@ statement	: tree  ENDSTATEMENT		{ context->add ($1); }
 //_______________________________________________
 tree		: identifier			{ $$ = $1; }
 			| string				{ $$ = $1; }
+			| prefix				{ $$ = $1; }
 			| number				{ $$ = $1; }
 			| variable				{ $$ = $1; }
 			| operator				{ $$ = $1; }					%prec OP
@@ -169,6 +171,9 @@ identifier	: LETTERS		{ $$ = context->create (context->fText); }
 			| IDENTIFIER	{ $$ = context->create (context->fText); }
 			| EXPANDID		{ $$ = context->expand (context->fText); }
 			| REGEXP		{ $$ = context->regexp (context->fText); }
+			;
+
+prefix		: URLPREFIX		{ $$ = context->prefix (context->fText); }
 			;
 
 string		: STRING		{ $$ = context->create (context->fText); }

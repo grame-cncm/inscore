@@ -33,7 +33,7 @@ class INode {
 
 	public:
 		enum TNodeType {
-			kText, kInt, kFloat, kSeq, kPar, kExpand, kForest, kRegexp, kVariable, kSlash, kJScript,
+			kText, kInt, kFloat, kSeq, kPar, kExpand, kForest, kRegexp, kVariable, kSlash, kJScript, kURLPrefix,
 			kFirstMath, kAdd=kFirstMath, kSub, kDiv, kMult, kModulo, kQuest, kNeg, kEq, kGreater, kGreatereq, kLess, kLesseq, kMin, kMax, kHas,
 			kSin, kCos, kTan, kASin, kACos, kATan, kSinh, kCosh, kTanh, kASinh, kACosh, kATanh,
 			kExp, kLog, kLog10, kLog2, kPow, kSqrt, kCbrt, kCeil, kFloor, kRound, kRand, kLastMath=kRand };
@@ -129,6 +129,13 @@ class ExpandNode : public INode {
 	public:
 			 ExpandNode(std::string name) : INode(name, kExpand) {}
 	virtual ~ExpandNode() {}
+};
+
+//------------------------------------------------------------
+class UrlPrefixNode : public INode {
+	public:
+			 UrlPrefixNode(std::string name) : INode(name, kURLPrefix) { setAddress(true); }
+	virtual ~UrlPrefixNode() {}
 };
 
 //------------------------------------------------------------

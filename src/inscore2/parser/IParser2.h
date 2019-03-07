@@ -42,6 +42,7 @@ class IParser {
 		TINode 	seq (TINode n1, TINode n2) const 		{ return set (INode::createSeq (SINode(n1), SINode(n2))); }
 	 	TINode 	par (TINode n1, TINode n2) const 		{ return set (INode::createPar (SINode(n1), SINode(n2))); }
 	 	TINode 	javascript (const std::string text) const 	{ return set (new JavascriptNode (text)); }
+	 	TINode 	prefix (const std::string text) const 	{ return set (new UrlPrefixNode (text)); }
 	 	TINode 	regexp (const std::string text) const 	{ return set (new RegexpNode (text)); }
 		TINode 	expand(const std::string text) const 	{ return set (new ExpandNode (text)); }
 		TINode 	operation(INode::TNodeType type) const	{ return set (new INode ("", type)); }

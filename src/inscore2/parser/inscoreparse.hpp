@@ -108,14 +108,15 @@ extern int INSCOREV2debug;
     TAN = 318,
     TANH = 319,
     UINT = 320,
-    VARIABLE = 321,
-    WITH = 322,
-    OP = 323,
-    MFUN = 324,
-    PAR = 325,
-    SEQ = 326,
-    DECL = 327,
-    LDECL = 328
+    URLPREFIX = 321,
+    VARIABLE = 322,
+    WITH = 323,
+    OP = 324,
+    MFUN = 325,
+    PAR = 326,
+    SEQ = 327,
+    DECL = 328,
+    LDECL = 329
   };
 #endif
 
@@ -124,11 +125,11 @@ extern int INSCOREV2debug;
 
 union YYSTYPE
 {
-#line 109 "inscorev2.y" /* yacc.c:1919  */
+#line 110 "inscorev2.y" /* yacc.c:1919  */
 
 	inscore2::INode* 		treeptr;
 
-#line 132 "inscoreparse.hpp" /* yacc.c:1919  */
+#line 133 "inscoreparse.hpp" /* yacc.c:1919  */
 };
 
 typedef union YYSTYPE YYSTYPE;

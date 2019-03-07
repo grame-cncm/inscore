@@ -186,14 +186,15 @@ extern int INSCOREV2debug;
     TAN = 318,
     TANH = 319,
     UINT = 320,
-    VARIABLE = 321,
-    WITH = 322,
-    OP = 323,
-    MFUN = 324,
-    PAR = 325,
-    SEQ = 326,
-    DECL = 327,
-    LDECL = 328
+    URLPREFIX = 321,
+    VARIABLE = 322,
+    WITH = 323,
+    OP = 324,
+    MFUN = 325,
+    PAR = 326,
+    SEQ = 327,
+    DECL = 328,
+    LDECL = 329
   };
 #endif
 
@@ -202,11 +203,11 @@ extern int INSCOREV2debug;
 
 union YYSTYPE
 {
-#line 109 "inscorev2.y" /* yacc.c:355  */
+#line 110 "inscorev2.y" /* yacc.c:355  */
 
 	inscore2::INode* 		treeptr;
 
-#line 210 "inscoreparse.cpp" /* yacc.c:355  */
+#line 211 "inscoreparse.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -235,7 +236,7 @@ int INSCOREV2parse (inscore2::IParser* context);
 #endif /* !YY_INSCOREV2_INSCOREPARSE_HPP_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
-#line 117 "inscorev2.y" /* yacc.c:358  */
+#line 118 "inscorev2.y" /* yacc.c:358  */
 
 
 int yyerror (const YYLTYPE* locp, IParser* context, const char*s);
@@ -255,7 +256,7 @@ nodebug ydebug;
 #endif
 
 
-#line 259 "inscoreparse.cpp" /* yacc.c:358  */
+#line 260 "inscoreparse.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -497,23 +498,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  67
+#define YYFINAL  69
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   406
+#define YYLAST   413
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  74
+#define YYNTOKENS  75
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  71
+#define YYNRULES  73
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  88
+#define YYNSTATES  90
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   328
+#define YYMAXUTOK   329
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -554,21 +555,21 @@ static const yytype_uint8 yytranslate[] =
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
       45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
-      65,    66,    67,    68,    69,    70,    71,    72,    73
+      65,    66,    67,    68,    69,    70,    71,    72,    73,    74
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   143,   143,   144,   148,   149,   150,   151,   155,   156,
-     157,   158,   159,   160,   161,   162,   163,   164,   165,   168,
-     169,   170,   171,   174,   177,   180,   183,   184,   187,   188,
-     191,   194,   195,   196,   197,   198,   199,   200,   201,   202,
-     203,   204,   205,   207,   208,   209,   210,   211,   212,   213,
-     216,   217,   218,   221,   222,   223,   224,   225,   226,   227,
-     228,   229,   230,   231,   232,   233,   234,   235,   236,   239,
-     240,   241
+       0,   144,   144,   145,   149,   150,   151,   152,   156,   157,
+     158,   159,   160,   161,   162,   163,   164,   165,   166,   167,
+     170,   171,   172,   173,   176,   179,   182,   185,   188,   189,
+     192,   193,   196,   199,   200,   201,   202,   203,   204,   205,
+     206,   207,   208,   209,   210,   212,   213,   214,   215,   216,
+     217,   218,   221,   222,   223,   226,   227,   228,   229,   230,
+     231,   232,   233,   234,   235,   236,   237,   238,   239,   240,
+     241,   244,   245,   246
 };
 #endif
 
@@ -586,10 +587,10 @@ static const char *const yytname[] =
   "LOG2", "MAX", "MIN", "MODULO", "MULT", "NEG", "POW", "QUEST", "RAND",
   "REGEXP", "RIGHTBRACE", "RIGHTBRACKET", "RIGHTPAR", "ROUND", "SIN",
   "SINH", "SLASH", "SQRT", "STRING", "SUB", "TAN", "TANH", "UINT",
-  "VARIABLE", "WITH", "OP", "MFUN", "PAR", "SEQ", "DECL", "LDECL",
-  "$accept", "start", "statement", "tree", "identifier", "string",
-  "vardecl", "pushvardecl", "variable", "varlist", "varname", "mfunction",
-  "operator", "number", YY_NULLPTR
+  "URLPREFIX", "VARIABLE", "WITH", "OP", "MFUN", "PAR", "SEQ", "DECL",
+  "LDECL", "$accept", "start", "statement", "tree", "identifier", "prefix",
+  "string", "vardecl", "pushvardecl", "variable", "varlist", "varname",
+  "mfunction", "operator", "number", YY_NULLPTR
 };
 #endif
 
@@ -605,14 +606,14 @@ static const yytype_uint16 yytoknum[] =
      295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
      305,   306,   307,   308,   309,   310,   311,   312,   313,   314,
      315,   316,   317,   318,   319,   320,   321,   322,   323,   324,
-     325,   326,   327,   328
+     325,   326,   327,   328,   329
 };
 # endif
 
-#define YYPACT_NINF -71
+#define YYPACT_NINF -73
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-71)))
+  (!!((Yystate) == (-73)))
 
 #define YYTABLE_NINF -1
 
@@ -623,15 +624,15 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     148,   -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,
-     -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,
-     -71,   -71,   -71,   -71,   -71,   -71,   340,   -71,   -71,   -71,
-     -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,   -71,
-     -71,   -71,   -71,   -71,   -71,   340,   -71,   -71,   -71,   -71,
-     -71,   -71,   -71,    84,   -71,   212,   -17,   -71,   -13,   -71,
-     -28,   340,   -71,   -71,   276,   -71,     2,   -71,   -71,   340,
-     -71,    -5,   340,   -71,   -21,    -5,   -71,    -5,   340,   -11,
-     -71,   -12,   340,   -21,   -71,   340,   -17,   -71
+     151,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,
+     -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,
+     -73,   -73,   -73,   -73,   -73,   -73,   346,   -73,   -73,   -73,
+     -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,
+     -73,   -73,   -73,   -73,   -73,   346,   -73,   -73,   -73,   -73,
+     -73,   -73,   -73,   -73,    86,   -73,   216,   -18,   -73,   -73,
+     -12,   -73,   -29,   346,   -73,   -73,   281,   -73,     2,   -73,
+     -73,   346,   -73,    -4,   346,   -73,   -20,    -4,   -73,    -4,
+     346,   -10,   -73,   -13,   346,   -20,   -73,   346,   -18,   -73
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -639,29 +640,29 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    35,    41,    53,    15,    34,    40,    36,    42,    49,
-      50,    32,    38,    55,     7,    60,    43,    21,    71,    51,
-      61,    62,    67,    20,    70,     6,     0,    63,    64,    19,
-      44,    45,    46,    66,    65,    57,    56,    59,    47,    58,
-      68,    22,    52,    31,    37,     0,    48,    23,    54,    33,
-      39,    69,    30,     0,     2,     0,     8,     9,     0,    11,
-      26,     0,    12,    10,     0,     8,    14,     1,     3,     0,
-       4,    16,     0,     5,     0,    13,    18,    17,    24,     0,
-      28,     0,     0,     0,    27,    25,     0,    29
+       0,    37,    43,    55,    16,    36,    42,    38,    44,    51,
+      52,    34,    40,    57,     7,    62,    45,    22,    73,    53,
+      63,    64,    69,    21,    72,     6,     0,    65,    66,    20,
+      46,    47,    48,    68,    67,    59,    58,    61,    49,    60,
+      70,    23,    54,    33,    39,     0,    50,    25,    56,    35,
+      41,    71,    24,    32,     0,     2,     0,     8,    10,     9,
+       0,    12,    28,     0,    13,    11,     0,     8,    15,     1,
+       3,     0,     4,    17,     0,     5,     0,    14,    19,    18,
+      26,     0,    30,     0,     0,     0,    29,    27,     0,    31
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -71,   -71,   -41,     3,     0,   -71,   -70,   -71,   -71,   -71,
-     -71,   -71,   -71,   -71
+     -73,   -73,   -45,     3,     0,   -73,   -73,   -72,   -73,   -73,
+     -73,   -73,   -73,   -73,   -73
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    53,    54,    71,    65,    57,    58,    80,    59,    81,
-      60,    61,    62,    63
+      -1,    54,    55,    73,    67,    58,    59,    60,    82,    61,
+      83,    62,    63,    64,    65
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -669,92 +670,94 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      56,     4,    83,    55,    17,    72,    73,    74,     4,    69,
-      23,    82,    68,    87,     0,     0,     0,     0,     0,    29,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,    64,
-       0,    41,    26,     0,     0,     0,     0,     0,     0,     0,
-       0,    84,     0,     0,     0,     0,     0,     0,    66,     0,
-       0,     0,     0,    56,    45,     0,    55,     0,     0,     0,
-       0,     0,     0,     0,    75,     0,     0,     0,     0,     0,
-       0,     0,    77,     0,    79,    78,     0,     0,     0,     0,
-       0,     0,     0,    86,    67,    85,     0,     1,     2,     3,
-       4,     5,     6,     7,     8,     9,    10,     0,     0,    11,
-      12,    13,    14,     0,     0,    15,     0,     0,    16,    17,
-      18,    19,    20,    21,    22,    23,    24,    25,     0,     0,
-       0,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,     0,     0,     0,
-      42,    43,    44,    45,    46,    47,    48,    49,    50,    51,
-      52,     1,     2,     3,     4,     5,     6,     7,     8,     9,
-      10,     0,     0,    11,    12,    13,    14,     0,     0,    15,
-       0,     0,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,     0,     0,     0,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
-      41,     0,     0,     0,    42,    43,    44,    45,    46,    47,
-      48,    49,    50,    51,    52,     1,     2,     3,     4,     5,
-       6,     7,     8,     9,    10,     0,    69,    11,    12,    13,
-       0,    70,     0,    15,     0,     0,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,     0,     0,     0,     0,    26,
-      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
-      37,    38,    39,    40,    41,     0,     0,     0,    42,    43,
-      44,    45,    46,    47,    48,    49,    50,    51,    52,     1,
+      57,    85,     4,    56,    74,    17,    76,    75,     4,    70,
+      71,    23,    84,    89,     0,     0,     0,     0,     0,     0,
+      29,     0,     0,     0,     0,     0,     0,     0,     0,    66,
+       0,     0,    41,    26,     0,     0,     0,     0,     0,     0,
+      86,     0,     0,     0,     0,     0,     0,     0,    68,     0,
+       0,     0,     0,     0,    57,    45,     0,    56,     0,     0,
+       0,     0,     0,     0,     0,     0,    77,     0,     0,     0,
+       0,     0,     0,     0,    79,     0,    81,    80,     0,     0,
+       0,     0,     0,     0,     0,    88,    69,    87,     0,     1,
        2,     3,     4,     5,     6,     7,     8,     9,    10,     0,
-      69,    11,    12,    13,     0,     0,     0,    15,     0,     0,
+       0,    11,    12,    13,    14,     0,     0,    15,     0,     0,
+      16,    17,    18,    19,    20,    21,    22,    23,    24,    25,
+       0,     0,     0,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    38,    39,    40,    41,     0,
+       0,     0,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,     1,     2,     3,     4,     5,     6,
+       7,     8,     9,    10,     0,     0,    11,    12,    13,    14,
+       0,     0,    15,     0,     0,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,     0,     0,     0,    26,    27,
+      28,    29,    30,    31,    32,    33,    34,    35,    36,    37,
+      38,    39,    40,    41,     0,     0,     0,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52,    53,     1,
+       2,     3,     4,     5,     6,     7,     8,     9,    10,     0,
+      71,    11,    12,    13,     0,    72,     0,    15,     0,     0,
       16,    17,    18,    19,    20,    21,    22,    23,    24,     0,
        0,     0,     0,    26,    27,    28,    29,    30,    31,    32,
       33,    34,    35,    36,    37,    38,    39,    40,    41,     0,
-       0,    76,    42,    43,    44,    45,    46,    47,    48,    49,
-      50,    51,    52,     1,     2,     3,     4,     5,     6,     7,
-       8,     9,    10,     0,     0,    11,    12,    13,     0,     0,
-       0,    15,     0,     0,    16,    17,    18,    19,    20,    21,
-      22,    23,    24,     0,     0,     0,     0,    26,    27,    28,
-      29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
-      39,    40,    41,     0,     0,     0,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52
+       0,     0,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,     1,     2,     3,     4,     5,     6,
+       7,     8,     9,    10,     0,    71,    11,    12,    13,     0,
+       0,     0,    15,     0,     0,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,     0,     0,     0,     0,    26,    27,
+      28,    29,    30,    31,    32,    33,    34,    35,    36,    37,
+      38,    39,    40,    41,     0,     0,    78,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52,    53,     1,
+       2,     3,     4,     5,     6,     7,     8,     9,    10,     0,
+       0,    11,    12,    13,     0,     0,     0,    15,     0,     0,
+      16,    17,    18,    19,    20,    21,    22,    23,    24,     0,
+       0,     0,     0,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    38,    39,    40,    41,     0,
+       0,     0,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     6,    14,     0,    25,    22,    19,    35,     6,    14,
-      31,    22,    53,    83,    -1,    -1,    -1,    -1,    -1,    40,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    26,
-      -1,    52,    37,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    53,    -1,    -1,    -1,    -1,    -1,    -1,    45,    -1,
-      -1,    -1,    -1,    53,    59,    -1,    53,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    61,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    69,    -1,    74,    72,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    83,     0,    82,    -1,     3,     4,     5,
-       6,     7,     8,     9,    10,    11,    12,    -1,    -1,    15,
-      16,    17,    18,    -1,    -1,    21,    -1,    -1,    24,    25,
-      26,    27,    28,    29,    30,    31,    32,    33,    -1,    -1,
-      -1,    37,    38,    39,    40,    41,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    -1,    -1,    -1,
-      56,    57,    58,    59,    60,    61,    62,    63,    64,    65,
-      66,     3,     4,     5,     6,     7,     8,     9,    10,    11,
-      12,    -1,    -1,    15,    16,    17,    18,    -1,    -1,    21,
-      -1,    -1,    24,    25,    26,    27,    28,    29,    30,    31,
-      32,    33,    -1,    -1,    -1,    37,    38,    39,    40,    41,
-      42,    43,    44,    45,    46,    47,    48,    49,    50,    51,
-      52,    -1,    -1,    -1,    56,    57,    58,    59,    60,    61,
-      62,    63,    64,    65,    66,     3,     4,     5,     6,     7,
-       8,     9,    10,    11,    12,    -1,    14,    15,    16,    17,
-      -1,    19,    -1,    21,    -1,    -1,    24,    25,    26,    27,
-      28,    29,    30,    31,    32,    -1,    -1,    -1,    -1,    37,
-      38,    39,    40,    41,    42,    43,    44,    45,    46,    47,
-      48,    49,    50,    51,    52,    -1,    -1,    -1,    56,    57,
-      58,    59,    60,    61,    62,    63,    64,    65,    66,     3,
+       0,    14,     6,     0,    22,    25,    35,    19,     6,    54,
+      14,    31,    22,    85,    -1,    -1,    -1,    -1,    -1,    -1,
+      40,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    26,
+      -1,    -1,    52,    37,    -1,    -1,    -1,    -1,    -1,    -1,
+      53,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    45,    -1,
+      -1,    -1,    -1,    -1,    54,    59,    -1,    54,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    63,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    71,    -1,    76,    74,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    85,     0,    84,    -1,     3,
        4,     5,     6,     7,     8,     9,    10,    11,    12,    -1,
-      14,    15,    16,    17,    -1,    -1,    -1,    21,    -1,    -1,
+      -1,    15,    16,    17,    18,    -1,    -1,    21,    -1,    -1,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
+      -1,    -1,    -1,    37,    38,    39,    40,    41,    42,    43,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    -1,
+      -1,    -1,    56,    57,    58,    59,    60,    61,    62,    63,
+      64,    65,    66,    67,     3,     4,     5,     6,     7,     8,
+       9,    10,    11,    12,    -1,    -1,    15,    16,    17,    18,
+      -1,    -1,    21,    -1,    -1,    24,    25,    26,    27,    28,
+      29,    30,    31,    32,    33,    -1,    -1,    -1,    37,    38,
+      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    51,    52,    -1,    -1,    -1,    56,    57,    58,
+      59,    60,    61,    62,    63,    64,    65,    66,    67,     3,
+       4,     5,     6,     7,     8,     9,    10,    11,    12,    -1,
+      14,    15,    16,    17,    -1,    19,    -1,    21,    -1,    -1,
       24,    25,    26,    27,    28,    29,    30,    31,    32,    -1,
       -1,    -1,    -1,    37,    38,    39,    40,    41,    42,    43,
       44,    45,    46,    47,    48,    49,    50,    51,    52,    -1,
-      -1,    55,    56,    57,    58,    59,    60,    61,    62,    63,
-      64,    65,    66,     3,     4,     5,     6,     7,     8,     9,
-      10,    11,    12,    -1,    -1,    15,    16,    17,    -1,    -1,
-      -1,    21,    -1,    -1,    24,    25,    26,    27,    28,    29,
-      30,    31,    32,    -1,    -1,    -1,    -1,    37,    38,    39,
-      40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
-      50,    51,    52,    -1,    -1,    -1,    56,    57,    58,    59,
-      60,    61,    62,    63,    64,    65,    66
+      -1,    -1,    56,    57,    58,    59,    60,    61,    62,    63,
+      64,    65,    66,    67,     3,     4,     5,     6,     7,     8,
+       9,    10,    11,    12,    -1,    14,    15,    16,    17,    -1,
+      -1,    -1,    21,    -1,    -1,    24,    25,    26,    27,    28,
+      29,    30,    31,    32,    -1,    -1,    -1,    -1,    37,    38,
+      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    51,    52,    -1,    -1,    55,    56,    57,    58,
+      59,    60,    61,    62,    63,    64,    65,    66,    67,     3,
+       4,     5,     6,     7,     8,     9,    10,    11,    12,    -1,
+      -1,    15,    16,    17,    -1,    -1,    -1,    21,    -1,    -1,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    -1,
+      -1,    -1,    -1,    37,    38,    39,    40,    41,    42,    43,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    -1,
+      -1,    -1,    56,    57,    58,    59,    60,    61,    62,    63,
+      64,    65,    66,    67
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -766,36 +769,36 @@ static const yytype_uint8 yystos[] =
       28,    29,    30,    31,    32,    33,    37,    38,    39,    40,
       41,    42,    43,    44,    45,    46,    47,    48,    49,    50,
       51,    52,    56,    57,    58,    59,    60,    61,    62,    63,
-      64,    65,    66,    75,    76,    77,    78,    79,    80,    82,
-      84,    85,    86,    87,    77,    78,    77,     0,    76,    14,
-      19,    77,    22,    19,    35,    77,    55,    77,    77,    78,
-      81,    83,    22,    14,    53,    77,    78,    80
+      64,    65,    66,    67,    76,    77,    78,    79,    80,    81,
+      82,    84,    86,    87,    88,    89,    78,    79,    78,     0,
+      77,    14,    19,    78,    22,    19,    35,    78,    55,    78,
+      78,    79,    83,    85,    22,    14,    53,    78,    79,    82
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    74,    75,    75,    76,    76,    76,    76,    77,    77,
-      77,    77,    77,    77,    77,    77,    77,    77,    77,    78,
-      78,    78,    78,    79,    80,    81,    82,    82,    83,    83,
-      84,    85,    85,    85,    85,    85,    85,    85,    85,    85,
-      85,    85,    85,    85,    85,    85,    85,    85,    85,    85,
-      85,    85,    85,    86,    86,    86,    86,    86,    86,    86,
-      86,    86,    86,    86,    86,    86,    86,    86,    86,    87,
-      87,    87
+       0,    75,    76,    76,    77,    77,    77,    77,    78,    78,
+      78,    78,    78,    78,    78,    78,    78,    78,    78,    78,
+      79,    79,    79,    79,    80,    81,    82,    83,    84,    84,
+      85,    85,    86,    87,    87,    87,    87,    87,    87,    87,
+      87,    87,    87,    87,    87,    87,    87,    87,    87,    87,
+      87,    87,    87,    87,    87,    88,    88,    88,    88,    88,
+      88,    88,    88,    88,    88,    88,    88,    88,    88,    88,
+      88,    89,    89,    89
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     2,     2,     2,     1,     1,     1,     1,
-       1,     1,     1,     2,     2,     1,     2,     3,     3,     1,
-       1,     1,     1,     1,     3,     3,     1,     4,     1,     3,
+       1,     1,     1,     1,     2,     2,     1,     2,     3,     3,
+       1,     1,     1,     1,     1,     1,     3,     3,     1,     4,
+       1,     3,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1
+       1,     1,     1,     1
 };
 
 
@@ -1575,415 +1578,427 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 148 "inscorev2.y" /* yacc.c:1666  */
+#line 149 "inscorev2.y" /* yacc.c:1666  */
     { context->add ((yyvsp[-1].treeptr)); }
-#line 1581 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1584 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 5:
-#line 149 "inscorev2.y" /* yacc.c:1666  */
+#line 150 "inscorev2.y" /* yacc.c:1666  */
     { }
-#line 1587 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1590 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 6:
-#line 150 "inscorev2.y" /* yacc.c:1666  */
+#line 151 "inscorev2.y" /* yacc.c:1666  */
     { context->add (context->javascript (context->fText)); }
-#line 1593 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1596 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 7:
-#line 151 "inscorev2.y" /* yacc.c:1666  */
+#line 152 "inscorev2.y" /* yacc.c:1666  */
     { YYACCEPT; }
-#line 1599 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1602 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 8:
-#line 155 "inscorev2.y" /* yacc.c:1666  */
+#line 156 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = (yyvsp[0].treeptr); }
-#line 1605 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1608 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 9:
-#line 156 "inscorev2.y" /* yacc.c:1666  */
+#line 157 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = (yyvsp[0].treeptr); }
-#line 1611 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1614 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 10:
-#line 157 "inscorev2.y" /* yacc.c:1666  */
+#line 158 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = (yyvsp[0].treeptr); }
-#line 1617 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1620 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 11:
-#line 158 "inscorev2.y" /* yacc.c:1666  */
+#line 159 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = (yyvsp[0].treeptr); }
-#line 1623 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1626 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 12:
-#line 159 "inscorev2.y" /* yacc.c:1666  */
+#line 160 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = (yyvsp[0].treeptr); }
-#line 1629 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1632 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 13:
-#line 160 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
-#line 1635 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 161 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = (yyvsp[0].treeptr); }
+#line 1638 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 14:
-#line 161 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->slash((yyvsp[0].treeptr)); }
-#line 1641 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 162 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
+#line 1644 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 15:
-#line 162 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->slash(context->regexp ("*")); }
-#line 1647 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 163 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->slash((yyvsp[0].treeptr)); }
+#line 1650 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 16:
-#line 163 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
-#line 1653 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 164 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->slash(context->regexp ("*")); }
+#line 1656 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 17:
-#line 164 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->par((yyvsp[-2].treeptr), (yyvsp[0].treeptr)); }
-#line 1659 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 165 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
+#line 1662 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 18:
-#line 165 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = (yyvsp[-1].treeptr); }
-#line 1665 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 166 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->par((yyvsp[-2].treeptr), (yyvsp[0].treeptr)); }
+#line 1668 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 19:
-#line 168 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText); }
-#line 1671 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 167 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = (yyvsp[-1].treeptr); }
+#line 1674 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 20:
-#line 169 "inscorev2.y" /* yacc.c:1666  */
+#line 170 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = context->create (context->fText); }
-#line 1677 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1680 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 21:
-#line 170 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->expand (context->fText); }
-#line 1683 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 171 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText); }
+#line 1686 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 22:
-#line 171 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->regexp (context->fText); }
-#line 1689 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 172 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->expand (context->fText); }
+#line 1692 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 23:
-#line 174 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText); }
-#line 1695 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 173 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->regexp (context->fText); }
+#line 1698 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 24:
-#line 177 "inscorev2.y" /* yacc.c:1666  */
-    {context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
-#line 1701 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 176 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->prefix (context->fText); }
+#line 1704 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 25:
-#line 180 "inscorev2.y" /* yacc.c:1666  */
-    { context->pushEnv(); context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
-#line 1707 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 179 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText); }
+#line 1710 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 26:
-#line 183 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->variable ((yyvsp[0].treeptr)->getName()); delete (yyvsp[0].treeptr); }
-#line 1713 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 182 "inscorev2.y" /* yacc.c:1666  */
+    {context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
+#line 1716 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 27:
-#line 184 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->variable ((yyvsp[-3].treeptr)->getName()); context->popEnv(); delete  (yyvsp[-3].treeptr); }
-#line 1719 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 185 "inscorev2.y" /* yacc.c:1666  */
+    { context->pushEnv(); context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
+#line 1722 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 28:
-#line 187 "inscorev2.y" /* yacc.c:1666  */
-    { }
-#line 1725 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 188 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->variable ((yyvsp[0].treeptr)->getName()); delete (yyvsp[0].treeptr); }
+#line 1728 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 29:
-#line 188 "inscorev2.y" /* yacc.c:1666  */
-    { }
-#line 1731 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 189 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->variable ((yyvsp[-3].treeptr)->getName()); context->popEnv(); delete  (yyvsp[-3].treeptr); }
+#line 1734 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 30:
-#line 191 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText); }
-#line 1737 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 192 "inscorev2.y" /* yacc.c:1666  */
+    { }
+#line 1740 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 31:
-#line 194 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSin); }
-#line 1743 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 193 "inscorev2.y" /* yacc.c:1666  */
+    { }
+#line 1746 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 32:
-#line 195 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCos); }
-#line 1749 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 196 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText); }
+#line 1752 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 33:
-#line 196 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kTan); }
-#line 1755 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 199 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSin); }
+#line 1758 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 34:
-#line 197 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kASin); }
-#line 1761 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 200 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCos); }
+#line 1764 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 35:
-#line 198 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kACos); }
-#line 1767 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 201 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kTan); }
+#line 1770 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 36:
-#line 199 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kATan); }
-#line 1773 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 202 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kASin); }
+#line 1776 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 37:
-#line 200 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSinh); }
-#line 1779 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 203 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kACos); }
+#line 1782 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 38:
-#line 201 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCosh); }
-#line 1785 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 204 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kATan); }
+#line 1788 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 39:
-#line 202 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kTanh); }
-#line 1791 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 205 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSinh); }
+#line 1794 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 40:
-#line 203 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kASinh); }
-#line 1797 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 206 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCosh); }
+#line 1800 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 41:
-#line 204 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kACosh); }
-#line 1803 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 207 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kTanh); }
+#line 1806 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 42:
-#line 205 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kATanh); }
-#line 1809 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 208 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kASinh); }
+#line 1812 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 43:
-#line 207 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kExp); }
-#line 1815 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 209 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kACosh); }
+#line 1818 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 44:
-#line 208 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLog); }
-#line 1821 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 210 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kATanh); }
+#line 1824 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 45:
-#line 209 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLog10); }
-#line 1827 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 212 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kExp); }
+#line 1830 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 46:
-#line 210 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLog2); }
-#line 1833 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 213 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLog); }
+#line 1836 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 47:
-#line 211 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kPow); }
-#line 1839 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 214 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLog10); }
+#line 1842 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 48:
-#line 212 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSqrt); }
-#line 1845 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 215 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLog2); }
+#line 1848 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 49:
-#line 213 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCbrt); }
-#line 1851 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 216 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kPow); }
+#line 1854 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 50:
-#line 216 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCeil); }
-#line 1857 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 217 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSqrt); }
+#line 1860 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 51:
-#line 217 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kFloor); }
-#line 1863 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 218 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCbrt); }
+#line 1866 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 52:
-#line 218 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kRound); }
-#line 1869 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 221 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCeil); }
+#line 1872 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 53:
-#line 221 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kAdd); }
-#line 1875 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 222 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kFloor); }
+#line 1878 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 54:
-#line 222 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSub); }
-#line 1881 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 223 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kRound); }
+#line 1884 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 55:
-#line 223 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kDiv); }
-#line 1887 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 226 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kAdd); }
+#line 1890 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 56:
-#line 224 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kMult); }
-#line 1893 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 227 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSub); }
+#line 1896 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 57:
-#line 225 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kModulo); }
-#line 1899 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 228 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kDiv); }
+#line 1902 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 58:
-#line 226 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kQuest); }
-#line 1905 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 229 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kMult); }
+#line 1908 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 59:
-#line 227 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kNeg); }
-#line 1911 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 230 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kModulo); }
+#line 1914 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 60:
-#line 228 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kEq); }
-#line 1917 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 231 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kQuest); }
+#line 1920 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 61:
-#line 229 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kGreater); }
-#line 1923 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 232 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kNeg); }
+#line 1926 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 62:
-#line 230 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kGreatereq); }
-#line 1929 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 233 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kEq); }
+#line 1932 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 63:
-#line 231 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLess); }
-#line 1935 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 234 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kGreater); }
+#line 1938 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 64:
-#line 232 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLesseq); }
-#line 1941 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 235 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kGreatereq); }
+#line 1944 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 65:
-#line 233 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kMin); }
-#line 1947 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 236 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLess); }
+#line 1950 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 66:
-#line 234 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kMax); }
-#line 1953 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 237 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLesseq); }
+#line 1956 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 67:
-#line 235 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kHas); }
-#line 1959 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 238 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kMin); }
+#line 1962 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 68:
-#line 236 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kRand); }
-#line 1965 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 239 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kMax); }
+#line 1968 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 69:
-#line 239 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
-#line 1971 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 240 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kHas); }
+#line 1974 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 70:
-#line 240 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
-#line 1977 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 241 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kRand); }
+#line 1980 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 71:
-#line 241 "inscorev2.y" /* yacc.c:1666  */
+#line 244 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
+#line 1986 "inscoreparse.cpp" /* yacc.c:1666  */
+    break;
+
+  case 72:
+#line 245 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
+#line 1992 "inscoreparse.cpp" /* yacc.c:1666  */
+    break;
+
+  case 73:
+#line 246 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = context->create (context->fText, INode::kFloat); }
-#line 1983 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 1998 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
 
-#line 1987 "inscoreparse.cpp" /* yacc.c:1666  */
+#line 2002 "inscoreparse.cpp" /* yacc.c:1666  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2217,7 +2232,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 244 "inscorev2.y" /* yacc.c:1910  */
+#line 249 "inscorev2.y" /* yacc.c:1910  */
 
 
 namespace inscore2

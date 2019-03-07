@@ -205,6 +205,7 @@ const char * INode::type2string (TNodeType t)
 		case kTan: 		return "Tan";
 		case kTanh: 	return "Tanh";
 		case kText: 	return "Text";
+		case kURLPrefix: return "Prefix";
 		case kVariable: return "Variable";
 	}
 	return "unknown";
