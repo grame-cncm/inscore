@@ -1,6 +1,5 @@
 
 #include <sstream>
-#include <regex>
 
 #include "inscorev1converter.h"
 #include "pathsList.h"
@@ -14,13 +13,10 @@ namespace inscore2
 //------------------------------------------------------------
 class v1Msg {
 	IMessage::TUrl  fUrl;		// the msg address url prefix
-//	string			fHostname;	// the msg address prefix
-//	int				fPort=0;	// the prefix port number
 	string			fAddress;	// the msg osc address
 	string			fMethod;	// the msg method string
 	SINode			fPParams;	// parent node of the parameters
 
-//	void			scanPrefix (const string& prefix);
 	const SINode	getAddress (const SINode& node);
 	const SINode	getMethod (const SINode& node);
 	SIMessage		getParams (const SINode& node, SIMessage msg) const;
@@ -47,21 +43,6 @@ SIMessage v1Msg::toMessage () const
 }
 
 //------------------------------------------------------------
-//bool v1Msg::scanPrefix (const string& prefix)
-//{
-//	string exp = "(..*):([0-9]+)$";
-//	std::regex e (exp);
-//
-//	smatch m;
-//	if (regex_match (input, m, e) && (m.size() == 3)) {
-//		fHostname = m[1].str();
-//		fPort = std::stoi(m[2].str());
-//		return true;
-//	}
-//	return false;
-//}
-
-//------------------------------------------------------------
 const SINode v1Msg::getAddress (const SINode& node)
 {
 	if (!node) return node;
@@ -83,7 +64,6 @@ const SINode v1Msg::getMethod (const SINode& node)
 {
 	if (node && (node->getType() == INode::kText)) {
 		fMethod = node->getName();
-//		return node->size() ? node->childs()[0] : 0;
 	}
 	return node;
 }
