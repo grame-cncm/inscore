@@ -41,6 +41,7 @@
 #include "../QArchive/QArchive.h"
 
 #include "IParser2.h"
+#include "jsEval.h"
 #include "parseEval.h"
 #include "evaluator2.h"
 #include "inscorev1converter.h"
@@ -167,11 +168,12 @@ MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std
 }
 
 //--------------------------------------------------------------------------
-SIMessageList TILoader::inscorev2_to_inscorev1 (const inscore2::SINode& node)
+SIMessageList TILoader::inscorev2_to_inscorev1 (const inscore2::SINode& node, TJSEngine* js)
 {
 	SIMessageList out = IMessageList::create();
 	try {
-		inscore2::SINode e = inscore2::evaluator::eval(inscore2::parseEval::eval(node));
+		inscore2::jsEval jse (js);
+		inscore2::SINode e = inscore2::evaluator::eval(inscore2::parseEval::eval(jse.eval(node)));
 		inscore2::inscorev1converter v1;
 		return v1.convert(e);
 	}
@@ -185,11 +187,11 @@ SIMessageList TILoader::inscorev2_to_inscorev1 (const inscore2::SINode& node)
 }
 
 //--------------------------------------------------------------------------
-SIMessageList TILoader::parsev2(std::istream* stream, int line) const
+SIMessageList TILoader::parsev2(std::istream* stream, int line, IAppl* root) const
 {
 	inscore2::IParser p (stream);
 	if (p.parse()) {
-		return inscorev2_to_inscorev1 (p.tree());
+		return inscorev2_to_inscorev1 (p.tree(), root->getJSEngine());
 	}
 	return 0;
 }
@@ -198,22 +200,12 @@ SIMessageList TILoader::parsev2(std::istream* stream, int line) const
 bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute) const
 {
 	if (pversion == 2) {
-		SIMessageList msgs = parsev2 (stream, line);
+		SIMessageList msgs = parsev2 (stream, line, root);
 		if (!msgs) return false;
 		if (execute) {
 			for (auto n: msgs->list()) root->processMsg(n);
 		}
 		return true;
-
-//		inscore2::IParser p (stream);
-//		if (p.parse()) {
-//			SIMessageList msgs = inscorev2_to_inscorev1 (p.tree());
-//			if (execute) {
-//				for (auto n: msgs->list()) root->processMsg(n);
-//			}
-//			return true;
-//		}
-//		return false;
 	}
 	else {
 		ITLparser p (stream, line, root, execute);
@@ -255,7 +247,7 @@ MsgHandler::msgStatus TILoader::preprocess(const IMessage* msg, IAppl* appl, con
 			if (fileversion) pversion = fileversion;
 
 			if (pversion == 2) {
-				SIMessageList msgs = parsev2(&file, 0);
+				SIMessageList msgs = parsev2(&file, 0, appl);
 				if (msgs) appl->logMsgs (msgs);
 			}
 			else {
