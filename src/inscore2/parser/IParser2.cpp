@@ -29,7 +29,9 @@
 #include "parseEval.h"
 #include "addressEval.h"
 
+#ifndef TESTV2
 #include "ITLError.h"
+#endif
 
 using namespace std;
 
@@ -49,7 +51,11 @@ TINode 	IParser::variable(const std::string name) const		{
 
 //------------------------------------------------------------
 void 	IParser::error (int line, int col, const char* msg) const {
+#ifdef TESTV2
+	cerr << "line " << line << " column " << col << ": " << msg << endl;
+#else
 	inscore::ITLErr << "line " << line << " column " << col << ": " << msg << inscore::ITLEndl;
+#endif
 }
 
 } // end namespace
