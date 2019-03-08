@@ -49,7 +49,8 @@ class TEnv : public std::map<std::string, SINode>
 
 	const SINode get (const std::string& name) const {
 		TEnvMap::const_iterator i = this->find(name);
-		return i == this->end() ? 0 : i->second;
+		SINode null;
+		return (i == this->end()) ? null : i->second;
 	}
 
 	void put (const std::string& name, SINode val )	{
