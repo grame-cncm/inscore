@@ -203,14 +203,14 @@ prefix		: URLPREFIX		{ $$ = context->prefix (context->fText); }
 string		: STRING		{ $$ = context->create (context->fText); }
 			;
 
-vardecl	    : identifier EQUAL tree {context->declare ($1->getName(), $3); delete $1; }  %prec DECL
+vardecl	    : identifier EQUAL tree {context->declare ($1->getValue(), $3); delete $1; }  %prec DECL
 			;
 
-pushvardecl	: identifier EQUAL tree { context->pushEnv(); context->declare ($1->getName(), $3); delete $1; }  %prec LDECL
+pushvardecl	: identifier EQUAL tree { context->pushEnv(); context->declare ($1->getValue(), $3); delete $1; }  %prec LDECL
 			;
 
-variable	: varname					{ $$ = context->variable ($1->getName()); delete $1; } 
-			| varname LEFTBRACE varlist  RIGHTBRACE { $$ = context->variable ($1->getName()); context->popEnv(); delete  $1; }
+variable	: varname					{ $$ = context->variable ($1->getValue()); delete $1; } 
+			| varname LEFTBRACE varlist  RIGHTBRACE { $$ = context->variable ($1->getValue()); context->popEnv(); delete  $1; }
  			;
 
 varlist	    : pushvardecl				{ }

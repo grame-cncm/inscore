@@ -222,7 +222,7 @@ SINode expandEval::evalExpand (const SINode& node)
 {
 	NList l;
 	try {
-		TExpandInfos info = expandEval::getExpand (node->getName());
+		TExpandInfos info = expandEval::getExpand (node->getValue());
 		makelist (info.from, info.to, [info, node, &l](const string& s, int i, int j) -> void {
 			SINode n = SINode(new INode(info.header + s, node->clone()->childs(), INode::kText));
 //			n->setAddress( node->address() );

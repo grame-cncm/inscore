@@ -63,7 +63,7 @@ SINode jsEval::evalJavascript (const SINode& node)
 SINode jsEval::evalJavascript (const SINode& node)
 {
 	string jsOut;
-	bool done = fJavascript->eval(node->getLine(), node->getName().c_str(), jsOut);
+	bool done = fJavascript->eval(node->getLine(), node->getValue().c_str(), jsOut);
 	if (done) {
 		if (jsOut.size()) {
 			stringstream stream (jsOut);

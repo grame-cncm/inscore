@@ -32,7 +32,7 @@ namespace inscore2
 {
 
 std::ostream& TEnv::print (std::ostream& os) const {
-	for (auto n: *this) os << n.first << "=" << n.second->getName() << std::endl;
+	for (auto n: *this) os << n.first << "=" << n.second->getValue() << std::endl;
 	return os;
 }
 

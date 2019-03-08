@@ -25,7 +25,7 @@ void oscprinter::print (ostream& os, const INode* node, std::string prefix)
 			print (os, node->childs(), prefix);
 			break;
 	 	default:
-			string p = prefix + "/" + node->getName();
+			string p = prefix + "/" + node->getValue();
 			for (auto n: node->childs()) print (os, n, p );
 			if (node->empty()) os << p << ";" << endl;
 	}

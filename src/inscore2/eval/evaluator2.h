@@ -123,7 +123,6 @@ class evaluator
 	static SINode 	evalExpand (const SINode& node, const TEnv&);
 	static SINode 	evalVar    (const SINode& node, const TEnv&);
 	static SINode 	evalNode   (const SINode& node, const TEnv&);
-	static SINode 	evalJS     (const SINode& node, const TEnv&);
 
 	static SINode 	eval (const SINode& node, const TEnv&);
 

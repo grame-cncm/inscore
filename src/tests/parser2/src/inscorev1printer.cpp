@@ -58,7 +58,7 @@ const SINode v1Msg::getAddress (const SINode& node)
 	const SINode next = node->size() ? node->childs()[0] : 0;
 	if (node->address()) {
 		fAddress += "/";
-		fAddress += node->getName();
+		fAddress += node->getValue();
 		return next ? getAddress (next) : 0;
 	}
 	else return node;
@@ -75,7 +75,7 @@ void v1Msg::getParams (const SINode& node)
 	else {
 		string prefix;
 		if (node->getType() == INode::kVariable) prefix = "$";
-		fArgs.push_back (prefix + node->getName());
+		fArgs.push_back (prefix + node->getValue());
 		for (auto n: node->childs())
 			getParams (n);
 	}

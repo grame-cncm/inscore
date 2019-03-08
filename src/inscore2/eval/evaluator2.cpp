@@ -92,7 +92,7 @@ evaluator::TType evaluator::getType (const NList& args)
 SINode evaluator::addStrings (const NList& args)
 {
 	stringstream sum;
-	for (auto n: args) sum << n->getName();
+	for (auto n: args) sum << n->getValue();
 	SINode out = INode::create (sum.str());
 	out->setAddress( args.size() ? args[0]->address() : false );
 	return out;
@@ -102,7 +102,7 @@ SINode evaluator::addStrings (const NList& args)
 SINode evaluator::addInt (const NList& args)
 {
 	int sum = 0;
-	for (auto n: args) sum += std::stoi(n->getName());
+	for (auto n: args) sum += std::stoi(n->getValue());
 	return INode::create (sum);
 }
 
@@ -110,7 +110,7 @@ SINode evaluator::addInt (const NList& args)
 SINode evaluator::addFloat (const NList& args)
 {
 	float sum = 0;
-	for (auto n: args) sum += std::stof(n->getName());
+	for (auto n: args) sum += std::stof(n->getValue());
 	return INode::create (sum);
 }
 
@@ -130,16 +130,16 @@ SINode evaluator::evalAdd 	(const SINode& node, const NList& args, TType type)
 //------------------------------------------------------------
 SINode evaluator::subInt (const NList& args)
 {
-	int result = std::stoi(args[0]->getName());
-	for (size_t i = 1; i < args.size(); i++) result -= std::stoi(args[i]->getName());
+	int result = std::stoi(args[0]->getValue());
+	for (size_t i = 1; i < args.size(); i++) result -= std::stoi(args[i]->getValue());
 	return INode::create (result);
 }
 
 //------------------------------------------------------------
 SINode evaluator::subFloat (const NList& args)
 {
-	float result = std::stof(args[0]->getName());
-	for (size_t i = 1; i < args.size(); i++) result -= std::stof(args[i]->getName());
+	float result = std::stof(args[0]->getValue());
+	for (size_t i = 1; i < args.size(); i++) result -= std::stof(args[i]->getValue());
 	return INode::create (result);
 }
 
@@ -159,17 +159,17 @@ SINode evaluator::evalSub 	(const SINode& node, const NList& args, TType type)
 //------------------------------------------------------------
 SINode evaluator::divInt (const NList& args)
 {
-	int result = std::stoi(args[0]->getName());
-	for (size_t i = 1; i < args.size(); i++) result /= std::stoi(args[i]->getName());
+	int result = std::stoi(args[0]->getValue());
+	for (size_t i = 1; i < args.size(); i++) result /= std::stoi(args[i]->getValue());
 	return INode::create (result);
 }
 
 //------------------------------------------------------------
 SINode evaluator::divFloat (const NList& args)
 {
-	float result = std::stof(args[0]->getName());
+	float result = std::stof(args[0]->getValue());
 	for (size_t i = 1; i < args.size(); i++) {
-		float v = std::stof(args[i]->getName());
+		float v = std::stof(args[i]->getValue());
 		if (v) result /= v;
 		else  error (args[i], "divide by zero");
 	}
@@ -192,16 +192,16 @@ SINode evaluator::evalDiv 	(const SINode& node, const NList& args, TType type)
 //------------------------------------------------------------
 SINode evaluator::multInt (const NList& args)
 {
-	int result = std::stoi(args[0]->getName());
-	for (size_t i = 1; i < args.size(); i++) result *= std::stoi(args[i]->getName());
+	int result = std::stoi(args[0]->getValue());
+	for (size_t i = 1; i < args.size(); i++) result *= std::stoi(args[i]->getValue());
 	return INode::create (result);
 }
 
 //------------------------------------------------------------
 SINode evaluator::multFloat (const NList& args)
 {
-	float result = std::stof(args[0]->getName());
-	for (size_t i = 1; i < args.size(); i++) result *= std::stof(args[i]->getName());
+	float result = std::stof(args[0]->getValue());
+	for (size_t i = 1; i < args.size(); i++) result *= std::stof(args[i]->getValue());
 	return INode::create (result);
 }
 
@@ -221,8 +221,8 @@ SINode evaluator::evalMult 	(const SINode& node, const NList& args, TType type)
 //------------------------------------------------------------
 SINode evaluator::moduloInt (const NList& args)
 {
-	int result = std::stoi(args[0]->getName());
-	for (size_t i = 1; i < args.size(); i++) result %= std::stoi(args[i]->getName());
+	int result = std::stoi(args[0]->getValue());
+	for (size_t i = 1; i < args.size(); i++) result %= std::stoi(args[i]->getValue());
 	return INode::create (result);
 }
 
@@ -240,7 +240,7 @@ SINode evaluator::evalModulo (const SINode& node, const NList& args, TType type)
 //------------------------------------------------------------
 bool evaluator::isTrue  (const SINode& n)
 {
-	string testStr = n->getName();
+	string testStr = n->getValue();
 	switch (n->getType()) {
 		case INode::kText:
 			return (testStr == "true") || (testStr=="yes") || (testStr == "on");
@@ -279,15 +279,15 @@ SINode evaluator::evalEq 	(const SINode& node, const NList& args, TType type)
 
 SINode evaluator::compare (const SINode& arg1, const SINode& arg2, TCompStrFunction f)
 {
-	string result = f(arg1->getName(), arg2->getName()) ? "true" : "false";
+	string result = f(arg1->getValue(), arg2->getValue()) ? "true" : "false";
 	return SINode (new INode (result));
 
 }
 
 SINode evaluator::compare (const SINode& arg1, const SINode& arg2, TCompNumFunction f)
 {
-	float v1 = std::stof(arg1->getName());
-	float v2 = std::stof(arg2->getName());
+	float v1 = std::stof(arg1->getValue());
+	float v2 = std::stof(arg2->getValue());
 	string result = f(v1, v2) ? "true" : "false";
 	return SINode (new INode (result));
 }
@@ -331,9 +331,9 @@ SINode evaluator::evalLesseq	(const SINode& node, const NList& args, TType type)
 SINode evaluator::minStrings	(const NList& args)
 {
 	SINode node = args[0];
-	size_t min = node->getName().size();
+	size_t min = node->getValue().size();
 	for (size_t i=1; i < args.size(); i++) {
-		size_t n = args[i]->getName().size();
+		size_t n = args[i]->getValue().size();
 		if (n < min) {
 			min = n;
 			node = args[i];
@@ -346,9 +346,9 @@ SINode evaluator::minStrings	(const NList& args)
 SINode evaluator::minNum	(const NList& args)
 {
 	SINode node = args[0];
-	double min = std::stof(node->getName());;
+	double min = std::stof(node->getValue());;
 	for (size_t i=1; i < args.size(); i++) {
-		float n = std::stof(args[i]->getName());
+		float n = std::stof(args[i]->getValue());
 		if (n < min) {
 			min = n;
 			node = args[i];
@@ -374,9 +374,9 @@ SINode evaluator::evalMin (const SINode& node, const NList& args, TType type)
 SINode evaluator::maxStrings	(const NList& args)
 {
 	SINode node = args[0];
-	size_t max = node->getName().size();
+	size_t max = node->getValue().size();
 	for (size_t i=1; i < args.size(); i++) {
-		size_t n = args[i]->getName().size();
+		size_t n = args[i]->getValue().size();
 		if (n > max) {
 			max = n;
 			node = args[i];
@@ -388,9 +388,9 @@ SINode evaluator::maxStrings	(const NList& args)
 SINode evaluator::maxNum	(const NList& args)
 {
 	SINode node = args[0];
-	float max = std::stof(node->getName());;
+	float max = std::stof(node->getValue());;
 	for (size_t i=0; i < args.size(); i++) {
-		float n = std::stof(args[i]->getName());
+		float n = std::stof(args[i]->getValue());
 		if (n > max) {
 			max = n;
 			node = args[i];
@@ -431,7 +431,7 @@ float evaluator::getFArgValue (const SINode& node, const NList& args)
 	switch (arg->getType()) {
 		case INode::kInt:
 		case INode::kFloat:
-			return std::stof(arg->getName());
+			return std::stof(arg->getValue());
 		default:
 			what << "unexpected type of argument (type " << arg->getType() << ": " << arg->getTypeStr() << ")";
 			error (arg, what.str());
@@ -466,8 +466,8 @@ SINode evaluator::evalRound (float value) 	{ return INode::create ( round(value)
 SINode evaluator::evalPow (const SINode& node, const NList& args, TType type)
 {
 	if ((args.size() != 2) || (type == kString)) error (node, "operator 'pow' requires 2 numeric arguments");
-	float v1 = 	std::stof(args[0]->getName());
-	float v2 = 	std::stof(args[1]->getName());
+	float v1 = 	std::stof(args[0]->getValue());
+	float v2 = 	std::stof(args[1]->getValue());
 	return INode::create (pow(v1, v2));
 }
 
@@ -580,14 +580,6 @@ SINode evaluator::evalSlash (const SINode& node, const TEnv& env)
 	return l[0];
 }
 
-
-//------------------------------------------------------------
-SINode evaluator::evalJS (const SINode& node, const TEnv& env)
-{
-cerr << "evaluator::evalJS " << node->getName() << endl;
-	return evalNode (node, env);
-}
-
 //------------------------------------------------------------
 SINode evaluator::evalExpand (const SINode& node, const TEnv& env)
 {
@@ -598,7 +590,7 @@ SINode evaluator::evalExpand (const SINode& node, const TEnv& env)
 //------------------------------------------------------------
 SINode evaluator::evalVar (const SINode& node, const TEnv& env)
 {
-	SINode out = env.get (node->getName());
+	SINode out = env.get (node->getValue());
 	if (out) {
 		if (node->address()) out->setAddress(true);
 		out = eval(out, env);
@@ -623,7 +615,6 @@ SINode evaluator::eval (const SINode& node, const TEnv& env)
 		case INode::kSlash: 	return evalSlash (node, env);
 		case INode::kVariable: 	return evalVar   (node, env);
 		case INode::kExpand: 	return evalExpand(node, env);
-		case INode::kJScript: 	return evalJS(node, env);
 		default:
 			return evalNode (node, env);
 	}

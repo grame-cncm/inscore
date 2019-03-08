@@ -74,9 +74,9 @@ string dotprinter::label (const INode * node) const
 // 	else if (node->mtime()) str = to_string(node->mtime());
 // 	else str = "0 ";
 	if (node->address()) str += " /";
-	str += node->getName();
+	str += node->getValue();
 	switch(node->getType()) {
-		case INode::kURLPrefix: str = node->getName(); break; // no "/" before the url prefix
+		case INode::kURLPrefix: str = node->getValue(); break; // no "/" before the url prefix
 		case INode::kText:
 		case INode::kInt:
 		case INode::kFloat:

@@ -1735,25 +1735,25 @@ yyreduce:
 
   case 26:
 #line 206 "inscorev2.y" /* yacc.c:1666  */
-    {context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
+    {context->declare ((yyvsp[-2].treeptr)->getValue(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
 #line 1740 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 27:
 #line 209 "inscorev2.y" /* yacc.c:1666  */
-    { context->pushEnv(); context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
+    { context->pushEnv(); context->declare ((yyvsp[-2].treeptr)->getValue(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
 #line 1746 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 28:
 #line 212 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->variable ((yyvsp[0].treeptr)->getName()); delete (yyvsp[0].treeptr); }
+    { (yyval.treeptr) = context->variable ((yyvsp[0].treeptr)->getValue()); delete (yyvsp[0].treeptr); }
 #line 1752 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
   case 29:
 #line 213 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->variable ((yyvsp[-3].treeptr)->getName()); context->popEnv(); delete  (yyvsp[-3].treeptr); }
+    { (yyval.treeptr) = context->variable ((yyvsp[-3].treeptr)->getValue()); context->popEnv(); delete  (yyvsp[-3].treeptr); }
 #line 1758 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 

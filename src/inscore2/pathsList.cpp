@@ -41,7 +41,7 @@ static void addPath (const SINode& path, const SINode& node, NList& list)
 	if (type == INode::kForest)
 		list.add( node );
 	else {
-		SINode n = SINode (new INode (path->getName(), node, type));
+		SINode n = SINode (new INode (path->getValue(), node, type));
 		n->setAddress(path->address());
 		list.add( n );
 	}

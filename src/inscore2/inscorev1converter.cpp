@@ -73,10 +73,10 @@ const SINode v1Msg::getAddress (const SINode& node)
 	const SINode next = node->size() ? node->childs()[0] : 0;
 	if (node->address()) {
 		if (node->getType() == INode::kURLPrefix)
-			fUrl.parse (node->getName());
+			fUrl.parse (node->getValue());
 		else {
 			fAddress += "/";
-			fAddress += node->getName();
+			fAddress += node->getValue();
 		}
 		return next ? getAddress (next) : 0;
 	}
@@ -87,7 +87,7 @@ const SINode v1Msg::getAddress (const SINode& node)
 const SINode v1Msg::getMethod (const SINode& node)
 {
 	if (node && (node->getType() == INode::kText)) {
-		fMethod = node->getName();
+		fMethod = node->getValue();
 	}
 	return node;
 }
@@ -104,14 +104,14 @@ SIMessage v1Msg::getParams (const SINode& node, SIMessage msg) const
 		string prefix;
 		switch (node->getType()) {
 			case INode::kText:
-				msg->add (node->getName()); break;
+				msg->add (node->getValue()); break;
 			case INode::kInt:
-				msg->add (std::stoi(node->getName())); break;
+				msg->add (std::stoi(node->getValue())); break;
 			case INode::kFloat:
-				msg->add (std::stof(node->getName())); break;
+				msg->add (std::stof(node->getValue())); break;
 			case INode::kVariable:
 				prefix = "$";
-				msg->add (prefix + node->getName()); break;
+				msg->add (prefix + node->getValue()); break;
 			default:
 				cerr << "v1Msg::getParams: unexpected node type " << node->getTypeStr() << endl;
 		}

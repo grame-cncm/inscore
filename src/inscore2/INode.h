@@ -62,24 +62,24 @@ class INode {
 			kSin, kCos, kTan, kASin, kACos, kATan, kSinh, kCosh, kTanh, kASinh, kACosh, kATanh,
 			kExp, kLog, kLog10, kLog2, kPow, kSqrt, kCbrt, kCeil, kFloor, kRound, kRand, kLastMath=kRand };
 
-		static SINode create (const std::string& name, TNodeType t=kText) { return SINode(new INode(name, t));}
+		static SINode create (const std::string& val, TNodeType t=kText)  { return SINode(new INode(val, t));}
 		static SINode create (float value) 								  { return SINode(new INode(std::to_string(value), kFloat)); }
 		static SINode create (int value) 								  { return SINode(new INode(std::to_string(value), kInt)); }
 
-				 INode(const std::string& name, TNodeType t=kText)
-				 							: fName(name), fType(t), fAddressPart(false), fLine(0), fColumn(0) 	{}
-				 INode(const std::string& name, const NList& sub, TNodeType t)
-				 							: fName(name), fType(t), fAddressPart(false), fLine(0), fColumn(0) { fSubNodes.add(sub); }
-				 INode(const std::string& name, const SINode& n, TNodeType t)
-				 							: fName(name), fType(t), fAddressPart(false), fLine(0), fColumn(0) { fSubNodes.add(n); }
+				 INode(const std::string& val, TNodeType t=kText)
+				 							: fValue(val), fType(t), fAddressPart(false), fLine(0), fColumn(0) 	{}
+				 INode(const std::string& val, const NList& sub, TNodeType t)
+				 							: fValue(val), fType(t), fAddressPart(false), fLine(0), fColumn(0) { fSubNodes.add(sub); }
+				 INode(const std::string& val, const SINode& n, TNodeType t)
+				 							: fValue(val), fType(t), fAddressPart(false), fLine(0), fColumn(0) { fSubNodes.add(n); }
 				 INode(const SINode n1, const SINode n2, TNodeType t)
 				 							: fType(t), fAddressPart(false), fLine(0), fColumn(0)  { fSubNodes.add(n1); fSubNodes.add(n2); }
 				 INode(const INode* node);
 
 		virtual ~INode() {}
 
-		virtual const std::string 	getName () const 	{ return fName; }
-		virtual const std::string 	getFullName () const { return fName + ":" + getTypeStr(); }
+		virtual const std::string 	getValue () const 	{ return fValue; }
+		virtual const std::string 	getFullValue () const { return fValue + ":" + getTypeStr(); }
 		virtual TNodeType 			getType () const 	{ return fType; }
 		virtual const char* 		getTypeStr() const 	{ return type2string (fType); }
 
@@ -97,9 +97,8 @@ class INode {
 		virtual SINode  merge (const SINode& n) const;
 		const SINode 	find  (const SINode& n) const	{ return fSubNodes.find(n); }
 
-		void print (std::ostream& os, int depth=0) const;
-		bool operator == (const INode* n) const	 { return (n->getName() == getName()) && (n->getType() == getType()); }
-		bool operator == (const SINode& n) const { return (n->getName() == getName()) && (n->getType() == getType()); }
+		bool operator == (const INode* n) const	 { return (n->getValue() == getValue()) && (n->getType() == getType()); }
+		bool operator == (const SINode& n) const { return (n->getValue() == getValue()) && (n->getType() == getType()); }
 		bool operator != (const INode* n) const	 { return !(*this == n); }
 		bool operator != (const SINode& n) const { return !(*this == n); }
 
@@ -108,7 +107,6 @@ class INode {
 		void 	setLC (int line, int column) 	{ fLine = line; fColumn = column; }
 
 		void 			setEnv (const std::string&, int val);	// sets a single var in environment
-//		void 			setEnv (const SINode& node);
 		void 			setEnv (const TEnv& env);				// overrides the current environment
 		void 			addEnv (const SINode& node);			// add the node environment to the current environment
 		const TEnv& 	getEnv () const					{ return fEnv; }
@@ -123,7 +121,7 @@ class INode {
 		static INode* createPar (SINode n1, SINode n2);
 
 	private:
-		std::string fName;
+		std::string fValue;
 		NList		fSubNodes;
 		TNodeType	fType;
 		bool		fAddressPart;
@@ -151,21 +149,21 @@ class ParNode : public INode {
 //------------------------------------------------------------
 class ExpandNode : public INode {
 	public:
-			 ExpandNode(std::string name) : INode(name, kExpand) {}
+			 ExpandNode(std::string val) : INode(val, kExpand) {}
 	virtual ~ExpandNode() {}
 };
 
 //------------------------------------------------------------
 class UrlPrefixNode : public INode {
 	public:
-			 UrlPrefixNode(std::string name) : INode(name, kURLPrefix) { setAddress(true); }
+			 UrlPrefixNode(std::string val) : INode(val, kURLPrefix) { setAddress(true); }
 	virtual ~UrlPrefixNode() {}
 };
 
 //------------------------------------------------------------
 class JavascriptNode : public INode {
 	public:
-			 JavascriptNode(std::string name) : INode(name, kJScript) {}
+			 JavascriptNode(std::string val) : INode(val, kJScript) {}
 	virtual ~JavascriptNode() {}
 };
 
@@ -180,15 +178,15 @@ class ForestNode : public INode {
 //------------------------------------------------------------
 class RegexpNode : public INode {
 	public:
-			 RegexpNode(std::string name) : INode(name, kRegexp) {}
-			 RegexpNode(std::string name, const NList& l) : INode(name, l, kRegexp) {}
+			 RegexpNode(std::string val) : INode(val, kRegexp) {}
+			 RegexpNode(std::string val, const NList& l) : INode(val, l, kRegexp) {}
 	virtual ~RegexpNode() {}
 };
 
 //------------------------------------------------------------
 class VariableNode : public INode {
 	public:
-			 VariableNode(std::string name) : INode (name, kVariable) {}
+			 VariableNode(std::string val) : INode (val, kVariable) {}
 	virtual ~VariableNode() {}
 };
 
