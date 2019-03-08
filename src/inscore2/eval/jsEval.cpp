@@ -54,6 +54,12 @@ SINode jsEval::eval (const SINode& node) throw(jsEvalException)
 }
 
 //------------------------------------------------------------
+#ifdef TESTV2
+SINode jsEval::evalJavascript (const SINode& node)
+{
+	return node->clone();
+}
+#else
 SINode jsEval::evalJavascript (const SINode& node)
 {
 	string jsOut;
@@ -67,7 +73,7 @@ SINode jsEval::evalJavascript (const SINode& node)
 	}
 	return 0;
 }
-
+#endif
 
 //------------------------------------------------------------
 SINode jsEval::evalNode (const SINode& node)

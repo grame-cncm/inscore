@@ -28,7 +28,13 @@
 
 #include <exception>
 
+#ifdef TESTV2
+typedef void* JSEngine;
+#else
 #include "TQtJs.h"
+typedef inscore::TQtJs* JSEngine;
+#endif
+
 #include "INode.h"
 
 namespace inscore2
@@ -45,14 +51,14 @@ class jsEvalException: public std::exception
 
 class jsEval
 {
-	inscore::TQtJs* fJavascript;
+	JSEngine fJavascript;
 	
 	SINode 	evalNode 		(const SINode& node);
 	SINode 	evalJavascript	(const SINode& node);
 	SINode 	evalForest		(const SINode& node);
 
 	public:
-				 jsEval(inscore::TQtJs* jsengine) : fJavascript(jsengine) {}
+				 jsEval(JSEngine jsengine) : fJavascript(jsengine) {}
 		virtual ~jsEval() {}
 
 		SINode eval 	(const SINode& node) throw(jsEvalException);
