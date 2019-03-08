@@ -125,7 +125,7 @@ extern int INSCOREV2debug;
 
 union YYSTYPE
 {
-#line 110 "inscorev2.y" /* yacc.c:1919  */
+#line 134 "inscorev2.y" /* yacc.c:1919  */
 
 	inscore2::INode* 		treeptr;
 

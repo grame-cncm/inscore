@@ -70,6 +70,30 @@
 /* Copy the first part of user declarations.  */
 #line 2 "inscorev2.y" /* yacc.c:339  */
 
+/*
+
+  INScore Project
+
+  Copyright (C) 2019  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Grame - Centre national de création musicale, 
+  11 cours de Verdun Gensoul, 69002 Lyon - France
+
+*/
 
 #include <iostream>
 #include <fstream>
@@ -88,7 +112,7 @@ using namespace std;
 using namespace inscore2;
 
 
-#line 92 "inscoreparse.cpp" /* yacc.c:339  */
+#line 116 "inscoreparse.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -203,11 +227,11 @@ extern int INSCOREV2debug;
 
 union YYSTYPE
 {
-#line 110 "inscorev2.y" /* yacc.c:355  */
+#line 134 "inscorev2.y" /* yacc.c:355  */
 
 	inscore2::INode* 		treeptr;
 
-#line 211 "inscoreparse.cpp" /* yacc.c:355  */
+#line 235 "inscoreparse.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -236,7 +260,7 @@ int INSCOREV2parse (inscore2::IParser* context);
 #endif /* !YY_INSCOREV2_INSCOREPARSE_HPP_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
-#line 118 "inscorev2.y" /* yacc.c:358  */
+#line 142 "inscorev2.y" /* yacc.c:358  */
 
 
 int yyerror (const YYLTYPE* locp, IParser* context, const char*s);
@@ -256,7 +280,7 @@ nodebug ydebug;
 #endif
 
 
-#line 260 "inscoreparse.cpp" /* yacc.c:358  */
+#line 284 "inscoreparse.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -560,16 +584,16 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,   144,   144,   145,   149,   150,   151,   152,   156,   157,
-     158,   159,   160,   161,   162,   163,   164,   165,   166,   167,
-     170,   171,   172,   173,   176,   179,   182,   185,   188,   189,
-     192,   193,   196,   199,   200,   201,   202,   203,   204,   205,
-     206,   207,   208,   209,   210,   212,   213,   214,   215,   216,
-     217,   218,   221,   222,   223,   226,   227,   228,   229,   230,
-     231,   232,   233,   234,   235,   236,   237,   238,   239,   240,
-     241,   244,   245,   246
+       0,   168,   168,   169,   173,   174,   175,   176,   180,   181,
+     182,   183,   184,   185,   186,   187,   188,   189,   190,   191,
+     194,   195,   196,   197,   200,   203,   206,   209,   212,   213,
+     216,   217,   220,   223,   224,   225,   226,   227,   228,   229,
+     230,   231,   232,   233,   234,   236,   237,   238,   239,   240,
+     241,   242,   245,   246,   247,   250,   251,   252,   253,   254,
+     255,   256,   257,   258,   259,   260,   261,   262,   263,   264,
+     265,   268,   269,   270
 };
 #endif
 
@@ -1578,427 +1602,427 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 149 "inscorev2.y" /* yacc.c:1666  */
+#line 173 "inscorev2.y" /* yacc.c:1666  */
     { context->add ((yyvsp[-1].treeptr)); }
-#line 1584 "inscoreparse.cpp" /* yacc.c:1666  */
-    break;
-
-  case 5:
-#line 150 "inscorev2.y" /* yacc.c:1666  */
-    { }
-#line 1590 "inscoreparse.cpp" /* yacc.c:1666  */
-    break;
-
-  case 6:
-#line 151 "inscorev2.y" /* yacc.c:1666  */
-    { context->add (context->javascript (context->fText)); }
-#line 1596 "inscoreparse.cpp" /* yacc.c:1666  */
-    break;
-
-  case 7:
-#line 152 "inscorev2.y" /* yacc.c:1666  */
-    { YYACCEPT; }
-#line 1602 "inscoreparse.cpp" /* yacc.c:1666  */
-    break;
-
-  case 8:
-#line 156 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = (yyvsp[0].treeptr); }
 #line 1608 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 9:
-#line 157 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = (yyvsp[0].treeptr); }
+  case 5:
+#line 174 "inscorev2.y" /* yacc.c:1666  */
+    { }
 #line 1614 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 10:
-#line 158 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = (yyvsp[0].treeptr); }
+  case 6:
+#line 175 "inscorev2.y" /* yacc.c:1666  */
+    { context->add (context->javascript (context->fText)); }
 #line 1620 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 11:
-#line 159 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = (yyvsp[0].treeptr); }
+  case 7:
+#line 176 "inscorev2.y" /* yacc.c:1666  */
+    { YYACCEPT; }
 #line 1626 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 12:
-#line 160 "inscorev2.y" /* yacc.c:1666  */
+  case 8:
+#line 180 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = (yyvsp[0].treeptr); }
 #line 1632 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 13:
-#line 161 "inscorev2.y" /* yacc.c:1666  */
+  case 9:
+#line 181 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = (yyvsp[0].treeptr); }
 #line 1638 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 14:
-#line 162 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
+  case 10:
+#line 182 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = (yyvsp[0].treeptr); }
 #line 1644 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 15:
-#line 163 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->slash((yyvsp[0].treeptr)); }
+  case 11:
+#line 183 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = (yyvsp[0].treeptr); }
 #line 1650 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 16:
-#line 164 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->slash(context->regexp ("*")); }
+  case 12:
+#line 184 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = (yyvsp[0].treeptr); }
 #line 1656 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 17:
-#line 165 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
+  case 13:
+#line 185 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = (yyvsp[0].treeptr); }
 #line 1662 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 18:
-#line 166 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->par((yyvsp[-2].treeptr), (yyvsp[0].treeptr)); }
+  case 14:
+#line 186 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
 #line 1668 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 19:
-#line 167 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = (yyvsp[-1].treeptr); }
+  case 15:
+#line 187 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->slash((yyvsp[0].treeptr)); }
 #line 1674 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 20:
-#line 170 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText); }
+  case 16:
+#line 188 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->slash(context->regexp ("*")); }
 #line 1680 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 21:
-#line 171 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText); }
+  case 17:
+#line 189 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->seq((yyvsp[-1].treeptr), (yyvsp[0].treeptr)); }
 #line 1686 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 22:
-#line 172 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->expand (context->fText); }
+  case 18:
+#line 190 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->par((yyvsp[-2].treeptr), (yyvsp[0].treeptr)); }
 #line 1692 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 23:
-#line 173 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->regexp (context->fText); }
+  case 19:
+#line 191 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = (yyvsp[-1].treeptr); }
 #line 1698 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 24:
-#line 176 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->prefix (context->fText); }
+  case 20:
+#line 194 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText); }
 #line 1704 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 25:
-#line 179 "inscorev2.y" /* yacc.c:1666  */
+  case 21:
+#line 195 "inscorev2.y" /* yacc.c:1666  */
     { (yyval.treeptr) = context->create (context->fText); }
 #line 1710 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 26:
-#line 182 "inscorev2.y" /* yacc.c:1666  */
-    {context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
+  case 22:
+#line 196 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->expand (context->fText); }
 #line 1716 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 27:
-#line 185 "inscorev2.y" /* yacc.c:1666  */
-    { context->pushEnv(); context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
+  case 23:
+#line 197 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->regexp (context->fText); }
 #line 1722 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 28:
-#line 188 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->variable ((yyvsp[0].treeptr)->getName()); delete (yyvsp[0].treeptr); }
+  case 24:
+#line 200 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->prefix (context->fText); }
 #line 1728 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 29:
-#line 189 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->variable ((yyvsp[-3].treeptr)->getName()); context->popEnv(); delete  (yyvsp[-3].treeptr); }
+  case 25:
+#line 203 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText); }
 #line 1734 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 30:
-#line 192 "inscorev2.y" /* yacc.c:1666  */
-    { }
+  case 26:
+#line 206 "inscorev2.y" /* yacc.c:1666  */
+    {context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
 #line 1740 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 31:
-#line 193 "inscorev2.y" /* yacc.c:1666  */
-    { }
+  case 27:
+#line 209 "inscorev2.y" /* yacc.c:1666  */
+    { context->pushEnv(); context->declare ((yyvsp[-2].treeptr)->getName(), (yyvsp[0].treeptr)); delete (yyvsp[-2].treeptr); }
 #line 1746 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 32:
-#line 196 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText); }
+  case 28:
+#line 212 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->variable ((yyvsp[0].treeptr)->getName()); delete (yyvsp[0].treeptr); }
 #line 1752 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 33:
-#line 199 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSin); }
+  case 29:
+#line 213 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->variable ((yyvsp[-3].treeptr)->getName()); context->popEnv(); delete  (yyvsp[-3].treeptr); }
 #line 1758 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 34:
-#line 200 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCos); }
+  case 30:
+#line 216 "inscorev2.y" /* yacc.c:1666  */
+    { }
 #line 1764 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 35:
-#line 201 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kTan); }
+  case 31:
+#line 217 "inscorev2.y" /* yacc.c:1666  */
+    { }
 #line 1770 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 36:
-#line 202 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kASin); }
+  case 32:
+#line 220 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText); }
 #line 1776 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 37:
-#line 203 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kACos); }
+  case 33:
+#line 223 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSin); }
 #line 1782 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 38:
-#line 204 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kATan); }
+  case 34:
+#line 224 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCos); }
 #line 1788 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 39:
-#line 205 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSinh); }
+  case 35:
+#line 225 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kTan); }
 #line 1794 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 40:
-#line 206 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCosh); }
+  case 36:
+#line 226 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kASin); }
 #line 1800 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 41:
-#line 207 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kTanh); }
+  case 37:
+#line 227 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kACos); }
 #line 1806 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 42:
-#line 208 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kASinh); }
+  case 38:
+#line 228 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kATan); }
 #line 1812 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 43:
-#line 209 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kACosh); }
+  case 39:
+#line 229 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSinh); }
 #line 1818 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 44:
-#line 210 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kATanh); }
+  case 40:
+#line 230 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCosh); }
 #line 1824 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 45:
-#line 212 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kExp); }
+  case 41:
+#line 231 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kTanh); }
 #line 1830 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 46:
-#line 213 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLog); }
+  case 42:
+#line 232 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kASinh); }
 #line 1836 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 47:
-#line 214 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLog10); }
+  case 43:
+#line 233 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kACosh); }
 #line 1842 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 48:
-#line 215 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLog2); }
+  case 44:
+#line 234 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kATanh); }
 #line 1848 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 49:
-#line 216 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kPow); }
+  case 45:
+#line 236 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kExp); }
 #line 1854 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 50:
-#line 217 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSqrt); }
+  case 46:
+#line 237 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLog); }
 #line 1860 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 51:
-#line 218 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCbrt); }
+  case 47:
+#line 238 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLog10); }
 #line 1866 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 52:
-#line 221 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kCeil); }
+  case 48:
+#line 239 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLog2); }
 #line 1872 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 53:
-#line 222 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kFloor); }
+  case 49:
+#line 240 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kPow); }
 #line 1878 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 54:
-#line 223 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kRound); }
+  case 50:
+#line 241 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSqrt); }
 #line 1884 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 55:
-#line 226 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kAdd); }
+  case 51:
+#line 242 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCbrt); }
 #line 1890 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 56:
-#line 227 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kSub); }
+  case 52:
+#line 245 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kCeil); }
 #line 1896 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 57:
-#line 228 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kDiv); }
+  case 53:
+#line 246 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kFloor); }
 #line 1902 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 58:
-#line 229 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kMult); }
+  case 54:
+#line 247 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kRound); }
 #line 1908 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 59:
-#line 230 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kModulo); }
+  case 55:
+#line 250 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kAdd); }
 #line 1914 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 60:
-#line 231 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kQuest); }
+  case 56:
+#line 251 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kSub); }
 #line 1920 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 61:
-#line 232 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kNeg); }
+  case 57:
+#line 252 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kDiv); }
 #line 1926 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 62:
-#line 233 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kEq); }
+  case 58:
+#line 253 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kMult); }
 #line 1932 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 63:
-#line 234 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kGreater); }
+  case 59:
+#line 254 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kModulo); }
 #line 1938 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 64:
-#line 235 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kGreatereq); }
+  case 60:
+#line 255 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kQuest); }
 #line 1944 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 65:
-#line 236 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLess); }
+  case 61:
+#line 256 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kNeg); }
 #line 1950 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 66:
-#line 237 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kLesseq); }
+  case 62:
+#line 257 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kEq); }
 #line 1956 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 67:
-#line 238 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kMin); }
+  case 63:
+#line 258 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kGreater); }
 #line 1962 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 68:
-#line 239 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kMax); }
+  case 64:
+#line 259 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kGreatereq); }
 #line 1968 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 69:
-#line 240 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kHas); }
+  case 65:
+#line 260 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLess); }
 #line 1974 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 70:
-#line 241 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->operation (INode::kRand); }
+  case 66:
+#line 261 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kLesseq); }
 #line 1980 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 71:
-#line 244 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
+  case 67:
+#line 262 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kMin); }
 #line 1986 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 72:
-#line 245 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
+  case 68:
+#line 263 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kMax); }
 #line 1992 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
-  case 73:
-#line 246 "inscorev2.y" /* yacc.c:1666  */
-    { (yyval.treeptr) = context->create (context->fText, INode::kFloat); }
+  case 69:
+#line 264 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kHas); }
 #line 1998 "inscoreparse.cpp" /* yacc.c:1666  */
     break;
 
+  case 70:
+#line 265 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->operation (INode::kRand); }
+#line 2004 "inscoreparse.cpp" /* yacc.c:1666  */
+    break;
 
-#line 2002 "inscoreparse.cpp" /* yacc.c:1666  */
+  case 71:
+#line 268 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
+#line 2010 "inscoreparse.cpp" /* yacc.c:1666  */
+    break;
+
+  case 72:
+#line 269 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText, INode::kInt); }
+#line 2016 "inscoreparse.cpp" /* yacc.c:1666  */
+    break;
+
+  case 73:
+#line 270 "inscorev2.y" /* yacc.c:1666  */
+    { (yyval.treeptr) = context->create (context->fText, INode::kFloat); }
+#line 2022 "inscoreparse.cpp" /* yacc.c:1666  */
+    break;
+
+
+#line 2026 "inscoreparse.cpp" /* yacc.c:1666  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2232,7 +2256,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 249 "inscorev2.y" /* yacc.c:1910  */
+#line 273 "inscorev2.y" /* yacc.c:1910  */
 
 
 namespace inscore2
