@@ -23,7 +23,6 @@ OUT  := INScore.framework
 MOBILESCRIPTS := ../scripts/mobile
 
 INSCOREDIR  ?= inscoredir
-DESTDIR ?= 
 
 ifeq ($(system), Darwin)
 	LIBPROJ = INScore.xcodeproj
@@ -90,10 +89,11 @@ ibundle :
 	cp ../tools/IBundle/IBundle bin
 
 
-ios : QMAKE=qmake-ios
-ios : INSCOREDIR=iosdir
-ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-	@which $(QMAKE) || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
+ios :
+	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir
+
+_ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
+	@which $(QMAKE) > /dev/null || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
 	cp -rf ../rsrc/ tmp-rsc
 	make -C $(MOBILESCRIPTS)
 	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
@@ -116,6 +116,7 @@ $(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
 
 $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
+
 
 qmake :
 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
@@ -140,7 +141,7 @@ android : $(INSCOREDIR)/Makefile
 	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk bin/INScoreViewer.apk
 
 $(INSCOREDIR)/Makefile: library.pro viewer.pro INScore.pro
-	@which qmake-android || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
+	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
 	[ -d $(INSCOREDIR) ] || mkdir $(INSCOREDIR)
 	cd $(INSCOREDIR) && $(QMAKE) -spec android-clang ../INScore.pro
 
