@@ -78,7 +78,7 @@ INode* INode::createPar (SINode n1, SINode n2)	{ return new ParNode(n1, n2); }
 
 //------------------------------------------------------------
 INode::INode(const INode* node)
-	: fValue(node->getValue()), fType(node->getType()), fAddressPart(node->address()), fLine(node->getLine()), fColumn(node->getColumn())
+	: fValue(node->getValue()), fType(node->getType()), fAddressPart(node->address()), fDelay(node->getDelay()), fLine(node->getLine()), fColumn(node->getColumn())
 {
 	setEnv (node->getEnv());
 	for (auto n: node->childs()) fSubNodes.push_back(n->clone());
@@ -90,6 +90,7 @@ SINode INode::clone (const NList& sub) const
 	SINode out = SINode(new INode(getValue(), sub, getType()));
 	out->setAddress( address() );
 	out->setEnv (getEnv());
+	out->setDelay (fDelay);
 	out->setLC (fLine, fColumn);
 	return out;
 }
@@ -102,6 +103,7 @@ SINode INode::clone () const
 	SINode out = SINode(new INode (fValue, l, fType));
 	out->setAddress( address() );
 	out->setEnv (getEnv());
+	out->setDelay (fDelay);
 	out->setLC (fLine, fColumn);
 	return out;
 }
@@ -210,6 +212,7 @@ DelayNode::DelayNode(std::string val) : INode(val, kDelay)
 		val.pop_back();
 	}
 	float delay = std::stof (val) * multiplier;
+cerr << "DelayNode::DelayNode value " << val << " delay: " << delay << endl;
 	setDelay ( int(delay) );
 }
 
