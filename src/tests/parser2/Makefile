@@ -96,3 +96,58 @@ obj/src/%.o: src/%.cpp
 
 
 # DO NOT DELETE
+
+../../inscore2/eval/addressEval.o: ../../inscore2/eval/addressEval.h
+../../inscore2/eval/addressEval.o: ../../inscore2/INode.h
+../../inscore2/eval/addressEval.o: ../../inscore2/TEnv2.h
+../../inscore2/eval/addressEval.o: ../../inscore2/eval/expandEval.h
+../../inscore2/eval/evaluator2.o: ../../inscore2/eval/evaluator2.h
+../../inscore2/eval/evaluator2.o: ../../inscore2/INode.h
+../../inscore2/eval/evaluator2.o: ../../inscore2/TEnv2.h
+../../inscore2/eval/evaluator2.o: ../../inscore2/eval/expandEval.h
+../../inscore2/eval/evaluator2.o: ../../inscore2/eval/parseEval.h
+../../inscore2/eval/evaluator2.o: ../../inscore2/TreeTools.h
+../../inscore2/eval/expandEval.o: ../../inscore2/eval/expandEval.h
+../../inscore2/eval/expandEval.o: ../../inscore2/INode.h
+../../inscore2/eval/expandEval.o: ../../inscore2/TEnv2.h
+../../inscore2/eval/expandEval.o: ../../inscore2/TreeTools.h
+../../inscore2/eval/jsEval.o: ../../inscore2/eval/jsEval.h
+../../inscore2/eval/jsEval.o: ../../inscore2/INode.h ../../inscore2/TEnv2.h
+../../inscore2/eval/jsEval.o: ../../inscore2/parser/IParser2.h
+../../inscore2/eval/parseEval.o: ../../inscore2/eval/parseEval.h
+../../inscore2/eval/parseEval.o: ../../inscore2/INode.h
+../../inscore2/eval/parseEval.o: ../../inscore2/TEnv2.h
+../../inscore2/eval/parseEval.o: ../../inscore2/eval/expandEval.h
+../../inscore2/parser/IParser2.o: ../../inscore2/parser/IParser2.h
+../../inscore2/parser/IParser2.o: ../../inscore2/INode.h
+../../inscore2/parser/IParser2.o: ../../inscore2/TEnv2.h
+../../inscore2/parser/IParser2.o: ../../inscore2/eval/parseEval.h
+../../inscore2/parser/IParser2.o: ../../inscore2/eval/addressEval.h
+../../inscore2/parser/inscorelex.o: ../../inscore2/parser/IParser2.h
+../../inscore2/parser/inscorelex.o: ../../inscore2/INode.h
+../../inscore2/parser/inscorelex.o: ../../inscore2/TEnv2.h
+../../inscore2/parser/inscorelex.o: ../../inscore2/parser/inscoreparse.hpp
+../../inscore2/parser/inscoreparse.o: ../../inscore2/parser/IParser2.h
+../../inscore2/parser/inscoreparse.o: ../../inscore2/INode.h
+../../inscore2/parser/inscoreparse.o: ../../inscore2/TEnv2.h
+../../inscore2/parser/inscoreparse.o: ../../inscore2/parser/inscoreparse.hpp
+../../inscore2/parser/inscoreparse.o: ../../inscore2/parser/inscorelex.hpp
+../../inscore2/INode.o: ../../inscore2/INode.h ../../inscore2/TEnv2.h
+../../inscore2/INode.o: ../../inscore2/TreeTools.h
+../../inscore2/TEnv2.o: ../../inscore2/INode.h ../../inscore2/TEnv2.h
+../../inscore2/TreeTools.o: ../../inscore2/TreeTools.h
+../../inscore2/pathsList.o: ../../inscore2/pathsList.h ../../inscore2/INode.h
+../../inscore2/pathsList.o: ../../inscore2/TEnv2.h
+../../inscore2/reduce.o: ../../inscore2/reduce.h ../../inscore2/INode.h
+../../inscore2/reduce.o: ../../inscore2/TEnv2.h ../../inscore2/pathsList.h
+src/dotprinter.o: src/dotprinter.h ../../inscore2/INode.h
+src/dotprinter.o: ../../inscore2/TEnv2.h
+src/inscorev1printer.o: src/inscorev1printer.h ../../inscore2/INode.h
+src/inscorev1printer.o: ../../inscore2/TEnv2.h ../../inscore2/pathsList.h
+src/oscprinter.o: src/oscprinter.h ../../inscore2/INode.h
+src/oscprinter.o: ../../inscore2/TEnv2.h
+main.o: ../../inscore2/parser/IParser2.h ../../inscore2/INode.h
+main.o: ../../inscore2/TEnv2.h ../../inscore2/reduce.h src/dotprinter.h
+main.o: src/oscprinter.h src/inscorev1printer.h
+main.o: ../../inscore2/eval/parseEval.h ../../inscore2/eval/evaluator2.h
+main.o: ../../inscore2/pathsList.h

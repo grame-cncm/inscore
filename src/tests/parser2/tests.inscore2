@@ -1,4 +1,13 @@
 
+/toto watch me;
+0.5s /titi watch you;
+200ms (/tata x 1),
+	(/tata y 2),
+	(/tata z 3)	
+	;
+
+__END__
+
 faust 	= 192.168.1.1:5512;
 f2		= faust.grame.fr:8000;
 

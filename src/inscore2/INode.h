@@ -57,9 +57,9 @@ class INode {
 
 	public:
 		enum TNodeType {
-			kText, kInt, kFloat, kSeq, kPar, kExpand, kForest, kRegexp, kVariable, kSlash, kJScript, kURLPrefix,
-			kFirstMath, kAdd=kFirstMath, kSub, kDiv, kMult, kModulo, kQuest, kNeg, kEq, kGreater, kGreatereq, kLess, kLesseq, kMin, kMax, kHas,
-			kSin, kCos, kTan, kASin, kACos, kATan, kSinh, kCosh, kTanh, kASinh, kACosh, kATanh,
+			kText, kInt, kFloat, kSeq, kPar, kExpand, kForest, kRegexp, kVariable, kSlash, kJScript, kURLPrefix, kDelay,
+			kFirstMath, kAdd=kFirstMath, kSub, kDiv, kMult, kModulo, kQuest, kNeg, kEq, kGreater, kGreatereq, kLess,
+            kLesseq, kMin, kMax, kHas, kSin, kCos, kTan, kASin, kACos, kATan, kSinh, kCosh, kTanh, kASinh, kACosh, kATanh,
 			kExp, kLog, kLog10, kLog2, kPow, kSqrt, kCbrt, kCeil, kFloor, kRound, kRand, kLastMath=kRand };
 
 		static SINode create (const std::string& val, TNodeType t=kText)  { return SINode(new INode(val, t));}
@@ -81,7 +81,9 @@ class INode {
 		virtual const std::string 	getValue () const 	{ return fValue; }
 		virtual const std::string 	getFullValue () const { return fValue + ":" + getTypeStr(); }
 		virtual TNodeType 			getType () const 	{ return fType; }
-		virtual const char* 		getTypeStr() const 	{ return type2string (fType); }
+        virtual const char*         getTypeStr() const  { return type2string (fType); }
+        virtual int               	getDelay() const    { return fDelay; }
+        virtual void                setDelay(int d)   	{ fDelay = d; }
 
 		size_t 			size () const 		{ return fSubNodes.size(); }
 		bool 			empty () const 		{ return fSubNodes.size() == 0; }
@@ -125,7 +127,8 @@ class INode {
 		NList		fSubNodes;
 		TNodeType	fType;
 		bool		fAddressPart;
-		TEnv		fEnv;
+        TEnv        fEnv;
+        int 		fDelay = 0;
 
 		int fLine;			// line number in file if any (this is for error reporting)
 		int	fColumn;		// column number in file if any (this is for error reporting)
@@ -154,10 +157,17 @@ class ExpandNode : public INode {
 };
 
 //------------------------------------------------------------
+class DelayNode : public INode {
+    public:
+             DelayNode(std::string val);
+    virtual ~DelayNode() {}
+};
+
+//------------------------------------------------------------
 class UrlPrefixNode : public INode {
-	public:
-			 UrlPrefixNode(std::string val) : INode(val, kURLPrefix) { setAddress(true); }
-	virtual ~UrlPrefixNode() {}
+    public:
+             UrlPrefixNode(std::string val) : INode(val, kURLPrefix) { setAddress(true); }
+    virtual ~UrlPrefixNode() {}
 };
 
 //------------------------------------------------------------

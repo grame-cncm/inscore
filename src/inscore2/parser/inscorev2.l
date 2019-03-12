@@ -139,7 +139,7 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	digits */
  /* ----------------------------------------- */
-{DIGIT}+				yyextra->fText = yytext; return UINT;
+{DIGIT}+				yyextra->fText = yytext; return INT;
 "+"{DIGIT}+				yyextra->fText = yytext; return INT;
 "-"{DIGIT}+				yyextra->fText = yytext; return INT;
 
@@ -152,7 +152,14 @@ EOL		[\x0a\x0d]
 "with"				return WITH;
 
  /* ----------------------------------------- */
- /*	math operators */
+ /*    delays */
+ /* ----------------------------------------- */
+{DIGIT}+("."{DIGIT}+)*"s"       yyextra->fText = yytext; return STIME;
+{DIGIT}+("."{DIGIT}+)*"ms"      yyextra->fText = yytext; return MSTIME;
+
+
+ /* ----------------------------------------- */
+ /*    math operators */
  /* ----------------------------------------- */
 "+"				return ADD;
 "-"				return SUB;

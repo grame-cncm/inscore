@@ -590,17 +590,36 @@ SINode evaluator::evalExpand (const SINode& node, const TEnv& env)
 //------------------------------------------------------------
 SINode evaluator::evalVar (const SINode& node, const TEnv& env)
 {
-	SINode out = env.get (node->getValue());
-	if (out) {
-		if (node->address()) out->setAddress(true);
-		out = eval(out, env);
-		if (node->size()) {
-			SINode n = SINode (new ForestNode (node->childs()));
-			return eval(parseEval::seq (out, n), env);
-		}
-		return out->clone();
-	}
-	return evalNode(node, env);
+    SINode out = env.get (node->getValue());
+    if (out) {
+        if (node->address()) out->setAddress(true);
+        out = eval(out, env);
+        if (node->size()) {
+            SINode n = SINode (new ForestNode (node->childs()));
+            return eval(parseEval::seq (out, n), env);
+        }
+        return out->clone();
+    }
+    return evalNode(node, env);
+}
+
+//------------------------------------------------------------
+SINode evaluator::evalDelay (const SINode& node, const TEnv& env)
+{
+    NList l;
+    if (node->size() == 1) {
+		SINode n = eval (node->childs()[0], env );
+		n->setDelay (node->getDelay());
+		return n;
+    }
+    else for (auto n: node->childs()) {
+        SINode e = eval(n, env + n->getEnv());
+        e->setDelay (node->getDelay());
+        l.add (e);
+    }
+	SINode n;
+    if (l.size()) return new ForestNode (l);
+    return n;
 }
 
 //------------------------------------------------------------

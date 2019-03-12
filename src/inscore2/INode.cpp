@@ -122,6 +122,7 @@ SINode  INode::merge (const SINode& node) const
 	return clone (l);
 }
 
+//------------------------------------------------------------
 void INode::addEnv (const SINode& node)
 {
 	fEnv += node->getEnv();
@@ -155,7 +156,8 @@ const char * INode::type2string (TNodeType t)
 		case kCeil: 	return "Ceil";
 		case kCos: 		return "Cos";
 		case kCosh: 	return "Cosh";
-		case kDiv: 		return "Div";
+        case kDelay:    return "Delay";
+        case kDiv:      return "Div";
 		case kEq: 		return "Eq";
 		case kExp: 		return "Exp";
 		case kExpand: 	return "Expand";
@@ -196,6 +198,19 @@ const char * INode::type2string (TNodeType t)
 		case kVariable: return "Variable";
 	}
 	return "unknown";
+}
+
+//------------------------------------------------------------
+DelayNode::DelayNode(std::string val) : INode(val, kDelay)
+{
+	int multiplier = 1000;
+	val.pop_back();		// assumes last char is 's'
+	if (val.back() == 'm') {
+		multiplier = 1;
+		val.pop_back();
+	}
+	float delay = std::stof (val) * multiplier;
+	setDelay ( int(delay) );
 }
 
 } // end namespace

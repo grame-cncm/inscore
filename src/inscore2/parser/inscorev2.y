@@ -50,20 +50,15 @@ using namespace inscore2;
 %lex-param { void* scanner  }
 
 /*------------------------------ tokens ------------------------------*/
-%token ACOS
-%token ACOSH
+%token ACOS ACOSH
 %token ADD
 %token ANYADDR
-%token ASIN
-%token ASINH
-%token ATAN
-%token ATANH
+%token ASIN ASINH ATAN ATANH
 %token CBRT
 %token CEIL
 %token COLON
 %token COMMA
-%token COS
-%token COSH
+%token COS COSH
 %token DIV
 %token ENDSCRIPT
 %token ENDSTATEMENT
@@ -75,49 +70,38 @@ using namespace inscore2;
 %token EXPANDID
 %token FLOAT
 %token FLOOR
-%token GREATER
-%token GREATEREQ
+%token GREATER GREATEREQ
 %token HAS
 %token IDENTIFIER
 %token INT
 %token JSCRIPT
 %token LDOTS
-%token LEFTBRACE
-%token LEFTBRACKET
-%token LEFTPAR
-%token LESS
-%token LESSEQ
+%token LEFTBRACE LEFTBRACKET LEFTPAR
+%token LESS  LESSEQ
 %token LETTERS
-%token LOG
-%token LOG10
-%token LOG2
-%token MAX
-%token MIN
-%token MODULO
-%token MULT
+%token LOG LOG10 LOG2
+%token MAX MIN
+%token MODULO MULT
 %token NEG
 %token POW
 %token QUEST
 %token RAND
 %token REGEXP
-%token RIGHTBRACE
-%token RIGHTBRACKET
-%token RIGHTPAR
-%token ROUND
-%token SIN
-%token SINH
+%token RIGHTBRACE RIGHTBRACKET RIGHTPAR
+%token ROUND SIN SINH
 %token SLASH
 %token SQRT
 %token STRING
 %token SUB
 %token TAN
 %token TANH
-%token UINT
 %token URLPREFIX
 %token VARIABLE
 %token WITH
 
-%left UINT INT FLOAT
+%token STIME MSTIME
+
+%left INT FLOAT
 %left URLPREFIX LETTERS IDENTIFIER STRING EXPANDID REGEXP VARIABLE
 %left QUEST NEG EQ GREATER GREATEREQ LESS LESSEQ MIN MAX HAS	
 %left ADD SUB MODULO DIV MULT
@@ -135,7 +119,7 @@ using namespace inscore2;
 	inscore2::INode* 		treeptr;
 }
 
-%type <treeptr> 	identifier number string tree variable operator prefix mfunction varname
+%type <treeptr> 	identifier number delay string tree variable operator prefix mfunction varname
 
 %start start
 
@@ -180,7 +164,8 @@ statement	: tree  ENDSTATEMENT		{ context->add ($1); }
 tree		: identifier			{ $$ = $1; }
 			| string				{ $$ = $1; }
 			| prefix				{ $$ = $1; }
-			| number				{ $$ = $1; }
+            | number                { $$ = $1; }
+            | delay                 { $$ = $1; }
 			| variable				{ $$ = $1; }
 			| operator				{ $$ = $1; }					%prec OP
 			| mfunction tree		{ $$ = context->seq($1, $2); }	%prec MFUN
@@ -265,10 +250,13 @@ operator	: ADD			{ $$ = context->operation (INode::kAdd); }
 			| RAND			{ $$ = context->operation (INode::kRand); }
 			;
 
-number		: UINT			{ $$ = context->create (context->fText, INode::kInt); }
-			| INT			{ $$ = context->create (context->fText, INode::kInt); }
-			| FLOAT			{ $$ = context->create (context->fText, INode::kFloat); }
-			;
+delay       : STIME         { $$ = context->delay (context->fText); }
+            | MSTIME        { $$ = context->delay (context->fText); }
+            ;
+
+number      : INT           { $$ = context->create (context->fText, INode::kInt); }
+            | FLOAT         { $$ = context->create (context->fText, INode::kFloat); }
+            ;
 
 %%
 

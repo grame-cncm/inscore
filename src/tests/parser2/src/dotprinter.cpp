@@ -73,6 +73,7 @@ string dotprinter::label (const INode * node) const
 // 	if (node->time()) str = to_string(node->time());
 // 	else if (node->mtime()) str = to_string(node->mtime());
 // 	else str = "0 ";
+	if (node->getDelay()) str = to_string(node->getDelay()) + "d ";
 	if (node->address()) str += " /";
 	str += node->getValue();
 	switch(node->getType()) {
@@ -90,7 +91,8 @@ string dotprinter::label (const INode * node) const
 		case INode::kRegexp:	str += ":RE"; break;
 //		case INode::kValue:		str += ":value"; break;
 		case INode::kVariable:	str += ":var"; break;
-		case INode::kJScript:	str += ":js"; break;
+        case INode::kJScript:   str += ":js"; break;
+        case INode::kDelay:     str += ":d"; break;
 
 		case INode::kAdd:		str += ":+"; break;
 		case INode::kSub:		str += ":-"; break;
