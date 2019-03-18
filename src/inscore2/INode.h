@@ -84,6 +84,8 @@ class INode {
         virtual const char*         getTypeStr() const  { return type2string (fType); }
         virtual int               	getDelay() const    { return fDelay; }
         virtual void                setDelay(int d)   	{ fDelay = d; }
+		virtual void 				setInfos (const SINode& n) { setInfos(n.get()); }
+		virtual void 				setInfos (const INode* n);
 
 		size_t 			size () const 		{ return fSubNodes.size(); }
 		bool 			empty () const 		{ return fSubNodes.size() == 0; }

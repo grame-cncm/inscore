@@ -42,14 +42,10 @@ namespace inscore2
 void NList::add (const SINode& n)
 {
 	push_back (n);
-//	if (n->getType() == INode::kList)
-//		add (n->childs());
-//	else push_back (n);
 }
 //------------------------------------------------------------
 void NList::add (const NList& l)
 {
-//	for (auto n: l) add(n);
 	for (auto n: l) push_back(n);
 }
 
@@ -88,10 +84,7 @@ INode::INode(const INode* node)
 SINode INode::clone (const NList& sub) const
 {
 	SINode out = SINode(new INode(getValue(), sub, getType()));
-	out->setAddress( address() );
-	out->setEnv (getEnv());
-	out->setDelay (fDelay);
-	out->setLC (fLine, fColumn);
+	out->setInfos( this );
 	return out;
 }
 
@@ -101,11 +94,17 @@ SINode INode::clone () const
 	NList l;
 	for (auto n: childs()) l.push_back (n->clone());
 	SINode out = SINode(new INode (fValue, l, fType));
-	out->setAddress( address() );
-	out->setEnv (getEnv());
-	out->setDelay (fDelay);
-	out->setLC (fLine, fColumn);
+	out->setInfos( this );
 	return out;
+}
+
+//------------------------------------------------------------
+void INode::setInfos (const INode* n)
+{
+	setAddress( n->address() );
+	setEnv 	  ( n->getEnv());
+	setDelay  ( n->getDelay() );
+	setLC 	  ( n->getLine(), n->getColumn());
 }
 
 //------------------------------------------------------------
@@ -212,7 +211,6 @@ DelayNode::DelayNode(std::string val) : INode(val, kDelay)
 		val.pop_back();
 	}
 	float delay = std::stof (val) * multiplier;
-cerr << "DelayNode::DelayNode value " << val << " delay: " << delay << endl;
 	setDelay ( int(delay) );
 }
 
