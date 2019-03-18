@@ -6,6 +6,10 @@
 	(/tata z 3)	
 	;
 
+100ms localhost:80/toto stop;
+0.2s /a/b[i:1...3] x $i;
+
+
 __END__
 
 faust 	= 192.168.1.1:5512;
