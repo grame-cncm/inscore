@@ -606,7 +606,6 @@ SINode evaluator::evalVar (const SINode& node, const TEnv& env)
 //------------------------------------------------------------
 SINode evaluator::evalDelay (const SINode& node, const TEnv& env)
 {
-cerr << "evaluator::evalDelay with delay: " << node->getDelay() << endl;
     NList l;
     if (node->size() == 1) {
 		SINode n = eval (node->childs()[0], env );
@@ -618,9 +617,8 @@ cerr << "evaluator::evalDelay with delay: " << node->getDelay() << endl;
         e->setDelay (node->getDelay());
         l.add (e);
     }
-	SINode n;
     if (l.size()) return SINode(new ForestNode (l));
-    return n;
+    else return node->clone();
 }
 
 //------------------------------------------------------------

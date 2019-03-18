@@ -70,14 +70,13 @@ string dotprinter::id (const INode * node) const
 string dotprinter::label (const INode * node) const
 {
 	string str;
-// 	if (node->time()) str = to_string(node->time());
-// 	else if (node->mtime()) str = to_string(node->mtime());
-// 	else str = "0 ";
-	if (node->getDelay()) str = to_string(node->getDelay()) + "d ";
-	if (node->address()) str += " /";
+	string delay;
+
+	if (node->getDelay()) delay = to_string(node->getDelay()) + "d ";
+	if (node->address()) str = delay + " /";
 	str += node->getValue();
 	switch(node->getType()) {
-		case INode::kURLPrefix: str = node->getValue(); break; // no "/" before the url prefix
+		case INode::kURLPrefix: str = delay + node->getValue(); break;
 		case INode::kText:
 		case INode::kInt:
 		case INode::kFloat:

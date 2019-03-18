@@ -23,13 +23,10 @@
 
 */
 
-
 #include <iostream>
-
 #include "pathsList.h"
 
 using namespace std;
-
 
 namespace inscore2
 {
@@ -42,7 +39,7 @@ static void addPath (const SINode& path, const SINode& node, NList& list)
 		list.add( node );
 	else {
 		SINode n = SINode (new INode (path->getValue(), node, type));
-		n->setAddress(path->address());
+		n->setInfos (path);
 		list.add( n );
 	}
 }
