@@ -58,13 +58,14 @@ static SINode getTypedNode (const NList& l, INode::TNodeType t)
 //------------------------------------------------------------
 evaluator::TType evaluator::getType (const NList& args)
 {
-	int strcount=0, intcount=0, floatcount=0;
+	int strcount=0, intcount=0, floatcount=0, delayCount=0;
 	for (auto n: args) {
 		INode::TNodeType t = n->getType();
 		if ((t >= INode::kFirstMath) && (t <=INode::kLastMath))
 			return kDefer;		// assumes a subnode has already been deferred
 
 		else switch (n->getType()) {
+			case INode::kDelay:		delayCount++; break;
 			case INode::kText:		strcount++; break;
 			case INode::kInt:		intcount++; break;
 			case INode::kFloat:		floatcount++; break;
@@ -82,6 +83,7 @@ evaluator::TType evaluator::getType (const NList& args)
 		}
 	}
 	if (strcount) 	return kString;
+	if (delayCount) return kDelay;
 	if (floatcount) return kFloat;
 	return kInt;
 }
@@ -115,11 +117,20 @@ SINode evaluator::addFloat (const NList& args)
 }
 
 //------------------------------------------------------------
+SINode evaluator::addDelay (const NList& args)
+{
+	float sum = 0;
+	for (auto n: args) sum += n->getFloat();
+	return SINode( new DelayNode( int(sum)) );
+}
+
+//------------------------------------------------------------
 SINode evaluator::evalAdd 	(const SINode& node, const NList& args, TType type)
 {
 	if (args.size() < 2) error( node, "operator '+' requires at least 2 arguments");
 	switch (type) {
 		case kString:	return addStrings (args);
+		case kDelay:	return addDelay (args);
 		case kFloat:	return addFloat (args);
 		default:		return addInt (args);
 	}
@@ -144,11 +155,20 @@ SINode evaluator::subFloat (const NList& args)
 }
 
 //------------------------------------------------------------
+SINode evaluator::subDelay (const NList& args)
+{
+	float result = args[0]->getFloat();
+	for (size_t i = 1; i < args.size(); i++) result -= args[i]->getFloat();
+	return SINode( new DelayNode( int(result)) );
+}
+
+//------------------------------------------------------------
 SINode evaluator::evalSub 	(const SINode& node, const NList& args, TType type)
 {
 	if (args.size() < 2) error (node, "operator '-' requires at least 2 arguments");
 	switch (type) {
 		case kString:	throw (evalException ("invalid string argument passed to operator '-'"));
+		case kDelay:	return subDelay (args);
 		case kFloat:	return subFloat (args);
 		default:		return subInt (args);
 	}
@@ -177,11 +197,24 @@ SINode evaluator::divFloat (const NList& args)
 }
 
 //------------------------------------------------------------
+SINode evaluator::divDelay (const NList& args)
+{
+	float result = args[0]->getFloat();
+	for (size_t i = 1; i < args.size(); i++) {
+		float v = args[i]->getFloat();
+		if (v) result /= v;
+		else  error (args[i], "divide by zero");
+	}
+	return SINode( new DelayNode( int(result)) );
+}
+
+//------------------------------------------------------------
 SINode evaluator::evalDiv 	(const SINode& node, const NList& args, TType type)
 {
 	if (args.size() < 2) error (node, "operator '/' requires at least 2 arguments");
 	switch (type) {
 		case kString:	throw (evalException ("invalid string argument passed to operator '/'"));
+		case kDelay:	return divDelay (args);
 		case kFloat:	return divFloat (args);
 		default:		return divInt (args);
 	}
@@ -206,11 +239,20 @@ SINode evaluator::multFloat (const NList& args)
 }
 
 //------------------------------------------------------------
+SINode evaluator::multDelay (const NList& args)
+{
+	float result = args[0]->getFloat();
+	for (size_t i = 1; i < args.size(); i++) result *= args[i]->getFloat();
+	return SINode( new DelayNode( int(result)) );
+}
+
+//------------------------------------------------------------
 SINode evaluator::evalMult 	(const SINode& node, const NList& args, TType type)
 {
 	if (args.size() < 2) error (node, "operator '*' requires at least 2 arguments");
 	switch (type) {
 		case kString:	error (getTypedNode(args, INode::kText), "invalid string argument passed to operator '*'");
+		case kDelay:	return multDelay (args);
 		case kFloat:	return multFloat (args);
 		default:		return multInt (args);
 	}
@@ -478,7 +520,6 @@ SINode evaluator::evalRand () 				{ return INode::create (((float)rdev() / rdev.
 SINode evaluator::evalMath (const SINode& node, const TEnv& env)
 {
 	NList l;
-
 	for (auto n: node->childs()) {
 		SINode e = eval(n, env + n->getEnv());
 		if (e->getType() == INode::kForest)
@@ -604,22 +645,22 @@ SINode evaluator::evalVar (const SINode& node, const TEnv& env)
 }
 
 //------------------------------------------------------------
-SINode evaluator::evalDelay (const SINode& node, const TEnv& env)
-{
-    NList l;
-    if (node->size() == 1) {
-		SINode n = eval (node->childs()[0], env );
-		n->setDelay (node->getDelay());
-		return n;
-    }
-    else for (auto n: node->childs()) {
-        SINode e = eval(n, env + n->getEnv());
-        e->setDelay (node->getDelay());
-        l.add (e);
-    }
-    if (l.size()) return SINode(new ForestNode (l));
-    else return node->clone();
-}
+//SINode evaluator::evalDelay (const SINode& node, const TEnv& env)
+//{
+//    NList l;
+//    if (node->size() == 1) {
+//		SINode n = eval (node->childs()[0], env );
+//		n->setDelay (node->getDelay());
+//		return n;
+//    }
+//    else for (auto n: node->childs()) {
+//        SINode e = eval(n, env + n->getEnv());
+//        e->setDelay (node->getDelay());
+//        l.add (e);
+//    }
+//    if (l.size()) return SINode(new ForestNode (l));
+//    else return node->clone();
+//}
 
 //------------------------------------------------------------
 //
@@ -633,7 +674,7 @@ SINode evaluator::eval (const SINode& node, const TEnv& env)
 		case INode::kSlash: 	return evalSlash (node, env);
 		case INode::kVariable: 	return evalVar   (node, env);
 		case INode::kExpand: 	return evalExpand(node, env);
-		case INode::kDelay: 	return evalDelay (node, env);
+//		case INode::kDelay: 	if (!inmath) return evalDelay (node, env);
 		default:
 			return evalNode (node, env);
 	}

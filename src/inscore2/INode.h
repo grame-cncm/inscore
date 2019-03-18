@@ -83,6 +83,7 @@ class INode {
 		virtual TNodeType 			getType () const 	{ return fType; }
         virtual const char*         getTypeStr() const  { return type2string (fType); }
         virtual int               	getDelay() const    { return fDelay; }
+        virtual float               getFloat() const;
         virtual void                setDelay(int d)   	{ fDelay = d; }
 		virtual void 				setInfos (const SINode& n) { setInfos(n.get()); }
 		virtual void 				setInfos (const INode* n);
@@ -162,6 +163,7 @@ class ExpandNode : public INode {
 class DelayNode : public INode {
     public:
              DelayNode(std::string val);
+             DelayNode(int val);			// a milliseconds delay
     virtual ~DelayNode() {}
 };
 

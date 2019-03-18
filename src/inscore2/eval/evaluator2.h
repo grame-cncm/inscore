@@ -46,7 +46,7 @@ class evalException: public std::exception
 
 class evaluator
 {
-	enum TType { kDefer, kString, kInt, kFloat };
+	enum TType { kDefer, kString, kInt, kFloat, kDelay };
 	static TType getType (const NList& args);
 
 	typedef std::function<bool(float, float)> 				TCompNumFunction;
@@ -63,12 +63,20 @@ class evaluator
 	static SINode 	addStrings 	(const NList& args);
 	static SINode 	addInt 		(const NList& args);
 	static SINode 	addFloat 	(const NList& args);
+	static SINode	addDelay 	(const NList& args);
+
 	static SINode 	subInt 		(const NList& args);
 	static SINode 	subFloat 	(const NList& args);
+	static SINode	subDelay 	(const NList& args);
+
 	static SINode 	divInt 		(const NList& args);
 	static SINode 	divFloat 	(const NList& args);
+	static SINode 	divDelay 	(const NList& args);
+
 	static SINode 	multInt 	(const NList& args);
 	static SINode 	multFloat 	(const NList& args);
+	static SINode 	multDelay 	(const NList& args);
+
 	static SINode 	moduloInt 	(const NList& args);
 
 	static SINode 	minStrings	(const NList& args);
@@ -121,7 +129,7 @@ class evaluator
 	static SINode 	evalMath   (const SINode& node, const TEnv&);
 	static SINode 	evalSlash  (const SINode& node, const TEnv&);
 	static SINode 	evalExpand (const SINode& node, const TEnv&);
-    static SINode   evalDelay  (const SINode& node, const TEnv&);
+//    static SINode   evalDelay  (const SINode& node, const TEnv&);
 	static SINode 	evalVar    (const SINode& node, const TEnv&);
 	static SINode 	evalNode   (const SINode& node, const TEnv&);
 

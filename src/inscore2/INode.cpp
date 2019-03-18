@@ -124,6 +124,12 @@ SINode  INode::merge (const SINode& node) const
 }
 
 //------------------------------------------------------------
+float INode::getFloat() const
+{
+	return (fType == kDelay) ? float(fDelay) : std::stof(fValue);
+}
+
+//------------------------------------------------------------
 void INode::addEnv (const SINode& node)
 {
 	fEnv += node->getEnv();
@@ -202,6 +208,12 @@ const char * INode::type2string (TNodeType t)
 }
 
 //------------------------------------------------------------
+DelayNode::DelayNode(int val) : INode(std::to_string (val)+"ms", kDelay)
+{
+	setDelay ( val );	// the delay value is stored as integer count of milliseconds
+}
+
+//------------------------------------------------------------
 DelayNode::DelayNode(std::string val) : INode(val, kDelay)
 {
 	int multiplier = 1000;
@@ -211,7 +223,7 @@ DelayNode::DelayNode(std::string val) : INode(val, kDelay)
 		val.pop_back();
 	}
 	float delay = std::stof (val) * multiplier;
-	setDelay ( int(delay) );
+	setDelay ( int(delay) );	// the delay value is stored as integer count of milliseconds
 }
 
 } // end namespace

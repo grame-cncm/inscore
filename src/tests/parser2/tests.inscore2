@@ -1,4 +1,12 @@
 
+
+(+ 1s, 1, 500ms) /A x 0;
+(- 1s, 1, 500ms) /A x 1;
+(* 1s, 2.78) /A x 2;
+(/ 1s, 2.78) /A x 3;
+
+delay = 100ms;
+
 /toto watch me;
 0.5s /titi watch you;
 200ms (/tata x 1),
@@ -6,8 +14,14 @@
 	(/tata z 3)	
 	;
 
-100ms localhost:80/toto stop;
+$delay localhost:80/toto stop;
 0.2s /a/b[i:1...3] x $i;
+
+/a watch event (
+	(1s /a/b x 1),
+	(2s /a/b x 2),
+	((* 3s, 2) /a/b x 3)
+);
 
 
 __END__
