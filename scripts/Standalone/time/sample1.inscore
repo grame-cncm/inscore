@@ -1,0 +1,107 @@
+
+/ITL/scene/* del;
+
+
+shadow = shadow 5 5 0 0 0 75 20;
+
+#########################################################
+# colors definition
+orange 	= 255 150 0;
+red 	= 240 0 0;
+green 	= 0 240 0;
+grey 	= 180 180 180;
+
+#########################################################
+# durations definition
+d1 = 0;
+d2 = 1;
+d3 = 3;
+d4 = 3.5;
+d5 = 4.5;
+w = 0.03;
+
+#########################################################
+# sets the title
+/ITL/scene/title set txt "A cursor that behaves like a conductor.";
+/ITL/scene/title color 20 0 150;
+/ITL/scene/title fontSize 32;
+/ITL/scene/title fontWeight bold;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.6;
+
+#########################################################
+# creates a cursor
+/ITL/scene/cursor set ellipse 0.05 0.05;
+/ITL/scene/cursor color $red;
+
+#########################################################
+# creates the central object: a circle
+/ITL/scene/obj set rect 0.5 0.5;
+/ITL/scene/obj color $red ;
+
+#########################################################
+# put messages in the time domain
+/ITL/scene/cursor watch timeEnter $d1 $d2 ( /ITL/scene/obj color $red );
+/ITL/scene/cursor watch timeEnter $d2 $d3 ( /ITL/scene/obj color $orange);
+/ITL/scene/cursor watch timeEnter $d3 $d4 ( /ITL/scene/obj color $green);
+/ITL/scene/cursor watch timeEnter $d4 $d5 ( /ITL/scene/obj color $orange);
+/ITL/scene/cursor watch timeEnter $d5 10  ( /ITL/scene/cursor date 0);
+
+#########################################################
+# setup the time line
+/ITL/scene/line set line wa 1.6 0;
+/ITL/scene/line y 0.75;
+/ITL/scene/line duration 5;
+
+#########################################################
+# creates textual messages
+/ITL/scene/m1 set txt "/ITL/scene/obj color $red";
+/ITL/scene/m2 set txt "/ITL/scene/obj color $orange";
+/ITL/scene/m3 set txt "/ITL/scene/obj color $green";
+/ITL/scene/m4 set txt "/ITL/scene/obj color $orange";
+/ITL/scene/m5 set txt "/ITL/scene/cursor date 0";
+/ITL/scene/m* xorigin -0.9;
+
+#########################################################
+# creates circles used as time markers
+/ITL/scene/e1 set ellipse $w $w;
+/ITL/scene/e2 set ellipse $w $w;
+/ITL/scene/e3 set ellipse $w $w;
+/ITL/scene/e4 set ellipse $w $w;
+/ITL/scene/e5 set ellipse $w $w;
+/ITL/scene/e* color $grey;
+
+#########################################################
+# put the text and the markers at the corresponding dates
+/ITL/scene/?1 date $d1;
+/ITL/scene/?2 date $d2;
+/ITL/scene/?3 date $d3;
+/ITL/scene/?4 date $d4;
+/ITL/scene/?5 date $d5;
+
+#########################################################
+# and synchronizes the text and the markers to the time line
+/ITL/scene/sync m[135] line syncTop; 	# odd messages are above the line
+/ITL/scene/m[135] dy -5;				# with a small y offset
+/ITL/scene/sync m[24] line syncBottom;	# even messages are below
+/ITL/scene/m[24] dy 15;					# also with a y offset
+/ITL/scene/sync e* line;				# circles are over the line
+/ITL/scene/sync cursor line;			# and sync the cursor to the line
+
+#########################################################
+# this subscript install a button at the bottom
+# to switch the fullscreen mode on/off
+/ITL/scene load 'fullscreen.inscore';
+
+#########################################################
+# and finally activate the tempo
+/ITL/scene/cursor tempo 300;
+
+__END__
+
+/ITL/scene/cursor tempo 0;
+/ITL/scene/cursor tempo 60;
+/ITL/scene/cursor tempo 120;
+/ITL/scene/cursor tempo 240;
+/ITL/scene/cursor tempo 480;
+

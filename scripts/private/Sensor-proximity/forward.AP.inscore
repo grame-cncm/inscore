@@ -1,0 +1,7 @@
+
+marcopolo = "192.168.43.88";
+minidom   = "192.168.43.110";
+
+192.168.43.1:7000/ITL forward $marcopolo;
+192.168.43.1:7000/ITL forward $minidom;
+192.168.43.1:7000/ITL/filter reject ddate load;

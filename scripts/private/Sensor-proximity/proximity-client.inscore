@@ -1,0 +1,52 @@
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+<? javascript
+	var scores = [  {file:"score1.gmn", scale:1},
+					{file:"score2.gmn", scale:1.2},
+					{file:"score3.gmn", scale:0.7},
+					{file:"score4.gmn", scale:0.6} 
+				];
+	var current = 0;
+	function makemsg (msg, file, scale) {
+		msg  = msg.replace(/FILE/g, file) ;
+		return msg.replace(/SCALE/g, scale) ;
+	}
+
+	function next() {
+		var msg = "/ITL/scene/score set gmnf 'rsrc/FILE';\n";
+		msg    += "/ITL/scene/score scale SCALE;\n";
+		current++;
+		if (current >= scores.length) current = 0;
+		return makemsg(msg, scores[current].file, scores[current].scale );
+	}
+
+?>
+
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+
+y = -0.1;
+
+/ITL/scene/title set txt Sensor interaction;
+/ITL/scene/title fontSize 48;
+/ITL/scene/title color $color;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.8;
+
+/ITL/scene/signal/x size 200;
+/ITL/scene/signal/x alias "/x";
+
+/ITL/scene/score set gmnf "rsrc/score1.gmn";
+/ITL/scene/score watch mouseDown (/ITL/scene event NEXT);
+/ITL/scene/signal connect x "score:alpha";
+
+/ITL/scene watch NEXT ( /ITL/scene/javascript run "next()" );
+
+__END__
+
+/ITL/log show 1;
+/ITL/log level 2;
+
+/ITL/scene event NEXT;

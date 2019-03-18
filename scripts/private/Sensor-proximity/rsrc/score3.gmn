@@ -1,0 +1,8 @@
+{
+    [
+      \barFormat<style="system"> g f | \stemsUp g2/2 | \noteFormat<dx=15hs, size=1.4> c1/1
+    ],
+    [
+        \meter<"2/4", size=3, dy=8.7hs, color="grey"> a b \stemsDown c/2 
+    ]
+}

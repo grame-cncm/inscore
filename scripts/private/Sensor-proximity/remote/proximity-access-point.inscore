@@ -1,0 +1,85 @@
+
+click  = ($OSId < 3 ? touchBegin : mouseDown);
+shadow = shadow 5 5 0 0 0 75 20;
+color = 20 0 150;
+
+/ITL/scene/* del;
+/ITL/scene/signal/* del;
+
+
+/ITL/scene/title set txt Proximity;
+/ITL/scene/title fontSize 48;
+/ITL/scene/title color $color;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.8;
+
+/ITL/scene/rect set rect 1 1;
+/ITL/scene/rect radius 5 5;
+
+/ITL/scene/sensor set proximity;
+/ITL/scene/sensor watch newData ( 192.168.43.88:7000/x '$x[-1.,1.]');
+
+sval = proximity;
+/ITL/scene/signal/proximity size 200;
+/ITL/scene/signal/proximity alias '/sensor';
+
+/ITL/scene/control1 set txt "Next";
+/ITL/scene/control2 set txt "Connect";
+/ITL/scene/control1 xorigin 1;
+/ITL/scene/control1 x -$(/ITL/scene/rect get width) / 2;
+/ITL/scene/control2 xorigin -1;
+/ITL/scene/control2 x $(/ITL/scene/rect get width) / 2;
+/ITL/scene/control? y 0.85;
+/ITL/scene/control? fontSize 44;
+
+/ITL/scene/control1 watch $click ( 192.168.43.88:7000/ITL/scene event NEXT);
+
+/ITL/scene/control2 watch $click (
+	/ITL/scene/$self push,
+	/ITL/scene/signal connect $sval "rect:alpha",
+	/ITL/scene/$self set txt "Disconnect",
+	/ITL/scene/$self watch $click (
+		/ITL/scene/signal disconnect $sval,
+		/ITL/scene/rect alpha 1.0,
+		/ITL/scene/$self set txt "Connect",
+		/ITL/scene/$self pop
+	)
+);
+
+w = 0.1;
+/ITL/scene/control3 set rect $w $w;
+/ITL/scene/control3 penWidth 1.5;
+/ITL/scene/control3 radius 20 20;
+/ITL/scene/control3 brushStyle none;
+/ITL/scene/control3 color 14 214 41;
+/ITL/scene/control3 y 0.85;
+/ITL/scene/control3 watch $click (
+	/ITL/scene/control3 push,
+	/ITL/scene/control3 brushStyle solid,
+	192.168.43.88:7000/ITL/scene fullscreen 1,
+	/ITL/scene/control3 watch $click (
+		/ITL/scene/control3 brushStyle none,
+		192.168.43.88:7000/ITL/scene fullscreen 0,
+		/ITL/scene/control3 pop
+	)
+);
+
+smooth = 0.015;
+/ITL/scene/sensor smooth $smooth;
+/ITL/scene/signal/proximity smooth $smooth;
+/ITL/scene/sensor run 1;
+/ITL/scene/signal/proximity run 1;
+
+__END__
+
+/sensor smooth 0.5;
+/sensor smooth 0.2;
+/sensor smooth 0.1;
+/sensor smooth 0.02;
+/sensor smooth 0.01;
+/sensor max 30;
+
+/sensor run 1;
+/sensor get run;
+
+

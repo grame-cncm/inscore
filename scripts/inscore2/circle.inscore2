@@ -1,0 +1,29 @@
+
+pi		= 3.141592653589793;
+step    = / ( * 2, $pi), $count;
+hstep   = / 0.3, $count;
+
+x = math.sin ( * $step, (+ $i, $startpos) );
+y = math.cos ( * $step, (+ $i, $startpos) );
+
+hue 	= (+ $startcolor, (* $hstep, $i));
+bstart  = 0.4;
+bstep   = / (- 1, $bstart), $count;
+brigthness = + $bstart, ( * $bstep, $i);
+
+
+/ITL/scene/* del;
+
+circle = (/ITL/scene/$addr  
+	(set ellipse $size $size),
+	(x * $x, $radius),
+	(y * $y, $radius),
+	(hsb $hue, $brigthness, 1.));
+
+$circle{ addr=c1_[i:1...30], count=30, radius=0.7,  size=0.1,   startpos=0,  startcolor=0.  };
+$circle{ addr=c2_[i:1...24], count=24, radius=0.5,  size=0.08,  startpos=6,  startcolor=0.1  };
+$circle{ addr=c3_[i:1...20], count=20, radius=0.3,  size=0.06,  startpos=10, startcolor=0.2  };
+$circle{ addr=c4_[i:1...12], count=12, radius=0.15, size=0.045, startpos=9,  startcolor=0.35  };
+
+grey = (150, 150, 150, 120);
+/ITL/scene/c* effect shadow (6, 6, $grey, 6);

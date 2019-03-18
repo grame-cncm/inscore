@@ -1,0 +1,18 @@
+
+size 	= 12;
+width 	= 1.5;
+sep 	= 0.1;
+w 		= / (- $width, $sep), $size;
+offset	= / $width, 2;
+grey 	= (150, 150, 150, 120);
+hue 	= ( * (/ $size, 360.), (+ 1,$j));
+brigthness = (/ 1., (+ 1, (/ $i, 1.7)));
+
+/ITL/scene/* del;
+/ITL/scene/r_[i:j:aa...ll] 
+	(set rect $w, $w),
+	(x (- (/ ( * $i, $width), (- $size, 1.)), $offset)),
+	(y (- (/ ( * $j, $width), (- $size, 1.)), $offset)),
+	(hsb $hue, $brigthness, 1.);
+/ITL/scene/r_* effect shadow (6, 6, $grey, 6);
+/ITL/scene/r_* radius 20 20;

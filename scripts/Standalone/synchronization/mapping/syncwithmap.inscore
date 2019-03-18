@@ -1,0 +1,88 @@
+
+/ITL/scene/* del;
+
+grey = 240 240 240;
+green = 100 255 100;
+
+y = 0.5;
+/ITL/scene/score set gmnf 'rsrc/sample1.gmn';
+/ITL/scene/score scale 0.5;
+/ITL/scene/score y -$y;
+
+/ITL/scene/applebaum1 set img 'rsrc/Applebaum-Metaphysics_of_Notation.jpg';
+/ITL/scene/applebaum2 set img 'rsrc/Applebaum-Metaphysics_of_Notation.jpg';
+/ITL/scene/applebaum* scale 0.35;
+/ITL/scene/applebaum* y $y;
+
+w = 0.05;
+y = 0.0;
+/ITL/scene/mapctrl set rect $w $w;
+/ITL/scene/syncctrl set rect $w $w;
+/ITL/scene/*ctrl penWidth 1;
+/ITL/scene/*ctrl color $grey;
+/ITL/scene/*ctrl radius 30 30 ;
+/ITL/scene/*ctrl x -0.85;
+/ITL/scene/mapctrl y $y;
+/ITL/scene/syncctrl y $y + $w * 1.5;
+
+
+/ITL/scene/mapctrl watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/score/debug map 1,
+	/ITL/scene/applebaum*/debug map 1,
+	/ITL/scene/$self color $green,
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/score/debug map 0,
+		/ITL/scene/applebaum*/debug map 0,
+		/ITL/scene/$self color $grey,
+		/ITL/scene/$self pop
+	)
+);
+
+/ITL/scene/syncctrl watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/sync applebaum2 score h syncBottom,
+	/ITL/scene/applebaum2 dy 0.1,
+	/ITL/scene/$self color $green,
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/sync applebaum2,
+		/ITL/scene/$self color $grey,
+		/ITL/scene/$self pop
+	)
+);
+
+
+/ITL/scene/text1 set txt "Click to display the mapping";
+/ITL/scene/text2 set txt "Click to synchronise";
+/ITL/scene/text1 y $y;
+/ITL/scene/text2 y $y + $w * 1.5;
+/ITL/scene/text? fontFamily Courier;
+/ITL/scene/text? xorigin -1;
+/ITL/scene/text? x -0.8;
+
+
+/ITL/scene/box set rect 0.3 0.2;
+/ITL/scene/box color 250 250 250;
+/ITL/scene/box radius 10 10;
+/ITL/scene/box penWidth 1;
+/ITL/scene/box y 0.03;
+/ITL/scene/box x 0.6;
+/ITL/scene/box/map1 set txt "Select map 1";
+/ITL/scene/box/map2 set txt "Select map 2";
+/ITL/scene/box/map1 y -0.31;
+/ITL/scene/box/map2 y 0.31;
+/ITL/scene/box/map? watch mouseEnter ( /ITL/scene/box/$self red 240 );
+/ITL/scene/box/map? watch mouseLeave ( /ITL/scene/box/$self red 0 );
+/ITL/scene/box/map1 watch mouseDown  ( /ITL/scene/applebaum* mapf 'rsrc/Applebaum1.map' );
+/ITL/scene/box/map2 watch mouseDown  ( /ITL/scene/applebaum* mapf 'rsrc/Applebaum2.map' );
+
+
+/ITL/scene load 'rsrc/fullscreen.inscore';
+
+__END__
+
+
+/ITL/log show 1;
+/ITL/log level 2;
+/ITL/scene/* scale 0.35;
+/ITL/scene/A* penWidth 1;
