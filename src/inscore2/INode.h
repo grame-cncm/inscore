@@ -39,6 +39,7 @@ namespace inscore2
 {
 
 class INode;
+class DelayNode;
 typedef std::shared_ptr<INode>	SINode;
 
 //------------------------------------------------------------
@@ -65,6 +66,7 @@ class INode {
 		static SINode create (const std::string& val, TNodeType t=kText)  { return SINode(new INode(val, t));}
 		static SINode create (float value) 								  { return SINode(new INode(std::to_string(value), kFloat)); }
 		static SINode create (int value) 								  { return SINode(new INode(std::to_string(value), kInt)); }
+		static SINode createDelay (float value);
 
 				 INode(const std::string& val, TNodeType t=kText)
 				 							: fValue(val), fType(t), fAddressPart(false), fLine(0), fColumn(0) 	{}
@@ -82,22 +84,25 @@ class INode {
 		virtual const std::string 	getFullValue () const { return fValue + ":" + getTypeStr(); }
 		virtual TNodeType 			getType () const 	{ return fType; }
         virtual const char*         getTypeStr() const  { return type2string (fType); }
-        virtual int               	getDelay() const    { return fDelay; }
+        virtual float               getDelay() const    { return fDelay; }
         virtual float               getFloat() const;
-        virtual void                setDelay(int d)   	{ fDelay = d; }
+        virtual void                setDelay(float d)   { fDelay = d; }
 		virtual void 				setInfos (const SINode& n) { setInfos(n.get()); }
 		virtual void 				setInfos (const INode* n);
+		virtual void 				propagateDelay ();
 
 		size_t 			size () const 		{ return fSubNodes.size(); }
 		bool 			empty () const 		{ return fSubNodes.size() == 0; }
 		bool 			isVariable () const { return fType == kVariable; }
 		bool 			isForest () const 	{ return fType == kForest; }
+		bool 			isDelay () const 	{ return fType == kDelay; }
 		bool 			petiole () const;
 		bool 			address () const	{ return fAddressPart; }
 		const NList& 	childs() const		{ return fSubNodes; }
 
 
 		virtual SINode  clone (const NList& sub) const;
+		virtual SINode  clone (const SINode& n) const;
 		virtual SINode  clone () const;
 		virtual SINode  merge (const SINode& n) const;
 		const SINode 	find  (const SINode& n) const	{ return fSubNodes.find(n); }
@@ -131,7 +136,7 @@ class INode {
 		TNodeType	fType;
 		bool		fAddressPart;
         TEnv        fEnv;
-        int 		fDelay = 0;
+        float 		fDelay = 0;
 
 		int fLine;			// line number in file if any (this is for error reporting)
 		int	fColumn;		// column number in file if any (this is for error reporting)
@@ -163,7 +168,7 @@ class ExpandNode : public INode {
 class DelayNode : public INode {
     public:
              DelayNode(std::string val);
-             DelayNode(int val);			// a milliseconds delay
+             DelayNode(float val);			// a milliseconds delay
     virtual ~DelayNode() {}
 };
 

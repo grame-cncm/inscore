@@ -73,6 +73,9 @@ INode* INode::createSeq (SINode n1, SINode n2)	{ return new SeqNode(n1, n2); }
 INode* INode::createPar (SINode n1, SINode n2)	{ return new ParNode(n1, n2); }
 
 //------------------------------------------------------------
+SINode INode::createDelay (float value) 		{ return SINode(new DelayNode (value)); }
+
+//------------------------------------------------------------
 INode::INode(const INode* node)
 	: fValue(node->getValue()), fType(node->getType()), fAddressPart(node->address()), fDelay(node->getDelay()), fLine(node->getLine()), fColumn(node->getColumn())
 {
@@ -81,11 +84,25 @@ INode::INode(const INode* node)
 }
 
 //------------------------------------------------------------
+SINode INode::clone (const SINode& n) const
+{
+	SINode out = SINode (new INode (getValue(), n, getType()));
+	out->setInfos (this);
+	return out;
+}
+
+//------------------------------------------------------------
 SINode INode::clone (const NList& sub) const
 {
 	SINode out = SINode(new INode(getValue(), sub, getType()));
 	out->setInfos( this );
 	return out;
+}
+
+//------------------------------------------------------------
+void INode::propagateDelay ()
+{
+	for (auto n: childs()) n->setDelay(fDelay);
 }
 
 //------------------------------------------------------------
@@ -208,7 +225,7 @@ const char * INode::type2string (TNodeType t)
 }
 
 //------------------------------------------------------------
-DelayNode::DelayNode(int val) : INode(std::to_string (val)+"ms", kDelay)
+DelayNode::DelayNode(float val) : INode(std::to_string (int(val))+"ms", kDelay)
 {
 	setDelay ( val );	// the delay value is stored as integer count of milliseconds
 }
@@ -223,7 +240,7 @@ DelayNode::DelayNode(std::string val) : INode(val, kDelay)
 		val.pop_back();
 	}
 	float delay = std::stof (val) * multiplier;
-	setDelay ( int(delay) );	// the delay value is stored as integer count of milliseconds
+	setDelay ( delay );	// the delay value is stored as integer count of milliseconds
 }
 
 } // end namespace
