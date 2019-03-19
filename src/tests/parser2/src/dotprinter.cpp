@@ -72,7 +72,7 @@ string dotprinter::label (const INode * node) const
 	string str;
 	string delay;
 
-	if (node->getDelay()) delay = to_string(node->getDelay()) + "d ";
+	if (node->getDelay()) delay = to_string(int(node->getDelay())) + "d ";
 	if (node->address()) str = delay + " /";
 	str += node->getValue();
 	switch(node->getType()) {
