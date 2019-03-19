@@ -51,12 +51,13 @@ class evaluator
 
 	typedef std::function<bool(float, float)> 				TCompNumFunction;
 	typedef std::function<bool(std::string, std::string)> 	TCompStrFunction;
+	typedef std::function<SINode(float)> 					TCreateFunction;
 
 	static void 	error  (const SINode& node, const std::string& what);
 
 	static bool 	isTrue  (const SINode& arg);
 
-	static float 	getFArgValue (const SINode& node, const NList& args);
+	static float 	getFArgValue (const SINode& node, const NList& args, TCreateFunction& f);
 	static SINode 	compare (const SINode& arg1, const SINode& arg2, TCompStrFunction f);
 	static SINode 	compare (const SINode& arg1, const SINode& arg2, TCompNumFunction f);
 
@@ -101,29 +102,29 @@ class evaluator
 	static SINode 	evalMax		(const SINode& node, const NList& args, TType type);
 	static SINode 	evalHas		(const SINode& node, const NList& args);
 
-	static SINode 	evalSin		(float value);
-	static SINode 	evalCos		(float value);
-	static SINode 	evalTan		(float value);
-	static SINode 	evalASin	(float value);
-	static SINode 	evalACos	(float value);
-	static SINode 	evalATan	(float value);
-	static SINode 	evalSinh	(float value);
-	static SINode 	evalCosh	(float value);
-	static SINode 	evalTanh	(float value);
-	static SINode 	evalASinh	(float value);
-	static SINode 	evalACosh	(float value);
-	static SINode 	evalATanh	(float value);
+	static SINode 	evalSin		(float value, TCreateFunction create);
+	static SINode 	evalCos		(float value, TCreateFunction create);
+	static SINode 	evalTan		(float value, TCreateFunction create);
+	static SINode 	evalASin	(float value, TCreateFunction create);
+	static SINode 	evalACos	(float value, TCreateFunction create);
+	static SINode 	evalATan	(float value, TCreateFunction create);
+	static SINode 	evalSinh	(float value, TCreateFunction create);
+	static SINode 	evalCosh	(float value, TCreateFunction create);
+	static SINode 	evalTanh	(float value, TCreateFunction create);
+	static SINode 	evalASinh	(float value, TCreateFunction create);
+	static SINode 	evalACosh	(float value, TCreateFunction create);
+	static SINode 	evalATanh	(float value, TCreateFunction create);
 
-	static SINode 	evalExp		(float value);
-	static SINode 	evalLog		(float value);
-	static SINode 	evalLog10	(float value);
-	static SINode 	evalLog2	(float value);
+	static SINode 	evalExp		(float value, TCreateFunction create);
+	static SINode 	evalLog		(float value, TCreateFunction create);
+	static SINode 	evalLog10	(float value, TCreateFunction create);
+	static SINode 	evalLog2	(float value, TCreateFunction create);
 	static SINode 	evalPow		(const SINode& node, const NList& args, TType type);
-	static SINode 	evalSqrt	(float value);
-	static SINode 	evalCbrt	(float value);
-	static SINode 	evalCeil	(float value);
-	static SINode 	evalFloor	(float value);
-	static SINode 	evalRound	(float value);
+	static SINode 	evalSqrt	(float value, TCreateFunction create);
+	static SINode 	evalCbrt	(float value, TCreateFunction create);
+	static SINode 	evalCeil	(float value, TCreateFunction create);
+	static SINode 	evalFloor	(float value, TCreateFunction create);
+	static SINode 	evalRound	(float value, TCreateFunction create);
 	static SINode 	evalRand();
 
 	static SINode 	evalMath   (const SINode& node, const TEnv&);

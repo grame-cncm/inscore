@@ -121,7 +121,7 @@ SINode evaluator::addDelay (const NList& args)
 {
 	float sum = 0;
 	for (auto n: args) sum += n->getFloat();
-	return SINode( new DelayNode( int(sum)) );
+	return SINode( new DelayNode( sum) );
 }
 
 //------------------------------------------------------------
@@ -159,7 +159,7 @@ SINode evaluator::subDelay (const NList& args)
 {
 	float result = args[0]->getFloat();
 	for (size_t i = 1; i < args.size(); i++) result -= args[i]->getFloat();
-	return SINode( new DelayNode( int(result)) );
+	return SINode( new DelayNode( result) );
 }
 
 //------------------------------------------------------------
@@ -205,7 +205,7 @@ SINode evaluator::divDelay (const NList& args)
 		if (v) result /= v;
 		else  error (args[i], "divide by zero");
 	}
-	return SINode( new DelayNode( int(result)) );
+	return SINode( new DelayNode( result) );
 }
 
 //------------------------------------------------------------
@@ -243,7 +243,7 @@ SINode evaluator::multDelay (const NList& args)
 {
 	float result = args[0]->getFloat();
 	for (size_t i = 1; i < args.size(); i++) result *= args[i]->getFloat();
-	return SINode( new DelayNode( int(result)) );
+	return SINode( new DelayNode( result) );
 }
 
 //------------------------------------------------------------
@@ -287,7 +287,8 @@ bool evaluator::isTrue  (const SINode& n)
 		case INode::kText:
 			return (testStr == "true") || (testStr=="yes") || (testStr == "on");
 		case INode::kFloat:
-			return  std::stof(testStr) != 0.f;
+		case INode::kDelay:
+			return  n->getFloat() != 0.f;
 		case INode::kInt:
 			return  std::stoi(testStr) != 0;
 		default:	return false;
@@ -328,8 +329,8 @@ SINode evaluator::compare (const SINode& arg1, const SINode& arg2, TCompStrFunct
 
 SINode evaluator::compare (const SINode& arg1, const SINode& arg2, TCompNumFunction f)
 {
-	float v1 = std::stof(arg1->getValue());
-	float v2 = std::stof(arg2->getValue());
+	float v1 = arg1->getFloat();
+	float v2 = arg2->getFloat();
 	string result = f(v1, v2) ? "true" : "false";
 	return SINode (new INode (result));
 }
@@ -388,9 +389,9 @@ SINode evaluator::minStrings	(const NList& args)
 SINode evaluator::minNum	(const NList& args)
 {
 	SINode node = args[0];
-	double min = std::stof(node->getValue());;
+	double min = node->getFloat();
 	for (size_t i=1; i < args.size(); i++) {
-		float n = std::stof(args[i]->getValue());
+		float n = args[i]->getFloat();
 		if (n < min) {
 			min = n;
 			node = args[i];
@@ -430,9 +431,9 @@ SINode evaluator::maxStrings	(const NList& args)
 SINode evaluator::maxNum	(const NList& args)
 {
 	SINode node = args[0];
-	float max = std::stof(node->getValue());;
+	float max = node->getFloat();
 	for (size_t i=0; i < args.size(); i++) {
-		float n = std::stof(args[i]->getValue());
+		float n = args[i]->getFloat();
 		if (n > max) {
 			max = n;
 			node = args[i];
@@ -462,7 +463,7 @@ SINode evaluator::evalHas	(const SINode& node, const NList& args)
 }
 
 //------------------------------------------------------------
-float evaluator::getFArgValue (const SINode& node, const NList& args)
+float evaluator::getFArgValue (const SINode& node, const NList& args, TCreateFunction& f)
 {
 	stringstream what;
 	if (args.size() != 1) {
@@ -473,7 +474,11 @@ float evaluator::getFArgValue (const SINode& node, const NList& args)
 	switch (arg->getType()) {
 		case INode::kInt:
 		case INode::kFloat:
-			return std::stof(arg->getValue());
+			f = [] (float v) -> SINode { return INode::create(v); };
+			return arg->getFloat();
+		case INode::kDelay:
+			f = [] (float v) -> SINode { return INode::createDelay(v); };
+			return arg->getFloat();
 		default:
 			what << "unexpected type of argument (type " << arg->getType() << ": " << arg->getTypeStr() << ")";
 			error (arg, what.str());
@@ -482,35 +487,34 @@ float evaluator::getFArgValue (const SINode& node, const NList& args)
 }
 
 //------------------------------------------------------------
-SINode evaluator::evalSin (float value) 	{ return INode::create ( sin(value)); }
-SINode evaluator::evalCos (float value) 	{ return INode::create ( cos(value)); }
-SINode evaluator::evalTan (float value) 	{ return INode::create ( tan(value)); }
-SINode evaluator::evalASin (float value) 	{ return INode::create ( asin(value)); }
-SINode evaluator::evalACos (float value) 	{ return INode::create ( acos(value)); }
-SINode evaluator::evalATan (float value) 	{ return INode::create ( atan(value)); }
-SINode evaluator::evalSinh (float value) 	{ return INode::create ( sinh(value)); }
-SINode evaluator::evalCosh (float value) 	{ return INode::create ( cosh(value)); }
-SINode evaluator::evalTanh (float value) 	{ return INode::create ( tanh(value)); }
-SINode evaluator::evalASinh (float value) 	{ return INode::create ( asinh(value)); }
-SINode evaluator::evalACosh (float value) 	{ return INode::create ( acosh(value)); }
-SINode evaluator::evalATanh (float value) 	{ return INode::create ( atanh(value)); }
+SINode evaluator::evalSin 	(float value, TCreateFunction create) 	{ return create ( sin(value)); }
+SINode evaluator::evalCos 	(float value, TCreateFunction create) 	{ return create ( cos(value)); }
+SINode evaluator::evalTan 	(float value, TCreateFunction create) 	{ return create ( tan(value)); }
+SINode evaluator::evalASin 	(float value, TCreateFunction create) 	{ return create ( asin(value)); }
+SINode evaluator::evalACos 	(float value, TCreateFunction create) 	{ return create ( acos(value)); }
+SINode evaluator::evalATan 	(float value, TCreateFunction create) 	{ return create ( atan(value)); }
+SINode evaluator::evalSinh 	(float value, TCreateFunction create) 	{ return create ( sinh(value)); }
+SINode evaluator::evalCosh 	(float value, TCreateFunction create) 	{ return create ( cosh(value)); }
+SINode evaluator::evalTanh 	(float value, TCreateFunction create) 	{ return create ( tanh(value)); }
+SINode evaluator::evalASinh (float value, TCreateFunction create) 	{ return create ( asinh(value)); }
+SINode evaluator::evalACosh (float value, TCreateFunction create) 	{ return create ( acosh(value)); }
+SINode evaluator::evalATanh (float value, TCreateFunction create) 	{ return create ( atanh(value)); }
 
-SINode evaluator::evalExp (float value) 	{ return INode::create ( exp(value)); }
-SINode evaluator::evalLog (float value) 	{ return INode::create ( log(value)); }
-SINode evaluator::evalLog10 (float value) 	{ return INode::create ( log10(value)); }
-SINode evaluator::evalLog2 (float value) 	{ return INode::create ( log2(value)); }
-SINode evaluator::evalSqrt (float value) 	{ return INode::create ( sqrt(value)); }
-SINode evaluator::evalCbrt (float value) 	{ return INode::create ( cbrt(value)); }
-SINode evaluator::evalCeil (float value) 	{ return INode::create ( ceil(value)); }
-SINode evaluator::evalFloor (float value) 	{ return INode::create ( floor(value)); }
-SINode evaluator::evalRound (float value) 	{ return INode::create ( round(value)); }
+SINode evaluator::evalExp 	(float value, TCreateFunction create) 	{ return create ( exp(value)); }
+SINode evaluator::evalLog 	(float value, TCreateFunction create) 	{ return create ( log(value)); }
+SINode evaluator::evalLog10 (float value, TCreateFunction create) 	{ return create ( log10(value)); }
+SINode evaluator::evalLog2 	(float value, TCreateFunction create) 	{ return create ( log2(value)); }
+SINode evaluator::evalSqrt 	(float value, TCreateFunction create) 	{ return create ( sqrt(value)); }
+SINode evaluator::evalCbrt 	(float value, TCreateFunction create) 	{ return create ( cbrt(value)); }
+SINode evaluator::evalCeil 	(float value, TCreateFunction create) 	{ return create ( ceil(value)); }
+SINode evaluator::evalFloor (float value, TCreateFunction create) 	{ return create ( floor(value)); }
+SINode evaluator::evalRound (float value, TCreateFunction create) 	{ return create ( round(value)); }
 
 SINode evaluator::evalPow (const SINode& node, const NList& args, TType type)
 {
 	if ((args.size() != 2) || (type == kString)) error (node, "operator 'pow' requires 2 numeric arguments");
-	float v1 = 	std::stof(args[0]->getValue());
-	float v2 = 	std::stof(args[1]->getValue());
-	return INode::create (pow(v1, v2));
+	float val = pow (args[0]->getFloat(), args[1]->getFloat());
+	return (type == kDelay) ?  INode::createDelay (val) : INode::create (val);
 }
 
 static std::random_device rdev;
@@ -534,6 +538,7 @@ SINode evaluator::evalMath (const SINode& node, const TEnv& env)
 		return evalQuest (node, l);
 
 	TType exprType = getType (l);
+	TCreateFunction f;
 	if (exprType == kDefer)
 		return node->clone(l);
 	
@@ -553,30 +558,30 @@ SINode evaluator::evalMath (const SINode& node, const TEnv& env)
 		case INode::kMax:		out = evalMax		(node, l, exprType); break;
 		case INode::kHas:		out = evalHas		(node, l); break;
 
-		case INode::kSin:		out = evalSin	(getFArgValue(node, l)); break;
-		case INode::kCos:		out = evalCos	(getFArgValue(node, l)); break;
-		case INode::kTan:		out = evalTan	(getFArgValue(node, l)); break;
-		case INode::kASin:		out = evalASin	(getFArgValue(node, l)); break;
-		case INode::kACos:		out = evalACos	(getFArgValue(node, l)); break;
-		case INode::kATan:		out = evalATan	(getFArgValue(node, l)); break;
-		case INode::kSinh:		out = evalSinh	(getFArgValue(node, l)); break;
-		case INode::kCosh:		out = evalCosh	(getFArgValue(node, l)); break;
-		case INode::kTanh:		out = evalTanh	(getFArgValue(node, l)); break;
-		case INode::kASinh:		out = evalASinh	(getFArgValue(node, l)); break;
-		case INode::kACosh:		out = evalACosh	(getFArgValue(node, l)); break;
-		case INode::kATanh:		out = evalATanh	(getFArgValue(node, l)); break;
+		case INode::kSin:		out = evalSin	(getFArgValue(node, l, f), f); break;
+		case INode::kCos:		out = evalCos	(getFArgValue(node, l, f), f); break;
+		case INode::kTan:		out = evalTan	(getFArgValue(node, l, f), f); break;
+		case INode::kASin:		out = evalASin	(getFArgValue(node, l, f), f); break;
+		case INode::kACos:		out = evalACos	(getFArgValue(node, l, f), f); break;
+		case INode::kATan:		out = evalATan	(getFArgValue(node, l, f), f); break;
+		case INode::kSinh:		out = evalSinh	(getFArgValue(node, l, f), f); break;
+		case INode::kCosh:		out = evalCosh	(getFArgValue(node, l, f), f); break;
+		case INode::kTanh:		out = evalTanh	(getFArgValue(node, l, f), f); break;
+		case INode::kASinh:		out = evalASinh	(getFArgValue(node, l, f), f); break;
+		case INode::kACosh:		out = evalACosh	(getFArgValue(node, l, f), f); break;
+		case INode::kATanh:		out = evalATanh	(getFArgValue(node, l, f), f); break;
 
-		case INode::kExp: 		out = evalExp	(getFArgValue(node, l)); break;
-		case INode::kLog: 		out = evalLog	(getFArgValue(node, l)); break;
-		case INode::kLog10: 	out = evalLog10 (getFArgValue(node, l)); break;
-		case INode::kLog2: 		out = evalLog2	(getFArgValue(node, l)); break;
-		case INode::kSqrt: 		out = evalSqrt	(getFArgValue(node, l)); break;
-		case INode::kCbrt: 		out = evalCbrt	(getFArgValue(node, l)); break;
-		case INode::kCeil: 		out = evalCeil	(getFArgValue(node, l)); break;
-		case INode::kFloor: 	out = evalFloor	(getFArgValue(node, l)); break;
-		case INode::kRound: 	out = evalRound	(getFArgValue(node, l)); break;
+		case INode::kExp: 		out = evalExp	(getFArgValue(node, l, f), f); break;
+		case INode::kLog: 		out = evalLog	(getFArgValue(node, l, f), f); break;
+		case INode::kLog10: 	out = evalLog10 (getFArgValue(node, l, f), f); break;
+		case INode::kLog2: 		out = evalLog2	(getFArgValue(node, l, f), f); break;
+		case INode::kSqrt: 		out = evalSqrt	(getFArgValue(node, l, f), f); break;
+		case INode::kCbrt: 		out = evalCbrt	(getFArgValue(node, l, f), f); break;
+		case INode::kCeil: 		out = evalCeil	(getFArgValue(node, l, f), f); break;
+		case INode::kFloor: 	out = evalFloor	(getFArgValue(node, l, f), f); break;
+		case INode::kRound: 	out = evalRound	(getFArgValue(node, l, f), f); break;
 
-		case INode::kPow: 		out = evalPow(node, l, exprType); break;
+		case INode::kPow: 		out = evalPow	(node, l, exprType); break;
 		case INode::kRand: 		out = evalRand(); break;
 		default:
 			;
