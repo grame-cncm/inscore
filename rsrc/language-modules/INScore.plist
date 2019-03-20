@@ -218,6 +218,10 @@ or equivalent.
 			<key>BBLMLanguageSuffix</key>
 			<string>.inscore</string>
 		</dict>
+		<dict>
+			<key>BBLMLanguageSuffix</key>
+			<string>.inscore2</string>
+		</dict>
 	</array>
 	<key>Language Features</key>
 	<dict>
@@ -232,8 +236,8 @@ or equivalent.
 		<key>End-of-line Ends Strings 2</key> 	<false/>
 
 		<key>Open Line Comments</key>	<string>#</string>
-		<key>Open Block Comments</key>	<string>(*</string>
-		<key>Close Block Comments</key>	<string>*)</string>
+		<key>Open Block Comments</key>	<string>/#</string>
+		<key>Close Block Comments</key>	<string>#/</string>
 
 		<key>Open Parameter Lists</key>     <string>(</string>
 		<key>Close Parameter Lists</key>    <string>)</string>
