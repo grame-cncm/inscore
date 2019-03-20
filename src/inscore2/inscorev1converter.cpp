@@ -40,8 +40,9 @@ class v1Msg {
 	string			fAddress;	// the msg osc address
 	string			fMethod;	// the msg method string
 	SINode			fPParams;	// parent node of the parameters
+	float 			fDelay = 0.f;
 
-	const SINode	getAddress (const SINode& node);
+	const SINode	getAddress (const SINode& node, bool getDelay=true);
 	const SINode	getMethod (const SINode& node);
 	SIMessage		getParams (const SINode& node, SIMessage msg) const;
 
@@ -61,13 +62,15 @@ SIMessage v1Msg::toMessage () const
 	if (fMethod.empty()) msg = IMessage::create (fAddress);
 	else msg = IMessage::create (fAddress, fMethod);
 	if (fUrl.fPort) msg->setUrl (fUrl);
+	if (fDelay)		msg->setDelay (fDelay);
 	for (auto n: fPParams->childs())
 		getParams (n, msg);
 	return msg;
 }
 
 //------------------------------------------------------------
-const SINode v1Msg::getAddress (const SINode& node)
+// retrieve the OSC address from a tree
+const SINode v1Msg::getAddress (const SINode& node, bool getDelay)
 {
 	if (!node) return node;
 	const SINode next = node->size() ? node->childs()[0] : 0;
@@ -77,8 +80,9 @@ const SINode v1Msg::getAddress (const SINode& node)
 		else {
 			fAddress += "/";
 			fAddress += node->getValue();
+			if (getDelay) fDelay = node->getDelay();
 		}
-		return next ? getAddress (next) : 0;
+		return next ? getAddress (next, false) : 0;
 	}
 	else return node;
 }

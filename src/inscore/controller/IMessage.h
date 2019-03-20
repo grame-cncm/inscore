@@ -181,7 +181,8 @@ class IMessage : public Message, public libmapping::smartable
 		argslist	fArguments;			///< the message arguments, index 0 is reserved for the message string
 		bool		fHasMessage;		///< indicates when arguments start with a message string
 		TUrl		fUrl;
-		
+		float		fDelay = 0.f;
+
 		inline int index (int i) const	{ return fHasMessage ? i+1 : i; }
 		/*!
 			\brief adds a parameter to the message
@@ -227,6 +228,9 @@ class IMessage : public Message, public libmapping::smartable
 		static SIMessage create(const std::string& address, const argslist& args, const TUrl& url)
 				{ return new IMessage(address, args, url); }
 
+	//------------------------------------------------------------------------------
+	// methods to add parameters
+	//------------------------------------------------------------------------------
 	/*!
 		\brief adds a float parameter to the message
 		\param val the parameter value
@@ -272,6 +276,9 @@ class IMessage : public Message, public libmapping::smartable
 	*/
 	void	add( const argslist& params );
 
+	//------------------------------------------------------------------------------
+	// methods for address management
+	//------------------------------------------------------------------------------
 	/*!
 		\brief sets the message address
 		\param addr the address
@@ -305,13 +312,28 @@ class IMessage : public Message, public libmapping::smartable
 		\brief sets the message string
 		\param msg the message string
 	*/
+
+	//------------------------------------------------------------------------------
+	// misc.
+	//------------------------------------------------------------------------------
+	/*!
+		\brief sets the message string
+		\param msg the message string
+	*/
 	void				setMessage(const std::string& msg);
+
+	/*!
+		\brief sets the message delay
+		\param delay the message delay
+	*/
+	void				setDelay(float delay)	{ fDelay = delay; }
+
 	/*!
 		\brief print the message
 		\param out the output stream
 		\param suffix the suffix to be used as messages separator
 	*/
-	void				print(std::ostream& out, int nested=0, const char* suffix=0) const;
+	void		print(std::ostream& out, int nested=0, const char* suffix=0) const;
 	/*!
 		\brief print a message parameter
 		\param out the output stream
@@ -320,6 +342,7 @@ class IMessage : public Message, public libmapping::smartable
 		\param suffix the suffix to be used as messages separator
 	*/
 	void		print(std::ostream& out, int param, int nested, const char* suffix=0) const;
+
 	/*!
 		\brief convert a message to string
 	*/
@@ -347,30 +370,37 @@ class IMessage : public Message, public libmapping::smartable
 	void printArgs(OSCStream& out) const;
 #endif
 
+	//------------------------------------------------------------------------------
+	// methods to query a message
+	//------------------------------------------------------------------------------
 	/// \brief gives the message address
-	const std::string&	address() const		{ return fAddress; }
+	const std::string&	address() const				{ return fAddress; }
 	/// \brief check for relative address
 	bool				relativeAddress() const		{ return fAddress[0] == '.'; }
 	/// \brief check for extended address
 	bool				extendedAddress() const		{ return fUrl.fPort != 0; }
 	/// \brief gives the address extension
-	const TUrl&	url() const					{ return fUrl; }
+	const TUrl&	url() const							{ return fUrl; }
 	/// \brief gives the message message
 	std::string			message() const;
 	/// \brief gives a single parameter by index
-	const argPtr&		param(unsigned int i) const		{ return fArguments[index(i)]; }
+	const argPtr&		param(unsigned int i) const				{ return fArguments[index(i)]; }
 	/// \brief sets parameter value
 	template <typename T> void setparam(unsigned int i, T val)  { fArguments[index(i)] = new IMsgParam<T>(val); }
 	/// \brief gives the message source IP
-	unsigned long		src() const			{ return fSrcIP; }
+	unsigned long		src() const				{ return fSrcIP; }
 	/// \brief gives the message destination IP
 	unsigned long		dest() const			{ return fDestIP; }
 	/// \brief gives the message parameters count
-	int					size() const		{ int  n = int(fArguments.size()); return fHasMessage ? n -1 : n; }
-	
+	int					size() const			{ int  n = int(fArguments.size()); return fHasMessage ? n -1 : n; }
+	/// \brief gives the message delay
+	float				delay() const			{ return fDelay; }
+
 	bool operator == (const IMessage& other) const;	
 
 
+	//------------------------------------------------------------------------------
+	// getting parameters values and types
 	/*!
 		\brief gives a message value as float value and operates int to float cast if necessary
 		\param i the parameter index (0 <= i < size())
