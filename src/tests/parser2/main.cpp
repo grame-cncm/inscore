@@ -69,6 +69,7 @@ int main (int argc, char * argv[]) {
 	bool eval 	  = checkOption (argc, argv, "-eval");
 	bool printenv = checkOption (argc, argv, "-env");
 	bool pathsout = checkOption (argc, argv, "-paths");
+	bool pathsonl = checkOption (argc, argv, "-pathsonly");
 	bool applyout = checkOption (argc, argv, "-apply");
 	const char* file = input (argc, argv);
 	if (!file)  usage (argv[0]);
@@ -90,6 +91,7 @@ int main (int argc, char * argv[]) {
 			SINode toprint = e;
 			if (eval) 			toprint = evaluator::eval(e);
 			else if (pathsout)	toprint = pathsList::eval( evaluator::eval( e ));
+			else if (pathsonl)	toprint = pathsList::eval( evaluator::eval( e ), false);
 			else if (applyout)	toprint = reduce::apply (evaluator::eval( e ));
 
 			if (applyout)	dot.print (cout, toprint.get());

@@ -20,10 +20,11 @@ help:
 	@echo "    clean  : remove $(OUT) and object files"
 	@echo 
 	@echo "Targets to run $(OUT) with various output:"
-	@echo "    dot   : generates the tree with seq and par reduced, corresponding to $(FILE).inscore2"
-	@echo "    parse : generates the parsed tree corresponding to $(FILE).inscore2 "
-	@echo "    eval  : generates the evaluated tree corresponding to $(FILE).inscore2 "
-	@echo "    paths : generates all the paths corresponding to the evaluation of $(FILE).inscore2 "
+	@echo "    dot    : generates the tree with seq and par reduced, corresponding to $(FILE).inscore2"
+	@echo "    parse  : generates the parsed tree corresponding to $(FILE).inscore2 "
+	@echo "    eval   : generates the evaluated tree corresponding to $(FILE).inscore2 "
+	@echo "    paths  : generates all the paths corresponding to the evaluation of $(FILE).inscore2 without delay report"
+	@echo "    pathd  : generates all the paths corresponding to the evaluation of $(FILE).inscore2 with delay report"
 
 ##############################################################
 # the targets
@@ -53,6 +54,9 @@ eval: $(FILE).eval.pdf $(OUT)
 
 paths: $(FILE).paths.pdf $(OUT)
 	open $(FILE).paths.pdf
+
+pathd: $(FILE).pathd.pdf $(OUT)
+	open $(FILE).pathd.pdf
 
 depends:
 	makedepend $(CXXFLAGS) $(sources)
@@ -84,8 +88,11 @@ obj/src/%.o: src/%.cpp
 %.apply.dot: %.inscore2 $(OUT)
 	$(OUT) -apply $< > $@	
 
-%.paths.dot: %.inscore2 $(OUT)
+%.pathd.dot: %.inscore2 $(OUT)
 	$(OUT) -paths $< > $@	
+
+%.paths.dot: %.inscore2 $(OUT)
+	$(OUT) -pathsonly $< > $@	
 
 %.eval.dot: %.inscore2 $(OUT)
 	$(OUT) -eval $< > $@	
