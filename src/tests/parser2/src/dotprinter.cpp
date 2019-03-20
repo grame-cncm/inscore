@@ -33,15 +33,17 @@ void dotprinter::print (ostream& os, const NList& nodes)
 //------------------------------------------------------------
 void dotprinter::printNames (const INode* node)
 {
+	string shape = "ellipse";
+	if (node->getDelay() || (node->getType() == INode::kDelay)) shape = "box color=blue";
 	if (!fPrintEnv)
-		*fStream << id (node) << "\t[label=\"" << label (node) << "\"];" << endl;
+		*fStream << id (node) << "\t[label=\"" << label (node) << "\" shape=" << shape << "];" << endl;
 	else {
 		if (node->getEnv().empty())
 			*fStream << id (node) << "\t[label=\"" << label (node) << "\"];" << endl;
 		else {
 			stringstream s;
 			s << "|" << node->getEnv();
-			*fStream << id (node) << "\t[shape=record fontsize=12 label=\"" << label (node) << s.str() << "\"];" << endl;
+			*fStream << id (node) << "\t[shape=" << shape << " fontsize=12 label=\"" << label (node) << s.str() << "\"];" << endl;
 		}
 	}
 	for (auto n: node->childs()) printNames(n.get());
@@ -69,14 +71,12 @@ string dotprinter::id (const INode * node) const
 //------------------------------------------------------------
 string dotprinter::label (const INode * node) const
 {
-	string str;
-	string delay;
-
-	if (node->getDelay()) delay = to_string(int(node->getDelay())) + "d ";
-	if (node->address()) str = delay + " /";
+	string str, prefix;
+	if (node->address())   str = "/";
 	str += node->getValue();
-	switch(node->getType()) {
-		case INode::kURLPrefix: str = delay + node->getValue(); break;
+	INode::TNodeType t = node->getType();
+	switch(t) {
+		case INode::kURLPrefix: str = node->getValue(); break;
 		case INode::kText:
 		case INode::kInt:
 		case INode::kFloat:
@@ -88,7 +88,6 @@ string dotprinter::label (const INode * node) const
 		case INode::kExpand:	str += ":expand"; break;
 		case INode::kForest:	str += ":forest"; break;
 		case INode::kRegexp:	str += ":RE"; break;
-//		case INode::kValue:		str += ":value"; break;
 		case INode::kVariable:	str += ":var"; break;
         case INode::kJScript:   str += ":js"; break;
         case INode::kDelay:     str += ":d"; break;
@@ -135,7 +134,7 @@ string dotprinter::label (const INode * node) const
 		case INode::kPow: 		str += ":pow"; break;
 		case INode::kRand: 		str += ":rand"; break;
 	}
-
+	if (node->getDelay() && (t != INode::kDelay))  str += "\n" + to_string(int(node->getDelay())) + ":D ";
 	return str;
 }
 
