@@ -30,71 +30,50 @@ using namespace std;
 
 namespace inscore2
 {
-#if 0
+
 //------------------------------------------------------------
-// add path to a list
-// args:
-//		path:
-//		node:
-//		list: the destination list
-//------------------------------------------------------------
-static void addPath (const SINode& path, const SINode& node, NList& list)
+static float sumDelays (SINode node)
 {
-	INode::TNodeType type = path->getType();
-	if (type == INode::kForest)
-		list.add( node );
-	else {
-		SINode n = SINode (new INode (path->getValue(), node, type));
-		n->setInfos (path);
-		list.add( n );
+	float delay = node->getDelay();
+	node->setDelay(0);
+	for (auto n: node->childs()) {
+		delay += (sumDelays(n));
 	}
+	return delay;
+}
+
+//------------------------------------------------------------
+// computes the total delay along a path and report
+// this delay to the root node
+//------------------------------------------------------------
+SINode pathsList::delayed (SINode& node)
+{
+	node->setDelay (sumDelays (node));
+	return node;
 }
 
 //------------------------------------------------------------
 // transform a tree into a list of paths
-//
+// and computes the total delay of each path
 //------------------------------------------------------------
-SINode pathsList::eval (const SINode& node)
+SINode pathsList::eval (const SINode& node, bool sumdelays)
 {
-	// node has no subnodes: just clone the node
-	if (node->empty()) return node->clone();
+	SINode paths = _eval (node);
+	if (!sumdelays) return paths;
 
-	// node has subnodes
-	//------------------------------------------------------------
-	// node is not a forest and not an address
-	if (!node->address() && !node->isForest()) {
-		NList nl;
-		for (auto n: node->childs()) {			// for each subnode
-			SINode e = eval (n);				// eval the subnode
-			// when the evaluated node is a forest, add the subnodes to the list
-			if (e->isForest()) nl.add (e->childs());
-			// otherwise add the node to the list
-			else nl.add (e);
-		}
-		return node->clone(nl);		// and return a clone of the current node with the evaluated subnodes
+	if (paths->isForest()) {
+		NList l;
+		for (auto n: paths->childs())
+			l.add (delayed(n));
+		return SINode(new ForestNode (l));
 	}
-
-	//------------------------------------------------------------
-	// node is a forest or an address
-	NList l;
-	for (auto n: node->childs()) {	// for each subnode
-		SINode sub = eval (n);		// eval the subnode
-		if (sub->isForest()) {
-			// when the evaluated node is a forest, add the subnodes to the paths list
-			for (auto s: sub->childs())
-				addPath (node, s, l);
-		}
-		// otherwise add the node to the list
-		else addPath (node, sub, l);
-	}
-	return SINode(new ForestNode (l));
+	else return delayed (paths);
 }
-#else
 
 //------------------------------------------------------------
 // transform a tree into a list of paths
 //------------------------------------------------------------
-SINode pathsList::eval (const SINode& node)
+SINode pathsList::_eval (const SINode& node)
 {
 	// node has no subnodes: just clone the node
 	if (node->empty()) return node->clone();
@@ -104,7 +83,7 @@ SINode pathsList::eval (const SINode& node)
 	if (node->address()) {
 		NList l;
 		for (auto n: node->childs()) {	// for each subnode
-			SINode sub = eval (n);		// eval the subnode
+			SINode sub = _eval (n);		// eval the subnode
 			if (sub->isForest()) {
 				// when the evaluated node is a forest, add the subnodes to the paths list
 				for (auto s: sub->childs()) l.add (node->clone(s));
@@ -121,7 +100,7 @@ SINode pathsList::eval (const SINode& node)
 		float delay = node->getDelay();
 		NList l;
 		for (auto n: node->childs()) {	// for each subnode
-			SINode sub = eval (n);		// eval the subnode
+			SINode sub = _eval (n);		// eval the subnode
 			sub->setDelay (delay);
 			if (sub->isForest()) {
 				sub->propagateDelay();
@@ -136,7 +115,7 @@ SINode pathsList::eval (const SINode& node)
 	// node is not an address and not a delay
 	NList l;
 	for (auto n: node->childs()) {			// for each subnode
-		SINode sub = eval (n);				// eval the subnode
+		SINode sub = _eval (n);				// eval the subnode
 		// when the evaluated node is a forest, add the subnodes to the list
 		if (sub->isForest()) l.add (sub->childs());
 		// otherwise add the node to the list
@@ -144,8 +123,6 @@ SINode pathsList::eval (const SINode& node)
 	}
 	return node->isForest() ? SINode(new ForestNode (l)) : node->clone(l);
 }
-
-#endif
 
 } // end namespace
 

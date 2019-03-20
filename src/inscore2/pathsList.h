@@ -35,11 +35,14 @@ namespace inscore2
 
 class pathsList
 {
+	static SINode 	delayed (SINode& node);
+	static SINode 	_eval (const SINode& node);
+
 	public:
 				 pathsList() {}
 		virtual ~pathsList() {}
 
-		static SINode 	eval (const SINode& node);
+	static SINode 	eval (const SINode& node, bool sumdelays=true);
 };
 
 } // end namespace
