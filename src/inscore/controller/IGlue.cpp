@@ -38,12 +38,13 @@
 #include "EventsAble.h"
 #include "IAppl.h"
 #include "IGlue.h"
+#include "IMappingUpdater.h"
+#include "IMessage.h"
 #include "INScore.h"
 #include "IScene.h"
 #include "ISync.h"
-#include "IMessage.h"
 #include "OSCStream.h"
-#include "IMappingUpdater.h"
+#include "TWallClock.h"
 #include "ViewFactory.h"
 #include "VSceneView.h"
 
@@ -346,7 +347,7 @@ static void sendTimeSig ()
 //--------------------------------------------------------------------------
 void IGlue::timerEvent ( QTimerEvent *)
 {
-	unsigned long long current = getTime();
+	double current = TWallClock::time();
 	if (fLastTimeTask)
 		fModel->setRealRate(current - fLastTimeTask);
 	else fModel->setRealRate(fCurrentRate);

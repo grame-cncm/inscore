@@ -89,8 +89,10 @@ class inscore_export IGlue : public MsgListener, public QTimer
 	SPeriodicTask	fTimeTask;
 	GraphicUpdateListener * fViewListener;
 	QMutex			fTimeViewMutex;
-	int				fCurrentRate;				// the current application rate
-	unsigned long long	fLastTimeTask;			// the date of the last time task (in uls)
+//	int				fCurrentRate;				// the current application rate
+//	unsigned long long	fLastTimeTask;			// the date of the last time task (in uls)
+	double			fCurrentRate;				// the current application rate
+	double			fLastTimeTask;				// the date of the last time task (in mls)
 
 	udpinfo fUDP;
 	

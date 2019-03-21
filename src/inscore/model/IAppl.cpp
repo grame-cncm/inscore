@@ -38,23 +38,24 @@
 #include <QNetworkInterface>
 #include <QDesktopServices>
 
+#include "Events.h"
+#include "Forwarder.h"
 #include "IAppl.h"
 #include "IApplVNodes.h"
-#include "Forwarder.h"
 #include "IFilterForward.h"
 #include "IGlue.h"
 #include "IMessage.h"
 #include "IObjectFactory.h"
 #include "IScene.h"
+#include "ITLError.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
-#include "Updater.h"
-#include "TMessageEvaluator.h"
-#include "ITLError.h"
-#include "Tools.h"
 #include "QFileDownloader.h"
 #include "QGuidoImporter.h"
-#include "Events.h"
+#include "TMessageEvaluator.h"
+#include "Tools.h"
+#include "TWallClock.h"
+#include "Updater.h"
 
 #include "INScore.h"
 
@@ -157,7 +158,7 @@ unsigned long IAppl::kUPDPort = 7000;			//Default listening port
 udpinfo IAppl::fUDP(IAppl::kUPDPort);
 string	IAppl::fDefaultFontName("Carlito");		// the default font name
 int		IAppl::fRate = 10;
-float	IAppl::fRealRate = fRate;
+double	IAppl::fRealRate = fRate;
 std::string	IAppl::fParseVersion = "v1";
 
 
@@ -170,7 +171,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fVersion	= INScore::versionStr();
 	fVersionNum = INScore::version();
 	fCompatibilityVersionNum = fVersionNum;
-	fStartTime = getTime() / 1000;
+	fStartTime = TWallClock::time();
 
 	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
@@ -204,7 +205,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fCompatibilityVersionNum);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fRate);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getForwardList);
-	fAltGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::time);
+	fAltGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::mstime);
 	fAltGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
 
 	fAltGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
@@ -493,7 +494,7 @@ MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 void IAppl::clock()
 {
 	QMutexLocker locker (&fTimeMutex);
-	fCurrentTime = getTime() / 1000 - fStartTime;
+	fCurrentTime = TWallClock::time() - fStartTime;
 	fCurrentTicks++;
 }
 
@@ -528,7 +529,7 @@ MsgHandler::msgStatus IAppl::setTime(const IMessage* msg)
 		int time;
 		if (msg->param(0, time)) {
 			QMutexLocker locker (&fTimeMutex);
-			fStartTime = getTime() / 1000 + time;
+			fStartTime = TWallClock::time() + time;
 			return MsgHandler::kProcessed;
 		}
 	}

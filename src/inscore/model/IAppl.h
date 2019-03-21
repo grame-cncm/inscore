@@ -78,11 +78,11 @@ class IAppl : public IObject, public TILoader
 	static float		fCompatibilityVersionNum;	// the supported version number as floating point value
 	static udpinfo		fUDP;						// udp port settings
 	static int			fRate;						// the time task rate
-	static float		fRealRate;					// the time task real rate in mls (maintained for every tick)
+	static double		fRealRate;					// the time task real rate in mls (maintained for every tick)
 	static std::string	fParseVersion;				// used to switch the parser to different versions of the language
 
 		int			fStartTime;					// the application start time
-		int			fCurrentTime;				// the application current time
+		double		fCurrentTime;				// the application current time
 		int			fCurrentTicks;				// the current count of clocks
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
@@ -122,7 +122,8 @@ class IAppl : public IObject, public TILoader
 
 		bool	oscDebug() const;
 		void	clock();
-		int		time() const				{ return fCurrentTime; }
+		double	time() const				{ return fCurrentTime; }
+		int		mstime() const				{ return int(fCurrentTime); }		// the current time in milliseconds
 		int		ticks() const				{ return fCurrentTicks; }
 		void	quit();
 		static int			getUDPInPort() 		{ return fUDP.fInPort; }
@@ -174,7 +175,7 @@ class IAppl : public IObject, public TILoader
 		virtual bool processMsg (const IMessage* msg);
 	
 		static int		getRate()					{ return fRate; }
-		static float	getRealRate()				{ return fRealRate; }
+		static double	getRealRate()				{ return fRealRate; }
 		static void		setUDPInPort(int p)			{ fUDP.fInPort = p; }
 		static void		setUDPOutPort(int p)		{ fUDP.fOutPort = p; }
 		static void		setUDPErrPort(int p)		{ fUDP.fErrPort = p; }
@@ -182,7 +183,7 @@ class IAppl : public IObject, public TILoader
 		void		setUDPOutPortHandler(int p)		{ IAppl::setUDPOutPort(p); }
 		void		setUDPErrPortHandler(int p)		{ IAppl::setUDPErrPort(p); }
 		void		setRate(int rate)				{ fRate = rate; }
-		void		setRealRate(unsigned long rate)	{ fRealRate = rate / 1000.f; }
+		void		setRealRate(double rate)		{ fRealRate = rate; }
 		void		setReceivedOSC(int n);
 
 		void		resetBench();
