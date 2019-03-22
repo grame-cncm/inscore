@@ -32,12 +32,15 @@ namespace inscore2
 {
 
 //------------------------------------------------------------
-static float sumDelays (SINode node)
+static float sumDelays (SINode node, bool parentAddress)
 {
+	// stop at next root address
+	if (!parentAddress && node->address()) return 0;
+	
 	float delay = node->getDelay();
 	node->setDelay(0);
 	for (auto n: node->childs()) {
-		delay += (sumDelays(n));
+		delay += sumDelays(n, node->address());
 	}
 	return delay;
 }
@@ -45,10 +48,19 @@ static float sumDelays (SINode node)
 //------------------------------------------------------------
 // computes the total delay along a path and report
 // this delay to the root node
+// the total delay computation stop at the next message along the path
 //------------------------------------------------------------
 SINode pathsList::delayed (SINode& node)
 {
-	node->setDelay (sumDelays (node));
+	if (node->address()) {					// only report the sum to the first address node
+		float delay = node->getDelay();
+		float sum = 0;
+		for (auto n: node->childs())
+			sum += sumDelays(n, true);		// computes the delays of the childrens up to the next root address
+		node->setDelay (sum + delay);		// and set the node total delay
+	}
+	for (auto n: node->childs())			// propagate the computation to children since a message can contain messages
+		delayed(n);
 	return node;
 }
 
