@@ -203,7 +203,11 @@ bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, 
 		SIMessageList msgs = parsev2 (stream, line, root);
 		if (!msgs) return false;
 		if (execute) {
-			for (auto n: msgs->list()) root->processMsg(n);
+			double curtime = TWallClock::time();
+			for (auto n: msgs->list()) {
+				if (n->delay()) root->schedule (n, curtime);
+				else root->processMsg(n);
+			}
 		}
 		return true;
 	}
