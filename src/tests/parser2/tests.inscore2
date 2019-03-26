@@ -1,4 +1,35 @@
 
+delay = 500ms;
+
+/ITL/scene/* del;
+
+size		= 0.1;
+startpos	= 0;
+
+/ITL/scene watch SHOW (	
+	(				/ITL/scene/c1  (set ellipse $size $size), (x -0.5), (y -0.5)),
+	($delay 		/ITL/scene/c2  (set ellipse $size $size), (x 0), (y 0)),
+	((* $delay, 2)	/ITL/scene/c3  (set ellipse $size $size), (x 0.5), (y 0.5))
+);
+
+/ITL/scene watch HIDE (
+	(				/ITL/scene/c1 del),
+	($delay			/ITL/scene/c2 del),
+	((* $delay, 3)	/ITL/scene/c3 del)
+);
+
+
+__END__
+
+/ITL/scene/* del;
+/ITL/scene/r_[n:1...3]
+	(set ellipse $w $w 	(* 10ms, $n)),
+	(x $randpos	(* 10ms, $n)),
+	(y $randpos	(* 10ms, $n)),
+	(hsb $h, 0.7, 0.7, 0.5	(* 10ms, $n));
+
+__END__
+
 maxl 	= 10;
 width 	= 1.3;
 w 		= / $width, $maxl;
