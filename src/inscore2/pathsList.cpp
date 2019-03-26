@@ -46,6 +46,19 @@ static float sumDelays (SINode node, bool parentAddress)
 }
 
 //------------------------------------------------------------
+static SINode clean (SINode node, SINode parent)
+{
+	if (node->isDelay() && node->empty()) return 0;
+
+	NList l;
+	for (auto n: node->childs()) {			// propagate the computation to children since a message can contain messages
+		SINode sub = clean (n, node);
+		if (sub) l.add (sub);
+	}
+	return node->clone(l);
+}
+
+//------------------------------------------------------------
 // computes the total delay along a path and report
 // this delay to the root node
 // the total delay computation stop at the next message along the path
@@ -59,9 +72,17 @@ SINode pathsList::delayed (SINode& node)
 			sum += sumDelays(n, true);		// computes the delays of the childrens up to the next root address
 		node->setDelay (sum + delay);		// and set the node total delay
 	}
+
 	for (auto n: node->childs())			// propagate the computation to children since a message can contain messages
 		delayed(n);
-	return node;
+
+	NList l;
+	for (auto n: node->childs()) {			// propagate the computation to children since a message can contain messages
+		SINode sub = clean (n, node);
+		if (sub) l.add (sub);
+	}
+	return node->clone(l);
+//	return node;
 }
 
 //------------------------------------------------------------
