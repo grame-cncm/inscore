@@ -43,6 +43,7 @@ HEADERS  = $$files($$SRC/*.h, true)
 INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/ 
 INCLUDEPATH +=	$$ITLSRC/inscore/signal/
 INCLUDEPATH +=	$$ITLSRC/inscore2
+INCLUDEPATH +=	$$ITLSRC/inscore2/sorter
 
 include($$ITLROOT/src/QArchive/qarchive.pri)
 
