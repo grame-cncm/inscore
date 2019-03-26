@@ -37,6 +37,6 @@ class TWallClock
 	public:
 				 TWallClock() {}
 		virtual ~TWallClock() {}
-		static double time();
+		static double time();		// the current time expressed in mls
 };
 
