@@ -728,7 +728,15 @@ bool IObject::checkEvent (EventsAble::eventype event, const IMessage::argslist& 
 		EventContext env(MouseLocation(getXPos(), getYPos(), getZOrder()), getDate(), this);
 		TMessageEvaluator me;
 		SIMessageList outmsgs = me.eval (msgs, env, args);
-		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
+		if (outmsgs && outmsgs->list().size()) {
+			double time = TWallClock::time();
+			for (auto m: outmsgs->list()) {
+cerr << "IObject::checkEvent m delay: " << m << endl;
+				if (m->delay())
+					IAppl::schedule (m, time);
+				else outmsgs->send(true);
+			}
+		}
 		return true;
 	}
 	return false;
@@ -1621,25 +1629,6 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 		}
 	}
 	return MsgHandler::kBadParameters;
-
-//	if (n == 3) {			// this is a mouse related event
-//		string event; int x, y;
-//		if (msg->param(0, event) && msg->param(1, x) && msg->param(2, y)) {
-//			VObjectView	* view = getView();
-//			if (view) {
-//				view->handleEvent (this, x, y, event.c_str());
-//			}
-//			return MsgHandler::kProcessed;
-//		}
-//	}
-//	else if (n == 1) {			// this is a simple event
-//		string event;
-//		if (msg->param(0, event)) {
-//			if (checkEvent(event.c_str(), getDate(), this))
-//				return MsgHandler::kProcessed;
-//		}
-//	}
-//	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------

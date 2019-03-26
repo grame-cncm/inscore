@@ -36,6 +36,7 @@
 #include "ITLError.h"
 
 #include "TMaths.h"
+#include "TWallClock.h"
 
 using namespace std;
 extern inscore::TScripting* gScripter;
@@ -83,7 +84,9 @@ void TScripting::variable (const char* ident, const SIMessageList* msgs)
 //--------------------------------------------------------------------------------------------
 void TScripting::process (SIMessage& msg)
 {
-	if (fExecute)
+	if (msg->delay())
+		fRoot->schedule(msg, TWallClock::time());
+	else if (fExecute)
 		fRoot->processMsg(msg);
 	else
 		fMessages->list().push_back (msg);
@@ -93,8 +96,13 @@ void TScripting::process (SIMessage& msg)
 void TScripting::process (SIMessageList& msgs)
 {
 	if (fExecute) {
-		for (size_t i=0; i<msgs->list().size(); i++)
-			fRoot->processMsg(msgs->list()[i]);
+		double time = TWallClock::time();
+		for (size_t i=0; i<msgs->list().size(); i++) {
+			if (msgs->list()[i]->delay())
+				fRoot->schedule(msgs->list()[i], time);
+			else
+				fRoot->processMsg(msgs->list()[i]);
+		}
 	}
 	else
 		fMessages->list().push_back (msgs->list());
