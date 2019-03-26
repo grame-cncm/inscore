@@ -384,6 +384,7 @@ void IMessage::print(std::ostream& out, int i, int nested, const char* sep) cons
 void IMessage::print(std::ostream& out, int nested, const char* sep) const
 {
 	nested++;
+	if (delay()) out << delay() << " ";
 	if (extendedAddress()) out << string(fUrl);
 	out << address() << " ";
 	const string method = message();
