@@ -26,32 +26,19 @@
 #include <vector>
 #include <map>
 
+#include "TWallClock.h"
+
+
 namespace inscore
 {
 
-#define __is_uint32	unsigned int
-#define __is_int32	int
-
-#ifdef __x86_64__
-#define __is_uint64	unsigned long int
-#define __is_int64	long int
-#else
-#define __is_uint64	unsigned long long int
-#define __is_int64		long long int
-#endif
-
-#ifndef WIN32
-__is_uint64  rdtsc(void);
-#else
-__is_uint64 __cdecl rdtsc(void);
-#endif
-__is_uint64  getTime(void);
+inline double  getTime(void)		{ return TWallClock::time(); }
 
 //_________________________________________________________________________________
 class bench
 {
 	public:
-		static float	usec2ticks(void);
+//		static float	usec2ticks(void);
 		static void		init(const char* sigs[], unsigned short size = 3000);
 		static void		start();
 		static void		stop();
@@ -67,9 +54,9 @@ class bench
 #ifdef RUNBENCH
 #define  timebench(name,f)				\
 {										\
-	__is_uint64 start = getTime();			\
+	double start = getTime();			\
 	f;									\
-	__is_uint64 elapsed = getTime() - start;	\
+	double elapsed = getTime() - start;	\
 	bench::put (name, elapsed);			\
 }
 #else

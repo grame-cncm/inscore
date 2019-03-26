@@ -24,12 +24,6 @@
 #include "benchtools.h"
 #include "TSignal.h"
 
-#ifdef WIN32
-# include <windows.h>
-#else
-# include <sys/time.h>
-#endif
-
 using namespace std;
 
 namespace inscore
@@ -41,72 +35,8 @@ static bool					gRunning = false;
 
 
 //_________________________________________________________________________________
-// Returns the number of clock cycles elapsed since the last reset of the processor
-//_________________________________________________________________________________
-//#if !defined(WIN32) || defined(__MINGW32__)
-//__is_uint64  rdtsc(void)
-//{
-//	union {
-//		__is_uint32 i32[2];
-//		__is_uint64 i64;
-//	} count;
-//
-//	__asm__ __volatile__("rdtsc" : "=a" (count.i32[0]), "=d" (count.i32[1]));
-//
-//     return count.i64;
-//}
-//#else
-//__is_uint64 __cdecl rdtsc(void)
-//{
-//   __asm {
-//		XOR eax, eax
-//		CPUID
-//		rdtsc
-//	}
-//}
-//
-//#endif
-
-#define kTimeOffset  60*60*24*365*40
-//_________________________________________________________________________________
-// time returned as usec
-// (absolute time not exactly known but could be computed from time offset)
-//_________________________________________________________________________________
-#ifdef WIN32
-__is_uint64  getTime(void)	{ return GetTickCount() * 1000; }
-#else
-__is_uint64  getTime(void)
-{
-	struct timeval time;
-	if (gettimeofday(&time, 0) == 0)
-		return ((time.tv_sec - kTimeOffset) * 1000000) + time.tv_usec;
-	return 0;
-}
-#endif
-
-//_________________________________________________________________________________
-// estimates the count of ticks in a usec
-//_________________________________________________________________________________
-float  bench::usec2ticks(void)
-{
-//	static float gUSec2ticks = 0;
-//
-//	if (!gUSec2ticks) {
-//		__is_uint64 start = rdtsc();
-//		__is_uint64 t1 = getTime();
-//		while ( (getTime() - t1) < 400000)
-//			;
-//		__is_uint64 ticks = rdtsc() - start;
-//		gUSec2ticks= ticks / 400000.f;
-//	}
-//	return gUSec2ticks;
-	return 1;
-}
-
-//_________________________________________________________________________________
 void  bench::init(const char* sigs[], unsigned short size)
 {
-	usec2ticks();			// initializes the usec to ticks value
 	gBenchs.clear();
 	unsigned int i = 0;
 	while (sigs[i] ) {
