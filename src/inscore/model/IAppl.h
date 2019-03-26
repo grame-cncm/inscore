@@ -30,15 +30,19 @@
 #ifndef PARSERTEST
 #include <QMutex>
 #endif
+#include <QTimer>
 
-#include "IMessageHandlers.h"
-#include "PeriodicTask.h"
-#include "IObject.h"
-#include "TILoader.h"
-#include "TScripting.h"
-#include "udpinfo.h"
 #include "benchtools.h"
 #include "Forwarder.h"
+#include "IMessageHandlers.h"
+#include "IObject.h"
+#include "PeriodicTask.h"
+#include "TILoader.h"
+#include "TSchedulable.h"
+#include "TScheduler.h"
+#include "TScripting.h"
+#include "TWallClock.h"
+#include "udpinfo.h"
 
 class QApplication;
 namespace inscore
@@ -65,8 +69,18 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public TILoader
+class IAppl : public IObject, public TILoader, public QTimer
 {
+	class TDatedMessage : public TSchedulable {
+		double 		fDate;
+		public:
+			SIMessage	fMessage;
+
+					 TDatedMessage(SIMessage msg, double curdate) : fDate(curdate), fMessage(msg) {}
+			virtual ~TDatedMessage() {}
+			inline int32_t	date() const 		 { return int32_t(fDate + fMessage->delay()); }
+	};
+	
 	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
 	static TAliasesMap fAliases;
 
@@ -80,6 +94,8 @@ class IAppl : public IObject, public TILoader
 	static int			fRate;						// the time task rate
 	static double		fRealRate;					// the time task real rate in mls (maintained for every tick)
 	static std::string	fParseVersion;				// used to switch the parser to different versions of the language
+	static TScheduler 	fScheduler;					// a scheduler for delayed events
+	static int			fTimeStart;					// the time task start time
 
 		int			fStartTime;					// the application start time
 		double		fCurrentTime;				// the application current time
@@ -90,6 +106,7 @@ class IAppl : public IObject, public TILoader
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
+//		TScheduler 	fScheduler;					// a scheduler for delayed events
 		QApplication*	fAppl;					// the Qt application
 #ifndef PARSERTEST
 		QMutex		fTimeMutex;
@@ -117,6 +134,7 @@ class IAppl : public IObject, public TILoader
 		static void				getAliases( const std::string& address, std::vector<std::pair<std::string, std::string> >& aliases);
 		static void				setRootPath();
 		static int				getParseVersion	();
+		static void				schedule(SIMessage msg, double date);
 
 		static bool	running() 		{ return fRunning; }
 
@@ -144,7 +162,6 @@ class IAppl : public IObject, public TILoader
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
-
 		virtual void		cleanup ();
 
 		/*!
@@ -185,6 +202,9 @@ class IAppl : public IObject, public TILoader
 		void		setRate(int rate)				{ fRate = rate; }
 		void		setRealRate(double rate)		{ fRealRate = rate; }
 		void		setReceivedOSC(int n);
+
+		void 		timerEvent ( QTimerEvent * event );
+		void 		timerStart ();
 
 		void		resetBench();
 		bool		offscreen()	const				{ return fOffscreen; }

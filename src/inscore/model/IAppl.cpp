@@ -106,6 +106,8 @@ static string getFilePath() { return string(getenv("HOME")) + "/"; }
 //--------------------------------------------------------------------------
 const string IAppl::kApplType("appl");
 string IAppl::fRootPath;
+TScheduler 	IAppl::fScheduler;
+int			IAppl::fTimeStart=0;
 
 //--------------------------------------------------------------------------
 void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
@@ -233,11 +235,12 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 		QFont f = dbf.font(fDefaultFontName.c_str(), "Regular", 12);
 		fAppl->setFont (f);
 	}
+	timerStart();
 }
 
 //--------------------------------------------------------------------------
-IAppl::~IAppl() {}
-bool IAppl::oscDebug() const								{ return fApplDebug->getOSCDebug(); }
+IAppl::~IAppl() 					{ QTimer::stop(); }
+bool IAppl::oscDebug() const		{ return fApplDebug->getOSCDebug(); }
 
 //--------------------------------------------------------------------------
 string IAppl::checkRootPath(const std::string& s)
@@ -252,19 +255,34 @@ string IAppl::checkRootPath(const std::string& s)
 }
 
 //--------------------------------------------------------------------------
-void IAppl::setReceivedOSC(int n)		{ fApplStat->count(n); }
-
-//--------------------------------------------------------------------------
-void IAppl::setRootPath(const std::string& s)
-{
-	IAppl::fRootPath = checkRootPath(s);
-}
+void IAppl::setReceivedOSC(int n)				{ fApplStat->count(n); }
+void IAppl::setRootPath(const std::string& s)	{ IAppl::fRootPath = checkRootPath(s); }
 
 //--------------------------------------------------------------------------
 int IAppl::getParseVersion ()
 {
 	if (fParseVersion == "v2") return 2;
 	return 1;
+}
+
+//--------------------------------------------------------------------------
+void IAppl::schedule(SIMessage msg, double date)	{ fScheduler.put (new TDatedMessage(msg, date-fTimeStart)); }
+void IAppl::timerStart ()							{ QTimer::start(1); fTimeStart = int(TWallClock::time()); }
+
+//--------------------------------------------------------------------------
+void IAppl::timerEvent ( QTimerEvent * )
+{
+ 	int elapsed = int(TWallClock::time()) - fTimeStart;
+	do {
+//		TReadyList l = fScheduler.clock();
+//		if (l.size()) cerr << "IAppl::timerEvent got " << l.size() << " events" << endl;
+		for (auto n: fScheduler.clock()) {
+			TDatedMessage* dm = static_cast<TDatedMessage*>(n);
+			dm->fMessage->send();
+			delete dm;
+		}
+		int32_t date = fScheduler.date();
+	} while (fScheduler.date() < elapsed);
 }
 
 //--------------------------------------------------------------------------
