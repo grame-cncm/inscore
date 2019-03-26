@@ -499,6 +499,7 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 	// create a new message with an evaluated address
 	SIMessage outmsg = IMessage::create( evalAddress (msg->address(), env.object));
 	outmsg->setUrl ( msg->url() );
+	outmsg->setDelay ( msg->delay() );
 
 	// evaluate the message string
 	IMessage::argslist methodlist = evalVariable(msg->message(), env);
@@ -531,6 +532,7 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env,
 	// create a new message with an evaluated address
 	SIMessage outmsg = IMessage::create( evalAddress (msg->address(), env.object));
 	outmsg->setUrl ( msg->url() );
+	outmsg->setDelay ( msg->delay() );
 
 	// evaluate the message string
 	IMessage::argslist methodlist = evalVariable(msg->message(), env, args);
