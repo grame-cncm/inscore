@@ -1,0 +1,13 @@
+
+maxl 	= 10;
+width 	= 1.3;
+w 		= / $width, $maxl;
+offset	= (/ (- $width, $w), 2);
+x		= ( * ( % $i, $maxl), $w );
+y		= ( * ( / $i, $maxl), $w );
+
+/ITL/scene/* del;
+/ITL/scene/t_[i:1...100] (* 10ms, $i)
+	(set txt (+ $i, 1)),
+	(x (- $x, $offset)),
+	(y (- $y, $offset));

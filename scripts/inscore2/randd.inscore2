@@ -1,0 +1,14 @@
+
+w 	 = 0.04;
+size = 0.80;
+randpos = (* math.rand, $size);
+h	= / (+ math.rand, 1), 2 ;
+time =  (* 10ms, $n);
+
+/ITL/scene/* del;
+/ITL/scene/r_[n:1...1000]
+	(set ellipse $w $w $time),
+	(x $randpos $time),
+	(y $randpos $time),
+	(hsb $h, 0.7, 0.7, (0.5  $time ));
+
