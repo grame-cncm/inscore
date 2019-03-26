@@ -358,8 +358,8 @@ void IGlue::timerEvent ( QTimerEvent *)
 #endif
 
 #ifdef RUNBENCH
-	static __is_uint64 prevtime = 0;
-	__is_uint64 time = getTime();
+	static double prevtime = 0;
+	double time = getTime();
 	bench::put ("time", prevtime ? (time - prevtime)/1000 : 0);
 	prevtime = time;
 #endif
