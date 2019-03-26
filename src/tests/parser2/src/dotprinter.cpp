@@ -134,7 +134,7 @@ string dotprinter::label (const INode * node) const
 		case INode::kPow: 		str += ":pow"; break;
 		case INode::kRand: 		str += ":rand"; break;
 	}
-	if (node->getDelay() && (t != INode::kDelay))  str += "\n" + to_string(int(node->getDelay())) + ":D ";
+	if (node->getDelay() && (t != INode::kDelay))  str += "\\n" + to_string(int(node->getDelay())) + ":D ";
 	return str;
 }
 
