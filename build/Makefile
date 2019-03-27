@@ -77,12 +77,12 @@ macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C ../lib/GuidoAR/macosx
 	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
 	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
-	$(MAKE) ibundle
+#	$(MAKE) ibundle
 
 linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(LIBPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(VIEWPROJ)
-	$(MAKE) ibundle
+#	$(MAKE) ibundle
 
 ibundle : 
 	$(MAKE) -C ../tools/IBundle/build
@@ -102,7 +102,7 @@ _ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScoreViewer.vcxproj $(WINOPTS)"
-	$(MAKE) -C ../tools/IBundle/build
+#	$(MAKE) -C ../tools/IBundle/build
 
 
 #===============================================================
