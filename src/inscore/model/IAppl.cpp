@@ -54,6 +54,7 @@
 #include "QGuidoImporter.h"
 #include "TMessageEvaluator.h"
 #include "Tools.h"
+#include "TSorter.h"
 #include "TWallClock.h"
 #include "Updater.h"
 
@@ -106,8 +107,6 @@ static string getFilePath() { return string(getenv("HOME")) + "/"; }
 //--------------------------------------------------------------------------
 const string IAppl::kApplType("appl");
 string IAppl::fRootPath;
-TScheduler 	IAppl::fScheduler;
-int			IAppl::fTimeStart=0;
 
 //--------------------------------------------------------------------------
 void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
@@ -266,23 +265,19 @@ int IAppl::getParseVersion ()
 }
 
 //--------------------------------------------------------------------------
-void IAppl::schedule(SIMessage msg, double date)	{ fScheduler.put (new TDatedMessage(msg, date-fTimeStart)); }
-void IAppl::timerStart ()							{ QTimer::start(1); fTimeStart = int(TWallClock::time()); }
+void IAppl::timerStart ()	{ QTimer::start(1); inscore2::TSorter::start (TWallClock::time()); }
 
 //--------------------------------------------------------------------------
 void IAppl::timerEvent ( QTimerEvent * )
 {
- 	int elapsed = int(TWallClock::time()) - fTimeStart;
+ 	int curdate = int(TWallClock::time()) - inscore2::TSorter::offset();
 	do {
-//		TReadyList l = fScheduler.clock();
-//		if (l.size()) cerr << "IAppl::timerEvent got " << l.size() << " events" << endl;
-		for (auto n: fScheduler.clock()) {
-			TDatedMessage* dm = static_cast<TDatedMessage*>(n);
+		for (auto n: inscore2::TSorter::clock()) {
+			inscore2::TDatedMessage* dm = static_cast<inscore2::TDatedMessage*>(n);
 			dm->fMessage->send();
 			delete dm;
 		}
-		int32_t date = fScheduler.date();
-	} while (fScheduler.date() < elapsed);
+	} while (inscore2::TSorter::date() < curdate);
 }
 
 //--------------------------------------------------------------------------
