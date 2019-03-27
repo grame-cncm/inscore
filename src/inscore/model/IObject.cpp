@@ -728,15 +728,7 @@ bool IObject::checkEvent (EventsAble::eventype event, const IMessage::argslist& 
 		EventContext env(MouseLocation(getXPos(), getYPos(), getZOrder()), getDate(), this);
 		TMessageEvaluator me;
 		SIMessageList outmsgs = me.eval (msgs, env, args);
-		if (outmsgs && outmsgs->list().size()) {
-			double time = TWallClock::time();
-			for (auto m: outmsgs->list()) {
-cerr << "IObject::checkEvent m delay: " << m << endl;
-				if (m->delay())
-					IAppl::schedule (m, time);
-				else outmsgs->send(true);
-			}
-		}
+		if (outmsgs && outmsgs->list().size()) outmsgs->send(true);
 		return true;
 	}
 	return false;
