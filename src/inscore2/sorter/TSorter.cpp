@@ -23,8 +23,6 @@
 
 */
 
-#pragma once
-
 #include "TSorter.h"
 
 namespace inscore2
