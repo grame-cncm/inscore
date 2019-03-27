@@ -4,7 +4,7 @@ FILE ?= tests
 
 srcdir := ../../inscore2
 subprojects :=  $(srcdir) $(srcdir)/eval $(srcdir)/parser src
-sources = $(wildcard $(srcdir)/*/*.cpp $(srcdir)/[^i]*.cpp src/*.cpp) main.cpp
+sources = $(wildcard $(srcdir)/[^s]*/*.cpp $(srcdir)/[^i]*.cpp src/*.cpp) main.cpp
 objects = $(patsubst src%, obj/src%, $(patsubst ../../inscore2%,obj%, $(sources:%.cpp=%.o)))
 
 CXXFLAGS += $(addprefix -I, $(subprojects)) -DTESTV2
