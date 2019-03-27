@@ -31,6 +31,7 @@
 #include "IExprParser.h"
 #include "IAppl.h"
 
+#include "TSorter.h"
 #include "TEnv.h"
 #include "ITLparser.h"
 #include "ITLError.h"
@@ -85,7 +86,7 @@ void TScripting::variable (const char* ident, const SIMessageList* msgs)
 void TScripting::process (SIMessage& msg)
 {
 	if (msg->delay())
-		fRoot->schedule(msg, TWallClock::time());
+		inscore2::TSorter::schedule(msg, TWallClock::time());
 	else if (fExecute)
 		fRoot->processMsg(msg);
 	else
@@ -99,7 +100,7 @@ void TScripting::process (SIMessageList& msgs)
 		double time = TWallClock::time();
 		for (size_t i=0; i<msgs->list().size(); i++) {
 			if (msgs->list()[i]->delay())
-				fRoot->schedule(msgs->list()[i], time);
+				inscore2::TSorter::schedule(msgs->list()[i], time);
 			else
 				fRoot->processMsg(msgs->list()[i]);
 		}

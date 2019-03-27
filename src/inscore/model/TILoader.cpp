@@ -35,6 +35,7 @@
 #include "IGlue.h"
 #include "IMessage.h"
 #include "IObject.h"
+#include "TSorter.h"
 
 #include "OSCAddress.h"
 #include "QFileDownloader.h"
@@ -205,7 +206,7 @@ bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, 
 		if (execute) {
 			double curtime = TWallClock::time();
 			for (auto n: msgs->list()) {
-				if (n->delay()) root->schedule (n, curtime);
+				if (n->delay()) inscore2::TSorter::schedule (n, curtime);
 				else root->processMsg(n);
 			}
 		}
