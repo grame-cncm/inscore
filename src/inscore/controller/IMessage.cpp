@@ -33,6 +33,8 @@
 #include "Methods.h"
 #include "Tools.h"
 #include "rational.h"
+#include "TWallClock.h"
+#include "TSorter.h"
 
 #ifndef NO_OSCSTREAM
 #include "OSCStream.h"
@@ -315,10 +317,15 @@ void IMessage::send(const bool& ) const
 //--------------------------------------------------------------------------
 void IMessageList::send(const bool& delay) const
 {
-	for (unsigned int i=0; i < list().size(); i++) {
-		const IMessage * msg = list()[i];
-		if (msg) msg->send(delay);
+	double time = TWallClock::time();
+	for (auto msg: list()) {
+		if (msg->delay()) inscore2::TSorter::schedule (msg, time);
+		else msg->send(delay);
 	}
+//	for (unsigned int i=0; i < list().size(); i++) {
+//		const IMessage * msg = list()[i];
+//		if (msg) msg->send(delay);
+//	}
 }
 
 //--------------------------------------------------------------------------
