@@ -32,6 +32,9 @@
 
 #include "TFifo.h"
 
+namespace inscore2
+{
+
 class TSchedulable;
 typedef TFifo<TSchedulable> 		TEltsList;
 typedef std::vector<TSchedulable*> 	TReadyList;
@@ -106,3 +109,4 @@ class TScheduler {
 	inline int32_t	date() const 		{ return fDate; }
 };
 
+}

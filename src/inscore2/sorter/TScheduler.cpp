@@ -31,6 +31,9 @@
 
 using namespace std;
 
+namespace inscore2
+{
+
 //-------------------------------------------------------------------
 void TLevel::resortSome (TLevel* to, unsigned char index, size_t count)
 {
@@ -125,4 +128,6 @@ TReadyList TScheduler::clock()
 	fReady.clear();
 	fMutex.unlock();
 	return out;
+}
+
 }

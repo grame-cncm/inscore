@@ -25,6 +25,9 @@
 
 #pragma once
 
+namespace inscore2
+{
+
 //-------------------------------------------------------------------
 template <typename T> class TFifo {
 
@@ -61,3 +64,5 @@ template <typename T> class TFifo {
 			return 0;
 		}
 };
+
+}

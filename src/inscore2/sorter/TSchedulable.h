@@ -25,6 +25,9 @@
 
 #pragma once
 
+namespace inscore2
+{
+
 class TSchedulable {
 	public:
 				 TSchedulable() {}
@@ -32,3 +35,5 @@ class TSchedulable {
 
 		virtual int32_t	date() const = 0;
 };
+
+}
