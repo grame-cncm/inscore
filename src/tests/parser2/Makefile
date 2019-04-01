@@ -9,6 +9,9 @@ objects = $(patsubst src%, obj/src%, $(patsubst ../../inscore2%,obj%, $(sources:
 
 CXXFLAGS += $(addprefix -I, $(subprojects)) -DTESTV2
 
+SAMPLES = parse/sample3.pdf eval/sample3.pdf tree/sample3.pdf
+
+
 all : $(OUT)
 
 ##############################################################
@@ -61,6 +64,8 @@ pathd: $(FILE).pathd.pdf $(OUT)
 depends:
 	makedepend $(CXXFLAGS) $(sources)
 
+sample3:  $(SAMPLES)
+
 ##############################################################
 # rules for building to obj folder
 ##############################################################
@@ -99,6 +104,21 @@ obj/src/%.o: src/%.cpp
 
 %.pdf: %.dot
 	dot -Tpdf -o $@ $<
+
+##############################################################
+# rules to generate the samples
+##############################################################
+tree/%.dot: %.inscore2 $(OUT)
+	@[ -d tree ] || mkdir tree
+	$(OUT) $< > $@	|| (rm $@; false)
+
+eval/%.dot: %.inscore2 $(OUT)
+	@[ -d eval ] || mkdir eval
+	$(OUT) -eval $< > $@	|| (rm $@; false)
+
+parse/%.dot: %.inscore2 $(OUT)
+	@[ -d parse ] || mkdir parse
+	$(OUT) -parse $< > $@	|| (rm $@; false)
 
 
 
