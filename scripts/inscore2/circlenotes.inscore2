@@ -1,0 +1,92 @@
+# variables declaration 
+pi    = 3.141592653589793;
+
+# the 'step' variable makes use of 'count'
+# a variable that is instantiated locally
+step  = / ( * 2, $pi), $count;
+
+# the variable 'i' is defined by the 
+# expansion of the address 'n_[i:1...9]'
+x = math.sin ( * $step, $i );
+y = math.cos ( * $step, $i );
+
+# the following variables select part of
+# guido music notation code to build a short score
+dyn = (?  (% $i, 3), 
+	'\i<"p">', 
+	'\i<"ff">');
+note = (+ $dyn, (?  (% $i, 2), 
+	" e2", 
+	" g1/8"));
+
+# this is a classical OSC message
+# that simply clears the scene
+/ITL/scene/* del;
+
+# this is the main variable. It will be
+# expanded to create a series of small scores.
+# The variables are computed using locally 
+# defined variales.  
+notes = (/ITL/scene/$addr  
+	(set gmn (+ "[ ", $note, "]")),
+	(scale 0.7),
+	(x * $x, $radius),
+	(y * $y, $radius)); 
+
+# finally the 'notes' variable is used 
+# addr, count and radius are local
+$notes{ addr=n_[i:1...9], count=9, radius=0.75 };
+
+
+
+__END__
+
+grey = (150, 150, 150, 120);
+/ITL/scene/c* effect shadow (6, 6, $grey, 6);
+/ITL/scene export;
+
+
+
+/ITL/log level 2;
+/ITL parse v2;
+/ITL get parse;
+
+/ITL preprocess "circlenotes.inscore2";
+
+/ITL/scene/* del;
+/ITL/scene/n_1 set gmn "[ \i<\"ff\"> g1/8]";
+/ITL/scene/n_1 scale 0.7;
+/ITL/scene/n_1 x 0.0;
+/ITL/scene/n_1 y 0.7;
+/ITL/scene/n_2 set gmn "[ \i<\"p\"> e2]";
+/ITL/scene/n_2 scale 0.7;
+/ITL/scene/n_2 x 0.449952;
+/ITL/scene/n_2 y 0.536231;
+/ITL/scene/n_3 set gmn "[ \i<\"p\"> g1/8]";
+/ITL/scene/n_3 scale 0.7;
+/ITL/scene/n_3 x 0.689366;
+/ITL/scene/n_3 y 0.121554;
+/ITL/scene/n_4 set gmn "[ \i<\"ff\"> e2]";
+/ITL/scene/n_4 scale 0.7;
+/ITL/scene/n_4 x 0.606217;
+/ITL/scene/n_4 y -0.350001;
+/ITL/scene/n_5 set gmn "[ \i<\"p\"> g1/8]";
+/ITL/scene/n_5 scale 0.7;
+/ITL/scene/n_5 x 0.239413;
+/ITL/scene/n_5 y -0.657785;
+/ITL/scene/n_6 set gmn "[ \i<\"p\"> e2]";
+/ITL/scene/n_6 scale 0.7;
+/ITL/scene/n_6 x -0.239415;
+/ITL/scene/n_6 y -0.657784;
+/ITL/scene/n_7 set gmn "[ \i<\"ff\"> g1/8]";
+/ITL/scene/n_7 scale 0.7;
+/ITL/scene/n_7 x -0.606218;
+/ITL/scene/n_7 y -0.349999;
+/ITL/scene/n_8 set gmn "[ \i<\"p\"> e2]";
+/ITL/scene/n_8 scale 0.7;
+/ITL/scene/n_8 x -0.689365;
+/ITL/scene/n_8 y 0.121555;
+/ITL/scene/n_9 set gmn "[ \i<\"p\"> g1/8]";
+/ITL/scene/n_9 scale 0.7;
+/ITL/scene/n_9 x -0.44995;
+/ITL/scene/n_9 y 0.536232;
