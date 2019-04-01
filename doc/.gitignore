@@ -19,6 +19,7 @@
 *.nav
 *.pl
 *.xref
+*.synctex.gz
 OSCMsg/WARNINGS
 doxygen/IASL-*.pdf
 doxygen/IASL-*/
