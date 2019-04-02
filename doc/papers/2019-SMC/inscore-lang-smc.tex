@@ -315,6 +315,8 @@ t \seq\ t'  $\to$  t" : v [ t' ]
 }
 where \nulltree\ is an empty forest.
 
+The right arrow ($\to$) indicates the result of an expression evaluation.
+
 %-----------------------------
 \subsection{Putting Trees in Parallel}
 Putting two trees $t$ and $t'$ in parallel consists in putting both in the same forest.
@@ -468,7 +470,7 @@ t :  v f
 Let then define a tree $t'$ as:
 \op{t' :  \$var f'}
 \emph{\$var} denotes the value of the variable named \emph{var}. The evaluation of $t'$ is defined as:
-\op{t'$_{\{var\}}$ :  \$var f' $\to$ t" : t \seq\ \toforet(t') \\
+\op{t'$_{\{var\}}$  $\to$ t" : t \seq\ \toforet(t') \\
 where \\
 \toforet(t : v f) $\to$ t' : \foret\ f
 }
