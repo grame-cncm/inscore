@@ -240,7 +240,7 @@ In addition, there are programming languages dedicated to music notation, like C
 The approach proposed by \IS\ is quite radically different: symbolic music notation is supported (via the Guido language and rendering engine \cite{Dau:09b,hoos98}), but it constitutes one of the means of music representation among others, without being privileged. 
 Purely graphic scores can be designed, but all the elements of a score have a temporal dimension (date, duration and tempo) and can be manipulated both in the graphic and time space. In a way that is somewhat similar to Antescofo \cite{acont08}, the notion of time is both event-driven and continuous \cite{fober17c}, which makes it possible to design interactive and dynamic scores.
 
-It's the graphical and temporal organization of the score that is described by the OSC-based scripting language, which also defines the dynamic and reactive parts.
+The current OSC-based scripting language describes the graphical and temporal organization of the score viewed as a static object, but also defines the dynamic and reactive parts.
 OSC is basically a communication protocol. However, programming capabilities have been added \cite{429}, in the form of \emph{functions} embedded in OSC messages, allowing structured functional communication between musical applications \cite{bresson:hal-01353794}. 
 
 None of the above approaches covers the very particular angle we have adopted: that of a language for describing music scores, based on the hierarchical structure of both the score and the OSC messages.
