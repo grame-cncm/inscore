@@ -111,7 +111,7 @@ Dans la pratique, il est difficile de comparer cette approche avec les travaux e
 L'extension de certains de ces langages a toutefois été considérée, afin de leur ajouter de la \textit{programmabilité}. Il s'agit par exemple d'opérations de composition de partitions musicale dans Guido \cite{fober12b}, ou encore du langage Scheme qui vient en extension de Lilypond.
 
 Il y a par ailleurs des approches résolument tournées vers la programmation avec les langages CMN \cite{Schottstaedt97} ou encore ENP 
-\cite{KUUSK06} qui sont en fait des dialectes basés sur Lisp, qui adoptent principalement vers une approche classique de la notation musicale.
+\cite{KUUSK06} qui sont en fait des dialectes basés sur Lisp, qui adoptent principalement une approche classique de la notation musicale.
 
 L'approche proposée par \IS\ est très différente : la notation musicale symbolique est supportée (via le langage Guido et son moteur de rendu \cite{Dau:09b,hoos98}), mais elle constitue un moyen de représentation musicale parmi d'au-tres, sans être privilégiée. 
 Des partitions purement graphiques peuvent être conçues, mais tous les éléments de la partition ont une dimension temporelle (date, durée et tempo) et peuvent être manipulés aussi bien dans l'espace graphique que temporel. De manière similaire à Antescofo \cite{acont08}, la notion de temps est à la fois événementielle et continue \cite{fober17c}, ce qui permet de concevoir des partitions interactives et dynamiques.
@@ -184,7 +184,7 @@ t' :  v' f'
 }
 alors
 \op{t \seq\ t'  $\to$  t" : v f" \\
-f" : [t[1] \seq\ t',\etc, t[k] \seq\ t']
+f" : [t[1]\seq t',\etc, t[k]\seq t']
 }
 avec : 
 \op{t :  v [ \nulltree\ ]\\
