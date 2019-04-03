@@ -82,7 +82,6 @@ SINode pathsList::delayed (SINode& node)
 		if (sub) l.add (sub);
 	}
 	return node->clone(l);
-//	return node;
 }
 
 //------------------------------------------------------------
@@ -146,15 +145,21 @@ SINode pathsList::_eval (const SINode& node)
 
 	//------------------------------------------------------------
 	// node is not an address and not a delay
-	NList l;
+	NList l; bool makeforest= node->isForest();
 	for (auto n: node->childs()) {			// for each subnode
 		SINode sub = _eval (n);				// eval the subnode
+		// when the evaluated node is delayed,
+		if (n->isDelay()) {
+			if (sub->isForest()) l.add (node->clone(sub->childs()));
+			else l.add (node->clone(sub));
+			makeforest = true;
+		}
 		// when the evaluated node is a forest, add the subnodes to the list
-		if (sub->isForest()) l.add (sub->childs());
+		else if (sub->isForest()) l.add (sub->childs());
 		// otherwise add the node to the list
 		else l.add (sub);
 	}
-	return node->isForest() ? SINode(new ForestNode (l)) : node->clone(l);
+	return makeforest ? SINode(new ForestNode (l)) : node->clone(l);
 }
 
 } // end namespace
