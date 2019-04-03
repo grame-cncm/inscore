@@ -1,5 +1,5 @@
 
-OUT  ?= parse2
+OUT  ?= parseINScore2
 FILE ?= tests
 
 srcdir := ../../inscore2
@@ -10,7 +10,9 @@ objects = $(patsubst src%, obj/src%, $(patsubst ../../inscore2%,obj%, $(sources:
 CXXFLAGS += $(addprefix -I, $(subprojects)) -DTESTV2
 
 SAMPLES = parse/sample3.pdf eval/sample3.pdf tree/sample3.pdf
-
+ifeq ($(ENV), on)
+	ENVOPT := -env
+endif
 
 all : $(OUT)
 
@@ -21,6 +23,7 @@ help:
 	@echo "    all (default)  : build $(OUT) tool"
 	@echo "    parser : re-build the parser"
 	@echo "    clean  : remove $(OUT) and object files"
+	@echo "    install: copy $(OUT) to ~/bin"
 	@echo 
 	@echo "Targets to run $(OUT) with various output:"
 	@echo "    dot    : generates the tree with seq and par reduced, corresponding to $(FILE).inscore2"
@@ -33,15 +36,17 @@ help:
 # the targets
 ##############################################################
 test:
-	@echo $(sources)
-	@echo
-	@echo $(objects)
+	@echo ENV $(ENV)
+	@echo ENVOPT $(ENVOPT)
 
 parser:
 	make -C $(srcdir)/parser
 
 $(OUT): $(objects)
 	$(CXX) $(objects) -o $(OUT)
+
+install: $(OUT)
+	cp $(OUT) ~/bin
 
 clean:
 	rm -f $(OUT) $(objects) $(FILE).*.pdf
@@ -85,22 +90,22 @@ obj/src/%.o: src/%.cpp
 # rules to generate the various output
 ##############################################################
 %.dot: %.inscore2 $(OUT)
-	$(OUT) $(OPTION) $< > $@	
+	$(OUT) $(ENVOPT) $(OPTION) $< > $@	
 
 %.parse.dot: %.inscore2 $(OUT)
-	$(OUT) -parse $< > $@	
+	$(OUT) $(ENVOPT) -parse $< > $@	
 
 %.apply.dot: %.inscore2 $(OUT)
-	$(OUT) -apply $< > $@	
+	$(OUT) $(ENVOPT) -apply $< > $@	
 
 %.pathd.dot: %.inscore2 $(OUT)
-	$(OUT) -paths $< > $@	
+	$(OUT) $(ENVOPT) -paths $< > $@	
 
 %.paths.dot: %.inscore2 $(OUT)
-	$(OUT) -pathsonly $< > $@	
+	$(OUT) $(ENVOPT) -pathsonly $< > $@	
 
 %.eval.dot: %.inscore2 $(OUT)
-	$(OUT) -eval $< > $@	
+	$(OUT) $(ENVOPT) -eval $< > $@	
 
 %.pdf: %.dot
 	dot -Tpdf -o $@ $<
