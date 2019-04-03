@@ -58,8 +58,8 @@ class TEnv : public std::map<std::string, SINode>
 	}
 
 	TEnv operator + (const TEnv& e) const	{
- 		TEnv ne(e);
- 		for (auto n: *this) ne.put(n.first, n.second);
+ 		TEnv ne(*this);
+ 		for (auto n: e) ne.put(n.first, n.second);
  		return ne;
 	}
 
