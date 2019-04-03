@@ -58,7 +58,7 @@ class INode {
 
 	public:
 		enum TNodeType {
-			kText, kInt, kFloat, kSeq, kPar, kExpand, kForest, kRegexp, kVariable, kSlash, kJScript, kURLPrefix, kDelay,
+			kText, kInt, kFloat, kSeq, kPar, kExpand, kExpandVal, kForest, kRegexp, kVariable, kSlash, kJScript, kURLPrefix, kDelay,
 			kFirstMath, kAdd=kFirstMath, kSub, kDiv, kMult, kModulo, kQuest, kNeg, kEq, kGreater, kGreatereq, kLess,
             kLesseq, kMin, kMax, kHas, kSin, kCos, kTan, kASin, kACos, kATan, kSinh, kCosh, kTanh, kASinh, kACosh, kATanh,
 			kExp, kLog, kLog10, kLog2, kPow, kSqrt, kCbrt, kCeil, kFloor, kRound, kRand, kLastMath=kRand };
@@ -207,6 +207,13 @@ class VariableNode : public INode {
 	public:
 			 VariableNode(std::string val) : INode (val, kVariable) {}
 	virtual ~VariableNode() {}
+};
+
+//------------------------------------------------------------
+class ExpandValNode : public INode {
+	public:
+			 ExpandValNode(const SINode n1, const SINode n2) : INode (n1, n2, kExpandVal) {}
+	virtual ~ExpandValNode() {}
 };
 
 

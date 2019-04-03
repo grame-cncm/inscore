@@ -33,6 +33,7 @@
 
 #include "evaluator2.h"
 #include "expandEval.h"
+#include "expandVal.h"
 #include "parseEval.h"
 #include "TEnv2.h"
 #include "TreeTools.h"
@@ -634,12 +635,19 @@ SINode evaluator::evalExpand (const SINode& node, const TEnv& env)
 }
 
 //------------------------------------------------------------
+SINode evaluator::evalExpandVal (const SINode& node, const TEnv& env)
+{
+	SINode out = expandVal::eval(node, env);
+	return eval (out, env);
+}
+
+//------------------------------------------------------------
 SINode evaluator::evalVar (const SINode& node, const TEnv& env)
 {
     SINode out = env.get (node->getValue());
     if (out) {
         if (node->address()) out->setAddress(true);
-        out = eval(out, env);
+        out = eval(out, env + node->getEnv());
         if (node->size()) {
             SINode n = SINode (new ForestNode (node->childs()));
             return eval(parseEval::seq (out, n), env);
@@ -648,24 +656,6 @@ SINode evaluator::evalVar (const SINode& node, const TEnv& env)
     }
     return evalNode(node, env);
 }
-
-//------------------------------------------------------------
-//SINode evaluator::evalDelay (const SINode& node, const TEnv& env)
-//{
-//    NList l;
-//    if (node->size() == 1) {
-//		SINode n = eval (node->childs()[0], env );
-//		n->setDelay (node->getDelay());
-//		return n;
-//    }
-//    else for (auto n: node->childs()) {
-//        SINode e = eval(n, env + n->getEnv());
-//        e->setDelay (node->getDelay());
-//        l.add (e);
-//    }
-//    if (l.size()) return SINode(new ForestNode (l));
-//    else return node->clone();
-//}
 
 //------------------------------------------------------------
 //
@@ -679,7 +669,7 @@ SINode evaluator::eval (const SINode& node, const TEnv& env)
 		case INode::kSlash: 	return evalSlash (node, env);
 		case INode::kVariable: 	return evalVar   (node, env);
 		case INode::kExpand: 	return evalExpand(node, env);
-//		case INode::kDelay: 	if (!inmath) return evalDelay (node, env);
+		case INode::kExpandVal: return evalExpandVal(node, env);
 		default:
 			return evalNode (node, env);
 	}

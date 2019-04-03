@@ -1,22 +1,10 @@
 
-delay = 500ms;
+C = 3;
+b = $a;
+a = 1.0; 
 
-/ITL/scene/* del;
-
-size		= 0.1;
-startpos	= 0;
-
-/ITL/scene watch SHOW (	
-	(				/ITL/scene/c1  (set ellipse $size $size), (x -0.5), (y -0.5)),
-	($delay 		/ITL/scene/c2  (set ellipse $size $size), (x 0), (y 0)),
-	((* $delay, 2)	/ITL/scene/c3  (set ellipse $size $size), (x 0.5), (y 0.5))
-);
-
-/ITL/scene watch HIDE (
-	(				/ITL/scene/c1 del),
-	($delay			/ITL/scene/c2 del),
-	((* $delay, 3)	/ITL/scene/c3 del)
-);
+/A/B x $b{C=2,a=(* 2, $C)};
+/A/B y [1.0...2.0]{dur=1s,style=linear,step=0.1};
 
 
 __END__

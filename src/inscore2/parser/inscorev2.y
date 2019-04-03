@@ -101,8 +101,8 @@ using namespace inscore2;
 
 %token STIME MSTIME
 
-%left INT FLOAT
-%left URLPREFIX LETTERS IDENTIFIER STRING EXPANDID REGEXP VARIABLE
+%left INT FLOAT 
+%left URLPREFIX LETTERS IDENTIFIER STRING EXPANDID REGEXP VARIABLE LDOTS
 %left QUEST NEG EQ GREATER GREATEREQ LESS LESSEQ MIN MAX HAS	
 %left ADD SUB MODULO DIV MULT
 %left SIN COS TAN ASIN ACOS ATAN SINH COSH TANH ASINH ACOSH ATANH 
@@ -119,7 +119,7 @@ using namespace inscore2;
 	inscore2::INode* 		treeptr;
 }
 
-%type <treeptr> 	identifier number delay string tree variable operator prefix mfunction varname
+%type <treeptr> 	identifier number delay string tree variable operator prefix mfunction varname exval expandval
 
 %start start
 
@@ -165,6 +165,7 @@ tree		: identifier			{ $$ = $1; }
 			| string				{ $$ = $1; }
 			| prefix				{ $$ = $1; }
             | number                { $$ = $1; }
+            | expandval             { $$ = $1; }
             | delay                 { $$ = $1; }
 			| variable				{ $$ = $1; }
 			| operator				{ $$ = $1; }					%prec OP
@@ -186,6 +187,16 @@ prefix		: URLPREFIX		{ $$ = context->prefix (context->fText); }
 			;
 
 string		: STRING		{ $$ = context->create (context->fText); }
+			;
+
+exval		: LEFTBRACKET number LDOTS number RIGHTBRACKET	{ $$ = context->expandVal ($2, $4); }
+			;
+
+expandval	: exval									{ $$ = $1; }
+			| exval LEFTBRACE varlist RIGHTBRACE	{ $$ = context->setEnv($1); context->popEnv(); }
+			;
+
+ //listval		: LEFTBRACKET number LDOTS number RIGHTBRACKET	{ $$ = context->create ($2->getValue()+"..."+$4->getValue()); delete $2; delete $4; }
 			;
 
 vardecl	    : identifier EQUAL tree {context->declare ($1->getValue(), $3); delete $1; }  %prec DECL

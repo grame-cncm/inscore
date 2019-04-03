@@ -23,41 +23,36 @@
 
 */
 
-#include <iostream>
+#pragma once
 
-#include "IParser2.h"
-#include "parseEval.h"
-#include "addressEval.h"
+#include <exception>
+#include <string>
 
-#ifndef TESTV2
-#include "ITLError.h"
-#endif
-
-using namespace std;
+#include "INode.h"
 
 namespace inscore2
 {
 
-//------------------------------------------------------------
-void IParser::declare(const std::string& name, TINode n)  {
-	SINode e = SINode(n);
-//	fVars.put(name, addressEval::eval(parseEval::eval(e)));
-	fVars.put(name, parseEval::eval(e));
-}
+class expandValException: public std::exception
+{
+	std::string fWhat;
+	public:
+			 expandValException(const char* reason) : fWhat(reason) {}
+	virtual ~expandValException() noexcept {}
+	virtual const char* what() const noexcept { return fWhat.c_str(); }
+};
 
-//------------------------------------------------------------
-TINode 	IParser::variable(const std::string name) const		{
-	return set (new VariableNode (name) );
-}
+class expandVal
+{
+	static SINode duration 		(const TEnv& env);
+	static double step 			(const TEnv& env);
+	static std::string style 	(const TEnv& env);
 
-//------------------------------------------------------------
-void 	IParser::error (int line, int col, const char* msg) const {
-#ifdef TESTV2
-	cerr << "line " << line << " column " << col << ": " << msg << endl;
-#else
-	inscore::ITLErr << "line " << line << " column " << col << ": " << msg << inscore::ITLEndl;
-#endif
-}
+	public:
+				 expandVal() {}
+		virtual ~expandVal() {}
+
+		static SINode 	eval 	 (const SINode& node, const TEnv& env) throw(expandValException);
+};
 
 } // end namespace
-

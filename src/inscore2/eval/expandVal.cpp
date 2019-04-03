@@ -23,15 +23,9 @@
 
 */
 
-#include <iostream>
+#include <sstream>
 
-#include "IParser2.h"
-#include "parseEval.h"
-#include "addressEval.h"
-
-#ifndef TESTV2
-#include "ITLError.h"
-#endif
+#include "expandVal.h"
 
 using namespace std;
 
@@ -39,24 +33,25 @@ namespace inscore2
 {
 
 //------------------------------------------------------------
-void IParser::declare(const std::string& name, TINode n)  {
-	SINode e = SINode(n);
-//	fVars.put(name, addressEval::eval(parseEval::eval(e)));
-	fVars.put(name, parseEval::eval(e));
-}
-
+// evaluation of the expand value form [n...m]
 //------------------------------------------------------------
-TINode 	IParser::variable(const std::string name) const		{
-	return set (new VariableNode (name) );
-}
+SINode expandVal::eval (const SINode& node, const TEnv& env) throw(expandValException)
+{
+	if (node->getType() != INode::kExpand) {
+		stringstream what;
+		what << "line " << node->getLine() << " column " << node->getColumn() << ": unexpected node type " << node->getTypeStr();
+		throw (expandValException (what.str().c_str()));
+	}
 
-//------------------------------------------------------------
-void 	IParser::error (int line, int col, const char* msg) const {
-#ifdef TESTV2
-	cerr << "line " << line << " column " << col << ": " << msg << endl;
-#else
-	inscore::ITLErr << "line " << line << " column " << col << ": " << msg << inscore::ITLEndl;
-#endif
+	if (node->size() != 2) {
+		stringstream what;
+		what << "line " << node->getLine() << " column " << node->getColumn() << ": unexpected childs count = " << node->size();
+		throw (expandValException (what.str().c_str()));
+	}
+
+	float v1 = node->childs()[0]->getFloat();
+	float v2 = node->childs()[1]->getFloat();
+	return node->clone();
 }
 
 } // end namespace

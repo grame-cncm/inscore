@@ -70,12 +70,14 @@ class IParser {
         TINode  delay (const std::string text) const    { return set (new DelayNode (text)); }
         TINode  regexp (const std::string text) const   { return set (new RegexpNode (text)); }
 		TINode 	expand(const std::string text) const 	{ return set (new ExpandNode (text)); }
+		TINode 	expandVal(TINode n1, TINode n2) const 	{ return set (new ExpandValNode (SINode(n1), SINode(n2))); }
 		TINode 	operation(INode::TNodeType type) const	{ return set (new INode ("", type)); }
 		TINode 	slash(TINode node) const				{ return set (new INode ("", SINode(node), INode::kSlash)); }
 
 		void 	pushEnv()		{ fEnvStack.push(fVars); }
 		void 	popEnv()		{ if (fEnvStack.size()) { fVars = fEnvStack.top(); fEnvStack.pop();} }
-	
+		TINode 	setEnv(TINode node) const		{ node->setEnv (fVars); return node; }
+
 		void 	declare (const std::string& name, TINode n);
 		TINode 	variable(const std::string name) const;
 

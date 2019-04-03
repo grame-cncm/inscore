@@ -42,7 +42,7 @@ void dotprinter::printNames (const INode* node)
 			*fStream << id (node) << "\t[label=\"" << label (node) << "\"];" << endl;
 		else {
 			stringstream s;
-			s << "|" << node->getEnv();
+			s << " env: " << node->getEnv();
 			*fStream << id (node) << "\t[shape=" << shape << " fontsize=12 label=\"" << label (node) << s.str() << "\"];" << endl;
 		}
 	}
@@ -86,6 +86,7 @@ string dotprinter::label (const INode * node) const
 		case INode::kSeq:		str += ":seq"; break;
 		case INode::kPar:		str += ":par"; break;
 		case INode::kExpand:	str += ":expand"; break;
+		case INode::kExpandVal:	str += ":vexpand"; break;
 		case INode::kForest:	str += ":forest"; break;
 		case INode::kRegexp:	str += ":RE"; break;
 		case INode::kVariable:	str += ":var"; break;
