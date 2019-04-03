@@ -204,19 +204,34 @@
 \capstarttrue
 %
 \begin{abstract}
-The work presented is part of the \IS\ project, an environment for the design of augmented interactive music scores, oriented towards unconventional uses of music notation and representation, without excluding classical approaches. This environment is fully controllable using Open Sound Control [OSC] messages. \IS\ scripting language is an extended textual version of OSC messages that allows you to design scores in a modular and incremental way. This article presents a major revision of this scripting language, based on the description and manipulation of trees.
+The presented work is part of the \IS\ project, an environment for the design of augmented interactive music scores, oriented towards unconventional uses of music notation and representation, including real-time symbolic notation capabilities. This environment is fully controllable using Open Sound Control [OSC] messages. \IS\ scripting language is an extended textual version of OSC messages that allows you to design scores in a modular and incremental way. This article presents a major revision of this scripting language, based on the description and manipulation of trees.
 \end{abstract}
 %
 
 %-------------------------------------------------
 \section{Introduction}\label{sec:introduction}
 
-\IS \cite{Fober:12a} is a music notation and representation system initially designed to be driven by OSC messages \cite{OSC}. A textual version of these messages constitutes the storage format, which has been extended to a scripting language, \cite{Fober:13b} allowing greater flexibility in music scores design.
+\IS \cite{Fober:12a} is a music notation and representation system initially designed to be driven by OSC messages \cite{OSC}. Figure \ref{pavlos} presents an example of a score realised using \IS . It includes symbolic notation, pictures, a video, and cursors (the video is one of them) synchronised by the performer gestures.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{inscore-score}
+\caption{A score realized using \IS , as part of a sensor-based environment for the processing of complex music called \emph{GesTCom} (\emph{Gesture Cutting through Textual Complexity}) \cite{antoniadis:tel-01861171}.}
+\label{pavlos}
+\end{center}
+\end{figure}
+
+A textual version of the \IS\ OSC messages constitutes the storage format, which has been extended to a scripting language, \cite{Fober:13b} allowing greater flexibility in music scores design.
 
 These extensions (introduction of variables, extended addresses, Javascript section, etc.) have nevertheless suffered from a rigidity inherent to an ad hoc and incremental design. For example, the parser makes a clear distinction between OSC addresses and associated data, which prevent the use of variables (at least as currently defined) in OSC addresses.
 
 As a result, a major revision of this language became necessary. In order to gain flexibility, it is based on the manipulation of a regular tree structure which is also homogeneous to the \IS\ model.
 Figure \ref{tree1} gives an example of such hierarchy, which can be described in the current scripting language (i.e. OSC) by listing all branches from the root (Figure~\ref{script1})
+
+\vspace{2mm}
+There is a large number of musical score description languages (Lilypond \cite{lilypond03}, Guido \cite{hoos98}, MuseData \cite{Hewlett97}, MEI \cite{Roland_2002}, MusicXML \cite{good01}, abc,\footnote{\url{http://abcnotation.com/}} etc.) that are all turned towards common western music notation, and do not have programming capacity. 
+
+However, the extension of some of these languages has been considered, in order to add \textit{programmability}. It includes, for example, operations to compose musical scores in Guido \cite{fober12b}, or the Scheme language as an extension of Lilypond.
 
 \begin{figure}
 \begin{center}
@@ -224,15 +239,10 @@ Figure \ref{tree1} gives an example of such hierarchy, which can be described in
 	[ .obj1 [ .x 0 ] [ .y 0 ] [ .date 0 ] ] 
 	[ .obj2 [ .x 0.5 ] [ .y 0.5 ] [ .date 1 ] ] ] 
 ]
-\caption{A score sample including 2 objects $obj1$ and $obj2$, having a $x$, $y$, and $date$ attributes. The leaves of the tree are the values of the attributes.Time properties (date, duration) are notably used to represent the time relationship between objects }
+\caption{A score sample including 2 objects $obj1$ and $obj2$, having a $x$, $y$, and $date$ attributes. The leaves of the tree are the values of the attributes. Time properties (date, duration) are notably used to represent the time relationship between objects }
 \label{tree1}
 \end{center}
 \end{figure}
-
-\vspace{5mm}
-There is a large number of musical score description languages (Lilypond \cite{lilypond03}, Guido \cite{hoos98}, MuseData \cite{Hewlett97}, MEI \cite{Roland_2002}, MusicXML \cite{good01}, abc,\footnote{\url{http://abcnotation.com/}} etc.) that are all turned towards common western music notation, and do not have programming capacity. 
-
-However, the extension of some of these languages has been considered, in order to add \textit{programmability}. It includes, for example, operations to compose musical scores in Guido \cite{fober12b}, or the Scheme language as an extension of Lilypond.
 
 In addition, there are programming languages dedicated to music notation, like CMN \cite{Schottstaedt97} or ENP 
 \cite{KUUSK06} which are in fact Lisp dialects, still oriented towards the common western notation.
@@ -277,7 +287,7 @@ A tree is a data structure made up of nodes and edges without having any cycle. 
 \item[Leaf]	A node with no children.
 \item[Edge]	The connection between one node and another.
 \item[Path]	A sequence of nodes and edges connecting a node with a descendant.
-\item[Forest]	A set of $n >= 0$ disjoint trees.
+\item[Forest]	A list of $n >= 0$ trees.
 \end{description}
 
 %---------------------------
@@ -356,7 +366,6 @@ A tree is syntactically defined in BNF as follows:
 The right arrow ($\to$) indicates the tree built for each syntactical construct. 
 The tree whose value is \emph{slash} (/) plays a special role in the tree conversion to OSC messages. This role is described in section \ref{ssec:slash}.
 
-\newpage
 \exemple
 
 Figure~\ref{parsesample1} gives an example of the grammar with the tree built from this script. Figure~\ref{treesample1} shows this tree after evaluation of the sequencing ($seq$) and parallelisation ($par$) operations.
@@ -402,7 +411,7 @@ Mathematical operations on trees are seen as operations on their values that pre
  \setlength\itemsep{0.0em}
 \item arithmetic operations (+ - * / \%)
 \item logical operations ($==$ $<$ $\leq$ $>$ $\geq$)
-\item trigonometric function (sin, cos, tan, asin, acos, atan)
+\item trigonometric functions (sin, cos, tan, asin, acos, atan)
 \item hyperbolic functions (sinh, cosh, tanh, asinh, acosh, atanh)
 \item exponential and logarithmic functions (exp, log, log10, log2)
 \item power and square root (pow, sqrt, cbrt)
