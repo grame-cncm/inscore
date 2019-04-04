@@ -41,7 +41,9 @@ namespace inscore2
 //------------------------------------------------------------
 void NList::add (const SINode& n)
 {
-	push_back (n);
+	if (n->isForest()) add (n->childs());
+	else push_back (n);
+//	push_back (n);
 }
 //------------------------------------------------------------
 void NList::add (const NList& l)
@@ -185,6 +187,7 @@ const char * INode::type2string (TNodeType t)
 		case kEq: 		return "Eq";
 		case kExp: 		return "Exp";
 		case kExpand: 	return "Expand";
+		case kExpandVal: return "ExpandVal";
 		case kFloat: 	return "Float";
 		case kFloor: 	return "Floor";
 		case kForest: 	return "Forest";
