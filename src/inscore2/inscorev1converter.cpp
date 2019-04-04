@@ -79,6 +79,7 @@ const SINode v1Msg::getAddress (const SINode& node, bool getDelay)
 			fUrl.parse (node->getValue());
 		else {
 			fAddress += "/";
+			if (node->isVariable()) fAddress += "$";
 			fAddress += node->getValue();
 			if (getDelay) fDelay = node->getDelay();
 		}
