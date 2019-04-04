@@ -689,7 +689,12 @@ void evaluator::error  (const SINode& node, const std::string& what)
 //------------------------------------------------------------
 SINode evaluator::eval (const SINode& node) throw(evalException)
 {
-	return eval (node, node->getEnv());
+	try{
+		return eval (node, node->getEnv());
+	}
+	catch (expandValException e) {
+		throw (evalException (e.what()));
+	}
 }
 
 } // end namespace
