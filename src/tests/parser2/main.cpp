@@ -8,12 +8,8 @@
 #include "dotprinter.h"
 #include "oscprinter.h"
 #include "inscorev1printer.h"
-//#include "mathEval.h"
-//#include "addressEval.h"
 #include "parseEval.h"
-//#include "expandEval.h"
 #include "evaluator2.h"
-//#include "varEval.h"
 #include "pathsList.h"
 
 
