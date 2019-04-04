@@ -1,3 +1,31 @@
+/ITL/scene/rect x [0.0...0.5]  {dur=$dur,style=linear,step=-0.1666};
+
+__END__
+
+delay = 330ms;
+
+size	= 0.15;
+grey	= 200;
+/ITL/scene/ctrl watch SHOW (	
+	(				/ITL/scene/c1  (set ellipse $size $size), (x '$(/ITL/scene/pc1 get x)'), (y '$(/ITL/scene/pc1 get y)'), (red 200)),
+	($delay 		/ITL/scene/c2  (set ellipse $size $size), (x 0), (y 0), (green 200)),
+	((* $delay, 2)	/ITL/scene/c3  (set ellipse $size $size), (x '$(/ITL/scene/pc2 get x)'), (y '$(/ITL/scene/pc2 get y)'), (blue 200)),
+	((* $delay, 3)	/ITL/scene/ctrl event HIDE)
+);
+
+__END__
+
+
+dur = 2s;
+#			 /ITL/scene/rect x [0.0...0.5]  {dur=$dur,style=linear,step=0.1666};
+#$dur 		 /ITL/scene/rect x [0.5...-0.5] {dur=(* $dur, 2),style=linear,step=-0.1};
+#(* $dur, 3)  /ITL/scene/rect x [-0.5...0.]  {dur=$dur,style=linear,step=0.2};
+1s  /ITL/scene/rect x [-0.5...0.]  {dur=1s,style=linear,step=0.2};
+1s  /ITL/scene/rect (x 1), (y 2);
+
+
+__END__
+
 
 C = 3;
 b = $a;
