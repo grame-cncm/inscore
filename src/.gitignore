@@ -1,6 +1,6 @@
 *.tex
 _tokens.l
-tests/parser2/parse2
+tests/parser2/parseINScore2
 tests/parser2/*.pdf
 tests/parser2/*.bak
 tests/parser2/eval
