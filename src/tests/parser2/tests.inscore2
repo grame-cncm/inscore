@@ -1,4 +1,5 @@
-/ITL/scene/rect x [0.0...0.5]  {dur=$dur,style=linear,step=-0.1666};
+
+/ITL/scene/rect x [0.0...0.5]  { dur=1s, style=linear, step=0.25, end=/ITL/scene event TOTO };
 
 __END__
 
