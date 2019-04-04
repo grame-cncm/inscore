@@ -53,7 +53,7 @@ class expandVal
 	static const char* kDefaultStyle;
 
 	static SINode duration 		(const TEnv& env);
-	static float step 			(const TEnv& env);
+	static float step 			(const TEnv& env, float v1, float v2);
 	static std::string style 	(const TEnv& env);
 
 	static void 	error  (const SINode& node, const std::string& what);

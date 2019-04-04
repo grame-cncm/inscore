@@ -49,10 +49,18 @@ SINode expandVal::duration (const TEnv& env)
 }
 
 //------------------------------------------------------------
-float expandVal::step (const TEnv& env)
+float expandVal::step (const TEnv& env, float v1, float v2)
 {
-	SINode step = env.get(kStepName);
-	return step ?  evaluator::eval(step)->getFloat() : kDefaultStep;
+	SINode node = env.get(kStepName);
+	if (node) {
+		float val = evaluator::eval(node)->getFloat();
+		if (((v1 > v2) && (val > 0)) || ((v1 < v2) && (val < 0)) || (val==0.f)) {
+			string what="inconsistent step: ";
+			error (node, what + to_string(val));
+		}
+		return val;
+	}
+	return (v1 <= v2) ?  kDefaultStep : - kDefaultStep;
 }
 
 //------------------------------------------------------------
@@ -67,8 +75,7 @@ void expandVal::error  (const SINode& node, const std::string& what)
 {
 	stringstream msg;
 	msg << "line " << node->getLine() << " column " << node->getColumn() << ": " << what;
-	throw (evalException (msg.str().c_str()));
-
+	throw (expandValException (msg.str().c_str()));
 }
 
 //------------------------------------------------------------
@@ -110,12 +117,7 @@ SINode expandVal::eval (const SINode& node, const TEnv& env) throw(expandValExce
 
 	float v1 = node->childs()[0]->getFloat();
 	float v2 = node->childs()[1]->getFloat();
-	float vstep = step (env);
-
-	if (((v1 > v2) && (vstep > 0)) || ((v1 < v2) && (vstep < 0))){
-		string what="inconsistent step: ";
-		error (node, what + to_string(vstep));
-	}
+	float vstep = step (env, v1, v2);
 
 	return expand(v1, v2, vstep, duration(env), style(env));
 }
