@@ -168,6 +168,27 @@ bool INode::petiole () const
 }
 
 //------------------------------------------------------------
+void INode::print (std::ostream& os, const INode* parent) const
+{
+	size_t n = size();
+
+	const char* sep = "";
+	if (getDelay()) 	os << int(getDelay()) << " ";
+	if (address()) 		os << "/";
+	else sep = " ";
+	if (isVariable()) 	os << "$";
+	os << sep << getValue();
+	if (n > 1) os << " (" ;
+	for (auto sub: childs()) {
+		os << sep;
+		sub->print (os, this);
+		sep = ", ";
+	}
+	if (n > 1) os << ") ";
+	if (!parent) os << ";";
+}
+
+//------------------------------------------------------------
 const char * INode::type2string (TNodeType t)
 {
 	switch (t) {
@@ -245,5 +266,10 @@ DelayNode::DelayNode(std::string val) : INode(val, kDelay)
 	float delay = std::stof (val) * multiplier;
 	setDelay ( delay );	// the delay value is stored as integer count of milliseconds
 }
+
+//------------------------------------------------------------
+std::ostream& operator<< (std::ostream& os, const SINode n)		{ n->print(os); return os; }
+std::ostream& operator<< (std::ostream& os, const INode* n)		{ n->print(os); return os; }
+std::ostream& operator<< (std::ostream& os, const INode& n)		{ n.print(os); return os; }
 
 } // end namespace

@@ -90,6 +90,7 @@ class INode {
 		virtual void 				setInfos (const SINode& n) { setInfos(n.get()); }
 		virtual void 				setInfos (const INode* n);
 		virtual void 				propagateDelay ();
+		virtual void 				print (std::ostream& os, const INode* parent=0) const;
 
 		size_t 			size () const 		{ return fSubNodes.size(); }
 		bool 			empty () const 		{ return fSubNodes.size() == 0; }
