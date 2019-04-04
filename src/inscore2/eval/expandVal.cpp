@@ -25,6 +25,7 @@
 
 #include <sstream>
 
+#include "evaluator2.h"
 #include "expandVal.h"
 
 using namespace std;
@@ -32,26 +33,91 @@ using namespace std;
 namespace inscore2
 {
 
+const char* expandVal::kDurName   = "dur";
+const char* expandVal::kStepName  = "step";
+const char* expandVal::kStyleName = "style";
+
+const float expandVal::kDefaultDur		= 1000.f;
+const float expandVal::kDefaultStep		= 0.1f;
+const char* expandVal::kDefaultStyle	= "linear";
+
+//------------------------------------------------------------
+SINode expandVal::duration (const TEnv& env)
+{
+	SINode dur = env.get(kDurName);
+	return dur ? evaluator::eval(dur) : SINode (new DelayNode (kDefaultDur));
+}
+
+//------------------------------------------------------------
+float expandVal::step (const TEnv& env)
+{
+	SINode step = env.get(kStepName);
+	return step ?  evaluator::eval(step)->getFloat() : kDefaultStep;
+}
+
+//------------------------------------------------------------
+string expandVal::style (const TEnv& env)
+{
+	SINode style = env.get(kStyleName);
+	return style ? style->getValue() : kDefaultStyle;
+}
+
+//------------------------------------------------------------
+void expandVal::error  (const SINode& node, const std::string& what)
+{
+	stringstream msg;
+	msg << "line " << node->getLine() << " column " << node->getColumn() << ": " << what;
+	throw (evalException (msg.str().c_str()));
+
+}
+
+//------------------------------------------------------------
+SINode expandVal::expand (float from, float to, float step, const SINode& dur, const std::string& style )
+{
+	float count = (to - from) / step;
+	float delay = dur->getDelay();
+	float timestep = delay / count;
+	float currentDelay = 0;
+	float currentVal = from;
+	NList l;
+	while (currentDelay < delay) {
+		SINode v = INode::create (currentVal);
+		v->setDelay (currentDelay);
+		l.add (v);
+		currentVal += step;
+		currentDelay += timestep;
+	}
+	SINode v = INode::create (to);
+	v->setDelay (delay);
+	l.add (v);
+	return SINode(new ForestNode (l));
+}
+
 //------------------------------------------------------------
 // evaluation of the expand value form [n...m]
 //------------------------------------------------------------
 SINode expandVal::eval (const SINode& node, const TEnv& env) throw(expandValException)
 {
-	if (node->getType() != INode::kExpand) {
-		stringstream what;
-		what << "line " << node->getLine() << " column " << node->getColumn() << ": unexpected node type " << node->getTypeStr();
-		throw (expandValException (what.str().c_str()));
+	if (node->getType() != INode::kExpandVal) {
+		string what="unexpected node type ";
+		error (node, what + node->getTypeStr());
 	}
 
 	if (node->size() != 2) {
-		stringstream what;
-		what << "line " << node->getLine() << " column " << node->getColumn() << ": unexpected childs count = " << node->size();
-		throw (expandValException (what.str().c_str()));
+		string what="unexpected childs count: ";
+		error (node, what + to_string(node->size()));
 	}
 
 	float v1 = node->childs()[0]->getFloat();
 	float v2 = node->childs()[1]->getFloat();
-	return node->clone();
+	float vstep = step (env);
+
+	if (((v1 > v2) && (vstep > 0)) || ((v1 < v2) && (vstep < 0))){
+		string what="inconsistent step: ";
+		error (node, what + to_string(vstep));
+	}
+
+	return expand(v1, v2, vstep, duration(env), style(env));
 }
 
 } // end namespace

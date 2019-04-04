@@ -44,9 +44,20 @@ class expandValException: public std::exception
 
 class expandVal
 {
+	static const char* kDurName;
+	static const char* kStepName;
+	static const char* kStyleName;
+
+	static const float kDefaultDur;
+	static const float kDefaultStep;
+	static const char* kDefaultStyle;
+
 	static SINode duration 		(const TEnv& env);
-	static double step 			(const TEnv& env);
+	static float step 			(const TEnv& env);
 	static std::string style 	(const TEnv& env);
+
+	static void 	error  (const SINode& node, const std::string& what);
+	static SINode 	expand (float from, float to, float step, const SINode& dur, const std::string& style );
 
 	public:
 				 expandVal() {}
