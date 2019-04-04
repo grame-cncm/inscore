@@ -79,14 +79,17 @@ void expandVal::error  (const SINode& node, const std::string& what)
 }
 
 //------------------------------------------------------------
-SINode expandVal::expand (float from, float to, float step, const SINode& dur, const std::string& style )
+SINode expandVal::expand (float from, float to, float step, const SINode& dur, const std::string& style)
 {
 	float count = (to - from) / step;
 	float delay = dur->getDelay();
 	float timestep = delay / count;
-	float currentDelay = 0;
 	float currentVal = from;
 	NList l;
+	SINode first = INode::create (currentVal);
+	first->setDelay (-1);
+	l.add (first);
+	float currentDelay = timestep;
 	while (currentDelay < delay) {
 		SINode v = INode::create (currentVal);
 		v->setDelay (currentDelay);
@@ -94,9 +97,9 @@ SINode expandVal::expand (float from, float to, float step, const SINode& dur, c
 		currentVal += step;
 		currentDelay += timestep;
 	}
-	SINode v = INode::create (to);
-	v->setDelay (delay);
-	l.add (v);
+	SINode last = INode::create (to);
+	last->setDelay (delay);
+	l.add (last);
 	return SINode(new ForestNode (l));
 }
 
