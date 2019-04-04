@@ -130,9 +130,7 @@ SINode parseEval::evalPar (const SINode& node)
 {
 	NList l;
 	for (auto n: node->childs()) {
-		SINode e = eval(n);
-		if (e->isForest()) l.add (e->childs());
-		else l.add (e);
+		l.add (eval(n));
 	}
 	SINode out = SINode(new ForestNode(l));
 	out->setEnv (node->getEnv());

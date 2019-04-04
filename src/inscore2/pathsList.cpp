@@ -134,11 +134,9 @@ SINode pathsList::_eval (const SINode& node)
 		for (auto n: node->childs()) {	// for each subnode
 			SINode sub = _eval (n);		// eval the subnode
 			sub->setDelay (delay);
-			if (sub->isForest()) {
+			if (sub->isForest())
 				sub->propagateDelay();
-				l.add (sub->childs());
-			}
-			else l.add (sub);
+			l.add (sub);
 		}
 		if (l.size() == 1) return l[0];
 		return SINode(new ForestNode (l));
@@ -157,8 +155,7 @@ SINode pathsList::_eval (const SINode& node)
 			makeforest = true;
 		}
 		// when the evaluated node is a forest, add the subnodes to the list
-		else
-		if (sub->isForest()) l.add (sub->childs());
+//		else if (sub->isForest()) l.add (sub->childs());
 		// otherwise add the node to the list
 		else l.add (sub);
 	}
