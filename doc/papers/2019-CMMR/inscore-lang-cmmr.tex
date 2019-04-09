@@ -42,13 +42,17 @@
 \newcommand{\seq}		{\ensuremath{|}}
 \newcommand{\paral}		{\ensuremath{\parallel}}
 \newcommand{\foret}		{\ensuremath{F}}
+\newcommand{\forest}	{\ensuremath{\varnothing}}
 \newcommand{\toforet}	{\ensuremath{\mathcal{F}}}
+\newcommand{\toforest}	{\ensuremath{\mathcal{F}}}
+\newcommand{\toType}	{\ensuremath{\mathcal{T}}}
 \newcommand{\expand}	{\ensuremath{\rightsquigarrow}}
 \newcommand{\transform}	{\ensuremath{\xi}}
-\newcommand{\binop}		{\ensuremath{op}}
+\newcommand{\binop}		{\ensuremath{\texttt{op}}}
 \newcommand{\logop}		{$lop$}
 \newcommand{\ftree}		{ftree}
 \newcommand{\etc}		{\ensuremath{…}}
+\newcommand{\emptyf}	{\ensuremath{[\ ]}}
 
 \newcommand{\nexpand}	{\ensuremath{\varepsilon}}
 \newcommand{\ula}		{\hspace*{8mm}}
@@ -82,15 +86,15 @@ S. Letz\inst{1} \and R. Michon\inst{1}}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-\institute{Grame-CNCM  Lyon - France \\ 
-\email{\{fober,orlarey,letz,michon\}@grame.fr}}
+\institute{Grame CNCM  Lyon - France \\ 
+\email{{\small \{fober,orlarey,letz,michon\}@grame.fr}}}
 
 
 \maketitle
 
 %
 \begin{abstract}
-The presented work is part of the \IS\ project, an environment for the design of augmented interactive music scores, oriented towards unconventional uses of music notation and representation, including real-time symbolic notation capabilities. This environment is fully controllable using Open Sound Control [OSC] messages. \IS\ scripting language is an extended textual version of OSC messages that allows you to design scores in a modular and incremental way. This article presents a major revision of this scripting language, based on the description and manipulation of trees.
+The presented work is part of the \IS\ project, an environment for the design of augmented interactive music scores, oriented towards unconventional uses of music notation and representation, including real-time symbolic notation capabilities. This environment is fully controllable using Open Sound Control [OSC] messages. \IS\ scripting language is an extended textual version of OSC messages that allows you to design scores in a modular and incremental way. This article presents a major revision of this language, based on the description and manipulation of trees.
 
 \keywords{Music notation \and Language \and INScore.}
 \end{abstract}
@@ -101,28 +105,24 @@ The presented work is part of the \IS\ project, an environment for the design of
 
 There is a large number of musical score description languages (Lilypond \cite{lilypond03}, Guido \cite{hoos98}, MuseData \cite{Hewlett97}, MEI \cite{Roland_2002}, MusicXML \cite{good01} etc.) that are all turned towards common western music notation. 
 The extension of some of these languages has been considered, in order to add \textit{programmability} e.g. operations to compose musical scores in Guido \cite{fober12b}, or the Scheme language in Lilypond.
-There are also programming languages dedicated to music notation, like CMN \cite{Schottstaedt97} or ENP 
-\cite{KUUSK06} which are in fact Lisp dialects, still oriented towards the common western notation.
+There are also programming languages dedicated to common music notation, like CMN \cite{Schottstaedt97} or ENP 
+\cite{KUUSK06} that are actually Lisp dialects. %, always oriented towards the common western notation.
 
-The approach proposed by \IS\ \cite{Fober:12a} is quite radically different: symbolic music notation is supported (via the Guido language and rendering engine \cite{Dau:09b,hoos98}), but it constitutes one of the means of music representation among others, without being privileged. 
-Purely graphic scores can be designed, but all the elements of a score have a temporal dimension (date, duration and tempo) and can be manipulated both in the graphic and time space. In a way that is somewhat similar to Antescofo \cite{acont08}, the notion of time is both event-driven and continuous \cite{fober17c}, which makes it possible to design interactive and dynamic scores. Figure \ref{pavlos} presents an example of a score realised using \IS . It includes symbolic notation, pictures, a video, and cursors (the video is one of them) which position is synchronised by the performer gestures.
+The approach proposed by \IS\ \cite{Fober:12a} is different: symbolic music notation is supported (via the Guido language and rendering engine \cite{Dau:09b,hoos98}), but it constitutes one of the means of music representation among others, without being privileged. 
+Purely graphic scores can be designed. All the elements of a score (including purely graphical elements) have a temporal dimension (date, duration and tempo) and can be manipulated both in the graphic and time space. The notion of time is both event-driven and continuous \cite{fober17c}, which makes it possible to design interactive and dynamic scores. Figure \ref{pavlos} presents an example of a score realised using \IS . It includes symbolic notation, pictures, a video, and cursors (the video is one of them) which positions are synchronised by the performer gestures.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.75\columnwidth]{imgs/inscore-score}
+\includegraphics[width=0.64\columnwidth]{imgs/inscore-score}
 \caption{A score realised using \IS , used as part of a sensor-based environment for the processing of complex music called \emph{GesTCom} (\emph{Gesture Cutting through Textual Complexity}) \cite{antoniadis:tel-01861171}.}
 \label{pavlos}
 \end{center}
 \end{figure}
 
-\IS\ has been initially designed to be driven by OSC messages \cite{OSC}. OSC is basically a communication protocol. Recently, programming capabilities have been added \cite{429}, in the form of \emph{functions} embedded in OSC messages, allowing structured functional communication between musical applications \cite{bresson:hal-01353794}. 
-A textual version of the \IS\ OSC messages constitutes \IS\ storage format, which has been extended to a scripting language, \cite{Fober:13b} allowing greater flexibility in music scores design.
-These extensions (introduction of variables, extended addresses, Javascript section, etc.) have nevertheless suffered from a rigidity inherent to an ad hoc and incremental design. For example, the parser makes a clear distinction between OSC addresses and associated data, which prevent the use of variables (at least as currently defined) in OSC addresses.
-
-As a result, a major revision of this language became necessary. It is based on the manipulation of a regular tree structure which is also homogeneous to the \IS\ model.
-Figure \ref{tree1} gives an example of such hierarchy, which can be described in the current scripting language (i.e. OSC) by listing all branches from the root. % (Figure~\ref{script1})
-
-\vspace{-4mm}
+\IS\ has been initially designed to be driven by OSC messages \cite{OSC}. OSC is basically a communication protocol. A textual version of the OSC messages constitutes the \IS\ storage format, which has been extended to a scripting language, \cite{Fober:13b} allowing greater flexibility in music scores design.
+These extensions (variables, extended addresses, Javascript section, etc.) have nevertheless suffered from a rigidity inherent to an ad hoc and incremental design. For example, the parser makes a clear distinction between OSC addresses and associated data, which prevents the use of variables in OSC addresses.
+Thus, a major revision of this language became necessary. It is based on the manipulation of a regular tree structure that is also homogeneous to the \IS\ model.
+Figure \ref{tree1} gives an example of such model hierarchy, that can be described in the current scripting language (i.e. OSC) by listing all branches from the root. % (Figure~\ref{script1})
 
 \begin{figure}
 \begin{center}
@@ -130,41 +130,31 @@ Figure \ref{tree1} gives an example of such hierarchy, which can be described in
 	[ .obj1 [ .x 0 ] [ .y 0 ] [ .date 0 ] ] 
 	[ .obj2 [ .x 0.5 ] [ .y 0.5 ] [ .date 1 ] ] ] 
 ]
-\caption{A score sample including 2 objects $obj1$ and $obj2$, having a $x$, $y$, and $date$ attributes. The leaves of the tree are the values of the attributes. Time properties (date, duration) are notably used to represent the time relationship between objects }
+\caption{A score sample including 2 objects $obj1$ and $obj2$, having $x$, $y$, and $date$ attributes. Time properties (date, duration) are notably used to represent the time relationship between objects.}
 \label{tree1}
 \end{center}
 \end{figure}
 
-After some definitions, we will present the basic operations on trees and the corresponding grammar. We will then introduce mathematical operations on trees, the concepts of \emph{variables} and \emph{nodes in intention} and we'll present how this language is turned into OSC messages. The final section gives an example of the new language before concluding.
+After some definitions, we will present the basic operations on trees and the corresponding grammar.Then we introduce mathematical operations on trees, the concepts of \emph{variables} and \emph{nodes in intention} and we'll present how this language is turned into OSC messages. The final section gives an example of the new language before concluding.
 
 
 %-------------------------------------------------
 \section{Definitions}
 
-A tree is a data structure made up of nodes and edges without having any cycle. The tree with no nodes is called the null or empty tree. A tree that is not empty consists of a root node and potentially many levels of additional nodes that form a hierarchy.
-
-
-%---------------------------
-\subsection{Terminology}
-
-\begin{description}
- \setlength\itemsep{0.0em}
-\item[Root]	The top node in a tree.
-\item[Child]	A node directly connected to another node when moving away from the root.
-\item[Parent]	The converse notion of a child.
-\item[Leaf]	A node with no children.
-\item[Edge]	The connection between one node and another.
-\item[Path]	A sequence of nodes and edges connecting a node with a descendant.
-\item[Forest]	A list of $n >= 0$ trees.
-\end{description}
-
-%---------------------------
-\subsection{Trees}
-A tree $t$ consists of a value $v$ (of some data type, possibly empty) and a forest $f$ (the subtrees of its children).
+A tree $t$ consists of a value $v$ (of some data type) and the (possibly empty) list of its subtrees.
 \[
-	t :  v f \land f = \llist{t} 
+	t :  v \times\llist{t} 
 \]
-
+A tree with an empty list of subtrees $t:v\times \emptyf$ is called a leaf.\\
+A value is among literal (i.e., text, number) or special values of the following types:
+\begin{itemize}
+\item forest (\forest): denotes a tree including only subtrees,
+\item mathematical operators: indicates a mathematical operation between subtrees,
+\item variable: denotes a tree whose value refers to another tree, 
+\item expand: indicates a tree to be expanded,
+\item slash (/): used for conversion to OSC
+\end{itemize}
+Use and evaluation of these values is detailed in the next sections.
 
 %-------------------------------------------------
 \section{Operations on Trees}
@@ -174,27 +164,21 @@ We define two abstract operations on trees: sequencing and paralleling. These op
 %-----------------------------
 \subsection{Putting Trees in Sequence}
 Putting two trees $t$ and $t'$ in sequence adds $t'$ as child of all the leaves of $t$.
-
-
 We will note \seq\ the sequencing operation.
-Let 2 trees $t$ and $t'$ be defined as follows:
-$t \ :  v \ \ f \ \land f = \llist{t} \\
-t' :  v' f'\\$
-then
+Let 2 trees $t :  v \times \llist{t}$ and $t'$.
+Then:
 \[
-	t \seq\ t'  \to  t" : v\ f" \land f" = [t_1 \seq\ t',\etc, t_k \seq\ t']
+	v \times \llist{t} \seq\ t'  \to  v  \times [t_1 \seq\ t',\etc, t_k \seq\ t']
 \]
 with: 
 \[
 \left\{
 \begin{array}{l}
-	t :  v \ [\ \nulltree\ ] \\
-	t \seq\ t'  \to  t" : v\ [ t' ] \\
+	v \times \emptyf \seq\ t'  \to  v  \times [ t' ]\\
+	v \times \emptyf \seq\ \forest \times \llist{t}  \to  v  \times \llist{t}\\
 \end{array}
 \right.
 \]
-where \nulltree\ is an empty forest.
-
 The right arrow ($\to$) indicates the result of an expression evaluation.
 
 %-----------------------------
@@ -203,26 +187,15 @@ Putting two trees $t$ and $t'$ in parallel consists in putting them in a forest.
 We will note \paral\ the parallelisation operation. 
 Let 2 trees $t$ and $t'$:
 \[
-	t \paral\ t'  \to  t" : \foret\ [ t, t' ]
+	t \paral\ t'  \to  \forest \times [ t, t' ]
 \]
-$t"$ is a tree which value \foret\ denotes a forest. 
-We'll name \emph{\ftree} the type of tree whose value is \foret\ and we extend the sequencing operation to \emph{\ftree}\ as follows:
+The result is a tree which value \forest\ denotes a forest. \\
+Parallelisation applied to a \emph{forest} preserves the subtrees order:
 \[
 \left\{
 \begin{array}{l}
-	t \ :  v\ [ \nulltree\ ] \\
-	t' :  \foret\ f\\
-	t \seq\ t'  \to  t" : v f \\
-\end{array}
-\right.
-\]
-
-Parallelisation applied to a \emph{\ftree} is propagated to children. For a tree $t : \foret\ \llist{t}$ and $t' :  v f$ :
-\[
-\left\{
-\begin{array}{l}
-	t\  \paral\ t'  \to  t" : \foret\ [t_1,\etc,t_k,t']\\
-	t' \paral\ t \ \to  t" : \foret\ [t',t_1,\etc,t_k]\\
+	\forest \times \llist{t}\  \paral\ t'  \to  \forest \times [t_1,\etc,t_k,t']\\
+	t' \paral\ \forest \times \llist{t}\   \to  \forest \times [t',t_1,\etc,t_k]\\
 \end{array}
 \right.
 \]
@@ -232,7 +205,7 @@ Parallelisation applied to a \emph{\ftree} is propagated to children. For a tree
 \section{Grammar}\label{agram}
 
 A tree is syntactically defined in BNF as follows:
-\code{tree := value      \hspace*{8mm} $\to$ t : value [ \nulltree ] \\
+\code{tree := value      \hspace*{8mm} $\to$ t : value \emptyf \\
 \ula | tree tree         \hspace*{4mm} $\to$ t : tree \seq\ tree \\
 \ula | / tree            \hspace*{9.7mm} $\to$ t : '/' \seq\ tree\\
 \ula | tree , tree       \hspace*{0mm}  $\to$ t : tree \paral\ tree \\
@@ -240,62 +213,44 @@ A tree is syntactically defined in BNF as follows:
 \ula ;
 }
 The right arrow ($\to$) indicates the tree built for each syntactical construct. 
-The tree whose value is \emph{slash} (/) plays a special role in the tree conversion to OSC messages. This role is described in section \ref{ssec:slash}.
+The tree whose value is \emph{slash} (/) plays a special role in the tree conversion to OSC messages. This role is described in section \ref{sslash}.
 
 
 %-------------------------------------------------
 \section{Values and Evaluation}\label{sec:valeurs}
 
-A tree may contain literal values (i.e., text, number) or special values that are among the following types:
-\begin{itemize}
- \setlength\itemsep{0.0em}
-\item mathematical operators
-\item variables
-\item node in intention
-\item slash (/)
-\end{itemize}
-
-
+This section explains how the trees carrying the special \emph{mathematical operators}, \emph{variables} and \emph{expand} special values are evaluated.
 
 %---------------------------
 \subsection{Mathematical Operators}
 
-Mathematical operations on trees are seen as operations on their values that preserve the subtrees. These operations include:
-\begin{itemize}
-% \setlength\itemsep{0.0em}
-\item arithmetic operations (+ - * / \%)
-\item logical operations ($==$ $<$ $\leq$ $>$ $\geq$)
-\item trigonometric functions (sin, cos, tan, asin, acos, atan)
-\item hyperbolic functions (sinh, cosh, tanh, asinh, acosh, atanh)
-\item exponential and logarithmic functions (exp, log, log10, log2)
-\item power and square root (pow, sqrt, cbrt)
-\item miscellaneous  (min, max, rand)
-\end{itemize}
+Mathematical operations on trees are seen as operations on their values that preserve the subtrees. These operations include arithmetic and logical operations, trigonometric and hyperbolic functions, exponential and logarithmic functions, power, square root, etc.
 
-We will designate these operations by \binop. Then for 2 trees $t : v\ \llist{t}$ and $t' : v'\ \llist{t'}$:
+We will designate these operations by \binop. Then for 2 trees $t : v \times \llist{t}$ and $t' : v' \times \llist{t'}$:
 \[
-	\binop\ t\ t'  \to  t":  (\binop\ v\ v') [ t_1,\etc,t_k,t'_1,\etc,t'_k ]
+	\binop \times [ t, t']  \to  (\binop\ v\ v') \times [ t_1,\etc,t_k,t'_1,\etc,t'_k ]
 \]
 
 %---------------------------
 \subsection{Variables}
-
-A variable is the association of an identifier and a tree. Its general form is
-$varname = t$.
-Evaluation of a variable consists in expanding the corresponding tree at the variable position.
-Let a variable $var$ be defined as a tree $t : v f$.
-Let then define a tree $t' : \$var f'$.
-\emph{\$var} denotes the value of the variable named \emph{var}. The evaluation of $t'$ is defined as:
+The special value type \emph{variable} denotes a tree whose value refers to another tree.
+%A variable is the association of an identifier and a tree. Its general form is
+%$varname = t$.
+Evaluation of a variable tree consists in expanding the referred tree at the variable position.
+Let's define a variable $var$ and a variable tree $t'$ as follows:
 \[
-	t'_{\{var\}}  \to t" : t \seq\ \toforet(t')
+\left\{
+\begin{array}{l}
+	var = v \times \llist{t} \\
+	t' : \$var \times \llist{t'}\\
+\end{array}
+\right.
 \]
-where
+then 
 \[
-	\toforet(t : v\ f)  \to t' : \foret\ f
+	t'_{\{var\}}  \to v \times \llist{t}\ \seq\ \forest \times \llist{t'}
 \]
-
-t'$_{\{var\}}$ denotes a tree whose environment contains the definition of the variable $var$. The \toforet\ operation transforms a tree into an \emph{\ftree}.
-
+t'$_{\{var\}}$ denotes the tree $t'$ with an environment containing a definition of the variable $var$.
 
 \exemple
 \code{x = x 0;\\
@@ -311,52 +266,72 @@ Each tree is evaluated in an environment containing the list of all the variable
 \left\{
 \begin{array}{l}
 	var = t \\
-	\$var\{a=t1, b=t2,\etc\} \ \to  t' := t_{\{a, b,\etc\}} \\
+	\$var\{a=t1, b=t2,\etc\} \ \to  t_{\{a, b,\etc\}} \\
 \end{array}
 \right.
 \]
 
 
 %---------------------------
-\subsection{Nodes in Intention}
+\subsection{Expand Value}
 
-A \emph{node in intention} is a compact description of a forest. It can also be seen as a \emph{loop} control structure. The general form is as follows:
+An \emph{expand value} is a special value that is expanded to a forest. It can also be seen as a \emph{loop} control structure. The syntactic form is as follows:
 \begin{description}
- \setlength\itemsep{0.0em}
 \item $id[n…m]$ 	where $n$ and $m$ are integers
 \item $id[ab…xy]$ where $a,b,x,y$ are letters.
 \end{description}
-
-Expanding a node in intention transforms that node into a forest. We will note \nexpand\ the expansion operation:
+We will note \nexpand\ the expansion operation:
 \[
 \left\{
 \begin{array}{l}
-	\nexpand(id[n…m])   \ \ \to \foret \ [id_n,id_{n+1},…,id_m] \\
-	\nexpand(id[ab…xy]) \to \foret \ [id_{ab},id_{ac},…,id_{ay}, \\
-	\ule id_{bb},id_{bc},…,id_{by},\\
+	\nexpand(id[n…m])   \ \ \to \forest \ [id_n,id_{n+1},…,id_m] \\
+	\nexpand(id[ab…xy]) \to \forest \ [id_{ab},id_{ac},…,id_{ay}, \\
+%	\ule id_{bb},id_{bc},…,id_{by},\\
 	\ule …,\\
 	\ule id_{xb},id_{xc},…,id_{xy}]
 \end{array}
 \right.
 \]
+where each $id_n$ is a tree $v \times \emptyf$ whose value $v$ is the concatenation of the base value $id$ and of the current index $n$.
 
 %---------------------------
 \subsubsection{Special Forms}
 
-A \emph{node in intention} can take the following special forms: 
+An \emph{expand value} can also take the following special forms: 
 \begin{description}
 \item $id[i:n…m]$ 	where $i$ is an identifier
 \item $id[i:j:ab…xy]$ where $i,j$ are identifiers.
 \end{description}
-These identifiers denote variables that are instantiated in the environment by the expansion operation, with the current index value. For example for the first form:
+The identifiers denote variables that are instantiated in the environment by the expansion operation, with the current index value. For example:
 \[
-	\nexpand(id[i:n…m])   \qquad \to \foret \ [id_{n\{i=0\}},id_{n+1\{i=1\}},…,id_{m\{i=m-n\}}] \\
+	\nexpand(id[i:n…m])   \quad \to \forest \ [id_{n\{i=0\}},id_{n+1\{i=1\}},…,id_{m\{i=m-n\}}] \\
 \]
 
-%---------------------------
-\subsection{Slash (/)}\label{ssec:slash}
+%-------------------------------------------------
+\section{Conversion to OSC}\label{sslash}
 
-The \emph{slash} nodes are used to transform a tree into OSC messages. Their purpose is to discriminate the OSC address and the parameters of the message. Transforming a tree into OSC messages consists in enumerating all the paths from the root node up to the first parameter, which is the first node that is not preceded by a \emph{slash}.
+Transforming a tree into a list of OSC messages consists in transforming this tree into a forest of \emph{osc trees}. An \emph{osc tree} is a tree made of an OSC address followed by data:
+\[
+	OSC : osc\_address \times \llist{d}
+\]
+The \emph{slash} special value of a tree is used to discriminate the OSC address and the parameters of the messages. We need to define two tree sub-types: 
+\begin{description}
+\item an $address$ type: noted $t^a$, that denotes a tree part of the OSC address
+\item a $data$ type: noted $t^d$, that denotes a tree part of the OSC data
+\end{description}
+Note that in INScore, an OSC message can be part of the OSC data. Thus a tree can carry both the address and data sub-types.\\
+Then we define an operation \toType that transforms a tree in to a \emph{sub-typed} tree:
+\[
+\left\{
+\begin{array}{l}
+	\toType (/ \times \llist{t}) \to \forest \times \llist{t^a} \\
+	\toType (v \times \llist{t}) \to v \times \llist{t^d} \ \land v \neq /\\
+\end{array}
+\right.
+\]
+
+
+Transforming a tree into OSC messages consists in enumerating all the paths from the root node up to the first parameter, which is the first node that is not preceded by a \emph{slash}.
 
 
 
@@ -425,12 +400,11 @@ Evaluation of this script produces OSC messages fully compatible with the previo
 /ITL/scene/n\_9 x -0.411452;\\
 /ITL/scene/n\_9 y 0.56631;
 }
-
-In practice, this example expresses the scene illustrated by the Figure \ref{samplescene} in just a few lines.  
+In practice, this example expresses the score illustrated in Figure \ref{samplescene} in just a few lines.  
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.65\columnwidth]{imgs/scene}
+\includegraphics[width=0.63\columnwidth]{imgs/scene}
 \caption{\IS\ scene corresponding to the sample script given in section \ref{example}.}
 \label{samplescene}
 \end{center}
