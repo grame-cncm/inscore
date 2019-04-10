@@ -106,10 +106,10 @@
      WITH = 322,
      STIME = 323,
      MSTIME = 324,
-     SEQ = 325,
-     PAR = 326,
-     MFUN = 327,
-     OP = 328,
+     MFUN = 325,
+     OP = 326,
+     SEQ = 327,
+     PAR = 328,
      LDECL = 329,
      DECL = 330
    };
@@ -182,10 +182,10 @@
 #define WITH 322
 #define STIME 323
 #define MSTIME 324
-#define SEQ 325
-#define PAR 326
-#define MFUN 327
-#define OP 328
+#define MFUN 325
+#define OP 326
+#define SEQ 327
+#define PAR 328
 #define LDECL 329
 #define DECL 330
 

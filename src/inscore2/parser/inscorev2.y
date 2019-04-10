@@ -101,7 +101,7 @@ using namespace inscore2;
 
 %token STIME MSTIME
 
-%left INT FLOAT 
+%left INT FLOAT
 %left URLPREFIX LETTERS IDENTIFIER STRING EXPANDID REGEXP VARIABLE LDOTS
 %left QUEST NEG EQ GREATER GREATEREQ LESS LESSEQ MIN MAX HAS	
 %left ADD SUB MODULO DIV MULT
@@ -110,8 +110,8 @@ using namespace inscore2;
 %left CEIL FLOOR ROUND RAND 
  
 
-%left OP MFUN  PAR SEQ
-%left COMMA SLASH DECL LDECL LEFTPAR LEFTBRACE
+%left PAR SEQ OP MFUN
+%left COMMA  DECL LDECL LEFTPAR LEFTBRACE SLASH
 
 /*------------------------------   types  ------------------------------*/
 %union
@@ -170,8 +170,9 @@ tree		: identifier			{ $$ = $1; }
 			| variable				{ $$ = $1; }
 			| operator				{ $$ = $1; }					%prec OP
 			| mfunction tree		{ $$ = context->seq($1, $2); }	%prec MFUN
-			| SLASH tree			{ $$ = context->slash($2); }
-			| ANYADDR				{ $$ = context->slash(context->regexp ("*")); }
+			| SLASH identifier		{ $$ = context->slash($2); }
+			| SLASH variable		{ $$ = context->slash($2); }
+			| ANYADDR				{ $$ = context->slash(context->create ("*")); }
 			| tree tree				{ $$ = context->seq($1, $2); }  %prec SEQ
 			| tree COMMA tree		{ $$ = context->par($1, $3); }  %prec PAR
 			| LEFTPAR tree RIGHTPAR { $$ = $2; }
@@ -180,7 +181,7 @@ tree		: identifier			{ $$ = $1; }
 identifier	: LETTERS		{ $$ = context->create (context->fText); }
 			| IDENTIFIER	{ $$ = context->create (context->fText); }
 			| EXPANDID		{ $$ = context->expand (context->fText); }
-			| REGEXP		{ $$ = context->regexp (context->fText); }
+			| REGEXP		{ $$ = context->create (context->fText); }
 			;
 
 prefix		: URLPREFIX		{ $$ = context->prefix (context->fText); }
