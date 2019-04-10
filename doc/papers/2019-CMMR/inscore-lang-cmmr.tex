@@ -21,46 +21,34 @@
 \usepackage{tree-dvips}
 \usepackage{listings}
 
-\definecolor{lightgrey}{rgb}{0.95,0.95,0.95}
+\definecolor{lightgrey}{rgb}{0.97,0.97,0.97}
 
 \newcommand{\IS}		{INScore}
 \newcommand{\exemple}	{\vspace*{1mm}\hspace*{-4mm}\textbf{Example :}}
 
-\definecolor{mygrey}{gray}{0.93}
-\newcommand{\code}	[2][0.9]	{\vspace{0mm}\begin{center}\colorbox{mygrey}{
+\newcommand{\code}	[2][0.9]	{\vspace{0mm}\begin{center}\colorbox{lightgrey}{
 							\begin{minipage}[t]{#1\columnwidth} 
 							{\small \texttt{#2}}
 							\end{minipage}}\end{center}}
 
-\newcommand{\op}	[1]		{\vspace{0mm}\begin{center}\colorbox{mygrey}{
-							\begin{minipage}[t]{0.9\columnwidth} 
-							{\small \texttt{#1}}
-							\end{minipage}}\end{center}}
 \newcommand{\llist}	[1]		{\ensuremath{[#1_1,...,#1_k]}}
 
-\newcommand{\nulltree}	{\ensuremath{\varnothing}}
 \newcommand{\seq}		{\ensuremath{|}}
 \newcommand{\paral}		{\ensuremath{\parallel}}
-\newcommand{\foret}		{\ensuremath{F}}
 \newcommand{\forest}	{\ensuremath{\varnothing}}
-\newcommand{\toforet}	{\ensuremath{\mathcal{F}}}
-\newcommand{\toforest}	{\ensuremath{\mathcal{F}}}
 \newcommand{\toType}	{\ensuremath{\mathcal{T}}}
-\newcommand{\expand}	{\ensuremath{\rightsquigarrow}}
-\newcommand{\transform}	{\ensuremath{\xi}}
+\newcommand{\toAddress}	{\ensuremath{\text{@}}}
+\newcommand{\toOSCAddress}	{\ensuremath{\texttt{OSC}}}
+\newcommand{\taddress}	{\ensuremath{\text{@}}}
+\newcommand{\toData}	{\ensuremath{\text{D}}}
+\newcommand{\tdata}	    {\ensuremath{\text{D}}}
 \newcommand{\binop}		{\ensuremath{\texttt{op}}}
-\newcommand{\logop}		{$lop$}
-\newcommand{\ftree}		{ftree}
-\newcommand{\etc}		{\ensuremath{…}}
+\newcommand{\etc}		{\ensuremath{\text{…}}}
 \newcommand{\emptyf}	{\ensuremath{[\ ]}}
 
 \newcommand{\nexpand}	{\ensuremath{\varepsilon}}
 \newcommand{\ula}		{\hspace*{8mm}}
-\newcommand{\ulb}		{\hspace*{4mm}}
-\newcommand{\ulc}		{\hspace*{37mm}}
-\newcommand{\uld}		{\hspace*{9mm}}
-\newcommand{\ule}		{\hspace*{31.5mm}}
-\newcommand{\ulf}		{\hspace*{39mm}}
+\newcommand{\ulb}		{\hspace*{31.5mm}}
 
 
 % ====================================================
@@ -277,18 +265,17 @@ Each tree is evaluated in an environment containing the list of all the variable
 
 An \emph{expand value} is a special value that is expanded to a forest. It can also be seen as a \emph{loop} control structure. The syntactic form is as follows:
 \begin{description}
-\item $id[n…m]$ 	where $n$ and $m$ are integers
-\item $id[ab…xy]$ where $a,b,x,y$ are letters.
+\item $id[n\etc m]$ 	where $n$ and $m$ are integers
+\item $id[ab\etc xy]$ where $a,b,x,y$ are letters.
 \end{description}
 We will note \nexpand\ the expansion operation:
 \[
 \left\{
 \begin{array}{l}
-	\nexpand(id[n…m])   \ \ \to \forest \ [id_n,id_{n+1},…,id_m] \\
-	\nexpand(id[ab…xy]) \to \forest \ [id_{ab},id_{ac},…,id_{ay}, \\
-%	\ule id_{bb},id_{bc},…,id_{by},\\
-	\ule …,\\
-	\ule id_{xb},id_{xc},…,id_{xy}]
+	\nexpand(id[n\etc m])   \ \ \to \forest \ [id_n,id_{n+1},\etc ,id_m] \\
+	\nexpand(id[ab\etc xy]) \to \forest \ [id_{ab},id_{ac},\etc ,id_{ay}, \\
+	\ulb \etc ,\\
+	\ulb id_{xb},id_{xc},\etc ,id_{xy}]
 \end{array}
 \right.
 \]
@@ -299,39 +286,70 @@ where each $id_n$ is a tree $v \times \emptyf$ whose value $v$ is the concatenat
 
 An \emph{expand value} can also take the following special forms: 
 \begin{description}
-\item $id[i:n…m]$ 	where $i$ is an identifier
-\item $id[i:j:ab…xy]$ where $i,j$ are identifiers.
+\item $id[i:n\etc m]$ 	where $i$ is an identifier
+\item $id[i:j:ab\etc xy]$ where $i,j$ are identifiers.
 \end{description}
 The identifiers denote variables that are instantiated in the environment by the expansion operation, with the current index value. For example:
 \[
-	\nexpand(id[i:n…m])   \quad \to \forest \ [id_{n\{i=0\}},id_{n+1\{i=1\}},…,id_{m\{i=m-n\}}] \\
+	\nexpand(id[i:n\etc m])   \quad \to \forest \ [id_{n\{i=0\}},id_{n+1\{i=1\}},\etc ,id_{m\{i=m-n\}}] \\
 \]
 
 %-------------------------------------------------
 \section{Conversion to OSC}\label{sslash}
 
-Transforming a tree into a list of OSC messages consists in transforming this tree into a forest of \emph{osc trees}. An \emph{osc tree} is a tree made of an OSC address followed by data:
-\[
-	OSC : osc\_address \times \llist{d}
-\]
-The \emph{slash} special value of a tree is used to discriminate the OSC address and the parameters of the messages. We need to define two tree sub-types: 
+An OSC message is made of an OSC address (similar to an Unix path) followed by a list of data (which can possibly be empty)
+The \emph{slash} special value of a tree is used to discriminate the OSC address and the data. \\
+We define two types of values: 
 \begin{description}
-\item an $address$ type: noted $t^a$, that denotes a tree part of the OSC address
-\item a $data$ type: noted $t^d$, that denotes a tree part of the OSC data
+\item \taddress : the type of a value part of an OSC address
+\item \tdata : the type of a value part of the OSC data
 \end{description}
-Note that in INScore, an OSC message can be part of the OSC data. Thus a tree can carry both the address and data sub-types.\\
-Then we define an operation \toType that transforms a tree in to a \emph{sub-typed} tree:
+We'll note $type(v)$ to refer to the type of the value $v$.
+Note that in INScore, an OSC message can be part of the OSC data. Thus a value can carry both the \taddress\  and \tdata\ types.
+We'll note $t^a$ a tree $t$ which value is of type \taddress\ and $t^d$ a tree $t$ which value is of type \tdata .
+Then we define two operations: \toAddress\ and \toData\ that transforms a tree in to a \emph{typed} tree:
 \[
+    \toAddress (v \times \llist{t}) \to 
 \left\{
 \begin{array}{l}
-	\toType (/ \times \llist{t}) \to \forest \times \llist{t^a} \\
-	\toType (v \times \llist{t}) \to v \times \llist{t^d} \ \land v \neq /\\
+	\forest \times \llist{t^a} , v = /\\
+	v \ \times \llist{t^d} , v \neq / \\
+\end{array}
+\right.
+\]
+\[
+    \toData (v \times \llist{t}) \to v \ \times \llist{t^d} , type(v) = D
+\]
+%The \toData\ operation actually propagate the \tdata\ type to all the children of the first tree of type \tdata .
+
+The conversion of a tree $t$ into OSC messages transforms the typed tree $\toData (\toAddress (t))$ into a forest of OSC addresses followed by data.
+\[
+    \toOSCAddress (v \times \llist{t}) \to
+\left\{
+\begin{array}{l}
+	\forest \times [ v \times \toOSCAddress(t_1),\etc , v \times \toOSCAddress(t_k)] , type(v) = \taddress\\
+	v \ \times \llist{t} , type(v) = \tdata \\
 \end{array}
 \right.
 \]
 
 
-Transforming a tree into OSC messages consists in enumerating all the paths from the root node up to the first parameter, which is the first node that is not preceded by a \emph{slash}.
+% \[
+% \left\{
+% \begin{array}{l}
+% 	\toType (/ \times \llist{t}) \to \forest \times \llist{t^a} \\
+% 	\toType (v \times \llist{t}) \to v \times \llist{t^d} \ \land v \neq / \lor \\
+% \end{array}
+% \right.
+% \]
+
+
+% Transforming a tree into a list of OSC messages consists in transforming this tree into a forest of \emph{osc trees}. An \emph{osc tree} is a tree made of an OSC address followed by data:
+% \[
+% 	OSC : osc\_address \times \llist{d}
+% \]
+
+% Transforming a tree into OSC messages consists in enumerating all the paths from the root node up to the first parameter, which is the first node that is not preceded by a \emph{slash}.
 
 
 
@@ -404,7 +422,7 @@ In practice, this example expresses the score illustrated in Figure \ref{samples
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.63\columnwidth]{imgs/scene}
+\includegraphics[width=0.8\columnwidth]{imgs/scene}
 \caption{\IS\ scene corresponding to the sample script given in section \ref{example}.}
 \label{samplescene}
 \end{center}
