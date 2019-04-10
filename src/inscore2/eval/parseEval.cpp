@@ -43,7 +43,6 @@ SINode parseEval::eval (const SINode& node) throw(parseEvalException)
 	try {
 	switch(node->getType()) {
 		case INode::kForest:	return evalForest(node);
-		case INode::kSlash:		return evalSlash(node);
 		case INode::kSeq:		return evalSeq(node);
 		case INode::kPar:		return evalPar(node);
 		default:				return evalNode(node);
@@ -60,23 +59,6 @@ SINode parseEval::eval (const SINode& node) throw(parseEvalException)
 SINode parseEval::evalExpand (const SINode& node)
 {
 	return expandEval::eval(node);
-}
-
-//------------------------------------------------------------
-SINode parseEval::evalSlash (const SINode& node)
-{
-	if (node->size() != 1) {
-		stringstream what;
-		what << "slash evaluation: 1 node expected, got " << node->size();
-		throw (parseEvalException (what.str().c_str()));
-	}
-	SINode n = eval (node->childs()[0]);
-	if (n->isForest())
-		return node->clone (n->childs());
-
-	NList l;
-	l.add (n);
-	return node->clone (l);
 }
 
 //------------------------------------------------------------

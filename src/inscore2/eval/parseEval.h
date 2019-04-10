@@ -44,8 +44,6 @@ class parseEvalException: public std::exception
 
 class parseEval
 {
-
-	static SINode 	evalSlash 	(const SINode& node);
 	static SINode 	evalSeq 	(const SINode& node);
 	static SINode 	evalPar 	(const SINode& node);
 	static SINode 	evalNode 	(const SINode& node);

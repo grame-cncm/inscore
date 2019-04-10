@@ -128,7 +128,6 @@ class evaluator
 	static SINode 	evalRand();
 
 	static SINode 	evalMath   (const SINode& node, const TEnv&);
-	static SINode 	evalSlash  (const SINode& node, const TEnv&);
 	static SINode 	evalExpand (const SINode& node, const TEnv&);
 	static SINode 	evalExpandVal (const SINode& node, const TEnv&);
 	static SINode 	evalVar    (const SINode& node, const TEnv&);

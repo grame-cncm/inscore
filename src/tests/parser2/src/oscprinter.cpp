@@ -21,9 +21,6 @@ void oscprinter::print (ostream& os, const INode* node, std::string prefix)
 	 	case INode::kForest:
 			print (os, node->childs(), prefix);
 			break;
-	 	case INode::kSlash:
-			print (os, node->childs(), prefix);
-			break;
 	 	default:
 			string p = prefix + "/" + node->getValue();
 			for (auto n: node->childs()) print (os, n, p );

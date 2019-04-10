@@ -613,21 +613,6 @@ SINode evaluator::evalNode (const SINode& node, const TEnv& env)
 }
 
 //------------------------------------------------------------
-SINode evaluator::evalSlash (const SINode& node, const TEnv& env)
-{
-	if (node->empty()) throw (evalException ("unexpected empty '/' node."));
-
-	NList l;
-	for (auto n: node->childs()) {
-		SINode e = eval(n, env + n->getEnv());
-		e->setAddress (true);
-		l.add (e);
-	}
-	if (l.size() > 1) return SINode( new ForestNode (l));
-	return l[0];
-}
-
-//------------------------------------------------------------
 SINode evaluator::evalExpand (const SINode& node, const TEnv& env)
 {
 	SINode out = expandEval::eval(node);
@@ -666,7 +651,7 @@ SINode evaluator::eval (const SINode& node, const TEnv& env)
 	if ((t >= INode::kFirstMath) && (t <= INode::kLastMath))
 		return evalMath (node, env);
 	switch (t) {
-		case INode::kSlash: 	return evalSlash (node, env);
+//		case INode::kSlash: 	return evalSlash (node, env);
 		case INode::kVariable: 	return evalVar   (node, env);
 		case INode::kExpand: 	return evalExpand(node, env);
 		case INode::kExpandVal: return evalExpandVal(node, env);

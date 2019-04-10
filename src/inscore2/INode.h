@@ -58,7 +58,7 @@ class INode {
 
 	public:
 		enum TNodeType {
-			kText, kInt, kFloat, kSeq, kPar, kExpand, kExpandVal, kForest, kRegexp, kVariable, kSlash, kJScript, kURLPrefix, kDelay,
+			kText, kInt, kFloat, kSeq, kPar, kExpand, kExpandVal, kForest, kVariable, kJScript, kURLPrefix, kDelay,
 			kFirstMath, kAdd=kFirstMath, kSub, kDiv, kMult, kModulo, kQuest, kNeg, kEq, kGreater, kGreatereq, kLess,
             kLesseq, kMin, kMax, kHas, kSin, kCos, kTan, kASin, kACos, kATan, kSinh, kCosh, kTanh, kASinh, kACosh, kATanh,
 			kExp, kLog, kLog10, kLog2, kPow, kSqrt, kCbrt, kCeil, kFloor, kRound, kRand, kLastMath=kRand };
@@ -193,14 +193,6 @@ class ForestNode : public INode {
 			 ForestNode(SINode node ) 	: INode ("", node, kForest) {}
 			 ForestNode(const NList& l) 	: INode ("", l, kForest) {}
 	virtual ~ForestNode() {}
-};
-
-//------------------------------------------------------------
-class RegexpNode : public INode {
-	public:
-			 RegexpNode(std::string val) : INode(val, kRegexp) {}
-			 RegexpNode(std::string val, const NList& l) : INode(val, l, kRegexp) {}
-	virtual ~RegexpNode() {}
 };
 
 //------------------------------------------------------------

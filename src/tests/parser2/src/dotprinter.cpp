@@ -81,14 +81,11 @@ string dotprinter::label (const INode * node) const
 		case INode::kInt:
 		case INode::kFloat:
 			break;
-		case INode::kSlash:		str += ":/"; break;
-
 		case INode::kSeq:		str += ":seq"; break;
 		case INode::kPar:		str += ":par"; break;
 		case INode::kExpand:	str += ":expand"; break;
 		case INode::kExpandVal:	str += ":vexpand"; break;
 		case INode::kForest:	str += ":forest"; break;
-		case INode::kRegexp:	str += ":RE"; break;
 		case INode::kVariable:	str += ":var"; break;
         case INode::kJScript:   str += ":js"; break;
         case INode::kDelay:     str += ":d"; break;

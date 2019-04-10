@@ -231,12 +231,10 @@ const char * INode::type2string (TNodeType t)
 		case kPow: 		return "Pow";
 		case kQuest: 	return "Quest";
 		case kRand: 	return "Rand";
-		case kRegexp: 	return "Regexp";
 		case kRound: 	return "Round";
 		case kSeq: 		return "Seq";
 		case kSin: 		return "Sin";
 		case kSinh: 	return "Sinh";
-		case kSlash: 	return "Slash";
 		case kSqrt: 	return "Sqrt";
 		case kSub: 		return "Sub";
 		case kTan: 		return "Tan";
