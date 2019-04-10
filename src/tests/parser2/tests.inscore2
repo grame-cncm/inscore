@@ -1,5 +1,18 @@
 
-/ITL/scene/rect x [0.0...0.5]  { dur=1s, style=linear, step=0.25, end=/ITL/scene event TOTO };
+ /ITL/scene/rect x [0.0...0.5]  {dur=500ms,style=linear,step=0.1};
+ 
+__END__
+
+1s  /ITL/scene/rect x [-0.5...0.]  {dur=1s,style=linear,step=0.2};
+1s  /ITL/scene/rect (x 1), (y 2);
+
+/a/b (set rect (1, 1)), (x 1), (y 2);
+/a/b/c (set rect (1, 1)), (x 1), (y 2);
+
+#action = watch (ev1, ev2) ;
+#/A $action (ev (/B a 0), (/C b 1)); #,  (ev (/D a 0), (/E b 1));
+
+#/ITL/scene/rect x [0.0...0.5]  { dur=1s, style=linear, step=0.25, end=/ITL/scene event TOTO };
 
 __END__
 
@@ -21,8 +34,6 @@ dur = 2s;
 #			 /ITL/scene/rect x [0.0...0.5]  {dur=$dur,style=linear,step=0.1666};
 #$dur 		 /ITL/scene/rect x [0.5...-0.5] {dur=(* $dur, 2),style=linear,step=-0.1};
 #(* $dur, 3)  /ITL/scene/rect x [-0.5...0.]  {dur=$dur,style=linear,step=0.2};
-1s  /ITL/scene/rect x [-0.5...0.]  {dur=1s,style=linear,step=0.2};
-1s  /ITL/scene/rect (x 1), (y 2);
 
 
 __END__
