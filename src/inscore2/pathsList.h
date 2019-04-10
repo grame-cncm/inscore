@@ -38,6 +38,14 @@ class pathsList
 	static SINode 	delayed (SINode& node);
 	static SINode 	_eval (const SINode& node);
 
+	static SINode 	evalDelays (const SINode& node);
+	static SINode 	evalDelay (const SINode& node);
+
+	static SINode 	evalForest (const SINode& node);
+	static SINode 	evalAddress (const SINode& node);
+	static SINode 	evalData (const SINode& node);
+	static SINode 	evalDData (const SINode& node);
+
 	public:
 				 pathsList() {}
 		virtual ~pathsList() {}
