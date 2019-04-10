@@ -1,0 +1,142 @@
+
+delay = 166ms;
+
+/ITL/scene/* del;
+
+size	= 0.15;
+grey	= 200;
+/ITL/scene/ctrl set rect 1, 1;
+/ITL/scene/ctrl color $grey, $grey, $grey;
+/ITL/scene/pc1 set rect 1, 1;
+/ITL/scene/pc2 set rect 1, 1;
+/ITL/scene/pc* show 0;
+/ITL/scene/pc1 x -0.5;
+/ITL/scene/pc1 y -0.5;
+/ITL/scene/pc2 x 0.5;
+/ITL/scene/pc2 y 0.5;
+
+
+
+/ITL/scene/ctrl watch SHOW (	
+(				/ITL/scene/c1  (set ellipse $size $size), (x '$(/ITL/scene/pc1 get x)'), (y '$(/ITL/scene/pc1 get y)'), (red 200)),
+($delay 		/ITL/scene/c2  (set ellipse $size $size), (x 0), (y 0), (green 200)),
+((* $delay, 2)	/ITL/scene/c3  (set ellipse $size $size), (x '$(/ITL/scene/pc2 get x)'), (y '$(/ITL/scene/pc2 get y)'), (blue 200)),
+((* $delay, 3)	/ITL/scene/ctrl event HIDE)
+);
+
+/ITL/scene/ctrl watch HIDE (
+	(				/ITL/scene/c1 del),
+	($delay			/ITL/scene/c2 del),
+	((* $delay, 2)	/ITL/scene/c3 del),
+	((* $delay, 3)	/ITL/scene/ctrl event LOOP),
+	(/ITL/scene/ctrl event NEXT)
+);
+
+/ITL/scene/ctrl watch LOOP (/ITL/scene/ctrl event SHOW);
+
+/ITL/scene/ctrl watch mouseDown (
+	(/ITL/scene/ctrl push),
+	(/ITL/scene/ctrl watch LOOP),
+	(/ITL/scene/ctrl color 0, 0, 0), 
+	(/ITL/scene/ctrl watch mouseDown (
+		(/ITL/scene/ctrl color $grey, $grey, $grey),
+		(/ITL/scene/ctrl watch LOOP (/ITL/scene/ctrl event SHOW)),
+		(/ITL/scene/ctrl event SHOW),
+		(/ITL/scene/ctrl pop)
+	))
+);
+
+
+/ITL/scene/ctrl watch TOPMIDDLE (
+	(/ITL/scene/pc1 (x 0), (y -0.5)),
+	(/ITL/scene/pc2 (x 0), (y  0.5))
+);
+
+/ITL/scene/ctrl watch TOPRIGHT (
+	(/ITL/scene/pc1 (x 0.5), (y -0.5)),
+	(/ITL/scene/pc2 (x -0.5), (y  0.5))
+);
+
+/ITL/scene/ctrl watch MIDDLERIGHT (
+	(/ITL/scene/pc1 (x 0.5), (y 0)),
+	(/ITL/scene/pc2 (x -0.5), (y 0))
+);
+
+/ITL/scene/ctrl watch BOTTOMRIGHT (
+	(/ITL/scene/pc1 (x 0.5), (y 0.5)),
+	(/ITL/scene/pc2 (x -0.5), (y -0.5))
+);
+
+/ITL/scene/ctrl watch BOTTOMMIDDLE (
+	(/ITL/scene/pc1 (x 0), (y 0.5)),
+	(/ITL/scene/pc2 (x 0), (y -0.5))
+);
+
+/ITL/scene/ctrl watch BOTTOMLEFT (
+	(/ITL/scene/pc1 (x -0.5), (y 0.5)),
+	(/ITL/scene/pc2 (x 0.5), (y -0.5))
+);
+
+/ITL/scene/ctrl watch LEFTMIDDLE (
+	(/ITL/scene/pc1 (x -0.5), (y 0)),
+	(/ITL/scene/pc2 (x 0.5), (y 0))
+);
+
+/ITL/scene/ctrl watch TOPLEFT (
+	(/ITL/scene/pc1 (x -0.5), (y -0.5)),
+	(/ITL/scene/pc2 (x 0.5), (y 0.5))
+);
+
+/ITL/scene/ctrl watch NEXT (
+	(/ITL/scene/ctrl push),
+	(/ITL/scene/ctrl event TOPMIDDLE),
+
+	(/ITL/scene/ctrl watch NEXT (
+		(/ITL/scene/ctrl event TOPRIGHT),
+
+		(/ITL/scene/ctrl watch NEXT (
+			(/ITL/scene/ctrl event MIDDLERIGHT),
+
+			(/ITL/scene/ctrl watch NEXT (
+				(/ITL/scene/ctrl event BOTTOMRIGHT),
+
+				(/ITL/scene/ctrl watch NEXT (
+					(/ITL/scene/ctrl event BOTTOMMIDDLE),
+
+					(/ITL/scene/ctrl watch NEXT (
+						(/ITL/scene/ctrl event BOTTOMLEFT),
+
+						(/ITL/scene/ctrl watch NEXT (
+							(/ITL/scene/ctrl event LEFTMIDDLE),
+
+							(/ITL/scene/ctrl watch NEXT (
+								(/ITL/scene/ctrl event TOPLEFT),
+								(/ITL/scene/ctrl pop)
+							))
+						))
+					))
+				))
+			))
+		))
+	))
+);
+
+
+/ITL/scene/ctrl event SHOW;
+
+
+__END__
+
+/ITL/log show 1;
+/ITL/log level 2;
+/ITL parse v2;
+
+/ITL preprocess "watchd2.inscore2";
+
+/ITL/scene/ctrl get watch;
+
+/ITL/scene/ctrl event SHOW;
+
+/ITL/scene get width height;
+/ITL/scene width 2;
+/ITL/scene height 2;

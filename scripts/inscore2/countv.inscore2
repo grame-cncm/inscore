@@ -1,0 +1,40 @@
+
+maxl 	= 10;
+width 	= 1.3;
+w 		= / $width, $maxl;
+offset	= (/ (- $width, $w), 2);
+x		= ( * ( % $i, $maxl), $w );
+y		= ( * ( / $i, $maxl), $w );
+
+/ITL/scene/* del;
+/ITL/scene/t_[i:1...100] set txt $i;
+
+VERT = /ITL/scene/t_[i:1...100] 
+	(y (- $x, $offset)),
+	(x (- $y, $offset));
+
+HOR = /ITL/scene/t_[i:1...100] 
+	(x (- $x, $offset)),
+	(y (- $y, $offset));
+
+$VERT;
+
+/ITL/scene/t_* watch mouseEnter ( /ITL/scene/$self red 250 );
+/ITL/scene/t_* watch mouseLeave ( /ITL/scene/$self red 0 );
+
+/ITL/scene/t_*   watch mouseDown (
+	(/ITL/scene/t_* push),
+	($HOR ),
+	(/ITL/scene/t_*  watch mouseDown (
+		($VERT),
+		(/ITL/scene/t_* pop)
+	))
+);
+
+__END__
+
+/ITL/log show 1;
+/ITL/log level 2;
+/ITL parse v2;
+
+/ITL/scene get;
