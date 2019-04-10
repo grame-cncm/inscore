@@ -60,7 +60,7 @@ class IParser {
 		void 	error (int line, int col, const char* msg) const;	
 
 		SINode 	tree() 							{ return SINode(new ForestNode(fNodes));}
-		TINode 	create(std::string name, INode::TNodeType t = INode::kText) 	{ TINode n = new INode(name, t); n->setLC(fLine, fColumn); return n; }
+		TINode 	create(std::string name, INode::TNodeType t = INode::kText) const	{ return set (new INode(name, t)); }
 
 		void 	add (TINode n)  						{ fNodes.push_back (SINode(n)); }
 		TINode 	seq (TINode n1, TINode n2) const 		{ return set (INode::createSeq (SINode(n1), SINode(n2))); }
@@ -68,11 +68,10 @@ class IParser {
 	 	TINode 	javascript (const std::string js) const { return set (new JavascriptNode (js)); }
 	 	TINode 	prefix (const std::string text) const 	{ return set (new UrlPrefixNode (text)); }
         TINode  delay (const std::string text) const    { return set (new DelayNode (text)); }
-        TINode  regexp (const std::string text) const   { return set (new RegexpNode (text)); }
 		TINode 	expand(const std::string text) const 	{ return set (new ExpandNode (text)); }
 		TINode 	expandVal(TINode n1, TINode n2) const 	{ return set (new ExpandValNode (SINode(n1), SINode(n2))); }
 		TINode 	operation(INode::TNodeType type) const	{ return set (new INode ("", type)); }
-		TINode 	slash(TINode node) const				{ return set (new INode ("", SINode(node), INode::kSlash)); }
+		TINode 	slash(TINode node) const				{ node->setAddress(true); return node; }
 
 		void 	pushEnv()		{ fEnvStack.push(fVars); }
 		void 	popEnv()		{ if (fEnvStack.size()) { fVars = fEnvStack.top(); fEnvStack.pop();} }
