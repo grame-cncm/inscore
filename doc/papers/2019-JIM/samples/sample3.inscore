@@ -1,0 +1,5 @@
+
+/A 	(b ((* (math.sin 1), 2))) ,
+	(c (math.pow 2.2, 0.4)),
+	(d (math.max 1, 2, 3));
+

@@ -19,7 +19,12 @@ using namespace inscore2;
 
 static void usage (const char * name) {
 	cerr << "usage: " << name << " [options] file" << endl;
-	cerr << "       options: -pout to generate the dot parser output" << endl;
+	cerr << "options: -v1        conversion to INScore v1" << endl;
+	cerr << "         -parse     generates the parser output" << endl;
+	cerr << "         -eval      generates the evaluated tree" << endl;
+	cerr << "         -env       includes env info in the generated tree" << endl;
+	cerr << "         -paths     generates all the paths with dates" << endl;
+	cerr << "         -pathsonly generates the paths only" << endl;
 	exit (1);
 }
 
