@@ -43,11 +43,13 @@
 
 \newcommand{\llist}	[1]		{\ensuremath{[#1_1,...,#1_k]}}
 
+\newcommand{\type}		{\ensuremath{{\scriptsize \texttt{type}}}}
 \newcommand{\seq}		{\ensuremath{|}}
 \newcommand{\paral}		{\ensuremath{\parallel}}
 \newcommand{\forest}	{\ensuremath{\varnothing}}
 \newcommand{\toType}	{\ensuremath{\mathcal{T}}}
-\newcommand{\toAddress}	{\ensuremath{\text{@}}}
+%\newcommand{\toAddress}	{\ensuremath{\text{@}}}
+\newcommand{\toAddress}	{\ensuremath{\varGamma}}
 \newcommand{\toOSCAddress}	{\ensuremath{{\scriptsize \texttt{OSC}}}}
 \newcommand{\taddress}	{\ensuremath{\text{@}}}
 \newcommand{\toData}	{\ensuremath{\text{D}}}
@@ -147,7 +149,7 @@ Un arbre $t$ est constitué d'une valeur $v$ (d'un certain type de données) et 
 	t :  v \times \llist{t} 
 \]
 
-Un arbre avec une liste vide de sous-arbres $t:v\times \emptyf$ s'appelle une feuille. \\
+Un arbre avec une liste de sous-arbres vide $t:v\times \emptyf$ s'appelle une feuille. \\
 Une valeur est soit une valeur littérale (i.e. texte, nombre) soit une valeur spéciale parmi les types suivants :
 \begin{itemize}
 \item forêt (\forest) : désigne un arbre comprenant uniquement des sous-arbres,
@@ -221,7 +223,7 @@ L'arbre dont la valeur est \emph{slash} (/) joue un rôle spécial dans la conve
 %-------------------------------------------------
 \section{Valeurs et évaluation}\label{sec:valeurs}
 
-Cette section décrit comment sont évalués les arbres ayant les valeurs spéciales \emph{opérateurs mathématiques}, \emph{variables} et \emph{expand}.
+Cette section décrit comment sont évalués les arbres ayant les valeurs spéciales \emph{opérateur mathématique}, \emph{variable} et \emph{expand}.
 
 %---------------------------
 \subsection{Opérateurs mathématiques}
@@ -349,8 +351,7 @@ Une \emph{valeur expansée} peut également prendre les formes particulières su
 \item $id[i:n…m]$ 	où $i$ est un identificateur
 \item $id[i:j:ab…xy]$ où $i,j$ sont des identificateurs.
 \end{description}
-Ces identificateurs désignent des variables qui sont instanciées dans l'environnement par l'opération d'expansion, avec la valeur d'indice courante :
-Par exemple:
+Ces identificateurs désignent des variables qui sont instanciées dans l'environnement par l'opération d'expansion, avec la valeur d'indice courante, i.e.:
 \[
 %	\nexpand(id[i:n\etc m]) \to \forest \ [id_{n\{i=0\}},id_{n+1\{i=1\}},\etc ,id_{m\{i=m-n\}}] \\
 	\nexpand(id[i:n\etc m]) \to \forest \ [id_{n\{i=0\}},\etc ,id_{m\{i=m-n\}}] \\
@@ -361,10 +362,10 @@ Par exemple:
 \section{Conversion en OSC}\label{ssec:slash}
 
 Un message OSC est constitué d'une adresse OSC (similaire à un chemin Unix) suivie d'une liste de données (qui peut éventuellement être vide)
-La valeur spéciale \emph{slash} d'un arbre est utilisée pour distinguer l'adresse OSC et les données. Pour ce faire, nous allons \emph{typer} les valeurs et nous définissons \taddress\ comme le type d'une valeur faisant partie d'une adresse OSC. Nous noterons $type(v)$ pour faire référence au type de la valeur $v$.
+La valeur spéciale \emph{slash} d'un arbre est utilisée pour distinguer l'adresse OSC et les données. Pour ce faire, nous allons \emph{typer} les valeurs et nous définissons \taddress\ comme le type d'une valeur faisant partie d'une adresse OSC. Nous noterons $\type(v)$ pour faire référence au type de la valeur $v$.
 
 Nous noterons $t^a$ pour désigner un arbre $t$ dont la valeur est de type \taddress\ .
-Ensuite, nous définissons une opération \toAddress\ qui transforme un arbre en un arbre \emph{typé} :
+Ensuite, nous définissons une opération \toAddress\ qui transforme un arbre en arbre \emph{typé} :
 \[
     \toAddress (v \times \llist{t}) \to 
 \left\{
@@ -385,8 +386,8 @@ La conversion d'un arbre $t$ en messages OSC transforme l'arbre typé $\toAddres
 \[
 \left\{
 \begin{array}{l}
-	\forest \times [ v \times \toOSCAddress(t_1),\etc , v \times \toOSCAddress(t_k)] , type(v) = \taddress\\
-	v \ \times [ \toOSCAddress(t_1),\etc , \toOSCAddress(t_k)] , \hspace{12mm} type(v) \neq \taddress \\
+	\forest \times [ v \times \toOSCAddress(t_1),\etc , v \times \toOSCAddress(t_k)] , \type(v) = \taddress\\
+	v \ \times [ \toOSCAddress(t_1),\etc , \toOSCAddress(t_k)] , \hspace{12mm} \type(v) \neq \taddress \\
 \end{array}
 \right.
 \]
