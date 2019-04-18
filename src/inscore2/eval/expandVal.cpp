@@ -24,6 +24,7 @@
 */
 
 #include <sstream>
+#include <functional>
 
 #include "evaluator2.h"
 #include "expandVal.h"

@@ -24,7 +24,7 @@
 */
 
 
-
+#include <functional>
 #include <algorithm>
 #include <sstream>
 #include <string>
