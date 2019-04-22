@@ -13,7 +13,6 @@
 
 \usepackage{graphicx}
 \usepackage{amssymb,amsmath,amsfonts} 
-\usepackage{balance}
 
 \usepackage{color}
 \usepackage{hyperref}
@@ -298,37 +297,31 @@ The identifiers denote variables that are instantiated in the environment by the
 \section{Conversion to OSC}\label{sslash}
 
 An OSC message is made of an OSC address (similar to an Unix path) followed by a list of data (which can possibly be empty)
-The \emph{slash} special value of a tree is used to discriminate the OSC address and the data. \\
-We define two types of values: 
-\begin{description}
-\item \taddress : the type of a value part of an OSC address
-\item \tdata : the type of a value part of the OSC data
-\end{description}
-We'll note $type(v)$ to refer to the type of the value $v$.
-Note that in INScore, an OSC message can be part of the OSC data. Thus a value can carry both the \taddress\  and \tdata\ types.
-We'll note $t^a$ a tree $t$ which value is of type \taddress\ and $t^d$ a tree $t$ which value is of type \tdata .
-Then we define two operations: \toAddress\ and \toData\ that transforms a tree in to a \emph{typed} tree:
+The \emph{slash} special value of a tree is used to discriminate the OSC address and the data. In order to do so, we type the values and we define \taddress\ as the type of a value part of an OSC address.We'll note $type(v)$ to refer to the type of the value $v$.
+
+We'll note $t^a$ a tree $t$ which value is of type \taddress\ .
+Then we define a \toAddress\ operation that transforms a tree in to a \emph{typed} tree:
 \[
     \toAddress (v \times \llist{t}) \to 
 \left\{
 \begin{array}{l}
 	\forest \times \llist{t^a} , v = /\\
-	v \ \times \llist{t^d} , v \neq / \\
+	v \ \times \llist{t} , v \neq / \\
 \end{array}
 \right.
 \]
-\[
-    \toData (v \times \llist{t}) \to v \ \times \llist{t^d} , type(v) = D
-\]
+% \[
+%     \toData (v \times \llist{t}) \to v \ \times \llist{t^d} , type(v) = D
+% \]
 %The \toData\ operation actually propagate the \tdata\ type to all the children of the first tree of type \tdata .
 
-The conversion of a tree $t$ into OSC messages transforms the typed tree $\toData (\toAddress (t))$ into a forest of OSC addresses followed by data.
+The conversion of a tree $t$ into OSC messages transforms the typed tree $\toAddress (t)$ into a forest of OSC addresses followed by data:
 \[
     \toOSCAddress (v \times \llist{t}) \to
 \left\{
 \begin{array}{l}
 	\forest \times [ v \times \toOSCAddress(t_1),\etc , v \times \toOSCAddress(t_k)] , type(v) = \taddress\\
-	v \ \times \llist{t} , type(v) = \tdata \\
+	v \ \times [ \toOSCAddress(t_1),\etc , \toOSCAddress(t_k)] , \hspace{12mm} type(v) \neq \taddress \\
 \end{array}
 \right.
 \]
@@ -406,7 +399,6 @@ notes = (/ITL/scene/$addr
 $notes{addr=n_[i:1...9], count=9, radius=0.7};
 \end{lstlisting}
 
-
 Evaluation of this script produces OSC messages fully compatible with the previous version of the language, and which are schematically presented below. 
 \code[1]{/ITL/scene/n\_1 set gmn '[ \i<"ff"> g1/8]';\\
 /ITL/scene/n\_1 scale 0.7;\\
@@ -419,15 +411,13 @@ Evaluation of this script produces OSC messages fully compatible with the previo
 /ITL/scene/n\_9 y 0.56631;
 }
 In practice, this example expresses the score illustrated in Figure \ref{samplescene} in just a few lines.  
-
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.8\columnwidth]{imgs/scene}
+\includegraphics[width=0.69\columnwidth]{imgs/scene}
 \caption{\IS\ scene corresponding to the sample script given in section \ref{example}.}
 \label{samplescene}
 \end{center}
 \end{figure}
-
 
 %-------------------------------------------------
 \section{Conclusions}
@@ -435,10 +425,8 @@ From two elementary operations on trees - sequencing and parallelisation - we ha
 It supports parallelisation of the arguments of a message, variables to describe addresses, series of addresses expressed in a concise manner, use of local variables allowing reusing scripts or parts of scripts in different contexts.
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
-\balance
 \bibliographystyle{splncs04}
 \bibliography{../interlude}
 
