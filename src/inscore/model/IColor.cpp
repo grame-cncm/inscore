@@ -24,10 +24,11 @@
 */
 
 
-#include "IColor.h"
-#include "IMessage.h"
 #include <algorithm>
 
+#include "HtmlColors.h"
+#include "IColor.h"
+#include "IMessage.h"
 #include "deelx.h"
 
 using namespace std;
@@ -78,10 +79,27 @@ bool IColor::getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a, int s
 }
 
 //--------------------------------------------------------------------------------
+void IColor::getRGB (long rgb, int& r, int& g, int& b)
+{
+	b = int(rgb & 0xff);
+	g = int((rgb & 0xff00) >> 8);
+	r = int((rgb & 0xff0000) >> 16);
+}
+
+//--------------------------------------------------------------------------------
 MsgHandler::msgStatus IColor::set (const IMessage* msg)
 { 
+	int n = msg->size();
 	int r, g, b, a = 255;
-	if (!getRGBA (msg, r, g, b, a)) return MsgHandler::kBadParameters;
+	if (n == 1) {
+		string color;
+		if (!msg->param(0, color)) return MsgHandler::kBadParameters;
+		if (color.rfind("0x", 0) == 0)	getRGB (std::stoi(color, 0, 0), r, g, b);
+		else 							getRGB (HtmlColor::get(color.c_str()), r, g, b);
+	}
+	else {
+		if (!getRGBA (msg, r, g, b, a)) return MsgHandler::kBadParameters;
+	}
 	fR = std::max(0,std::min(r,255));
 	fG = std::max(0,std::min(g,255));
 	fB = std::max(0,std::min(b,255));

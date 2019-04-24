@@ -149,6 +149,7 @@ class IColor
 		 */
 		static bool getRGBA(const IMessage* msg, int& r, int& g, int& b, int& a, int startIndex = 0);
 		static bool getHSBA( const IMessage* msg, int& h, int& s, int& b, int& a, int startIndex = 0);
+		static void getRGB (long rgb, int& r, int& g, int& b);
 
 		// R,G,B in [0,255], H in [0,360] and SV in [0,255]
 		static void rgb2hsv(int ir , int ig , int ib , int* H, int* S, int* V);

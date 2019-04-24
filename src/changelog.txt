@@ -4,12 +4,17 @@
 GRAME - Centre national de creation musicale
 http://www.grame.fr
 ====================================================
-Copyright GRAME (c) 2009-2018
+Copyright GRAME (c) 2009-2019
 ----------------------------------------------------
 INScore originates from the Interlude project.
 It has been supported by the ANR 
 (ANR-08-CORD-010 - ANR-12-CORD-0009)
 ====================================================
+
+----------------------------------------------------
+Version 1.24
+- new inscore2 scripting language
+- colors: supports html color names and hex values with 0x as prefix
 
 ----------------------------------------------------
 Version 1.23
