@@ -1,0 +1,109 @@
+
+/ITL/scene/* del ;
+
+tempo = 60;
+
+/ITL/scene (width 1.0), (height 1.3);
+
+/ITL/scene/score (set gmnf "rsrc/1voice-846_2f.gmn"),
+				 (scale 0.4);
+
+/ITL/scene/tgv  (set img "rsrc/tgv.gif"),
+				(scale 0.60),
+				(mapf "maps/tgv.map"),
+				(date 1);
+
+/ITL/scene/score watch mouseDown (
+	(/ITL/scene/tgv date $date)
+);
+
+
+
+yloc = 1.2;
+
+# adds a simple button to control play/pause
+/ITL/scene/control  (set img "rsrc/play.png"),
+					(scale 0.15),
+					(y $yloc);
+/ITL/scene/control watch mouseDown 	(
+	(/ITL/scene/control push),
+	(/ITL/scene/tgv tempo $tempo),
+	(/ITL/scene/control set img "rsrc/pause.png"),
+	(/ITL/scene/control watch mouseDown 	(
+		(/ITL/scene/tgv tempo 0),
+		(/ITL/scene/control set img "rsrc/play.png"),
+		(/ITL/scene/control pop)
+	))
+); 
+
+
+/ITL/scene/sync tgv score hv syncBottom;
+
+w = 0.04;
+radius = 30;
+onoff = (watch mouseDown (
+			(/ITL/scene/$name push),
+			(/ITL/scene/$name color SpringGreen),
+			($msgOn),
+			(/ITL/scene/$name watch mouseDown (
+				(/ITL/scene/$name color SeaShell ),
+				($msgOff),
+				(/ITL/scene/$name pop)
+			))));
+
+push = (watch mouseDown (
+			(/ITL/scene/$name color SpringGreen),
+			($msgOn)));
+
+button = ((/ITL/scene/$name (set rect $w $w),
+					(radius $radius $radius),
+					(y $yloc),
+					(x $x),
+					(color SeaShell),
+					(penWidth 1),
+					(penColor SlateGrey),
+					($behavior)),
+			(/ITL/scene/$addr (set txt $caption),
+					(yorigin 2),
+					(y $yloc),
+					(x $x),
+					(fontSize 11)));
+
+
+$button{name=ctrlSync, addr=captSync, caption=Sync, x=-0.4,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/sync tgv score hv syncBottom),  
+		msgOff=(/ITL/scene/sync tgv)};
+
+$button{name=ctrDbg, addr=captDbg, caption=Show, x=-0.5,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/tgv/debug map 1),  
+		msgOff=(/ITL/scene/tgv/debug map 0)};
+
+$button{name=ctrMap1, addr=captMap1, caption=Map1, x=0.3,
+		behavior=$push,
+		msgOn=((/ITL/scene/tgv mapf "maps/tgv.map"), (/ITL/scene/ctrMap[23d] color SeaShell) ) };
+$button{name=ctrMap2, addr=captMap2, caption=Map2, x=0.4,
+		behavior=$push,
+		msgOn=((/ITL/scene/tgv mapf "maps/tgv2.map"), (/ITL/scene/ctrMap[13d] color SeaShell) ) };
+$button{name=ctrMap3, addr=captMap3, caption=Map3, x=0.5,
+		behavior=$push,
+		msgOn=((/ITL/scene/tgv mapf "maps/tgv3.map"), (/ITL/scene/ctrMap[12d] color SeaShell) ) };
+$button{name=ctrMapd, addr=captMapd, caption=Mapd, x=0.6,
+		behavior=$push,
+		msgOn=((/ITL/scene/tgv mapf "maps/tgvd.map"), (/ITL/scene/ctrMap[123] color SeaShell) ) };
+
+/ITL/scene/ctrMap1 event mouseDown 0 0;
+/ITL/scene/ctrlSync event mouseDown 0 0;
+
+
+__END__
+
+/ITL/log show 1;
+/ITL/log level 2;
+
+/ITL preprocess "DROPME.inscore2";
+/ITL/scene/score get watch;
+
+/ITL parse v2;
+/ITL get parse;

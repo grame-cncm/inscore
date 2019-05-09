@@ -1,0 +1,98 @@
+
+
+/ITL/scene/* del ;
+
+tempo = 60;
+
+/ITL/scene (width 1.0), (height 1.3);
+
+/ITL/scene/score (set gmnf "rsrc/1voice-846_2f.gmn"),
+				 (scale 0.4);
+
+/ITL/scene/car1 set img "rsrc/car_blue.gif" ;
+/ITL/scene/car2 set img "rsrc/car_red.gif" ;
+/ITL/scene/car* scale 5 ;
+/ITL/scene/car* duration 1 4 ;
+/ITL/scene/car1 date 1 1 ;
+/ITL/scene/car2 date 4 1 ;
+/ITL/scene/sync car* score v;
+
+yloc = 1.2;
+
+# adds a simple button to control play/pause
+/ITL/scene/control  (set img "rsrc/play.png"),
+					(scale 0.15),
+					(y $yloc);
+/ITL/scene/control watch mouseDown 	(
+	(/ITL/scene/control push),
+	(/ITL/scene/car* tempo $tempo),
+	(/ITL/scene/control set img "rsrc/pause.png"),
+	(/ITL/scene/control watch mouseDown 	(
+		(/ITL/scene/car* tempo 0),
+		(/ITL/scene/control set img "rsrc/play.png"),
+		(/ITL/scene/control pop)
+	))
+); 
+
+w = 0.04;
+radius = 30;
+onoff = (watch mouseDown (
+			(/ITL/scene/$name push),
+			(/ITL/scene/$name color SpringGreen),
+			($msgOn),
+			(/ITL/scene/$name watch mouseDown (
+				(/ITL/scene/$name color SeaShell ),
+				($msgOff),
+				(/ITL/scene/$name pop)
+			))));
+
+push = (watch mouseDown (
+			(/ITL/scene/$name color SpringGreen),
+			($msgOn)));
+
+button = ((/ITL/scene/$name (set rect $w $w),
+					(radius $radius $radius),
+					(y $yloc),
+					(x $x),
+					(color SeaShell),
+					(penWidth 1),
+					(penColor SlateGrey),
+					($behavior)),
+			(/ITL/scene/$addr (set txt $caption),
+					(yorigin 2),
+					(y $yloc),
+					(x $x),
+					(fontSize 11)));
+
+
+$button{name=ctrlSync, addr=captSync, caption="Sync Dur", x=-0.4,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/sync car* score hv),  
+		msgOff=(/ITL/scene/sync car* score v)};
+
+
+$button{name=ctrMap1, addr=captMap1, caption=Eight, x=0.3,
+		behavior=$push,
+		msgOn=((/ITL/scene/car* duration 1 8), (/ITL/scene/ctrMap[23d] color SeaShell) ) };
+$button{name=ctrMap2, addr=captMap2, caption=Quarter, x=0.4,
+		behavior=$push,
+		msgOn=((/ITL/scene/car* duration 1 4), (/ITL/scene/ctrMap[13d] color SeaShell) ) };
+$button{name=ctrMap3, addr=captMap3, caption=Half, x=0.5,
+		behavior=$push,
+		msgOn=((/ITL/scene/car* duration 2 4), (/ITL/scene/ctrMap[12d] color SeaShell) ) };
+$button{name=ctrMapd, addr=captMapd, caption=Whole, x=0.6,
+		behavior=$push,
+		msgOn=((/ITL/scene/car* duration 1 1), (/ITL/scene/ctrMap[123] color SeaShell) ) };
+
+/ITL/scene/ctrMap2 event mouseDown 0 0;
+
+
+__END__
+
+/ITL/scene/car* alpha 150 ;
+
+/ITL/log show 1;
+/ITL/log level 2;
+
+/ITL parse v2;
+/ITL get parse;
