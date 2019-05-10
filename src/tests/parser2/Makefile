@@ -31,6 +31,9 @@ help:
 	@echo "    eval   : generates the evaluated tree corresponding to $(FILE).inscore2 "
 	@echo "    paths  : generates all the paths corresponding to the evaluation of $(FILE).inscore2 without delay report"
 	@echo "    pathd  : generates all the paths corresponding to the evaluation of $(FILE).inscore2 with delay report"
+	@echo 
+	@echo "Options:"
+	@echo "    ENV=on : to include the current environment in the output"
 
 ##############################################################
 # the targets
