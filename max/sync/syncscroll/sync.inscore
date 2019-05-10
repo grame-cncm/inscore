@@ -1,7 +1,7 @@
 /ITL/scene/* del ;
 /ITL/scene/signal/* del ;
 /ITL/scene/myScore set "gmnf" "score.gmn" ;
-/ITL/scene/myScore scale 2.70000 ;
+/ITL/scene/myScore scale 0.4 ;
 /ITL/scene/myScore map "system" ;
 /ITL/scene/myScore map "voice1" ;
 /ITL/scene/window set "rect" 0.500000 0.100000 ;
