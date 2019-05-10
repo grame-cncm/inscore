@@ -1,4 +1,15 @@
 
+C = 3;
+a = 1.0; 
+
+b = ($a, 1, $C);
+/A/B TOTO $b;
+/A/B titi $b{C=1}; 
+/A/B titi $b{C=2,a=(* 2, $C)};
+#/A/B y [1.0...2.0]{dur=1s,style=linear,step=0.1};
+
+__END__
+
 1s  /ITL/scene/rect x [-0.5...0.]  {dur=1s,style=linear,step=0.2};
 1s  /ITL/scene/rect (x 1), (y 2);
 
@@ -30,17 +41,6 @@ dur = 2s;
 #			 /ITL/scene/rect x [0.0...0.5]  {dur=$dur,style=linear,step=0.1666};
 #$dur 		 /ITL/scene/rect x [0.5...-0.5] {dur=(* $dur, 2),style=linear,step=-0.1};
 #(* $dur, 3)  /ITL/scene/rect x [-0.5...0.]  {dur=$dur,style=linear,step=0.2};
-
-
-__END__
-
-
-C = 3;
-b = $a;
-a = 1.0; 
-
-/A/B x $b{C=2,a=(* 2, $C)};
-/A/B y [1.0...2.0]{dur=1s,style=linear,step=0.1};
 
 
 __END__
