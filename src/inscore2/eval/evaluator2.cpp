@@ -602,7 +602,7 @@ SINode evaluator::evalNode (const SINode& node, const TEnv& env)
 	NList l;
 	bool addr = node->isForest() && node->address();
 	for (auto n: node->childs()) {
-		SINode e = eval(n, env + n->getEnv());
+		SINode e = eval(n, n->getEnv() + env);
 		if (addr) e->setAddress(true);
 		if (e->getType() == INode::kForest)
 			l.add (e->childs());
