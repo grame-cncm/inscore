@@ -394,30 +394,30 @@ int IAppl::processAlias (const TAlias& alias, const IMessage* imsg)
 
 	vector<TAliasParam> params = alias.second;
 	size_t psize = params.size();
-	if (psize) {
+	if (psize) {					// the alias has parameter strings
 		int status = MsgHandler::kBadAddress;
-		int n = imsg->size();
+		int n = imsg->size();		// get the input message args number
 		int i=0;
-		for (auto p: params) {
+		for (auto p: params) {		// and for each alias parameter
 			psize--;
-			if (i >= n) {
+			if (i >= n) {			// check that the input message has the minimum count of arguments
 				ITLErr << "incorrect alias call: at least " << int(params.size()) << " parameters expected" << ITLEndl;
 				return MsgHandler::kBadParameters;
 			}
-			SIMessage m = IMessage::create(alias.first, p.fName);
-			if (!p.scaled())
-				m->add (imsg->param(i));
+			SIMessage m = IMessage::create(alias.first, p.fName);	// create a message with the real address and with the parameter as message string
+			if (!p.scaled())					// when there is no scaling
+				m->add (imsg->param(i));		// just add the correponding message argument
 			else {
-				float val;
-				if (imsg->cast_param(i, val))
-					m->add (p.scale(val));
+				float val;						// and with scaling
+				if (imsg->cast_param(i, val))	// get first the corresponding value as a float
+					m->add (p.scale(val));		// and add the scaled value
 				else return MsgHandler::kBadParameters;
 			}
-			i++;
-			if (!psize) {
-				for (i; i<n; i++) m->add (imsg->param(i));
+			i++;			// i maintains the correspondence between args and params
+			if (!psize) {	// check if there are more args than params
+				for (i; i<n; i++) m->add (imsg->param(i));	// add the remaining args
 			}
-			status = processMsg (head, tail, m);
+			status = processMsg (head, tail, m);	// and finally process the resolved message
 			if (status != MsgHandler::kProcessed) {
 				ITLErr << "incorrect alias call: translated to " << m->toString() << ITLEndl;
 				break;
@@ -425,10 +425,10 @@ int IAppl::processAlias (const TAlias& alias, const IMessage* imsg)
 		}
 		return status;
 	}
-
-	SIMessage msg = IMessage::create (*imsg);
-	msg->setAddress (alias.first);
-	return processMsg (head, tail, msg);
+	// here there is no params
+	SIMessage msg = IMessage::create (*imsg);	// just copy the message
+	msg->setAddress (alias.first);				// change the destination address
+	return processMsg (head, tail, msg);		// and process the message
 }
 
 //--------------------------------------------------------------------------
