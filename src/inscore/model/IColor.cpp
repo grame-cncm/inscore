@@ -87,6 +87,13 @@ void IColor::getRGB (long rgb, int& r, int& g, int& b)
 }
 
 //--------------------------------------------------------------------------------
+void IColor::getRGBA(long long rgba, int& r, int& g, int& b, int& a)
+{
+	a = int(rgba & 0xff);
+	getRGB (long(rgba / 256), r, g, b);
+}
+
+//--------------------------------------------------------------------------------
 MsgHandler::msgStatus IColor::set (const IMessage* msg)
 { 
 	int n = msg->size();
@@ -94,8 +101,11 @@ MsgHandler::msgStatus IColor::set (const IMessage* msg)
 	if (n == 1) {
 		string color;
 		if (!msg->param(0, color)) return MsgHandler::kBadParameters;
-		if (color.rfind("0x", 0) == 0)	getRGB (std::stoi(color, 0, 0), r, g, b);
-		else 							getRGB (HtmlColor::get(color.c_str()), r, g, b);
+		if (color.rfind("0x", 0) == 0) {
+			if (color.size() == 10) getRGBA (std::stoll(color, 0, 0), r, g, b, a);
+			else getRGB (std::stoi(color, 0, 0), r, g, b);
+		}
+		else getRGB (HtmlColor::get(color.c_str()), r, g, b);
 	}
 	else {
 		if (!getRGBA (msg, r, g, b, a)) return MsgHandler::kBadParameters;
