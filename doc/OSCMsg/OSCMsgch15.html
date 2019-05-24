@@ -17,18 +17,18 @@ href="OSCMsgch14.html#tailOSCMsgch14.html" >prev-tail</a>] [<a
 href="#tailOSCMsgch15.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch15.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;15</span><br /><a 
- id="x19-9300015"></a>Sensors</h2>
+ id="x19-9500015"></a>Sensors</h2>
 <!--l. 10--><p class="noindent" >INScore supports various sensors, which can be viewed as objects or as signals. When created as a signal node,
 a sensor behaves like any signal but may provide some additional features (like calibration). When
 created as a score element, a sensor has no graphical appearance and provides specific sensor events and
 features.
 <!--l. 12--><p class="noindent" >Table <a 
-href="#x19-9300015">15<!--tex4ht:ref: tab:sensors --></a> gives the list of supported sensors names.
+href="#x19-9500015">15<!--tex4ht:ref: tab:sensors --></a> gives the list of supported sensors names.
                                                                                  
 
                                                                                  
 <!--l. 14--><p class="noindent" ><a 
- id="x19-930011"></a><hr class="float"><div class="float" 
+ id="x19-950011"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
@@ -104,7 +104,7 @@ class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr
 class="td11">           </td></tr></table></div></div>
 <br /><div class="caption" 
 ><span class="id">Table&#x00A0;15.1: </span><span  
-class="content">Sensors names and description</span></div><!--tex4ht:label?: x19-930011 -->
+class="content">Sensors names and description</span></div><!--tex4ht:label?: x19-950011 -->
                                                                                  
 
                                                                                  
@@ -117,18 +117,18 @@ class="small-caps">E</span> </span><br
 class="newline" /> All the sensors won&#8217;t likely be available on a given device. In case a sensor is not supported, an error message is
 generated at creation request and the creation process fails.
 <h3 class="sectionHead"><span class="titlemark">15.1    </span> <a 
- id="x19-9400015.1"></a>Sensors as signals</h3>
+ id="x19-9600015.1"></a>Sensors as signals</h3>
 <!--l. 47--><p class="noindent" >A sensor is viewed as a signal when created in a <span 
 class="pcrr8tn-">signal </span>node using pre-defined signal names which are listed in
 table <a 
-href="#x19-9400015.1">15.1<!--tex4ht:ref: tab:sensorsig --></a>. Values provided on different axis (e.g. acceleration on the x, y, and z axis) are available from the sensor
+href="#x19-9600015.1">15.1<!--tex4ht:ref: tab:sensorsig --></a>. Values provided on different axis (e.g. acceleration on the x, y, and z axis) are available from the sensor
 subnodes, also listed in table <a 
-href="#x19-9400015.1">15.1<!--tex4ht:ref: tab:sensorsig --></a>.
+href="#x19-9600015.1">15.1<!--tex4ht:ref: tab:sensorsig --></a>.
                                                                                  
 
                                                                                  
 <!--l. 49--><p class="noindent" ><a 
- id="x19-940012"></a><hr class="float"><div class="float" 
+ id="x19-960012"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
@@ -209,7 +209,7 @@ class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr
 class="td11">           </td></tr></table></div></div>
 <br /><div class="caption" 
 ><span class="id">Table&#x00A0;15.2: </span><span  
-class="content">Sensor&#8217;s signal names and subnodes</span></div><!--tex4ht:label?: x19-940012 -->
+class="content">Sensor&#8217;s signal names and subnodes</span></div><!--tex4ht:label?: x19-960012 -->
                                                                                  
 
                                                                                  
@@ -227,7 +227,7 @@ class="newline" />Creating a rotation sensor with a 200 values buffer size.
 >
 <!--l. 77--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox94"> <div class="minipage">  <span 
+class="colorbox" id="colorbox97"> <div class="minipage">  <span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/rotation size 200;</span>
 </div></div>
 </div>
@@ -236,7 +236,7 @@ class="pcrr8tn-x-x-90">/ITL/scene/signal/rotation size 200;</span>
 >
 <!--l. 81--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox95"> <div class="minipage">  <span 
+class="colorbox" id="colorbox98"> <div class="minipage">  <span 
 class="pcrr8tn-x-x-90">/ITL/scene/signal/accelerometer/x get;</span>
 </div></div>
 </div>
@@ -252,17 +252,17 @@ class="ptmri8t-">z </span>signal is always present but set to 0 when
 no <span 
 class="pcrr8tn-">z </span>component is available. A specific message is provided to get the <span 
 class="pcrr8tn-">z </span>component status (see section <a 
-href="#x19-10200015.6.3">15.6.3<!--tex4ht:ref: rotmsg --></a>
+href="#x19-10400015.6.3">15.6.3<!--tex4ht:ref: rotmsg --></a>
 p.<a 
-href="#x19-10200015.6.3">151<!--tex4ht:ref: rotmsg --></a>).
+href="#x19-10400015.6.3">153<!--tex4ht:ref: rotmsg --></a>).
 <h3 class="sectionHead"><span class="titlemark">15.2    </span> <a 
- id="x19-9500015.2"></a>Sensors as nodes</h3>
+ id="x19-9700015.2"></a>Sensors as nodes</h3>
 <!--l. 92--><p class="noindent" >A sensor is viewed as a regular INScore node when created outside a <span 
 class="pcrr8tn-">signal </span>node and using one of the sensors
 types defined below. A sensor node has no graphical appearance but has the position attributes of an INScore object
 (x, y, z and scale).
 <a 
- id="dx19-95001"></a>
+ id="dx19-97001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
@@ -271,28 +271,28 @@ class="list">
                                                                                  
 <!--l. 106--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">sensorSet</span> <img 
-src="OSCMsg107x.png" alt="PICT" >
+src="OSCMsg108x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-95002"></a>
+ id="dx19-97002"></a>
 <a 
- id="dx19-95003"></a>
+ id="dx19-97003"></a>
 <a 
- id="dx19-95004"></a>
+ id="dx19-97004"></a>
 <a 
- id="dx19-95005"></a>
+ id="dx19-97005"></a>
 <a 
- id="dx19-95006"></a>
+ id="dx19-97006"></a>
 <a 
- id="dx19-95007"></a>
+ id="dx19-97007"></a>
 <a 
- id="dx19-95008"></a>
+ id="dx19-97008"></a>
 <a 
- id="dx19-95009"></a>
+ id="dx19-97009"></a>
 <a 
- id="dx19-95010"></a>
+ id="dx19-97010"></a>
 <a 
- id="dx19-95011"></a>
+ id="dx19-97011"></a>
 <!--l. 118--><p class="noindent" >Values generated by a sensor are available using its <span 
 class="pcrr8tn-">x</span>, <span 
 class="pcrr8tn-">y </span>and <span 
@@ -304,8 +304,8 @@ class="pcrr8tn-">$x</span>, <span
 class="pcrr8tn-">$y </span>and <span 
 class="pcrr8tn-">$z </span>set with the
 current sensor values (see section <a 
-href="OSCMsgch16.html#x20-11800016.5.2">16.5.2<!--tex4ht:ref: sensorvar --></a> p.<a 
-href="OSCMsgch16.html#x20-11800016.5.2">168<!--tex4ht:ref: sensorvar --></a>).
+href="OSCMsgch16.html#x20-12000016.5.2">16.5.2<!--tex4ht:ref: sensorvar --></a> p.<a 
+href="OSCMsgch16.html#x20-12000016.5.2">170<!--tex4ht:ref: sensorvar --></a>).
 <!--l. 120--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
@@ -319,7 +319,7 @@ class="newline" />Creating a proximity sensor, querying it&#8217;s value and wat
 >
 <!--l. 126--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox96"> <div class="minipage">  <span 
+class="colorbox" id="colorbox99"> <div class="minipage">  <span 
 class="pcrr8tn-x-x-90">/ITL/scene/sensor set proximity;</span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/sensor get x;</span><br 
@@ -328,13 +328,13 @@ class="pcrr8tn-x-x-90">/ITL/scene/sensor watch newData (/ITL/scene/score show &#
 </div>
 <!--l. 131--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">15.3    </span> <a 
- id="x19-9600015.3"></a>Values</h3>
+ id="x19-9800015.3"></a>Values</h3>
                                                                                  
 
                                                                                  
 <!--l. 134--><p class="noindent" >Values generated by the sensors depends on the sensor type and on the the sensor instance (i.e. whether created as
 signal or as node). Table <a 
-href="#x19-9600015.3">15.3<!--tex4ht:ref: tab:sensorsval --></a> presents the values range for the node and the signal instances. The rationale is that
+href="#x19-9800015.3">15.3<!--tex4ht:ref: tab:sensorsval --></a> presents the values range for the node and the signal instances. The rationale is that
 nodes values are raw sensor values while signal values are mapped to the signal range i.e. [-1,1]. Actually, the
 mapping of the raw values depends on the sensor calibration that can be automatically or manually adjusted. See the
 section about calibration below.
@@ -342,7 +342,7 @@ section about calibration below.
 
                                                                                  
 <!--l. 138--><p class="noindent" ><a 
- id="x19-960013"></a><hr class="float"><div class="float" 
+ id="x19-980013"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
@@ -442,7 +442,7 @@ class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr
 class="td11">           </td></tr></table></div></div>
 <br /><div class="caption" 
 ><span class="id">Table&#x00A0;15.3: </span><span  
-class="content">Sensor&#8217;s values as node and as signal</span></div><!--tex4ht:label?: x19-960013 -->
+class="content">Sensor&#8217;s values as node and as signal</span></div><!--tex4ht:label?: x19-980013 -->
                                                                                  
 
                                                                                  
@@ -523,15 +523,15 @@ class="zpzccmry-">-</span><span
 class="zptmcmr-">1)</span><br 
 class="newline" />In a given way and from values 2 to 5, the device may be viewed as rotating clockwise. A counter-clockwise option
 is also supported, see section <a 
-href="#x19-10300015.6.4">15.6.4<!--tex4ht:ref: orientmsg --></a> p.<a 
-href="#x19-10300015.6.4">151<!--tex4ht:ref: orientmsg --></a>.
+href="#x19-10500015.6.4">15.6.4<!--tex4ht:ref: orientmsg --></a> p.<a 
+href="#x19-10500015.6.4">153<!--tex4ht:ref: orientmsg --></a>.
 <h3 class="sectionHead"><span class="titlemark">15.4    </span> <a 
- id="x19-9700015.4"></a>Calibration</h3>
+ id="x19-9900015.4"></a>Calibration</h3>
 <!--l. 187--><p class="noindent" >Calibration of sensor values may be viewed as scaling and makes use of the common object&#8217;s <span 
 class="pcrr8tn-">scale </span>attribute. By
 default, the scale value is 1.0 when the sensor is a regular node. For signal nodes, the default scale value is given by
 the table <a 
-href="#x19-9700015.4">15.4<!--tex4ht:ref: tab:sensorsscales --></a>. These values have been choosen to map the raw values to the signal range but of course
+href="#x19-9900015.4">15.4<!--tex4ht:ref: tab:sensorsscales --></a>. These values have been choosen to map the raw values to the signal range but of course
 this mapping depends on the device and may greatly vary. In order to accommodate these variations
 but also to cope with different requirements, scaling can be manually adjusted to any arbitrary value
 using the <span 
@@ -542,7 +542,7 @@ message.
 
                                                                                  
 <!--l. 190--><p class="noindent" ><a 
- id="x19-970014"></a><hr class="float"><div class="float" 
+ id="x19-990014"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
@@ -619,7 +619,7 @@ class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr
 class="td11">           </td></tr></table></div></div>
 <br /><div class="caption" 
 ><span class="id">Table&#x00A0;15.4: </span><span  
-class="content">Sensor as signal default scaling</span></div><!--tex4ht:label?: x19-970014 -->
+class="content">Sensor as signal default scaling</span></div><!--tex4ht:label?: x19-990014 -->
                                                                                  
 
                                                                                  
@@ -649,30 +649,30 @@ class="pcrr8tn-">scale</span>
 value is next adjusted to <span 
 class="zptmcmr-">1</span><span 
 class="zptmcmrm-">&#x2215;peak </span>(see also the sensor common messages in section <a 
-href="#x19-9800015.5">15.5<!--tex4ht:ref: sensorCommonMsgs --></a>). Auto-scaling is supported
+href="#x19-10000015.5">15.5<!--tex4ht:ref: sensorCommonMsgs --></a>). Auto-scaling is supported
 by all the sensors, although
 <h3 class="sectionHead"><span class="titlemark">15.5    </span> <a 
- id="x19-9800015.5"></a>Sensor common messages</h3>
+ id="x19-10000015.5"></a>Sensor common messages</h3>
 <!--l. 223--><p class="noindent" >All sensors support a common set of message.
 <a 
- id="dx19-98001"></a>
+ id="dx19-100001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 231--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">sensorCommon</span> <img 
-src="OSCMsg108x.png" alt="PICT" >
+src="OSCMsg109x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-98002"></a>
+ id="dx19-100002"></a>
 <a 
- id="dx19-98003"></a>
+ id="dx19-100003"></a>
 <a 
- id="dx19-98004"></a>
+ id="dx19-100004"></a>
 <a 
- id="dx19-98005"></a>
+ id="dx19-100005"></a>
 <a 
- id="dx19-98006"></a>
+ id="dx19-100006"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">run</span>: takes a boolean value as parameter. When true, the sensor starts to generate values. Default value
@@ -708,7 +708,7 @@ class="zptmcmrm-">&#x03B1;</span>. Default value is 1.
      <li class="itemize"><span 
 class="pcrr8tn-">scale</span>: sensor values are multiplied by the scale. Default scale is dependent on the sensor type. See
      table <a 
-href="#x19-9700015.4">15.4<!--tex4ht:ref: tab:sensorsscales --></a> for the default scale values.
+href="#x19-9900015.4">15.4<!--tex4ht:ref: tab:sensorsscales --></a> for the default scale values.
      </li>
      <li class="itemize"><span 
 class="pcrr8tn-">autoscale</span>: start or stop the auto-scaling process. Default value is false. See the note about auto
@@ -721,21 +721,21 @@ class="pcrr8tn-">reset</span>: reset the smoothing factor and the scale to their
                                                                                  
 <!--l. 251--><p class="noindent" >
 <h3 class="sectionHead"><span class="titlemark">15.6    </span> <a 
- id="x19-9900015.6"></a>Sensor specific messages</h3>
+ id="x19-10100015.6"></a>Sensor specific messages</h3>
 <!--l. 255--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.6.1    </span> <a 
- id="x19-10000015.6.1"></a>Accelerometer sensor</h4>
+ id="x19-10200015.6.1"></a>Accelerometer sensor</h4>
 <a 
- id="dx19-100001"></a>
+ id="dx19-102001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 259--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">accelerometerMsg</span> <img 
-src="OSCMsg109x.png" alt="PICT" >
+src="OSCMsg110x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-100002"></a>
+ id="dx19-102002"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">mode</span>: the acceleration mode controls how acceleration values are reported.
@@ -776,9 +776,9 @@ class="pcrr8tn-">combined </span>mode is the most accurate one, as it does not i
 gravity.
 <!--l. 277--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.6.2    </span> <a 
- id="x19-10100015.6.2"></a>Magnetometer sensor</h4>
+ id="x19-10300015.6.2"></a>Magnetometer sensor</h4>
 <a 
- id="dx19-101001"></a>
+ id="dx19-103001"></a>
                                                                                  
 
                                                                                  
@@ -787,10 +787,10 @@ gravity.
 class="list">
 <!--l. 281--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">magnetometerMsg</span> <img 
-src="OSCMsg110x.png" alt="PICT" >
+src="OSCMsg111x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-101002"></a>
+ id="dx19-103002"></a>
 <!--l. 284--><p class="noindent" >The magnetometer can report on either raw magnetic flux values or geomagnetic flux values. The primary
 difference between raw and geomagnetic values is that extra processing is done to eliminate local
 magnetic interference from the geomagnetic values so they represent only the effect of the Earth&#8217;s
@@ -799,35 +799,35 @@ magnetic field. This process is not perfect and the accuracy of each reading may
 class="pcrr8tn-">raw</span>.
 <!--l. 290--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.6.3    </span> <a 
- id="x19-10200015.6.3"></a>Rotation sensor</h4>
+ id="x19-10400015.6.3"></a>Rotation sensor</h4>
 <a 
- id="dx19-102001"></a>
+ id="dx19-104001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 295--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">rotationMsg</span> <img 
-src="OSCMsg111x.png" alt="PICT" >
+src="OSCMsg112x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-102002"></a>
+ id="dx19-104002"></a>
 <!--l. 298--><p class="noindent" >z angle availability of the rotation sensor can be queried using <span 
 class="pcrr8tn-">hasZ</span>. The returned value is a boolean
 value.
 <!--l. 301--><p class="noindent" >
 <h4 class="subsectionHead"><span class="titlemark">15.6.4    </span> <a 
- id="x19-10300015.6.4"></a>Orientation sensor</h4>
+ id="x19-10500015.6.4"></a>Orientation sensor</h4>
 <a 
- id="dx19-103001"></a>
+ id="dx19-105001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 306--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">orientationMsg</span> <img 
-src="OSCMsg112x.png" alt="PICT" >
+src="OSCMsg113x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-103002"></a>
+ id="dx19-105002"></a>
                                                                                  
 
                                                                                  
@@ -836,12 +836,12 @@ src="OSCMsg112x.png" alt="PICT" >
 class="pcrr8tn-">mode</span>: selects how the device position is mapped to successive values. Default value is <span 
 class="pcrr8tn-">clockwise</span>.
      See table <a 
-href="#x19-10300015.6.4">15.6.4<!--tex4ht:ref: tab:orientations --></a> for the detail of the positions and values.</li></ul>
+href="#x19-10500015.6.4">15.6.4<!--tex4ht:ref: tab:orientations --></a> for the detail of the positions and values.</li></ul>
                                                                                  
 
                                                                                  
 <!--l. 313--><p class="noindent" ><a 
- id="x19-1030035"></a><hr class="float"><div class="float" 
+ id="x19-1050035"></a><hr class="float"><div class="float" 
 >
                                                                                  
 
@@ -900,36 +900,36 @@ class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr
 class="td11">     </td></tr></table></div></div>
 <br /><div class="caption" 
 ><span class="id">Table&#x00A0;15.5: </span><span  
-class="content">Device positions and values in different modes.</span></div><!--tex4ht:label?: x19-1030035 -->
+class="content">Device positions and values in different modes.</span></div><!--tex4ht:label?: x19-1050035 -->
                                                                                  
 
                                                                                  
 </div><hr class="endfloat" />
 <h4 class="subsectionHead"><span class="titlemark">15.6.5    </span> <a 
- id="x19-10400015.6.5"></a>Tilt sensor</h4>
+ id="x19-10600015.6.5"></a>Tilt sensor</h4>
 <a 
- id="dx19-104001"></a>
+ id="dx19-106001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
 <!--l. 339--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">tiltMsg</span> <img 
-src="OSCMsg113x.png" alt="PICT" >
+src="OSCMsg114x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx19-104002"></a>
+ id="dx19-106002"></a>
      <ul class="itemize1">
      <li class="itemize"><span 
 class="pcrr8tn-">calibrate</span>: calibrates the tilt sensor: uses the current tilt angles as 0.</li></ul>
                                                                                  
 
                                                                                  
-<!--l. 2921--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 2981--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch16.html" >next</a>] [<a 
 href="OSCMsgch14.html" >prev</a>] [<a 
 href="OSCMsgch14.html#tailOSCMsgch14.html" >prev-tail</a>] [<a 
 href="OSCMsgch15.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch15.html" >up</a>] </p></div>
-<!--l. 2921--><p class="noindent" ><a 
+<!--l. 2981--><p class="noindent" ><a 
  id="tailOSCMsgch15.html"></a>  
 </body></html> 

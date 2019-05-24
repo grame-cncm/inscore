@@ -48,20 +48,27 @@
 \rail@nont{parameters}[]
 \rail@end
 }
-\rail@i {5}{ alias : OSCAddress 'alias' (([1] OSCAlias (message | ) ) | [2]) }
+\rail@i {5}{ alias : OSCAddress 'alias' (([1] OSCAlias ( (message ('[n,m]' |))+ | ) ) | [2]) }
 \rail@o {5}{
 \rail@index{alias}
-\rail@begin{3}{alias}
+\rail@begin{5}{alias}
 \rail@nont{OSCAddress}[]
 \rail@term{alias}[]
 \rail@bar
 \rail@annote[1]
 \rail@nont{OSCAlias}[]
 \rail@bar
+\rail@plus
 \rail@nont{message}[]
+\rail@bar
+\rail@term{[n,m]}[]
 \rail@nextbar{1}
 \rail@endbar
-\rail@nextbar{2}
+\rail@nextplus{2}
+\rail@endplus
+\rail@nextbar{3}
+\rail@endbar
+\rail@nextbar{4}
 \rail@annote[2]
 \rail@endbar
 \rail@end
@@ -294,20 +301,28 @@
 \rail@endbar
 \rail@end
 }
-\rail@i {15}{ color : 'color' ('r' 'g' 'b' | 'r' 'g' 'b' 'a') }
+\rail@i {15}{ color : 'color' ( [1] ('r' 'g' 'b') | [2] ('r' 'g' 'b' 'a') | [3] 'name' | [4] 'hexValue' ) }
 \rail@o {15}{
 \rail@index{color}
-\rail@begin{2}{color}
+\rail@begin{4}{color}
 \rail@term{color}[]
 \rail@bar
+\rail@annote[1]
 \rail@term{r}[]
 \rail@term{g}[]
 \rail@term{b}[]
 \rail@nextbar{1}
+\rail@annote[2]
 \rail@term{r}[]
 \rail@term{g}[]
 \rail@term{b}[]
 \rail@term{a}[]
+\rail@nextbar{2}
+\rail@annote[3]
+\rail@term{name}[]
+\rail@nextbar{3}
+\rail@annote[4]
+\rail@term{hexValue}[]
 \rail@endbar
 \rail@end
 }

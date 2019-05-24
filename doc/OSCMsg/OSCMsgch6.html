@@ -10,30 +10,30 @@
 <link rel="stylesheet" type="text/css" href="OSCMsg.css"> 
 </head><body 
 >
-<!--l. 1222--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1282--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch7.html" >next</a>] [<a 
 href="OSCMsgch5.html" >prev</a>] [<a 
 href="OSCMsgch5.html#tailOSCMsgch5.html" >prev-tail</a>] [<a 
 href="#tailOSCMsgch6.html">tail</a>] [<a 
 href="OSCMsg3.html#OSCMsgch6.html" >up</a>] </p></div>
 <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;6</span><br /><a 
- id="x10-380006"></a>The &#8217;get&#8217; messages</h2>
-<!--l. 1227--><p class="noindent" >The <span 
+ id="x10-400006"></a>The &#8217;get&#8217; messages</h2>
+<!--l. 1287--><p class="noindent" >The <span 
 class="pcrr8tn-">get </span>messages can be sent to any valid OSC address. It is intended to query the system state. It is the
 counterpart of all the messages modifying this state. The result of the query is sent to the OSC output port with the
 exact syntax of the counterpart message. The global form of the message is:
 <a 
- id="dx10-38001"></a>
+ id="dx10-40001"></a>
 <dl class="list1"><dt class="list">
 </dt><dd 
 class="list">
-<!--l. 1231--><p class="noindent" ><div class="minipage"><span 
+<!--l. 1291--><p class="noindent" ><div class="minipage"><span 
 class="ptmri8t-">getMsg</span> <img 
-src="OSCMsg42x.png" alt="PICT" >
+src="OSCMsg43x.png" alt="PICT" >
 </div></dd></dl>
 <a 
- id="dx10-38002"></a>
-<!--l. 1234--><p class="noindent" >The <span 
+ id="dx10-40002"></a>
+<!--l. 1294--><p class="noindent" >The <span 
 class="pcrr8tn-">get </span>message without parameter is the counterpart of the <span 
 class="pcrr8tn-">set </span>message. When addressed to a container (the
 application <span 
@@ -41,20 +41,20 @@ class="pcrr8tn-">/ITL</span>, a scene <span
 class="pcrr8tn-">/ITL/scene</span>, the signal node <span 
 class="pcrr8tn-">/ITL/scene/signal</span>) is also distributed to all the container
 components.
-<!--l. 1236--><p class="noindent" >Specific <span 
+<!--l. 1296--><p class="noindent" >Specific <span 
 class="pcrr8tn-">get </span>forms may be available, depending on the component type (see sections <a 
-href="OSCMsgch7.html#x11-420007.3">7.3<!--tex4ht:ref: gmnpage --></a>, <a 
-href="OSCMsgch8.html#x12-580008.4">8.4<!--tex4ht:ref: ITLQuery --></a>, <a 
-href="OSCMsgch8.html#x12-610008.5.2">8.5.2<!--tex4ht:ref: ITLdebug --></a>, <a 
-href="OSCMsgch13.html#x17-7800013">13<!--tex4ht:ref: syncmsg --></a>, <a 
-href="OSCMsgch14.html#x18-8700014.1.2">14.1.2<!--tex4ht:ref: parcomp --></a>,
+href="OSCMsgch7.html#x11-440007.3">7.3<!--tex4ht:ref: gmnpage --></a>, <a 
+href="OSCMsgch8.html#x12-600008.4">8.4<!--tex4ht:ref: ITLQuery --></a>, <a 
+href="OSCMsgch8.html#x12-630008.5.2">8.5.2<!--tex4ht:ref: ITLdebug --></a>, <a 
+href="OSCMsgch13.html#x17-8000013">13<!--tex4ht:ref: syncmsg --></a>, <a 
+href="OSCMsgch14.html#x18-8900014.1.2">14.1.2<!--tex4ht:ref: parcomp --></a>,
 <a 
-href="OSCMsgch20.html#x25-15300020.1.2">20.1.2<!--tex4ht:ref: faustmsg --></a>).
-<!--l. 1238--><p class="noindent" >The <span 
+href="OSCMsgch20.html#x25-15500020.1.2">20.1.2<!--tex4ht:ref: faustmsg --></a>).
+<!--l. 1298--><p class="noindent" >The <span 
 class="pcrr8tn-">get frame </span>message is supported by all the components. An object frame is available for read only. It
 represents the polygon that encloses the object, taking account of scaling, rotations, and shear. The polygon is
 returned as a set of 4 points (x, y) expressed in the parent object coordinates space.
-<!--l. 1240--><p class="noindent" ><span 
+<!--l. 1300--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -65,64 +65,64 @@ class="small-caps">E</span> </span><br
 class="newline" />Sending the following request to an object which position is 0.3 0.5
 <div class="center" 
 >
-<!--l. 1242--><p class="noindent" >
+<!--l. 1302--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox35"> <div class="minipage"><span 
+class="colorbox" id="colorbox38"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myobject get x y;</span>
 </div></div>
 </div>
-<!--l. 1243--><p class="noindent" >&#x00A0;       will give the following messages on outpout port:
+<!--l. 1303--><p class="noindent" >&#x00A0;       will give the following messages on outpout port:
 <div class="center" 
 >
-<!--l. 1245--><p class="noindent" >
+<!--l. 1305--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox36"> <div class="minipage"><span 
+class="colorbox" id="colorbox39"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myobject x 0.3; </span><br 
 class="newline" /><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myobject y 0.5;</span></div></div>
 </div>
-<!--l. 1246--><p class="noindent" >Querying an object content
+<!--l. 1306--><p class="noindent" >Querying an object content
 <div class="center" 
 >
-<!--l. 1247--><p class="noindent" >
+<!--l. 1307--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox37"> <div class="minipage"><span 
+class="colorbox" id="colorbox40"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myobject get;</span>
 </div></div>
 </div>
                                                                                  
 
                                                                                  
-<!--l. 1248--><p class="noindent" >&#x00A0;       will give the corresponding <span 
+<!--l. 1308--><p class="noindent" >&#x00A0;       will give the corresponding <span 
 class="pcrr8tn-">set </span>message:
 <div class="center" 
 >
-<!--l. 1249--><p class="noindent" >
+<!--l. 1309--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox38"> <div class="minipage"><span 
+class="colorbox" id="colorbox41"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myobject set txt "Hello world!";</span>
 </div></div>
 </div>
-<!--l. 1250--><p class="noindent" >Querying an object frame
+<!--l. 1310--><p class="noindent" >Querying an object frame
 <div class="center" 
 >
-<!--l. 1251--><p class="noindent" >
+<!--l. 1311--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox39"> <div class="minipage"><span 
+class="colorbox" id="colorbox42"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myobject get frame;</span>
 </div></div>
 </div>
-<!--l. 1252--><p class="noindent" >&#x00A0;       will give the corresponding <span 
+<!--l. 1312--><p class="noindent" >&#x00A0;       will give the corresponding <span 
 class="pcrr8tn-">frame </span>message:
 <div class="center" 
 >
-<!--l. 1253--><p class="noindent" >
+<!--l. 1313--><p class="noindent" >
 <div 
-class="colorbox" id="colorbox40"> <div class="minipage"><span 
+class="colorbox" id="colorbox43"> <div class="minipage"><span 
 class="pcrr8tn-x-x-90">/ITL/scene/myobject frame -0.5 -0.25 0.50 -0.25 0.50 0.25 -0.5 0.25;</span>
 </div></div>
 </div>
-<!--l. 1256--><p class="noindent" ><span 
+<!--l. 1316--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
 class="small-caps">T</span><span 
@@ -134,12 +134,12 @@ images, etc.) returns 0 as long as the target component has not been graphically
                                                                                  
 
                                                                                  
-<!--l. 1262--><div class="crosslinks"><p class="noindent">[<a 
+<!--l. 1322--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch7.html" >next</a>] [<a 
 href="OSCMsgch5.html" >prev</a>] [<a 
 href="OSCMsgch5.html#tailOSCMsgch5.html" >prev-tail</a>] [<a 
 href="OSCMsgch6.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch6.html" >up</a>] </p></div>
-<!--l. 1262--><p class="noindent" ><a 
+<!--l. 1322--><p class="noindent" ><a 
  id="tailOSCMsgch6.html"></a>  
 </body></html> 

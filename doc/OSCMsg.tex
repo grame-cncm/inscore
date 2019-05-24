@@ -215,19 +215,69 @@ Each component includes a static node named \OSC{debug} that provides debugging 
 \label{alias}
 An alias mechanism allows an arbitrary OSC address to be used in place of a real address. An \OSC{alias} message is provided to describe aliases: 
 \begin{rail}
-alias : OSCAddress 'alias' (([1] OSCAlias (message | ) ) | [2])
+alias : OSCAddress 'alias' (([1] OSCAlias ( (message ('[n,m]' |))+ | ) ) | [2])
 \end{rail}
 \index{Common messages!alias}
 \begin{itemize}
-\item \textbf{[1]} sets \OSC{OSCAlias} as an alias of \OSC{OSCAddress}. The alias may be optionally followed by a message string which is then taken as an implied message i.e. the alias is translated to \OSC{OSCAddress message}.
+\item \textbf{[1]} sets \OSC{OSCAlias} as an alias of \OSC{OSCAddress}. The alias may be optionally followed by message strings which are then taken as implied messages. These messages can also be optionally followed by a scaling specification.
 \item \textbf{[2]} removes \OSC{OSCAddress} aliases.
 \end{itemize}
 
-\example
-\sample{/ITL/scene/myobject alias '/1/fader1';}
-\sampleindent makes the object \OSC{myobject} addressable using the address \OSC{/1/fader1}.
-
 \note{} Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
+
+\example
+\sample{makes the address /ITL/scene/myobject available using /1/fader1\\
+/ITL/scene/myobject alias '/1/fader1';\\
+\\
+the following input message:\\
+/1/fader1 0.5;\\
+will be translated into:\\
+/ITL/scene/myobject 0.5;
+}
+
+\sample{create an alias with an implicit 'x' message\\
+/ITL/scene/myobject alias '/1/fader1' x;\\
+\\
+the following input message:\\
+/1/fader1 0.5;\\
+will be translated into:\\
+/ITL/scene/myobject x 0.5;
+}
+
+\subsublevel{Scaling}
+In INScore, the parameter values are generally in the range [-1, 1]. However, some devices can generate messages with their own values range (e. g. accelerometers). An optional scaling string allows to convert any input range into the [-1, 1] range.
+
+The general form of the scaling string is \OSC{[n,m]}, where $n$ and $m$ are 2 numbers describing the minimum and maximum input values. Any input value $v$ is then transformed into a value $v'$ such that:
+\[
+	v' = 2 (v-n)/(n-m) - 1
+\]
+
+\example
+\sample{create an alias with an implicit 'x' message using a scaling specification\\
+/ITL/scene/myobject alias '/1/fader1' x[0,100];\\
+\\
+the following input message:\\
+/1/fader1 5;\\
+will be translated into:\\
+/ITL/scene/myobject x -0.9;
+}
+
+
+\subsublevel{Using more than one implicit message}
+You can you any arbitrary number of message strings in an \OSC{alias} message. In any case, an input message with the corresponding values is expected. For example, when the \OSC{alias} message has 3 messages strings, input messages are expected to have 3 associated values. These values are distributed in sequence with each message string, which also means that the input message is translated into 3 different messages.
+ 
+
+\example
+\sample{create an alias with implicit 'x' 'y' and 'angle' messages using scaling\\
+/ITL/scene/myobject alias '/1/fader1' x[0,100] y[0,100] angle;\\
+\\
+the following input message:\\
+/1/fader1 5 60 12;\\
+will be translated into:\\
+/ITL/scene/myobject x -0.9;\\
+/ITL/scene/myobject y  0.2;\\
+/ITL/scene/myobject angle 12;
+}
 
 
 
@@ -468,6 +518,7 @@ absColorMsg :    color
 			| 'brightness' colorvalue
 \end{rail}
 \index{Common messages!color}
+\index{Common messages!color!name}
 \index{Common messages!color!red}
 \index{Common messages!color!blue}
 \index{Common messages!color!green}
@@ -516,13 +567,22 @@ The same alpha channel specified as integer value or as floating point value:
 \subsublevel{The color messages}
 
 \begin{rail}
-color :		'color' ('r' 'g' 'b' | 'r' 'g' 'b' 'a') 
+color :		'color' ( [1] ('r' 'g' 'b') | [2] ('r' 'g' 'b' 'a') | [3] 'name' | [4] 'hexValue' ) 
 \end{rail}
 \index{Common messages!color}
 
-\OSC{color} sets an object color in the RGBA space.
-When A is not specified, the color is assumed to be opaque. 
-Default color value is \values{[0,0,0,255]}.
+\OSC{color} sets an object color in the RGBA space. The color can be specified in different ways:
+\begin{itemize}
+\item \textbf{1} sets the color using RGB values. Alpha is not specified and the color is assumed to be opaque. 
+\item \textbf{2} sets the color using RGBA values.  
+\item \textbf{3} sets the color using a name among html defined names (see at \url{https://www.w3schools.com/colors/colors_names.asp}). Name is not case sensitive.
+\item \textbf{4} sets the color using a single hexadecimal value in the form \OSC{0xrrggbb} or \OSC{0xrrggbbaa}.
+\end{itemize}
+
+
+
+
+The default color value is \values{[0,0,0,255]}.
 
 
 \subsublevel{The hsb messages}

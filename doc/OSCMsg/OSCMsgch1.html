@@ -55,11 +55,11 @@ class="pcrr8tn-">0.5 </span>as parameter.
 href="http://opensoundcontrol.org/" class="url" ><span 
 class="pcrr8tn-">http://opensoundcontrol.org/</span></a>). This address scheme is extended to address any host and applications (see
 section <a 
-href="OSCMsgch16.html#x20-10500016">16<!--tex4ht:ref: interaction --></a> p.<a 
-href="OSCMsgch16.html#x20-10500016">157<!--tex4ht:ref: interaction --></a>). Relative addresses have also been introduced for the scripting language (see section <a 
-href="OSCMsgch17.html#x21-12800017.2">17.2<!--tex4ht:ref: scriptmsgs --></a>
+href="OSCMsgch16.html#x20-10700016">16<!--tex4ht:ref: interaction --></a> p.<a 
+href="OSCMsgch16.html#x20-10700016">159<!--tex4ht:ref: interaction --></a>). Relative addresses have also been introduced for the scripting language (see section <a 
+href="OSCMsgch17.html#x21-13000017.2">17.2<!--tex4ht:ref: scriptmsgs --></a>
 p.<a 
-href="OSCMsgch17.html#x21-12800017.2">175<!--tex4ht:ref: scriptmsgs --></a>)
+href="OSCMsgch17.html#x21-13000017.2">177<!--tex4ht:ref: scriptmsgs --></a>)
 <!--l. 152--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
 class="small-caps">O</span><span 
@@ -78,8 +78,8 @@ src="OSCMsg1x.png" alt="PICT" >
 </div></dd></dl>
 <!--l. 157--><p class="noindent" >Identifiers may include letters, hyphen, underscore and numbers apart at first position (see lexical definition section
 <a 
-href="OSCMsgch21.html#x28-16600021.2">21.2<!--tex4ht:ref: lex --></a> p.<a 
-href="OSCMsgch21.html#x28-16600021.2">229<!--tex4ht:ref: lex --></a>).
+href="OSCMsgch21.html#x28-16800021.2">21.2<!--tex4ht:ref: lex --></a> p.<a 
+href="OSCMsgch21.html#x28-16800021.2">231<!--tex4ht:ref: lex --></a>).
 <a 
  id="dx5-2003"></a>
 <dl class="list1"><dt class="list">
@@ -94,7 +94,7 @@ src="OSCMsg2x.png" alt="PICT" >
 </div></dd></dl>
 <!--l. 164--><p class="noindent" >Some specific nodes (like <span 
 class="ptmri8t-">signals </span>- see section <a 
-href="OSCMsgch14.html#x18-8600014.1.1">14.1.1<!--tex4ht:ref: ssignal --></a>) accept OSC messages without message
+href="OSCMsgch14.html#x18-8800014.1.1">14.1.1<!--tex4ht:ref: ssignal --></a>) accept OSC messages without message
 string:
 <a 
  id="dx5-2004"></a>
@@ -116,7 +116,7 @@ class="pcrb8t-x-x-90">int32</span>, <span
 class="pcrb8t-x-x-90">float32</span>&#x00A0;and <span 
 class="pcrb8t-x-x-90">string</span>.
 <!--l. 174--><p class="noindent" >When used in a script file (see section <a 
-href="OSCMsgch17.html#x21-12600017">17<!--tex4ht:ref: scripting --></a>), <span 
+href="OSCMsgch17.html#x21-12800017">17<!--tex4ht:ref: scripting --></a>), <span 
 class="pcrb8t-x-x-90">string</span>&#x00A0;should be single or double quoted when they include characters
 not allowed in identifiers (space, punctuation marks, etc.). If an ambiguous double or single quote is part of the
 string, it must be escaped using a &#8217;<span class="obeylines-h"><span class="verb"><span 
@@ -141,7 +141,7 @@ href="#x5-40011">1.1<!--tex4ht:ref: fig:addrspace --></a>:
 
                                                                                  
 <!--l. 184--><p class="noindent" ><img 
-src="OSCMsg4x.png" alt="PIC" class="graphics" width="341.43306pt" height="171.07335pt" ><!--tex4ht:graphics  
+src="OSCMsg4x.png" alt="PIC" class="graphics" width="341" height="171" ><!--tex4ht:graphics  
 name="OSCMsg4x.png" src="imgs/address_space.ps"  
 -->
 <br /> <div class="caption" 
@@ -183,8 +183,8 @@ class="pcrr8tn-">debug </span>that provides debugging information.
      <li class="itemize"><span 
 class="ptmb8t-">the signals level </span>contains signals i.e. objects that accept data streams and that may be graphically rendered as
      a scene component (see Signals and Graphic signals section <a 
-href="OSCMsgch14.html#x18-8400014">14<!--tex4ht:ref: graphsig --></a> p.<a 
-href="OSCMsgch14.html#x18-8400014">113<!--tex4ht:ref: graphsig --></a>).
+href="OSCMsgch14.html#x18-8600014">14<!--tex4ht:ref: graphsig --></a> p.<a 
+href="OSCMsgch14.html#x18-8600014">115<!--tex4ht:ref: graphsig --></a>).
      </li></ul>
 <!--l. 210--><p class="noindent" ><span 
 class="ptmbc8t-">N<span 
@@ -209,21 +209,26 @@ src="OSCMsg5x.png" alt="PICT" >
 </div></dd></dl>
 <a 
  id="dx5-5002"></a>
+                                                                                 
+
+                                                                                 
      <ul class="itemize1">
      <li class="itemize"><span 
 class="ptmb8t-">[1] </span>sets <span 
 class="pcrr8tn-">OSCAlias </span>as an alias of <span 
-class="pcrr8tn-">OSCAddress</span>. The alias may be optionally followed by a message
-     string which is then taken as an implied message i.e. the alias is translated to <span 
-class="pcrr8tn-">OSCAddress message</span>.
-                                                                                 
-
-                                                                                 
+class="pcrr8tn-">OSCAddress</span>. The alias may be optionally followed by message
+     strings which are then taken as implied messages. These messages can also be optionally followed
+     by a scaling specification.
      </li>
      <li class="itemize"><span 
 class="ptmb8t-">[2] </span>removes <span 
 class="pcrr8tn-">OSCAddress </span>aliases.</li></ul>
 <!--l. 226--><p class="noindent" ><span 
+class="ptmbc8t-">N<span 
+class="small-caps">O</span><span 
+class="small-caps">T</span><span 
+class="small-caps">E</span>  </span>Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
+<!--l. 228--><p class="noindent" ><span 
 class="ptmbc8t-">E<span 
 class="small-caps">X</span><span 
 class="small-caps">A</span><span 
@@ -233,29 +238,138 @@ class="small-caps">L</span><span
 class="small-caps">E</span></span>
 <div class="center" 
 >
-<!--l. 227--><p class="noindent" >
+<!--l. 236--><p class="noindent" >
 <div 
 class="colorbox" id="colorbox2"> <div class="minipage"><span 
-class="pcrr8tn-x-x-90">/ITL/scene/myobject alias &#8217;/1/fader1&#8217;;</span>
-</div></div>
+class="pcrr8tn-x-x-90">makes the address /ITL/scene/myobject available using /1/fader1</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject alias &#8217;/1/fader1&#8217;;</span><br 
+class="newline" /><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">the following input message:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/1/fader1 0.5;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">will be translated into:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject 0.5;</span></div></div>
 </div>
-<!--l. 228--><p class="noindent" >&#x00A0;       makes the object <span 
-class="pcrr8tn-">myobject </span>addressable using the address <span 
-class="pcrr8tn-">/1/fader1</span>.
-<!--l. 230--><p class="noindent" ><span 
-class="ptmbc8t-">N<span 
-class="small-caps">O</span><span 
-class="small-caps">T</span><span 
-class="small-caps">E</span>  </span>Regular expressions are not supported by the alias mechanism and could lead to unpredictable results.
+<div class="center" 
+>
+<!--l. 245--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox3"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">create an alias with an implicit &#8217;x&#8217; message</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject alias &#8217;/1/fader1&#8217; x;</span><br 
+class="newline" /><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">the following input message:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/1/fader1 0.5;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">will be translated into:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject x 0.5;</span></div></div>
+</div>
+<!--l. 247--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">1.3.1    </span> <a 
+ id="x5-60001.3.1"></a>Scaling</h4>
+<!--l. 248--><p class="noindent" >In INScore, the parameter values are generally in the range [-1, 1]. However, some devices can generate messages
+with their own values range (e. g. accelerometers). An optional scaling string allows to convert any input range into
+the [-1, 1] range.
+<!--l. 250--><p class="noindent" >The general form of the scaling string is <span 
+class="pcrr8tn-">[n,m]</span>, where <span 
+class="zptmcmrm-">n </span>and <span 
+class="zptmcmrm-">m </span>are 2 numbers describing the minimum and
+maximum input values. Any input value <span 
+class="zptmcmrm-">v </span>is then transformed into a value <span 
+class="zptmcmrm-">v</span><span 
+class="zpzccmry-">&#x2032; </span>such that:
+<center class="math-display" >
+<img 
+src="OSCMsg6x.png" alt="&#x2032;
+v= 2(v- n)&#x2215;(n- m)- 1
+" class="math-display" ></center>
+<!--l. 253--><p class="nopar" >
+<!--l. 255--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span></span>
                                                                                  
 
                                                                                  
-<!--l. 236--><div class="crosslinks"><p class="noindent">[<a 
+<div class="center" 
+>
+<!--l. 263--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox4"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">create an alias with an implicit &#8217;x&#8217; message using a scaling specification</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject alias &#8217;/1/fader1&#8217; x[0,100];</span><br 
+class="newline" /><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">the following input message:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/1/fader1 5;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">will be translated into:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject x -0.9;</span></div></div>
+</div>
+<!--l. 266--><p class="noindent" >
+<h4 class="subsectionHead"><span class="titlemark">1.3.2    </span> <a 
+ id="x5-70001.3.2"></a>Using more than one implicit message</h4>
+<!--l. 267--><p class="noindent" >You can you any arbitrary number of message strings in an <span 
+class="pcrr8tn-">alias </span>message. In any case, an input
+message with the corresponding values is expected. For example, when the <span 
+class="pcrr8tn-">alias </span>message has 3
+messages strings, input messages are expected to have 3 associated values. These values are distributed in
+sequence with each message string, which also means that the input message is translated into 3 different
+messages.
+<!--l. 270--><p class="noindent" ><span 
+class="ptmbc8t-">E<span 
+class="small-caps">X</span><span 
+class="small-caps">A</span><span 
+class="small-caps">M</span><span 
+class="small-caps">P</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span></span>
+<div class="center" 
+>
+<!--l. 280--><p class="noindent" >
+<div 
+class="colorbox" id="colorbox5"> <div class="minipage"><span 
+class="pcrr8tn-x-x-90">create an alias with implicit &#8217;x&#8217; &#8217;y&#8217; and &#8217;angle&#8217; messages using scaling</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject alias &#8217;/1/fader1&#8217; x[0,100] y[0,100] angle;</span><br 
+class="newline" /><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">the following input message:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/1/fader1 5 60 12;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">will be translated into:</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject x -0.9;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject y 0.2;</span><br 
+class="newline" /><span 
+class="pcrr8tn-x-x-90">/ITL/scene/myobject angle 12;</span></div></div>
+</div>
+                                                                                 
+
+                                                                                 
+<!--l. 286--><div class="crosslinks"><p class="noindent">[<a 
 href="OSCMsgch2.html" >next</a>] [<a 
 href="OSCMsgli1.html" >prev</a>] [<a 
 href="OSCMsgli1.html#tailOSCMsgli1.html" >prev-tail</a>] [<a 
 href="OSCMsgch1.html" >front</a>] [<a 
 href="OSCMsg3.html#OSCMsgch1.html" >up</a>] </p></div>
-<!--l. 236--><p class="noindent" ><a 
+<!--l. 286--><p class="noindent" ><a 
  id="tailOSCMsgch1.html"></a>  
 </body></html> 
