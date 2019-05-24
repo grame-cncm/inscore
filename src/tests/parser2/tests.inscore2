@@ -1,3 +1,13 @@
+a = toto;
+/ITL/scene/$a x 0.1;
+ 
+__END__
+
+/ITL/scene/toto watch TRUC (/A/B (x $1), (y $2));
+
+
+
+__END__
 
 C = 3;
 a = 1.0; 
