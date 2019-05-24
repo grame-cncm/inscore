@@ -29,6 +29,7 @@
 
 #include <stdlib.h>
 #include <fstream>
+#include <regex>
 #include <sstream>
 
 #include <QDir>
@@ -150,7 +151,7 @@ void IAppl::resetBench()
 bool IAppl::fDefaultShow(true);
 bool IAppl::fRunning(true);
 const string IAppl::kName = "ITL";
-map<string, pair<string, string> > IAppl::fAliases;
+map<string, IAppl::TAlias> IAppl::fAliases;
 
 string	IAppl::fVersion;						// the application version number
 float	IAppl::fVersionNum = 0.;				// the application version number as floating point value
@@ -386,6 +387,51 @@ bool IAppl::processMsg (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+int IAppl::processAlias (const TAlias& alias, const IMessage* imsg)
+{
+	string head = OSCAddress::addressFirst(alias.first);
+	string tail = OSCAddress::addressTail(alias.first);
+
+	vector<TAliasParam> params = alias.second;
+	size_t psize = params.size();
+	if (psize) {
+		int status = MsgHandler::kBadAddress;
+		int n = imsg->size();
+		int i=0;
+		for (auto p: params) {
+			psize--;
+			if (i >= n) {
+				ITLErr << "incorrect alias call: at least " << int(params.size()) << " parameters expected" << ITLEndl;
+				return MsgHandler::kBadParameters;
+			}
+			SIMessage m = IMessage::create(alias.first, p.fName);
+			if (!p.scaled())
+				m->add (imsg->param(i));
+			else {
+				float val;
+				if (imsg->cast_param(i, val))
+					m->add (p.scale(val));
+				else return MsgHandler::kBadParameters;
+			}
+			i++;
+			if (!psize) {
+				for (i; i<n; i++) m->add (imsg->param(i));
+			}
+			status = processMsg (head, tail, m);
+			if (status != MsgHandler::kProcessed) {
+				ITLErr << "incorrect alias call: translated to " << m->toString() << ITLEndl;
+				break;
+			}
+		}
+		return status;
+	}
+
+	SIMessage msg = IMessage::create (*imsg);
+	msg->setAddress (alias.first);
+	return processMsg (head, tail, msg);
+}
+
+//--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
 	setReceivedOSC (1);
@@ -400,22 +446,17 @@ int IAppl::processMsg (const std::string& address, const std::string& addressTai
 	int status = MsgHandler::kBadAddress;
 	string head = address;
 	string tail = addressTail;
-	SIMessage msg = IMessage::create (*imsg);
 	TAliasesMap::const_iterator i = fAliases.find(imsg->address());
 	if (i != fAliases.end()) {
-		msg->setAddress (i->second.first);
-		if (i->second.second.size()) 
-			msg->setMessage(i->second.second);
-		head = OSCAddress::addressFirst(i->second.first);
-		tail = OSCAddress::addressTail(i->second.first);
+		return processAlias (i->second, imsg);
 	}
 
 	if (tail.size()) {		// application is not the final destination of the message
-		status = IObject::processMsg(head, tail, msg);
+		status = IObject::processMsg(head, tail, imsg);
  	}
 	
 	else if (match(head)) {			// the message is for the application itself
-		status = execute(msg);
+		status = execute(imsg);
 		if (status & MsgHandler::kProcessed)
 			setModified();
 	}
@@ -647,9 +688,45 @@ MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+IAppl::TAliasParam IAppl::string2param (const string& str)
+{
+	string exp = "([^[]+)\\[(..*)\\]";
+	std::regex e (exp);
+	smatch m;
+
+	string param = str;
+	float min = -1.f;
+	float max = 1.f;
+
+	if (regex_search (str, m, e)) {
+		param = m[1];
+		string exp = "(-?[0-9]+(?:\\.[0-9]*){0,1})[ 	]*,[ 	]*(-?[0-9]+(?:\\.[0-9]*){0,1})";
+		std::regex e (exp);
+		smatch v;
+
+		if (regex_search (str, v, e)) {
+			min = std::stof(v[1]);
+			max = std::stof(v[2]);
+		}
+	}
+	return IAppl::TAliasParam(param, min, max);
+}
+
+//--------------------------------------------------------------------------
 void IAppl::addAlias( const string& alias, const string& address, const string& msg )
 {
-	fAliases[alias] = make_pair(address, msg);
+	vector<TAliasParam> params;
+	params.push_back(string2param (msg));
+	fAliases[alias] = make_pair(address, params);
+}
+
+//--------------------------------------------------------------------------
+void IAppl::addAlias( const string& alias, const string& address, const vector<string>& msgs )
+{
+	vector<TAliasParam> params;
+	for (auto m: msgs)
+		params.push_back(string2param (m));
+	fAliases[alias] = make_pair(address, params);
 }
 
 //--------------------------------------------------------------------------
@@ -667,15 +744,36 @@ void IAppl::delAliases( const string& address)
 }
 
 //--------------------------------------------------------------------------
-void IAppl::getAliases( const string& address, vector<pair<string, string> >& aliases)
+void IAppl::getAliases( const string& address, vector<TAlias>& aliases)
 {
 	TAliasesMap::iterator i = fAliases.begin();
 	while ( i != fAliases.end() ) {
-		if (i->second.first == address) {
-			aliases.push_back(make_pair(i->first, i->second.second));
+		TAlias alias = i->second;
+		if (alias.first == address) {
+			alias.first = i->first;
+			aliases.push_back(alias);
 		}
 		i++;
 	}
 }
+
+//--------------------------------------------------------------------------
+string IAppl::TAliasParam::toString() const
+{
+	stringstream sstr;
+	sstr << fName;
+	if ( scaled() )
+		sstr << "[" << fMin << "," << fMax << "]";
+	return sstr.str();
+}
+
+//--------------------------------------------------------------------------
+float IAppl::TAliasParam::scale(float val) const
+{
+	float range = fMax - fMin;
+	float out = range ? 2 * (val - fMin) / range - 1 : val;
+	return out;
+}
+
 
 }

@@ -1304,13 +1304,14 @@ SIMessageList IObject::getStack() const
 SIMessageList IObject::getAliases() const
 {
 	SIMessageList list = IMessageList::create();
-	vector<pair<string, string> > aliases;
+	vector<IAppl::TAlias > aliases;
 	IAppl::getAliases (getOSCAddress(), aliases);
 	size_t n = aliases.size();
 	for (size_t i = 0; i < n; i++) {
 		SIMessage msg = IMessage::create (getOSCAddress(), kalias_GetSetMethod);
 		msg->add (aliases[i].first);
-		if (aliases[i].second.size()) msg->add (aliases[i].second);
+		vector<IAppl::TAliasParam> params = aliases[i].second;
+		for (auto p: params) msg->add (p.toString());
 		list->list().push_back (msg);
 	}
 	if (list->list().empty()) {
@@ -1322,19 +1323,22 @@ SIMessageList IObject::getAliases() const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::aliasMsg(const IMessage* msg)
 { 
-	unsigned int n = msg->size();
+	size_t n = msg->size();
 	if (n == 0) {
 		IAppl::delAliases (getOSCAddress());
 		return MsgHandler::kProcessed;
 	}
-	
-	else if ( n <= 2 ) {
-		string alias, msgstr;
-		if (( n == 2 ) && !msg->param(1, msgstr)) return MsgHandler::kBadParameters;
-		if (msg->param(0, alias)) {
-			IAppl::addAlias (alias, getOSCAddress(), msgstr);
-			return MsgHandler::kProcessed;
+	if ( n >= 1 ) {
+		string alias;
+		if (!msg->param(0, alias)) return MsgHandler::kBadParameters;
+		vector<string> msgs;
+		for (size_t i = 1; i < n; i++) {
+			string msgstr;
+			if (!msg->param(i, msgstr)) return MsgHandler::kBadParameters;
+			msgs.push_back( msgstr);
 		}
+		IAppl::addAlias (alias, getOSCAddress(), msgs);
+		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;
 }

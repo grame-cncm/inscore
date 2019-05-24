@@ -69,8 +69,23 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 */
 class IAppl : public IObject, public TILoader, public QTimer
 {
-	typedef std::map<std::string, std::pair<std::string, std::string> >		TAliasesMap;
+	public:
+	struct TAliasParam {
+		std::string	fName;
+		float		fMin;
+		float 		fMax;
+		TAliasParam (std::string name)							: fName(name), fMin(-1.f), fMax(1.f) {}
+		TAliasParam (std::string name, float min, float max)	: fName(name), fMin(min), fMax(max) {}
+		bool 		scaled() const		{ return (fMin!=-1.0) || (fMax!=1.0); }
+		std::string toString() const;
+		float 		scale(float val) const;
+	};
+	typedef std::pair<std::string, std::vector<TAliasParam> >	TAlias;
+	typedef std::map<std::string, TAlias>						TAliasesMap;
+
+	private:
 	static TAliasesMap fAliases;
+	static TAliasParam string2param (const std::string& str);
 
 	static std::string	fDefaultFontName;
 	static std::string	fRootPath;
@@ -115,8 +130,9 @@ class IAppl : public IObject, public TILoader, public QTimer
 		static const std::string&	parseVersion()			{ return fParseVersion; }
 
 		static void				addAlias( const std::string& alias, const std::string& address, const std::string& msg);
+		static void				addAlias( const std::string& alias, const std::string& address, const std::vector<std::string>& msg);
 		static void				delAliases( const std::string& address);
-		static void				getAliases( const std::string& address, std::vector<std::pair<std::string, std::string> >& aliases);
+		static void				getAliases( const std::string& address, std::vector<TAlias>& aliases);
 		static void				setRootPath();
 		static int				getParseVersion	();
 
@@ -155,7 +171,7 @@ class IAppl : public IObject, public TILoader, public QTimer
 
 		/*!
 			\brief application processing of a message
-			
+		 
 			Processing a message at application level differs from general scheme since the IAppl object
 			call its self \c execute method while this method is called by the parent object when not at the root
 			of the model tree.
@@ -165,6 +181,20 @@ class IAppl : public IObject, public TILoader, public QTimer
 			\return true when the message has been successfully processed i.e. when the model is modified
 		*/
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
+
+		/*!
+			\brief processing of an alias
+		 
+			Processing an alias consist in building a message with a resolved adress from the input message.
+			The resolved address is contained in the alias. In addition, an arbitrary number of implicit message
+			strings can be associated to the alias and may include scaling specification. A new message is build for
+			each implicit message string and the input message parameters are passed in sequence to each message,
+			with scaling when it applies.
+			\param msg the input message
+			\param alias an alias for the input message address
+			\return true when the message has been successfully processed i.e. when the model is modified
+		*/
+		virtual int processAlias (const TAlias& alias, const IMessage* msg);
 
 		/*!
 			\brief processing of a message
