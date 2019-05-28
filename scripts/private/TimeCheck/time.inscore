@@ -1,0 +1,88 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/title 	set txt "Measure of tempo accuracy";
+/ITL/scene/title	fontSize 32;
+/ITL/scene/title	y -0.5;
+
+fontsize = 24;
+y = -0.1;
+/ITL/scene/cursor 	set txt "0";
+/ITL/scene/cursor 	fontSize $fontsize;
+/ITL/scene/cursor 	xorigin -1;
+/ITL/scene/cursor 	y $y;
+/ITL/scene/cursor 	watch timeEnter 10 4 12 4 ( 
+		/ITL/scene/cursor set txt "10",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "10" "$(/ITL get time)");
+
+/ITL/scene/cursor 	watch timeEnter 15 16 ( 
+		/ITL/scene/cursor set txt "60",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "60" "$(/ITL get time)");
+		
+/ITL/scene/cursor 	watch timeEnter 30 31 ( 
+		/ITL/scene/cursor set txt "120",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "120" "$(/ITL get time)");
+
+/ITL/scene/cursor 	watch timeEnter 45 46 ( 
+		/ITL/scene/cursor set txt "180",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "180" "$(/ITL get time)");
+
+/ITL/scene/cursor 	watch timeEnter 60 61 (  
+		/ITL/scene/cursor set txt "240",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "240" "$(/ITL get time)");
+
+/ITL/scene/cursor 	watch timeEnter 75 76 (  
+		/ITL/scene/cursor set txt "300",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "300" "$(/ITL get time)");
+
+/ITL/scene/cursor 	watch ddate (/ITL/scene/curtime set txt "$(/ITL get time)");
+					
+
+/ITL/scene/time 	set txt "0";
+/ITL/scene/time 	fontSize $fontsize;
+/ITL/scene/time 	xorigin -1;
+
+/ITL/scene/curtime 	set txt "0";
+/ITL/scene/curtime 	fontSize $fontsize;
+/ITL/scene/curtime 	xorigin -1;
+/ITL/scene/curtime 	y 0.5;
+
+/ITL/scene/label1 	set txt "Logical time (in sec.) : ";
+/ITL/scene/label1 	y $y;
+/ITL/scene/label2 	set txt "Real time (in ms.) : ";
+/ITL/scene/label3 	set txt "Current time (in ms.) : ";
+/ITL/scene/label3 	y 0.5;
+
+/ITL/scene/label*	fontSize $fontsize;
+/ITL/scene/label*	xorigin 1;
+
+
+/ITL time 0;
+#/ITL/scene/cursor tempo 60.045;
+/ITL/scene/cursor tempo 60;
+
+/ITL/log show 1;
+/ITL/log level 2;
+
+__END__
+
+/ITL/log show 1;
+/ITL/log level 2;
+
+/ITL parse v2;
+/ITL parse v1;
+
+/ITL/log $(/ITL/scene/cursor get set);
+/ITL/scene/cursor get date;
+/ITL/scene/cursor get tempo;
+/ITL/scene/cursor tempo 0;
+
+# not supported in v2
+/ITL/log $(/ITL get time);
+
