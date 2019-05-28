@@ -1,0 +1,114 @@
+
+/ITL/scene/* del;
+/ITL/scene height 1;
+/ITL/scene width 1.4;
+
+# title and credits
+/ITL/scene/title1 	(set img "rsrc/title1.png"),
+					(x -1.1);
+/ITL/scene/title2 	(set img "rsrc/title2.png"),
+					(x 0.2);
+/ITL/scene/title* 	(xorigin -1.0),
+					(yorigin 1.0),
+					(scale 0.7),
+					(y -0.5);
+
+# navigation
+/ITL/scene/navbar 	(set img "rsrc/artikulation-line.png"),
+					(y 0.7),
+					(duration 1807 32);
+
+# Add rectangles as cursors
+/ITL/scene/cursor 		set rect 0.01 0.2;
+/ITL/scene/cursornav 	set rect 0.005 0.2;
+/ITL/scene/cursor* 	(date 1000 1),
+					(duration 1 64),
+					(color 255 0 48 200),
+					(z 1.0);
+
+<? javascript 
+	var pages=20;
+
+	function makemsg (msg, index, t1, t2) {
+		msg = msg.replace(/INDEX/g, index);
+		msg = msg.replace(/T1/g, t1);
+		msg = msg.replace(/T2/g, t2);
+		return msg;
+	}
+
+	function makePages () {
+		var t = [ 0, 86, 176, 270, 366, 471, 557, 659, 733, 824, 908, 1016, 1122, 1216, 1297, 1396, 1486, 1574, 1667, 1733, 1807 ];
+		var out = new Array;
+		var msg = "/ITL/scene/pageINDEX set 'img' 'rsrc/scINDEX.png'; \
+			/ITL/scene/cursor watch  timeEnter T1 32 T2 32  ((/ITL/scene/pageINDEX show 1), (/ITL/scene/sync cursor pageINDEX v)); \
+			/ITL/scene/cursor watch  timeLeave T1 32 T2 32  (/ITL/scene/pageINDEX show 0);" 
+
+		for (i=1; i <= pages; i++) {
+			out[i] = makemsg (msg, i, t[i-1], t[i]) ;
+		}
+		return out;
+	}
+?>
+
+<? javascript makePages() ?>
+
+move = ((/ITL/scene/cursor* date "$date"),
+		(/ITL/scene/artikulation vdate "$date%f"));
+
+/ITL/scene/page*	(scale 0.6),
+					(show 0),
+					(watch mouseDown ( $move)),
+					(watch mouseMove ( $move));
+
+/ITL/scene/navbar	(watch mouseDown ( $move)),
+					(watch mouseMove ( $move));
+
+/ITL/scene/artikulation (set audio "artikulation.m4a"),
+						(show 0);
+
+
+/ITL/scene/sync cursor page1 v;
+/ITL/scene/sync cursornav navbar v;
+/ITL/scene/cursor* date 0 1;
+
+
+/ITL/scene/cursor watch timeEnter 1820 32 1830 32 ((/ITL/scene/control event mouseDown 0 0), (/ITL/scene/stop event mouseDown 0 0));
+
+# adds a simple button to control play/pause
+/ITL/scene/control  (set img "rsrc/play.png"),
+					(scale 0.15),
+					(x -0.05),
+					(y 0.85);
+
+/ITL/scene/stop  (set img "rsrc/stop.png"),
+					(scale 0.15),
+					(x 0.05),
+					(y 0.85),
+					(watch mouseDown (
+						(/ITL/scene/cursor* tempo 0),
+						(/ITL/scene/cursor* date 0),
+						(/ITL/scene/artikulation play 0),
+						(/ITL/scene/artikulation vdate 0),
+						(/ITL/scene/control set img "rsrc/play.png")
+					));
+
+/ITL/scene/control watch mouseDown 	(
+	(/ITL/scene/control push),
+	(/ITL/scene/cursor* tempo 60 ),
+	(/ITL/scene/artikulation play 1),
+	(/ITL/scene/control set img "rsrc/pause.png"),
+	(/ITL/scene/control watch mouseDown 	(
+		(/ITL/scene/cursor* tempo 0),
+		(/ITL/scene/artikulation play 0),
+		(/ITL/scene/control set img "rsrc/play.png"),
+		(/ITL/scene/control pop)
+	))
+); 
+
+/ITL/scene load "rsrc/maps.inscore2";
+
+__END__
+
+/ITL/scene/page*/debug map 1;
+
+
