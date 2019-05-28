@@ -2335,9 +2335,9 @@ The \OSC{relation} parameter must be sent as a single string which format is des
 
 \begin{rail}
 relation : 
-		([1] float2DSegment relativeTimeSegment ) +
-	| 	([2] int2DSegment relativeTimeSegment ) +
-	| 	([3] int1DSegment relativeTimeSegment ) + 
+		([1] float2DSegment timeSegment ) +
+	| 	([2] int2DSegment timeSegment ) +
+	| 	([3] int1DSegment timeSegment ) + 
 \end{rail}
 
 Segments are expressed as a list of intervals. For a 1 dimension resource, a segment is a made of a single interval. For a 2 dimensions resource, a segment is a made of 2 intervals: an interval on the \values{x}-axis and one on the \values{y}-axis for graphic based resource, or an interval on columns and one on lines for text based resources. Intervals are right-opened.
@@ -2373,9 +2373,21 @@ component type & segmentation type \\
 \label{maptable}
 \end{table}
 
+
+%===============================
+\subsublevel{Segments definitions}
+
+\begin{rail}
+timeSegment : relativeTimeSegment | absoluteTimeSegment
+\end{rail}
+
 \begin{rail}
 relativeTimeSegment : '(' relativeTimeInterval ')' 
 \end{rail}
+\begin{rail}
+absoluteTimeSegment : '(' absoluteTimeInterval ')' 
+\end{rail}
+
 \begin{rail}
 float2DSegment : '(' floatInterval floatInterval ')' 
 \end{rail}
@@ -2391,6 +2403,9 @@ int1DSegment : '(' intInterval ')'
 relativeTimeInterval : '[' rational ',' rational '[' 
 \end{rail}
 \begin{rail}
+absoluteTimeInterval : '[' absoluteTime ',' absoluteTime '[' 
+\end{rail}
+\begin{rail}
 floatInterval : '[' float32 ',' float32 '['
 \end{rail}
 \begin{rail}
@@ -2403,6 +2418,12 @@ Relative time is expressed as \OSC{rational} values where \values{1} represents 
 rational : int32 '/' int32
 \end{rail}
 
+Absolute time is expressed in minutes, seconds and cents. It is automatically converted to relative time, assuming that the 
+tempo is 60 quarter notes per minute.
+\begin{rail}
+absoluteTime : "min" ":" "sec" ":" "cents"
+\end{rail}
+
 \example \\
 Mapping an image graphic space to time:
 \sample{/ITL/scene/myImage map \\
@@ -2413,6 +2434,16 @@ Mapping an image graphic space to time:
 \hspace*{1.15cm}( [190, 235[ [0, 86[ ) ( [2/1, 5/2[ )" ;
 }
 the image is horizontally segmented into 5 different graphic segments that express pixel positions. The vertical dimension of the segments remains the same and corresponds to the interval \values{[0, 86[}. Each graphic segment is associated to a time interval which duration is 1/2 (a half note).
+
+The same mapping using absolute time assumes that 1 second is equal to 1 quarter note:
+\sample{/ITL/scene/myImage map \\
+\hspace*{1cm}"( [0, 67[    [0, 86[ )   ( [0:0:0, 0:2:0[ ) \\
+\hspace*{1.15cm}( [67, 113[  [0, 86[ ) ( [0:2:0, 0:4:0[ ) \\
+\hspace*{1.15cm}( [113, 153[ [0, 86[ ) ( [0:4:0, 0:6:0[ ) \\
+\hspace*{1.15cm}( [153, 190[ [0, 86[ ) ( [0:6:0, 0:8:0[ ) \\
+\hspace*{1.15cm}( [190, 235[ [0, 86[ ) ( [0:8:0, 0:10:0[ )" ;
+}
+
 
 \note{about local spaces}
 \begin{itemize}

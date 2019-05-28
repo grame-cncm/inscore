@@ -75,6 +75,8 @@ EOL		[\x0a\x0d]
 "["					return INTERVAL_BAR;
 ","					return SEP;
 
+":"					return TIMESEP;
+
 
 {EOL}				yylloc->first_column=0; /* ignore */
 {SPACE}+			/* eat up space */

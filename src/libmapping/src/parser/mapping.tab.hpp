@@ -43,10 +43,11 @@
      FLOAT = 259,
      SEGMENT_START = 260,
      SEGMENT_END = 261,
-     INTERVAL_BAR = 262,
-     RATIONAL_BAR = 263,
+     RATIONAL_BAR = 262,
+     INTERVAL_BAR = 263,
      SEP = 264,
-     ERROR = 265
+     TIMESEP = 265,
+     ERROR = 266
    };
 #endif
 /* Tokens.  */
@@ -54,17 +55,18 @@
 #define FLOAT 259
 #define SEGMENT_START 260
 #define SEGMENT_END 261
-#define INTERVAL_BAR 262
-#define RATIONAL_BAR 263
+#define RATIONAL_BAR 262
+#define INTERVAL_BAR 263
 #define SEP 264
-#define ERROR 265
+#define TIMESEP 265
+#define ERROR 266
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 20 "mapping.y"
+#line 25 "mapping.y"
 {         
 	long int				num;
 	float					real;
@@ -78,7 +80,7 @@ typedef union YYSTYPE
 	libmapping::TSegment<float,1>*					floatseg;
 }
 /* Line 1529 of yacc.c.  */
-#line 82 "mapping.tab.hpp"
+#line 84 "mapping.tab.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

@@ -16,6 +16,11 @@
 %start mapping
 
 /*------------------------------ tokens ------------------------------*/
+%token NUMBER FLOAT
+%token SEGMENT_START SEGMENT_END
+%token RATIONAL_BAR  INTERVAL_BAR SEP TIMESEP ERROR
+
+/*------------------------------ types ------------------------------*/
 %union 
 {         
 	long int				num;
@@ -30,29 +35,14 @@
 	libmapping::TSegment<float,1>*					floatseg;
 };
 
-/*------------------------------ numbers ------------------------------*/
-%token NUMBER
-%token FLOAT
-
-/*------------------------------ markers ------------------------------*/
-%token SEGMENT_START
-%token SEGMENT_END
-%token INTERVAL_BAR
-
-/*------------------------------   misc  ------------------------------*/
-%token RATIONAL_BAR
-%token SEP
-%token ERROR
-
-/*------------------------------   types  ------------------------------*/
 %type <num>			NUMBER number
-%type <real>		FLOAT floatnumber
+%type <real>		FLOAT floatnumber abstime
 %type <rat>			rational
 %type <longInterv>	longInterval
 %type <floatInterv>	floatInterval
 %type <long2Dseg>	long2DSegment
 %type <float2Dseg>	float2DSegment
-%type <rationalseg>	rationalSegment
+%type <rationalseg>	rationalSegment abstimeSegment
 %type <longseg>		longSegment
 %type <floatseg>	floatSegment
 
@@ -83,14 +73,28 @@ mapping		: long2D_to_rational_map
 			| float2D_to_rational_map
 			| long_to_rational_map
 			| float_to_rational_map
+			| long2D_to_atime_map
+			| float2D_to_atime_map
+			| long_to_atime_map
+			| float_to_atime_map
 			;
 
 
 //_______________________________________________
 // time segment definition
-rationalSegment			: SEGMENT_START INTERVAL_BAR rational SEP rational INTERVAL_BAR SEGMENT_END	
+rationalSegment	: SEGMENT_START INTERVAL_BAR rational SEP rational INTERVAL_BAR SEGMENT_END	
 									{ $$ = new libmapping::TSegment<libmapping::rational,1>(*$3,*$5);  delete $3; delete $5;}
-						;
+				;
+
+abstime  		: number TIMESEP number TIMESEP number	
+									{ $$ = ((($1 * 60) + $3) * 100 + $5) / 100.f; }
+				;
+
+abstimeSegment  : SEGMENT_START INTERVAL_BAR abstime SEP abstime INTERVAL_BAR SEGMENT_END	
+									{ $$ = new libmapping::TSegment<libmapping::rational,1>(libmapping::rational($3/4),libmapping::rational($5/4));}
+				;
+
+
 
 //_______________________________________________
 // intpoint to relative time mapping
@@ -131,6 +135,28 @@ float2D_to_rational_map : float2D_to_rational_relation
 float2D_to_rational_relation: float2DSegment rationalSegment					{ if (!context->fReader->map(*$1,*$2)) { _maperror } delete $1; delete $2;}
 float2DSegment			: SEGMENT_START floatInterval floatInterval SEGMENT_END	{ $$ = new libmapping::TSegment<float,2>(*$2,*$3);  delete $2; delete $3; }
 						;
+
+
+//_______________________________________________
+// absolute time mappins
+long2D_to_atime_map			: long2D_to_atime_relation
+							| long2D_to_atime_relation long2D_to_atime_map
+long2D_to_atime_relation	: long2DSegment abstimeSegment						{ if (!context->fReader->map(*$1,*$2)) { _maperror } delete $1; delete $2;}
+
+float2D_to_atime_map 		: float2D_to_atime_relation
+							| float2D_to_atime_relation float2D_to_atime_map
+float2D_to_atime_relation	: float2DSegment abstimeSegment						{ if (!context->fReader->map(*$1,*$2)) { _maperror } delete $1; delete $2;}
+
+long_to_atime_map			: long_to_atime_relation
+							| long_to_atime_relation long_to_atime_map
+							;
+long_to_atime_relation		: longSegment abstimeSegment						{ if (!context->fReader->map(*$1,*$2)) { _maperror } delete $1; delete $2;}
+
+float_to_atime_map			: float_to_atime_relation
+							| float_to_atime_relation float_to_atime_map
+							;
+float_to_atime_relation		: floatSegment abstimeSegment						{ if (!context->fReader->map(*$1,*$2)) { _maperror } delete $1; delete $2;}
+
 
 //_______________________________________________
 // numbers
