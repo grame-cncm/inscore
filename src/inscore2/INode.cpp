@@ -28,7 +28,6 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <regex>
 
 #include "INode.h"
 #include "TreeTools.h"
