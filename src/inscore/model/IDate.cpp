@@ -81,7 +81,7 @@ if (date.getNumerator() < 0)
 //--------------------------------------------------------------------------
 void IDate::move () const
 { 
-	rational dd ( int(IAppl::getRealRate() * fTempo), 60000 * 4);
+	rational dd ( int(IAppl::getRealRate() * fTempo * 8), 60000 * 32);
 	dd.rationalize();
 	SIMessage msg = IMessage::create(getOSCAddress(), kddate_SetMethod);
 	msg->add(int(dd.getNumerator()));
@@ -90,7 +90,7 @@ void IDate::move () const
 }
 
 //--------------------------------------------------------------------------
-void IDate::setTempo (int tempo)
+void IDate::setTempo (float tempo)
 { 
 	fTempo = tempo;
 }

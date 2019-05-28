@@ -51,7 +51,7 @@ class IDate : public TimeEventAble
 	protected:
 		libmapping::rational fDate;					///< the object date
 		libmapping::rational fDuration;				///< the object duration
-		int					 fTempo;				///< the object tempo
+		float				 fTempo;				///< the object tempo
 
 		bool	fDateChanged;
 		bool	fDurationChanged;
@@ -85,9 +85,9 @@ class IDate : public TimeEventAble
 		/// \brief sets the object duration \param dur a duration expressed as a rational
 		virtual void	setDuration (const libmapping::rational& dur);
 		/// \brief sets the object date \param date a date expressed as a rational
-		virtual void	setTempo (int tempo);
+		virtual void	setTempo (float tempo);
 		/// \brief moves the date
-		virtual void	addDate (const libmapping::rational& date)		{ setDate(fDate + date); }
+		virtual void	addDate (const libmapping::rational& date)		{ setDate( libmapping::rational(double(fDate) + double(date))); }
 		/// \brief moves the duration
 		virtual void	addDuration (const libmapping::rational& dur)	{ fDuration += dur; fDurationChanged = true; }
 		/// \brief moves the tempo
