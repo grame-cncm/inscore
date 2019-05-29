@@ -50,15 +50,21 @@ using namespace inscore2;
 %lex-param { void* scanner  }
 
 /*------------------------------ tokens ------------------------------*/
-%token ACOS ACOSH
+%token ACOS
+%token ACOSH
 %token ADD
 %token ANYADDR
-%token ASIN ASINH ATAN ATANH
+%token APPLY
+%token ASIN
+%token ASINH
+%token ATAN
+%token ATANH
 %token CBRT
 %token CEIL
 %token COLON
 %token COMMA
-%token COS COSH
+%token COS
+%token COSH
 %token DIV
 %token ENDSCRIPT
 %token ENDSTATEMENT
@@ -70,27 +76,41 @@ using namespace inscore2;
 %token EXPANDID
 %token FLOAT
 %token FLOOR
-%token GREATER GREATEREQ
+%token GREATER
+%token GREATEREQ
 %token HAS
 %token IDENTIFIER
 %token INT
 %token JSCRIPT
 %token LDOTS
-%token LEFTBRACE LEFTBRACKET LEFTPAR
-%token LESS  LESSEQ
+%token LEFTBRACE
+%token LEFTBRACKET
+%token LEFTPAR
+%token LESS
+%token LESSEQ
 %token LETTERS
-%token LOG LOG10 LOG2
-%token MAX MIN
-%token MODULO MULT
+%token LOG
+%token LOG10
+%token LOG2
+%token MAX
+%token MIN
+%token MODULO
+%token MSTIME
+%token MULT
 %token NEG
 %token POW
 %token QUEST
 %token RAND
 %token REGEXP
-%token RIGHTBRACE RIGHTBRACKET RIGHTPAR
-%token ROUND SIN SINH
+%token RIGHTBRACE
+%token RIGHTBRACKET
+%token RIGHTPAR
+%token ROUND
+%token SIN
+%token SINH
 %token SLASH
 %token SQRT
+%token STIME
 %token STRING
 %token SUB
 %token TAN
@@ -98,8 +118,6 @@ using namespace inscore2;
 %token URLPREFIX
 %token VARIABLE
 %token WITH
-
-%token STIME MSTIME
 
 %left INT FLOAT
 %left URLPREFIX LETTERS IDENTIFIER STRING EXPANDID REGEXP VARIABLE LDOTS
@@ -109,7 +127,6 @@ using namespace inscore2;
 %left EXP LOG LOG10 LOG2 POW SQRT CBRT 
 %left CEIL FLOOR ROUND RAND 
  
-
 %left PAR SEQ 
 %left COMMA  DECL LDECL LEFTPAR LEFTBRACE SLASH
 
@@ -119,7 +136,7 @@ using namespace inscore2;
 	inscore2::INode* 		treeptr;
 }
 
-%type <treeptr> 	identifier number delay string tree variable prefix varname exval expandval math
+%type <treeptr> 	identifier number delay string tree variable prefix varname exval expandval expandid regexp math argslist
 
 %start start
 
@@ -156,8 +173,19 @@ start		: statement
 //_______________________________________________
 statement	: tree  ENDSTATEMENT		{ context->add ($1); }
 			| vardecl ENDSTATEMENT		{ } 
+			| fundef  ENDSTATEMENT		{ } 
 			| JSCRIPT 					{ context->add (context->javascript (context->fText)); }
 			| ENDSCRIPT					{ YYACCEPT; }
+			;
+
+//_______________________________________________
+fundef	    : identifier LEFTPAR  RIGHTPAR EQUAL tree { cerr << "fundef " << $1->getValue() << "()" << endl; }
+			| identifier LEFTPAR argslist RIGHTPAR EQUAL tree { cerr << "fundef " << $1->getValue() << " args: " << $3 << " -> " << $6  << endl; }
+			;
+
+argslist	: identifier				{ $$ = $1; }
+			| identifier EQUAL tree		{ $$ = context->seq($1, $3); }
+			| argslist COMMA argslist 	{ $$ = context->par($1, $3) };
 			;
 
 //_______________________________________________
@@ -165,6 +193,8 @@ tree		: identifier			{ $$ = $1; }
 			| string				{ $$ = $1; }
 			| prefix				{ $$ = $1; }
             | number                { $$ = $1; }
+            | expandid             	{ $$ = $1; }
+            | regexp             	{ $$ = $1; }
             | expandval             { $$ = $1; }
             | delay                 { $$ = $1; }
 			| variable				{ $$ = $1; }
@@ -178,8 +208,12 @@ tree		: identifier			{ $$ = $1; }
 
 identifier	: LETTERS		{ $$ = context->create (context->fText); }
 			| IDENTIFIER	{ $$ = context->create (context->fText); }
-			| EXPANDID		{ $$ = context->expand (context->fText); }
-			| REGEXP		{ $$ = context->create (context->fText); }
+			;
+
+expandid	: EXPANDID		{ $$ = context->expand (context->fText); }
+			;
+
+regexp		: REGEXP		{ $$ = context->create (context->fText); }
 			;
 
 prefix		: URLPREFIX		{ $$ = context->prefix (context->fText); }
@@ -198,13 +232,13 @@ expandval	: exval									{ $$ = $1; }
  //listval		: LEFTBRACKET number LDOTS number RIGHTBRACKET	{ $$ = context->create ($2->getValue()+"..."+$4->getValue()); delete $2; delete $4; }
 			;
 
-vardecl	    : identifier EQUAL tree {context->declare ($1->getValue(), $3); delete $1; }  %prec DECL
+vardecl	    : identifier EQUAL tree 				{context->declare ($1->getValue(), $3); delete $1; }  %prec DECL
 			;
 
-pushvardecl	: identifier EQUAL tree { context->pushEnv(); context->declare ($1->getValue(), $3); delete $1; }  %prec LDECL
+pushvardecl	: identifier EQUAL tree 				{ context->pushEnv(); context->declare ($1->getValue(), $3); delete $1; }  %prec LDECL
 			;
 
-variable	: varname					{ $$ = context->variable ($1->getValue()); delete $1; } 
+variable	: varname								{ $$ = context->variable ($1->getValue()); delete $1; } 
 			| varname LEFTBRACE varlist  RIGHTBRACE { $$ = context->variable ($1->getValue()); context->popEnv(); delete  $1; }
  			;
 

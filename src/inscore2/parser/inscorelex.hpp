@@ -339,7 +339,7 @@ extern int INSCOREV2lex \
 #undef YY_DECL
 #endif
 
-#line 287 "inscorev2.l"
+#line 288 "inscorev2.l"
 
 
 #line 346 "inscorelex.hpp"

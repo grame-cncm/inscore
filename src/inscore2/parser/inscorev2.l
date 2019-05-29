@@ -213,17 +213,18 @@ EOL		[\x0a\x0d]
  /* ----------------------------------------- */
  /*	delimiters */
  /* ----------------------------------------- */
-"/"					 	return SLASH;
-"("					 	return LEFTPAR;
-")"					 	return RIGHTPAR;
-"{"					 	return LEFTBRACE;
-"}"					 	return RIGHTBRACE;
-"["					 	return LEFTBRACKET;
-"]"					 	return RIGHTBRACKET;
-";"					 	return ENDSTATEMENT;
-":"					 	return COLON;
-","					 	return COMMA;
-"..."					return LDOTS;
+"@"					return APPLY;
+"/"					return SLASH;
+"("					return LEFTPAR;
+")"					return RIGHTPAR;
+"{"					return LEFTBRACE;
+"}"					return RIGHTBRACE;
+"["					return LEFTBRACKET;
+"]"					return RIGHTBRACKET;
+";"					return ENDSTATEMENT;
+":"					return COLON;
+","					return COMMA;
+"..."				return LDOTS;
 
 
  /* ----------------------------------------- */

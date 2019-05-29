@@ -43,73 +43,74 @@
      ACOSH = 259,
      ADD = 260,
      ANYADDR = 261,
-     ASIN = 262,
-     ASINH = 263,
-     ATAN = 264,
-     ATANH = 265,
-     CBRT = 266,
-     CEIL = 267,
-     COLON = 268,
-     COMMA = 269,
-     COS = 270,
-     COSH = 271,
-     DIV = 272,
-     ENDSCRIPT = 273,
-     ENDSTATEMENT = 274,
-     EOL = 275,
-     EQ = 276,
-     EQUAL = 277,
-     ERR = 278,
-     EXP = 279,
-     EXPANDID = 280,
-     FLOAT = 281,
-     FLOOR = 282,
-     GREATER = 283,
-     GREATEREQ = 284,
-     HAS = 285,
-     IDENTIFIER = 286,
-     INT = 287,
-     JSCRIPT = 288,
-     LDOTS = 289,
-     LEFTBRACE = 290,
-     LEFTBRACKET = 291,
-     LEFTPAR = 292,
-     LESS = 293,
-     LESSEQ = 294,
-     LETTERS = 295,
-     LOG = 296,
-     LOG10 = 297,
-     LOG2 = 298,
-     MAX = 299,
-     MIN = 300,
-     MODULO = 301,
-     MULT = 302,
-     NEG = 303,
-     POW = 304,
-     QUEST = 305,
-     RAND = 306,
-     REGEXP = 307,
-     RIGHTBRACE = 308,
-     RIGHTBRACKET = 309,
-     RIGHTPAR = 310,
-     ROUND = 311,
-     SIN = 312,
-     SINH = 313,
-     SLASH = 314,
-     SQRT = 315,
-     STRING = 316,
-     SUB = 317,
-     TAN = 318,
-     TANH = 319,
-     URLPREFIX = 320,
-     VARIABLE = 321,
-     WITH = 322,
-     STIME = 323,
-     MSTIME = 324,
-     SEQ = 325,
-     PAR = 326,
-     LDECL = 327,
-     DECL = 328
+     APPLY = 262,
+     ASIN = 263,
+     ASINH = 264,
+     ATAN = 265,
+     ATANH = 266,
+     CBRT = 267,
+     CEIL = 268,
+     COLON = 269,
+     COMMA = 270,
+     COS = 271,
+     COSH = 272,
+     DIV = 273,
+     ENDSCRIPT = 274,
+     ENDSTATEMENT = 275,
+     EOL = 276,
+     EQ = 277,
+     EQUAL = 278,
+     ERR = 279,
+     EXP = 280,
+     EXPANDID = 281,
+     FLOAT = 282,
+     FLOOR = 283,
+     GREATER = 284,
+     GREATEREQ = 285,
+     HAS = 286,
+     IDENTIFIER = 287,
+     INT = 288,
+     JSCRIPT = 289,
+     LDOTS = 290,
+     LEFTBRACE = 291,
+     LEFTBRACKET = 292,
+     LEFTPAR = 293,
+     LESS = 294,
+     LESSEQ = 295,
+     LETTERS = 296,
+     LOG = 297,
+     LOG10 = 298,
+     LOG2 = 299,
+     MAX = 300,
+     MIN = 301,
+     MODULO = 302,
+     MSTIME = 303,
+     MULT = 304,
+     NEG = 305,
+     POW = 306,
+     QUEST = 307,
+     RAND = 308,
+     REGEXP = 309,
+     RIGHTBRACE = 310,
+     RIGHTBRACKET = 311,
+     RIGHTPAR = 312,
+     ROUND = 313,
+     SIN = 314,
+     SINH = 315,
+     SLASH = 316,
+     SQRT = 317,
+     STIME = 318,
+     STRING = 319,
+     SUB = 320,
+     TAN = 321,
+     TANH = 322,
+     URLPREFIX = 323,
+     VARIABLE = 324,
+     WITH = 325,
+     SEQ = 326,
+     PAR = 327,
+     LDECL = 328,
+     DECL = 329
    };
 #endif
 /* Tokens.  */
@@ -117,85 +118,86 @@
 #define ACOSH 259
 #define ADD 260
 #define ANYADDR 261
-#define ASIN 262
-#define ASINH 263
-#define ATAN 264
-#define ATANH 265
-#define CBRT 266
-#define CEIL 267
-#define COLON 268
-#define COMMA 269
-#define COS 270
-#define COSH 271
-#define DIV 272
-#define ENDSCRIPT 273
-#define ENDSTATEMENT 274
-#define EOL 275
-#define EQ 276
-#define EQUAL 277
-#define ERR 278
-#define EXP 279
-#define EXPANDID 280
-#define FLOAT 281
-#define FLOOR 282
-#define GREATER 283
-#define GREATEREQ 284
-#define HAS 285
-#define IDENTIFIER 286
-#define INT 287
-#define JSCRIPT 288
-#define LDOTS 289
-#define LEFTBRACE 290
-#define LEFTBRACKET 291
-#define LEFTPAR 292
-#define LESS 293
-#define LESSEQ 294
-#define LETTERS 295
-#define LOG 296
-#define LOG10 297
-#define LOG2 298
-#define MAX 299
-#define MIN 300
-#define MODULO 301
-#define MULT 302
-#define NEG 303
-#define POW 304
-#define QUEST 305
-#define RAND 306
-#define REGEXP 307
-#define RIGHTBRACE 308
-#define RIGHTBRACKET 309
-#define RIGHTPAR 310
-#define ROUND 311
-#define SIN 312
-#define SINH 313
-#define SLASH 314
-#define SQRT 315
-#define STRING 316
-#define SUB 317
-#define TAN 318
-#define TANH 319
-#define URLPREFIX 320
-#define VARIABLE 321
-#define WITH 322
-#define STIME 323
-#define MSTIME 324
-#define SEQ 325
-#define PAR 326
-#define LDECL 327
-#define DECL 328
+#define APPLY 262
+#define ASIN 263
+#define ASINH 264
+#define ATAN 265
+#define ATANH 266
+#define CBRT 267
+#define CEIL 268
+#define COLON 269
+#define COMMA 270
+#define COS 271
+#define COSH 272
+#define DIV 273
+#define ENDSCRIPT 274
+#define ENDSTATEMENT 275
+#define EOL 276
+#define EQ 277
+#define EQUAL 278
+#define ERR 279
+#define EXP 280
+#define EXPANDID 281
+#define FLOAT 282
+#define FLOOR 283
+#define GREATER 284
+#define GREATEREQ 285
+#define HAS 286
+#define IDENTIFIER 287
+#define INT 288
+#define JSCRIPT 289
+#define LDOTS 290
+#define LEFTBRACE 291
+#define LEFTBRACKET 292
+#define LEFTPAR 293
+#define LESS 294
+#define LESSEQ 295
+#define LETTERS 296
+#define LOG 297
+#define LOG10 298
+#define LOG2 299
+#define MAX 300
+#define MIN 301
+#define MODULO 302
+#define MSTIME 303
+#define MULT 304
+#define NEG 305
+#define POW 306
+#define QUEST 307
+#define RAND 308
+#define REGEXP 309
+#define RIGHTBRACE 310
+#define RIGHTBRACKET 311
+#define RIGHTPAR 312
+#define ROUND 313
+#define SIN 314
+#define SINH 315
+#define SLASH 316
+#define SQRT 317
+#define STIME 318
+#define STRING 319
+#define SUB 320
+#define TAN 321
+#define TANH 322
+#define URLPREFIX 323
+#define VARIABLE 324
+#define WITH 325
+#define SEQ 326
+#define PAR 327
+#define LDECL 328
+#define DECL 329
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 118 "inscorev2.y"
+#line 135 "inscorev2.y"
 {
 	inscore2::INode* 		treeptr;
 }
 /* Line 1529 of yacc.c.  */
-#line 199 "inscoreparse.hpp"
+#line 201 "inscoreparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
