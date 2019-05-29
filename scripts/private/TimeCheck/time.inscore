@@ -11,10 +11,10 @@ y = -0.1;
 /ITL/scene/cursor 	fontSize $fontsize;
 /ITL/scene/cursor 	xorigin -1;
 /ITL/scene/cursor 	y $y;
-/ITL/scene/cursor 	watch timeEnter 10 4 12 4 ( 
-		/ITL/scene/cursor set txt "10",
+/ITL/scene/cursor 	watch timeEnter 1 2 ( 
+		/ITL/scene/cursor set txt "4",
 		/ITL/scene/time set txt "$(/ITL get time)",
-		/ITL/log write "10" "$(/ITL get time)");
+		/ITL/log write "4" "$(/ITL get time)");
 
 /ITL/scene/cursor 	watch timeEnter 15 16 ( 
 		/ITL/scene/cursor set txt "60",
@@ -40,6 +40,16 @@ y = -0.1;
 		/ITL/scene/cursor set txt "300",
 		/ITL/scene/time set txt "$(/ITL get time)",
 		/ITL/log write "300" "$(/ITL get time)");
+
+/ITL/scene/cursor 	watch timeEnter 150 151 (  
+		/ITL/scene/cursor set txt "600",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "600" "$(/ITL get time)");
+
+/ITL/scene/cursor 	watch timeEnter 225 226 (  
+		/ITL/scene/cursor set txt "900",
+		/ITL/scene/time set txt "$(/ITL get time)",
+		/ITL/log write "900" "$(/ITL get time)");
 
 /ITL/scene/cursor 	watch ddate (/ITL/scene/curtime set txt "$(/ITL get time)");
 					

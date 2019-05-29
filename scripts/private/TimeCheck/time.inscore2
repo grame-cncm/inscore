@@ -15,11 +15,14 @@ y = -0.1;
 					(fontSize $fontsize),
 					(xorigin -1),
 					(y $y),
+					(watch timeEnter 1 2 ( $print{text="4"})),
 					(watch timeEnter 15 16 ( $print{text="60"})),
 					(watch timeEnter 30 31 ( $print{text="120"})),
 					(watch timeEnter 45 46 ( $print{text="180"})),
 					(watch timeEnter 60 61 ( $print{text="240"})),
 					(watch timeEnter 75 76 ( $print{text="300"})),
+					(watch timeEnter 150 151 ( $print{text="600"})),
+					(watch timeEnter 225 226 ( $print{text="900"})),
 					(watch ddate (/ITL/scene/curtime set txt "$(/ITL get time)"));
 					
 
