@@ -1,22 +1,28 @@
-a = toto;
-/ITL/scene/$a x 0.1;
- 
+
+a = 1;
+b = truc;
+/A/b (? (> $a, 1), toto);
+/A/(? (> $a, 1), toto, titi) x  1;
+/A/(+ $b, "_T") x  1;
+/A/scene/* del;
+
 __END__
 
-/ITL/scene/toto watch TRUC (/A/B (x $1), (y $2));
+b(a, b, c) = (a, b, c);
+b(p1=1.0, p2=1, p3=3) = (p1, p2, p3);
+b(p1=1.0, p2=1, p3=3, n=1) = (p1, p2, p3, (? ( < 10, n) b(n+1)));
+/A/B TOTO b();
+/A/B titi b(p3=1); 
+toto = 2;
+/A/B titi b(p1=(* 2, toto), p3=toto);
 
-
-
-__END__
-
+b = ($a, 1, $C);
 C = 3;
 a = 1.0; 
 
-b = ($a, 1, $C);
 /A/B TOTO $b;
 /A/B titi $b{C=1}; 
 /A/B titi $b{C=2,a=(* 2, $C)};
-#/A/B y [1.0...2.0]{dur=1s,style=linear,step=0.1};
 
 __END__
 
