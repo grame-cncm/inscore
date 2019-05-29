@@ -301,7 +301,9 @@ bool evaluator::isTrue  (const SINode& n)
 //------------------------------------------------------------
 SINode evaluator::evalQuest 	(const SINode& node, const NList& args)
 {
-	if (args.size() != 3) error (node, "operator '?' requires 3 arguments");
+	if (args.size() == 2)
+		return isTrue(args[0]) ? args[1]->clone() : SINode(new INode("", INode::kForest));
+	if (args.size() != 3) error (node, "operator '?' requires at least 2 arguments");
 	return SINode (isTrue(args[0]) ? args[1]->clone() : args[2]->clone());
 }
 
@@ -527,16 +529,20 @@ SINode evaluator::evalMath (const SINode& node, const TEnv& env)
 	NList l;
 	for (auto n: node->childs()) {
 		SINode e = eval(n, env + n->getEnv());
-		if (e->getType() == INode::kForest)
-			l.add (e->childs());
-		else
+//		if (e->getType() == INode::kForest)
+//			l.add (e->childs());
+//		else
 			l.add (e);
 	}
 
 	SINode out;
 	INode::TNodeType t = node->getType ();
-	if (t == INode::kQuest)
-		return evalQuest (node, l);
+	if (t == INode::kQuest) {
+		SINode en = evalQuest (node, l);
+		if (node->address()) en->setAddress(true);
+		return en;
+//		return evalQuest (node, l);
+	}
 
 	TType exprType = getType (l);
 	TCreateFunction f;
@@ -588,6 +594,7 @@ SINode evaluator::evalMath (const SINode& node, const TEnv& env)
 			;
 	}
 
+	if (node->address()) out->setAddress(true);
 	if (l.size()) {
 		SINode m = l[0];		// now merge subnodes
 		for (size_t i = 1; i < l.size(); i++) m = m->merge(l[i]);

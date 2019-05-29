@@ -103,6 +103,7 @@ SINode parseEval::evalSeq (const SINode& node)
 	}
 	const NList& sub = node->childs();
 	SINode out = seq (eval(sub[0]), eval(sub[1]));
+	if (node->address()) out->setAddress (true);
 	out->setEnv (node->getEnv());
 	return out;
 }
@@ -112,7 +113,9 @@ SINode parseEval::evalPar (const SINode& node)
 {
 	NList l;
 	for (auto n: node->childs()) {
-		l.add (eval(n));
+		SINode en = eval(n);
+		if (node->address()) en->setAddress (true);
+		l.add (en);
 	}
 	SINode out = SINode(new ForestNode(l));
 	out->setEnv (node->getEnv());
