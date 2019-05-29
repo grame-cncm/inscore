@@ -64,8 +64,14 @@ DAlpha = 150;
 /ITL/scene/box/c* 	(watch mouseEnter (/ITL/scene/box/$self dalpha (- 0, $DAlpha))),
 					(watch mouseLeave (/ITL/scene/box/$self dalpha $DAlpha));
 
-
-/ITL/scene/box watch ddate (/ITL/scene/box dangle 0.1);
+speed = 0.2;
+/ITL/scene/speed 	(set txt "speed"),
+					(show 0),
+					(x $speed),
+					(y (- 0, $speed)),
+					(angle $speed);
+					
+/ITL/scene/box watch ddate (/ITL/scene/box dangle "$(/ITL/scene/speed get angle)");
 
 
 # adds a simple button to control play/pause
@@ -82,9 +88,25 @@ DAlpha = 150;
 	))
 ); 
 
+w = 0.05;
+pos = 0.95;
+/ITL/scene/ctr_[i:j:aa...bb] 	(set ellipse ($w, $w)),
+								(x (+ (- 0, $pos), (* $i, 2, $pos))),
+								(y (+ (- 0, $pos), (* $j, 2, $pos))),
+								(color "0xbbbbbb88");
+
+/ITL/scene/ctr_*				(watch mouseEnter (/ITL/scene/$self dalpha 50)),
+								(watch mouseLeave (/ITL/scene/$self dalpha -50));
+
+/ITL/scene/ctr_ab		watch mouseDown ( /ITL/scene/speed angle $speed);
+/ITL/scene/ctr_bb		watch mouseDown ( /ITL/scene/speed angle (- 0, $speed));
+/ITL/scene/ctr_aa		watch mouseDown ( /ITL/scene/speed angle (/ $speed, 2));
+/ITL/scene/ctr_ba		watch mouseDown ( /ITL/scene/speed angle (* $speed, 5));
 
 __END__
 
+/ITL/log level 2;
+/ITL/scene/ctr*/debug name 1;
 /ITL/scene opengl 1;
 /ITL/scene opengl 0;
 /ITL parse v2;
