@@ -661,12 +661,11 @@ QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
         return specItem->parentItem() ? specItem->parentItem()->boundingRect() : fScene->sceneRect();
     else
     {
-        if(fParent)
+        if (fParent)
         {
             float l = std::min(fParent->boundingRect().width(), fParent->boundingRect().height());
 			float left = fParent->boundingRect().center().x() - l/2;
             float top = fParent->boundingRect().center().y() - l/2;
- //           QRectF rect = *new QRectF( left, top, l, l);
             QRectF rect ( left, top, l, l);
             return rect;
         }
