@@ -106,12 +106,10 @@
      WITH = 322,
      STIME = 323,
      MSTIME = 324,
-     MFUN = 325,
-     OP = 326,
-     SEQ = 327,
-     PAR = 328,
-     LDECL = 329,
-     DECL = 330
+     SEQ = 325,
+     PAR = 326,
+     LDECL = 327,
+     DECL = 328
    };
 #endif
 /* Tokens.  */
@@ -182,12 +180,10 @@
 #define WITH 322
 #define STIME 323
 #define MSTIME 324
-#define MFUN 325
-#define OP 326
-#define SEQ 327
-#define PAR 328
-#define LDECL 329
-#define DECL 330
+#define SEQ 325
+#define PAR 326
+#define LDECL 327
+#define DECL 328
 
 
 
@@ -199,7 +195,7 @@ typedef union YYSTYPE
 	inscore2::INode* 		treeptr;
 }
 /* Line 1529 of yacc.c.  */
-#line 203 "inscoreparse.hpp"
+#line 199 "inscoreparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

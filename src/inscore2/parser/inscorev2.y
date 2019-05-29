@@ -110,7 +110,7 @@ using namespace inscore2;
 %left CEIL FLOOR ROUND RAND 
  
 
-%left PAR SEQ OP MFUN
+%left PAR SEQ 
 %left COMMA  DECL LDECL LEFTPAR LEFTBRACE SLASH
 
 /*------------------------------   types  ------------------------------*/
@@ -119,7 +119,7 @@ using namespace inscore2;
 	inscore2::INode* 		treeptr;
 }
 
-%type <treeptr> 	identifier number delay string tree variable operator prefix mfunction varname exval expandval
+%type <treeptr> 	identifier number delay string tree variable prefix varname exval expandval math
 
 %start start
 
@@ -168,10 +168,8 @@ tree		: identifier			{ $$ = $1; }
             | expandval             { $$ = $1; }
             | delay                 { $$ = $1; }
 			| variable				{ $$ = $1; }
-			| operator				{ $$ = $1; }					%prec OP
-			| mfunction tree		{ $$ = context->seq($1, $2); }	%prec MFUN
-			| SLASH identifier		{ $$ = context->slash($2); }
-			| SLASH variable		{ $$ = context->slash($2); }
+			| math 					{ $$ = $1; }
+			| SLASH tree			{ $$ = context->slash($2); }
 			| ANYADDR				{ $$ = context->slash(context->create ("*")); }
 			| tree tree				{ $$ = context->seq($1, $2); }  %prec SEQ
 			| tree COMMA tree		{ $$ = context->par($1, $3); }  %prec PAR
@@ -217,7 +215,7 @@ varlist	    : pushvardecl				{ }
 varname		: VARIABLE		{ $$ = context->create (context->fText); }
 			;
 
-mfunction	: SIN			{ $$ = context->operation (INode::kSin); }
+math		: SIN			{ $$ = context->operation (INode::kSin); }
 			| COS			{ $$ = context->operation (INode::kCos); }
 			| TAN			{ $$ = context->operation (INode::kTan); }
 			| ASIN			{ $$ = context->operation (INode::kASin); }
@@ -238,13 +236,11 @@ mfunction	: SIN			{ $$ = context->operation (INode::kSin); }
 			| SQRT			{ $$ = context->operation (INode::kSqrt); }
 			| CBRT			{ $$ = context->operation (INode::kCbrt); }
 
-
 			| CEIL			{ $$ = context->operation (INode::kCeil); }
 			| FLOOR			{ $$ = context->operation (INode::kFloor); }
 			| ROUND			{ $$ = context->operation (INode::kRound); }
-			;
 
-operator	: ADD			{ $$ = context->operation (INode::kAdd); }
+			| ADD			{ $$ = context->operation (INode::kAdd); }
 			| SUB			{ $$ = context->operation (INode::kSub); }
 			| DIV			{ $$ = context->operation (INode::kDiv); }
 			| MULT			{ $$ = context->operation (INode::kMult); }
