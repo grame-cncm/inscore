@@ -39,28 +39,33 @@ notes = (/ITL/scene/box/$addr
 # addr, count and radius are local
 $notes{ addr=n_[i:1...9], count=9, radius=0.75 };
 
+/ITL/scene/line set line wa ( 1.8, 90);
 
 /ITL/scene/box watch ddate (
 	(/ITL/scene/box dangle 0.1),
 	(/ITL/scene/box/* dangle -0.1)
 	);
 
-/ITL/scene/line set line wa ( 1.8, 90);
+/ITL/scene/line watch ddate (/ITL/scene/line dangle 0.15);
 	
 
 # adds a simple button to control play/pause
-/ITL/scene/control  (set img "rsrc/play.png"),
-					(scale 0.12);
-/ITL/scene/control watch mouseDown 	(
-	(/ITL/scene/control push),
-	(/ITL/scene/box tempo 60),
-	(/ITL/scene/control set img "rsrc/pause.png"),
-	(/ITL/scene/control watch mouseDown 	(
-		(/ITL/scene/box tempo 0),
-		(/ITL/scene/control set img "rsrc/play.png"),
-		(/ITL/scene/control pop)
-	))
-); 
+control = /ITL/scene/$addr  (set img "rsrc/play.png"),
+					(scale 0.12),
+					(x $x),
+					(y $y),
+					(watch mouseDown 	(
+						(/ITL/scene/$self push),
+						($msgon),
+						(/ITL/scene/$self set img "rsrc/pause.png"),
+						(/ITL/scene/$self watch mouseDown 	(
+							($msgoff),
+							(/ITL/scene/$self set img "rsrc/play.png"),
+							(/ITL/scene/$self pop)
+						)))); 
+
+$control{addr=controlbox, x=0, y=0, msgon=(/ITL/scene/box tempo 60), msgoff=(/ITL/scene/box tempo 0)};
+$control{addr=controlline, x=0, y=0.95, msgon=(/ITL/scene/line tempo 60), msgoff=(/ITL/scene/line tempo 0)};
 
 __END__
 

@@ -1,0 +1,69 @@
+# variables declaration 
+pi    = 3.141592653589793;
+
+# the 'step' variable makes use of 'count'
+# a variable that is instantiated locally
+step  = / ( * 2, $pi), $count;
+
+# the variable 'i' is defined by the 
+# expansion of the address 'n_[i:1...9]'
+x = math.sin ( * $step, $i );
+y = math.cos ( * $step, $i );
+
+# the following variables select part of
+# guido music notation code to build a short score
+dyn = (?  (% $i, 3), 
+	'\i<"p">', 
+	'\i<"ff">');
+note = (+ $dyn, (?  (% $i, 2), 
+	" e2", 
+	" g1/8"));
+
+# this is a classical OSC message
+# that simply clears the scene
+/ITL/scene/* del;
+
+scale = 0.7;
+# this is the main variable. It will be expanded to create a series of small scores.
+# The variables are computed using locally defined variales.  
+notes = /ITL/scene/$addr  
+			(set gmn (+ "[ ", $note, "]")),
+			(scale $scale),
+			(x * $x, $radius),
+			(y * $y, $radius); 
+
+# finally the 'notes' variable is used 
+# addr, count and radius are local
+#$notes{ addr=n_[i:1...9], count=9, radius=0.75 };
+#1s $notes{ addr=b_[i:1...6], count=6, radius=0.425, scale=0.5 };
+#2s $notes{ addr=c_[i:1...5], count=5, radius=0.20,  scale=0.27 };
+#3s /ITL/scene/n_* del;
+#4s /ITL/scene/b_* del;
+#5s /ITL/scene/c_* del;
+
+/ITL/scene watch SHOW (
+	($notes{ addr=n_[i:1...9], count=9, radius=0.75 }),
+	(1s $notes{ addr=b_[i:1...6], count=6, radius=0.425, scale=0.5 }),
+	(2s $notes{ addr=c_[i:1...5], count=5, radius=0.20,  scale=0.27 }),
+	(3s /ITL/scene event HIDE)
+);
+
+/ITL/scene watch HIDE (
+	(/ITL/scene/n_* del),
+	(1s /ITL/scene/b_* del),
+	(2s /ITL/scene/c_* del),
+	(3s /ITL/scene event SHOW)	
+);
+
+/ITL/scene event SHOW;
+
+
+
+__END__
+
+$notes{ addr=b_[i:1...6], count=6, radius=0.425, scale=0.5 };
+$notes{ addr=c_[i:1...5], count=5, radius=0.20,  scale=0.27 };
+
+
+/ITL/log level 2;
+/ITL parse v2;
