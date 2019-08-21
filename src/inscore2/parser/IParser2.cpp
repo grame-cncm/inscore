@@ -34,19 +34,29 @@
 
 using namespace std;
 
+#define SUBSTITUTE_VARS	0
+
 namespace inscore2
 {
 
 //------------------------------------------------------------
 void IParser::declare(const std::string& name, TINode n)  {
 	SINode e = SINode(n);
-//	fVars.put(name, addressEval::eval(parseEval::eval(e)));
+#if SUBSTITUTE_VARS
+	fVars.put(name, e);
+#else
 	fVars.put(name, parseEval::eval(e));
+#endif
 }
 
 //------------------------------------------------------------
 TINode 	IParser::variable(const std::string name) const		{
+#if SUBSTITUTE_VARS
+	TINode node = getEnv (name);
+	return node ? node : set (new VariableNode (name) );
+#else
 	return set (new VariableNode (name) );
+#endif
 }
 
 //------------------------------------------------------------

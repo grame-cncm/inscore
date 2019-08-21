@@ -1,0 +1,18 @@
+
+/ITL/scene/turenas 	(set img "rsrc/schema4VoixLine.png"),
+					(map "( [0, 1675[ [20, 187[ ) ( [0/1, 594/4[ )"),
+					(xorigin -1.0),
+					(scale 1);
+
+/ITL/scene/cursor color 0 0 255 180;
+
+
+
+/ITL/scene/_smallturenas 	(set img "rsrc/schema4VoixLine.png"),
+							(map "( [0, 1675[ [20, 187[ ) ( [0/1, 594/4[ )"),
+							(scale 0.3),
+							(y 0.65);
+
+/ITL/scene/cursorsmall set rect 0.01 0.217176;
+
+/ITL load "scripts/layoutLine.inscore";

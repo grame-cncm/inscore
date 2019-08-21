@@ -81,6 +81,7 @@ class IPolygon : public IShapeMap
 };
 
 OSCStream& operator <<(OSCStream& s, const IPolygon::PolygonData& val);
+inline std::ostream& operator <<(std::ostream& s, const IPolygon* poly) { poly->print(s); return s; }
 
 /*! @} */
 

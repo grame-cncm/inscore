@@ -1,0 +1,98 @@
+
+
+/ITL/scene/* del;
+
+/ITL/scene width 1.3;
+
+/ITL/scene/title set txt "Jeu est un autre";
+/ITL/scene/title fontFamily Arial;
+/ITL/scene/title fontSize 40;
+/ITL/scene/title y -0.85;
+
+/ITL/scene/author set txt "Vincent-Raphaël Carinola, 2016";
+/ITL/scene/author fontFamily Arial;
+/ITL/scene/author fontSize 12;
+/ITL/scene/author y 0.9;
+/ITL/scene/author x 0.92;
+
+
+/ITL/scene/g1 set img imgs/Graphic1.png;
+/ITL/scene/g2 set img imgs/Graphic4.png;
+/ITL/scene/g3 set img imgs/Graphic3.png;
+/ITL/scene/g4 set img imgs/Graphic2.png;
+/ITL/scene/g* scale 0.5;
+
+/ITL/scene/g5 set img imgs/Graphic5.png;
+/ITL/scene/g* alpha 40;
+
+w = 1.8;
+h = 1.4;
+/ITL/scene/a1 set arc $w $h 45 90;
+/ITL/scene/a2 set arc $w $h 150 60;
+/ITL/scene/a3 set arc $w $h 225 90;
+/ITL/scene/a4 set arc $w $h 330 60;
+/ITL/scene/a* penStyle dash;
+
+w = 0.6;
+/ITL/scene/l1 set line wa $w 30;
+/ITL/scene/l2 set line wa $w 150;
+/ITL/scene/l3 set line wa $w 210;
+/ITL/scene/l4 set line wa $w 330;
+/ITL/scene/l[14] xorigin -1.2;
+/ITL/scene/l[23] xorigin 1.2;
+/ITL/scene/l[12] yorigin -1.2;
+/ITL/scene/l[34] yorigin 1.2;
+/ITL/scene/l* penStyle solid;
+/ITL/scene/l* penWidth 1.5;
+/ITL/scene/l* penColor 150 150 150;
+
+/ITL/scene/t1 set txt "sculpture";
+/ITL/scene/t2 set txt "zébrure";
+/ITL/scene/t3 set txt "texture";
+/ITL/scene/t4 set txt "allure";
+/ITL/scene/t5 set txt "tournure";
+/ITL/scene/t6 set txt "murmure";
+
+/ITL/scene/g[13] x -0.69;
+/ITL/scene/g[24] x  0.69;
+/ITL/scene/g[12] y -0.42;
+/ITL/scene/g[34] y  0.42;
+
+/ITL/scene/t[13] x -0.7;
+/ITL/scene/t[24] x  0.7;
+/ITL/scene/t[12] y -0.54;
+/ITL/scene/t[34] y  0.3;
+/ITL/scene/t5 y -0.17;
+/ITL/scene/t6 y 0.62;
+
+/ITL/scene/t* fontFamily Arial;
+/ITL/scene/t* fontStyle italic;
+/ITL/scene/t* fontWeight bold;
+
+cursorColor = 0 0 0;
+/ITL/scene/cursor set ellipse 0.05 0.05;
+/ITL/scene/cursor color $cursorColor;
+/ITL/scene/cursor show 0;
+
+/ITL/scene/progress set rect 0.5 0.05;
+/ITL/scene/progress color 220 220 220 150;
+/ITL/scene/progress show 0;
+
+w = 0.45;
+/ITL/scene/p13 set ellipse $w $w;
+/ITL/scene/p13 brushStyle none;
+/ITL/scene/p13 penWidth 1;
+/ITL/scene/p13 penColor 200 200 200;
+/ITL/scene/p13 angle 90;
+/ITL/scene/p13 show 0;
+
+/ITL/scene load 'rsrc/events.inscore';
+
+
+__END__
+
+/ITL/log show 1;
+/ITL/log level 2;
+
+/ITL/scene preprocess jeu.inscore;
+/ITL/scene preprocess "rsrc/events.inscore";

@@ -1,0 +1,16 @@
+/ITL/scene/sync turenas;
+
+#/ITL/scene/turenas del;
+/ITL/scene/turenas set img "rsrc/schemaStruct.png";
+/ITL/scene/turenas map "( [25, 1145[ [57, 298[ )  ( [0/1, 75/1[ )
+						( [25, 1145[ [417, 658[ ) ( [75/1, 594/4[ )";
+/ITL/scene/turenas scale 0.7;
+
+/ITL/scene/cursor color 0 0 240 132;
+/ITL/scene/cursor width 0.01;
+
+# Load the comments position
+/ITL load "scripts/sectionsCenter.inscore";
+
+# reload the watched events
+/ITL load "scripts/layoutScore.inscore";

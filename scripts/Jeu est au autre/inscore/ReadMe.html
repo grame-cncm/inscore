@@ -1,0 +1,71 @@
+<!DOCTYPE html><html>
+<xmp theme="united" style="display:none;">
+   Jeu est un autre
+========================
+
+---
+
+"Jeu est un autre" is a pedagogical musical piece for variable number of performers. composed by [Vincent-R. Carinola](https://www.vrcarinola.com/). 
+
+The music score has been realized with INScore. It is basically designed to be driven by Max/MSP. 
+This is an autonomous version of the score (it doesn't require Max/MSP to run).
+
+
+## Principle
+
+"Jeu est un autre"  is an animated music score. 
+
+A cursor activated in real time, moves over the arcs that connect the different figures. We will talk about 'paths' to refer to these arcs.
+This cursor can also stop on a figure which will then be momentarily highlighted. We will talk about 'stations' to refer to these figures.
+The paper score gives playing instructions for each path and each station.
+
+
+
+## Instructions for use
+
+To start, drop the file "jeu.inscore" to an INScore window
+Next you can choose between manual or automatic modes.
+
+
+
+### Manual mode
+
+Activate stations or paths manually: simulates the messages sent by Max
+
+The following scripts activate stations and contain a single message:
+
+	- 1-sculpture.inscore   /ITL/scene event P1 200;
+	- 2-zebrure.inscore     /ITL/scene event P2 200;
+	- 3-allure.inscore      /ITL/scene event P3 200;
+	- 4-texture.inscore     /ITL/scene event P4 200;
+
+200 represents the duration of the station activation.
+
+The following scripts activate paths and contain 
+also a single message:
+
+	- 1-vers-2.inscore		/ITL/scene event P9 100;
+	- 1-vers-4.inscore		/ITL/scene event P8 100;
+	- 2-vers-1.inscore		/ITL/scene event P10 100;
+	- 2-vers-3.inscore		/ITL/scene event P11 100;	
+	- 3-vers-2.inscore		/ITL/scene event P12 100;	
+	- 3-vers-4.inscore		/ITL/scene event P5 100;	
+	- 4-vers-1.inscore		/ITL/scene event P7 100;
+	- 4-vers-3.inscore		/ITL/scene event P6 100;
+
+Finally the central station is activated with the script
+	- centre.inscore		/ITL/scene event P13 200;
+	
+All durations are of course modifiable. 
+Max strives to match paths and stations, now the interpretation remains free....
+
+
+### Automatic mode
+
+Simply drop the file `standalone.inscore` to the score.
+
+---
+
+</xmp>
+<script src=http://strapdownjs.com/v/0.2/strapdown.js></script>
+</html>

@@ -1,0 +1,73 @@
+#-------------------------------------------------------
+# user interface setup
+# buttons + associated messages
+#-------------------------------------------------------
+
+y = 0.85;
+# adds a simple button to control play/pause
+/ITL/scene/control  (set img "rsrc/play.png"),
+					(scale 0.15),
+					(x -0.05),
+					(y $y),
+					(watch mouseDown (
+						(/ITL/scene/control push),
+						(/ITL/scene/cursor* tempo 60 ),
+						(/ITL/scene/sound play 1),
+						(/ITL/scene/control set img "rsrc/pause.png"),
+						(/ITL/scene/control watch mouseDown 	(
+							(/ITL/scene/cursor* tempo 0),
+							(/ITL/scene/sound play 0),
+							(/ITL/scene/control set img "rsrc/play.png"),
+							(/ITL/scene/control pop)
+						))));
+
+/ITL/scene/stop  (set img "rsrc/stop2.png"),
+					(scale 0.15),
+					(x 0.05),
+					(y $y),
+					(watch mouseDown (
+						(/ITL/scene/sound play 0),
+						(/ITL/scene/cursor* tempo 0),
+						(/ITL/scene/cursor* date 0),
+						(/ITL/scene/control set img "rsrc/play.png")
+					));
+
+# adds a controler to switch to fullscreen
+w = 0.086;
+/ITL/scene/fsctrl 	(set img "rsrc/fullscreen.png"),
+					(scale 0.10),
+					(y $y),
+					(x 0.15),
+					(alpha 50),
+					(watch mouseEnter ( /ITL/scene/$self alpha 150 )),
+					(watch mouseLeave ( /ITL/scene/$self alpha 50 )),
+					(watch mouseDown ( 
+						(/ITL/scene/fsctrl push),
+						(/ITL/scene fullscreen 1),
+						(/ITL/scene/fsctrl set img "rsrc/fullscreenoff.png"),
+						(/ITL/scene/fsctrl watch mouseDown (
+							(/ITL/scene fullscreen 0),
+							(/ITL/scene/fsctrl set img "rsrc/fullscreen.png"),
+							(/ITL/scene/fsctrl pop)
+						)
+					)));
+
+__END__
+
+# adds a controler to switch to fullscreen
+w = 0.086;
+/ITL/scene/fsctrl 	(set ellipse $w $w),
+					(y $y),
+					(x 0.15),
+					(penColor "0xaaaaaa"),
+					(color LightCyan),
+					(watch mouseEnter ( /ITL/scene/$self penWidth 1 )),
+					(watch mouseLeave ( /ITL/scene/$self penWidth 0 )),
+					(watch mouseDown ( 
+						(/ITL/scene/fsctrl push),
+						(/ITL/scene fullscreen 1),
+						(/ITL/scene/fsctrl watch mouseDown (
+							(/ITL/scene fullscreen 0),
+							(/ITL/scene/fsctrl pop)
+						)
+					)));

@@ -1,0 +1,8 @@
+#-------------------------------------------------------
+# control user interactions with the score
+#-------------------------------------------------------
+move = ((/ITL/scene/cursor* date  "$date"),
+		(/ITL/scene/sound vdate "$date%f" ));
+
+/ITL/scene/turenas 	(watch mouseDown ( $move )),
+					(watch mouseMove ( $move ));
