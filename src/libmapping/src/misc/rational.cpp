@@ -68,7 +68,7 @@ rational& rational::operator =(const rational& dur) {
 }
 
 //#define MAXCONV (111546435 << 1)		// actually 3 * 5 * 7 * 11 * 13 * 17 * 19 * 23
-#define MAXCONV (5105100)				// actually 2 * 3 * 5 * 7 * 11 * 13 * 17 * 10
+#define MAXCONV (5105100 << 1)				// actually 2 * 3 * 5 * 7 * 11 * 13 * 17 * 10
 rational& rational::operator =(double f) {
 	long lf = long(f > 0 ? f : -f);
 	long mult = MAXCONV / (lf ? lf : 1);

@@ -1,0 +1,161 @@
+
+tempo 	= 300;
+dunit 	= 16;
+alpha 	= 40;
+
+#################################################
+# 
+#   single node events 
+#   events P1 to P4
+#
+#################################################
+stopprogress = (
+		/ITL/scene/progress show 0,			# hide the cursor
+		/ITL/scene/cursor tempo 0,			# set the tempo to 0
+		/ITL/scene/sync progress,			# remove any synchronization
+		/ITL/scene/cursor watch,			# remove any watched event
+		/ITL/scene/g* alpha $alpha			# and reset the alpha channel
+);
+
+/ITL/scene watch PROGRESS (
+	/ITL/scene/cursor 	show 0,				# hide the cursor
+	/ITL/scene/p13 		show 0,
+	/ITL/scene/progress show 0,
+	/ITL/scene/progress duration 0,
+	/ITL/scene/sync progress,				# remove any previous synchronisation
+	/ITL/scene/sync progress '$1' hv,	
+	/ITL/scene/cursor tempo 0,
+	/ITL/scene/cursor watch,
+	/ITL/scene/cursor date 0,
+	/ITL/scene/cursor watch ddate ( /ITL/scene/progress duration '$date'),
+	/ITL/scene/cursor watch timeLeave 0 $dunit '$3' $dunit $stopprogress,
+	/ITL/scene/cursor tempo '$2'
+);
+
+/ITL/scene watch P1 (
+	/ITL/scene/g* alpha $alpha,
+	/ITL/scene/g1 duration '$1' $dunit,
+	/ITL/scene/g1 alpha 255,
+	/ITL/scene event PROGRESS g1 $tempo '$1'
+);
+
+/ITL/scene watch P2 (
+	/ITL/scene/g* alpha $alpha,
+	/ITL/scene/g2 duration '$1' $dunit,
+	/ITL/scene/g2 alpha 255,
+	/ITL/scene event PROGRESS g2 $tempo '$1'
+);
+
+/ITL/scene watch P3 (
+	/ITL/scene/g* alpha $alpha,
+	/ITL/scene/g4 duration '$1' $dunit,
+	/ITL/scene/g4 alpha 255,
+	/ITL/scene event PROGRESS g4 $tempo '$1'
+);
+
+/ITL/scene watch P4 (
+	/ITL/scene/g* alpha $alpha,
+	/ITL/scene/g3 duration '$1' $dunit,
+	/ITL/scene/g3 alpha 255,
+	/ITL/scene event PROGRESS g3 $tempo '$1'
+);
+
+
+#################################################
+# 
+#   transitions between nodes 
+#   events P5 to P12
+#
+#################################################
+stopcursor = (
+	/ITL/scene/cursor 	show 0,			# hide the cursor
+	/ITL/scene/p13 		show 0,
+	/ITL/scene/cursor 	tempo 0,		# set the tempo to 0
+	/ITL/scene/sync 	cursor,			# remove any synchronization
+	/ITL/scene/cursor 	watch			# and remove any watched event
+);
+
+/ITL/scene watch SYNC (
+	/ITL/scene/p13 		show 0,			    # hides P13 sync
+	/ITL/scene/progress show 0,				# hides P1-4 sync
+	/ITL/scene/g* alpha $alpha,				# remove any previous synchronization
+	/ITL/scene/sync cursor,					# remove any previous synchronization
+	/ITL/scene/cursor watch,				# remove any previous watched event
+	/ITL/scene/cursor show 1,				# show the cursor
+	/ITL/scene/sync cursor '$1' syncFrame,  # synchronize to the new master
+	/ITL/scene/cursor date 0,
+	/ITL/scene/cursor watch timeLeave 0 $dunit '$3' $dunit $stopcursor,
+	/ITL/scene/cursor tempo '$2'
+);
+
+/ITL/scene watch P5 (
+	/ITL/scene/a3 rotatey 0,
+	/ITL/scene/a3 duration '$1' $dunit,
+	/ITL/scene event SYNC a3 $tempo '$1'
+);
+
+/ITL/scene watch P6 (
+	/ITL/scene/a3 rotatey 180,
+	/ITL/scene/a3 duration '$1' $dunit,
+	/ITL/scene event SYNC a3 $tempo '$1'
+);
+
+/ITL/scene watch P7 (
+	/ITL/scene/a2 rotatex 0,
+	/ITL/scene/a2 duration '$1' $dunit,
+	/ITL/scene event SYNC a2 $tempo '$1'
+);
+
+/ITL/scene watch P8 (
+	/ITL/scene/a2 rotatex 180,
+	/ITL/scene/a2 duration '$1' $dunit,
+	/ITL/scene event SYNC a2 $tempo '$1'
+);
+
+/ITL/scene watch P9 (
+	/ITL/scene/a1 rotatey 0,
+	/ITL/scene/a1 duration '$1' $dunit,
+	/ITL/scene event SYNC a1 $tempo '$1'
+);
+
+/ITL/scene watch P10 (
+	/ITL/scene/a1 rotatey 180,
+	/ITL/scene/a1 duration '$1' $dunit,
+	/ITL/scene event SYNC a1 $tempo '$1'
+);
+
+/ITL/scene watch P11 (
+	/ITL/scene/a4 rotatex 0,
+	/ITL/scene/a4 duration '$1' $dunit,
+	/ITL/scene event SYNC a4 $tempo '$1'
+);
+
+/ITL/scene watch P12 (
+	/ITL/scene/a4 rotatex 180,
+	/ITL/scene/a4 duration '$1' $dunit,
+	/ITL/scene event SYNC a4 $tempo '$1'
+);
+
+#################################################
+# 
+#   central event 
+#   event P13
+#
+#################################################
+
+/ITL/scene watch POST13 (
+	/ITL/scene/g5 alpha 255,
+	/ITL/scene/p13 show 1
+);
+
+/ITL/scene watch P13 (
+	/ITL/scene/g5 alpha 255,
+	/ITL/scene/p13 duration '$1' $dunit,
+	/ITL/scene event SYNC p13 $tempo '$1',
+	/ITL/scene event POST13
+);
+
+
+__END__
+
+

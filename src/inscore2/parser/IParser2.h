@@ -75,7 +75,8 @@ class IParser {
 
 		void 	pushEnv()		{ fEnvStack.push(fVars); }
 		void 	popEnv()		{ if (fEnvStack.size()) { fVars = fEnvStack.top(); fEnvStack.pop();} }
-		TINode 	setEnv(TINode node) const		{ node->setEnv (fVars); return node; }
+		TINode 	setEnv(TINode node) const				{ node->setEnv (fVars); return node; }
+		TINode 	getEnv(const std::string& var) const	{ SINode n = fVars.get (var); return n ? new INode(n.get()) : 0; }
 
 		void 	declare (const std::string& name, TINode n);
 		TINode 	variable(const std::string name) const;

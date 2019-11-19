@@ -42,8 +42,8 @@ $notes{ addr=n_[i:1...9], count=9, radius=0.75 };
 /ITL/scene/line set line wa ( 1.8, 90);
 
 /ITL/scene/box watch ddate (
-	(/ITL/scene/box dangle 0.1),
-	(/ITL/scene/box/* dangle -0.1)
+	(/ITL/scene/box dangle -0.1),
+	(/ITL/scene/box/* dangle 0.1)
 	);
 
 /ITL/scene/line watch ddate (/ITL/scene/line dangle 0.15);

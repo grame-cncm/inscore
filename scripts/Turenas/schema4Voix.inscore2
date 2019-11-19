@@ -1,0 +1,12 @@
+/ITL/scene/sync turenas;
+
+/ITL/scene/turenas 	(set img "rsrc/schema4Voix.png"),
+					(map "( [0, 901[ [15, 191[ )  ( [0/4, 318/4[ )
+						( [2, 772[ [223, 380[ ) ( [318/4, 594/4[ )"),
+					(scale 0.87);
+
+/ITL/scene/cursor 	(color 0 0 240 132),
+					(width 0.01);
+
+# reload the watched events
+/ITL load "scripts/layoutScore.inscore";
