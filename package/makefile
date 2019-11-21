@@ -47,7 +47,7 @@ macos: $(BUILD)/Makefile
 linux: $(BUILD)/Makefile
 	cmake --build $(BUILD) --config Release --target install
 	
-$(BUILD)/Makefile:
+$(BUILD)/Makefile: CMakeLists.txt
 	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
 	cd $(BUILD) && cmake -DCMAKE_INSTALL_PREFIX=$(PREFIX) ..
 
