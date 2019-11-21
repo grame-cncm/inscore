@@ -134,7 +134,7 @@ install (
     FILES     ${ROOT}/src/changelog.txt ${ROOT}/package/ReadMe.html DESTINATION ${DOCDEST}
     PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 )
-if (LINUX)
+if (UNIX AND NOT APPLE)
 set (LRSRC ${ROOT}/package/rsrc/share)
 install (
     DIRECTORY ${LRSRC} DESTINATION ${DEST}
