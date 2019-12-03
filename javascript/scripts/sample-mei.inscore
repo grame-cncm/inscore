@@ -1,0 +1,20 @@
+#/ITL/scene/* del;
+
+/ITL/scene/title set txt "This is a MEI score !";
+/ITL/scene/title scale 2.2;
+/ITL/scene/title y -0.82;
+/ITL/scene/title fontFamily Zapfino;
+
+
+#/ITL/scene/score set mei "mei/Bach_Invention_No_1_BVW.772.mei";
+/ITL/scene/Bach* scale 0.2;
+
+
+__END__
+
+/ITL/scene/sync cursor score syncTop;
+/ITL/scene/cursor dy -5;
+/ITL/scene/cursor tempo 120;
+
+/ITL/scene/sync cursor;
+/ITL/scene/cursor date 0;
