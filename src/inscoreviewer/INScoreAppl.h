@@ -75,6 +75,8 @@ class INScoreAppl : public QApplication, public inscore::INScoreApplicationGlue
 		void	started();
 		void	readArgs(int argc, char ** argv);
 
+		void	startView () override;
+		void	stopView  () override;
 		bool	event(QEvent *ev) override;
 		void 	showMouse (bool state) override;
 		bool 	openUrl (const char* url) override;

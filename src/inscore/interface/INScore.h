@@ -70,6 +70,8 @@ class INScoreApplicationGlue
 		virtual void 	showMouse (bool state) = 0;
 		virtual bool 	openUrl (const char* url) = 0;
 		virtual std::string getIP() const = 0;
+		virtual void	startView () = 0;
+		virtual void	stopView  () = 0;
 };
 
 //--------------------------------------------------------------------------

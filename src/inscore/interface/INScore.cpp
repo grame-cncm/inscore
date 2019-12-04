@@ -32,7 +32,6 @@
 #include "VMobileQtUpdater.h"
 #include "VQtLocalMappingUpdater.h"
 #else
-#include "VQtInit.h"
 #include "VQtLocalMappingUpdater.h"
 #include "VQtUpdater.h"
 #endif
@@ -92,7 +91,6 @@ INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplic
 		// Initialize a view updater for mobile with a tab container
 		glue->setViewUpdater	(VMobileQtUpdater::create() );
 #else
-		VQtInit::startQt();
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		glue->setViewUpdater	(VQtUpdater::create() );
 #endif
@@ -107,9 +105,6 @@ INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplic
 //--------------------------------------------------------------------------
 void INScore::stop(INScoreGlue* glue)
 {
-#ifndef NOVIEW
-	VQtInit::stopQt();
-#endif
 	gGlue = 0;
 	delete glue;
 }

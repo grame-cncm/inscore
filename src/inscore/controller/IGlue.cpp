@@ -99,6 +99,7 @@ void IGlue::clean()
 	delete fOscThread;
     fOscThread = 0;
 	OSCStream::stop();
+	fModel->getApplicatonGlue()->stopView();
 }
 
 //--------------------------------------------------------------------------
@@ -175,6 +176,7 @@ bool IGlue::getSceneView(unsigned int* , int , int , bool )
 //--------------------------------------------------------------------------
 void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 {
+	ag->startView();
 	Master::initMap();
 	EventsAble::init();
 

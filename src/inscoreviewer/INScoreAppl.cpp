@@ -32,7 +32,6 @@
 #include <QFileDialog>
 #include <QFileOpenEvent>
 #include <QFontDatabase>
-#include <QFontDatabase>
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
@@ -58,9 +57,9 @@
 #include <string>
 
 #include "INScore.h"
-#include "INScore.h"
 #include "INScoreAppl.h"
-//#include "Methods.h"
+#include "QGuidoPainter.h"
+
 
 using namespace inscore;
 using namespace std;
@@ -366,6 +365,19 @@ string INScoreAppl::getIP () const
 	return "";
 }
 
+#define GUIDO_FONT_FILE ":/guido2.ttf"
+//-----------------------------------------------------------------------
+void INScoreAppl::startView ()
+{
+	QFontDatabase::addApplicationFont (GUIDO_FONT_FILE);
+	QGuidoPainter::startGuidoEngine();
+}
+
+//-----------------------------------------------------------------------
+void INScoreAppl::stopView  ()
+{
+	QGuidoPainter::stopGuidoEngine();
+}
 
 
 //-----------------------------------------------------------------------

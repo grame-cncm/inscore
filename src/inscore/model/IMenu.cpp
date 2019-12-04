@@ -25,7 +25,6 @@
 
 #include "IMenu.h"
 #include "Updater.h"
-#include "VQtInit.h"
 
 namespace inscore {
 

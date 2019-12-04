@@ -143,12 +143,13 @@ class IAppl : public IObject, public TILoader
 		static int			getUDPOutPort() 	{ return fUDP.fOutPort; }
 		static int			getUDPErrPort() 	{ return fUDP.fErrPort; }
 		std::string	getIP() const;
-		bool	defaultShow() const			{ return fDefaultShow; }
+		bool	defaultShow() const				{ return fDefaultShow; }
 		static const std::string&	getUDPOutAddress()		{ return fUDP.fOutDstAddress; }
 		static const std::string&	getUDPErrAddress()		{ return fUDP.fErrDstAddress; }
 	
 		void				logMsgs(const SIMessageList& msgs);
-		IApplLog*			getLogWindow()	{ return fApplLog; }
+		IApplLog*			getLogWindow()				{ return fApplLog; }
+		INScoreApplicationGlue* getApplicatonGlue() 	{ return fAppl; }
 	
 		/*!
 		 * \brief getForwardList Get the list of host to which forward message.
