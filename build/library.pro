@@ -85,10 +85,15 @@ INCLUDEPATH +=  $$GUIDOAR_PATH/include
 NOVIEW {
 	message ("Compiled with no view - remove CONFIG+=NOVIEW to change.")
 	DEFINES += NOVIEW
-	SOURCES  +=  $$files($$SRC/VoidView/*.cpp)
-	HEADERS  +=  $$files($$SRC/VoidView/*.h)
-	INCLUDEPATH +=  $$files($$SRC/VoidView)
+	SOURCES  +=  $$files($$SRC/view/VoidView/*.cpp)
+	HEADERS  +=  $$files($$SRC/view/VoidView/*.h)
+	INCLUDEPATH +=  $$files($$SRC/view/VoidView)
 } else {
+	SOURCES  +=  $$files($$SRC/view/QtView/*.cpp)
+	SOURCES  +=  $$files($$SRC/view/guidoqt/*.cpp)
+	HEADERS  +=  $$files($$SRC/view/QtView/*.h)
+	HEADERS  +=  $$files($$SRC/view/guidoqt/*.h)
+	INCLUDEPATH +=  $$SRC/view/QtView $$SRC/view/guidoqt
     message ("Compiled with Qt view - add CONFIG+=NOVIEW to change to no view.")
 }
 

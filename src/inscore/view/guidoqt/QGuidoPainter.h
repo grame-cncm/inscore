@@ -14,18 +14,19 @@
 #ifndef GUIDO_PAINTER_H
 #define GUIDO_PAINTER_H
 
-#include "GUIDOEngine.h"
-#include "GUIDOParse.h"
-#include "GUIDOPianoRoll.h"
-
 #include <QString>
 #include <QPainter>
 #include <QSizeF>
 #include <QRect>
 #include <QColor>
- 
+
+#include "GUIDOEngine.h"
+
 class GSystemQt;
 class VGDevice;
+class GuidoParser;
+class GuidoStream;
+class PianoRoll;
 
 /**
 *	\brief The QGuidoPainter object is a Qt encapsulation of the Guido Engine, 

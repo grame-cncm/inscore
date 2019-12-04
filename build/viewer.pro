@@ -17,6 +17,8 @@ QT += qml sensors
 ROOT = $$PWD/..
 SRC  = $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
+GUIDO_PATH	= $$LOCALLIB/GuidoEngine
+
 APPL = $$SRC/inscoreviewer
 LIB  = $$SRC/inscore
 OSC  = $$LOCALLIB/oscpack
@@ -36,6 +38,7 @@ HEADERS 	+= $$APPL/INScoreAppl.h
 INCLUDEPATH += $$APPL $$LIB/interface
 INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
 INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
+INCLUDEPATH += $$SRC/inscore/view/guidoqt $$GUIDO_PATH/include
 INCLUDEPATH += $$files($$OSC)
 INCLUDEPATH += $$files($$SRC/libmapping/src/[^.]*)
 

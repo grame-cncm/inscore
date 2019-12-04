@@ -2,7 +2,7 @@
 # 
 #
 
-.PHONY : macos ios win32 win64 linux android installAndroid help mobileUI
+.PHONY : macos ios win32 win64 linux android installAndroid mobileUI noview
 
 QMAKE ?= qmake
 MAKE  ?= make
@@ -47,7 +47,6 @@ ifeq ($(system), Linux)
 endif
 
 
-
 all :
 	$(MAKE) $(TARGET)
 
@@ -58,16 +57,21 @@ help :
 	@echo "This makefile is intended to build INScore for differents platforms."
 	@echo "Default target ($(TARGET)) is inferred from the current platform"
 	@echo "Available targets are : "
-	@echo "  macos : to build for Mac OS"
-	@echo "  ios : to build for iOS"
-	@echo "  windows : to build for Windows"
-	@echo "  linux : to build for Linux"
-	@echo "  android : to build for android"
+	@echo "  macos   : to build the MacOS library and application"
+	@echo "  ios     : to build the iOS application"
+	@echo "  windows : to build the Windows library and application"
+	@echo "  linux   : to build the Linux library and application"
+	@echo "Android targets: "
+	@echo "  android : to build the android apk"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
 	@echo "       with XXX the device serial number (can be retrieved using 'make devandroid')"
 	@echo "       DEVICE is optional when only one Android device is connected"
 	@echo "  devandroid : to get the serial number of the connected device"
-	@echo "  qmake : to regenerate the projects"
+	@echo "Project management: "
+	@echo "  qmake  : to regenerate the projects"
+	@echo "  noview : to regenerate the projects with no view"
+	@echo "Available options: "
+	@echo "  INSCOREDIR  : the build folder (default: $(INSCOREDIR))"
 
 #===============================================================
 # building inscore
@@ -117,10 +121,12 @@ $(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
 $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
 
+voidview :
+	$(MAKE) qmake CONFIG="CONFIG+=NOVIEW" INSCOREDIR=noview
 
-qmake :
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../viewer.pro  -o $(VIEWPROJ)
+qmake : $(INSCOREDIR)
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../library.pro -o $(LIBPROJ)
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../viewer.pro  -o $(VIEWPROJ)
 
 
 #===============================================================
