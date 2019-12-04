@@ -80,7 +80,6 @@ VGraphicsItemView::~VGraphicsItemView()
 		children[i]->setParentItem(0);
     
     std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.begin();
-std::cerr << "VGraphicsItemView::~VGraphicsItemView  fTilerItems: " << fTilerItems.size() << std::endl;
     while(it != fTilerItems.end())
     {
         std::map<SMaster, QStretchTilerItem*>::iterator toErase = it;

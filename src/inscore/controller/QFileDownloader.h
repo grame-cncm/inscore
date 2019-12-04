@@ -30,16 +30,13 @@
 #include <string>
 #include <functional>
 
-#include <QObject>
 #include <QByteArray>
-#include <QNetworkAccessManager>
-#include <QNetworkDiskCache>
 #include <QNetworkReply>
 
 namespace inscore
 {
 
-class	QFileDownloader
+class QFileDownloader
 {
 	public:
 				 QFileDownloader(const char* urlprefix = 0);
@@ -88,28 +85,6 @@ class	QFileDownloader
 };
  
 
-class NetworkAccess{
-	static NetworkAccess* gNetworkAccess;
-
-public:
-	static NetworkAccess* instance();
-
-	QNetworkAccessManager& qNetAccess(){return fNetworkAccessManager;}
-
-	QNetworkReply* get(const QNetworkRequest &request);
-
-	void clearCache();
-	QNetworkDiskCache* cache() const {return fCache;}
-
-protected:
-	NetworkAccess();
-	virtual ~NetworkAccess();
-
-	QNetworkDiskCache* fCache;
-	QNetworkAccessManager fNetworkAccessManager;
-};
-
-
-
 } // end namespace
+
 #endif

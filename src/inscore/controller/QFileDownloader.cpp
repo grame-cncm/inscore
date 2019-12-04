@@ -25,9 +25,10 @@
 
 #include <string>
 #include <QDebug>
-#include <QNetworkRequest>
-#include <QNetworkDiskCache>
 #include <QDir>
+#include <QNetworkAccessManager>
+#include <QNetworkDiskCache>
+#include <QNetworkRequest>
 
 #include "QFileDownloader.h"
 #include "INScore.h"
@@ -41,6 +42,25 @@ using namespace std;
 
 namespace inscore
 {
+
+class NetworkAccess{
+	static NetworkAccess* gNetworkAccess;
+
+public:
+	static NetworkAccess* instance();
+
+	QNetworkAccessManager& qNetAccess() 	{ return fNetworkAccessManager; }
+	QNetworkReply* 		get (const QNetworkRequest &request);
+	void 				clearCache();
+	QNetworkDiskCache* 	cache() const 		{ return fCache; }
+
+protected:
+			 NetworkAccess();
+	virtual ~NetworkAccess();
+
+	QNetworkDiskCache* 		fCache;
+	QNetworkAccessManager 	fNetworkAccessManager;
+};
 
 //--------------------------------------------------------------------------
 QFileDownloader::QFileDownloader(const char* urlprefix)

@@ -26,17 +26,16 @@
 #include <sstream>
 #include <fstream>
 #include <cstring>
+#include <condition_variable>
+#include <mutex>
 
 #include <QByteArray>
-#include <QWaitCondition>
-#include <QMutex>
 #include <QEvent>
-#include <QGraphicsSceneMouseEvent>
 
-#include "WebApi.h"
-#include "VSceneView.h"
-#include "ITLparser.h"
 #include "IAppl.h"
+#include "ITLparser.h"
+#include "VSceneView.h"
+#include "WebApi.h"
 
 using namespace std;
 
@@ -49,8 +48,8 @@ namespace inscore
 	const char * WebApi::kHoverMsg = "hover";
 	const char * WebApi::kFileMsg = "file";
 
-	extern QWaitCondition gModelUpdateWaitCondition;	///< a wait condition to wait for model update.
-    QMutex WebApi::fPostCommandMutex;
+	extern condition_variable gModelUpdateWaitCondition;	///< a wait condition to wait for model update.
+    std::mutex   WebApi::fPostCommandMutex;
 
 //------------------------------------kHoverMsg-------------------------------------------.
 unsigned long WebApi::getVersion()
@@ -80,7 +79,7 @@ std::string WebApi::postScript(const std::string &inscoreScript)
     ITLparser p (&stream, 0, fRoot, false);
 
     // wait for other network users
-	fPostCommandMutex.lock();
+	std::unique_lock<std::mutex> lock(fPostCommandMutex);
 
 	oscerr.activeConcatError(true);
 	p.parse();
@@ -93,11 +92,9 @@ std::string WebApi::postScript(const std::string &inscoreScript)
 		// Add messages to network stack
 		msgs->sendWebMsg();
 		// Wait for a model update from time task
-		gModelUpdateWaitCondition.wait(&fPostCommandMutex);
+		gModelUpdateWaitCondition.wait(lock);
 	}
-    // Get back log and unlock
 	string logExec = oscerr.streamConcat().str();
-	fPostCommandMutex.unlock();
 	return logParse + logExec;
 }
 
@@ -156,18 +153,9 @@ QGraphicsItem * WebApi::getItem(int x, int y)
 void WebApi::sendEvent(QGraphicsItem * item, int eventType)
 {
         VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
-        // Create an event
-//        QGraphicsSceneMouseEvent event((QEvent::Type) eventType);
-//        // Coordinate of the click in item coordinate
-//        QPointF point(0, 0);
-//        event.setPos(point);
-//        event.setButton(Qt::LeftButton);
-//        event.setButtons(Qt::LeftButton);
-
         if(!item->isEnabled())
             item->setEnabled(true);
 
-//        QGraphicsScene * scene = sceneView->scene();
         sceneView->postEvent(item, (QEvent::Type) eventType);
 }
 

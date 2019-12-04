@@ -27,11 +27,29 @@
 
 #include <string>
 #include <vector>
+
 #include <QApplication>
+#include <QTimer>
+
+#include "INScore.h"
 
 class QMenuBar;
+
 //_______________________________________________________________________
-class INScoreAppl : public QApplication
+class INScoreTimer : public QTimer
+{
+	inscore::INScoreGlue *	fGlue = 0;
+
+	public:
+				 INScoreTimer() {}
+		virtual ~INScoreTimer() { stop(); }
+
+		void 	start(inscore::INScoreGlue * glue);
+		void 	timerEvent(QTimerEvent *event) override;
+};
+
+//_______________________________________________________________________
+class INScoreAppl : public QApplication, public inscore::INScoreApplicationGlue
 {
 	Q_OBJECT
 
@@ -40,16 +58,30 @@ class INScoreAppl : public QApplication
 	std::vector<std::string> fPendingOpen;			// a list of inscore files that should be opened
 	std::string				 fPendingBuffer;		// a buffer that should be parsed
 
+	int 					fRate = 0;
+	int 					fTimerId = 0;
+	inscore::INScoreGlue *	fGlue = 0;
+	INScoreTimer			fSorterTask;
+
 	public :
-	INScoreAppl (int & argc, char ** argv );
+				 INScoreAppl (int & argc, char ** argv );
 		virtual ~INScoreAppl();
 
-		void	init ();
+		void	start (int udpinport, int udpoutport);
+		void	stop  ();
+
 		void	setupMenu();
 		void	showMobileMenu();
-		bool	event(QEvent *ev);
 		void	started();
 		void	readArgs(int argc, char ** argv);
+
+		bool	event(QEvent *ev) override;
+		void 	showMouse (bool state) override;
+		bool 	openUrl (const char* url) override;
+		std::string getIP() const override;
+
+	protected:
+		void 	timerEvent(QTimerEvent *event) override;
 
 	static void open(const std::string& file);
 	static void read(const std::string& buffer);

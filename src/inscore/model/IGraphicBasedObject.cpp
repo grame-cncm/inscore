@@ -28,9 +28,8 @@
 #include "IAppl.h"
 #include "IGraphicBasedObject.h"
 #include "IMessage.h"
-//#include "segment2relativetimereader.h"
-#include "Updater.h"
 #include "TComposition.h"
+#include "Updater.h"
 
 using namespace std;
 

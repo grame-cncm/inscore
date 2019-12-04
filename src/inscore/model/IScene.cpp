@@ -27,23 +27,23 @@
 #include <fstream>
 #include "deelx.h"
 
+#include "Events.h"
 #include "IAppl.h"
+#include "IFilterForward.h"
 #include "IGlue.h"
 #include "IGraphicSignal.h"
+#include "IJavascript.h"
 #include "IMessage.h"
 #include "IObjectFactory.h"
-#include "ISignalNode.h"
 #include "IScene.h"
 #include "ISceneSync.h"
+#include "ISignalNode.h"
 #include "ITLError.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
 #include "QFileWatcher.h"
 #include "rational.h"
 #include "Updater.h"
-#include "IJavascript.h"
-#include "IFilterForward.h"
-#include "Events.h"
 
 #include "VSceneView.h"
 

@@ -21,12 +21,7 @@
 
 */
 
-#include <QApplication>
-#include <QDir>
-#include <QThread>
-#include <QDebug>
-#include <QWaitCondition>
-
+#include <condition_variable>
 #include <iostream>
 #include <map>
 
@@ -42,16 +37,13 @@
 #include "VQtUpdater.h"
 #endif
 
-#include "INScore.h"
+#include "GUIDOEngine.h"
+#include "IGlue.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
-
-
-#include "GUIDOEngine.h"
-
-#include "IGlue.h"
-#include "VSceneView.h"
+#include "INScore.h"
 #include "QGuidoImporter.h"
+#include "VSceneView.h"
 
 using namespace std;
 namespace inscore 
@@ -62,22 +54,22 @@ IGlue* gGlue;
 /*!
 	\brief a specific thread for Java JNI
 */
-class JavaThread : public QThread
-{
-	public:
-		QApplication*	fAppl;
-	
-				 JavaThread(QApplication* appl) : fAppl(appl){}
-		virtual ~JavaThread() {}
-		void run()			 { fAppl->exec(); }
-};
+//class JavaThread : public QThread
+//{
+//	public:
+//		QApplication*	fAppl;
+//
+//				 JavaThread(QApplication* appl) : fAppl(appl){}
+//		virtual ~JavaThread() {}
+//		void run()			 { fAppl->exec(); }
+//};
 
 
 SIMessageStack				gMsgStack;			// the messages stack
 SIMessageStack				gDelayStack;		// the delayed messages stack
 SIMessageStack				gWebMsgStack;		// the messages stack for messages from the web
 map<INScore::MessagePtr, SIMessage>	gMsgMemory;		// allocated messages are stored in a map for refcounting
-QWaitCondition				gModelUpdateWaitCondition; // A wait condition on model update.
+std::condition_variable		gModelUpdateWaitCondition; // A wait condition on model update.
 //--------------------------------------------------------------------------
 static IMessage* Message2IMessage (INScore::MessagePtr p)
 {
@@ -87,10 +79,10 @@ static IMessage* Message2IMessage (INScore::MessagePtr p)
 //--------------------------------------------------------------------------
 // Qt environment initiaization + INScore glue setup
 //--------------------------------------------------------------------------
-IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, QApplication* appl, bool offscreen)
+INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplicationGlue* ag, bool offscreen)
 {
 	IGlue* glue = new IGlue (udpport, outport, errport);
-	if (glue && glue->start (timeInterval, offscreen, appl)) {
+	if (glue && glue->start (offscreen, ag)) {
 #ifdef NOVIEW
 		glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
 		glue->setViewUpdater	(VoidViewUpdater::create() );
@@ -113,7 +105,7 @@ IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, Q
 }
 
 //--------------------------------------------------------------------------
-void INScore::stop(IGlue* glue)
+void INScore::stop(INScoreGlue* glue)
 {
 #ifndef NOVIEW
 	VQtInit::stopQt();
@@ -133,25 +125,6 @@ void INScore::stopNetwork()
 {
     gGlue->clean();
 }
-
-//--------------------------------------------------------------------------
-//bool INScore::getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h)
-//{
-//	if (!glue || !bitmap) return false;
-//	return glue->getSceneView(bitmap, w, h, false );
-//}
-
-//--------------------------------------------------------------------------
-//void INScore::setListener (IGlue* glue, GraphicUpdateListener* listener)
-//{
-//	if (glue) glue->setGraphicListener (listener);
-//}
-
-//--------------------------------------------------------------------------
-//void INScore::timeTask (IGlue* glue)
-//{
-//	if (glue) glue->timerEvent (0);
-//}
 
 //--------------------------------------------------------------------------
 // versions 

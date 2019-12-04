@@ -30,7 +30,6 @@
 #include "ITLError.h"
 
 #include "IGraphicSignal.h"
-#include "ISignalProfiler.h"
 
 using namespace std;
 using namespace libmapping;

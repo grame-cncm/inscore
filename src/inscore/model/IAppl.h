@@ -27,10 +27,7 @@
 #ifndef __IAppl__
 #define __IAppl__
 
-#ifndef PARSERTEST
-#include <QMutex>
-#endif
-#include <QTimer>
+#include <mutex>
 
 #include "benchtools.h"
 #include "Forwarder.h"
@@ -42,7 +39,6 @@
 #include "TWallClock.h"
 #include "udpinfo.h"
 
-class QApplication;
 namespace inscore
 {
 
@@ -51,6 +47,7 @@ namespace inscore
 @{
 */
 
+class INScoreApplicationGlue;
 class IAppl;
 typedef class libmapping::SMARTP<IAppl>	SIAppl;
 
@@ -67,7 +64,7 @@ typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 /*!
 	\brief the application object of the model
 */
-class IAppl : public IObject, public TILoader, public QTimer
+class IAppl : public IObject, public TILoader
 {
 	public:
 	struct TAliasParam {
@@ -107,10 +104,8 @@ class IAppl : public IObject, public TILoader, public QTimer
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		bool		fOffscreen;
-		QApplication*	fAppl;					// the Qt application
-#ifndef PARSERTEST
-		QMutex		fTimeMutex;
-#endif
+		INScoreApplicationGlue* fAppl;				// the Qt application
+		std::mutex	fTimeMutex;
 		TJSEngine	fJavascript;
 
 	public:
@@ -118,12 +113,12 @@ class IAppl : public IObject, public TILoader, public QTimer
 		static bool fDefaultShow;
 		static const std::string kApplType;
 		static const std::string kName;
-		static SIAppl			create(int udpport, int outport, int errport,  QApplication* appl, bool offscreen=false)		
+		static SIAppl			create(int udpport, int outport, int errport,  INScoreApplicationGlue* ag, bool offscreen=false)
 			{
 				IAppl::setUDPInPort(udpport);
 				IAppl::setUDPOutPort(outport);
 				IAppl::setUDPErrPort(errport);
-				return new IAppl(appl, offscreen);
+				return new IAppl(ag, offscreen);
 			}
 		static std::string		getRootPath()				{ return fRootPath; }	//< returns the application root path
 		static std::string		absolutePath( const std::string& path );			//< returns the absolute path corresponding to 'path',
@@ -147,7 +142,7 @@ class IAppl : public IObject, public TILoader, public QTimer
 		static int			getUDPInPort() 		{ return fUDP.fInPort; }
 		static int			getUDPOutPort() 	{ return fUDP.fOutPort; }
 		static int			getUDPErrPort() 	{ return fUDP.fErrPort; }
-		static std::string	getIP();
+		std::string	getIP() const;
 		bool	defaultShow() const			{ return fDefaultShow; }
 		static const std::string&	getUDPOutAddress()		{ return fUDP.fOutDstAddress; }
 		static const std::string&	getUDPErrAddress()		{ return fUDP.fErrDstAddress; }
@@ -217,8 +212,8 @@ class IAppl : public IObject, public TILoader, public QTimer
 		void		setRealRate(double rate)		{ fRealRate = rate; }
 		void		setReceivedOSC(int n);
 
-		void 		timerEvent ( QTimerEvent * event );
-		void 		timerStart ();
+		void 		timeTask ();
+		void 		startTime ();
 
 		void		resetBench();
 		bool		offscreen()	const				{ return fOffscreen; }
@@ -238,7 +233,7 @@ class IAppl : public IObject, public TILoader, public QTimer
 				void setCompatibilityVersion (float v)	{ fCompatibilityVersionNum = v; }
 
 	protected:
-				 IAppl(QApplication* appl, bool offscreen);
+				 IAppl(INScoreApplicationGlue* ag, bool offscreen);
 		virtual ~IAppl();
 		
 		void		setRootPath		(const std::string& s);
@@ -285,8 +280,8 @@ class IAppl : public IObject, public TILoader, public QTimer
 		/// \brief application \c 'ticks' message handler.
 		virtual MsgHandler::msgStatus setTicks (const IMessage* msg);
 
-		/// \brief application \c 'clear' message handler.
-		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
+//		/// \brief application \c 'clear' message handler.
+//		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);
 
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 		void	startBench()			{ bench::start(); }

@@ -8,9 +8,9 @@
  * Grame Research Laboratory, 11, cours de Verdun Gensoul 69002 Lyon - France
  * research@grame.fr
  */
+ 
 #ifndef GUIDO_IMPORTER_H
 #define GUIDO_IMPORTER_H
-
 
 /**
 *	\brief An importer to support the MusicXML format.

@@ -25,6 +25,7 @@
 #ifndef __INScore__
 #define __INScore__
 
+#include <string>
 
 #if defined(WIN32) && defined(MSVC)
 
@@ -62,7 +63,25 @@ class GraphicUpdateListener
 		virtual void update() = 0;
 };
 
-class IGlue;
+//--------------------------------------------------------------------------
+class INScoreApplicationGlue
+{
+	public :
+		virtual void 	showMouse (bool state) = 0;
+		virtual bool 	openUrl (const char* url) = 0;
+		virtual std::string getIP() const = 0;
+};
+
+//--------------------------------------------------------------------------
+class INScoreGlue
+{
+	public :
+		virtual int 	getRate() const = 0;
+		virtual void 	timeTask () = 0;
+		virtual void 	sorterTask() = 0;
+};
+
+//--------------------------------------------------------------------------
 /*! \brief the main library API
 */
 class inscore_export INScore
@@ -72,7 +91,6 @@ class inscore_export INScore
 
 	/*! \brief Qt environment initialization + INScore glue setup
 
-		\param timeInterval the time task tme interval (in mls). 0 means no time task
 		\param udpport the udp port number to listen for incoming OSC messages
 		\param outport the udp port number for outgoing OSC messages
 		\param errport the udp port number for error messages
@@ -83,13 +101,13 @@ class inscore_export INScore
 		\see GraphicUpdateListener
 			   
 	*/
-	static IGlue* start (int timeInterval, int udpport, int outport, int errport, QApplication* appl, bool offscreen=false);
+	static INScoreGlue* start (int udpport, int outport, int errport, INScoreApplicationGlue* ag, bool offscreen=false);
 
 	/*! \brief stops the INScore services
 
 		\param glue the value returned by the last start call
 	*/
-	static void stop (IGlue* glue);
+	static void stop (INScoreGlue* glue);
 
     /*!
      * \brief restartNetwork Restart network services after a stop.
@@ -208,8 +226,8 @@ class inscore_export INScore
 	static void add (MessagePtr msg, int n);
 	
 	
-	static float version()				{ return 1.24f; }	///< gives the library version number
-	static const char* versionStr()		{ return "1.24"; }	///< gives the library version number as a string
+	static float version()				{ return 1.25f; }	///< gives the library version number
+	static const char* versionStr()		{ return "1.25"; }	///< gives the library version number as a string
 
 	static const char* guidoversion();						///< gives the guido library version number as a string
 	static const char* musicxmlversion();					///< gives the musicxml library version number as a string

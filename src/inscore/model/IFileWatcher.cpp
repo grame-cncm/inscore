@@ -23,12 +23,12 @@
 
 */
 
+#include "IAppl.h"
 #include "IFileWatcher.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
 #include "OSCStream.h"
 #include "Updater.h"
-#include "IAppl.h"
 
 using namespace std;
 

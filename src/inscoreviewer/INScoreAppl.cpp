@@ -25,21 +25,25 @@
 #include <QApplication>
 #include <QBitmap>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QDir>
 #include <QEvent>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileOpenEvent>
+#include <QFontDatabase>
+#include <QFontDatabase>
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QNetworkInterface>
 #include <QProcess>
+#include <QSettings>
 #include <QSplashScreen>
 #include <QString>
+#include <QTimer>
 #include <QUrl>
-#include <QFontDatabase>
-#include <QSettings>
 
 #ifdef WIN32
 #include <windows.h>
@@ -54,6 +58,7 @@
 #include <string>
 
 #include "INScore.h"
+#include "INScore.h"
 #include "INScoreAppl.h"
 //#include "Methods.h"
 
@@ -61,7 +66,6 @@ using namespace inscore;
 using namespace std;
 
 #define kUPDPort		7000
-#define kTimeInterval	10			// time task interval in milliseconds
 
 static const char* kPortOption = "--port";
 
@@ -303,12 +307,89 @@ void INScoreAppl::readArgs(int argc, char ** argv)
 }
 
 //_______________________________________________________________________
-void INScoreAppl::init()
+void INScoreTimer::start(inscore::INScoreGlue * glue)
+{
+	fGlue = glue;
+	setTimerType(Qt::PreciseTimer);
+	QTimer::start(1);
+}
+void INScoreTimer::timerEvent(QTimerEvent *)	{ fGlue->sorterTask(); }
+
+//_______________________________________________________________________
+void INScoreAppl::timerEvent(QTimerEvent *)
+{
+	fGlue->timeTask ();
+	if (fGlue->getRate() != fRate) {
+		fRate = fGlue->getRate();
+		killTimer(fTimerId);
+		fTimerId = startTimer(fRate);
+	}
+}
+
+//_______________________________________________________________________
+void INScoreAppl::stop()
+{
+	INScore::stop (fGlue);
+}
+
+//-----------------------------------------------------------------------
+// INScoreApplicationGlue interface
+//-----------------------------------------------------------------------
+void INScoreAppl::showMouse (bool state)
+{
+	if (state)
+		setOverrideCursor( QCursor( Qt::ArrowCursor ) );
+	else
+		setOverrideCursor( QCursor( Qt::BlankCursor ) );
+}
+
+//-----------------------------------------------------------------------
+bool INScoreAppl::openUrl (const char* url)
+{
+	QUrl qurl(url);
+	return QDesktopServices::openUrl(qurl);
+}
+
+//-----------------------------------------------------------------------
+string INScoreAppl::getIP () const
+{
+	QNetworkInterface ni;
+	QList<QHostAddress>	hl = ni.allAddresses();
+	for (int i=0; i < hl.size(); i++) {
+		unsigned long ip = hl[i].toIPv4Address();
+		if (ip) {
+			unsigned long classe = ip >> 24;
+			if ((classe >= 192) && (classe <= 223))		// look for a classe C network
+				return hl[i].toString().toStdString();
+		}
+	}
+	return "";
+}
+
+
+
+//-----------------------------------------------------------------------
+const char* kDefaultFontName = "Carlito";
+
+//_______________________________________________________________________
+void INScoreAppl::start (int udpinport, int udpoutport)
 {
 	setApplicationName("INScoreViewer");
 	setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
 	setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, false);
 	setupMenu();
+
+	const string applfont = ":/fonts/Carlito-Regular.ttf";
+	int result = QFontDatabase::addApplicationFont (applfont.c_str());
+	if (result < 0) {
+		cerr << "Cannot load application font " << applfont << endl;
+	}
+	else {
+		QFontDatabase dbf;
+		QFont f = dbf.font(kDefaultFontName, "Regular", 12);
+		setFont (f);
+	}
+
 
 	QDir dir(QApplication::applicationDirPath());
 #ifndef WIN32
@@ -320,6 +401,12 @@ void INScoreAppl::init()
 	dir.cdUp();
 	dir.cdUp();
 #endif
+
+    fGlue = INScore::start (udpinport, udpoutport, udpoutport+1, this);
+	fRate = fGlue->getRate();
+	fTimerId = startTimer (fRate, Qt::PreciseTimer);
+	fSorterTask.start(fGlue);
+    started();
 }
 
 #if defined(WIN32) && !defined(_DEBUG)
@@ -355,25 +442,22 @@ int main( int argc, char **argv )
     Q_INIT_RESOURCE( inscore );
 #endif
 
-	INScoreAppl appl(argc, argv);
-	appl.init();
+	INScoreAppl appl(argc, argv);	// must be called before building a QPixmap
 
     QPixmap pixmap(":/INScoreViewer.png");
     gAbout = new INScoreAbout(pixmap);
     gAbout->show();
-
-    IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
-    appl.started();
+	
+	appl.start (udpPort, kUPDPort+1);
     appl.readArgs(argc, argv);
 
-//#if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
     sleep (1);
     gAbout->hide();
     disableAppNap();
-//#endif
+
     appl.showMobileMenu();
     int ret = appl.exec();
-	INScore::stop (glue);
+//	appl.stop ();
 #if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
     delete gAbout;
 #endif

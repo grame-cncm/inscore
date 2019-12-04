@@ -27,13 +27,11 @@
 #ifndef __IGlue__
 #define __IGlue__
 
-#include <QThread>
-#include <QTimer>
-#include <QMutex>
-#include <QApplication>
+#include <thread>
 
-#include "IOSCListener.h"
+#include "INScore.h"
 #include "IController.h"
+#include "IOSCListener.h"
 #include "PeriodicTask.h"
 #include "udpinfo.h"
 #include "Updater.h"
@@ -53,16 +51,18 @@ typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 /*!
 	\brief a specific thread to listen incoming osc packets
 */
-class OscThread : public QThread
+class OscThread
 {
+	SIOSCListener fListener;
+	std::thread * fThread = 0;
+
 	public:
-		SIOSCListener fListener;	
-	
 				 OscThread(SIMessageStack& msgs, int udpport)  
 							 { fListener = IOSCListener::create (msgs, udpport); }
-		virtual ~OscThread() { fListener->stop(); quit(), wait(50); }
-		/// \brief starts the osc listener
-		void run()			 { fListener->run(); }
+		virtual ~OscThread() { stop(); }
+
+		void start();
+		void stop();
 };
 
 class OSCStream;
@@ -75,7 +75,7 @@ typedef class libmapping::SMARTP<IAppl>	SIAppl;
 
 	IGlue inherits from QObject for timer capabilities.
 */
-class inscore_export IGlue : public MsgListener, public QTimer 
+class inscore_export IGlue : public MsgListener, public INScoreGlue
 {
 	OscThread *		fOscThread;
 	SUpdater 		fViewUpdater;
@@ -88,10 +88,6 @@ class inscore_export IGlue : public MsgListener, public QTimer
 	SIMessageStack	fWebMsgStack;
 	SPeriodicTask	fTimeTask;
 	GraphicUpdateListener * fViewListener;
-	QMutex			fTimeViewMutex;
-//	int				fCurrentRate;				// the current application rate
-//	unsigned long long	fLastTimeTask;			// the date of the last time task (in uls)
-	double			fCurrentRate;				// the current application rate
 	double			fLastTimeTask;				// the date of the last time task (in mls)
 
 	udpinfo fUDP;
@@ -103,13 +99,12 @@ class inscore_export IGlue : public MsgListener, public QTimer
 
 				/*! \brief start running the glue i.e. inscore services
 
-					\param timerInterval a time interval for the time task, expressed in milliseconds
 					\param offscreen a boolean value to run without display and to draw the result in an offscreen only.
 							This is an experimental implementation intended to support java.
-					\param appl the QApplication that runs the program.
+					\param mmgr an object that can handle mouse management.
 					\return a boolean value indicating the running status at start exit
 				*/
-				bool start(int timerInterval, bool offscreen, QApplication* appl);
+				bool start(bool offscreen, INScoreApplicationGlue* ag);
 
                 /*!
                  * \brief clean Stop the glue.
@@ -134,12 +129,15 @@ class inscore_export IGlue : public MsgListener, public QTimer
 				bool getSceneView(unsigned int* dest, int w, int h, bool smooth=false );
 				const IObject* root () const;
 
-		virtual void timerEvent ( QTimerEvent * event );
+		virtual int  getRate() const override;
+//		virtual void timerEvent (bool viewUpdate) override;
+		virtual void timeTask  () override;
+		virtual void sorterTask () override;
 
 		static void trace (const IMessage* msg, int status);
 
 	protected:
-		virtual void initialize (bool offscreen,  QApplication* appl);
+		virtual void initialize (bool offscreen,  INScoreApplicationGlue* ag);
 		
 		void modelUpdate();
 		void localMapUpdate();

@@ -27,12 +27,10 @@
 #ifndef __QFileWatcher__
 #define __QFileWatcher__
 
-#include "IFileWatcher.h"
 #include <QObject>
-#include <QMultiMap>
 #include <QFileSystemWatcher>
 
-class QFileSystemWatcher;
+#include "IFileWatcher.h"
 
 namespace inscore
 {

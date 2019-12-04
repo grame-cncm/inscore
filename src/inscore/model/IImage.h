@@ -28,11 +28,11 @@
 #define __IImage__
 
 #include <string>
-#include "IGraphicBasedObject.h"
+
 #include "TFile.h"
+#include "IGraphicBasedObject.h"
 #include "TLocalMapping.h"
 #include "TRelation.h"
-#include <QByteArray>
 
 namespace inscore
 {
