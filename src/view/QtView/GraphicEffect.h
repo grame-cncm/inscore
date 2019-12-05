@@ -24,15 +24,16 @@
 */
 
 
-#ifndef __GraphicEffect__
-#define __GraphicEffect__
+#pragma once
 
-#include "IMessageHandlers.h"
+//#include "IMessageHandlers.h"
 
 class QGraphicsEffect;
 
 namespace inscore
 {
+
+class IEffect;
 
 /*!
 \addtogroup ITLView
@@ -45,25 +46,28 @@ namespace inscore
 */
 class GraphicEffect
 {
-	QGraphicsEffect * fEffect;
+//	QGraphicsEffect * fEffect;
 	
-	QGraphicsEffect *	buildBlurEffect (const IMessage* msg);
-	QGraphicsEffect *	buildColorizeEffect (const IMessage* msg);
-	QGraphicsEffect *	buildShadowEffect (const IMessage* msg);
+	QGraphicsEffect *	buildBlurEffect 	(const IEffect* effect);
+	QGraphicsEffect *	buildColorizeEffect (const IEffect* effect);
+	QGraphicsEffect *	buildShadowEffect 	(const IEffect* effect);
+
+//	QGraphicsEffect *	buildBlurEffect (const IMessage* msg);
+//	QGraphicsEffect *	buildColorizeEffect (const IMessage* msg);
+//	QGraphicsEffect *	buildShadowEffect (const IMessage* msg);
 
 	public :
-				 GraphicEffect () : fEffect(0) {}
-				 GraphicEffect (QGraphicsEffect * effect) : fEffect (effect) {}
+				 GraphicEffect () {} //: fEffect(0) {}
+//				 GraphicEffect (QGraphicsEffect * effect) : fEffect (effect) {}
 		virtual ~GraphicEffect () {}
 
-		MsgHandler::msgStatus set (const IMessage* msg);
-		QGraphicsEffect *	get () const;
-		void				get (IMessage* msg) const;
+//		MsgHandler::msgStatus set (const IMessage* msg);
+		QGraphicsEffect *	set (const IEffect* effect);
+//		QGraphicsEffect *	get () const;
+//		void				get (IMessage* msg) const;
 };
 
 
 /*!@} */
 
 } // end namespoace
-
-#endif

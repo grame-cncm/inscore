@@ -2,7 +2,7 @@
 # 
 #
 
-.PHONY : macos ios win32 win64 linux android installAndroid mobileUI noview
+.PHONY : macos ios win32 win64 linux android installAndroid mobileUI
 
 QMAKE ?= qmake
 MAKE  ?= make
@@ -68,8 +68,8 @@ help :
 	@echo "       DEVICE is optional when only one Android device is connected"
 	@echo "  devandroid : to get the serial number of the connected device"
 	@echo "Project management: "
-	@echo "  qmake  : to regenerate the projects"
-	@echo "  noview : to regenerate the projects with no view"
+	@echo "  qmake    : to regenerate the projects"
+	@echo "  voidview : to regenerate the projects with no view inside a 'noview' folder"
 	@echo "Available options: "
 	@echo "  INSCOREDIR  : the build folder (default: $(INSCOREDIR))"
 

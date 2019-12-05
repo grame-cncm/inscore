@@ -31,7 +31,8 @@
 #include <vector>
 #include <QGraphicsItem>
 
-#include "GraphicEffect.h"
+//#include "GraphicEffect.h"
+#include "IEffect.h"
 #include "EventsAble.h"
 #include "abstractdata.h"
 
@@ -45,6 +46,7 @@ namespace inscore
 */
 
 class IObject;
+class IEffect;
 
 //--------------------------------------------------------------------------
 /**
@@ -60,8 +62,9 @@ class VObjectView
 		//virtual void setParentView (IObject * object)		= 0;
 		virtual void setParentItem( VObjectView* parent )	= 0;
 
-		virtual void setEffect (GraphicEffect& effect)		= 0;
-		virtual GraphicEffect getEffect () const			= 0;
+		virtual void setEffect (const IEffect* effect)		= 0;
+//		virtual void setEffect (GraphicEffect& effect)		= 0;
+//		virtual GraphicEffect getEffect () const			= 0;
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		virtual float relative2SceneY(float y, QGraphicsItem * item = 0 ) const						= 0;

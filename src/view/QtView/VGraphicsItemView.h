@@ -85,8 +85,9 @@ class VGraphicsItemView : public VObjectView
 		virtual void setParentItem( VGraphicsItemView* parent ){ fParent = parent ? parent->item() : 0;
                                                                 fItem->setParentItem(parent ? parent->item() : 0);}
     
-        virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
-		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
+        virtual void setEffect (const IEffect* effect); //		{ item()->setGraphicsEffect (effect.get()); }
+//		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
+//		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		float relative2SceneY(float y, QGraphicsItem * item = 0 ) const;

@@ -38,7 +38,7 @@ HEADERS 	+= $$APPL/INScoreAppl.h
 INCLUDEPATH += $$APPL $$LIB/interface
 INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
 INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
-INCLUDEPATH += $$SRC/inscore/view/guidoqt $$GUIDO_PATH/include
+INCLUDEPATH += $$SRC/view/guidoqt $$GUIDO_PATH/include
 INCLUDEPATH += $$files($$OSC)
 INCLUDEPATH += $$files($$SRC/libmapping/src/[^.]*)
 

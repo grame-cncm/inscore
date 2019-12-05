@@ -50,8 +50,8 @@ class VDummyObjectView : public VObjectView
 		virtual void updateObjectSize( IObject *  )	{}
 		virtual void setParentItem( VObjectView*  )	{}
 
-		virtual void setEffect (GraphicEffect& )	{}
-		virtual GraphicEffect getEffect () const	{ return GraphicEffect(); }
+		virtual void setEffect (const IEffect* effect )	{}
+//		virtual GraphicEffect getEffect () const	{ return GraphicEffect(); }
     
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		virtual float relative2SceneY(float y, QGraphicsItem *  ) const						{ return y; }

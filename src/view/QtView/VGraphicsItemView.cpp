@@ -227,6 +227,15 @@ void VGraphicsItemView::setQBrushStyle(const std::string& brushStyle , QBrush& b
 }
 
 //------------------------------------------------------------------------------------------------------------
+// Graphic effects
+//------------------------------------------------------------------------------------------------------------
+void VGraphicsItemView::setEffect (const IEffect* effect)
+{
+	GraphicEffect ge;
+	item()->setGraphicsEffect (ge.set(effect));
+}
+
+//------------------------------------------------------------------------------------------------------------
 // Debug graphic feedback : displays the bounding rectangle and the object name for all the items
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::drawName(IObject* o)
