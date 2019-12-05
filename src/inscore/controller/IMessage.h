@@ -408,6 +408,13 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when type is not a numreric type
 	*/
 	bool	cast_param(int i, float& val) const;
+	/*!
+		\brief gives a message value as int value and operates float to int cast if necessary
+		\param i the parameter index (0 <= i < size())
+		\param val on output: the parameter value when the parameter type matches
+		\return false when type is not a numreric type
+	*/
+	bool	cast_param(int i, int& val) const;
 
 	/*!
 		\brief gives a message float parameter

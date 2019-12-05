@@ -146,6 +146,21 @@ bool IMessage::cast_param(int i, float& val) const
 	}
 	return false;
 }
+
+//--------------------------------------------------------------------------
+bool IMessage::cast_param(int i, int& val) const
+{
+	if (param(i)->isType<int>()) {
+		val = param(i)->value<int>(0);
+		return true;
+	}
+	if (param(i)->isType<float>()) {
+		val = int(param(i)->value<float>(0));
+		return true;
+	}
+	return false;
+}
+
 //--------------------------------------------------------------------------
 bool IMessage::param(int i, rational& val) const
 { 
