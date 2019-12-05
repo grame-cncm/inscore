@@ -41,8 +41,9 @@
 #include "IMessage.h"
 #include "IMessageStack.h"
 #include "INScore.h"
+#ifndef NOVIEW
 #include "QGuidoImporter.h"
-#include "VSceneView.h"
+#endif
 
 using namespace std;
 namespace inscore 
@@ -138,6 +139,7 @@ const char* INScore::guidoversion()
 //--------------------------------------------------------------------------
 const char* INScore::musicxmlversion()
 {
+#ifndef NOVIEW
 	if (QGuidoImporter::musicxmlSupported())
 	{
 		static string version;
@@ -148,15 +150,8 @@ const char* INScore::musicxmlversion()
 		}
 		return version.c_str();
 	}
+#endif
 	return "not available";
-}
-
-//--------------------------------------------------------------------------
-const char* INScore::qtversion()
-{
-	QString vers(qVersion());
-	static string version = vers.toStdString();
-	return version.c_str();
 }
 
 

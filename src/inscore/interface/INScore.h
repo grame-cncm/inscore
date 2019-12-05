@@ -47,8 +47,7 @@
 
 #endif
 
-class QApplication;
-namespace inscore 
+namespace inscore
 {
 
 /*!
@@ -69,9 +68,11 @@ class INScoreApplicationGlue
 	public :
 		virtual void 	showMouse (bool state) = 0;
 		virtual bool 	openUrl (const char* url) = 0;
-		virtual std::string getIP() const = 0;
 		virtual void	startView () = 0;
 		virtual void	stopView  () = 0;
+
+		virtual std::string viewVersion() const = 0;
+		virtual std::string getIP() const = 0;
 };
 
 //--------------------------------------------------------------------------
@@ -233,7 +234,6 @@ class inscore_export INScore
 
 	static const char* guidoversion();						///< gives the guido library version number as a string
 	static const char* musicxmlversion();					///< gives the musicxml library version number as a string
-	static const char* qtversion();							///< gives the Qt library version number as a string
 };
 
 /*! @} */

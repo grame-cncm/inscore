@@ -350,6 +350,13 @@ bool INScoreAppl::openUrl (const char* url)
 }
 
 //-----------------------------------------------------------------------
+string INScoreAppl::viewVersion() const
+{
+	QString vers(qVersion());
+	return vers.toStdString();
+}
+
+//-----------------------------------------------------------------------
 string INScoreAppl::getIP () const
 {
 	QNetworkInterface ni;

@@ -80,6 +80,7 @@ class INScoreAppl : public QApplication, public inscore::INScoreApplicationGlue
 		bool	event(QEvent *ev) override;
 		void 	showMouse (bool state) override;
 		bool 	openUrl (const char* url) override;
+		std::string viewVersion() const override;
 		std::string getIP() const override;
 
 	protected:
