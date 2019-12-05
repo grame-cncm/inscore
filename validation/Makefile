@@ -39,11 +39,12 @@ filterinscorefile	= $(shell grep -v '^\#' validate/filtersinscorefile.txt)
 mobilefiles		= $(shell grep -v '^\#' validate/mobile.txt)
 
 pdfbundles  	:= $(patsubst ../%.ibundle, $(version)/%.pdf, $(bundles)) 
-pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
+pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files)) 
 pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
 pdfsyncout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
 pdfjavaout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
 pdfregressionout:= $(patsubst ../%.inscore, $(version)/%.pdf, $(regressionfiles))
+pngout  		:= $(patsubst ../%.inscore, $(version)/png/%.png, $(files) $(graphicfiles) $(syncfiles) $(regressionfiles))
 logout 			:= $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
 inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
 filterout		:= $(patsubst ../%.flt, $(version)/%.out, $(filterfiles))
@@ -57,6 +58,7 @@ leaksfiles  := $(patsubst ../%.inscore, $(version)/%.leaks.out, $(files))
 
 allpdf 		:= $(shell [ -d $(version) ] && find $(version) -name "*.pdf" 2>/dev/null)
 validpdf 	:= $(patsubst %.pdf, %.outpdf, $(allpdf))
+validpng 	:= $(patsubst %.png, %.outpng, $(pngout))
 
 allLog 		:= $(shell [ -d $(version) ] && find $(version) -name "*.log" 2>/dev/null)
 validlog 	:= $(patsubst %.log, %.outlog, $(allLog))
@@ -171,7 +173,11 @@ tools:
 INScoreVersion:
 	make -C tools
 
-validate: $(validpdf) $(validlog) $(validinscore) $(validfilter)
+validate: $(validpdf) $(validlog) $(validinscore) $(validfilter) (validpng)
+	@echo Validating version $(VERSION) with $(version)
+
+
+pngvalidate: $(validpng)
 	@echo Validating version $(VERSION) with $(version)
 
 validatefilter: $(validfilter)
@@ -183,7 +189,7 @@ checkleaks: $(leakout)
 
 showleaks: $(leaksfiles)
 
-files: $(pdfout)
+files: $(pdfout) $(pngout)
 	@./forcepdfdate 20100101120000 $(pdfout)
 
 bundles: $(pdfbundles)
@@ -221,6 +227,10 @@ $(version)/$(TOOL)/%.leak.txt: %.inscore
 $(version)/%.pdf: ../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	@./inscore2pdf $< $@
+	
+$(version)/png/%.png: ../%.inscore
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	@./inscore2pdf $< $@
 
 $(version)/%.pdf: ../%.ibundle
 	@[ -d $(@D) ] || mkdir -p $(@D)
@@ -256,6 +266,12 @@ $(version)mobile/%.pdf: ../%.inscore
 	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)mobile/%, $(VERSION)/%, $<) # to check changes"; true))
 
 %.outpdf: %.pdf
+	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))
+	@[ -f  $(tmp) ] || echo $< : new file
+	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
+
+%.outpng: %.png
 	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
