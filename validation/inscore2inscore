@@ -6,6 +6,8 @@ then
 	exit 1
 fi
 
+. ./wait.sh
+
 path=$(pwd)
 file=$1
 inscore=$path/$2
