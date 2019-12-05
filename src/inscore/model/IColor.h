@@ -24,8 +24,7 @@
 */
 
 
-#ifndef __IColor__
-#define __IColor__
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -194,5 +193,3 @@ inline std::ostream& operator << (std::ostream& out, const IColor& color)	{ colo
 
 
 } // end namespoace
-
-#endif
