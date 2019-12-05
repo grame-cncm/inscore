@@ -28,16 +28,17 @@
 #include <math.h>
 
 #include "ifloat.h"
-#include "ITLError.h"
+#include "IMappingUpdater.h"
 #include "IModel.h"
 #include "IShapeMap.h"
+#include "ITLError.h"
+#include "MapTools.h"
+#include "maptypes.h"
 #include "TComposition.h"
 #include "TRelation.h"
 #include "TSegment.h"
 #include "TSegmentation.h"
-#include "IMappingUpdater.h"
-#include "MapTools.h"
-#include "maptypes.h"
+#include "TVariety.h"
 
 #include "VGraphicsItemView.h"
 

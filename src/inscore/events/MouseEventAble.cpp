@@ -27,8 +27,9 @@
 #include <QPointF>
 #include <set>
 
+#include "IObject.h"
 #include "MouseEventAble.h"
-#include "VGraphicsItemView.h"
+#include "VObjectView.h"
 #include "TMessageEvaluator.h"
 #include "TRefinedRelation.h"
 
