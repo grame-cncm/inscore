@@ -31,6 +31,7 @@
 
 #include <QByteArray>
 #include <QEvent>
+#include <QGraphicsItem>
 
 #include "IAppl.h"
 #include "ITLparser.h"
