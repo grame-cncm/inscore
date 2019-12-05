@@ -41,7 +41,6 @@
 #include "OSCStream.h"
 #include "TWallClock.h"
 #include "ViewFactory.h"
-#include "VSceneView.h"
 
 #include "benchtools.h"
 
