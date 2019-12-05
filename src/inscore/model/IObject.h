@@ -34,21 +34,21 @@
 
 #include "browsable.h"
 #include "EventsAble.h"
-#include "GraphicEffect.h"
+#include "IColor.h"
 #include "IDate.h"
+#include "IEffect.h"
 #include "IMessageHandlers.h"
+#include "IPosition.h"
 #include "IShape.h"
 #include "ISignalHandlers.h"
-#include "IColor.h"
-#include "IPosition.h"
 #include "maptypes.h"
 #include "Methods.h"
-#include "rational.h"
-#include "TSegmentation.h"
-#include "TRelation.h"
-#include "TMapable.h"
 #include "PeriodicTask.h"
+#include "rational.h"
 #include "smartpointer.h"
+#include "TMapable.h"
+#include "TRelation.h"
+#include "TSegmentation.h"
 
 
 
@@ -93,7 +93,7 @@ class TQtJs;
 	synchronization, objects carry a flag to denote pending deletion. Real deletion is in charge
 	of the \c cleanup method.
 */
-class IObject : public IPosition, public IShape, public IDate, public IColor, public EventsAble,
+class IObject : public IPosition, public IShape, public IDate, public IColor, public IEffect, public EventsAble,
 				public browsable, public TMapable, virtual public libmapping::smartable , public PeriodicTask
 {
 	public:
@@ -607,8 +607,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 	//--------------------------------------------------------------------------
 		/// \brief the \c 'effect' message handler
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
-		virtual bool           getLocked () const {return fLock;}
-		virtual GraphicEffect  getEffect () const;
+		virtual bool           getLocked () const 	{ return fLock;}
 		virtual SIMessageList  getWatch () const;
 		virtual SIMessageList  getStack () const;
 		virtual SIMessageList  getAliases () const;

@@ -33,31 +33,29 @@
 #include <iostream>
 #include <fstream>
 
+#include "Events.h"
 #include "EventsAble.h"
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "IGlue.h"
 #include "IMessage.h"
-#include "IMessageTranslator.h"
 #include "IMessageStream.h"
+#include "IMessageTranslator.h"
+#include "INScore.h"
 #include "IObject.h"
 #include "IObjectVNodes.h"
 #include "IProxy.h"
 #include "IScene.h"
+#include "ISceneSync.h"
+#include "ISignalNode.h"
+#include "ISync.h"
 #include "IVNode.h"
-#include "GraphicEffect.h"
 #include "OSCAddress.h"
 #include "OSCRegexp.h"
 #include "OSCStream.h"
-#include "Updater.h"
-#include "ISync.h"
-#include "Tools.h"
-#include "ISceneSync.h"
 #include "TMessageEvaluator.h"
-#include "ISignalNode.h"
-#include "INScore.h"
-#include "Events.h"
-
+#include "Tools.h"
+#include "Updater.h"
 #include "VObjectView.h"
 
 
@@ -201,7 +199,7 @@ void IObject::positionAble()
 	fGetMsgHandlerMap[krotatex_GetSetMethod]= TGetParamMsgHandler<float>::create(fXAngle);
 	fGetMsgHandlerMap[krotatey_GetSetMethod]= TGetParamMsgHandler<float>::create(fYAngle);
 	fGetMsgHandlerMap[krotatez_GetSetMethod]= TGetParamMsgHandler<float>::create(fZAngle);
-	fGetMsgHandlerMap[keffect_GetSetMethod]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap[keffect_GetSetMethod]	= TGetParamMethodHandler<IObject, const IEffect* (IObject::*)() const>::create(this, &IObject::getEffect);
 	fGetMsgHandlerMap[kframe_GetMethod]		= TGetParamMethodHandler<IObject, vector<float> (IObject::*)() const>::create(this, &IObject::getFrame);
 
 	fMsgHandlerMap[kx_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
@@ -1224,11 +1222,10 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::effectMsg(const IMessage* msg)
 { 
-	GraphicEffect effect;
-	MsgHandler::msgStatus status = effect.set (msg);
+	MsgHandler::msgStatus status = setEffect(msg);
 	if (status == MsgHandler::kProcessed) {
 		VObjectView* view = getView();
-		if (view) view->setEffect (effect);
+		if (view) view->setEffect(getEffect());
 	}
 	return status;
 }
@@ -1280,12 +1277,6 @@ vector<float> IObject::getFrame ()	const
 	getView()->getFrame(this, frame);
 //	showframe (frame);
 	return frame;
-}
-
-//--------------------------------------------------------------------------
-GraphicEffect IObject::getEffect ()	const
-{ 
-	return getView() ? getView()->getEffect() : GraphicEffect(); 
 }
 
 //--------------------------------------------------------------------------

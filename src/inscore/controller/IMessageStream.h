@@ -32,13 +32,14 @@
 #include <ostream>
 #include <sstream>
 
-#include "GraphicEffect.h"
 #include "IMessage.h"
 #include "maptypes.h"
 #include "smartpointer.h"
 
 namespace inscore
 {
+
+class IEffect;
 
 /*!
 \addtogroup ITLCtrl
@@ -108,7 +109,7 @@ template <typename T>	IMessage& operator <<(IMessage& msg, const std::pair<T,T>&
 IMessage& operator << (IMessage& out, const IMessage* m);
 std::ostream& operator << (std::ostream& out, const IMessage* m);
 
-IMessage& operator <<(IMessage& msg, const GraphicEffect& effect);
+IMessage& operator <<(IMessage& msg, const IEffect* effect);
 
 /*!
 @}
