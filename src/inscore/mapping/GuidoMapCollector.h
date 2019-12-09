@@ -31,11 +31,14 @@
 #include <string>
 
 #include "GUIDOScoreMap.h"
+#include "maptypes.h"
+#include "TRect.h"
 
-class QGuidoGraphicsItem;
 
 namespace inscore
 {
+
+class ScoreLayoutInfos;
 
 /*!
 \addtogroup ITLMapping Ressources mapping
@@ -48,7 +51,6 @@ namespace inscore
 class GuidoMapCollector: public MapCollector
 {
 	public :
-//		typedef std::map<RelativeTimeSegment, GraphicSegment> Time2GraphicMap;
 		typedef std::vector<std::pair<RelativeTimeSegment, GraphicSegment> > Time2GraphicMap;
 		struct Filter {
 			virtual ~Filter() {}
@@ -56,26 +58,25 @@ class GuidoMapCollector: public MapCollector
 		} ;
 
 	protected:
-		const QGuidoGraphicsItem *	fItem;
 		GuidoElementSelector	fSelector;
 		const Filter*			fFilter;
 		Time2GraphicMap*		fOutMap;		
-		QPointF					fCurrentPageOrigin;
+		TFloatPoint				fCurrentPageOrigin;
 		
 		void	CopyMap (const ::Time2GraphicMap& map);
 
 	public :
-				 GuidoMapCollector(const QGuidoGraphicsItem* item, GuidoElementSelector selector, const Filter* filter=0) 
-					: fItem(item), fSelector(selector), fFilter(filter), fOutMap(0) {}
+				 GuidoMapCollector (GuidoElementSelector selector, const Filter* filter=0)
+					: fSelector(selector), fFilter(filter), fOutMap(0) {}
 		virtual ~GuidoMapCollector() {}
 
 		///< the method called by guido for each graphic segment
 		virtual void Graph2TimeMap( const FloatRect& box, const TimeSegment& dates,  const GuidoElementInfos& infos );
-		virtual void process (Time2GraphicMap* outmap);
+		virtual void process (const ScoreLayoutInfos& score, Time2GraphicMap* outmap);
 				
 		static RelativeTimeSegment	relativeTimeSegment(const TimeSegment& dates)
 			{ return RelativeTimeSegment( libmapping::rational(dates.first.num , dates.first.denom) , libmapping::rational(dates.second.num , dates.second.denom) ); }
-		static GraphicSegment		graphicSegment(const FloatRect& box, QPointF offset = QPointF(0,0))
+		static GraphicSegment		graphicSegment(const FloatRect& box, TFloatPoint offset = TFloatPoint(0,0))
 			{ return GraphicSegment( box.left + offset.x(), box.top + offset.y(), box.right + offset.x(), box.bottom + offset.y()); }
 };
 
@@ -93,11 +94,11 @@ class GuidoVoiceCollector: public GuidoMapCollector
 		void	setFilter(int num)			{ fVoiceFilter.fNum = num; fFilter = &fVoiceFilter; }
 
 	public :
-				 GuidoVoiceCollector(const QGuidoGraphicsItem* item, int num) 
-					: GuidoMapCollector(item, kGuidoEvent), fVoiceNum(num) { if (num) setFilter(num); }
+				 GuidoVoiceCollector(int num)
+					: GuidoMapCollector (kGuidoEvent), fVoiceNum(num) { if (num) setFilter(num); }
 		virtual ~GuidoVoiceCollector() {}
 
-		virtual void process (Time2GraphicMap* outmap);
+		virtual void process (const ScoreLayoutInfos& score, Time2GraphicMap* outmap);
 };
 
 
@@ -111,11 +112,10 @@ class GuidoStaffCollector: public GuidoMapCollector
 		int	fStaffNum;
 
 	public :
-				 GuidoStaffCollector (const QGuidoGraphicsItem* item, int num) 
-					: GuidoMapCollector(item, kGuidoStaff), fStaffNum(num) {}
+				 GuidoStaffCollector (int num) : GuidoMapCollector (kGuidoStaff), fStaffNum(num) {}
 		virtual ~GuidoStaffCollector()	{}
 
-		virtual void process (Time2GraphicMap* outmap);
+		virtual void process (const ScoreLayoutInfos& score, Time2GraphicMap* outmap);
 };
 
 //----------------------------------------------------------------------
@@ -127,12 +127,11 @@ class GuidoSystemCollector: public GuidoMapCollector
 	bool fFlatMode;
 	
 	public :
-				 GuidoSystemCollector(const QGuidoGraphicsItem* item, bool flat=false) 
-					: GuidoMapCollector(item, kGuidoSystem), fFlatMode(flat) { }
+				 GuidoSystemCollector(bool flat=false) : GuidoMapCollector (kGuidoSystem), fFlatMode(flat) { }
 		virtual ~GuidoSystemCollector() {}
 
-		virtual void processNoDiv (Time2GraphicMap* outmap);
-		virtual void process (Time2GraphicMap* outmap);
+		virtual void processNoDiv (const ScoreLayoutInfos& score, Time2GraphicMap* outmap);
+		virtual void process 	  (const ScoreLayoutInfos& score, Time2GraphicMap* outmap);
 };
 
 /*!@} */

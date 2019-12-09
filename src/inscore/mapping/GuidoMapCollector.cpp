@@ -25,11 +25,9 @@
 
 #include <iostream>
 
-#include "maptypes.h"
-#include "ITLError.h"
-#include "QGuidoGraphicsItem.h"
-
 #include "GuidoMapCollector.h"
+#include "ITLError.h"
+#include "ScoreLayoutInfos.h"
 
 using namespace std;
 using namespace libmapping;
@@ -73,31 +71,27 @@ void GuidoMapCollector::CopyMap( const ::Time2GraphicMap& map )
 }
 
 //----------------------------------------------------------------------
-void GuidoMapCollector::process (Time2GraphicMap* outmap)
+void GuidoMapCollector::process (const ScoreLayoutInfos& score, Time2GraphicMap* outmap)
 {
 	fOutMap = outmap;
-	if (!fItem || !fOutMap) return;
+	if (!fOutMap) return;
 
-	for ( int page = fItem->firstVisiblePage() ; page <= fItem->lastVisiblePage() ; page++ ) {
-		fCurrentPageOrigin = fItem->pageManager()->pagePos(page);
-		float w = fItem->pageManager()->pageSize(page).width();
-		float h = fItem->pageManager()->pageSize(page).height();
-		GuidoGetMap( fItem->getGRHandler(), page, w, h, fSelector, *this );
+	for ( int page = score.firstPage() ; page <= score.lastPage() ; page++ ) {
+		fCurrentPageOrigin = score.position(page);
+		GuidoGetMap( score.handler(), page, score.pageWidth(page), score.pageHeight(page), fSelector, *this );
 	}
 }
 
 //----------------------------------------------------------------------
-void GuidoVoiceCollector::process (Time2GraphicMap* outmap)
+void GuidoVoiceCollector::process (const ScoreLayoutInfos& score, Time2GraphicMap* outmap)
 {
 	fOutMap = outmap;
-	if (!fItem || !fOutMap) return;
+	if (!fOutMap) return;
 
-	for ( int page = fItem->firstVisiblePage() ; page <= fItem->lastVisiblePage() ; page++ ) {
-		fCurrentPageOrigin = fItem->pageManager()->pagePos(page);
-		float w = fItem->pageManager()->pageSize(page).width();
-		float h = fItem->pageManager()->pageSize(page).height();
+	for ( int page = score.firstPage() ; page <= score.lastPage() ; page++ ) {
+		fCurrentPageOrigin = score.position(page);
 		::Time2GraphicMap map;
-		GuidoErrCode err = GuidoGetVoiceMap( fItem->getGRHandler(), page, w, h, fVoiceNum, map );
+		GuidoErrCode err = GuidoGetVoiceMap( score.handler(), page, score.pageWidth(page), score.pageHeight(page), fVoiceNum, map );
 		if (err == guidoNoErr) {
 			CopyMap (map);
 		}
@@ -109,16 +103,14 @@ void GuidoVoiceCollector::process (Time2GraphicMap* outmap)
 }
 
 //----------------------------------------------------------------------
-void GuidoStaffCollector::process (Time2GraphicMap* outmap)
+void GuidoStaffCollector::process (const ScoreLayoutInfos& score, Time2GraphicMap* outmap)
 {
-	if (!fItem || !outmap) return;
+	if (!outmap) return;
 
-	for ( int page = fItem->firstVisiblePage() ; page <= fItem->lastVisiblePage() ; page++ ) {
-		fCurrentPageOrigin = fItem->pageManager()->pagePos(page);
-		float w = fItem->pageManager()->pageSize(page).width();
-		float h = fItem->pageManager()->pageSize(page).height();
+	for ( int page = score.firstPage() ; page <= score.lastPage() ; page++ ) {
+		fCurrentPageOrigin = score.position(page);
 		::Time2GraphicMap map;
-		GuidoErrCode err = GuidoGetStaffMap( fItem->getGRHandler(), page, w, h, fStaffNum, map );
+		GuidoErrCode err = GuidoGetStaffMap( score.handler(), page, score.pageWidth(page), score.pageHeight(page), fStaffNum, map );
 		if (err == guidoNoErr) {
 			for (::Time2GraphicMap::const_iterator i=map.begin(); i!=map.end(); i++) {
 				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
@@ -137,17 +129,15 @@ void GuidoStaffCollector::process (Time2GraphicMap* outmap)
 
 
 //----------------------------------------------------------------------
-void GuidoSystemCollector::process (Time2GraphicMap* outmap)
+void GuidoSystemCollector::process (const ScoreLayoutInfos& score, Time2GraphicMap* outmap)
 {
-	if (!fItem || !outmap) return;
+	if (!outmap) return;
 
-	if (fFlatMode) processNoDiv (outmap);
-	else for ( int page = fItem->firstVisiblePage() ; page <= fItem->lastVisiblePage() ; page++ ) {
-		fCurrentPageOrigin = fItem->pageManager()->pagePos(page);
-		float w = fItem->pageManager()->pageSize(page).width();
-		float h = fItem->pageManager()->pageSize(page).height();
+	if (fFlatMode) processNoDiv (score, outmap);
+	else for ( int page = score.firstPage() ; page <= score.lastPage() ; page++ ) {
+		fCurrentPageOrigin = score.position(page);
 		::Time2GraphicMap map;
-		GuidoErrCode err = GuidoGetSystemMap( fItem->getGRHandler(), page, w, h, map );
+		GuidoErrCode err = GuidoGetSystemMap( score.handler(), page, score.pageWidth(page), score.pageHeight(page), map );
 		if (err == guidoNoErr) {
 			for (::Time2GraphicMap::const_iterator i=map.begin(); i!=map.end(); i++) {
 				RelativeTimeSegment ts (guidodate2rational(i->first.first), guidodate2rational(i->first.second));
@@ -166,19 +156,19 @@ void GuidoSystemCollector::process (Time2GraphicMap* outmap)
 //----------------------------------------------------------------------
 // computes the system map without subdivision
 //----------------------------------------------------------------------
-void GuidoSystemCollector::processNoDiv (Time2GraphicMap* outmap)
+void GuidoSystemCollector::processNoDiv (const ScoreLayoutInfos& score, Time2GraphicMap* outmap)
 {
 	int M,m,s;
 	GuidoGetVersionNums (&M, &m, &s);
 	if (GuidoCheckVersionNums (1, 4, 2) != guidoNoErr)
 		ITLErr << "correct system map requires GUIDOEngine version 1.4.2 or greater - current version is" << GuidoGetVersionStr() << ITLEndl;
 
-	GuidoMapCollector systemCollector(fItem, kGuidoSystem);
-	GuidoMapCollector slicesCollector(fItem, kGuidoSystemSlice);
+	GuidoMapCollector systemCollector (kGuidoSystem);
+	GuidoMapCollector slicesCollector (kGuidoSystemSlice);
 
 	Time2GraphicMap systemMap, slicesMap;
-	systemCollector.process (&systemMap);
-	slicesCollector.process(&slicesMap);
+	systemCollector.process (score, &systemMap);
+	slicesCollector.process (score, &slicesMap);
 
 	Time2GraphicMap::const_iterator slicesIter = slicesMap.begin();
 	Time2GraphicMap::const_iterator systemIter = systemMap.begin();

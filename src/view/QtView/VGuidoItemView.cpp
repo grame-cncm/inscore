@@ -26,19 +26,16 @@
 #include <iostream>
 #include <QDebug>
 
-
-#include "MapTools.h"
-#include "ITLError.h"
-#include "VGuidoItemView.h"
-#include "VApplView.h"
-
+#include "benchtools.h"
+#include "GuidoMapCollector.h"
 #include "IGuidoCode.h"
+#include "ITLError.h"
+#include "MapTools.h"
 #include "QGuidoGraphicsItem.h"
 #include "QGuidoImporter.h"
-
-#include "GuidoMapCollector.h"
-
-#include "benchtools.h"
+#include "ScoreLayoutInfos.h"
+#include "VApplView.h"
+#include "VGuidoItemView.h"
 
 using namespace std;
 
@@ -57,6 +54,24 @@ namespace inscore
 {
 
 float VGuidoItemView::fCm2GuidoUnit = 0;
+
+
+//----------------------------------------------------------------------
+class QScoreLayoutInfos: public ScoreLayoutInfos
+{
+	const QGuidoGraphicsItem *	fItem;
+	public:
+				 QScoreLayoutInfos (const QGuidoGraphicsItem * score) : fItem(score) {}
+		virtual ~QScoreLayoutInfos () {}
+	
+	int 		firstPage() const override			{ return fItem->firstVisiblePage(); }
+	int 		lastPage() const override 			{ return fItem->lastVisiblePage(); }
+	TFloatPoint	position (int page) const override	{ QPointF p = fItem->pageManager()->pagePos (page); return TFloatPoint (p.x(), p.y() ); }
+	float		pageWidth(int page) const override	{ return fItem->pageManager()->pageSize(page).width(); }
+	float		pageHeight(int page) const override	{ return fItem->pageManager()->pageSize(page).height(); }
+	CGRHandler 	handler() const override			{ return fItem->getGRHandler(); }
+};
+
 
 //----------------------------------------------------------------------
 class RolledUnrolledCollector: public TimeMapCollector
@@ -253,7 +268,8 @@ void VGuidoItemView::graphMapUpdate (IGuidoCode* guidoCode, SRelativeTime2Relati
 			SGraphic2RelativeTimeMapping g2l_mapping = Graphic2RelativeTimeMapping::create();					// Build the 'graphic -> rolled relative time' mapping.
 
 			GuidoMapCollector::Time2GraphicMap map;
-			collector->process (&map);
+			QScoreLayoutInfos score (fGuidoItem);
+			collector->process (score, &map);
 
 			for ( GuidoMapCollector::Time2GraphicMap::const_iterator iter = map.begin(); iter != map.end(); iter++) {
 				GraphicSegment transformedGraphicSegment( 2*iter->second.xinterval().first()/itemWidth -1 , 
@@ -307,19 +323,19 @@ GuidoMapCollector* VGuidoItemView::getMapBuilder(const string& mapName) const
 	QString name = mapName.size() ? mapName.c_str() : kStaffMap + "1";
 
 	if ( name.startsWith (kVoiceMap) )
-		mb = new GuidoVoiceCollector ( fGuidoItem, getMapNum (name, kVoiceMap.size()) );
+		mb = new GuidoVoiceCollector ( getMapNum (name, kVoiceMap.size()) );
 	else if ( name.startsWith (kStaffMap) )
-		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kStaffMap.size()) );
+		mb = new GuidoStaffCollector ( getMapNum (name, kStaffMap.size()) );
 	else if ( name == kSystemMap )
-		mb = new GuidoSystemCollector(fGuidoItem);
+		mb = new GuidoSystemCollector();
 	else if ( name == kSystemFlatMap )
-		mb = new GuidoSystemCollector(fGuidoItem, true);
+		mb = new GuidoSystemCollector(true);
 	else if ( name == kPageMap )
-		mb = new GuidoMapCollector(fGuidoItem, kGuidoPage);
+		mb = new GuidoMapCollector(kGuidoPage);
 	else if ( name == kSliceMap )
-		mb = new GuidoMapCollector(fGuidoItem, kGuidoSystemSlice);
+		mb = new GuidoMapCollector(kGuidoSystemSlice);
 	else if ( name.startsWith( kMeasureMap ) )
-		mb = new GuidoStaffCollector ( fGuidoItem, getMapNum (name, kMeasureMap.size()) );
+		mb = new GuidoStaffCollector ( getMapNum (name, kMeasureMap.size()) );
 	else ITLErr << "unknwown guido mapping name" << mapName << "requested" << ITLEndl;
 	
 	return mb;

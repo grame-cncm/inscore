@@ -26,7 +26,7 @@
 #include "IImage.h"
 #include "IMessage.h"
 #include "Updater.h"
-#include "VImageView.h"
+#include "VObjectView.h"
 
 using namespace std;
 

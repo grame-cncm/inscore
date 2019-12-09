@@ -27,8 +27,8 @@
 #include "IGuidoStream.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VGuidoItemView.h"
 #include "rational.h"
+#include "VObjectView.h"
 
 #include <sstream>
 

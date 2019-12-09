@@ -28,7 +28,8 @@
 #include "ITLError.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VImageView.h"
+#include "VObjectView.h"
+//#include "VImageView.h"
 
 using namespace std;
 
@@ -65,10 +66,10 @@ MsgHandler::msgStatus IMemImage::set (const IMessage* msg )
 		if (obj) {
 			VObjectView* view = getView();
 			VObjectView* srcview = obj->getView();
-			if (view && srcview) view->setImage(srcview);
-
-			VImageView * imgView = view ? dynamic_cast<VImageView*>(view) : 0;
-			imgView->updateLocalMapping(this);
+			if (view && srcview) {
+				view->setImage(srcview);
+				view->updateLocalMapping(this);
+			}
 			return MsgHandler::kProcessed;
 		}
 	}

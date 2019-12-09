@@ -36,6 +36,7 @@
 #include "maptypes.h"
 #include "TComposition.h"
 #include "TRelation.h"
+#include "TRefinedComposition.h"
 #include "TSegment.h"
 #include "TSegmentation.h"
 #include "TVariety.h"

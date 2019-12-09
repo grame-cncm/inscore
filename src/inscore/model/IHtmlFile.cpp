@@ -28,7 +28,7 @@
 #include "IScene.h"
 #include "TComposition.h"
 #include "Updater.h"
-#include "VTextView.h"
+#include "VObjectView.h"
 
 using namespace std;
 

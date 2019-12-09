@@ -27,7 +27,7 @@
 #include "IGuidoFile.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VGuidoItemView.h"
+#include "VObjectView.h"
 
 using namespace std;
 
