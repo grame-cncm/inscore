@@ -22,8 +22,7 @@
 
 */
 
-#ifndef __VoidViewFactory__
-#define __VoidViewFactory__
+#pragma once
 
 #include "IModelTypes.h"
 #include "VoidObjectView.h"
@@ -36,7 +35,7 @@ namespace inscore
 \addtogroup ITLView
 @{
 */
-class VoidViewFactory
+class ViewFactory
 {
 	public:
 
@@ -68,8 +67,3 @@ class VoidViewFactory
 /*!@} */
 
 } // end namespoace
-
-
-
-
-#endif

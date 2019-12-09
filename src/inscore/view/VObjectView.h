@@ -29,13 +29,13 @@
 
 #include <iostream>
 #include <vector>
-#include <QGraphicsItem>
+//#include <QGraphicsItem>
 
-//#include "GraphicEffect.h"
+#include "abstractdata.h"
 #include "IEffect.h"
 #include "EventsAble.h"
-#include "abstractdata.h"
 
+class QGraphicsItem;
 
 namespace inscore
 {
