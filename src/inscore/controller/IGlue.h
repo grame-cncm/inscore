@@ -120,7 +120,7 @@ class inscore_export IGlue : public MsgListener, public INScoreGlue
 				void setLocalMapUpdater(SUpdater updater);
 				void setSlaveMapUpdater(SUpdater updater);
 
-				void msgReceived (const IMessage* msg, int status);
+				void msgReceived (const IMessage* msg, int status) override;
 
 				void setOSCOut (const std::string& a);
 				void setOSCErr (const std::string& a);

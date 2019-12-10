@@ -22,21 +22,41 @@
 
 */
 
-#ifndef __INScoreAppl__
-#define __INScoreAppl__
+#pragma once
 
 #include <string>
+#include <QApplication>
+//#include <QTimer>
+
+#include "INScore.h"
 
 //_______________________________________________________________________
-class INScoreAppl
+class INScoreAppl : public QApplication, public inscore::INScoreApplicationGlue
 {
+	Q_OBJECT
+
+	int 					fRate = 0;
+	int 					fTimerId = 0;
+	inscore::INScoreGlue *	fGlue = 0;
+
 	public :
-				 INScoreAppl (int & , char ** ) {}
-		virtual ~INScoreAppl() {}
-		
-			int		exec(inscore::IGlue*);
-	static	void	open(const std::string& file);
+				 INScoreAppl (int & argc, char ** argv ) : QApplication(argc, argv)	{}
+		virtual ~INScoreAppl()	{}
+
+		void	start (int udpinport, int udpoutport);
+		void	run ();
+
+		void	startView () override		{}
+		void	stopView  () override		{}
+		bool	event(QEvent *) override			{ return true; }
+		void 	showMouse (bool ) override			{}
+		bool 	openUrl (const char* ) override		{ return false; }
+		std::string viewVersion() const override	{ return "No view version 1"; }
+		std::string getIP() const override			{ return "localhost"; }
+
+	static void open(const std::string& file);
+
+	protected:
+		void 	timerEvent(QTimerEvent *event) override;
 };
 
-
-#endif

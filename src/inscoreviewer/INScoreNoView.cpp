@@ -29,14 +29,14 @@
 #include <unistd.h>
 #endif
 
-#include <QApplication>
-
 #include <stdlib.h>
 #include <iostream>
 #include <string>
 
+#include <QApplication>
+#include <QTimer>
+
 #include "IAppl.h"
-#include "IGlue.h"
 #include "INScore.h"
 #include "INScoreNoView.h"
 
@@ -49,7 +49,7 @@ using namespace std;
 static const char* kPortOption = "--port";
 
 
-//_______________________________________________________________________
+//-----------------------------------------------------------------------
 static int intopt (const string& opt, int defaultValue, int n, char **argv)
 {
 	for (int i = 0; i < n; i++) {
@@ -84,11 +84,33 @@ void INScoreAppl::open(const string& file)
 }
 
 //_______________________________________________________________________
-int INScoreAppl::exec(inscore::IGlue* glue)
+void INScoreAppl::timerEvent(QTimerEvent *)
+{
+cerr << "INScoreAppl::timerEvent" << endl; 
+	fGlue->timeTask ();
+	if (fGlue->getRate() != fRate) {
+		fRate = fGlue->getRate();
+		killTimer(fTimerId);
+		fTimerId = startTimer(fRate);
+	}
+}
+
+//_______________________________________________________________________
+void INScoreAppl::start (int udpinport, int udpoutport)
+{
+	setApplicationName("INScoreViewer");
+
+	fGlue = INScore::start (udpinport, udpoutport, udpoutport+1, this);
+	fRate = fGlue->getRate();
+	fTimerId = startTimer (fRate, Qt::PreciseTimer);
+}
+
+//_______________________________________________________________________
+void INScoreAppl::run()
 {
 	do {
 		usleep (100);
-		glue->timerEvent(0);
+		fGlue->timeTask();
 	} while (IAppl::running());
 	return 0;
 }
@@ -101,20 +123,17 @@ int INScoreAppl::exec(inscore::IGlue* glue)
 #ifdef USEWINMAIN
 #include <windows.h>
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdParam, int iCmdShow)
-#else
-int main( int argc, char **argv )
-#endif
 {
-#ifdef USEWINMAIN
 	int argc = __argc;
 	char **argv = __argv;
+#else
+int main( int argc, char **argv )
+{
 #endif
-
-	QApplication qapp (argc, argv);
 	int ret = 1;
 	int udpPort = intopt (kPortOption, kUPDPort, argc, argv);
 	INScoreAppl appl(argc, argv);
-	IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, 0);
+	appl.start (udpPort, kUPDPort+1);
 
 	for (int i = 1; i < argc; i++) {
 		const string arg = argv[i];
@@ -124,8 +143,8 @@ int main( int argc, char **argv )
 		else appl.open (arg);
 	}
 
-	ret = appl.exec(glue);
-	INScore::stop (glue);
+//	ret = appl.exec();
+	appl.run();
 	cout << "Bye" << endl;
 	return ret;
 }

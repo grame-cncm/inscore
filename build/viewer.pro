@@ -1,5 +1,6 @@
-win32 { TEMPLATE = vcapp }
-else  { TEMPLATE = app }
+win32  { TEMPLATE = vcapp }
+else   { TEMPLATE = app }
+
 
 unix:!macx:!ios:!android:TARGET = inscoreviewer
 else { TARGET = INScoreViewer }
@@ -34,13 +35,16 @@ CONFIG += c++11
 ############################## 
 NOVIEW { SOURCES += $$APPL/INScoreNoView.cpp } 
 else   { SOURCES += $$APPL/INScoreAppl.cpp }
-HEADERS 	+= $$APPL/INScoreAppl.h
+NOVIEW { HEADERS += $$APPL/INScoreNoView.h } 
+else   { HEADERS += $$APPL/INScoreAppl.h }
 INCLUDEPATH += $$APPL $$LIB/interface
 INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
 INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
 INCLUDEPATH += $$SRC/view/guidoqt $$GUIDO_PATH/include
 INCLUDEPATH += $$files($$OSC)
 INCLUDEPATH += $$files($$SRC/libmapping/src/[^.]*)
+INCLUDEPATH += $$SRC/inscore2
+
 
 ############### Resources
 RESOURCES += $$ROOT/rsrc/inscore.qrc
