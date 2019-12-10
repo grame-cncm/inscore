@@ -87,7 +87,7 @@ NOVIEW {
 	DEFINES += NOVIEW
 	SOURCES  +=  $$files($$SRC/view/VoidView/*.cpp)
 	HEADERS  +=  $$files($$SRC/view/VoidView/*.h)
-	INCLUDEPATH +=  $$files($$SRC/view/VoidView)
+	INCLUDEPATH +=  $$SRC/view/VoidView
 } else {
 	SOURCES  +=  $$files($$SRC/view/QtView/*.cpp)
 	SOURCES  +=  $$files($$SRC/view/guidoqt/*.cpp)

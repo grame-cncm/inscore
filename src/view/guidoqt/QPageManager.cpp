@@ -79,6 +79,25 @@ QSizeF QPageManager::pageSize(int index) const
 }
 
 //-------------------------------------------------------------------------
+bool QPageManager::pagePos( int pageIndex, int& x, int& y ) const
+{
+	if ( pageIndex < firstVisiblePage() )
+		return false;
+	if ( pageIndex > lastVisiblePage() )
+		return false;
+
+	int iMax = columnIndex(pageIndex);
+	int jMax = lineIndex(pageIndex);
+	x = 0; y = 0;
+	for ( int i = 0 ; i < iMax ; i++ )
+		x += mColumnWidth[i];
+	for ( int j = 0 ; j < jMax ; j++ )
+		y += mLineHeight[j];
+
+	return true;
+}
+
+//-------------------------------------------------------------------------
 QPointF QPageManager::pagePos( int pageIndex ) const
 {
 	if ( pageIndex < firstVisiblePage() )

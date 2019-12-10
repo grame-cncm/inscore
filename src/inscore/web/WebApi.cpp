@@ -140,24 +140,28 @@ std::string WebApi::postMouseHover(int x, int y)
 //-------------------------------------------------------------------------------.
 QGraphicsItem * WebApi::getItem(int x, int y)
 {
-        VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
-        if(sceneView) {
-                QGraphicsView* view = sceneView->view();
+#ifndef NOVIEW
+	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
+	if(sceneView) {
+			QGraphicsView* view = sceneView->view();
 
-                // get item at position (x and y in pixel coordinate)
-                return view->itemAt(x, y);
-        }
-        return 0;
+			// get item at position (x and y in pixel coordinate)
+			return view->itemAt(x, y);
+	}
+#endif
+	return 0;
 }
 
 //-------------------------------------------------------------------------------.
 void WebApi::sendEvent(QGraphicsItem * item, int eventType)
 {
-        VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
-        if(!item->isEnabled())
-            item->setEnabled(true);
+#ifndef NOVIEW
+	VSceneView * sceneView = dynamic_cast<VSceneView *>(fView);
+	if(!item->isEnabled())
+		item->setEnabled(true);
 
-        sceneView->postEvent(item, (QEvent::Type) eventType);
+	sceneView->postEvent(item, (QEvent::Type) eventType);
+#endif
 }
 
 //--------------------------------------------------------------------------

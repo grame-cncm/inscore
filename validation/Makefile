@@ -97,6 +97,8 @@ pdf:
 	make pdfregression
 	make bundles
 
+png: $(pngout)
+
 log: 
 	@echo "----------- Generating log files"
 	make _log

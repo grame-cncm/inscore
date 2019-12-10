@@ -98,6 +98,13 @@ class QPageManager
 		QPointF pagePos( int pageIndex ) const;
 
 		/**
+		*	\brief Returns the position of the page.
+		*
+		*	\return False if the page is not visible.
+		*/
+		bool pagePos( int pageIndex, int& x, int& y ) const;
+
+		/**
 		*	\brief Returns the current total size of the grid of pages.
 		*/
 		QSizeF totalSize() const;

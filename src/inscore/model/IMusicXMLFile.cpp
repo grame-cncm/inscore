@@ -26,8 +26,10 @@
 #include "IMusicXMLFile.h"
 #include "IScene.h"
 #include "Updater.h"
+#include "VObjectView.h"
+#ifndef NOVIEW
 #include "QGuidoImporter.h"
-#include "VGuidoItemView.h"
+#endif
 
 using namespace std;
 
@@ -56,7 +58,11 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
+#ifdef NOVIEW
+	if (true) {
+#else
 	if (!QGuidoImporter::musicxmlSupported()) {
+#endif
 		ITLErr << "MusicXML import is not available" << ITLEndl;
 		return MsgHandler::kCreateFailure;
 	}

@@ -26,7 +26,7 @@
 #include <QUrl>
 
 #include "IUrlIntermediateObject.h"
-#include "VUrlIntermediateObjectView.h"
+#include "IObjectFactory.h"
 #include "TFile.h"
 #include "IScene.h"
 #include "Events.h"

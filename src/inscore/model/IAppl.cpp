@@ -50,7 +50,6 @@
 #include "ITLError.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
-#include "QGuidoImporter.h"
 #include "TMessageEvaluator.h"
 #include "Tools.h"
 #include "TSorter.h"
@@ -63,6 +62,10 @@
 #include "IMobileMenu.h"
 #else
 #include "IMenu.h"
+#endif
+
+#ifndef NOVIEW
+#include "QGuidoImporter.h"
 #endif
 
 using namespace std;
@@ -219,8 +222,10 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fMsgHandlerMap[kwriteBench_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
 #endif
 
+#ifndef NOVIEW
 	QGuidoImporter gi;
 	gi.initialize();
+#endif
 //	timerStart();
 }
 

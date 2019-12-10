@@ -29,16 +29,15 @@
 #include "IObjectFactory.h"
 #include "IModel.h"
 #include "SensorsModel.h"
-#include "INScoreScene.h"
 #include "ITLError.h"
+#include "ViewFactory.h"
+#ifndef NOVIEW
+#include "INScoreScene.h"
 #include "QtWebSocketController.h"
-#ifdef NOVIEW
-#include "VoidViewFactory.h"
-#elif defined(__MOBILE__)
-#include "ViewFactory.h"
+#endif
+#if defined(__MOBILE__)
 #include "VMobileSceneView.h"
-#else
-#include "ViewFactory.h"
+#elif !defined(NOVIEW)
 #include "VSceneView.h"
 #endif
 
@@ -54,7 +53,7 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 	SMARTP<T> obj = T::create(name, parent);
 	if (obj) {
 #ifdef NOVIEW
-		obj->setView ( VoidViewFactory::create(obj));
+		obj->setView ( ViewFactory::create(obj));
 #else
         // We created the object, then we create the view
         VObjectView* view = ViewFactory::create(obj, parent->getScene()->getGraphicScene());
@@ -74,6 +73,7 @@ template<typename T> SIObject _createNoView(const std::string& name , IObject* p
 	return T::create(name, parent);
 }
 
+#ifndef NOVIEW
 template<> SIObject _create<IWebSocket>(const std::string& name , IObject* parent)
 {
 	SIWebSocket obj = IWebSocket::create(name, parent);
@@ -82,6 +82,7 @@ template<> SIObject _create<IWebSocket>(const std::string& name , IObject* paren
 	else return 0;
 	return obj;
 }
+#endif
 
 #ifndef NOVIEW
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent)

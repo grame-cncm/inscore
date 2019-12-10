@@ -44,7 +44,6 @@
 #include "QFileWatcher.h"
 #include "rational.h"
 #include "Updater.h"
-
 #include "VSceneView.h"
 
 using namespace std;
@@ -96,7 +95,9 @@ IScene::IScene(const std::string& name, IObject * parent)
 }
 
 //--------------------------------------------------------------------------
+#ifndef NOVIEW
 QGraphicsScene * IScene::getGraphicScene () const			{ return fView ? static_cast<VSceneView*>(fView)->scene() : 0; }
+#endif
 
 //--------------------------------------------------------------------------
 void IScene::setHandlers ()

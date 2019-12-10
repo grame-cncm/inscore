@@ -123,7 +123,9 @@ class IScene : public IRectShape, public TILoader
 
 		std::string			getRootPath() const;
 		std::string			absolutePath( const std::string& path ) const;
+#ifndef NOVIEW
 		QGraphicsScene *	getGraphicScene () const;
+#endif
 
 		virtual VSceneView*	getSceneView() const;
 

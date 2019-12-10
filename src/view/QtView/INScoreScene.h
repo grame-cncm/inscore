@@ -41,7 +41,7 @@ class INScoreScene : public QGraphicsScene
 				 INScoreScene (const std::string& address, inscore::IScene* scene);
 		virtual ~INScoreScene() {}
 
-	protected:
+	private:
 		std::string	fOscAddress;
 		
 //		const char*	extension ( const char* file ) const;

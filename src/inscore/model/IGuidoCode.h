@@ -75,7 +75,6 @@ class IGuidoCode : public IObject
 	
 	protected:
 		std::string	fGMN;								/// < Guido Music Notation code.
-//		int			fPageCount;							/// < Nb of pages of the score. (set by the view)
 		
 		std::vector<std::string> fRequestedMappings;	/// < Requested map-name list. 
 														/// The 'map' msg just expects a map-name, and then the Guido view
@@ -87,7 +86,7 @@ class IGuidoCode : public IObject
 	public:
 		static const std::string kGuidoCodeType;
 		static SIGuidoCode create(const std::string& name, IObject * parent)	{ return new IGuidoCode(name, parent); }
-		virtual void	accept (Updater*u);
+		virtual void	accept (Updater*);
 
 		void	print (std::ostream& out) const;
 
