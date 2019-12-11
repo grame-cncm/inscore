@@ -31,7 +31,7 @@ namespace inscore
 {
 
 void VObjectView::handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type)
-						{ 	_MouseEventAble::handleEvent(obj, QPointF(x, y), type); }
+						{ 	_MouseEventAble::handleEvent(obj, x, y, type); }
 
 const AbstractData VObjectView::getImage(const char *)
 {

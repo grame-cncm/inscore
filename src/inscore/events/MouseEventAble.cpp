@@ -23,8 +23,6 @@
 
 */
 
-#include <QDebug>
-#include <QPointF>
 #include <set>
 
 #include "IObject.h"
@@ -106,22 +104,21 @@ SIMessageList _MouseEventAble::eval (const IMessageList* msgs, float x, float y,
 }
 
 //----------------------------------------------------------------------
-QPointF _MouseEventAble::touchPos	( QTouchEvent* event )	{
+TFloatPoint _MouseEventAble::touchPos	( QTouchEvent* event )	{
 			QList<QTouchEvent::TouchPoint> touchPoints = event->touchPoints();
 			if (touchPoints.count())
-				return touchPoints[0].pos();
-			return QPointF (0., 0.);
+//				return touchPoints[0].pos();
+				return TFloatPoint (touchPoints[0].pos().x(), touchPoints[0].pos().y());
+			return TFloatPoint (0., 0.);
 		}
 
 //----------------------------------------------------------------------
-void _MouseEventAble::handleEvent (const IObject * obj, QPointF pos,  EventsAble::eventype type)
+void _MouseEventAble::handleEvent (const IObject * obj, float x, float y,  EventsAble::eventype type)
 {
 	const IMessageList* msgs = obj->getMouseMsgs (type);
 	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
 	
 	VObjectView*	view = obj->getView();
-	float x = pos.x();											// first retrieve the x and y event position
-	float y = pos.y();
 	float w = view->relative2SceneWidth (obj->getWidth());		// next get the object width and height
 	float h = view->relative2SceneHeight(obj->getHeight());		// in scene coordinates space
 
