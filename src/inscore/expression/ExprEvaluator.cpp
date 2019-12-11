@@ -20,17 +20,18 @@
   Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
   research@grame.fr
 */
+
 #include <fstream>
-#include "ITLError.h"
 
 #include "ExprEvaluator.h"
-
-#include "IObject.h"
-#include "IScene.h"
 #include "IExpressionHandler.h"
 #include "IExprParser.h"
+#include "IObject.h"
+#include "IScene.h"
+#include "ITLError.h"
+#ifdef QTVIEW
 #include "QFileDownloader.h"
-
+#endif
 
 using namespace std;
 
@@ -136,9 +137,8 @@ const string ExprEvaluator::eval(const filepath& arg, const IExprArgBase *exprAr
 		else
 			updateMsg->add("reset");
 
-			// Request the current value stored in the patch and ask for updates
-		QFileDownloader* fDownloader = new QFileDownloader();
-		const char* data = fDownloader->getCachedAsync(url,  [updateMsg, fDownloader] (){ updateMsg->send(); delete fDownloader;}, [fDownloader](){delete fDownloader;}  );
+		// Request the current value stored in the patch and ask for updates
+		const char* data = fFileDownloader ? fFileDownloader->getCachedAsync(url,  [updateMsg] (){ updateMsg->send(); }, [](){}  ) : 0;
 		string s = emptyValue();
 
 		if(data){
@@ -208,6 +208,9 @@ ExprEvaluator::ExprEvaluator(std::string name, const IObject* contextObject, con
 	fEvalName(name), fCallbackList(operatorList)
 {
 	fContextObject = contextObject;
+#ifdef QTVIEW
+	fFileDownloader = new QFileDownloader();
+#endif
 }
 
 
@@ -219,26 +222,14 @@ bool ExprEvaluator::callbackByOperator(const string op, OperatorCb &cb) const
 	}catch(std::out_of_range){
 		return false;
 	}
-
 	return true;
 }
 
 //_____________________________________________________________
-ExprEvaluator::~ExprEvaluator()
-{
-
-}
-
+ExprEvaluator::~ExprEvaluator()								{ delete fFileDownloader; }
 
 //_____________________________________________________________
-void EvaluationStatus::init()
-{
-    fEvalSucceed = true;
-}
-
-EvaluationStatus::EvaluationStatus():
-	fEvalSucceed(true)
-{
-}
+void EvaluationStatus::init()								{ fEvalSucceed = true; }
+EvaluationStatus::EvaluationStatus(): fEvalSucceed(true)	{}
 
 } //end namespace

@@ -24,11 +24,12 @@
 */
 
 #include <string>
-#include <QDebug>
+
 #include <QDir>
 #include <QNetworkAccessManager>
 #include <QNetworkDiskCache>
 #include <QNetworkRequest>
+#include <QNetworkReply>
 
 #include "QFileDownloader.h"
 #include "INScore.h"

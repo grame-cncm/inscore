@@ -24,29 +24,28 @@
 */
 
 
-#ifndef __INScore__QFileDownloader__
-#define __INScore__QFileDownloader__
-
-#include <string>
-#include <functional>
+#pragma once
 
 #include <QByteArray>
-#include <QNetworkReply>
+
+#include "FileDownloader.h"
+
+class QNetworkReply;
 
 namespace inscore
 {
 
-class QFileDownloader
+class QFileDownloader : public FileDownloader
 {
 	public:
 				 QFileDownloader(const char* urlprefix = 0);
 		virtual ~QFileDownloader();
 	 
 		/// \brief asynchronous download of an url
-		virtual void				getAsync (const char* url, const char* address);
+		void	getAsync (const char* url, const char* address) override;
 
 		/// \brief synchronous download of an url
-		virtual bool				get (const char* url);
+		bool	get (const char* url) override;
 
 		/*!
 		 * \brief synchronously return the cached value of an url, while asynchronously update the cache and triggering a callback if it changed
@@ -55,11 +54,11 @@ class QFileDownloader
 		 * \param cbFail callback function triggered asynchronously if the download fails
 		 * \return the actual data stored in the cache
 		 */
-		 const char* getCachedAsync(const char *url, std::function<void()> cbUpdate, std::function<void()> cbFail = []{});
+		 const char* getCachedAsync(const char *url, std::function<void()> cbUpdate, std::function<void()> cbFail = []{}) override;
 
-		virtual int			dataSize() const	{ return fData.size(); }
-		virtual const char*	data() const		{ return fData.data(); }
-		QByteArray&			byteArray()			{ return fData; }
+		virtual int			dataSize() const override	{ return fData.size(); }
+		virtual const char*	data() const override		{ return fData.data(); }
+		QByteArray&			byteArray()					{ return fData; }
 	 
 	private:
 	 
@@ -75,7 +74,6 @@ class QFileDownloader
 		
 	private:
 		std::string				location(const char * file);
-	
 
 		QString					fInitialURL;
 		QNetworkReply*			fReply;
@@ -84,7 +82,4 @@ class QFileDownloader
 		std::string				fUrlPrefix;
 };
  
-
 } // end namespace
-
-#endif

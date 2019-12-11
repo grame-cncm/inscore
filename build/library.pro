@@ -20,6 +20,7 @@ GUIDOAR_PATH= $$LOCALLIB/GuidoAR
 OSC         = $$LOCALLIB/oscpack
 QRENCODE    = $$LOCALLIB/qrencode
 JSON        = $$SRC/json
+QTIMPL      = $$SRC/Qt
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
@@ -30,6 +31,7 @@ QT += qml # quick quickwidgets
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
+DEFINES += QTVIEW		# use the Qt Javascript engine
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_LESS_55}
 
@@ -45,6 +47,7 @@ SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
+SOURCES +=  $$files($$QTIMPL/*.cpp)
 
 HEADERS  =  $$files($$SRC/inscore/*.h, true)
 HEADERS +=  $$files($$SRC/inscore2/*.h, true)
@@ -54,6 +57,7 @@ HEADERS +=  $$files($$SRC/libmapping/src/*.h, true)
 HEADERS +=  $$files($$OSC/ip/*.h)
 HEADERS +=  $$files($$OSC/OSC/*.h)
 HEADERS +=  $$files($$JSON/*.h)
+HEADERS +=  $$files($$QTIMPL/*.h)
 win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
 #QArchive
@@ -76,6 +80,7 @@ INCLUDEPATH +=  $$files($$QRENCODE)
 INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
 INCLUDEPATH +=  $$GUIDOAR_PATH/include
+INCLUDEPATH +=  $$QTIMPL
 
 
 ############################## 
