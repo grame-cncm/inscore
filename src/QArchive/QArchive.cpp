@@ -18,16 +18,15 @@ QArchive* QArchive::readArchive(QIODevice *d, QArchiveError &error)
 	return a;
 }
 
-QArchive* QArchive::readArchiveFromData(const QByteArray &data, QArchiveError &error)
+QArchive* QArchive::readArchiveFromData(const char* data, int size, QArchiveError &error)
 {
 	QBuffer *b = new QBuffer();
-	b->setData(data);
+	b->setData(data, size);
 	return readArchive(b,error);
 }
 
 //______________________________________________________
 //------------------------------------------------------
-
 QArchiveError QArchive::compress(QString outputArchive, bool overwrite)
 {
 	QFile output(outputArchive);

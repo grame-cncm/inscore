@@ -39,6 +39,7 @@ namespace inscore
 
 class IMessage;
 class IObject;
+class FileDownloader;
 
 //--------------------------------------------------------------------------
 /*!
@@ -56,7 +57,7 @@ class TILoader
 
 		virtual MsgHandler::msgStatus	preprocess(const IMessage* msg, IAppl* client, const std::string& rootpath, int pversion);
 		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath, int pversion);
-		virtual MsgHandler::msgStatus	loadBundle(const std::string& file, const std::string& rootpath);
+		virtual MsgHandler::msgStatus	loadBundle(const std::string& file, const std::string& rootpath, FileDownloader* downloader);
 
 		bool	isBundle(const std::string& file);
 
