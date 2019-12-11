@@ -131,7 +131,7 @@ win32 {
 # macos x support
 ############################## 
 macx {
-	DESTDIR = $$PWD/bin
+	!NOVIEW { DESTDIR = $$PWD/bin }
 	QT += opengl
     QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 

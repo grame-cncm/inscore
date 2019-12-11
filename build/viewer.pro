@@ -3,14 +3,14 @@ else   { TEMPLATE = app }
 
 
 unix:!macx:!ios:!android:TARGET = inscoreviewer
-else { TARGET = INScoreViewer }
+else   { TARGET = INScoreViewer }
+
 OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets
 QT += qml sensors
-#QT += quick quickwidgets
 
 ############################## 
 # locations
@@ -54,7 +54,7 @@ ICON = $$ROOT/rsrc/INScoreViewer.icns
 # macos x support
 ############################## 
 macx {
-	DESTDIR = $$PWD/bin
+	!NOVIEW { DESTDIR = $$PWD/bin }
 	QMAKE_LFLAGS += -FRelease
 	LIBS += -F$$ROOT/bin -framework INScore
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
