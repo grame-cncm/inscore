@@ -1,0 +1,59 @@
+
+width= 0.18;
+cmin = 0.45;
+cmax = 0.4;
+mmin = 1.1;
+mmax = 0.85;
+
+orange = 255 190 0;
+grey   = 180 180 180;
+dur    = 1.;
+step   = $dur / 6;
+tempo  = 120;
+start  = 0.2;
+
+/ITL/scene/* del;
+
+/ITL/scene/c set ellipse $mmin $mmin;
+/ITL/scene/c color 255 255 255;
+/ITL/scene/c duration $dur;
+
+/ITL/scene/static set ellipse $width $width;
+/ITL/scene/static date $start;
+
+/ITL/scene/c1 set ellipse $cmin $cmin;
+/ITL/scene/c2 set ellipse $cmin $cmin;
+/ITL/scene/c3 set ellipse $cmin $cmin;
+/ITL/scene/c4 set ellipse $cmin $cmin;
+/ITL/scene/c5 set ellipse $cmin $cmin;
+/ITL/scene/c6 set ellipse $cmin $cmin;
+
+/ITL/scene/c1 date 0;
+/ITL/scene/c2 date $step;
+/ITL/scene/c3 date $step * 2;
+/ITL/scene/c4 date $step * 3;
+/ITL/scene/c5 date $step * 4;
+/ITL/scene/c6 date $step * 5;
+
+/ITL/scene/static color $orange;
+/ITL/scene/c? 	  color $grey;
+
+/ITL/scene/sync c? c syncFrame;
+
+/ITL/scene/static watch timeEnter  1 2 		( /ITL/scene/static tempo -$tempo );
+/ITL/scene/static watch timeEnter -1 $start ( /ITL/scene/static tempo $tempo );
+
+/ITL/scene/static watch ddate (
+	/ITL/scene/c* scale "$date%f"
+);
+
+/ITL/scene/static tempo $tempo;
+
+
+
+__END__
+/ITL/scene/c  set ellipse $mmax $mmax;
+/ITL/scene/c? set ellipse $cmax $cmax;
+
+/ITL/scene/static tempo 60;
+/ITL/scene/static tempo 0;
