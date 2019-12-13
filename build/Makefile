@@ -19,6 +19,7 @@ ifeq ($(TARGET), windows)
  SPEC ?= -spec win32-msvc2013
 endif
 
+JOBS ?= 8
 OUT  := INScore.framework
 MOBILESCRIPTS := ../scripts/mobile
 
@@ -75,8 +76,8 @@ help :
 macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C ../lib/GuidoEngine/macosx
 	$(MAKE) -C ../lib/GuidoAR/macosx
-	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
-	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
+	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
 #	$(MAKE) ibundle
 
 linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
@@ -96,8 +97,8 @@ _ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	@which $(QMAKE) > /dev/null || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
 	cp -rf ../rsrc/ tmp-rsc
 	make -C $(MOBILESCRIPTS)
-	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
-	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
+	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
 
 windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
