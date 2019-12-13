@@ -155,7 +155,7 @@ devandroid:
 
 # To install INScore on your android device add DEVICE variable with device serial number. It can be retreived with 'adb get-serialno'
 installAndroid :
-	adb -s $(shell adb get-serialno) install -r android/android-build/build/outputs/apk/android-build-release-signed.apk
+	adb -s $(shell adb get-serialno) install -r $(shell find android* -name android-build-release-signed.apk) 
 
 uninstallAndroid :
 	adb uninstall fr.grame.inscore
