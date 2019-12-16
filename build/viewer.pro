@@ -30,9 +30,15 @@ CONFIG += c++11
 ############################## 
 # source and headers
 ############################## 
-NOVIEW { SOURCES += $$APPL/INScoreNoView.cpp } 
-else   { SOURCES += $$APPL/INScoreAppl.cpp }
-HEADERS 	+= $$APPL/INScoreAppl.h
+NOVIEW { 
+	SOURCES += $$APPL/INScoreNoView.cpp 
+    HEADERS += $$APPL/INScoreNoView.h
+} 
+else   { 
+	SOURCES += $$APPL/INScoreAppl.cpp 
+	HEADERS += $$APPL/INScoreAppl.h
+}
+
 INCLUDEPATH += $$APPL $$LIB/interface
 INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
 INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
