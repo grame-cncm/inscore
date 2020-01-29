@@ -23,30 +23,20 @@
 
 */
 
-#include "VMobileMenu.h"
 
 #include <QSettings>
-//#include <QLabel>
-//#include <QPushButton>
-//#include <QFileDialog>
-//#include <QCheckBox>
-//#include <QHBoxLayout>
-//#include <QVBoxLayout>
-//#include <QGridLayout>
-//#include <QLineEdit>
 #include <QtQuick>
 
 #include "IAppl.h"
+#include "INScore.h"
 #include "IMessage.h"
 #include "Methods.h"
-#include "INScore.h"
-
-#include <QDebug>
+#include "VMobileMenu.h"
 
 namespace inscore
 {
 //--------------------------------------------------------------------------
-VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QQuickWidget(parent)
+VMobileMenu::VMobileMenu(const char * name, const char* qtversion, const char* ipnum, QWidget* parent) : QQuickWidget(parent)
 {
 	setResizeMode(QQuickWidget::SizeViewToRootObject);
 	setSource(QUrl("qrc:///qml/about.qml"));
@@ -55,9 +45,9 @@ VMobileMenu::VMobileMenu(const char * name, QWidget* parent) : QQuickWidget(pare
 	setWindowTitle( tr(name) );
 	QQuickItem *root = rootObject();
 	root->setProperty("version", QVariant(INScore::versionStr()));
-	root->setProperty("qtversion", QVariant(INScore::qtversion()));
+	root->setProperty("qtversion", QVariant(qtversion));
 	root->setProperty("guidoversion", QVariant(INScore::guidoversion()));
-	root->setProperty("ip", QString::fromStdString(IAppl::getIP()));
+	root->setProperty("ip", QString(ipnum));
 
 	QSettings settings("Grame", "INScore");
 	settings.beginGroup("Mobile");

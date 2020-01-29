@@ -22,6 +22,9 @@
   research@grame.fr
 
 */
+
+#include "INScore.h"
+
 #include "IMobileMenu.h"
 #include "VMobileMenu.h"
 #include "VMobileQtInit.h"
@@ -41,11 +44,11 @@ QWidget* IMobileMenu::window()
 	return fMobileMenu;
 }
 
-SIMenu IMobileMenu::create(IObject * parent)
+SIMenu IMobileMenu::create(const INScoreApplicationGlue* glue, IObject * parent)
 {
 	IMobileMenu * menu = new IMobileMenu(parent);
 	// Create the view of the menu object
-	menu->setWindow(new VMobileMenu("About"));
+	menu->setWindow(new VMobileMenu("About", glue->viewVersion().c_str(), glue->getIP().c_str()));
 	return menu;
 }
 
