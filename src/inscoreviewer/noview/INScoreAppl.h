@@ -1,7 +1,7 @@
 /*
 
   INScore viewer
-  Copyright (C) 2011  Grame
+  Copyright (C) 2020  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,6 @@
 
 #include <string>
 #include <QApplication>
-//#include <QTimer>
 
 #include "INScore.h"
 

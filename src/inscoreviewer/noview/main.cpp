@@ -1,7 +1,7 @@
 /*
 
-  Interlude Prototype
-  Copyright (C) 2009,2010  Grame
+  INScore project
+  Copyright (C) 2020  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -22,34 +22,19 @@
 
 */
 
-#ifdef WIN32
-#include <windows.h>
-#define sleep(n)	Sleep(n*1000)
-#else
-#include <unistd.h>
-#endif
-
-#include <stdlib.h>
 #include <iostream>
-#include <string>
 
-#include <QApplication>
-#include <QTimer>
-
-#include "IAppl.h"
 #include "INScore.h"
-#include "INScoreNoView.h"
+#include "INScoreAppl.h"
 
 using namespace inscore;
 using namespace std;
 
 #define kUPDPort		7000
-#define kTimeInterval	10			// time task interval in milliseconds
 
-static const char* kPortOption = "--port";
+const char* kPortOption = "--port";
 
-
-//-----------------------------------------------------------------------
+//_______________________________________________________________________
 static int intopt (const string& opt, int defaultValue, int n, char **argv)
 {
 	for (int i = 0; i < n; i++) {
@@ -59,60 +44,6 @@ static int intopt (const string& opt, int defaultValue, int n, char **argv)
 		}
 	}
 	return defaultValue;
-}
-
-
-#if WIN32
-#define sep '\\'
-#else
-#define sep '/'
-#endif
-
-//_______________________________________________________________________
-void INScoreAppl::open(const string& file)
-{
-	size_t pos = file.find_last_of (sep);
-	if (pos != string::npos) {
-		string path = file.substr(0, pos);
-		INScore::MessagePtr msg = INScore::newMessage (krootPath_GetSetMethod);
-		INScore::add (msg, path.c_str());
-		INScore::postMessage ("/ITL", msg);
-	}
-	INScore::MessagePtr msg = INScore::newMessage (kload_SetMethod);
-	INScore::add (msg, file.c_str());
-	INScore::postMessage ("/ITL", msg);
-}
-
-//_______________________________________________________________________
-void INScoreAppl::timerEvent(QTimerEvent *)
-{
-cerr << "INScoreAppl::timerEvent" << endl; 
-	fGlue->timeTask ();
-	if (fGlue->getRate() != fRate) {
-		fRate = fGlue->getRate();
-		killTimer(fTimerId);
-		fTimerId = startTimer(fRate);
-	}
-}
-
-//_______________________________________________________________________
-void INScoreAppl::start (int udpinport, int udpoutport)
-{
-	setApplicationName("INScoreViewer");
-
-	fGlue = INScore::start (udpinport, udpoutport, udpoutport+1, this);
-	fRate = fGlue->getRate();
-	fTimerId = startTimer (fRate, Qt::PreciseTimer);
-}
-
-//_______________________________________________________________________
-void INScoreAppl::run()
-{
-	do {
-		usleep (100);
-		fGlue->timeTask();
-	} while (IAppl::running());
-	return 0;
 }
 
 
@@ -139,11 +70,10 @@ int main( int argc, char **argv )
 		const string arg = argv[i];
 		if (arg[0] == '-') {
 			if (arg == kPortOption) i++;
-		}	
+		}
 		else appl.open (arg);
 	}
 
-//	ret = appl.exec();
 	appl.run();
 	cout << "Bye" << endl;
 	return ret;

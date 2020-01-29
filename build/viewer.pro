@@ -20,9 +20,11 @@ SRC  = $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
 GUIDO_PATH	= $$LOCALLIB/GuidoEngine
 
-APPL = $$SRC/inscoreviewer
-LIB  = $$SRC/inscore
-OSC  = $$LOCALLIB/oscpack
+APPL   = $$SRC/inscoreviewer
+NOVIEW 	{ SRCDIR = $$APPL/noview }
+else	{ SRCDIR = $$APPL/qtview }
+LIB    = $$SRC/inscore
+OSC    = $$LOCALLIB/oscpack
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
@@ -33,11 +35,9 @@ CONFIG += c++11
 ############################## 
 # source and headers
 ############################## 
-NOVIEW { SOURCES += $$APPL/INScoreNoView.cpp } 
-else   { SOURCES += $$APPL/INScoreAppl.cpp }
-NOVIEW { HEADERS += $$APPL/INScoreNoView.h } 
-else   { HEADERS += $$APPL/INScoreAppl.h }
-INCLUDEPATH += $$APPL $$LIB/interface
+SOURCES = $$SRCDIR/*.cpp
+HEADERS = $$SRCDIR/*.h
+INCLUDEPATH += $$SRCDIR $$LIB/interface
 INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
 INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
 INCLUDEPATH += $$SRC/view/guidoqt $$GUIDO_PATH/include
@@ -56,7 +56,7 @@ ICON = $$ROOT/rsrc/INScoreViewer.icns
 macx {
 	!NOVIEW { DESTDIR = $$PWD/bin }
 	QMAKE_LFLAGS += -FRelease
-	LIBS += -F$$ROOT/bin -framework INScore
+	LIBS += -F$$PWD/bin -framework INScore
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
 	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns
 	RSRC.path 	= Contents/Resources
