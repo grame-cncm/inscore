@@ -80,7 +80,7 @@ bool TFaustDSPPlugin::load ()
 {
 	if (isLoaded()){ return isResolved();}
 
-	if (TPlugin::load(fdlibName)) {
+	if (QPlugin::load(fdlibName)) {
         
 		fNewSFactory = resolve<TNewSFactory> (fdlibCreateFactoryS);
 		if (fNewSFactory == 0)

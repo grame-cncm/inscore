@@ -15,7 +15,7 @@
 #include <QLibrary>
 
 #include "QGuidoImporter.h"
-#include "TPlugin.h"
+#include "QPlugin.h"
 
 #if __APPLE__
 # define musicxmllib	"musicxml2"
@@ -26,7 +26,7 @@
 # define musicxmllib	"libmusicxml2"
 #endif
 
-static inscore::TPlugin glibmxml;
+static inscore::QPlugin glibmxml;
 
 //-------------------------------------------------------------------------
 bool QGuidoImporter::mMusicXMLSupported = false;

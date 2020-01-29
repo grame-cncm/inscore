@@ -29,7 +29,7 @@
 
 #include "IFaustSignal.h"
 #include "IMessageHandlers.h"
-#include "TPlugin.h"
+#include "QPlugin.h"
 #include "faust-inscore.h"
 
 namespace inscore
@@ -47,7 +47,7 @@ typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
 /*!
 	\brief a Faust processor (that is also a parallel signal)
 */
-class IFaustProcessor : public IFaustSignal, public TPlugin
+class IFaustProcessor : public IFaustSignal, public QPlugin
 {
 	buildUserInterface	fBuildUI;
 	compute				fCompute;

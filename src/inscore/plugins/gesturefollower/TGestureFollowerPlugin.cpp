@@ -98,7 +98,7 @@ bool TGestureFollowerPlugin::load ()
 {
 	if (isLoaded()) return isResolved();
 
-	if (TPlugin::load(gflibName)) {
+	if (QPlugin::load(gflibName)) {
 		fNew = resolve<TNewFunction> (gflibNewStr);
 		if (fNew == 0) return false;
 		fDel = resolve<TVoidVoidFunction> (gflibDelStr);

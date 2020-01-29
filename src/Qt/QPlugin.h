@@ -19,45 +19,36 @@
   
 */
 
-#ifndef __TPlugin__
-#define __TPlugin__
+#pragma once
 
 #include <string>
 #include <vector>
 
+#include <QLibrary>
+
+#include "TPlugin.h"
+
 namespace inscore
 {
 
-class TPlugin {
+class QPlugin : public TPlugin, public QLibrary {
 
 	public:
-	static std::string	fLocation;
-
-				 TPlugin()		{};
-		virtual ~TPlugin()		{};
+				 QPlugin()		{};
+		virtual ~QPlugin()		{ if (isLoaded()) unload(); };
 
 		// Gives the possible locations of a plugin in precedence order:
-		// in the current folder first,
-		// a PlugIns folder in application bundle on macos,
+		// in the current folder first, a PlugIns folder in application bundle on macos,
 		// a PlugIns folder in application folder
-		virtual void					locations (const char* library, std::vector<std::string>& list) = 0;
+		void	locations (const char* library, std::vector<std::string>& list) override;
 
-		// load a libray
+		// load the libray
 		// when the library name is an absolute path and if loading fails, try to use the file name only
-		virtual bool 			load 	(const char* library)	= 0;
-		template <typename T> T	resolve (const char* f)		{ return T(_resolve(f)); }
+		bool	load (const char* library) override;
+		std::string	errorString () const override			{ return QLibrary::errorString().toStdString(); }
 
-		virtual std::string	errorString () const	= 0;
-
-		// add a path to the plugins locations and starts looking at this location
-		// next the standard strategy is applied
-		static void	location (std::string path)		{ fLocation = path; }
-		static void	resetlocation ()				{ fLocation.clear(); }
-
-	protected:
-		virtual void* _resolve (const char* f)	= 0;
+		protected:
+			virtual void* _resolve (const char* f)	override { return (void*)(QLibrary::resolve(f)); }
 };
 
 } // end namespace
-
-#endif

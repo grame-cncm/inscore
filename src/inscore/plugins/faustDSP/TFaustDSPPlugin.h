@@ -27,7 +27,7 @@
 #define __TFaustDSPPlugin__
 
 #include <string>
-#include "TPlugin.h"
+#include "QPlugin.h"
 #include "llvm-c-dsp.h"
 
 struct Meta;
@@ -35,7 +35,7 @@ struct Meta;
 namespace inscore
 {
 
-class TFaustDSPPlugin : public TPlugin {
+class TFaustDSPPlugin : public QPlugin {
 
 //    Prototypes of libfaust functions to resolve
 		typedef llvm_dsp_factory*   (* TNewFFactory) (const char* filename, int argc, const char* argv[], const char* target, char* error_msg, int opt_level);

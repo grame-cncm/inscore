@@ -19,14 +19,6 @@
   
 */
 
-#include <iostream>
-
-#include <IAppl.h>
-#include <QApplication>
-#include <QFileInfo>
-#include <QDir>
-#include <QDebug>
-
 #include "TPlugin.h"
 
 using namespace std;
@@ -35,51 +27,6 @@ namespace inscore
 {
 
 std::string TPlugin::fLocation;
-// ------------------------------------------------------------------------------
-void TPlugin::locations (const char* library, std::vector<std::string>& list)
-{
-	if (fLocation.size()) {
-		char ending = fLocation[fLocation.length()-1];
-#ifdef WIN32
-		const char* sep = (ending == '/') || (ending == '\\') ? "" : "/";
-#else
-		const char* sep = (ending == '/') ? "" : "/";
-#endif
-		string libpath = IAppl::absolutePath(fLocation)+sep+library;
-		list.push_back (libpath);
-	}
-
-	list.push_back (IAppl::absolutePath (library));
-	QDir dir(QApplication::applicationDirPath());
-#if __APPLE__
-	dir.cdUp();
-//	if (dir.cd("PlugIns"))
-//		list.push_back (dir.absoluteFilePath(library).toStdString());
-#endif
-//#ifdef WIN32
-//	if (dir.cd("PlugIns"))
-//		list.push_back (dir.absoluteFilePath(library).toStdString());
-//#endif
-	if (dir.cd("PlugIns"))
-		list.push_back (dir.absoluteFilePath(library).toStdString());
-	list.push_back (library);
-#if __APPLE__
-	QString localFramework = qgetenv("HOME") + "/Library/Frameworks/" + library;
-	list.push_back (localFramework.toStdString());
-#endif
-}
-
-// ------------------------------------------------------------------------------
-bool TPlugin::load (const char* library)
-{
-	vector<string> l;
-	locations (library, l);
-	for (unsigned int i=0; i < l.size(); i++) {
-		setFileName ( l[i].c_str() );
-		if (QLibrary::load()) return true;
-	}
-	return false;
-}
 
 
 } // end namespace
