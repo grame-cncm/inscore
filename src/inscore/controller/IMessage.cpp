@@ -332,11 +332,13 @@ void IMessage::send(const bool& ) const
 //--------------------------------------------------------------------------
 void IMessageList::send(const bool& delay) const
 {
+#ifndef IBUNDLE
 	double time = TWallClock::time();
 	for (auto msg: list()) {
 		if (msg->delay()) inscore2::TSorter::schedule (msg, time);
 		else msg->send(delay);
 	}
+#endif
 //	for (unsigned int i=0; i < list().size(); i++) {
 //		const IMessage * msg = list()[i];
 //		if (msg) msg->send(delay);

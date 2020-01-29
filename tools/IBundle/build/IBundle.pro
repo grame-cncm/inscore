@@ -12,7 +12,6 @@ DESTDIR     = $$PWD/..
 QT = core
 
 VERSION = 1.0
-DEFINES += IBUNDLE
 
 ##############################
 # locations
@@ -22,6 +21,7 @@ SRC 		= $$ROOT/src
 ITLROOT		= $$ROOT/../../
 ITLSRC		= $$ITLROOT/src
 
+DEFINES += IBUNDLE
 win32 						{ DEFINES += NOHOSTNAME WINDOWS }
 android 					{ DEFINES += ANDROID }
 ios 						{ DEFINES += IOS }
