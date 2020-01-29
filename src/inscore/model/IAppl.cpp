@@ -114,11 +114,11 @@ string IAppl::fRootPath;
 void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
 
 
-inscore::SIMenu getMenuNode(inscore::IObject * parent) {
+inscore::SIMenu getMenuNode(inscore::IAppl * appl) {
 #ifdef __MOBILE__
-	return inscore::IMobileMenu::create(parent);
+	return inscore::IMobileMenu::create(appl->getApplicatonGlue(), appl);
 #else
-	return inscore::IMenu::create(parent);
+	return inscore::IMenu::create(appl);
 #endif
 }
 

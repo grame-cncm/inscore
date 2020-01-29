@@ -83,7 +83,6 @@ ios {
 	HEADERS += $$files($$SRC/mobile/ios/*.h)
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobileios.qrc
 	DEFINES += IOS __MOBILE__
-    CONFIG  += arm64 armv7 armv7s # x86_64
     QT += quick quickwidgets
 }
 
