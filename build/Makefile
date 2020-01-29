@@ -26,10 +26,11 @@ INSCOREDIR  ?= inscoredir
 
 ifeq ($(system), Darwin)
 	LIBPROJ = INScore.xcodeproj
-	VIEWPROJ = INScoreViewer.xcodeproj
+	VIEWPROJ= INScoreViewer.xcodeproj
 	SPEC    = -spec macx-xcode
 	TARGET  = macos
 	PREFIX  ?= /usr/local
+	J       ?= 8   # parallele jobs for xcode
 endif
 
 ifeq ($(system), MINGW)
@@ -79,8 +80,8 @@ help :
 macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C ../lib/GuidoEngine/macosx
 	$(MAKE) -C ../lib/GuidoAR/macosx
-	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
-	xcodebuild -jobs 8 -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
+	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
 #	$(MAKE) ibundle
 
 linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
