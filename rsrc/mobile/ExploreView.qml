@@ -186,7 +186,7 @@ Item {
 
         Loader{
             id: list1;
-            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.ibundle"]; showDirsFirst: true;}
+            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.inscore2","*.ibundle"]; showDirsFirst: true;}
             property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
@@ -194,7 +194,7 @@ Item {
         }
         Loader{
             id: list2;
-            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.ibundle"]; showDirsFirst: true;}
+            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.inscore2","*.ibundle"]; showDirsFirst: true;}
             property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;

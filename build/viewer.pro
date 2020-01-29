@@ -111,8 +111,11 @@ unix:!android:!macx:!ios {
 # android support
 ############################## 
 android {
+	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
 	LIBS += -L. -lINScore
-	ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/libGUIDOEngine.so $$ROOT/lib/GuidoAR/android/libguidoar.so libINScore.so
+	ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/$${ARCH}/libGUIDOEngine.so
+	ANDROID_EXTRA_LIBS += $$ROOT/lib/GuidoAR/android/$${ARCH}/libguidoar.so
+	ANDROID_EXTRA_LIBS += libINScore.so
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
 	QT += androidextras

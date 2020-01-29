@@ -188,13 +188,17 @@ unix:!macx:!ios:!android {
 ############################## 
 # android support
 ############################## 
+
 android {
+	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
+	message ("Target android platform is $$ARCH")
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
-    LIBS += -L$$ROOT/lib/GuidoEngine/android -lGUIDOEngine
-    LIBS += -L$$ROOT/lib/GuidoAR/android -lguidoar
+    LIBS += -L$$ROOT/lib/GuidoEngine/android/$${ARCH} -lGUIDOEngine
+    LIBS += -L$$ROOT/lib/GuidoAR/android/$${ARCH} -lguidoar
+    ANDROID_API_VERSION = 22
     QT += androidextras
 	QT += quick quickwidgets 
 }

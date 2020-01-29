@@ -12,6 +12,9 @@ rversion = 1.20;
 	/ITL/scene/warning scale 1.5
 );
 
+clickStr	= ($OSId < 3 ? Touch : 'Double click');
+click 		= ($OSId < 3 ? touchBegin : doubleClick);
+
 color = 20 0 150;
 
 /ITL/scene/title set txt "Editable objects";
@@ -24,13 +27,13 @@ color = 20 0 150;
 /ITL/scene/rect set rect 0.3 0.3;
 /ITL/scene/rect color 100 100 200;
 
-/ITL/scene/* watch doubleClick ( /ITL/scene/$self edit );
+/ITL/scene/* watch $click ( /ITL/scene/$self edit );
 
 /ITL/scene/circle set ellipse 0.3 0.3;
 /ITL/scene/circle color 200 250 200;
 /ITL/scene/circle y 0.45;
-/ITL/scene/circle watch doubleClick ( /ITL/scene/circle edit red green blue alpha );
+/ITL/scene/circle watch $click ( /ITL/scene/circle edit red green blue alpha );
 
-/ITL/scene/comment set txt "Double click any object above to open a small editor";
+/ITL/scene/comment set txt $clickStr  " any object above to open a small editor";
 /ITL/scene/comment y 0.8;
 

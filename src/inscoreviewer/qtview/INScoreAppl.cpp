@@ -297,7 +297,7 @@ void INScoreAppl::start (int udpinport, int udpoutport)
 {
 	setApplicationName("INScoreViewer");
 	setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, false);
-	setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, false);
+	setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, true);
 	setupMenu();
 
 	const string applfont = ":/fonts/Carlito-Regular.ttf";

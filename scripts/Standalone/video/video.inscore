@@ -16,8 +16,8 @@ rversion = 1.20;
 # links for more information
 #---------------------------------------------
 musicamobile 	= "http://www.grame.fr/prod/musica-mobile";
-line9			= "http://www.grame.fr/prod/line-9";
-smartfaust		= "http://www.grame.fr/events/smartfaust";
+line9			= "http://archive2010.grame.fr/prod/line-9";
+smartfaust		= "http://archive2010.grame.fr/events/smartfaust";
 
 click = ($OSId < 3 ? touchBegin : mouseDown);
 move  = ($OSId < 3 ? touchUpdate : mouseMove);
