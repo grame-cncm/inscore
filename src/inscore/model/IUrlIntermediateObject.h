@@ -23,8 +23,7 @@
 
 */
 
-#ifndef __INScore__IUrlIntermediateObject__
-#define __INScore__IUrlIntermediateObject__
+#pragma once
 
 #include <iostream>
 #include "TFile.h"
@@ -33,10 +32,21 @@
 namespace inscore
 {
 
-class QFileDownloader;
+class FileDownloader;
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>	SIUrlIntermediateObject;
 
+//--------------------------------------------------------------------------
+class Downloader
+{
+	public:
+				 Downloader() {}
+		virtual ~Downloader() {}
+
+
+};
+
+//--------------------------------------------------------------------------
 class IUrlIntermediateObject : public IShapeMap, public TFile
 {
 	
@@ -51,7 +61,7 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
     
     protected:    
 				 IUrlIntermediateObject( const std::string& name, IObject* parent );
-		virtual ~IUrlIntermediateObject();
+		virtual ~IUrlIntermediateObject() {}
     
         virtual MsgHandler::msgStatus set (const IMessage* msg );
 
@@ -64,21 +74,23 @@ class IUrlIntermediateObject : public IShapeMap, public TFile
         /// \brief returns the type of file that this intermediate object momently replace
 		std::string getType() { return fType; }
     
-        /// \brief handles the case of success ("success" message sent by the QFileDownloader if the download has succeeded)
+        /// \brief handles the case of success ("success" message sent by the FileDownloader if the download has succeeded)
 		virtual void updateFileSucceded();
     
         /// \brief handles the case of cancelation ("cancel" message, or in the case of a change of path or type)
 		virtual void updateFileCanceled();
     
-        /// \brief handles the case of failure ("error" message sent by the QFileDownloader if the download has failed)
+        /// \brief handles the case of failure ("error" message sent by the FileDownloader if the download has failed)
 		virtual MsgHandler::msgStatus updateFileFailed(const IMessage* msg );
-    	
-        std::string fUrlPath;
-        std::string fType; // the type of the object to be created once the data is ready
-        QFileDownloader *    fDownloaderThread; // the thread called to download the data from the URL. Once done, it sends the appropriate msg
-	
+    
+        /// \brief create a concrete file downloader
+		virtual FileDownloader* createDownloader(const char* urlprefix ) const;
+
+	private:
+		FileDownloader * fDownloader = 0;
 		status fStatus;
+	
+	std::string fUrlPath;
+	std::string fType; // the type of the object to be created once the data is ready
 };
 }
-
-#endif

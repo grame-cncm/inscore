@@ -23,8 +23,6 @@
 
 */
 
-#include <QUrl>
-
 #include "IUrlIntermediateObject.h"
 #include "IObjectFactory.h"
 #include "TFile.h"
@@ -32,7 +30,10 @@
 #include "Events.h"
 #include "Updater.h"
 
+#include "FileDownloader.h"
+#if !defined(NOVIEW) && !defined(MODELONLY)
 #include "QFileDownloader.h"
+#endif
 
 using namespace libmapping;
 
@@ -43,7 +44,7 @@ const std::string IUrlIntermediateObject::kUrlIntermediateType("url");
 
 
 //--------------------------------------------------------------------------
-IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject* parent ) : IShapeMap(name, parent), TFile(parent->getScene()), fDownloaderThread(0)
+IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject* parent ) : IShapeMap(name, parent), TFile(parent->getScene())
 {
     fMsgHandlerMap[ksuccess_SetMethod] = TMethodMsgHandler<IUrlIntermediateObject, void (IUrlIntermediateObject::*)(void)>::create(this, &IUrlIntermediateObject::updateFileSucceded);
 	fMsgHandlerMap[kerror_SetMethod]   = TMethodMsgHandler<IUrlIntermediateObject>::create(this, &IUrlIntermediateObject::updateFileFailed);
@@ -55,12 +56,6 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
     fWidth = 1.0;
     fHeight = 1.0;
 //	setColor( IColor(220,220,220) );
-}
-
-//--------------------------------------------------------------------------
-IUrlIntermediateObject::~IUrlIntermediateObject()
-{
-	delete fDownloaderThread;
 }
 
 //--------------------------------------------------------------------------
@@ -83,12 +78,12 @@ MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
 		if (!msg->param(2, path)) return MsgHandler::kBadParameters;
         setFile(path);
         
-        // if the fDownloaderThread exists, we are changing the path : we cancel the previous download.
-        if (fDownloaderThread)
+        // if the fDownloader exists, we are changing the path : we cancel the previous download.
+        if (fDownloader)
             updateFileCanceled();
 			
-        fDownloaderThread = new QFileDownloader(getScene()->getRootPath().c_str());
-        if (fDownloaderThread) fDownloaderThread->getAsync (path.c_str(), getOSCAddress().c_str());
+        fDownloader = createDownloader(getScene()->getRootPath().c_str());
+        if (fDownloader) fDownloader->getAsync (path.c_str(), getOSCAddress().c_str());
 		
         return MsgHandler::kProcessed;
     }
@@ -96,11 +91,21 @@ MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
 }
 
 //--------------------------------------------------------------------------
+FileDownloader* IUrlIntermediateObject::createDownloader(const char* urlprefix ) const
+{
+#if !defined(NOVIEW) && !defined(MODELONLY)
+	return new QFileDownloader (urlprefix);
+#else
+	return 0;
+#endif
+}
+
+//--------------------------------------------------------------------------
 void IUrlIntermediateObject::updateFileSucceded()
 {
     // creation of the real object
     SIObject obj = IObjectFactory::create(name(), fType, fParent);
-	int n = fDownloaderThread->dataSize();
+	int n = fDownloader->dataSize();
 
     if(obj && n)
     {
@@ -113,7 +118,7 @@ void IUrlIntermediateObject::updateFileSucceded()
         if (file)
         {
             file->setFile(getFile());
-            file->setData(fDownloaderThread->data(), fDownloaderThread->dataSize());
+            file->setData(fDownloader->data(), fDownloader->dataSize());
             file->updateUrl();
         }
 		else ITLErr << "Unexpected non file type" << fType << ITLEndl;
@@ -128,10 +133,9 @@ void IUrlIntermediateObject::updateFileSucceded()
 //--------------------------------------------------------------------------
 void IUrlIntermediateObject::updateFileCanceled()
 {
-    if (fDownloaderThread) {
-		//fDownloaderThread->terminate();
-        delete fDownloaderThread;
-		fDownloaderThread = 0;
+    if (fDownloader) {
+        delete fDownloader;
+		fDownloader = 0;
     }
     
 	checkEvent(kCancelEvent, rational(0,1), this);
