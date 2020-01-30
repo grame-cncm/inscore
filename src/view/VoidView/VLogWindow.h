@@ -34,7 +34,8 @@ class IApplLog;
 class VLogWindow
 {
 public:
-			VLogWindow(const char* name, IApplLog * logwindow) {}
+			 VLogWindow(const char* name, IApplLog * logwindow) {}
+	virtual ~VLogWindow() {}
 
 	void			append (const char* text)	{ std::cerr << text << std::endl;}
 	const char*		getText () const			{ return ""; }

@@ -79,6 +79,8 @@ class INScoreApplicationGlue
 class INScoreGlue
 {
 	public :
+		virtual ~INScoreGlue() {}
+
 		virtual int 	getRate() const = 0;
 		virtual void 	timeTask () = 0;
 		virtual void 	sorterTask() = 0;
