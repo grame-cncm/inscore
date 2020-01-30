@@ -19,6 +19,7 @@
 
 using namespace std;
 
+#define register
 #define YY_EXTRA_TYPE inscore::IExprParser*
 #define YY_USER_ACTION yyextra->fLine = yylloc->last_line = yylineno; yylloc->first_column += strlen(yytext);
 
