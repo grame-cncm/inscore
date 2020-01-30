@@ -28,16 +28,16 @@
 
 #include "IObjectFactory.h"
 #include "IModel.h"
-#include "SensorsModel.h"
 #include "ITLError.h"
 #include "ViewFactory.h"
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
+#include "SensorsModel.h"
 #include "INScoreScene.h"
 #include "QtWebSocketController.h"
 #endif
 #if defined(__MOBILE__)
 #include "VMobileSceneView.h"
-#elif !defined(NOVIEW)
+#elif !defined(NOVIEW) && !defined(MODELONLY)
 #include "VSceneView.h"
 #endif
 
@@ -52,7 +52,7 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 {
 	SMARTP<T> obj = T::create(name, parent);
 	if (obj) {
-#ifdef NOVIEW
+#if defined(NOVIEW) || defined(MODELONLY)
 		obj->setView ( ViewFactory::create(obj));
 #else
         // We created the object, then we create the view
@@ -73,7 +73,7 @@ template<typename T> SIObject _createNoView(const std::string& name , IObject* p
 	return T::create(name, parent);
 }
 
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 template<> SIObject _create<IWebSocket>(const std::string& name , IObject* parent)
 {
 	SIWebSocket obj = IWebSocket::create(name, parent);
@@ -84,7 +84,7 @@ template<> SIObject _create<IWebSocket>(const std::string& name , IObject* paren
 }
 #endif
 
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 {
 	SIScene obj = IScene::create(name, parent);
@@ -137,10 +137,12 @@ void IObjectFactory::init()
 	fCreateMap[IAudio::kAudioType]							= _create<IAudio>;
 	fCreateMap[ICurve::kCurveType]							= _create<ICurve>;
 	fCreateMap[IEllipse::kEllipseType]						= _create<IEllipse>;
+#ifndef MODELONLY
 	fCreateMap[IFaustDSP::kFaustDSPType]					= _createNoView<IFaustDSP>;
 	fCreateMap[IFaustDSPFile::kFaustDSPFileType]			= _createNoView<IFaustDSPFile>;
 	fCreateMap[IFaustProcessor::kFaustProcessorType]		= _createNoView<IFaustProcessor>;
 	fCreateMap[IGestureFollower::kGestureFollowerType]		= _create<IGestureFollower>;
+#endif
 	fCreateMap[IGraphicSignal::kGraphicType]				= _create<IGraphicSignal>;
 	fCreateMap[IGrid::kGridType]							= _create<IGrid>;
 	fCreateMap[IGuidoCode::kGuidoCodeType]					= _create<IGuidoCode>;
@@ -169,6 +171,7 @@ void IObjectFactory::init()
 	fCreateMap[ITextFile::kTextFileType]					= _create<ITextFile>;
 	fCreateMap[IUrlIntermediateObject::kUrlIntermediateType] = _create<IUrlIntermediateObject>;
 	fCreateMap[IVideo::kVideoType]							= _create<IVideo>;
+#ifndef MODELONLY
 	fCreateMap[IWebSocket::kIWebSocketType]					= _create<IWebSocket>;
 
 	fCreateMap[IAccelerometer::kAccelerometerType]			= _createNoView<IAccelerometer>;
@@ -185,6 +188,7 @@ void IObjectFactory::init()
 #if defined(__LINUX__) || defined(MACOS)
 	// httpd server is not yet supported on windows
 	fCreateMap[IHttpd::kIHttpdType]							= _create<IHttpd>;
+#endif
 #endif
 }
 

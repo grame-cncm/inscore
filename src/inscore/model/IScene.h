@@ -51,8 +51,10 @@ class Master;
 typedef class libmapping::SMARTP<Master>			SMaster;
 class IScene;
 typedef class libmapping::SMARTP<IScene>			SIScene;
+#ifndef MODELONLY
 class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
+#endif
 class IJavascript;
 typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 class IFilterForward;
@@ -69,7 +71,9 @@ class IScene : public IRectShape, public TILoader
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
 	bool			fUpdateVersion;
+#ifndef MODELONLY
 	SIFileWatcher	fFileWatcher;
+#endif
 	SIJavascript	fJSObject;
 	std::string		fRootPath;
 

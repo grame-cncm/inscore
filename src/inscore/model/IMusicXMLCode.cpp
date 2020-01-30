@@ -27,7 +27,7 @@
 #include "Updater.h"
 #include "IMessage.h"
 #include "IMessageHandlers.h"
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 #include "QGuidoImporter.h"
 #endif
 
@@ -55,7 +55,7 @@ void IMusicXMLCode::accept (Updater* u)
 //--------------------------------------------------------------------------
 bool IMusicXMLCode::convert (const string& xml, string& converted) const
 {
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
     std::stringstream sstr;
 	if ( QGuidoImporter::musicxmlString2Guido ( xml.c_str(), true, sstr) ) {
 		converted = sstr.str();
@@ -72,7 +72,7 @@ MsgHandler::msgStatus IMusicXMLCode::set ( const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 
-#ifdef NOVIEW
+#if defined(NOVIEW) || defined(MODELONLY)
 	if (true) {
 #else
 	if (!QGuidoImporter::musicxmlSupported()) {

@@ -64,7 +64,7 @@
 #include "IMenu.h"
 #endif
 
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 #include "QGuidoImporter.h"
 #endif
 
@@ -222,7 +222,7 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fMsgHandlerMap[kwriteBench_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
 #endif
 
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 	QGuidoImporter gi;
 	gi.initialize();
 #endif

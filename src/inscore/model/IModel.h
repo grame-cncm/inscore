@@ -24,8 +24,7 @@
 */
 
 
-#ifndef __IModel__
-#define __IModel__
+#pragma once
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
@@ -35,10 +34,12 @@
 #include "ICurve.h"
 #include "IEllipse.h"
 #include "IFileWatcher.h"
+#ifndef MODELONLY
 #include "IFaustProcessor.h"
 #include "IFaustDSP.h"
 #include "IFaustDSPFile.h"
 #include "IGestureFollower.h"
+#endif
 #include "IGraphicSignal.h"
 #include "IGrid.h"
 #include "IGuidoCode.h"
@@ -49,7 +50,6 @@
 #include "IGuidoStream.h"
 #include "IHtml.h"
 #include "IHtmlFile.h"
-#include "IHttpd.h"
 #include "IImage.h"
 #include "ILayer.h"
 #include "ILine.h"
@@ -71,5 +71,9 @@
 #include "ITextFile.h"
 #include "IVideo.h"
 #include "IUrlIntermediateObject.h"
+
+#ifndef MODELONLY
+#include "IHttpd.h"
 #include "IWebSocket.h"
 #endif
+

@@ -27,7 +27,7 @@
 #include "IGuidoCode.h"
 #include "IGuidoPianoRollFile.h"
 #include "libguidoar.h"
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 #include "QGuidoImporter.h"
 #endif
 
@@ -116,7 +116,7 @@ const std::string GmnEvaluator::eval(const IObject *arg)
 //_____________________________________________________
 const string GmnEvaluator::eval(const string &arg, const IExprArgBase *)
 {
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 	std::string gmn = arg;
 	if(isXml(arg)){
 		if(!QGuidoImporter::musicxmlSupported()){

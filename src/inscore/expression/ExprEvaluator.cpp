@@ -31,6 +31,8 @@
 #include "ITLError.h"
 #ifdef QTVIEW
 #include "QFileDownloader.h"
+#else
+#include "FileDownloader.h"
 #endif
 
 using namespace std;

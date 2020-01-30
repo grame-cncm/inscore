@@ -32,9 +32,6 @@
 #include "IProxy.h"
 #include "ISignalNode.h"
 #include "ISignal.h"
-#include "IFaustProcessor.h"
-#include "IFaustDSP.h"
-#include "IFaustDSPFile.h"
 #include "Tools.h"
 #include "IUrlIntermediateObject.h"
 #include "IMusicXMLFile.h"
@@ -43,7 +40,13 @@
 #include "ISVGFile.h"
 #include "IImage.h"
 #include "ITextFile.h"
+
+#ifndef MODELONLY
+#include "IFaustProcessor.h"
+#include "IFaustDSP.h"
+#include "IFaustDSPFile.h"
 #include "SensorsModel.h"
+#endif
 
 using namespace std;
 
@@ -53,6 +56,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 static string name2type (const std::string& name)
 {
+#ifndef MODELONLY
 	if  ((name == IAccelerometer::kAccelerometerType)	||
 		(name == IGyroscope::kGyroscopeType)			||
 		(name == IRotation::kRotationType)				||
@@ -64,6 +68,7 @@ static string name2type (const std::string& name)
 		(name == ITilt::kTiltType)						||
 		(name == IMagnetometer::kMagnetometerType))
 		return name;
+#endif
 	return ISignal::kSignalType;
 }
 
@@ -75,13 +80,16 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 
 	string objType = msg->param(0)->value<string>("");
 	SIObject obj;
+#ifndef MODELONLY
 	if (objType == IFaustProcessor::kFaustProcessorType || objType == IFaustDSP::kFaustDSPType || objType == IFaustDSPFile::kFaustDSPFileType)
 		obj = IObjectFactory::create(objName, objType, parent);
 	else {
 		string sigtype = name2type (objName);
         obj = IObjectFactory::create(objName, sigtype, parent);
 	}
-    
+#else
+	obj = IObjectFactory::create(objName, name2type (objName), parent);
+#endif
     if (obj) {
 		int status = obj->execute(msg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) parent->add(obj);

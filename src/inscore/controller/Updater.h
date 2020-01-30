@@ -64,14 +64,12 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (IAudio*) {}
 		virtual void updateTo (ICurve*) {}
 		virtual void updateTo (IEllipse *) {}
-		virtual void updateTo (IGestureFollower*) {}
 		virtual void updateTo (IGraphicSignal*) {}
 		virtual void updateTo (IGrid *) {}
 		virtual void updateTo (IGuidoCode*) {}
 		virtual void updateTo (IGuidoPianoRoll*) {}
 		virtual void updateTo (IGuidoPianoRollStream *) {};
 		virtual void updateTo (IHtml*) {}
-		virtual void updateTo (IHttpd*) {}
 		virtual void updateTo (IImage*) {}
 		virtual void updateTo (ILayer *) {}
 		virtual void updateTo (ILine*) {}
@@ -89,6 +87,10 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (IText*) {}
 		virtual void updateTo (IUrlIntermediateObject*) {}
 		virtual void updateTo (IVideo*) {}
+#ifndef MODELONLY
+		virtual void updateTo (IGestureFollower*) {}
+		virtual void updateTo (IHttpd*) {}
+#endif
 };
 typedef class libmapping::SMARTP<Updater>	SUpdater;
 

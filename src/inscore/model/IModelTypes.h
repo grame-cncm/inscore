@@ -55,12 +55,6 @@ typedef class libmapping::SMARTP<ICurve>		SICurve;
 class IEllipse;
 typedef class libmapping::SMARTP<IEllipse>		SIEllipse;
 
-class IFileWatcher;
-typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
-
-class IGestureFollower;
-typedef class libmapping::SMARTP<IGestureFollower> SIGestureFollower;
-
 class IGraphicSignal;
 typedef class libmapping::SMARTP<IGraphicSignal> SIGraphicSignal;
 
@@ -105,9 +99,6 @@ typedef class libmapping::SMARTP<IHtml>			SIHtml;
 
 class IHtmlFile;
 typedef class libmapping::SMARTP<IHtmlFile>		SIHtmlFile;
-
-class IHttpd;
-typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
 
 class IImage;
 typedef class libmapping::SMARTP<IImage>		SIImage;
@@ -169,8 +160,19 @@ typedef class libmapping::SMARTP<IVideo>		SIVideo;
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>		SIUrlIntermediateObject;
 
+#ifndef MODELONLY
+class IFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
+
+class IGestureFollower;
+typedef class libmapping::SMARTP<IGestureFollower> SIGestureFollower;
+
+class IHttpd;
+typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
+
 class IWebSocket;
 typedef class libmapping::SMARTP<IWebSocket>		SIWebSocket;
+#endif
 
 class Master;
 class ISync;

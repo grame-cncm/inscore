@@ -25,7 +25,7 @@
 #include <iostream>
 #include <map>
 
-#ifdef NOVIEW
+#if defined(NOVIEW) || defined(MODELONLY)
 #include "VoidUpdater.h"
 #elif defined(__MOBILE__)
 #include "VMobileQtInit.h"
@@ -41,7 +41,7 @@
 #include "IMessage.h"
 #include "IMessageStack.h"
 #include "INScore.h"
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 #include "QGuidoImporter.h"
 #endif
 
@@ -83,7 +83,7 @@ INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplic
 {
 	IGlue* glue = new IGlue (udpport, outport, errport);
 	if (glue && glue->start (offscreen, ag)) {
-#ifdef NOVIEW
+#if defined(NOVIEW) || defined(MODELONLY)
 		glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
 		glue->setViewUpdater	(VoidViewUpdater::create() );
 #elif defined(__MOBILE__)
@@ -139,7 +139,7 @@ const char* INScore::guidoversion()
 //--------------------------------------------------------------------------
 const char* INScore::musicxmlversion()
 {
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 	if (QGuidoImporter::musicxmlSupported())
 	{
 		static string version;

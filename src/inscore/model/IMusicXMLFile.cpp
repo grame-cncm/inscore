@@ -27,7 +27,7 @@
 #include "IScene.h"
 #include "Updater.h"
 #include "VObjectView.h"
-#ifndef NOVIEW
+#if !defined(NOVIEW) && !defined(MODELONLY)
 #include "QGuidoImporter.h"
 #endif
 
@@ -58,7 +58,7 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-#ifdef NOVIEW
+#if defined(NOVIEW) || defined(MODELONLY)
 	if (true) {
 #else
 	if (!QGuidoImporter::musicxmlSupported()) {
