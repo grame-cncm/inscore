@@ -25,13 +25,22 @@
 
 
 #include "VObjectView.h"
+
+#ifndef MODELONLY
 #include "MouseEventAble.h"
+#endif
 
 namespace inscore
 {
 
+#ifndef MODELONLY
 void VObjectView::handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type)
-						{ 	_MouseEventAble::handleEvent(obj, x, y, type); }
+{ 	_MouseEventAble::handleEvent(obj, x, y, type); }
+
+#else
+void VObjectView::handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type) {}
+
+#endif
 
 const AbstractData VObjectView::getImage(const char *)
 {

@@ -25,8 +25,6 @@
 
 #include <fstream>
 
-#include <QDir>
-
 #include "TFile.h"
 #include "IAppl.h"
 #include "IScene.h"

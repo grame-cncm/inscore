@@ -83,9 +83,12 @@ INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplic
 {
 	IGlue* glue = new IGlue (udpport, outport, errport);
 	if (glue && glue->start (offscreen, ag)) {
-#if defined(NOVIEW) || defined(MODELONLY)
+#if defined(NOVIEW)
 		glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
 		glue->setViewUpdater	(VoidViewUpdater::create() );
+#elif defined(MODELONLY)
+		glue->setLocalMapUpdater( 0 );
+		glue->setViewUpdater	( 0 );
 #elif defined(__MOBILE__)
 		VMobileQtInit::startQt();
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );

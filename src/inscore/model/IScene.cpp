@@ -184,13 +184,13 @@ void IScene::createVirtualNodes()
 {
 	IRectShape::createVirtualNodes();
 
-#ifndef MODELONLY
-	fFileWatcher = QFileWatcher::create(this);
-#endif
 	fJSObject = IJavascript::create(this);
 	fFilterForward = IFilterForward::create(this);
 	fForwarder.setFilter(fFilterForward);
+#ifndef MODELONLY
+	fFileWatcher = QFileWatcher::create(this);
 	add ( fFileWatcher );
+#endif
 	add ( fJSObject );
 	add ( fFilterForward );
 }

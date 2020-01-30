@@ -30,7 +30,7 @@
 #include <functional>
 
 #ifdef QTJSENGINE
-#include <TQtJs.h>
+#include "TQtJs.h"
 #elif defined IBUNDLE
 #include "TDummyJs.h"
 #endif

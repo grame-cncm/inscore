@@ -26,7 +26,9 @@
 
 #include <fstream>
 #include <sstream>
+#ifdef __MOBILE__
 #include <QStandardPaths>
+#endif
 
 #include "evaluator2.h"
 #include "IAppl.h"
@@ -43,8 +45,10 @@
 #include "TILoader.h"
 #include "TSorter.h"
 
-#include "../QArchive/QArchive.h"
+#include "FileDownloader.h"
+
 #ifdef QTVIEW
+#include "../QArchive/QArchive.h"
 #include "QFileDownloader.h"
 #endif
 
@@ -99,6 +103,7 @@ bool TILoader::isBundle(const std::string& file)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std::string& rootpath, FileDownloader* downloader)
 {
+#if !defined(NOVIEW) && !defined(MODELONLY)
 	// ---- Load a bundle ----
 	qarchive::QArchive* a = 0;
 	qarchive::QArchiveError error;
@@ -166,6 +171,9 @@ MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std
 		default:
 			ITLErr << "Unknown error" << error << ITLEndl;
 	}
+#else
+	ITLErr << "INScore bundles not supported" << ITLEndl;
+#endif
 	return MsgHandler::kBadParameters;
 }
 
