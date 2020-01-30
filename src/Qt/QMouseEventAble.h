@@ -56,7 +56,7 @@ class _MouseEventAble
 };
 
 //----------------------------------------------------------------------
-template <typename T> class QMouseEventAble : public T, public MouseEventAble
+template <typename T> class QMouseEventAble : public T
 {
 	int fTouchID;
 	public:

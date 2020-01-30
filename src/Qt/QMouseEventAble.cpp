@@ -26,7 +26,7 @@
 #include <set>
 
 #include "IObject.h"
-#include "MouseEventAble.h"
+#include "QMouseEventAble.h"
 #include "VObjectView.h"
 #include "TMessageEvaluator.h"
 #include "TRefinedRelation.h"
