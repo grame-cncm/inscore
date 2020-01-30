@@ -48,6 +48,7 @@ SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
 SOURCES +=  $$files($$QTIMPL/*.cpp)
+SOURCES +=  $$files($$QTIMPL/sensors/*.cpp)
 
 HEADERS  =  $$files($$SRC/inscore/*.h, true)
 HEADERS +=  $$files($$SRC/inscore2/*.h, true)
@@ -58,6 +59,7 @@ HEADERS +=  $$files($$OSC/ip/*.h)
 HEADERS +=  $$files($$OSC/OSC/*.h)
 HEADERS +=  $$files($$JSON/*.h)
 HEADERS +=  $$files($$QTIMPL/*.h)
+HEADERS +=  $$files($$QTIMPL/sensors/*.h)
 win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
 #QArchive
@@ -81,6 +83,7 @@ INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
 INCLUDEPATH +=  $$GUIDOAR_PATH/include
 INCLUDEPATH +=  $$QTIMPL
+INCLUDEPATH +=  $$QTIMPL/sensors
 
 
 ############################## 
