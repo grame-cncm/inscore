@@ -175,7 +175,7 @@ tools:
 INScoreVersion:
 	make -C tools
 
-validate: $(validpdf) $(validlog) $(validinscore) $(validfilter) (validpng)
+validate: $(validpdf) $(validlog) $(validinscore) $(validfilter) $(validpng)
 	@echo Validating version $(VERSION) with $(version)
 
 
