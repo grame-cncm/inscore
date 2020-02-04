@@ -67,7 +67,6 @@ void OscThread::start()
 {
 	if (fThread) stop();
 	fThread = new std::thread (run, fListener);
-//	fThread = new std::thread (fListener->run);
 }
 
 //--------------------------------------------------------------------------
@@ -97,7 +96,9 @@ void IGlue::clean()
 {
 	delete fOscThread;
     fOscThread = 0;
+#ifndef NO_OSCSTREAM
 	OSCStream::stop();
+#endif
 	fModel->getApplicatonGlue()->stopView();
 }
 
@@ -105,8 +106,10 @@ void IGlue::clean()
 void IGlue::restart()
 {
     try {
+#ifndef NO_OSCSTREAM
         if (!OSCStream::start())
             throw("Cannot initialize output udp streams");
+#endif
         oscinit (fModel, fUDP);
         if (!fMsgStack || !fController || !fModel || !fOscThread)
             throw("Memory allocation failed!");
@@ -132,9 +135,11 @@ void IGlue::oscinit (SIAppl appl, udpinfo& udp)
 	bool done = false;
 	do {
 		try {
+#ifndef NO_OSCSTREAM
 			oscinit (udp.fInPort);
 			oscinit (oscout, udp.fOutDstAddress, udp.fOutPort);
 			oscinit (oscerr, udp.fErrDstAddress, udp.fErrPort);
+#endif
 			appl->setUDPInPort (udp.fInPort);
 			done = true;
 		}
@@ -206,14 +211,18 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	if (!fMsgStack || !fController || !fModel || !fOscThread)
 		throw("Memory allocation failed!");
 	string listen(" listening OSC on port ");
+#ifndef NO_OSCSTREAM
 	oscerr.setLogWindow (fModel->getLogWindow());
 	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
+#endif
 	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
 	fModel->setRootPath ();
 
 	// check Guido version
 	if (GuidoCheckVersionNums(1, 6, 0) != guidoNoErr) {
+#ifndef NO_OSCSTREAM
 		oscerr << OSCStart("Warning:") << "GUIDOEngine version >= 1.60 is required." << OSCEnd();
+#endif
 		cerr << "Warning: GUIDOEngine version >= 1.60 is required." << endl;
 	}
 	
@@ -281,10 +290,17 @@ void IGlue::setLocalMapUpdater(SUpdater updater)
 }
 
 //--------------------------------------------------------------------------
+#ifndef NO_OSCSTREAM
 void IGlue::setOSCOut (int port) {	oscout.setPort(port); fUDP.fOutPort = port; }
 void IGlue::setOSCOut (const std::string& a) { oscout.setAddress(a); fUDP.fOutDstAddress = a;  }
 void IGlue::setOSCErr (int port) {	oscerr.setPort(port); fUDP.fErrPort = port; }
 void IGlue::setOSCErr (const std::string& a) { oscerr.setAddress(a); fUDP.fErrDstAddress = a;  }
+#else
+void IGlue::setOSCOut (int port) 			 { }
+void IGlue::setOSCOut (const std::string& a) { }
+void IGlue::setOSCErr (int port) 			 { }
+void IGlue::setOSCErr (const std::string& a) { }
+#endif
 
 //--------------------------------------------------------------------------
 void IGlue::checkUDPChange()
@@ -304,9 +320,13 @@ void IGlue::modelUpdate()
 	fController->processOn(fMsgStack, model);
 
 	// Process web message stack
+#ifndef NO_OSCSTREAM
 	oscerr.activeConcatError(true);
+#endif
 	fController->processOn(fWebMsgStack, model);
+#ifndef NO_OSCSTREAM
 	oscerr.activeConcatError(false);
+#endif
 
 	// Wake up thread waiting for a model update.
 	gModelUpdateWaitCondition.notify_all();

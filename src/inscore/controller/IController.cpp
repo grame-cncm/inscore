@@ -50,8 +50,10 @@ void IController::processOn(SIMessageStack& msgs, SIObject& obj)
 	SIMessage* msgptr = msgs->pop();
 	while (msgptr) {
 		SIMessage msg = *msgptr;
+#ifndef NO_OSCSTREAM
 		oscout.setAddress(msg->src());
 		oscerr.setAddress(msg->src());
+#endif
 		int status = processMsg (msg, obj);
 		if (fListener) fListener->msgReceived (msg, status);
 		delete msgptr;

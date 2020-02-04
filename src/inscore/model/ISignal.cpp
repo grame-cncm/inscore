@@ -176,8 +176,10 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 	if (available() > ParallelSignal::size()) {				// check for over-run
 		fix();
 		SISignalNode sn = getSignalNode();
+#ifndef NO_OSCSTREAM
 		if (sn && sn->debug())
 			oscerr << OSCWarn() << "over run for signal" << name() << OSCEnd();
+#endif
 	}
 	return true;
 }

@@ -117,7 +117,9 @@ void IMedia::setFile(const std::string& path)
 	{
 		const char* msg = "can't open media file :";
 		cerr << msg << path << endl;
+#ifndef NO_OSCSTREAM
 		oscerr << OSCErr() << msg << path << OSCEnd();
+#endif
 	}
 }
 

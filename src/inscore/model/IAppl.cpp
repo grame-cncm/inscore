@@ -479,7 +479,11 @@ SIMessage IAppl::hello()	const
 void IAppl::helloMsg() const
 {
 	SIMessage msg = hello();
+#ifndef NO_OSCSTREAM
 	msg->print(oscout);
+#else
+	msg->print(cout);
+#endif
 }
 
 //--------------------------------------------------------------------------

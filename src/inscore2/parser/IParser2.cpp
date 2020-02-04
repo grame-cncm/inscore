@@ -61,7 +61,7 @@ TINode 	IParser::variable(const std::string name) const		{
 
 //------------------------------------------------------------
 void 	IParser::error (int line, int col, const char* msg) const {
-#ifdef TESTV2
+#if defined(TESTV2) || defined(NO_OSCSTREAM)
 	cerr << "line " << line << " column " << col << ": " << msg << endl;
 #else
 	inscore::ITLErr << "line " << line << " column " << col << ": " << msg << inscore::ITLEndl;

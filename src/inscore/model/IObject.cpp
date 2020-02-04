@@ -1033,7 +1033,9 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 	SIMessageList msgs = getMsgs (msg);
 	if (msgs->list().size()) {
 		try {
+#ifndef NO_OSCSTREAM
 			oscout << msgs;
+#endif
 			IAppl* appl = (IAppl*) getAppl();
 			if (appl) {
 				IApplLog* log = appl->getLogWindow();

@@ -26,7 +26,11 @@
 #include <iostream>
 #include <sstream>
 
+#ifndef NO_OSCSTREAM
 #include "ip/NetworkingUtils.h"
+#else
+#define NOHOSTNAME
+#endif
 #include "Tools.h"
 #include "IMessage.h"
 #include "rational.h"
