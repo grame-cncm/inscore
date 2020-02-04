@@ -19,12 +19,13 @@
   
 */
 
-#ifndef __OSCStream__
-#define __OSCStream__
+#pragma once
 
 #include <string>
 #include <vector>
 #include <sstream>
+
+#ifndef NO_OSCSTREAM
 
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
@@ -203,5 +204,9 @@ extern OSCStream		gEventsStream;
 #define oscerr (*_oscerr)
 
 } // end namespace
+
+#else
+
+#include "OSCNoStream.h"
 
 #endif

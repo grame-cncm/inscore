@@ -24,20 +24,23 @@
 */
 
 
-#ifndef __IOSCListener__
-#define __IOSCListener__
+#pragma once
 
 #include "smartpointer.h"
 
+#ifndef NO_OSCSTREAM
 // oscpack include files
 #include "ip/UdpSocket.h"
 #include "osc/OscPacketListener.h"
+#endif
 
 namespace inscore
 {
 
 class IMessageStack;
 typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
+
+#ifndef NO_OSCSTREAM
 
 /*!
 \addtogroup ITLCtrl Controller
@@ -75,12 +78,31 @@ class IOSCListener : public osc::OscPacketListener, public libmapping::smartable
 				 bool isExpression(std::string arg);
 
 };
+
+#else
+
+class IOSCListener : public libmapping::smartable
+{
+	public:
+		static libmapping::SMARTP<IOSCListener> create(SIMessageStack& stack, int port = 7000)
+			{ return new IOSCListener(stack, port); }
+
+		virtual void run()	{}
+		virtual void stop() {}
+
+	protected:
+				 IOSCListener(SIMessageStack& stack, int port = 7000) {}
+		virtual ~IOSCListener() {}
+
+				 bool isExpression(std::string arg) { return false; }
+
+};
+#endif
+
 typedef class libmapping::SMARTP<IOSCListener>	SIOSCListener;
 
 /*!
 @}
 */
 
-} // end namespoace
-
-#endif
+}
