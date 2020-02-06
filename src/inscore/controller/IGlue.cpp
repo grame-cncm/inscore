@@ -213,7 +213,6 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 #ifndef NO_OSCSTREAM
 	cout << "INScore v " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 	oscerr.setLogWindow (fModel->getLogWindow());
-	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
 #else
 	cout << "INScore v " << INScore::versionStr() << " compiled without OSC support" << endl;
 #endif
