@@ -67,7 +67,7 @@ class INScoreApplicationGlue
 {
 	public :
 		virtual void 	showMouse (bool state) = 0;
-		virtual bool 	openUrl (const char* url) = 0;
+		virtual bool 	openUrl (const std::string& url) = 0;
 		virtual void	startView () = 0;
 		virtual void	stopView  () = 0;
 
@@ -123,28 +123,6 @@ class inscore_export INScore
      * \brief stopNetwork Stop network services of inscore.
      */
     static void stopNetwork();
-
-//	/* \brief sets a listener for the graphic update
-//
-//		\param glue the system glue as returned by init()
-//		\param listener a listener that will be called after the scene graphic update
-//	*/
-//	static void setListener (IGlue* glue, GraphicUpdateListener* listener);
-//
-//	/* \brief copy the graphic score data into a bitmap
-//
-//		\param glue the system glue as returned by init()
-//		\param bitmap the destination bitmap
-//		\param w the bitmap width
-//		\param h the bitmap height
-//	*/
-//	static bool getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h);
-//
-//	/* \brief copy the scene data into a bitmap
-//
-//		\param glue the system glue as returned by init()
-//	*/
-//	static void timeTask (IGlue* glue);
 
 	/*! \brief post a message
 
