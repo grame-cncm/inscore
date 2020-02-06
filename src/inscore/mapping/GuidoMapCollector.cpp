@@ -159,9 +159,10 @@ void GuidoSystemCollector::process (const ScoreLayoutInfos& score, Time2GraphicM
 void GuidoSystemCollector::processNoDiv (const ScoreLayoutInfos& score, Time2GraphicMap* outmap)
 {
 	int M,m,s;
-	GuidoGetVersionNums (&M, &m, &s);
-	if (GuidoCheckVersionNums (1, 4, 2) != guidoNoErr)
-		ITLErr << "correct system map requires GUIDOEngine version 1.4.2 or greater - current version is" << GuidoGetVersionStr() << ITLEndl;
+// already checked at upper level
+//	GuidoGetVersionNums (&M, &m, &s);
+//	if (GuidoCheckVersionNums (1, 4, 2) != guidoNoErr)
+//		ITLErr << "correct system map requires GUIDOEngine version 1.4.2 or greater - current version is" << GuidoGetVersionStr() << ITLEndl;
 
 	GuidoMapCollector systemCollector (kGuidoSystem);
 	GuidoMapCollector slicesCollector (kGuidoSystemSlice);
