@@ -24,8 +24,7 @@
 */
 
 
-#ifndef __VoidObjectView__
-#define __VoidObjectView__
+#pragma once
 
 #include <iostream>
 
@@ -56,5 +55,3 @@ class VoidObjectView :  public VDummyObjectView
 /*!@} */
 
 } // end namespoace
-
-#endif
