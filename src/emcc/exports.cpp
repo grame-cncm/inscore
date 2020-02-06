@@ -27,87 +27,63 @@
 #include <emscripten/bind.h>
 
 #include "INScoreAdapter.h"
+#include "INScoreGlue.h"
 
 using namespace emscripten;
 
 /*
- * Structure and enum binding.
- * This structures can be created and manipulated in javascript side like json object and passed to C++ method.
- */
-//EMSCRIPTEN_BINDINGS(CStruct) {
-//
-//	value_object<Guido2MidiParams>("Guido2MidiParams")
-//			.field("fTempo", &Guido2MidiParams::fTempo)
-//			.field("fTicks", &Guido2MidiParams::fTicks)
-//			.field("fChan", &Guido2MidiParams::fChan)
-//			.field("fIntensity", &Guido2MidiParams::fIntensity)
-//			.field("fAccentFactor", &Guido2MidiParams::fAccentFactor)
-//			.field("fMarcatoFactor", &Guido2MidiParams::fMarcatoFactor)
-//			.field("fDFactor", &Guido2MidiParams::fDFactor)
-//			.field("fStaccatoFactor", &Guido2MidiParams::fStaccatoFactor)
-//			.field("fSlurFactor", &Guido2MidiParams::fSlurFactor)
-//			.field("fTenutoFactor", &Guido2MidiParams::fTenutoFactor)
-//			.field("fFermataFactor", &Guido2MidiParams::fFermataFactor);
-//
-//	// Pitch constants
-//	constant("kCLine", kCLine);
-//	constant("kCSharpLine", kCSharpLine);
-//	constant("kDLine", kDLine);
-//	constant("kDSharpLine", kDSharpLine);
-//	constant("kELine", kELine);
-//	constant("kFLine", kFLine);
-//	constant("kFSharpLine", kFSharpLine);
-//	constant("kGLine", kGLine);
-//	constant("kGSharpLine", kGSharpLine);
-//	constant("kALine", kALine);
-//	constant("kASharpLine", kASharpLine);
-//	constant("kBLine", kBLine);
-//	constant("kAutoLines", kAutoLines);
-//	constant("kNoLine", kNoLine);
-//}
-
-/*
  * C++ class binding.
- * This classes can be used in javascript side.
+ * The javascript interface to inscore classes
  */
 
 using namespace inscore;
 EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
-	// Binding C++ class adapter for guidoEngine
+	// Binding C++ class adapter for INScore
 	class_<INScoreAdapter>("INScoreAdapter")
-			//.smart_ptr_constructor("GuidoEngineAdapter",&std::make_shared<GuidoEngineAdapter>)
 			.constructor<>()
 
 			.function("start", 				&INScoreAdapter::start, allow_raw_pointers())
 			.function("stop", 				&INScoreAdapter::stop, allow_raw_pointers())
-			.function("restartNetwork", 	&INScoreAdapter::restartNetwork )
-			.function("stopNetwork", 		&INScoreAdapter::stopNetwork )
+//			.function("restartNetwork", 	&INScoreAdapter::restartNetwork )
+//			.function("stopNetwork", 		&INScoreAdapter::stopNetwork )
 
-			.function("postMessage", 		select_overload<void(const char*, INScore::MessagePtr)>(&INScoreAdapter::postMessage), allow_raw_pointers())
-			.function("postMessageStr", 	select_overload<void(const char*, const char*)>(&INScoreAdapter::postMessage), allow_raw_pointers())
-			.function("postMessageStrI", 	select_overload<void(const char*, const char*, int)>(&INScoreAdapter::postMessage), allow_raw_pointers())
-			.function("postMessageStrF", 	select_overload<void(const char*, const char*, float)>(&INScoreAdapter::postMessage), allow_raw_pointers())
-			.function("postMessageStrStr", 	select_overload<void(const char*, const char*, const char*)>(&INScoreAdapter::postMessage), allow_raw_pointers())
+			.function("postMessage", 		select_overload<void( const std::string&, MessagePtr)> 					(&INScoreAdapter::postMessage), allow_raw_pointers())
+			.function("postMessageStr", 	select_overload<void( const std::string&, const std::string&)>			(&INScoreAdapter::postMessage), allow_raw_pointers())
+			.function("postMessageStrI", 	select_overload<void( const std::string&, const std::string&, int)>		(&INScoreAdapter::postMessage), allow_raw_pointers())
+			.function("postMessageStrF", 	select_overload<void( const std::string&, const std::string&, float)>	(&INScoreAdapter::postMessage), allow_raw_pointers())
+			.function("postMessageStrStr", 	select_overload<void( const std::string&, const std::string&,  const std::string&)>(&INScoreAdapter::postMessage), allow_raw_pointers())
 
 			.function("delayMessage", 		&INScoreAdapter::delayMessage, allow_raw_pointers())
-			.function("newMessage", 		select_overload<INScore::MessagePtr()>(&INScoreAdapter::newMessage), allow_raw_pointers())
-			.function("newMessageM", 		select_overload<INScore::MessagePtr(const char*)>(&INScoreAdapter::newMessage), allow_raw_pointers())
+			.function("newMessage", 		&INScoreAdapter::newMessage, allow_raw_pointers())
+			.function("newMessageM", 		&INScoreAdapter::newMessageM, allow_raw_pointers())
 			.function("delMessage", 		&INScoreAdapter::delMessage, allow_raw_pointers())
 
-			.function("msgAddStr", 			select_overload<void(INScore::MessagePtr, const char*)>(&INScoreAdapter::add), allow_raw_pointers())
-			.function("msgAddF", 			select_overload<void(INScore::MessagePtr, float)>(&INScoreAdapter::add), allow_raw_pointers())
-			.function("msgAddI", 			select_overload<void(INScore::MessagePtr, int)>(&INScoreAdapter::add), allow_raw_pointers())
+			.function("msgAddStr", 			select_overload<void(MessagePtr, const std::string&)> 	(&INScoreAdapter::add), allow_raw_pointers())
+			.function("msgAddF", 			select_overload<void(MessagePtr, float)>		(&INScoreAdapter::add), allow_raw_pointers())
+			.function("msgAddI", 			select_overload<void(MessagePtr, int)>			(&INScoreAdapter::add), allow_raw_pointers())
 
 			.function("version", 			&INScoreAdapter::version )
 			.function("versionStr", 		&INScoreAdapter::versionStr )
 			.function("guidoversion", 		&INScoreAdapter::guidoversion )
 			.function("musicxmlversion", 	&INScoreAdapter::musicxmlversion );
 
-	// Black box object, just for passing argument pointer in method to and from javascript.
-//	class_<inscore::INScore::MessagePtr>("MessagePtr");
-//	class_<inscore::GraphicUpdateListener>("GraphicUpdateListener");
-//	class_<inscore::INScoreGlue>("INScoreGlue");
-//	class_<inscore::INScoreApplicationGlue>("INScoreApplicationGlue");
-}
+	// Binding C++ class for INScoreGlue
+	class_<INScoreJSGlue>("INScoreJSGlue")
+			.constructor<>()
 
+			.function("showMouse", 			&INScoreJSGlue::showMouse)
+			.function("openUrl", 			&INScoreJSGlue::openUrl, allow_raw_pointers())
+			.function("startView", 			&INScoreJSGlue::startView )
+			.function("stopView", 			&INScoreJSGlue::stopView )
+			.function("viewVersion", 		&INScoreJSGlue::viewVersion )
+			.function("getIP", 				&INScoreJSGlue::getIP );
+
+	class_<INScoreGlue>("INScoreGlue")
+			.function("getRate", 			&INScoreGlue::getRate)
+			.function("timeTask", 			&INScoreGlue::timeTask)
+			.function("sorterTask", 		&INScoreGlue::sorterTask );
+
+	// Black box object, just for passing argument pointer in method to and from javascript.
+	class_<Message>("Message");
+}

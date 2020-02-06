@@ -24,40 +24,51 @@
 
 #pragma once
 
+#include <iostream>
+
 #include "INScore.h"
+#include "INScoreGlue.h"
 
 namespace inscore
 {
+
+class Message {};
+typedef Message* MessagePtr;
 
 //--------------------------------------------------------------------------
 /*! \brief the main library interface for emcc
 */
 class inscore_export INScoreAdapter
 {
+	inscore::INScoreJSGlue* fGlue = 0;
+	inline INScore::MessagePtr message(MessagePtr msg) 	{ return INScore::MessagePtr(msg); }
+
 	public:
+		typedef const std::string	jsString;
+	
 				 INScoreAdapter() {}
 		virtual ~INScoreAdapter() {}
 		
-		INScoreGlue* start (int udpport, int outport, int errport, INScoreApplicationGlue* ag, bool offscreen=false)
-												{ return INScore::start (udpport, outport, errport, ag, offscreen); }
-		void 		 stop (INScoreGlue* glue)	{ INScore::stop(glue); }
+		INScoreGlue* start (int udpport, int outport, int errport)
+												{ fGlue = new INScoreJSGlue; return INScore::start (udpport, outport, errport, fGlue); }
+		void 		 stop (INScoreGlue* glue)	{ INScore::stop(glue); delete fGlue; }
 
     	void restartNetwork()		{ INScore::restartNetwork(); }
     	void stopNetwork()			{ INScore::stopNetwork(); }
 
-		void postMessage	(const char* address, INScore::MessagePtr msg)	{ INScore::postMessage(address, msg); }
-		void postMessage	(const char* address, const char* msg)	{ INScore::postMessage(address, msg); }
-		void postMessage	(const char* address, const char* msg, int val)			{ INScore::postMessage(address, msg, val); }
-		void postMessage	(const char* address, const char* msg, float val)		{ INScore::postMessage(address, msg, val); }
-		void postMessage	(const char* address, const char* msg, const char* val)	{ INScore::postMessage(address, msg, val); }
-		void delayMessage	(const char* address, INScore::MessagePtr msg)	{ INScore::delayMessage(address, msg); }
+		void postMessage	(jsString& address, MessagePtr msg)					{ INScore::postMessage(address.c_str(), message(msg)); }
+		void postMessage	(jsString& address, jsString& msg)					{ INScore::postMessage(address.c_str(), msg.c_str()); }
+		void postMessage	(jsString& address, jsString& msg, int val)			{ INScore::postMessage(address.c_str(), msg.c_str(), val); }
+		void postMessage	(jsString& address, jsString& msg, float val)		{ INScore::postMessage(address.c_str(), msg.c_str(), val); }
+		void postMessage	(jsString& address, jsString& msg, jsString& val)	{ INScore::postMessage(address.c_str(), msg.c_str(), val.c_str()); }
+		void delayMessage	(jsString& address, MessagePtr msg)					{ INScore::delayMessage(address.c_str(), message(msg)); }
 
-		INScore::MessagePtr newMessage (const char* msg)	{ return INScore::newMessage(msg); }
-		INScore::MessagePtr newMessage ()					{ return INScore::newMessage(); }
-		void delMessage(INScore::MessagePtr msg)			{ INScore::delMessage(msg); }
-		void add (INScore::MessagePtr msg, const char* s)	{ INScore::add(msg, s); }
-		void add (INScore::MessagePtr msg, float f)			{ INScore::add(msg, f); }
-		void add (INScore::MessagePtr msg, int n)			{ INScore::add(msg, n); }
+		MessagePtr newMessageM (jsString& msg)	{ return MessagePtr(INScore::newMessage(msg.c_str())); }
+		MessagePtr newMessage ()				{ return MessagePtr(INScore::newMessage()); }
+		void delMessage(MessagePtr msg)			{ INScore::delMessage(INScore::MessagePtr(msg)); }
+		void add (MessagePtr msg, jsString& s)	{ INScore::add(message(msg), s.c_str()); }
+		void add (MessagePtr msg, float f)		{ INScore::add(message(msg), f); }
+		void add (MessagePtr msg, int n)		{ INScore::add(message(msg), n); }
 	
 	
 		float 		version()				{ return INScore::version(); }
