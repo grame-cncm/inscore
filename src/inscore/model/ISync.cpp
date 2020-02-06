@@ -318,7 +318,7 @@ void ISync::ptask ()
 {
     for(const_master_iterator it = fMasters2Slaves.begin(); it != fMasters2Slaves.end(); it++)
     {
-        if(it->first->getState() && IObject::kModified)
+        if(it->first->getState() & IObject::kModified)
             for(unsigned int i = 0; i<it->second.size(); i++)
                 it->second[i]->setState(IObject::kMasterModified);
     }
