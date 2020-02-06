@@ -245,9 +245,9 @@ void INScoreAppl::showMouse (bool state)
 }
 
 //-----------------------------------------------------------------------
-bool INScoreAppl::openUrl (const char* url)
+bool INScoreAppl::openUrl (const string& url)
 {
-	QUrl qurl(url);
+	QUrl qurl(url.c_str());
 	return QDesktopServices::openUrl(qurl);
 }
 
