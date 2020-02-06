@@ -208,24 +208,27 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	if (!OSCStream::start())
 		throw("Cannot initialize output udp streams");
 	oscinit (fModel, fUDP);
-	if (!fMsgStack || !fController || !fModel || !fOscThread)
+	if (!fMsgStack || !fController || !fModel) // || !fOscThread)
 		throw("Memory allocation failed!");
-	string listen(" listening OSC on port ");
 #ifndef NO_OSCSTREAM
+	cout << "INScore v " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 	oscerr.setLogWindow (fModel->getLogWindow());
 	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
+#else
+	cout << "INScore v " << INScore::versionStr() << " compiled without OSC support" << endl;
 #endif
-	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
 	fModel->setRootPath ();
 
 	// check Guido version
+#ifndef EMCC
 	if (GuidoCheckVersionNums(1, 6, 0) != guidoNoErr) {
 #ifndef NO_OSCSTREAM
 		oscerr << OSCStart("Warning:") << "GUIDOEngine version >= 1.60 is required." << OSCEnd();
 #endif
 		cerr << "Warning: GUIDOEngine version >= 1.60 is required." << endl;
 	}
-	
+#endif
+
 	// creates a mapping updater - note that it may send error messages and thus should not be
 	// set before the osc streams are ready
 	setSlaveMapUpdater(new IMappingUpdater);

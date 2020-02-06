@@ -130,6 +130,9 @@ void INScore::stopNetwork()
 //--------------------------------------------------------------------------
 const char* INScore::guidoversion()
 {
+#ifdef EMCC
+	return "not available";
+#else
 	int major, minor, sub;
 	GuidoGetVersionNums(&major, &minor, &sub);
 	stringstream s;
@@ -137,6 +140,7 @@ const char* INScore::guidoversion()
 	
 	static string version = s.str();
 	return version.c_str();
+#endif
 }
 
 //--------------------------------------------------------------------------
