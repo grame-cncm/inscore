@@ -25,23 +25,21 @@
 
 #include <iostream>
 
-#include "TComposition.h"
-#include "VGraphicsItemView.h"
-#include "VSceneView.h"
-#include "maptypes.h"
-#include "TSegment.h"
-#include "TRect.h"
-
 #include <QtDebug>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include "QStretchTilerItem.h"
 
-#include "IObject.h"
 #include "Events.h"
-#include "VExport.h"
-
+#include "IObject.h"
+#include "maptypes.h"
 #include "MouseEventAble.h"
+#include "TComposition.h"
+#include "TRect.h"
+#include "TSegment.h"
+#include "VExport.h"
+#include "VGraphicsItemView.h"
+#include "VSceneView.h"
 
 #define NB_OF_COLORS 12
 

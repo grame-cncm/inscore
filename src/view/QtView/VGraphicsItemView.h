@@ -78,16 +78,12 @@ class VGraphicsItemView : public VObjectView
 		virtual ~VGraphicsItemView();
 
 		virtual void updateView(IObject * object);			// updates the object view
-//		virtual void updateBoundingBox( IObject * object  );// updates the object bounding box
 		virtual void updateObjectSize( IObject * object );	// updates the object size
-		//virtual void setParentView (IObject * object);		// updates the object parent view
 		virtual void setParentItem( VObjectView* parent )		{ setParentItem((VGraphicsItemView*)parent); }
 		virtual void setParentItem( VGraphicsItemView* parent ){ fParent = parent ? parent->item() : 0;
                                                                 fItem->setParentItem(parent ? parent->item() : 0);}
     
         virtual void setEffect (const IEffect* effect); //		{ item()->setGraphicsEffect (effect.get()); }
-//		virtual void setEffect (GraphicEffect& effect)		{ item()->setGraphicsEffect (effect.get()); }
-//		virtual GraphicEffect getEffect () const			{ return GraphicEffect ( item()->graphicsEffect()); }
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		float relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
