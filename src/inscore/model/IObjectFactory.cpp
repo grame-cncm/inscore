@@ -137,7 +137,7 @@ void IObjectFactory::init()
 	fCreateMap[IAudio::kAudioType]							= _create<IAudio>;
 	fCreateMap[ICurve::kCurveType]							= _create<ICurve>;
 	fCreateMap[IEllipse::kEllipseType]						= _create<IEllipse>;
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 	fCreateMap[IFaustDSP::kFaustDSPType]					= _createNoView<IFaustDSP>;
 	fCreateMap[IFaustDSPFile::kFaustDSPFileType]			= _createNoView<IFaustDSPFile>;
 	fCreateMap[IFaustProcessor::kFaustProcessorType]		= _createNoView<IFaustProcessor>;
@@ -171,7 +171,7 @@ void IObjectFactory::init()
 	fCreateMap[ITextFile::kTextFileType]					= _create<ITextFile>;
 	fCreateMap[IUrlIntermediateObject::kUrlIntermediateType] = _create<IUrlIntermediateObject>;
 	fCreateMap[IVideo::kVideoType]							= _create<IVideo>;
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 	fCreateMap[IWebSocket::kIWebSocketType]					= _create<IWebSocket>;
 
 	fCreateMap[IAccelerometer::kAccelerometerType]			= _createNoView<IAccelerometer>;

@@ -160,7 +160,7 @@ typedef class libmapping::SMARTP<IVideo>		SIVideo;
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>		SIUrlIntermediateObject;
 
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
 

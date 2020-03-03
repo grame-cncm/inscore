@@ -45,7 +45,7 @@
 #include "Updater.h"
 #include "VSceneView.h"
 
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 #include "QFileWatcher.h"
 #endif
 
@@ -153,7 +153,7 @@ void IScene::reset ()
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 		fFileWatcher->clear();
 #endif
 }
@@ -187,7 +187,7 @@ void IScene::createVirtualNodes()
 	fJSObject = IJavascript::create(this);
 	fFilterForward = IFilterForward::create(this);
 	fForwarder.setFilter(fFilterForward);
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 	fFileWatcher = QFileWatcher::create(this);
 	add ( fFileWatcher );
 #endif
@@ -290,7 +290,7 @@ void IScene::print (ostream& out) const
 	out << "  mode : " << (getFullScreen() ? "normal" : "full") << "screen" << endl;
 	out << "  nodes synchronization :" << endl << fSync->getSync();
 	out << "  file watcher :" << endl;
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 	fFileWatcher->print(out);
 #endif
 }

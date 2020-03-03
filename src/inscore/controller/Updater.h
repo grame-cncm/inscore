@@ -87,7 +87,7 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (IText*) {}
 		virtual void updateTo (IUrlIntermediateObject*) {}
 		virtual void updateTo (IVideo*) {}
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 		virtual void updateTo (IGestureFollower*) {}
 		virtual void updateTo (IHttpd*) {}
 #endif

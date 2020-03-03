@@ -34,7 +34,7 @@
 #include "ICurve.h"
 #include "IEllipse.h"
 #include "IFileWatcher.h"
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 #include "IFaustProcessor.h"
 #include "IFaustDSP.h"
 #include "IFaustDSPFile.h"
@@ -72,7 +72,7 @@
 #include "IVideo.h"
 #include "IUrlIntermediateObject.h"
 
-#ifndef MODELONLY
+#if !defined(MODELONLY) && !defined(NOVIEW)
 #include "IHttpd.h"
 #include "IWebSocket.h"
 #endif
