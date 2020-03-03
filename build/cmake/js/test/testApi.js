@@ -22,7 +22,7 @@ function post_messages (inscore, log )
  	log( "  postMessage:       "); inscore.postMessage("/ITL", inscore.newMessage());	
  	log( "  postMessageStr:    "); inscore.postMessageStr("/ITL", "get");	
   	log( "  postMessageStrI:   "); inscore.postMessageStrI("/ITL", "get", 1);	
- 	log( "  postMessageStrF:   "); inscore.postMessageStrF("/ITL", "get", 1.1);	
+ 	log( "  postMessageStrF:   "); inscore.postMessageStrF("/ITL/scene", "x", 1.1);	
  	log( "  postMessageStrStr: "); inscore.postMessageStrStr("/ITL",  "get", "rate");	
  	log( "  delayMessage: "); 	   inscore.delayMessage("/ITL", inscore.newMessage("reset"));	
 }

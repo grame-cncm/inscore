@@ -43,14 +43,17 @@ static void test_messages ()
 	cout << "  newMessageM:   " << checkPtr(INScore::newMessage("get")) << endl;
 	INScore::MessagePtr msg = INScore::newMessage();
 	cout << "  msgAdd Str:    ";
-	INScore::add(msg, "set"); cout << "ok" << endl;
+	INScore::add(msg, "time"); cout << "ok" << endl;
 	cout << "  msgAdd Foat:   ";
 	INScore::add(msg, 1.1f); cout << "ok" << endl;
 	cout << "  msgAdd Int     ";
 	INScore::add(msg, 0); cout << "ok" << endl;
 	cout << "  delMessage:    ";
-	INScore::delMessage(INScore::newMessage()); cout << "ok" << endl;
+	INScore::delMessage(msg); cout << "ok" << endl;
 
+	msg = INScore::newMessage();
+	INScore::add(msg, "get");
+	INScore::add(msg, "time");
 	cout << "  postMessage:         ";
 	INScore::postMessage("/ITL", msg); cout << "ok" << endl;
 	cout << "  postMessage Str:     ";
