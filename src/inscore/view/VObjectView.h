@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2011  Grame
+  Copyright (C) 2009,2020  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -18,18 +18,16 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 
-#ifndef __VObjectView__
-#define __VObjectView__
+#pragma once
 
 #include <iostream>
 #include <vector>
-//#include <QGraphicsItem>
 
 #include "abstractdata.h"
 #include "IEffect.h"
@@ -63,8 +61,6 @@ class VObjectView
 		virtual void setParentItem( VObjectView* parent )	= 0;
 
 		virtual void setEffect (const IEffect* effect)		= 0;
-//		virtual void setEffect (GraphicEffect& effect)		= 0;
-//		virtual GraphicEffect getEffect () const			= 0;
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		virtual float relative2SceneY(float y, QGraphicsItem * item = 0 ) const						= 0;
@@ -130,5 +126,3 @@ class VObjectView
 /*!@} */
 
 } // end namespoace
-
-#endif
