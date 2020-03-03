@@ -23,24 +23,32 @@
 
 #pragma once
 
+#if !defined(MODELONLY) && !defined(NOVIEW)
+#include "QGuidoImporter.h"
+#define XMLImporter QGuidoImporter
+
+#else
+
 /**
 *	\brief An interface to support the MusicXML format.
 */
 class XMLImporter
 {
 	public:
+		bool initialize() { return true; };
+
 		/// musicxml library : functions prototypes
 		typedef int (* musicxml2guido)(const char *file, bool generateBars, std::ostream& out);
 		typedef const char* (* musicxmlversion)();
 
 		/// \return true when the conversion methods are available
-		virtual bool musicxmlSupported() 			{ return false; }
+		static bool musicxmlSupported() 			{ return false; }
 
 		/// \return the musicxml lib version as a string
-		virtual const char* musicxmlVersion() 		{ return 0; }
+		static const char* musicxmlVersion() 		{ return 0; }
 
 		/// \return the musicxml to guido converter version as a string
-		virtual const char* musicxml2guidoVersion() { return 0; }
+		static const char* musicxml2guidoVersion() { return 0; }
 
 		/*! \brief converts a musicxml file to guido
 		
@@ -49,7 +57,7 @@ class XMLImporter
 			\param out the output stream
 			\return true when the conversion is successful
 		*/
-		virtual bool musicxmlFile2Guido   (const char *file, bool generateBars, std::ostream& out) { return false; }
+		static bool musicxmlFile2Guido   (const char *file, bool generateBars, std::ostream& out) { return false; }
 
 		/*! \brief converts a musicxml string to guido
 		
@@ -58,5 +66,7 @@ class XMLImporter
 			\param out the output stream
 			\return true when the conversion is successful
 		*/
-		virtual bool musicxmlString2Guido (const char *str, bool generateBars, std::ostream& out) { return false; }
+		static bool musicxmlString2Guido (const char *str, bool generateBars, std::ostream& out) { return false; }
 };
+#endif
+

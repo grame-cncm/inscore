@@ -27,9 +27,7 @@
 #include "IScene.h"
 #include "Updater.h"
 #include "VObjectView.h"
-#if !defined(NOVIEW) && !defined(MODELONLY)
-#include "QGuidoImporter.h"
-#endif
+#include "XMLImporter.h"
 
 using namespace std;
 
@@ -58,11 +56,7 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-#if defined(NOVIEW) || defined(MODELONLY)
-	if (true) {
-#else
-	if (!QGuidoImporter::musicxmlSupported()) {
-#endif
+	if (!XMLImporter::musicxmlSupported()) {
 		ITLErr << "MusicXML import is not available" << ITLEndl;
 		return MsgHandler::kCreateFailure;
 	}

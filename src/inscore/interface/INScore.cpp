@@ -41,9 +41,7 @@
 #include "IMessage.h"
 #include "IMessageStack.h"
 #include "INScore.h"
-#if !defined(NOVIEW) && !defined(MODELONLY)
-#include "QGuidoImporter.h"
-#endif
+#include "XMLImporter.h"
 
 using namespace std;
 namespace inscore 
@@ -146,18 +144,16 @@ const char* INScore::guidoversion()
 //--------------------------------------------------------------------------
 const char* INScore::musicxmlversion()
 {
-#if !defined(NOVIEW) && !defined(MODELONLY)
-	if (QGuidoImporter::musicxmlSupported())
+	if (XMLImporter::musicxmlSupported())
 	{
 		static string version;
 		if (!version.size()) {
-			version = QGuidoImporter::musicxmlVersion();
+			version = XMLImporter::musicxmlVersion();
 			version += " using the guido converter version ";
-			version += QGuidoImporter::musicxml2guidoVersion();
+			version += XMLImporter::musicxml2guidoVersion();
 		}
 		return version.c_str();
 	}
-#endif
 	return "not available";
 }
 

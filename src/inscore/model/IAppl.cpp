@@ -64,9 +64,7 @@
 #include "IMenu.h"
 #endif
 
-#if !defined(NOVIEW) && !defined(MODELONLY)
-#include "QGuidoImporter.h"
-#endif
+#include "XMLImporter.h"
 
 using namespace std;
 
@@ -222,11 +220,8 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fMsgHandlerMap[kwriteBench_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
 #endif
 
-#if !defined(NOVIEW) && !defined(MODELONLY)
-	QGuidoImporter gi;
+	XMLImporter gi;
 	gi.initialize();
-#endif
-//	timerStart();
 }
 
 //--------------------------------------------------------------------------
