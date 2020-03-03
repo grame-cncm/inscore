@@ -48,9 +48,8 @@ all :
 
 help :
 	@echo "This makefile is intended to build the INScore model library."
-	@echo "Default target ($(TARGET)) is inferred from the current platform"
 	@echo "Available targets are : "
-	@echo "  library : to build the library"
+	@echo "  library : to build the library (default)"
 	@echo "  js      : to build the wasm library"
 	@echo
 	@echo "Project management: "

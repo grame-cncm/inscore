@@ -80,6 +80,22 @@ file (GLOB MAPHEADERS 	"${MAPPINGDIR}/*/*.h" )
 file (GLOB MISCSRC 		"${JSON}/*.cpp" )
 file (GLOB MISCHEADERS 	"${JSON}/*.h" )
 
+if (NOVIEW)
+	message (STATUS "Generates INScore library with no view")
+	file (GLOB VIEWSRC 		"${VIEWSDIR}/VoidView/*.cpp")
+	file (GLOB VIEWHEADERS 	"${VIEWSDIR}/VoidView/*.h")
+	set  (INCDIRS ${INCDIRS} ${VIEWSDIR}/VoidView)
+	set (DEFS ${DEFS} -DNOVIEW)
+elseif (SVGVIEW)
+	message (STATUS "Generates INScore library with SVG view")
+	file (GLOB VIEWSRC 		"${VIEWSDIR}/SVGView/*.cpp")
+	file (GLOB VIEWHEADERS  "${VIEWSDIR}/SVGView/*.h")
+	set  (INCDIRS ${INCDIRS} ${VIEWSDIR}/SVGView)
+	set (DEFS ${DEFS} -DSVGVIEW)
+else()
+	set (DEFS ${DEFS} -DMODELONLY)
+endif()
+
 set (SRC 	 ${CORESRC} ${CORE2SRC} ${MAPSRC} ${OSCSRC} ${MISCSRC} ${VIEWSRC} )
 set (HEADERS ${COREHEADERS} ${CORE2HEADERS} ${MAPHEADERS} ${OSCHEADERS} ${MISCHEADERS} ${VIEWHEADERS} )
 
@@ -112,18 +128,6 @@ if (USEOSC)
 set (INCDIRS ${INCDIRS} ${OSC})
 endif()
 
-if (NOVIEW)
-	message (STATUS "Generates INScore library with no view")
-	file (GLOB VIEWSRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${VIEWSDIR}/VoidView/*.cpp")
-	file (GLOB VIEWHEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${VIEWSDIR}/VoidView/*.h")
-	set  (INCDIRS ${INCDIRS} ${VIEWSDIR}/VoidView)
-endif()
-if (SVGVIEW)
-	message (STATUS "Generates INScore library with SVG view")
-	file (GLOB VIEWSRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${VIEWSDIR}/SVGView/*.cpp")
-	file (GLOB VIEWHEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${VIEWSDIR}/SVGView/*.h")
-endif()
-
 #########################################
 # mac os specific part
 #########################################
@@ -139,7 +143,7 @@ endif()
 
 #######################################
 # set libraries and definitions
-set (DEFS ${DEFS} -DHAVE_CONFIG_H=1 -DJSON_ONLY -DINScore_EXPORTS -DMODELONLY)
+set (DEFS ${DEFS} -DHAVE_CONFIG_H=1 -DJSON_ONLY -DINScore_EXPORTS)
 if(APPLE)
 	set (LIBS ${LIBS} "-L/usr/local/lib -lmicrohttpd")
 	set (LIBS ${LIBS} "-F${LOCALLIB}/GuidoEngine/macosx/ -F${LOCALLIB}/GuidoAR/macosx/")
