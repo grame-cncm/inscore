@@ -23,13 +23,13 @@
 
 */
 
+#include <iostream>
 
 #include "VoidUpdater.h"
 #include "IObject.h"
 #include "VObjectView.h"
 #include "ISync.h"
 
-#include <iostream>
 using namespace std;
 
 namespace inscore
