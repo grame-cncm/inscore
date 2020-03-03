@@ -26,7 +26,6 @@ tools/QtOSCController/QtOSCController.build/
 tools/QtOSCController/qtosccontroller_plugin_import.cpp
 validation/__tmp.inscore
 *~
-cmake/
 /.directory
 scripts/mobile/*.ibundle
 *.so
