@@ -40,8 +40,8 @@
 #include "TSegment.h"
 #include "TSegmentation.h"
 #include "TVariety.h"
+#include "VObjectView.h"
 
-#include "VGraphicsItemView.h"
 
 using namespace std;
 using namespace libmapping;
