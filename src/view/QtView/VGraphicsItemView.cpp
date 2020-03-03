@@ -577,20 +577,17 @@ QStretchTilerItem* VGraphicsItemView::buildTiler(SIObject o)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::itemChanged()
 {
-    for(std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.begin(); it != fTilerItems.end(); it++)
-    {
-        it->second->needUpdate(true);
-    }
+	for (auto item: fTilerItems) {
+		item.second->needUpdate(true);
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::findNewSync(SMaster master, SIObject slave)
 {
-    //std::map<SMaster, QStretchTilerItem*>::iterator it = fTilerItems.find(master);
     bool found = false;
-    for(std::map<SMaster, QStretchTilerItem*>::iterator i = fTilerItems.begin(); i != fTilerItems.end(); i++)
-    {
-        if(i->first->getMaster() == master->getMaster() && i->first->getMasterMapName() == master->getMasterMapName())
+    for(auto item: fTilerItems) {
+        if(item.first->getMaster() == master->getMaster() && item.first->getMasterMapName() == master->getMasterMapName())
             found = true;
     }
     QStretchTilerItem * fTilerItem;
@@ -611,11 +608,11 @@ void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
     while(it != fTilerItems.end())
     {
         bool found = false;
-        for(std::vector<SMaster>::iterator i = masters.begin(); i != masters.end(); i++)
-            if((*i)->getMaster() == it->first->getMaster() && (*i)->getMasterMapName() == it->first->getMasterMapName())
+        for(auto master: masters) {
+            if(master->getMaster() == it->first->getMaster() && master->getMasterMapName() == it->first->getMasterMapName())
                 found = true;
-        if(!found)
-        {
+		}
+        if(!found) {
             if(it->second->scene())
                 fScene->removeItem(it->second);
             else
@@ -625,8 +622,7 @@ void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
             it++;
             fTilerItems.erase(toErase);
         }
-        else
-            it++;
+        else it++;
     }
 }
 
@@ -642,7 +638,6 @@ void VGraphicsItemView::setSlave(SIObject o )
     }
     
     findObsoleteSync(masters); // Then we check if some representation could be obsolete (master/slave relation deleted)
-    
     if(fNbMasters == masters.size()) return; //there is no master-slave relation to add or remove
     
     if(!fNbMasters)    // this is the first master added, so we have to remove the classic fItem and switch to the slaved verison
