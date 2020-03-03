@@ -29,7 +29,6 @@
 #include "ISync.h"
 #include "ISceneSync.h"
 #include "ITLError.h"
-#include "VGraphicsItemView.h"
 #include "OSCRegexp.h"
 
 using namespace std;
