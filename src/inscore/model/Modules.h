@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2015  Grame
+  Copyright (C) 2009,2010  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -24,32 +24,27 @@
 */
 
 
-#include "Modules.h"
-#include "VObjectView.h"
+#pragma once
 
-#if QTView
-#include "MouseEventAble.h"
-#endif
-
-namespace inscore
-{
-
-#if QTView
-void VObjectView::handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type)
-{ 	_MouseEventAble::handleEvent(obj, x, y, type); }
-
+#if defined(MODELONLY) || defined(NOVIEW) || defined(SVGVIEW)
+# define INCLUDEFaust			false
+# define INCLUDEFileWatcher		false
+# define INCLUDEGestureFollower	false
+# define INCLUDESensors			false
+# define INCLUDEHttp			false
+# define INCLUDEWebSocket		false
+# define INCLUDEBundles			false
+# define INCLUDEJavascript		false
+# define QTView					false
 #else
-void VObjectView::handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type) {}
-
+# define INCLUDEFaust			true
+# define INCLUDEFileWatcher		true
+# define INCLUDEGestureFollower	true
+# define INCLUDESensors			true
+# define INCLUDEHttp			true
+# define INCLUDEWebSocket		true
+# define INCLUDEBundles			true
+# define INCLUDEJavascript		true
+# define QTView					true
 #endif
-
-const AbstractData VObjectView::getImage(const char *)
-{
-	AbstractData data;
-	data.data = 0;
-	data.size = 0;
-	return data;
-}
-
-}
 

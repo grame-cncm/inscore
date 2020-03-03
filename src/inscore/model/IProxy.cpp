@@ -25,6 +25,8 @@
 
 #include <iostream>
 
+#include "Modules.h"
+
 #include "IAppl.h"
 #include "IScene.h"
 #include "IMessage.h"
@@ -41,10 +43,13 @@
 #include "IImage.h"
 #include "ITextFile.h"
 
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFaust
 #include "IFaustProcessor.h"
 #include "IFaustDSP.h"
 #include "IFaustDSPFile.h"
+#endif
+
+#if INCLUDESensors
 #include "SensorsModel.h"
 #endif
 
@@ -56,7 +61,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 static string name2type (const std::string& name)
 {
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDESensors
 	if  ((name == IAccelerometer::kAccelerometerType)	||
 		(name == IGyroscope::kGyroscopeType)			||
 		(name == IRotation::kRotationType)				||
@@ -80,7 +85,7 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 
 	string objType = msg->param(0)->value<string>("");
 	SIObject obj;
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFaust
 	if (objType == IFaustProcessor::kFaustProcessorType || objType == IFaustDSP::kFaustDSPType || objType == IFaustDSPFile::kFaustDSPFileType)
 		obj = IObjectFactory::create(objName, objType, parent);
 	else {

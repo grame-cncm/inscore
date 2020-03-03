@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include "Modules.h"
+
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "IArc.h"
@@ -34,10 +36,12 @@
 #include "ICurve.h"
 #include "IEllipse.h"
 #include "IFileWatcher.h"
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFaust
 #include "IFaustProcessor.h"
 #include "IFaustDSP.h"
 #include "IFaustDSPFile.h"
+#endif
+#if INCLUDEGestureFollower
 #include "IGestureFollower.h"
 #endif
 #include "IGraphicSignal.h"
@@ -72,8 +76,10 @@
 #include "IVideo.h"
 #include "IUrlIntermediateObject.h"
 
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEHttp
 #include "IHttpd.h"
+#endif
+#if INCLUDEWebSocket
 #include "IWebSocket.h"
 #endif
 

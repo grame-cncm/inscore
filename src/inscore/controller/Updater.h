@@ -29,6 +29,7 @@
 
 #include "export.h"
 #include "IModelTypes.h"
+#include "Modules.h"
 #include "smartpointer.h"
 
 namespace inscore
@@ -87,8 +88,10 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (IText*) {}
 		virtual void updateTo (IUrlIntermediateObject*) {}
 		virtual void updateTo (IVideo*) {}
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEGestureFollower
 		virtual void updateTo (IGestureFollower*) {}
+#endif
+#if INCLUDEHttp
 		virtual void updateTo (IHttpd*) {}
 #endif
 };

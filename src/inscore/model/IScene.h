@@ -27,6 +27,7 @@
 #ifndef __IScene__
 #define __IScene__
 
+#include "Modules.h"
 #include "IRectShape.h"
 #include "PeriodicTask.h"
 #include "TILoader.h"
@@ -51,14 +52,15 @@ class Master;
 typedef class libmapping::SMARTP<Master>			SMaster;
 class IScene;
 typedef class libmapping::SMARTP<IScene>			SIScene;
-#if !defined(MODELONLY) && !defined(NOVIEW)
-class IFileWatcher;
-typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
-#endif
 class IJavascript;
 typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 class IFilterForward;
 typedef class libmapping::SMARTP<IFilterForward>		SIFilterForward;
+
+#if INCLUDEFileWatcher
+class IFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
+#endif
 
 //--------------------------------------------------------------------------
 /*! \brief a scene model
@@ -71,7 +73,7 @@ class IScene : public IRectShape, public TILoader
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
 	bool			fUpdateVersion;
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFileWatcher
 	SIFileWatcher	fFileWatcher;
 #endif
 	SIJavascript	fJSObject;

@@ -28,6 +28,8 @@
 #define __IModelTypes__
 
 #include "smartpointer.h"
+#include "Modules.h"
+
 
 namespace inscore
 {
@@ -160,16 +162,22 @@ typedef class libmapping::SMARTP<IVideo>		SIVideo;
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>		SIUrlIntermediateObject;
 
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFileWatcher
 class IFileWatcher;
 typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
+#endif
 
+#if INCLUDEGestureFollower
 class IGestureFollower;
 typedef class libmapping::SMARTP<IGestureFollower> SIGestureFollower;
+#endif
 
+#if INCLUDEHttp
 class IHttpd;
 typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
+#endif
 
+#if INCLUDEWebSocket
 class IWebSocket;
 typedef class libmapping::SMARTP<IWebSocket>		SIWebSocket;
 #endif

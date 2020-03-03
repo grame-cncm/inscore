@@ -26,18 +26,25 @@
 #include <iostream>
 #include <string>
 
+#include "Modules.h"
+
 #include "IObjectFactory.h"
 #include "IModel.h"
 #include "ITLError.h"
 #include "ViewFactory.h"
-#if !defined(NOVIEW) && !defined(MODELONLY)
+
+#if INCLUDESensors
 #include "SensorsModel.h"
-#include "INScoreScene.h"
+#endif
+
+#if INCLUDEWebSocket
 #include "QtWebSocketController.h"
 #endif
+
 #if defined(__MOBILE__)
 #include "VMobileSceneView.h"
-#elif !defined(NOVIEW) && !defined(MODELONLY)
+#elif QTView
+#include "INScoreScene.h"
 #include "VSceneView.h"
 #endif
 
@@ -52,9 +59,7 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
 {
 	SMARTP<T> obj = T::create(name, parent);
 	if (obj) {
-#if defined(NOVIEW) || defined(MODELONLY)
-		obj->setView ( ViewFactory::create(obj));
-#else
+#if QTView
         // We created the object, then we create the view
         VObjectView* view = ViewFactory::create(obj, parent->getScene()->getGraphicScene());
         // We set the parent view (only if different from the scene)
@@ -62,7 +67,8 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
             view->setParentItem(parent->getView()?parent->getView():0);
         // and finally we set the view to the object
 		obj->setView (view);
-        
+#else
+		obj->setView ( ViewFactory::create(obj));
 #endif
 	}
 	return obj->getView() ? obj : 0;
@@ -73,7 +79,7 @@ template<typename T> SIObject _createNoView(const std::string& name , IObject* p
 	return T::create(name, parent);
 }
 
-#if !defined(NOVIEW) && !defined(MODELONLY)
+#if INCLUDEWebSocket
 template<> SIObject _create<IWebSocket>(const std::string& name , IObject* parent)
 {
 	SIWebSocket obj = IWebSocket::create(name, parent);
@@ -84,7 +90,7 @@ template<> SIObject _create<IWebSocket>(const std::string& name , IObject* paren
 }
 #endif
 
-#if !defined(NOVIEW) && !defined(MODELONLY)
+#if QTView
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 {
 	SIScene obj = IScene::create(name, parent);
@@ -137,10 +143,12 @@ void IObjectFactory::init()
 	fCreateMap[IAudio::kAudioType]							= _create<IAudio>;
 	fCreateMap[ICurve::kCurveType]							= _create<ICurve>;
 	fCreateMap[IEllipse::kEllipseType]						= _create<IEllipse>;
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFaust
 	fCreateMap[IFaustDSP::kFaustDSPType]					= _createNoView<IFaustDSP>;
 	fCreateMap[IFaustDSPFile::kFaustDSPFileType]			= _createNoView<IFaustDSPFile>;
 	fCreateMap[IFaustProcessor::kFaustProcessorType]		= _createNoView<IFaustProcessor>;
+#endif
+#if INCLUDEGestureFollower
 	fCreateMap[IGestureFollower::kGestureFollowerType]		= _create<IGestureFollower>;
 #endif
 	fCreateMap[IGraphicSignal::kGraphicType]				= _create<IGraphicSignal>;
@@ -171,9 +179,10 @@ void IObjectFactory::init()
 	fCreateMap[ITextFile::kTextFileType]					= _create<ITextFile>;
 	fCreateMap[IUrlIntermediateObject::kUrlIntermediateType] = _create<IUrlIntermediateObject>;
 	fCreateMap[IVideo::kVideoType]							= _create<IVideo>;
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEWebSocket
 	fCreateMap[IWebSocket::kIWebSocketType]					= _create<IWebSocket>;
-
+#endif
+#if INCLUDESensors
 	fCreateMap[IAccelerometer::kAccelerometerType]			= _createNoView<IAccelerometer>;
 	fCreateMap[IAmbientLight::kAmbientLightType]			= _createNoView<IAmbientLight>;
 	fCreateMap[ICompass::kCompassType]						= _createNoView<ICompass>;
@@ -184,11 +193,11 @@ void IObjectFactory::init()
 	fCreateMap[IProximity::kProximityType]					= _createNoView<IProximity>;
 	fCreateMap[IRotation::kRotationType]					= _createNoView<IRotation>;
 	fCreateMap[ITilt::kTiltType]							= _createNoView<ITilt>;
+#endif
 
-#if defined(__LINUX__) || defined(MACOS)
+#if INCLUDEHttp && (defined(__LINUX__) || defined(MACOS))
 	// httpd server is not yet supported on windows
 	fCreateMap[IHttpd::kIHttpdType]							= _create<IHttpd>;
-#endif
 #endif
 }
 

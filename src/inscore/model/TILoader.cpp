@@ -30,6 +30,8 @@
 #include <QStandardPaths>
 #endif
 
+#include "Modules.h"
+
 #include "evaluator2.h"
 #include "IAppl.h"
 #include "IGlue.h"
@@ -103,7 +105,7 @@ bool TILoader::isBundle(const std::string& file)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std::string& rootpath, FileDownloader* downloader)
 {
-#if !defined(NOVIEW) && !defined(MODELONLY)
+#if INCLUDEBundles
 	// ---- Load a bundle ----
 	qarchive::QArchive* a = 0;
 	qarchive::QArchiveError error;

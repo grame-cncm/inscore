@@ -45,7 +45,7 @@
 #include "Updater.h"
 #include "VSceneView.h"
 
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFileWatcher
 #include "QFileWatcher.h"
 #endif
 
@@ -98,7 +98,7 @@ IScene::IScene(const std::string& name, IObject * parent)
 }
 
 //--------------------------------------------------------------------------
-#if !defined(NOVIEW) && !defined(MODELONLY)
+#if QTView
 QGraphicsScene * IScene::getGraphicScene () const			{ return fView ? static_cast<VSceneView*>(fView)->scene() : 0; }
 #endif
 
@@ -153,8 +153,8 @@ void IScene::reset ()
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
-#if !defined(MODELONLY) && !defined(NOVIEW)
-		fFileWatcher->clear();
+#if INCLUDEFileWatcher
+	fFileWatcher->clear();
 #endif
 }
 
@@ -187,7 +187,7 @@ void IScene::createVirtualNodes()
 	fJSObject = IJavascript::create(this);
 	fFilterForward = IFilterForward::create(this);
 	fForwarder.setFilter(fFilterForward);
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFileWatcher
 	fFileWatcher = QFileWatcher::create(this);
 	add ( fFileWatcher );
 #endif
@@ -290,7 +290,7 @@ void IScene::print (ostream& out) const
 	out << "  mode : " << (getFullScreen() ? "normal" : "full") << "screen" << endl;
 	out << "  nodes synchronization :" << endl << fSync->getSync();
 	out << "  file watcher :" << endl;
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#if INCLUDEFileWatcher
 	fFileWatcher->print(out);
 #endif
 }
