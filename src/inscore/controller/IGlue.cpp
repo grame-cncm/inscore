@@ -27,17 +27,17 @@
 #include <iostream>
 #include <condition_variable>
 
-#include "GUIDOEngine.h"
-
 #include "EventsAble.h"
+#include "GUIDOEngine.h"
 #include "IAppl.h"
 #include "IGlue.h"
 #include "IMappingUpdater.h"
 #include "IMessage.h"
 #include "INScore.h"
 #include "IScene.h"
-#include "ITLError.h"
 #include "ISync.h"
+#include "ITLError.h"
+#include "Modules.h"
 #include "OSCStream.h"
 #include "TWallClock.h"
 #include "ViewFactory.h"
@@ -196,9 +196,11 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	fModel->createVirtualNodes();
 	fModel->setView (ViewFactory::create(fModel));
 
+#if QTView
 	string address (fModel->getOSCAddress());
 	address += "/scene";
 	INScore::postMessage (address.c_str(), knew_SetMethod);
+#endif
 
 #ifdef __MOBILE__
 	INScore::postMessage(address.c_str(), klock_GetSetMethod, 1);
