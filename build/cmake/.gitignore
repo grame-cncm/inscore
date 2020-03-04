@@ -1,0 +1,6 @@
+bin/
+emccdir/
+js/libINScore.js
+js/libINScore.wasm
+lib/
+libdir/
