@@ -49,8 +49,8 @@ class FileDownloader;
 class TILoader
 {
 				int  inferVersion (const char* file) const;
-	SIMessageList 	 parsev2(std::istream* stream, int line, IAppl* root) const;
-				bool parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute=true) const;
+		static SIMessageList 	parsev2(std::istream* stream, int line, IAppl* root);
+		static SIMessageList	inscorev2_to_inscorev1 (const inscore2::SINode& node, TJSEngine* js);
 		virtual bool process(const SIMessageList& msgs, IObject* root, const std::string& baseaddress);
 
 	protected:
@@ -68,7 +68,7 @@ class TILoader
 		bool	loadString(const std::string& str, IObject* o, int pversion=1);
 
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
-		static SIMessageList	inscorev2_to_inscorev1 (const inscore2::SINode& node, TJSEngine* js);
+		static bool 			parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute=true);
 };
 
 } // end namespoace

@@ -199,7 +199,7 @@ SIMessageList TILoader::inscorev2_to_inscorev1 (const inscore2::SINode& node, TJ
 }
 
 //--------------------------------------------------------------------------
-SIMessageList TILoader::parsev2(std::istream* stream, int line, IAppl* root) const
+SIMessageList TILoader::parsev2(std::istream* stream, int line, IAppl* root)
 {
 	inscore2::IParser p (stream);
 	if (p.parse()) {
@@ -209,7 +209,7 @@ SIMessageList TILoader::parsev2(std::istream* stream, int line, IAppl* root) con
 }
 
 //--------------------------------------------------------------------------
-bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute) const
+bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute)
 {
 	if (pversion == 2) {
 		SIMessageList msgs = parsev2 (stream, line, root);
