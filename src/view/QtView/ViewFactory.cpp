@@ -54,37 +54,37 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-VObjectView*	ViewFactory::create (const IArc* object,		QGraphicsScene* scene)		{ return new VArcView (scene, object); }
-VObjectView*	ViewFactory::create (const IAudio* object,		QGraphicsScene* scene)		{ return new VAudioView (scene, object); }
-VObjectView*	ViewFactory::create (const ICurve* object,		QGraphicsScene* scene)		{ return new VCurveView (scene, object); }
-VObjectView*	ViewFactory::create (const IEllipse* object,	QGraphicsScene* scene)		{ return new VEllipseView (scene, object); }
-VObjectView*	ViewFactory::create (const IGestureFollower* object,  QGraphicsScene* scene){ return new VGestureFollowerView (scene, object); }
-VObjectView*	ViewFactory::create (const IGraphicSignal* object,  QGraphicsScene* scene)	{ return new VGraphView (scene, object); }
-VObjectView*	ViewFactory::create (const ISGraphicSignal* object, QGraphicsScene* scene)	{ return new VSGraphView (scene, object); }
-VObjectView*	ViewFactory::create (const IRGraphicSignal* object, QGraphicsScene* scene)	{ return new VRGraphView (scene, object); }
-VObjectView*	ViewFactory::create (const IGuidoCode* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
-VObjectView*	ViewFactory::create (const IGuidoPianoRoll* object,	QGraphicsScene* scene)	{ return new VPianoRollView (scene, object); }
-VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* object, QGraphicsScene* scene) { return new VPianoRollView (scene, object); }
-VObjectView*	ViewFactory::create (const IGuidoFile* object,	QGraphicsScene* scene)		{ return new VGuidoItemView (scene, object); }
-VObjectView*	ViewFactory::create (const IGuidoPianoRollFile* object,	QGraphicsScene* scene) { return new VPianoRollView (scene, object); }
-VObjectView*	ViewFactory::create (const IMusicXMLCode* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
-VObjectView*	ViewFactory::create (const IMusicXMLFile* object, QGraphicsScene* scene)	{ return new VGuidoItemView (scene, object); }
-VObjectView*	ViewFactory::create (const IHtml* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
-VObjectView*	ViewFactory::create (const IHtmlFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
-VObjectView*	ViewFactory::create (const IHttpd* object,		QGraphicsScene* scene)		{ return new VHttpdView (scene, object); }
-VObjectView*	ViewFactory::create (const IImage* object,		QGraphicsScene* scene)		{ return new VImageView (scene, object); }
-VObjectView*	ViewFactory::create (const IMemImage* object,	QGraphicsScene* scene)		{ return new VImageView (scene, object); }
-VObjectView*	ViewFactory::create (const ILine* object,		QGraphicsScene* scene)		{ return new VLineView (scene, object); }
-VObjectView*	ViewFactory::create (const IPolygon* object,	QGraphicsScene* scene)		{ return new VPolygonView (scene, object); }
-VObjectView*	ViewFactory::create (const IGrid* object,		QGraphicsScene* scene)		{ return new VGridView (scene, object); }
-VObjectView*	ViewFactory::create (const IRect* object,		QGraphicsScene* scene)		{ return new VRectView (scene, object); }
-VObjectView*	ViewFactory::create (const ISVG* object,		QGraphicsScene* scene)		{ return new VSVGView (scene, object); }
-VObjectView*	ViewFactory::create (const ISVGFile* object,	QGraphicsScene* scene)		{ return new VSVGView (scene, object); }
-VObjectView*	ViewFactory::create (const IText* object,		QGraphicsScene* scene)		{ return new VTextView (scene, object); }
-VObjectView*	ViewFactory::create (const ITextFile* object,	QGraphicsScene* scene)		{ return new VTextView (scene, object); }
-VObjectView*	ViewFactory::create (const IVideo* object,		QGraphicsScene* scene)		{ return new VVideoView (scene, object); }
-VObjectView*    ViewFactory::create (const ILayer* object,      QGraphicsScene* scene)      { return new VLayerView (scene, object);}
-VObjectView*	ViewFactory::create (const IUrlIntermediateObject* object, QGraphicsScene* scene){return new VUrlIntermediateObjectView (scene, object);}
+VObjectView*	ViewFactory::create (const IArc* object,		ViewContext scene)		{ return new VArcView (scene, object); }
+VObjectView*	ViewFactory::create (const IAudio* object,		ViewContext scene)		{ return new VAudioView (scene, object); }
+VObjectView*	ViewFactory::create (const ICurve* object,		ViewContext scene)		{ return new VCurveView (scene, object); }
+VObjectView*	ViewFactory::create (const IEllipse* object,	ViewContext scene)		{ return new VEllipseView (scene, object); }
+VObjectView*	ViewFactory::create (const IGestureFollower* object,  ViewContext scene){ return new VGestureFollowerView (scene, object); }
+VObjectView*	ViewFactory::create (const IGraphicSignal* object,  ViewContext scene)	{ return new VGraphView (scene, object); }
+VObjectView*	ViewFactory::create (const ISGraphicSignal* object, ViewContext scene)	{ return new VSGraphView (scene, object); }
+VObjectView*	ViewFactory::create (const IRGraphicSignal* object, ViewContext scene)	{ return new VRGraphView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoCode* object,	ViewContext scene)		{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoPianoRoll* object,	ViewContext scene)	{ return new VPianoRollView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* object, ViewContext scene) { return new VPianoRollView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoFile* object,	ViewContext scene)		{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IGuidoPianoRollFile* object,	ViewContext scene) { return new VPianoRollView (scene, object); }
+VObjectView*	ViewFactory::create (const IMusicXMLCode* object, ViewContext scene)	{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IMusicXMLFile* object, ViewContext scene)	{ return new VGuidoItemView (scene, object); }
+VObjectView*	ViewFactory::create (const IHtml* object,		ViewContext scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const IHtmlFile* object,	ViewContext scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const IHttpd* object,		ViewContext scene)		{ return new VHttpdView (scene, object); }
+VObjectView*	ViewFactory::create (const IImage* object,		ViewContext scene)		{ return new VImageView (scene, object); }
+VObjectView*	ViewFactory::create (const IMemImage* object,	ViewContext scene)		{ return new VImageView (scene, object); }
+VObjectView*	ViewFactory::create (const ILine* object,		ViewContext scene)		{ return new VLineView (scene, object); }
+VObjectView*	ViewFactory::create (const IPolygon* object,	ViewContext scene)		{ return new VPolygonView (scene, object); }
+VObjectView*	ViewFactory::create (const IGrid* object,		ViewContext scene)		{ return new VGridView (scene, object); }
+VObjectView*	ViewFactory::create (const IRect* object,		ViewContext scene)		{ return new VRectView (scene, object); }
+VObjectView*	ViewFactory::create (const ISVG* object,		ViewContext scene)		{ return new VSVGView (scene, object); }
+VObjectView*	ViewFactory::create (const ISVGFile* object,	ViewContext scene)		{ return new VSVGView (scene, object); }
+VObjectView*	ViewFactory::create (const IText* object,		ViewContext scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const ITextFile* object,	ViewContext scene)		{ return new VTextView (scene, object); }
+VObjectView*	ViewFactory::create (const IVideo* object,		ViewContext scene)		{ return new VVideoView (scene, object); }
+VObjectView*    ViewFactory::create (const ILayer* object,      ViewContext scene)      { return new VLayerView (scene, object);}
+VObjectView*	ViewFactory::create (const IUrlIntermediateObject* object, ViewContext scene){return new VUrlIntermediateObjectView (scene, object);}
 
 //--------------------------------------------------------------------------
 VObjectView* ViewFactory::create(const IScene* obj)
