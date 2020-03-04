@@ -2,7 +2,7 @@
 # 
 #
 
-.PHONY : cmake
+.PHONY : cmake js
 
 MAKE   ?= make
 CMAKE  ?= cmake
