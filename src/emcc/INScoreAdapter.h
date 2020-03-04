@@ -56,6 +56,9 @@ class inscore_export INScoreAdapter
     	void restartNetwork()		{ INScore::restartNetwork(); }
     	void stopNetwork()			{ INScore::stopNetwork(); }
 
+		bool loadInscore	(jsString& script)			{ return INScore::loadInscore(script.c_str()); }
+		bool loadInscore2 	(jsString& script)			{ return INScore::loadInscore2(script.c_str()); }
+
 		void postMessage	(jsString& address, MessagePtr msg)					{ INScore::postMessage(address.c_str(), message(msg)); }
 		void postMessage	(jsString& address, jsString& msg)					{ INScore::postMessage(address.c_str(), msg.c_str()); }
 		void postMessage	(jsString& address, jsString& msg, int val)			{ INScore::postMessage(address.c_str(), msg.c_str(), val); }

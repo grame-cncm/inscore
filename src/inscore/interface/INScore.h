@@ -123,6 +123,16 @@ class inscore_export INScore
      * \brief stopNetwork Stop network services of inscore.
      */
     static void stopNetwork();
+	
+	/*! \brief load an inscore script
+		\param script the text of the script
+	*/
+	static bool loadInscore	(const char* script);
+
+	/*! \brief load an inscore script version 2
+		\param script the text of the script
+	*/
+	static bool loadInscore2 (const char* script);
 
 	/*! \brief post a message
 

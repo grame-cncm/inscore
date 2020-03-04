@@ -54,6 +54,9 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 			.function("postMessageStrF", 	select_overload<void( const std::string&, const std::string&, float)>	(&INScoreAdapter::postMessage), allow_raw_pointers())
 			.function("postMessageStrStr", 	select_overload<void( const std::string&, const std::string&,  const std::string&)>(&INScoreAdapter::postMessage), allow_raw_pointers())
 
+			.function("loadInscore", 		&INScoreAdapter::loadInscore, allow_raw_pointers())
+			.function("loadInscore2", 		&INScoreAdapter::loadInscore2, allow_raw_pointers())
+
 			.function("delayMessage", 		&INScoreAdapter::delayMessage, allow_raw_pointers())
 			.function("newMessage", 		&INScoreAdapter::newMessage, allow_raw_pointers())
 			.function("newMessageM", 		&INScoreAdapter::newMessageM, allow_raw_pointers())

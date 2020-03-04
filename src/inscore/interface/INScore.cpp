@@ -24,6 +24,7 @@
 #include <condition_variable>
 #include <iostream>
 #include <map>
+#include <sstream>
 
 #if defined(NOVIEW) || defined(MODELONLY)
 #include "VoidUpdater.h"
@@ -37,10 +38,15 @@
 #endif
 
 #include "GUIDOEngine.h"
+#include "IAppl.h"
 #include "IGlue.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
+#include "TILoader.h"
+//#include "IParser2.h"
 #include "INScore.h"
+#include "TWallClock.h"
+#include "TSorter.h"
 #include "XMLImporter.h"
 
 using namespace std;
@@ -121,6 +127,20 @@ void INScore::restartNetwork()
 void INScore::stopNetwork()
 {
     gGlue->clean();
+}
+
+//--------------------------------------------------------------------------
+bool INScore::loadInscore(const char *script)
+{
+	stringstream stream(script);
+	return TILoader::parse(&stream, 0, gGlue->getAppl(), 1);
+}
+
+//--------------------------------------------------------------------------
+bool INScore::loadInscore2(const char *script)
+{
+	stringstream stream(script);
+	return TILoader::parse(&stream, 0, gGlue->getAppl(), 2);
 }
 
 //--------------------------------------------------------------------------
