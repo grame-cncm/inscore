@@ -41,6 +41,22 @@ function infos (inscore, log )
 }
 
 //----------------------------------------------------------------------------
+// loading scripts
+//----------------------------------------------------------------------------
+function load (inscore, log )
+{
+	var scriptv1 = "/ITL/scene new; /ITL/scene/rect1 set rect 0.2 0.2;"
+	scriptv1 += "/ITL/scene/rect1 x 0.5;"
+	scriptv1 += "/ITL/scene/rect1 y 0.1;"
+
+	var scriptv2 = "/ITL/scene new; /ITL/scene/label (set txt label), (yorigin 1.1), (y 0.5), (x 0), (fontSize 11);"
+
+	log( "\nLoading scripts:");
+	log( "  loadInscore:       "); inscore.loadInscore(scriptv1);
+	log( "  loadInscore2:      "); inscore.loadInscore2(scriptv2);
+}
+
+//----------------------------------------------------------------------------
 // inscore tasks
 //----------------------------------------------------------------------------
 function tasks (inscore, log )
@@ -73,6 +89,7 @@ function run (inscore, log) {
    	infos (inscore, log);
    	messages (inscore, log);
    	post_messages (inscore, log);
+   	load (inscore, log);
   	tasks (inscore, log);
   	stop  (inscore, log);
 }
