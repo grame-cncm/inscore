@@ -48,3 +48,9 @@
 # define QTView					true
 #endif
 
+#if QTView
+class QGraphicsScene;
+typedef QGraphicsScene*		ViewContext;
+#else
+typedef void*				ViewContext;
+#endif
