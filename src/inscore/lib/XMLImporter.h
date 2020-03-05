@@ -23,7 +23,8 @@
 
 #pragma once
 
-#if !defined(MODELONLY) && !defined(NOVIEW)
+#include "Modules.h"
+#if HASQGuidoImporter
 #include "QGuidoImporter.h"
 #define XMLImporter QGuidoImporter
 

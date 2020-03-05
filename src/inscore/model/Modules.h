@@ -49,8 +49,17 @@
 #endif
 
 #if QTView
+# define HASQGuidoImporter		true
+# define HASFileDownloader		true
+
 class QGraphicsScene;
 typedef QGraphicsScene*		ViewContext;
+class QGraphicsItem;
+typedef QGraphicsItem*		VObjectContext;
+
 #else
+# define HASQGuidoImporter		false
+# define HASFileDownloader		false
 typedef void*				ViewContext;
+typedef void*				VObjectContext;
 #endif

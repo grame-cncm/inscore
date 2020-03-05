@@ -31,7 +31,7 @@
 #include "Updater.h"
 
 #include "FileDownloader.h"
-#if !defined(NOVIEW) && !defined(MODELONLY)
+#if HASFileDownloader
 #include "QFileDownloader.h"
 #endif
 
@@ -93,7 +93,7 @@ MsgHandler::msgStatus IUrlIntermediateObject::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 FileDownloader* IUrlIntermediateObject::createDownloader(const char* urlprefix ) const
 {
-#if !defined(NOVIEW) && !defined(MODELONLY)
+#if HASFileDownloader
 	return new QFileDownloader (urlprefix);
 #else
 	return 0;
