@@ -54,6 +54,7 @@ help :
 	@echo
 	@echo "Project management: "
 	@echo "  cmake    : to (re)generate the projects"
+	@echo "  cmakejs  : to (re)generate the emcc projects"
 	@echo "  voidview : to regenerate the projects with no view inside a 'noview' folder"
 	@echo
 	@echo "Options:"
@@ -63,7 +64,7 @@ help :
 # building inscore library
 #===============================================================
 cmake : $(LIBDIR)
-	cd  $(LIBDIR) && $(CMAKE) .. -G $(GENERATOR)
+	cd  $(LIBDIR) && $(CMAKE) .. $(CMAKEOPT) -G $(GENERATOR)
 
 library : $(LIBDIR)
 	$(CMAKE) --build $(LIBDIR) --config Release -- $(J)
@@ -75,8 +76,16 @@ $(LIBDIR):
 #===============================================================
 # building inscore wasm library
 #===============================================================
+jstest : js/libINScore.js js/libINScore.wasm
+
+js/libINScore.js: lib/libINScore.js
+	cp lib/libINScore.js js
+
+js/libINScore.wasm: lib/libINScore.wasm
+	cp lib/libINScore.wasm js
+
 cmakejs : $(EMCCDIR)
-	cd  $(EMCCDIR) && $(CMAKE) .. -DEMCC=on
+	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
 
 js: $(EMCCDIR)
 	make -C $(EMCCDIR) wasmlib
