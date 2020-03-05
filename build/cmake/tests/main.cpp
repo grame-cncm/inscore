@@ -73,6 +73,19 @@ static INScoreGlue* test_start (TestGlue * appglue)
 	return INScore::start (7000, 7001, 7002, appglue);
 }
 
+static void test_load ()
+{
+	cout << "\nLoad tests:" << endl;
+	const char* script2 =  "/ITL/scene new; \
+							/ITL/scene/label 	(set txt label), (yorigin 1.1), (y 0.5), (x 0), (fontSize 11);";
+	const char* script1 =  "/ITL/scene new; \
+							/ITL/scene/rect1 set rect 0.2 0.2; \
+							/ITL/scene/rect1 x 0.5; \
+							/ITL/scene/rect1 y 0.1;";
+	cout << "  loadInscore:       " << INScore::loadInscore (script1, true) << endl;
+	cout << "  loadInscore2:      " << INScore::loadInscore2 (script2) << endl;
+}
+
 static void test_glue (INScoreGlue * glue)
 {
 	cout << "\nTest inscore glue:" << endl;
@@ -94,6 +107,7 @@ int main (int argc, char*argv[])
 	TestGlue appglue;
 	INScoreGlue* glue = test_start (&appglue);
 	test_messages ();
+	test_load ();
 	test_glue (glue);
 	test_stop (glue);
 	return 0;
