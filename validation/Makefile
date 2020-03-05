@@ -155,6 +155,10 @@ help:
 	@echo "Makefile for testing the INScore engine output. Available targets are:"
 	@echo " 'all' 		: generates pdf output files, inscore output files, log files and filter file"
 	@echo " 'pdf' 		: generates pdf files for inscore files recursively enclosed in this folder"
+	@echo " 'png' 		: generates png files for inscore files"
+	@echo " 'validate VERSION=another_version': compares the pdf output with another one"
+	@echo " 'pngvalidate VERSION=another_version': compares the png output with another one"
+	@echo "" 
 	@echo " 'log' 		: generates log files in order to check inscore logs"
 	@echo " 'save' 		: generates inscore files in order to check the save method"
 	@echo " 'filter'	: generates filter files and reference files in order to check the forward filter method"
@@ -165,7 +169,6 @@ help:
 	@echo " 'mobile REMOTEIP=XXX LOCALIP=XXX DEVICE=XXX': create pdf file on mobile device with ip REMOTEIP. LOCALIP must be the IP of this computer, DEVICE must be 'android' or 'ios'. See readme.txt and follow the instruction before run this command."
 	@echo " 'validatemobile : validate mobile pdf file. See readme.txt and follow the instruction before run this command."
 	@echo "  output files are generated under the current INScore version number."
-	@echo " 'validate VERSION=another_version': compares the current version with another one"
 	@echo " 'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
 	@echo " 'tools'     : rebuild the required tools"
 
