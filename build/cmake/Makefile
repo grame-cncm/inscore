@@ -51,6 +51,7 @@ help :
 	@echo "Available targets are : "
 	@echo "  library : to build the library (default)"
 	@echo "  js      : to build the wasm library"
+	@echo "  jstest  : copy the wasm output to js"
 	@echo
 	@echo "Project management: "
 	@echo "  cmake    : to (re)generate the projects"
