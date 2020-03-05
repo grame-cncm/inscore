@@ -51,7 +51,7 @@ void VLineView::updateView( ILine * line )
 	double yo = 0;
 
 	if (fParent) {	// a parent is a QGraphicsItem that differs from a scene regarding the reference rect:
-		QRectF r = referenceRect(0);	// a scene origin (the point in 0,0) is centered on the scene
+		TFloatRect r = referenceRect(0);	// a scene origin (the point in 0,0) is centered on the scene
 		x -= r.width()/2;				// while a QGraphicsItem origin is at the top left corner
 		y -= r.height()/2;				// this part is intended to compensate this difference
 	}

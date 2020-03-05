@@ -34,6 +34,45 @@
 namespace inscore
 {
 
+float VObjectView::relative2SceneX(float x, VObjectContext context ) const
+{
+	const TFloatRect& r = referenceRect(context);
+	// inscore graphic space is between -1 and 1
+	return (( x + 1 ) * r.width()) / 2.0f + r.x();
+}
+
+float VObjectView::relative2SceneY(float y, VObjectContext context ) const {
+	const TFloatRect& r = referenceRect(context);
+	// inscore graphic space is between -1 and 1
+	return (( y + 1 ) *  r.height()) / 2.0f  + r.y();
+}
+
+float VObjectView::relative2SceneWidth(float width, VObjectContext context ) const {
+	return (referenceRect(context).width() * width)/2.0f;
+}
+
+float VObjectView::relative2SceneHeight(float height, VObjectContext context ) const {
+	return (referenceRect(context).height() * height)/2.0f;
+}
+
+float VObjectView::scene2RelativeWidth(float width, VObjectContext context ) const {
+	return 2.0f * width / referenceRect(context).width();
+}
+
+float VObjectView::scene2RelativeHeight(float height, VObjectContext context ) const {
+	return 2.0f * height / referenceRect(context).height();
+}
+
+float VObjectView::scene2RelativeX(float x, VObjectContext context ) const {
+	const TFloatRect& r = referenceRect(context);
+	return ( x - r.x() ) / ( r.width() / 2.0f ) - 1 ;
+}
+
+float VObjectView::scene2RelativeY(float y, VObjectContext context ) const {
+	const TFloatRect& r = referenceRect(context);
+	return ( y - r.y() ) / ( r.height() / 2.0f ) - 1 ;
+}
+
 #if QTView
 void VObjectView::handleEvent (const IObject* obj, float x, float y, EventsAble::eventype type)
 { 	_MouseEventAble::handleEvent(obj, x, y, type); }

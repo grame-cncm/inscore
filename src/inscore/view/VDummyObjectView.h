@@ -24,8 +24,7 @@
 */
 
 
-#ifndef __VDummyObjectView__
-#define __VDummyObjectView__
+#pragma once
 
 #include "VObjectView.h"
 
@@ -51,31 +50,9 @@ class VDummyObjectView : public VObjectView
 		virtual void setParentItem( VObjectView*  )	{}
 
 		virtual void setEffect (const IEffect* effect )	{}
-//		virtual GraphicEffect getEffect () const	{ return GraphicEffect(); }
-    
-		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		virtual float relative2SceneY(float y, QGraphicsItem *  ) const						{ return y; }
-		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		virtual float relative2SceneX(float x, QGraphicsItem * ) const						{ return x; }
-		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		virtual float relative2SceneWidth(float width, QGraphicsItem *  ) const				{ return width; }
-		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		virtual float relative2SceneHeight(float height, QGraphicsItem *  ) const			{ return height; }
-		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
-//		virtual QRectF relative2SceneRect( const TFloatRect& rect) const	= 0;
-
-		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		virtual float scene2RelativeWidth(float width, QGraphicsItem *  ) const				{ return width; }
-		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		virtual float scene2RelativeHeight(float height, QGraphicsItem *  ) const			{ return height; }
-		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		virtual float scene2RelativeX(float x, QGraphicsItem *  ) const						{ return x; }
-		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		virtual float scene2RelativeY(float y, QGraphicsItem *  ) const						{ return y; }
+		virtual TFloatRect referenceRect(VObjectContext item) const			{ return TFloatRect (TFloatPoint(-1,-1), TFloatPoint(1,1)); }
 };
 
 /*!@} */
 
 } // end namespoace
-
-#endif

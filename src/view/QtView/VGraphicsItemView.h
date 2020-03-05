@@ -28,19 +28,19 @@
 #define __VGraphicsItemView__
 
 #include <iostream>
-
-#include "VObjectView.h"
-
-#include "IModel.h"
-#include "IText.h"
-#include "ISync.h"
-#include "TRefinedComposition.h"
-#include "QStretchTilerItem.h"
-#include "GraphicEffect.h"
-#include "maptypes.h"
-
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
+
+#include "GraphicEffect.h"
+#include "IModel.h"
+#include "ISync.h"
+#include "IText.h"
+#include "maptypes.h"
+#include "QStretchTilerItem.h"
+#include "TRect.h"
+#include "TRefinedComposition.h"
+#include "VObjectView.h"
+
 
 namespace inscore
 {
@@ -84,34 +84,11 @@ class VGraphicsItemView : public VObjectView
                                                                 fItem->setParentItem(parent ? parent->item() : 0);}
     
         virtual void setEffect (const IEffect* effect); //		{ item()->setGraphicsEffect (effect.get()); }
-
-		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		float relative2SceneY(float y, QGraphicsItem * item = 0 ) const;
-		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		float relative2SceneX(float x, QGraphicsItem * item = 0 ) const;
-		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		float relative2SceneWidth(float width, QGraphicsItem * item = 0 ) const;
-		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		float relative2SceneHeight(float height, QGraphicsItem * item = 0 ) const;
-		/// \brief Maps a rect expressed in [-1,1] scene coordinate to a QRectF expressed in referenceRect() coordinates.
-//		QRectF relative2SceneRect( const TFloatRect& rect) const;
-
-		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		float scene2RelativeWidth(float width, QGraphicsItem * item = 0 ) const;
-		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		float scene2RelativeHeight(float height, QGraphicsItem * item = 0 ) const;
-		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		float scene2RelativeX(float x, QGraphicsItem * item = 0 ) const;
-		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const;
-
-		void	getFrame (const IObject* , std::vector<float>&);
-
 		virtual void setMouseEventSensibility(bool mouseSensible);
-	
 		static void buildDefaultMapping (IObject* object);
     
-        void refreshSyncCache() { itemChanged(); }
+		void	getFrame (const IObject* , std::vector<float>&);
+        void 	refreshSyncCache() { itemChanged(); }
 	
 		/// \brief Returns the QGraphicsItem or the QTilerItem, whether the object is slaved or not
 				QGraphicsItem * item(SMaster m = 0)	{return m ? fTilerItems.find(m)->second : fItem;}
@@ -151,7 +128,7 @@ class VGraphicsItemView : public VObjectView
 		}
 		
 		/// \brief Returns the reference rectangle for the QGraphicsItem coordinate: the master QRect or the scene QRect (if there's no master).
-		QRectF referenceRect(QGraphicsItem * item) const;
+		TFloatRect referenceRect(QGraphicsItem * item) const;
 
 		/// \brief Maps a point in QGraphicsItem coordinate to a point in IObject internal coordinate. ( [-1,1], (0,0) is the center of the object, (-1,-1) is )
 		///	the topLeft, (1,1) is the bottomright.

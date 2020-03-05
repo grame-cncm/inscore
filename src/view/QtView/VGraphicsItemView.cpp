@@ -657,10 +657,13 @@ void VGraphicsItemView::setSlave(SIObject o )
 //------------------------------------------------------------------------------------------------------------
 //											Conversion methods
 //------------------------------------------------------------------------------------------------------------
-QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
+TFloatRect VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
 {
+    TFloatRect r;
+    float x, y, w, h;
+    QRectF qr;
     if(specItem)
-        return specItem->parentItem() ? specItem->parentItem()->boundingRect() : fScene->sceneRect();
+        qr = specItem->parentItem() ? specItem->parentItem()->boundingRect() : fScene->sceneRect();
     else
     {
         if (fParent)
@@ -668,67 +671,13 @@ QRectF VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
             float l = std::min(fParent->boundingRect().width(), fParent->boundingRect().height());
 			float left = fParent->boundingRect().center().x() - l/2;
             float top = fParent->boundingRect().center().y() - l/2;
-            QRectF rect ( left, top, l, l);
-            return rect;
+            return TFloatRect( TFloatPoint(left, top), TFloatPoint(left+l, top+l));
         }
         else {
-           return fScene->sceneRect();
+           qr = fScene->sceneRect();
 		}
     }
-}
-
-//------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneX(float x, QGraphicsItem * specItem) const
-{
-	const QRectF& refRect = referenceRect(specItem);
-	// inscore graphic space is between -1 and 1
-	return (( x + 1 ) * refRect.width()) / 2.0f + refRect.x();
-}
-
-//------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneY(float y, QGraphicsItem * specItem) const
-{
-	const QRectF& refRect = referenceRect(specItem);
-	// inscore graphic space is between -1 and 1
-	return (( y + 1 ) *  refRect.height()) / 2.0f  + refRect.y();
-}
-
-//--------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneWidth(float width, QGraphicsItem * specItem) const
-{
-	return (referenceRect(specItem).width() * width)/2.0f;
-}
-
-//--------------------------------------------------------------------------
-float VGraphicsItemView::relative2SceneHeight(float height, QGraphicsItem * specItem) const
-{
-	return (referenceRect(specItem).height() * height)/2.0f;
-}
-
-//--------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeWidth(float width, QGraphicsItem * specItem) const
-{
-	return 2.0f * width / referenceRect(specItem).width();
-}
-
-//--------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeHeight(float height, QGraphicsItem * specItem) const
-{
-	return 2.0f * height / referenceRect(specItem).height();
-}
-
-//------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeX(float x, QGraphicsItem * specItem) const
-{
-	const QRectF& refRect = referenceRect(specItem);
-	return ( x - refRect.x() ) / ( refRect.width() / 2.0f ) - 1 ;
-}
-
-//------------------------------------------------------------------------------------------------------------
-float VGraphicsItemView::scene2RelativeY(float y, QGraphicsItem * specItem) const
-{
-	const QRectF& refRect = referenceRect(specItem);
-	return ( y - refRect.y() ) / ( refRect.height() / 2.0f ) - 1 ;
+	return TFloatRect ( TFloatPoint(qr.x(), qr.y()), TFloatPoint(qr.x()+qr.width(), qr.y()+qr.height()));
 }
 
 //------------------------------------------------------------------------------------------------------------
