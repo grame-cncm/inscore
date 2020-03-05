@@ -78,11 +78,8 @@ class INScoreGlue {
 
 	drop( e ) {
 		let data = e.dataTransfer.getData("Text");
-		if (data) {
-//   			console.log ("text dropped : " + data );
- 			this.fInscore.loadInscore(data, false);
-		}
-		else this.filedropped (e);
+		if (data)	this.fInscore.loadInscore(data, false);
+		else 		this.filedropped (e);
 		e.target.style.border = e.target.getAttribute('savedborder');
 	}
 		
