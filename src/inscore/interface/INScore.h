@@ -126,8 +126,9 @@ class inscore_export INScore
 	
 	/*! \brief load an inscore script
 		\param script the text of the script
+		\param autoparse a boolean to activate the current parse version (set with the 'parse' message)
 	*/
-	static bool loadInscore	(const char* script);
+	static bool loadInscore	(const char* script, bool autoparse=false);
 
 	/*! \brief load an inscore script version 2
 		\param script the text of the script

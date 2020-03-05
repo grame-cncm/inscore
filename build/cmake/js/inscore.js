@@ -48,8 +48,8 @@ class INScore {
 // 	restartNetwork ()					{ this.fInscore.restartNetwork(); }
 // 	stopNetwork ()						{ this.fInscore.stopNetwork(); }
 
-	loadInscore	(script)				{ this.fInscore.loadInscore (script); }
-	loadInscore2 (script)				{ this.fInscore.loadInscore2 (script); }
+	loadInscore	(script, autoparse=false)	{ return this.fInscore.loadInscore (script, autoparse); }
+	loadInscore2 (script)				{ return this.fInscore.loadInscore2 (script); }
 
 	postMessage	(adr, msg)				{ this.fInscore.postMessage (adr, msg); }
 	postMessageStr (adr, meth)			{ this.fInscore.postMessageStr (adr, meth); }
