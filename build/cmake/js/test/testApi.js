@@ -52,8 +52,8 @@ function load (inscore, log )
 	var scriptv2 = "/ITL/scene new; /ITL/scene/label (set txt label), (yorigin 1.1), (y 0.5), (x 0), (fontSize 11);"
 
 	log( "\nLoading scripts:");
-	log( "  loadInscore:       "); inscore.loadInscore(scriptv1);
-	log( "  loadInscore2:      "); inscore.loadInscore2(scriptv2);
+	log( "  loadInscore:       " + inscore.loadInscore(scriptv1));
+	log( "  loadInscore2:      " + inscore.loadInscore2(scriptv2));
 }
 
 //----------------------------------------------------------------------------
