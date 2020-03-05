@@ -67,7 +67,9 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
             view->setParentItem(parent->getView()?parent->getView():0);
         // and finally we set the view to the object
 		obj->setView (view);
-#else
+#elif defined (SVGVIEW)
+		obj->setView ( ViewFactory::create(obj, 0));
+#elif defined (NOVIEW)
 		obj->setView ( ViewFactory::create(obj));
 #endif
 	}

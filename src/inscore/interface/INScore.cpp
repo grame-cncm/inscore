@@ -26,28 +26,32 @@
 #include <map>
 #include <sstream>
 
-#if defined(NOVIEW) || defined(MODELONLY)
-#include "VoidUpdater.h"
-#elif defined(__MOBILE__)
-#include "VMobileQtInit.h"
-#include "VMobileQtUpdater.h"
-#include "VQtLocalMappingUpdater.h"
-#else
-#include "VQtLocalMappingUpdater.h"
-#include "VQtUpdater.h"
-#endif
-
 #include "GUIDOEngine.h"
 #include "IAppl.h"
 #include "IGlue.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
-#include "TILoader.h"
-//#include "IParser2.h"
 #include "INScore.h"
-#include "TWallClock.h"
+#include "Modules.h"
+#include "TILoader.h"
 #include "TSorter.h"
+#include "TWallClock.h"
 #include "XMLImporter.h"
+
+#if defined(NOVIEW) || defined(MODELONLY)
+# include "VoidUpdater.h"
+
+#elif defined(SVGVIEW)
+# include "VoidUpdater.h"
+
+#elif defined(__MOBILE__)
+#  include "VMobileQtInit.h"
+#  include "VMobileQtUpdater.h"
+#  include "VQtLocalMappingUpdater.h"
+#else
+#  include "VQtLocalMappingUpdater.h"
+#  include "VQtUpdater.h"
+#endif
 
 using namespace std;
 namespace inscore 
@@ -88,8 +92,11 @@ INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplic
 	IGlue* glue = new IGlue (udpport, outport, errport);
 	if (glue && glue->start (offscreen, ag)) {
 #if defined(NOVIEW)
-		glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
-		glue->setViewUpdater	(VoidViewUpdater::create() );
+	glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
+	glue->setViewUpdater	(VoidViewUpdater::create() );
+#elif defined(SVGVIEW)
+	glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
+	glue->setViewUpdater	(VoidViewUpdater::create() );
 #elif defined(MODELONLY)
 		glue->setLocalMapUpdater( 0 );
 		glue->setViewUpdater	( 0 );
