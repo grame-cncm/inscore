@@ -6,6 +6,8 @@ set ( CMAKE_OSX_SYSROOT 		"")
 set ( CMAKE_CXX_COMPILER 	"emcc")
 
 option ( EMCCDEBUG		"Activate emcc debug information"	off )
+
+
 if (EMCCDEBUG)
 	set (EMCC_COMPILE_OPTION "-s ASSERTIONS=1 -s SAFE_HEAP=1 -s STACK_OVERFLOW_CHECK=1 -s DEMANGLE_SUPPORT=1")
 	message (STATUS "EMCC Debug options are on")
@@ -16,7 +18,7 @@ endif()
 
 ####################################
 # emscripten support
-set (WASM_LINK_FLAGS "--bind -O3 --memory-init-file 0 -s LINKABLE=1 -s WASM=1 -s EXPORT_NAME=\"'INScoreModule'\" -s MODULARIZE=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1 -s DISABLE_EXCEPTION_CATCHING=1")
+set (WASM_LINK_FLAGS "--bind -O3 --memory-init-file 0 -s LINKABLE=1 -s WASM=1 -s EXPORT_NAME=\"'INScoreModule'\" -s MODULARIZE=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1 -s DISABLE_EXCEPTION_CATCHING=1  -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\"]'")
 file (GLOB EMCCSRC 	${SRCDIR}/emcc/*.cpp)
 
 set (SRC  ${SRC} ${EMCCSRC})
