@@ -22,11 +22,16 @@
 
 */
 
+#include <iostream>
+
 #include "IModel.h"
 #include "VApplView.h"
-#include "VObjectView.h"
+#include "SVGObjectView.h"
 #include "ViewFactory.h"
 #include "VSceneView.h"
+#ifdef EMCC
+#include "wasmglue.h"
+#endif
 
 //#include "VArcView.h"
 //#include "VAudioView.h"
@@ -48,6 +53,8 @@
 //#include "VTextView.h"
 //#include "VUrlIntermediateObjectView.h"
 //#include "VVideoView.h"
+
+using namespace std;
 
 namespace inscore
 {
@@ -85,16 +92,20 @@ namespace inscore
 //VObjectView*    ViewFactory::create (const ILayer* object,      ViewContext scene)      { return new VLayerView (scene, object);}
 
 //--------------------------------------------------------------------------
-VObjectView* ViewFactory::create(const IScene* obj)
+VSceneView* ViewFactory::create(const IScene* obj)
 {
 	VSceneView * scene = new VSceneView ();
+
+#ifdef EMCC
+	testjscall(obj->name().c_str());
+#endif
 //    scene->initializeView(obj->getOSCAddress(), new QGraphicsScene);
 	return scene;
 }
 
-VObjectView* ViewFactory::create(const IAppl* )			{ return new VApplView (); }
+VObjectView* ViewFactory::create(const IAppl* )						{ return new VApplView (); }
 
-VObjectView* ViewFactory::create(const IObject* obj, ViewContext scene)	{ return 0; }
+VObjectView* ViewFactory::create(const IObject* obj, ViewContext scene)	{ return new SVGObjectView(); }
 
 }
 

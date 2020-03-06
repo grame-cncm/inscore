@@ -17,7 +17,10 @@ endif()
 ####################################
 # emscripten support
 set (WASM_LINK_FLAGS "--bind -O3 --memory-init-file 0 -s LINKABLE=1 -s WASM=1 -s EXPORT_NAME=\"'INScoreModule'\" -s MODULARIZE=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1 -s DISABLE_EXCEPTION_CATCHING=1")
-set (SRC  ${SRC} ${SRCDIR}/emcc/exports.cpp)
+file (GLOB EMCCSRC 	${SRCDIR}/emcc/*.cpp)
+
+set (SRC  ${SRC} ${EMCCSRC})
+set (INCDIRS  ${INCDIRS} ${SRCDIR}/emcc)
 set (DEFS ${DEFS} "-DOSC_HOST_LITTLE_ENDIAN" "-DEMCC" ${EMCCDEBUGOPTION})
 
 ####################################

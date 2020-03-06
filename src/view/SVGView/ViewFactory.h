@@ -36,13 +36,14 @@ namespace inscore
 @{
 */
 class VObjectView;
+class VSceneView;
 
 class ViewFactory
 {
 	public:
 
 	static VObjectView*		create (const IAppl* object);
-	static VObjectView*		create (const IScene* object);
+	static VSceneView*		create (const IScene* object);
 
 	static VObjectView*		create (const IObject* object,	ViewContext scene);
 //	static VObjectView*		create (const IArc* object,			ViewContext scene);

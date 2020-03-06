@@ -113,6 +113,16 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 	}
 	return obj->getView() ? obj : 0;
 }
+#elif SVGVIEW
+template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
+{
+	SIScene obj = IScene::create(name, parent);
+	if (obj) {
+		VSceneView *sceneView = ViewFactory::create(obj);
+		obj->setView ((VObjectView*)sceneView);
+	}
+	return obj->getView() ? obj : 0;
+}
 #endif
 
 //--------------------------------------------------------------------------
