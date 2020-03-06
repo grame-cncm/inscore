@@ -101,6 +101,10 @@ VSceneView* ViewFactory::create(const IScene* obj)
 	usediv (id);
 	TIntSize size = divGetSize(id);
 cout << "ViewFactory::create scene size: " << size << endl;
+	testAdd (10, 2);
+	int div = getdiv (id);
+	cout << "ViewFactory::create scene div: " << div << endl;
+
 #endif
 //    scene->initializeView(obj->getOSCAddress(), new QGraphicsScene);
 	return scene;

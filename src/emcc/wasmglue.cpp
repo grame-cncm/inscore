@@ -49,15 +49,29 @@ void usediv(const char *div) {
 	}, div);
 }
 
+int  getdiv(const char *id) {
+	int div = EM_ASM_INT( {
+		  return getScene(Module.UTF8ToString($0));
+		}, id);
+	return div;
+}
+
 TIntSize divGetSize (const char *div)
 {
 	int w = EM_ASM_INT( {
-		  getSceneWidth(Module.UTF8ToString($0));
+		  return getSceneWidth(Module.UTF8ToString($0));
 		}, div);
 	int h = EM_ASM_INT( {
-		  getSceneHeight(Module.UTF8ToString($0));
+		  return getSceneHeight(Module.UTF8ToString($0));
 		}, div);
 	return TIntSize(w, h);
+}
+
+void testAdd (int a, int b) {
+	int n = EM_ASM_INT( {
+		  return testadd($0, $1);
+		}, a, b);
+cout << "test add: " << a << " + " << b << " => " << n << endl;
 }
 
 }
