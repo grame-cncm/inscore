@@ -1,6 +1,23 @@
 
 "use strict";
 
+//------------------------------------------------------------------------
+// a glue to decode strings received from c++
+// got it from https://dev.to/azure/passing-strings-from-c-to-javascript-in-web-assembly-1p01
+
+function getScene (id) {
+  let div = document.getElementById(id);
+  let rect = div.getBoundingClientRect();
+  console.log ("JS getScene size " + div.clientWidth + " " + div.clientHeight + " rect: " + rect.left + " " + rect.top  + " " + (rect.right - rect.left) + " " + (rect.bottom - rect.top) + " border: " + div.style.borderWidth);
+  div.style.borderWidth = "1px";
+  return div;
+}
+function getSceneWidth (id)  { return document.getElementById(id).clientWidth; }
+function getSceneHeight (id) { return document.getElementById(id).clientHeight; }
+function getSceneX (id) 	 { return document.getElementById(id).getBoundingClientRect().left; }
+function getSceneY (id) 	 { return document.getElementById(id).getBoundingClientRect().top; }
+
+
 //----------------------------------------------------------------------------
 // INScore interface
 //----------------------------------------------------------------------------
@@ -95,3 +112,5 @@ class INScoreGlue {
  }
 
 var gGlue = new INScoreGlue;
+
+

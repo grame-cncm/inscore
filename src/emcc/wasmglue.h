@@ -26,6 +26,14 @@
 
 #include <string>
 
+#include "TRect.h"
+
+namespace inscore
+{
+
 void testjscall(const char* msg);
+void usediv(const char *div);
 
+TIntSize divGetSize (const char *div);
 
+}

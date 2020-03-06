@@ -23,19 +23,41 @@
 */
 
 #include <iostream>
+#include <string.h>
 
 #include <emscripten.h>
 #include <emscripten/bind.h>
 
+#include "wasmglue.h"
 
 using namespace emscripten;
 using namespace std;
 
+namespace inscore
+{
 
 void testjscall(const char *msg) {
 	EM_ASM( {
-	  console.log ('testjscall says ' + $0);
+	  console.log ('testjscall says ' + Module.UTF8ToString($0));
+	  document.getElementById(Module.UTF8ToString($0)).style.background = "lightblue";
 	}, msg);
-
 }
 
+void usediv(const char *div) {
+	EM_ASM( {
+	  getScene(Module.UTF8ToString($0)).style.color = "red";
+	}, div);
+}
+
+TIntSize divGetSize (const char *div)
+{
+	int w = EM_ASM_INT( {
+		  getSceneWidth(Module.UTF8ToString($0));
+		}, div);
+	int h = EM_ASM_INT( {
+		  getSceneHeight(Module.UTF8ToString($0));
+		}, div);
+	return TIntSize(w, h);
+}
+
+}

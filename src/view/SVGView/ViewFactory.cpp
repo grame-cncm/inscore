@@ -97,7 +97,10 @@ VSceneView* ViewFactory::create(const IScene* obj)
 	VSceneView * scene = new VSceneView ();
 
 #ifdef EMCC
-	testjscall(obj->name().c_str());
+	const char* id = obj->name().c_str();
+	usediv (id);
+	TIntSize size = divGetSize(id);
+cout << "ViewFactory::create scene size: " << size << endl;
 #endif
 //    scene->initializeView(obj->getOSCAddress(), new QGraphicsScene);
 	return scene;
