@@ -31,31 +31,26 @@ using namespace std;
 namespace inscore 
 {
 
+
 static const char * kOSNameVar	= "OSName";
 static const char * kOSIDVar	= "OSId";
-
-static const char * kMacOSName		= "MacOS";
-static const char * kWindowsName	= "Windows";
-static const char * kLinuxName		= "Linux";
-static const char * kAndroidName	= "Android";
-static const char * kiOSName		= "iOS";
 
 enum { kAndroid=1, kiOS, kLinux, kMacOS, kWindows };
 
 #ifdef MACOS
-const char *	kOSName	= kMacOSName;
+const char *	kOSName	= "MacOS";
 const int		kOSID	= kMacOS;
 #elif defined WINDOWS
-const char *	kOSName	= kWindowsName;
+const char *	kOSName	= "Windows";
 const int		kOSID	= kWindows;
 #elif defined INSCORE_IOS
-const char *	kOSName	= kiOSName;
+const char *	kOSName	= "iOS";
 const int		kOSID	= kiOS;
 #elif defined ANDROID
-const char *	kOSName	= kAndroidName;
+const char *	kOSName	= "Android";
 const int		kOSID	= kAndroid;
 #elif defined __LINUX__
-const char *	kOSName	= kLinuxName;
+const char *	kOSName	= "Linux";
 const int		kOSID	= kLinux;
 #else
 #error "undefined operating system"
@@ -68,7 +63,7 @@ ITLparser::ITLparser(std::istream* stream, int line, IAppl* root, bool execute)
 {
 	setlocale(LC_NUMERIC, "C");
 	initScanner();
-	fLineOffset = fColumn = fLine = fExprStartLine = 0;
+	fLineOffset = fExprStartLine = 0;
 	setupEnv();
 }
 
