@@ -18,7 +18,7 @@ class TestGlue : public INScoreApplicationGlue
 				 TestGlue() {}
 		virtual ~TestGlue() {}
 		virtual void 	showMouse (bool state) 				{ cout << "TestGlue::showMouse " << state << endl; }
-		virtual bool 	openUrl (const std::string& url)	{ cout << "TestGlue::openUrl " << url << endl; };
+		virtual bool 	openUrl (const std::string& url)	{ cout << "TestGlue::openUrl " << url << endl; return true; };
 		virtual void	startView ()				{ cout << "TestGlue::startView " << endl; };
 		virtual void	stopView  ()				{ cout << "TestGlue::stopView " << endl; };
 
@@ -27,14 +27,14 @@ class TestGlue : public INScoreApplicationGlue
 };
 
 
-static void create_rect ()
-{
-	INScore::MessagePtr msg = INScore::newMessage("set");
-	INScore::add(msg, "rect");
-	INScore::add(msg, "1");
-	INScore::add(msg, "1");
-	INScore::postMessage("/ITL/scene/rect", msg);
-}
+//static void create_rect ()
+//{
+//	INScore::MessagePtr msg = INScore::newMessage("set");
+//	INScore::add(msg, "rect");
+//	INScore::add(msg, "1");
+//	INScore::add(msg, "1");
+//	INScore::postMessage("/ITL/scene/rect", msg);
+//}
 
 static void test_messages ()
 {
