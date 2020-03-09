@@ -57,7 +57,7 @@ static void test_messages ()
 	cout << "  postMessage:         ";
 	INScore::postMessage("/ITL", msg); cout << "ok" << endl;
 	cout << "  postMessage Str:     ";
-	INScore::postMessage("/ITL", "get"); cout << "ok" << endl;
+	INScore::postMessage("/ITL", "hello"); cout << "ok" << endl;
 	cout << "  postMessage Str I:   ";
 	INScore::postMessage("/ITL", "get", 1); cout << "ok" << endl;
 	cout << "  postMessage Str F:   " ;
