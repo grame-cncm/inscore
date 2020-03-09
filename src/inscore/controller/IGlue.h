@@ -31,7 +31,7 @@
 
 #include "INScore.h"
 #include "IController.h"
-#include "IOSCListener.h"
+#include "INetListener.h"
 #include "PeriodicTask.h"
 #include "udpinfo.h"
 #include "Updater.h"
@@ -51,15 +51,15 @@ typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 /*!
 	\brief a specific thread to listen incoming osc packets
 */
-class OscThread
+class NetworkThread
 {
-	SIOSCListener fListener;
+	SINetListener fListener;
 	std::thread * fThread = 0;
 
 	public:
-				 OscThread(SIMessageStack& msgs, int udpport)  
-							 { fListener = IOSCListener::create (msgs, udpport); }
-		virtual ~OscThread() { stop(); }
+				 NetworkThread(SIMessageStack& msgs, int udpport)
+							 { fListener = INetListener::create (msgs, udpport); }
+		virtual ~NetworkThread() { stop(); }
 
 		void start();
 		void stop();
@@ -77,7 +77,7 @@ typedef class libmapping::SMARTP<IAppl>	SIAppl;
 */
 class inscore_export IGlue : public MsgListener, public INScoreGlue
 {
-	OscThread *		fOscThread;
+	NetworkThread *	fNetThread;
 	SUpdater 		fViewUpdater;
 	SUpdater 		fLocalMapUpdater;
 	SUpdater 		fSlaveMapUpdater;

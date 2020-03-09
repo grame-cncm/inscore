@@ -25,7 +25,7 @@
 
 #include <iostream>
 
-#include "IOSCListener.h"
+#include "INetListener.h"
 #include "IMessageStack.h"
 #include "IMessage.h"
 #include "IExprParser.h"
@@ -43,16 +43,16 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-IOSCListener::IOSCListener(SIMessageStack& stack, int port) 
+INetListener::INetListener(SIMessageStack& stack, int port)
 		: fSocket(IpEndpointName( IpEndpointName::ANY_ADDRESS, port ), this), fMsgStack(stack), fRunning(false)
 {
 //	fMyAddress = Tools::getIP("");
 }
 
-IOSCListener::~IOSCListener()	{ stop(); }
+INetListener::~INetListener()	{ stop(); }
 
 //--------------------------------------------------------------------------
-void IOSCListener::run()
+void INetListener::run()
 { 
 	fRunning = true;
 //	while (fRunning) {
@@ -67,13 +67,13 @@ void IOSCListener::run()
 }
 
 //--------------------------------------------------------------------------
-void IOSCListener::stop()	
+void INetListener::stop()
 { 
 	fSocket.AsynchronousBreak();
 }
 
 //--------------------------------------------------------------------------
-void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& src )
+void INetListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& src )
 {
     //if (src.address == fMyAddress) return;	// reject messages that come from the local address
 	
@@ -116,9 +116,11 @@ void IOSCListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpoi
 	fMsgStack->inc();
 }
 
+#endif
+
 
 //--------------------------------------------------------------------------
-bool IOSCListener::isExpression(std::string arg)
+bool INetListener::isExpression(std::string arg) const
 {
 	if(arg.empty())
 		return false;
@@ -144,6 +146,4 @@ bool IOSCListener::isExpression(std::string arg)
 }
 
 } // end namespoace
-
-#endif
 

@@ -51,7 +51,7 @@ typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 /*!
 	\brief an OSC listener that converts OSC input to IMessage
 */
-class IOSCListener : public osc::OscPacketListener, public libmapping::smartable
+class INetListener : public osc::OscPacketListener, public libmapping::smartable
 {
 	UdpListeningReceiveSocket fSocket;	///< the udp socket listener
 	SIMessageStack	fMsgStack;			///< the messages stack
@@ -59,8 +59,8 @@ class IOSCListener : public osc::OscPacketListener, public libmapping::smartable
 	bool	fRunning;
 
 	public:
-		static libmapping::SMARTP<IOSCListener> create(SIMessageStack& stack, int port = 7000)
-			{ return new IOSCListener(stack, port); }
+		static libmapping::SMARTP<INetListener> create(SIMessageStack& stack, int port = 7000)
+			{ return new INetListener(stack, port); }
 
 		/*!
 			\brief process OSC messages
@@ -73,34 +73,34 @@ class IOSCListener : public osc::OscPacketListener, public libmapping::smartable
 		virtual void stop(); //	{ fRunning=false; fSocket.AsynchronousBreak(); }
 
 	protected:
-				 IOSCListener(SIMessageStack& stack, int port = 7000);
-		virtual ~IOSCListener();
+				 INetListener(SIMessageStack& stack, int port = 7000);
+		virtual ~INetListener();
 
-				 bool isExpression(std::string arg);
+				 bool isExpression(std::string arg) const;
 
 };
 
 #else
 
-class IOSCListener : public libmapping::smartable
+class INetListener : public libmapping::smartable
 {
 	public:
-		static libmapping::SMARTP<IOSCListener> create(SIMessageStack& stack, int port = 7000)
-			{ return new IOSCListener(stack, port); }
+		static libmapping::SMARTP<INetListener> create(SIMessageStack& stack, int port = 7000)
+			{ return new INetListener(stack, port); }
 
 		virtual void run()	{}
 		virtual void stop() {}
 
 	protected:
-				 IOSCListener(SIMessageStack& stack, int port = 7000) {}
-		virtual ~IOSCListener() {}
+				 INetListener(SIMessageStack& stack, int port = 7000) {}
+		virtual ~INetListener() {}
 
-				 bool isExpression(std::string arg) { return false; }
+				 bool isExpression(std::string arg) const;
 
 };
 #endif
 
-typedef class libmapping::SMARTP<IOSCListener>	SIOSCListener;
+typedef class libmapping::SMARTP<INetListener>	SINetListener;
 
 /*!
 @}

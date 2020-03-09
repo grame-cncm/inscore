@@ -57,20 +57,20 @@ extern std::condition_variable gModelUpdateWaitCondition;
 #define kDefaultRate	10
 
 //--------------------------------------------------------------------------
-static void run (SIOSCListener listener)
+static void run (SINetListener listener)
 {
 	listener->run();
 }
 
 //--------------------------------------------------------------------------
-void OscThread::start()
+void NetworkThread::start()
 {
 	if (fThread) stop();
 	fThread = new std::thread (run, fListener);
 }
 
 //--------------------------------------------------------------------------
-void OscThread::stop()
+void NetworkThread::stop()
 {
 	if (fThread) {
 		fListener->stop();
@@ -81,7 +81,7 @@ void OscThread::stop()
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
-	: fOscThread(0), fViewListener(0), fUDP(udpport, outport, errport)
+	: fNetThread(0), fViewListener(0), fUDP(udpport, outport, errport)
 {
 	fLastTimeTask = 0;
 }
@@ -94,8 +94,8 @@ const IObject* IGlue::root () const  { return dynamic_cast<const IObject*>((IApp
 //--------------------------------------------------------------------------
 void IGlue::clean()
 {
-	delete fOscThread;
-    fOscThread = 0;
+	delete fNetThread;
+    fNetThread = 0;
 #if HASOSCStream
 	OSCStream::stop();
 #endif
@@ -111,7 +111,7 @@ void IGlue::restart()
             throw("Cannot initialize output udp streams");
 #endif
         oscinit (fModel, fUDP);
-        if (!fMsgStack || !fController || !fModel || !fOscThread)
+        if (!fMsgStack || !fController || !fModel || !fNetThread)
             throw("Memory allocation failed!");
     }
     catch (std::runtime_error e) {
@@ -153,9 +153,9 @@ void IGlue::oscinit (SIAppl appl, udpinfo& udp)
 //--------------------------------------------------------------------------
 void IGlue::oscinit (int port)
 {
-	if (fOscThread) delete fOscThread;
-	fOscThread = new OscThread(fMsgStack, fUDP.fInPort=port);
-	if (fOscThread) fOscThread->start();
+	if (fNetThread) delete fNetThread;
+	fNetThread = new NetworkThread(fMsgStack, fUDP.fInPort=port);
+	if (fNetThread) fNetThread->start();
 }
 
 //--------------------------------------------------------------------------
@@ -210,7 +210,7 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	if (!OSCStream::start())
 		throw("Cannot initialize output udp streams");
 	oscinit (fModel, fUDP);
-	if (!fMsgStack || !fController || !fModel) // || !fOscThread)
+	if (!fMsgStack || !fController || !fModel) // || !fNetThread)
 		throw("Memory allocation failed!");
 #if HASOSCStream
 	cout << "INScore v " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
