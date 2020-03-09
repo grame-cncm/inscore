@@ -1036,8 +1036,6 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 		try {
 #if HASOSCStream
 			oscout << msgs;
-//#else
-//			cout << msgs;
 #endif
 			IAppl* appl = (IAppl*) getAppl();
 			if (appl) {
