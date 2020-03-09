@@ -34,7 +34,7 @@ template <typename T> class extvector : public std::vector<T>
 	std::string fSuffix;
 	
 	public:
-				 extvector() : fSuffix(", ") {}
+				 extvector(const char* suffix=", ") : fSuffix(suffix) {}
 		virtual ~extvector() {}
 
 		void  set (const char* prefix, const char* suffix) {
@@ -43,8 +43,8 @@ template <typename T> class extvector : public std::vector<T>
 		}
 	
 		void  print (std::ostream& out) const {
-			for (unsigned int i=0; i < this->size()-1; i++)
-				out << fPrefix << (*this)[i] << fSuffix;
+			for (auto elt: *this)
+				out << fPrefix << elt << fSuffix;
 			out << fPrefix << (*this)[this->size()-1];
 		}
 	
