@@ -123,7 +123,7 @@ IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 {
 	fWindow = new VLogWindow ("/ITL/log", this);
-	fLogLevel = kLogError;
+	fLogLevel = kLogMsg;
 	
 	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
 	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
