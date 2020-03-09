@@ -43,9 +43,12 @@ template <typename T> class extvector : public std::vector<T>
 		}
 	
 		void  print (std::ostream& out) const {
-			for (auto elt: *this)
-				out << fPrefix << elt << fSuffix;
-			out << fPrefix << (*this)[this->size()-1];
+			size_t n = this->size()-1;
+			if (n >= 0) {
+				for (size_t i=0; i < n; i++)
+					out << fPrefix << (*this)[i] << fSuffix;
+				out << fPrefix << (*this)[n];
+			}
 		}
 	
 		// specific method to print messages list
