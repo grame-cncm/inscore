@@ -96,7 +96,7 @@ void IGlue::clean()
 {
 	delete fOscThread;
     fOscThread = 0;
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	OSCStream::stop();
 #endif
 	fModel->getApplicatonGlue()->stopView();
@@ -106,7 +106,7 @@ void IGlue::clean()
 void IGlue::restart()
 {
     try {
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
         if (!OSCStream::start())
             throw("Cannot initialize output udp streams");
 #endif
@@ -135,7 +135,7 @@ void IGlue::oscinit (SIAppl appl, udpinfo& udp)
 	bool done = false;
 	do {
 		try {
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 			oscinit (udp.fInPort);
 			oscinit (oscout, udp.fOutDstAddress, udp.fOutPort);
 			oscinit (oscerr, udp.fErrDstAddress, udp.fErrPort);
@@ -212,7 +212,7 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	oscinit (fModel, fUDP);
 	if (!fMsgStack || !fController || !fModel) // || !fOscThread)
 		throw("Memory allocation failed!");
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	cout << "INScore v " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 	oscerr.setLogWindow (fModel->getLogWindow());
 #else
@@ -223,7 +223,7 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	// check Guido version
 #ifndef EMCC
 	if (GuidoCheckVersionNums(1, 6, 0) != guidoNoErr) {
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		oscerr << OSCStart("Warning:") << "GUIDOEngine version >= 1.60 is required." << OSCEnd();
 #endif
 		cerr << "Warning: GUIDOEngine version >= 1.60 is required." << endl;
@@ -294,7 +294,7 @@ void IGlue::setLocalMapUpdater(SUpdater updater)
 }
 
 //--------------------------------------------------------------------------
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 void IGlue::setOSCOut (int port) {	oscout.setPort(port); fUDP.fOutPort = port; }
 void IGlue::setOSCOut (const std::string& a) { oscout.setAddress(a); fUDP.fOutDstAddress = a;  }
 void IGlue::setOSCErr (int port) {	oscerr.setPort(port); fUDP.fErrPort = port; }
@@ -324,11 +324,11 @@ void IGlue::modelUpdate()
 	fController->processOn(fMsgStack, model);
 
 	// Process web message stack
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	oscerr.activeConcatError(true);
 #endif
 	fController->processOn(fWebMsgStack, model);
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	oscerr.activeConcatError(false);
 #endif
 

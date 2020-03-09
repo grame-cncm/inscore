@@ -26,6 +26,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "Modules.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
 #include "IMessageStack.h"
@@ -35,10 +36,10 @@
 #include "rational.h"
 #include "TWallClock.h"
 #include "TSorter.h"
-
-#ifndef NO_OSCSTREAM
-#include "OSCStream.h"
 #include "ITLError.h"
+
+#if HASOSCStream
+#include "OSCStream.h"
 #endif
 
 using namespace std;
@@ -312,7 +313,7 @@ void IMessage::send(const bool& ) const
 #endif
 {
 	if (extendedAddress()) {
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		OSCStream::sendEvent (this, url().fHostname, url().fPort);
 #endif
 	}
@@ -436,7 +437,7 @@ IMessage::TUrl::operator string() const
 	return str.str();
 }
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 //--------------------------------------------------------------------------
 void IMessage::linearize(OSCStream& osc) const
 {

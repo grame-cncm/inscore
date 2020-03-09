@@ -30,6 +30,7 @@
 #include "ITLError.h"
 #include "Updater.h"
 #include "IMessage.h"
+#include "Modules.h"
 #include "IScene.h"
 #include "ISignalNode.h"
 
@@ -176,7 +177,7 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 	if (available() > ParallelSignal::size()) {				// check for over-run
 		fix();
 		SISignalNode sn = getSignalNode();
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		if (sn && sn->debug())
 			oscerr << OSCWarn() << "over run for signal" << name() << OSCEnd();
 #endif

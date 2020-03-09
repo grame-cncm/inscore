@@ -27,8 +27,9 @@
 #pragma once
 
 #include "smartpointer.h"
+#include "Modules.h"
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 // oscpack include files
 #include "ip/UdpSocket.h"
 #include "osc/OscPacketListener.h"
@@ -40,7 +41,7 @@ namespace inscore
 class IMessageStack;
 typedef class libmapping::SMARTP<IMessageStack>	SIMessageStack;
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 
 /*!
 \addtogroup ITLCtrl Controller

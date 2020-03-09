@@ -25,8 +25,9 @@
 #include <vector>
 #include <sstream>
 
-#ifndef NO_OSCSTREAM
+#include "Modules.h"
 
+#if HASOSCStream
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 

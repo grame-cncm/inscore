@@ -21,6 +21,7 @@
 
 #include <string>
 
+#include "Modules.h"
 #include "ITLError.h"
 #include "IMessage.h"
 
@@ -29,7 +30,7 @@ using namespace std;
 namespace inscore
 {
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 ITLError ITLErr;			// static ITL error output stream
 ITLErrEnd ITLEndl;			// static ITL error output stream end
 

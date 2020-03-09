@@ -38,6 +38,7 @@
 #include <QStandardPaths>
 #endif
 
+#include "Modules.h"
 #include "Events.h"
 #include "Forwarder.h"
 #include "IAppl.h"
@@ -474,7 +475,7 @@ SIMessage IAppl::hello()	const
 void IAppl::helloMsg() const
 {
 	SIMessage msg = hello();
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	msg->print(oscout);
 #else
 	msg->print(cout);

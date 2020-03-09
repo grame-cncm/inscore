@@ -29,6 +29,7 @@
 #include "IMessage.h"
 #include "IScene.h"
 #include "Events.h"
+#include "Modules.h"
 #include "VObjectView.h"
 
 using namespace std;
@@ -117,7 +118,7 @@ void IMedia::setFile(const std::string& path)
 	{
 		const char* msg = "can't open media file :";
 		cerr << msg << path << endl;
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		oscerr << OSCErr() << msg << path << OSCEnd();
 #endif
 	}

@@ -51,6 +51,7 @@
 #if QTView
 # define HASQGuidoImporter		true
 # define HASFileDownloader		true
+# define HASOSCStream			true
 
 class QGraphicsScene;
 typedef QGraphicsScene*		ViewContext;
@@ -60,6 +61,11 @@ typedef QGraphicsItem*		VObjectContext;
 #else
 # define HASQGuidoImporter		false
 # define HASFileDownloader		false
+#ifdef NO_OSCSTREAM
+# define HASOSCStream			false
+# else
+# define HASOSCStream			true
+#endif
 typedef void*				ViewContext;
 typedef void*				VObjectContext;
 #endif

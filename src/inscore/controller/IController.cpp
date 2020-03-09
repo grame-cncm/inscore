@@ -25,6 +25,7 @@
 
 #include <iostream>
 
+#include "Modules.h"
 #include "IController.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
@@ -50,7 +51,7 @@ void IController::processOn(SIMessageStack& msgs, SIObject& obj)
 	SIMessage* msgptr = msgs->pop();
 	while (msgptr) {
 		SIMessage msg = *msgptr;
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		oscout.setAddress(msg->src());
 		oscerr.setAddress(msg->src());
 #endif

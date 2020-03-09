@@ -84,10 +84,7 @@
 
 #include "ITLparser.h"
 #include "ITLparse.hpp"
-
-#ifndef NO_OSCSTREAM
 #include "ITLError.h"
-#endif
 
 typedef void * yyscan_t;
 

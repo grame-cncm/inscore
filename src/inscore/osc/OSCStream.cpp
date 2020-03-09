@@ -20,6 +20,11 @@
 */
 
 #include <iostream>
+
+
+#include "Modules.h"
+
+#if HASOSCStream
 #include "OSCStream.h"
 #include "IMessage.h"
 #include "IExpression.h"
@@ -234,8 +239,7 @@ OSCErrorStream& operator <<(OSCErrorStream& s, const OSCWarn& val)	{ return s.st
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCStart& val)	{ return s.start(val.fAddress); }
 OSCErrorStream& operator <<(OSCErrorStream& s, const OSCEnd )		{ return s.end(); }
 
-
-
-
 } // end namespace
+
+#endif
 

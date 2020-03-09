@@ -26,7 +26,9 @@
 #include <iostream>
 #include <sstream>
 
-#ifndef NO_OSCSTREAM
+#include "Modules.h"
+
+#if HASOSCStream
 #include "ip/NetworkingUtils.h"
 #else
 #define NOHOSTNAME

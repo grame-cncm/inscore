@@ -31,6 +31,8 @@
 #include "IExprParser.h"
 #include "Tools.h"
 
+#if HASOSCStream
+
 #include "osc/OscReceivedElements.h"
 #include "ip/IpEndpointName.h"
 
@@ -142,3 +144,6 @@ bool IOSCListener::isExpression(std::string arg)
 }
 
 } // end namespoace
+
+#endif
+

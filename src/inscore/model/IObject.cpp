@@ -34,6 +34,7 @@
 #include <fstream>
 
 #include "Events.h"
+#include "Modules.h"
 #include "EventsAble.h"
 #include "IAppl.h"
 #include "IApplVNodes.h"
@@ -1033,8 +1034,10 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 	SIMessageList msgs = getMsgs (msg);
 	if (msgs->list().size()) {
 		try {
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 			oscout << msgs;
+//#else
+//			cout << msgs;
 #endif
 			IAppl* appl = (IAppl*) getAppl();
 			if (appl) {

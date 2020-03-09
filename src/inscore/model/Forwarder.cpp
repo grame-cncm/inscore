@@ -22,12 +22,14 @@
   research@grame.fr
 
 */
+
+#include <string>
+
+#include "Modules.h"
 #include "Forwarder.h"
 #include "IFilterForward.h"
 #include "Tools.h"
 #include "IAppl.h"
-
-#include <string>
 
 namespace inscore
 {
@@ -35,7 +37,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
 {
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	// Forward if have host in foward list and if no filter or filter is not bloking the message.
 	if (fForwardList.size() && (!fFilter || !fFilter->applyFilter(imsg))) {
         for (unsigned int i = 0; i < fForwardList.size(); i++) {
@@ -52,7 +54,7 @@ void Forwarder::forward(const IMessage * imsg)
 MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 {
 	fForwardList.clear();					// clear the forward list first
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	if (msg->size() == 0)					// no other param
 		return MsgHandler::kProcessed;		// that's done
 

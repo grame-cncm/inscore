@@ -31,6 +31,7 @@
 #include <vector>
 #include <ostream>
 
+#include "Modules.h"
 #include "message.h"
 #include "ITLError.h"
 #include "OSCStream.h"
@@ -95,7 +96,7 @@ class baseparam : public libmapping::smartable
 			
 		virtual libmapping::SMARTP<baseparam> copy() const = 0;
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		virtual void print(ITLError ) const {}
 #endif
 		virtual void print(std::ostream& ) const {}
@@ -116,7 +117,7 @@ template <typename T> class IMsgParam : public baseparam
 		T	getValue() const { return fParam; }
 		
 		virtual libmapping::SMARTP<baseparam> copy() const	{ return new IMsgParam<T>(fParam); }
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		virtual void print(ITLError out) const				{ out << fParam; }
 #endif
 		virtual void print(std::ostream& out) const			{
@@ -348,7 +349,7 @@ class IMessage : public Message, public libmapping::smartable
 	*/
 	std::string	toString() const;
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	/*!
 		\brief send the message to OSC
 		\param out the OSC output stream

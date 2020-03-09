@@ -23,7 +23,9 @@
 
 #include <iostream>
 
-#ifdef NO_OSCSTREAM
+#include "Modules.h"
+
+#if !HASOSCStream
 #define ITLErr	std::cerr
 #define ITLEndl	std::endl
 #define ITLError std::ostream;			// static ITL error output stream
