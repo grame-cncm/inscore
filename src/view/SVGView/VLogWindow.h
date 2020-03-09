@@ -37,7 +37,7 @@ public:
 			 VLogWindow(const char* name, IApplLog * logwindow) {}
 	virtual ~VLogWindow() {}
 
-	void			append (const char* text)	{ std::cerr << text << std::endl;}
+	void			append (const char* text)	{ std::cout << text << std::endl;}
 	const char*		getText () const			{ return ""; }
 	virtual void	setVisible	(bool visible)		{}
 	virtual void	imove		(float x, float y)	{}
