@@ -568,10 +568,18 @@ class IMessageList : public libmapping::smartable
 		/*!
 		 * \brief sendWebMsg Add messages to a specific stack for message from web
 		 */
-		void sendWebMsg() const;
+		void 	sendWebMsg() const;
+	
+		/*!
+			\brief print the message list
+			\param out the output stream
+		*/
+		void	print(std::ostream& out) const;
+
 };
 
 inline std::ostream& operator << (std::ostream& os, const SIMessage& m)			{ if (m) m->print(os); else os << "null msg"; return os; }
+inline std::ostream& operator << (std::ostream& os, const SIMessageList& l)		{ if (l) l->list().print(os); else os << "null msg list"; return os; }
 
 /*!
 @}
