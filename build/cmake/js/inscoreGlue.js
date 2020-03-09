@@ -10,7 +10,21 @@ function getSceneWidth (id)  { return document.getElementById(id).clientWidth; }
 function getSceneHeight (id) { return document.getElementById(id).clientHeight; }
 function getSceneX (id) 	 { return document.getElementById(id).getBoundingClientRect().left; }
 function getSceneY (id) 	 { return document.getElementById(id).getBoundingClientRect().top; }
-function testadd (a, b) 	 { return a+b; }
+function getDocWidth (id) 	 { return document.body.clientWidth; }
+function getDocHeight (id) 	 { return document.body.clientHeight; }
+
+function updateCommon (scene, id, x, y, w, h) 	 { 
+	let elt = document.getElementById(scene).getElementById(id);
+	elt.style.width = w + "px";
+	elt.style.height = h + "px";
+	elt.style.left = x + "px";
+	elt.style.top = y + "px";
+}
+
+function newDiv (parent, id, name) { 
+	let elt = document.getElementById(parent);
+	elt.setAttribute = name;
+}
 
 
 //----------------------------------------------------------------------------
@@ -30,11 +44,14 @@ class INScoreGlue {
 		this.fInscore.start(0,0,0);
 		this.fTimeTask = setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
 		let divs = document.getElementsByClassName("inscore");
+// console.log("JS INScoreGlue::initialize inscore " + divs.length)
 		for (let i=0; i<divs.length; i++)
 			this.initDiv (divs[i], false);
 		divs = document.getElementsByClassName("inscore2");
+// console.log("JS INScoreGlue::initialize inscore2 " + divs.length)
 		for (let i=0; i<divs.length; i++)
 			this.initDiv (divs[i], true);
+// 		console.log("JS INScoreGlue::initialize doc size " + document.body.clientWidth + " " + document.body.clientHeight )
 	}
     
     //------------------------------------------------------------------------

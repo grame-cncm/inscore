@@ -49,7 +49,7 @@ class HTMLObjectView :  public VObjectView
 	HTMLObjectView* fParent;
 
 	public :
-				  HTMLObjectView(HTMLObjectView* parent=0) : fParent(parent) {}
+				  HTMLObjectView(HTMLObjectView* parent=0);
 		virtual ~HTMLObjectView()  {}
 		
 		virtual void updateView(IObject * object);

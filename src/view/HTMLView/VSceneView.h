@@ -28,6 +28,7 @@
 #include <string>
 
 #include "HTMLObjectView.h"
+#include "TRect.h"
 
 namespace inscore
 {
@@ -45,6 +46,8 @@ class IScene;
 */
 class VSceneView : public HTMLObjectView
 {
+	TIntSize fDocSize;
+	
 	public :
 		using VObjectView::updateView;
 

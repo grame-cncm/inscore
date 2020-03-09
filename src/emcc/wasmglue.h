@@ -31,10 +31,9 @@
 namespace inscore
 {
 
-void testjscall(const char* msg);
-void usediv(const char *div);
-int  getdiv(const char *div);
-
 TIntSize divGetSize (const char *div);
-void testAdd (int a, int b);
+TIntSize docGetSize ();
+
+void updateCommon (const char *div, int x, int y, int w, int h);
+
 }

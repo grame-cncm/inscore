@@ -36,42 +36,25 @@ using namespace std;
 namespace inscore
 {
 
-void testjscall(const char *msg) {
-	EM_ASM( {
-	  console.log ('testjscall says ' + Module.UTF8ToString($0));
-	  document.getElementById(Module.UTF8ToString($0)).style.background = "lightblue";
-	}, msg);
+void updateCommon (const char *div, int x, int y, int w, int h)
+{
+	EM_ASM( { updateCommon(Module.UTF8ToString($0), x, y, w, h);},
+		div, x, y, w, h);
 }
 
-void usediv(const char *div) {
-	EM_ASM( {
-	  getScene(Module.UTF8ToString($0)).style.color = "red";
-	}, div);
-}
-
-int  getdiv(const char *id) {
-	int div = EM_ASM_INT( {
-		  return getScene(Module.UTF8ToString($0));
-		}, id);
-	return div;
-}
 
 TIntSize divGetSize (const char *div)
 {
-	int w = EM_ASM_INT( {
-		  return getSceneWidth(Module.UTF8ToString($0));
-		}, div);
-	int h = EM_ASM_INT( {
-		  return getSceneHeight(Module.UTF8ToString($0));
-		}, div);
+	int w = EM_ASM_INT( { return getSceneWidth(Module.UTF8ToString($0));}, div);
+	int h = EM_ASM_INT( { return getSceneHeight(Module.UTF8ToString($0));}, div);
 	return TIntSize(w, h);
 }
 
-void testAdd (int a, int b) {
-	int n = EM_ASM_INT( {
-		  return testadd($0, $1);
-		}, a, b);
-cout << "test add: " << a << " + " << b << " => " << n << endl;
+TIntSize docGetSize ()
+{
+	int w = EM_ASM_INT( return getDocWidth(); );
+	int h = EM_ASM_INT( return getDocHeight(); );
+	return TIntSize(w, h);
 }
 
 }

@@ -29,6 +29,10 @@
 #include "IColor.h"
 #include "INScore.h"
 
+#ifdef EMCC
+#include "wasmglue.h"
+#endif
+
 using namespace std;
 
 namespace inscore
@@ -37,6 +41,10 @@ namespace inscore
 //------------------------------------------------------------------------------------------------------------------------
 VSceneView::VSceneView()
 {
+	#ifdef EMCC
+	fDocSize = docGetSize();
+	#endif
+
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -47,7 +55,7 @@ VSceneView::~VSceneView()
 //------------------------------------------------------------------------------------------------------------------------
 TFloatRect VSceneView::referenceRect(VObjectContext item) const
 {
-	return TFloatRect( TFloatPoint(-1,-1), TFloatPoint(1,1));
+	return TFloatRect( TFloatPoint(0,fDocSize.width()), TFloatPoint(0,fDocSize.height()));
 }
 
 //------------------------------------------------------------------------------------------------------------------------

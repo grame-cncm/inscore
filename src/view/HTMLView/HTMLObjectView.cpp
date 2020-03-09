@@ -27,6 +27,9 @@
 
 #include "IObject.h"
 #include "HTMLObjectView.h"
+#ifdef EMCC
+#include "wasmglue.h"
+#endif
 
 namespace inscore
 {
@@ -37,7 +40,21 @@ namespace inscore
 */
 
 //--------------------------------------------------------------------------
-void HTMLObjectView::updateView(IObject * object)	{}
+HTMLObjectView::HTMLObjectView(HTMLObjectView* parent) : fParent(parent) {
+
+}
+
+//--------------------------------------------------------------------------
+void HTMLObjectView::updateView(IObject * object)
+{
+#ifdef EMCC
+	int x = int(object->getXPos());
+	int y = int(object->getYPos());
+	int w = int(object->getWidth());
+	int h = int(object->getHeight());
+//	updateCommon (object->name(), x, y, w, h);
+#endif
+}
 
 //--------------------------------------------------------------------------
 void HTMLObjectView::setEffect (const IEffect* effect )	{}
