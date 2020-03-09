@@ -27,7 +27,7 @@
 
 #include <string>
 
-#include "VObjectView.h"
+#include "HTMLObjectView.h"
 
 namespace inscore
 {
@@ -43,7 +43,7 @@ class IScene;
 /**
 *	\brief a graphic view of a IScene.
 */
-class VSceneView : public VObjectView
+class VSceneView : public HTMLObjectView
 {
 	public :
 		using VObjectView::updateView;

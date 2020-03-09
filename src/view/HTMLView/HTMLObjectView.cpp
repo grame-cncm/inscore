@@ -26,7 +26,7 @@
 #include <iostream>
 
 #include "IObject.h"
-#include "SVGObjectView.h"
+#include "HTMLObjectView.h"
 
 namespace inscore
 {
@@ -35,6 +35,15 @@ namespace inscore
 \addtogroup ITLView 
 @{
 */
+
+//--------------------------------------------------------------------------
+void HTMLObjectView::updateView(IObject * object)	{}
+
+//--------------------------------------------------------------------------
+void HTMLObjectView::setEffect (const IEffect* effect )	{}
+
+//--------------------------------------------------------------------------
+TFloatRect HTMLObjectView::referenceRect(VObjectContext item) const { return TFloatRect(TFloatPoint(-1,-1), TFloatPoint(1,1)); };
 
 
 /*!@} */

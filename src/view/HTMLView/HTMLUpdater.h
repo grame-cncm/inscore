@@ -42,38 +42,38 @@ namespace inscore
 /*!
 	\brief A class intended to update the view
 */
-class inscore_export VoidUpdater : public Updater
+class inscore_export HTMLUpdater : public Updater
 {
 	protected:
-				 VoidUpdater() {}
-		virtual ~VoidUpdater() {}
+				 HTMLUpdater() {}
+		virtual ~HTMLUpdater() {}
 
 	public:		
 		virtual void update (IObject*);
-		virtual const char* name()	{ return "VoidUpdater"; }
+		virtual const char* name()	{ return "HTMLUpdater"; }
 };
-typedef class libmapping::SMARTP<VoidUpdater>	SVoidUpdater;
+typedef class libmapping::SMARTP<HTMLUpdater>	SHTMLUpdater;
 
 
-class inscore_export VoidViewUpdater : public VoidUpdater {
+class inscore_export HTMLViewUpdater : public HTMLUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
-		virtual const char* name()	{ return "VoidViewUpdater"; }
-	static libmapping::SMARTP<VoidViewUpdater> create()	{ return new VoidViewUpdater(); }
+		virtual const char* name()	{ return "HTMLViewUpdater"; }
+	static libmapping::SMARTP<HTMLViewUpdater> create()	{ return new HTMLViewUpdater(); }
 };
 
-class inscore_export VoidLocalMapUpdater : public VoidUpdater {
+class inscore_export HTMLLocalMapUpdater : public HTMLUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
-		virtual const char* name()	{ return "VoidLocalMapUpdater"; }
-	static libmapping::SMARTP<VoidLocalMapUpdater> create()	{ return new VoidLocalMapUpdater(); }
+		virtual const char* name()	{ return "LocalMapUpdater"; }
+	static libmapping::SMARTP<HTMLLocalMapUpdater> create()	{ return new HTMLLocalMapUpdater(); }
 };
 
-class inscore_export VoidSlaveMapUpdater : public VoidUpdater {
+class inscore_export HTMLSlaveMapUpdater : public HTMLUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
-		virtual const char* name()	{ return "VoidSlaveMapUpdater"; }
-	static libmapping::SMARTP<VoidSlaveMapUpdater> create()	{ return new VoidSlaveMapUpdater(); }
+		virtual const char* name()	{ return "HTMLSlaveMapUpdater"; }
+	static libmapping::SMARTP<HTMLSlaveMapUpdater> create()	{ return new HTMLSlaveMapUpdater(); }
 };
 
 

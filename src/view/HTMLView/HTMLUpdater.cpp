@@ -24,7 +24,7 @@
 */
 
 
-#include "VoidUpdater.h"
+#include "HTMLUpdater.h"
 #include "IObject.h"
 #include "VObjectView.h"
 #include "ISync.h"
@@ -36,7 +36,7 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-void VoidUpdater::update (IObject* object)
+void HTMLUpdater::update (IObject* object)
 {
 	if (needupdate (object)) {
 		VObjectView* view = object->getView();
@@ -46,29 +46,26 @@ void VoidUpdater::update (IObject* object)
 		}
 	}
 	if (object->getState() & IObject::kSubModified) {
-		IObject::subnodes::const_iterator i = object->elements().begin();
-		while (i != object->elements().end()) {
-			update (*i);
-			i++;
-		}
+		for (auto elt: object->elements())
+			update (elt);
 	}
 }
 
 //--------------------------------------------------------------------------
-bool VoidViewUpdater::needupdate (IObject* o)
+bool HTMLViewUpdater::needupdate (IObject* o)
 {
 	int state = o->getState();
 	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
 }
 
 //--------------------------------------------------------------------------
-bool VoidLocalMapUpdater::needupdate (IObject* o)
+bool HTMLLocalMapUpdater::needupdate (IObject* o)
 {
 	return ( o->fAutoMap && o->durationModified()) || o->localMapModified() || o->newData();
 }
 
 //--------------------------------------------------------------------------
-bool VoidSlaveMapUpdater::needupdate (IObject* o)
+bool HTMLSlaveMapUpdater::needupdate (IObject* o)
 {
 	return true;
 

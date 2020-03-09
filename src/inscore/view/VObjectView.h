@@ -52,8 +52,10 @@ class IEffect;
 */
 class VObjectView
 {
+	VObjectView* fParent;
+
 	public :
-		virtual ~VObjectView()	{}
+		virtual ~VObjectView() {}
 
 		virtual void updateView(IObject * object)			{}
 		virtual void updateObjectSize( IObject * object )	{}

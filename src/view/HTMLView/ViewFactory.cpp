@@ -26,7 +26,7 @@
 
 #include "IModel.h"
 #include "VApplView.h"
-#include "SVGObjectView.h"
+#include "HTMLObjectView.h"
 #include "ViewFactory.h"
 #include "VSceneView.h"
 #ifdef EMCC
@@ -48,7 +48,7 @@
 //#include "VObjectView.h"
 //#include "VPianoRollView.h"
 //#include "VPolygonView.h"
-//#include "VRectView.h"
+#include "VRectView.h"
 //#include "VSVGView.h"
 //#include "VTextView.h"
 //#include "VUrlIntermediateObjectView.h"
@@ -100,7 +100,7 @@ VSceneView* ViewFactory::create(const IScene* obj)
 	const char* id = obj->name().c_str();
 //	usediv (id);
 	TIntSize size = divGetSize(id);
-cout << "ViewFactory::create scene size: " << size << endl;
+cout << "ViewFactory::create scene " << id << " size: " << size << endl;
 //	testAdd (10, 2);
 //	int div = getdiv (id);
 //	cout << "ViewFactory::create scene div: " << div << endl;
@@ -112,7 +112,8 @@ cout << "ViewFactory::create scene size: " << size << endl;
 
 VObjectView* ViewFactory::create(const IAppl* )						{ return new VApplView (); }
 
-VObjectView* ViewFactory::create(const IObject* obj, ViewContext scene)	{ return new SVGObjectView(); }
+VObjectView* ViewFactory::create(const IObject* obj, HTMLObjectView* parent)	{ return new HTMLObjectView(parent); }
+
+VObjectView* ViewFactory::create(const IRect* object, HTMLObjectView* parent)  { return new VRectView(parent, object); }
 
 }
-

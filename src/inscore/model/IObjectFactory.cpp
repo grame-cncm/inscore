@@ -67,7 +67,7 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
             view->setParentItem(parent->getView()?parent->getView():0);
         // and finally we set the view to the object
 		obj->setView (view);
-#elif defined (SVGVIEW)
+#elif defined (HTMLVIEW)
 		obj->setView ( ViewFactory::create(obj, 0));
 #elif defined (NOVIEW)
 		obj->setView ( ViewFactory::create(obj));
@@ -113,7 +113,7 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 	}
 	return obj->getView() ? obj : 0;
 }
-#elif SVGVIEW
+#elif HTMLVIEW
 template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 {
 	SIScene obj = IScene::create(name, parent);

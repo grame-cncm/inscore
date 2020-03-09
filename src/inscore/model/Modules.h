@@ -26,7 +26,7 @@
 
 #pragma once
 
-#if defined(MODELONLY) || defined(NOVIEW) || defined(SVGVIEW)
+#if defined(MODELONLY) || defined(NOVIEW) || defined(HTMLVIEW)
 # define INCLUDEFaust			false
 # define INCLUDEFileWatcher		false
 # define INCLUDEGestureFollower	false
@@ -48,6 +48,12 @@
 # define QTView					true
 #endif
 
+#ifdef NO_OSCSTREAM
+# define HASOSCStream			false
+# else
+# define HASOSCStream			true
+#endif
+
 #if QTView
 # define HASQGuidoImporter		true
 # define HASFileDownloader		true
@@ -58,14 +64,16 @@ typedef QGraphicsScene*		ViewContext;
 class QGraphicsItem;
 typedef QGraphicsItem*		VObjectContext;
 
+#elif HTMLVIEW
+# define HASQGuidoImporter	false
+# define HASFileDownloader	false
+class SVGObjectView;
+typedef SVGObjectView*		ViewContext;
+typedef SVGObjectView*		VObjectContext;
+
 #else
-# define HASQGuidoImporter		false
-# define HASFileDownloader		false
-#ifdef NO_OSCSTREAM
-# define HASOSCStream			false
-# else
-# define HASOSCStream			true
-#endif
+# define HASQGuidoImporter	false
+# define HASFileDownloader	false
 typedef void*				ViewContext;
 typedef void*				VObjectContext;
 #endif

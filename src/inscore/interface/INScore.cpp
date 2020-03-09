@@ -41,8 +41,8 @@
 #if defined(NOVIEW) || defined(MODELONLY)
 # include "VoidUpdater.h"
 
-#elif defined(SVGVIEW)
-# include "VoidUpdater.h"
+#elif defined(HTMLVIEW)
+# include "HTMLUpdater.h"
 
 #elif defined(__MOBILE__)
 #  include "VMobileQtInit.h"
@@ -94,9 +94,9 @@ INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplic
 #if defined(NOVIEW)
 	glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
 	glue->setViewUpdater	(VoidViewUpdater::create() );
-#elif defined(SVGVIEW)
-	glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
-	glue->setViewUpdater	(VoidViewUpdater::create() );
+#elif defined(HTMLVIEW)
+	glue->setLocalMapUpdater(HTMLLocalMapUpdater::create() );
+	glue->setViewUpdater	(HTMLViewUpdater::create() );
 #elif defined(MODELONLY)
 		glue->setLocalMapUpdater( 0 );
 		glue->setViewUpdater	( 0 );

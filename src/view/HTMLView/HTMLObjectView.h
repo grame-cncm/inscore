@@ -42,22 +42,22 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 /**
-*	\brief the SVG graphic view of an IObject.
+*	\brief the HTML graphic view of an IObject.
 */
-class SVGObjectView :  public VObjectView
+class HTMLObjectView :  public VObjectView
 {
+	HTMLObjectView* fParent;
+
 	public :
-				 SVGObjectView()  {}
-		virtual ~SVGObjectView()  {}
+				  HTMLObjectView(HTMLObjectView* parent=0) : fParent(parent) {}
+		virtual ~HTMLObjectView()  {}
 		
-		virtual void updateView(IObject * object)	{ std::cout << "SVGObjectView::updateView " << object->name() << std::endl; }
+		virtual void updateView(IObject * object);
+		virtual void updateObjectSize( IObject *  )		{} // default do nothing
+		virtual void setParentItem( VObjectView* obj )	{ fParent = dynamic_cast<HTMLObjectView*>(obj); }
+		virtual void setEffect (const IEffect* effect );
 
-		virtual void updateObjectSize( IObject *  )	{}
-		virtual void setParentItem( VObjectView*  )	{}
-
-		virtual void setEffect (const IEffect* effect )	{}
-
-		virtual TFloatRect referenceRect(VObjectContext item) const { return TFloatRect(TFloatPoint(-1,-1), TFloatPoint(1,1)); };
+		virtual TFloatRect referenceRect(VObjectContext item) const;
 };
 
 /*!@} */
