@@ -175,7 +175,7 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fCompatibilityVersionNum = fVersionNum;
 	fStartTime = TWallClock::time();
 
-	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
+	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::helloMsg);
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
 	fMsgHandlerMap[kpreprocess_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::preProcessMsg);
@@ -467,19 +467,27 @@ void IAppl::error () const
 SIMessage IAppl::hello()	const
 {
 	SIMessage msg = IMessage::create (getOSCAddress());
+#if HASOSCStream
 	*msg << getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
+#else
+	*msg << "running" <<  "without" << "OSC" << "support";
+#endif
 	return msg;
 }
 
 //--------------------------------------------------------------------------
-void IAppl::helloMsg() const
+void IAppl::helloMsg()
 {
 	SIMessage msg = hello();
 #if HASOSCStream
 	msg->print(oscout);
-#else
-	msg->print(cout);
 #endif
+	IApplLog* log = getLogWindow();
+	if (log && log->acceptMsgs()) {
+		stringstream sstr;
+		sstr <<  msg;			// and print it to the string stream
+		log->print (sstr.str().c_str());
+	}
 }
 
 //--------------------------------------------------------------------------

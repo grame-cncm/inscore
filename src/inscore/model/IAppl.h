@@ -246,7 +246,7 @@ class IAppl : public IObject, public TILoader
 		virtual		SIMessageList getAll () const;
 
 		SIMessage	hello() const;
-		void		helloMsg() const;
+		void		helloMsg();
 //		void		activate() const;
 		std::string	guidoversion() const;
 		std::string	musicxmlversion() const;
