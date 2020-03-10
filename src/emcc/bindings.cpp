@@ -28,6 +28,7 @@
 
 #include "INScoreAdapter.h"
 #include "INScoreGlue.h"
+#include "IObjectAdapter.h"
 
 using namespace emscripten;
 
@@ -38,6 +39,26 @@ using namespace emscripten;
 
 using namespace inscore;
 EMSCRIPTEN_BINDINGS(EngineAdapter) {
+
+	class_<IObjectAdapter>("IObjectAdapter")
+		.constructor<>()
+//		.constructor<const SIObject&>()
+//		.constructor<int>()
+
+		.function("create", 		&IObjectAdapter::create, allow_raw_pointers())
+
+		.function("getXPos", 		&IObjectAdapter::getXPos)
+		.function("getYPos", 		&IObjectAdapter::getYPos)
+		.function("getWidth", 		&IObjectAdapter::getWidth)
+		.function("getHeight", 		&IObjectAdapter::getHeight)
+		.function("getScale", 		&IObjectAdapter::getScale)
+		.function("getVisible", 	&IObjectAdapter::getVisible)
+		.function("getXOrigin", 	&IObjectAdapter::getXOrigin)
+		.function("getYOrigin", 	&IObjectAdapter::getYOrigin)
+		.function("getRotateX", 	&IObjectAdapter::getRotateX)
+		.function("getRotateY", 	&IObjectAdapter::getRotateY)
+		.function("getRotateZ", 	&IObjectAdapter::getRotateZ);
+
 
 	// Binding C++ class adapter for INScore
 	class_<INScoreAdapter>("INScoreAdapter")
