@@ -113,8 +113,10 @@ class inscore_export Message
 		\return false when type doesn't matches
 	*/
 	virtual bool	param(int i, std::string& val) const = 0;
-	
+
+#ifndef EMCC
 	protected:
+#endif
 		virtual ~Message() {}
 	
 };
