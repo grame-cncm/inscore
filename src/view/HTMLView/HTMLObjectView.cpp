@@ -28,8 +28,11 @@
 #include "IObject.h"
 #include "HTMLObjectView.h"
 #ifdef EMCC
+#include <emscripten.h>
 #include "wasmglue.h"
 #endif
+
+using namespace std;
 
 namespace inscore
 {
@@ -40,19 +43,19 @@ namespace inscore
 */
 
 //--------------------------------------------------------------------------
-HTMLObjectView::HTMLObjectView(HTMLObjectView* parent) : fParent(parent) {
-
+HTMLObjectView::HTMLObjectView(int id, HTMLObjectView* parent) :
+	fParent(parent), fID (id)
+{
 }
 
 //--------------------------------------------------------------------------
 void HTMLObjectView::updateView(IObject * object)
 {
 #ifdef EMCC
-	int x = int(object->getXPos());
-	int y = int(object->getYPos());
-	int w = int(object->getWidth());
-	int h = int(object->getHeight());
-//	updateCommon (object->name(), x, y, w, h);
+	int id = getID();
+	int oid = int((void*)object);
+cout << "HTMLObjectView::updateView " << (void*)object << " oid: " << oid << endl;
+	EM_ASM( { JSObjectView.updateView($0, $1);}, id, oid);
 #endif
 }
 

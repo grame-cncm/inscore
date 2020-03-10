@@ -30,6 +30,7 @@
 #include "ViewFactory.h"
 #include "VSceneView.h"
 #ifdef EMCC
+#include <emscripten.h>
 #include "wasmglue.h"
 #endif
 
@@ -48,7 +49,7 @@
 //#include "VObjectView.h"
 //#include "VPianoRollView.h"
 //#include "VPolygonView.h"
-#include "VRectView.h"
+//#include "VRectView.h"
 //#include "VSVGView.h"
 //#include "VTextView.h"
 //#include "VUrlIntermediateObjectView.h"
@@ -59,61 +60,66 @@ using namespace std;
 namespace inscore
 {
 
+#ifdef EMCC
+int JSSceneCreate (const char* id) {
+	return EM_ASM_INT( { return ViewFactory.createScene(Module.UTF8ToString($0));}, id);
+}
+int JSObjectCreate (int parent, const char* type) {
+	return EM_ASM_INT( { return ViewFactory.create($0, Module.UTF8ToString($1));}, parent, type);
+}
+#define JSVIEWCREATE(id)	EM_ASM_INT( { return ViewFactory.create(Module.UTF8ToString($0));}, id);
+#else
+int JSSceneCreate  (const char* id) 				{ return 0; }
+int JSObjectCreate (int parent, const char* type)	{ return 0; }
+#define JSVIEWCREATE(id)	0;
+#endif
+
 //--------------------------------------------------------------------------
-//VObjectView*	ViewFactory::create (const IArc* object,		ViewContext scene)		{ return new VArcView (scene, object); }
-//VObjectView*	ViewFactory::create (const IAudio* object,		ViewContext scene)		{ return new VAudioView (scene, object); }
-//VObjectView*	ViewFactory::create (const ICurve* object,		ViewContext scene)		{ return new VCurveView (scene, object); }
-//VObjectView*	ViewFactory::create (const IEllipse* object,	ViewContext scene)		{ return new VEllipseView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGestureFollower* object,  ViewContext scene){ return new VGestureFollowerView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGraphicSignal* object,  ViewContext scene)	{ return new VGraphView (scene, object); }
-//VObjectView*	ViewFactory::create (const ISGraphicSignal* object, ViewContext scene)	{ return new VSGraphView (scene, object); }
-//VObjectView*	ViewFactory::create (const IRGraphicSignal* object, ViewContext scene)	{ return new VRGraphView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGuidoCode* object,	ViewContext scene)		{ return new VGuidoItemView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGuidoPianoRoll* object,	ViewContext scene)	{ return new VPianoRollView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* object, ViewContext scene) { return new VPianoRollView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGuidoFile* object,	ViewContext scene)		{ return new VGuidoItemView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGuidoPianoRollFile* object,	ViewContext scene) { return new VPianoRollView (scene, object); }
-//VObjectView*	ViewFactory::create (const IMusicXMLCode* object, ViewContext scene)	{ return new VGuidoItemView (scene, object); }
-//VObjectView*	ViewFactory::create (const IMusicXMLFile* object, ViewContext scene)	{ return new VGuidoItemView (scene, object); }
-//VObjectView*	ViewFactory::create (const IHtml* object,		ViewContext scene)		{ return new VTextView (scene, object); }
-//VObjectView*	ViewFactory::create (const IHtmlFile* object,	ViewContext scene)		{ return new VTextView (scene, object); }
-//VObjectView*	ViewFactory::create (const IHttpd* object,		ViewContext scene)		{ return new VHttpdView (scene, object); }
-//VObjectView*	ViewFactory::create (const IImage* object,		ViewContext scene)		{ return new VImageView (scene, object); }
-//VObjectView*	ViewFactory::create (const IMemImage* object,	ViewContext scene)		{ return new VImageView (scene, object); }
-//VObjectView*	ViewFactory::create (const ILine* object,		ViewContext scene)		{ return new VLineView (scene, object); }
-//VObjectView*	ViewFactory::create (const IPolygon* object,	ViewContext scene)		{ return new VPolygonView (scene, object); }
-//VObjectView*	ViewFactory::create (const IGrid* object,		ViewContext scene)		{ return new VGridView (scene, object); }
-//VObjectView*	ViewFactory::create (const IRect* object,		ViewContext scene)		{ return new VRectView (scene, object); }
-//VObjectView*	ViewFactory::create (const ISVG* object,		ViewContext scene)		{ return new VSVGView (scene, object); }
-//VObjectView*	ViewFactory::create (const ISVGFile* object,	ViewContext scene)		{ return new VSVGView (scene, object); }
-//VObjectView*	ViewFactory::create (const IText* object,		ViewContext scene)		{ return new VTextView (scene, object); }
-//VObjectView*	ViewFactory::create (const ITextFile* object,	ViewContext scene)		{ return new VTextView (scene, object); }
-//VObjectView*	ViewFactory::create (const IVideo* object,		ViewContext scene)		{ return new VVideoView (scene, object); }
-//VObjectView*    ViewFactory::create (const ILayer* object,      ViewContext scene)      { return new VLayerView (scene, object);}
+VObjectView*	ViewFactory::create (const IObject* obj, HTMLObjectView* parent)
+{
+	int id = JSObjectCreate(parent->getID(), obj->getTypeString().c_str());
+	cout << "ViewFactory::create object " << obj->name() << " div id: " << id  << " parent: " << (void*)parent << endl;
+	return new HTMLObjectView (id, parent);
+}
+
+//VObjectView*	ViewFactory::create (const IArc* obj,		HTMLObjectView* parent)		{ return new HTMLObjectView (JSObjectCreate(parent->getID(), obj->getTypeString()), parent); }
+//VObjectView*	ViewFactory::create (const IAudio* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const ICurve* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IEllipse* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IGraphicSignal* obj,  HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const ISGraphicSignal* obj, HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IRGraphicSignal* obj, HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IGuidoCode* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IGuidoPianoRoll* obj, HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* obj, HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IGuidoFile* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IGuidoPianoRollFile* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IMusicXMLCode* obj,HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IMusicXMLFile* obj,HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IHtml* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IHtmlFile* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IImage* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IMemImage* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const ILine* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IPolygon* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IGrid* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const ILayer* obj,     HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IRect* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const ISVG* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const ISVGFile* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IText* obj,		HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const ITextFile* obj,	HTMLObjectView* parent);
+//VObjectView*	ViewFactory::create (const IVideo* obj,		HTMLObjectView* parent);
 
 //--------------------------------------------------------------------------
 VSceneView* ViewFactory::create(const IScene* obj)
 {
-	VSceneView * scene = new VSceneView ();
-
-#ifdef EMCC
-	const char* id = obj->name().c_str();
-//	usediv (id);
-	TIntSize size = divGetSize(id);
-cout << "ViewFactory::create scene " << id << " size: " << size << endl;
-//	testAdd (10, 2);
-//	int div = getdiv (id);
-//	cout << "ViewFactory::create scene div: " << div << endl;
-
-#endif
-//    scene->initializeView(obj->getOSCAddress(), new QGraphicsScene);
-	return scene;
+	const char* name = obj->name().c_str();
+	int id = JSSceneCreate(name);
+	cout << "ViewFactory::create scene " << name << " div id: " << id << endl;
+	return new VSceneView (id);
 }
 
 VObjectView* ViewFactory::create(const IAppl* )						{ return new VApplView (); }
-
-VObjectView* ViewFactory::create(const IObject* obj, HTMLObjectView* parent)	{ return new HTMLObjectView(parent); }
-
-VObjectView* ViewFactory::create(const IRect* object, HTMLObjectView* parent)  { return new VRectView(parent, object); }
 
 }

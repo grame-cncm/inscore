@@ -32,7 +32,7 @@
 namespace inscore
 {
 
-class Message {};
+class Message;
 typedef Message* MessagePtr;
 
 //--------------------------------------------------------------------------

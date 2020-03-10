@@ -68,7 +68,7 @@ template<typename T> SIObject _create(const std::string& name , IObject* parent)
         // and finally we set the view to the object
 		obj->setView (view);
 #elif defined (HTMLVIEW)
-		obj->setView ( ViewFactory::create(obj, 0));
+		obj->setView ( ViewFactory::create(obj, (HTMLObjectView*)parent->getView()));
 #elif defined (NOVIEW)
 		obj->setView ( ViewFactory::create(obj));
 #endif

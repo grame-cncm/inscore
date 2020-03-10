@@ -41,7 +41,7 @@ void HTMLUpdater::update (IObject* object)
 	if (needupdate (object)) {
 		VObjectView* view = object->getView();
 		if (view) {
-			cout << name() << ": ";
+//			cout << name() << ": ";
 			view->updateView(object);
 		}
 	}

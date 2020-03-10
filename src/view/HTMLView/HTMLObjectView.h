@@ -47,11 +47,15 @@ namespace inscore
 class HTMLObjectView :  public VObjectView
 {
 	HTMLObjectView* fParent;
+	int fID = 0;
 
 	public :
-				  HTMLObjectView(HTMLObjectView* parent=0);
+				  HTMLObjectView(int id, HTMLObjectView* parent=0);
 		virtual ~HTMLObjectView()  {}
 		
+		int getID() const			{ return fID; }
+		int parentID() const		{ return fParent ? fParent->getID() : 0; }
+
 		virtual void updateView(IObject * object);
 		virtual void updateObjectSize( IObject *  )		{} // default do nothing
 		virtual void setParentItem( VObjectView* obj )	{ fParent = dynamic_cast<HTMLObjectView*>(obj); }

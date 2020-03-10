@@ -51,7 +51,7 @@ class VSceneView : public HTMLObjectView
 	public :
 		using VObjectView::updateView;
 
-				 VSceneView();
+				 VSceneView(int id);
 		virtual ~VSceneView();
 
 		virtual TFloatRect referenceRect(VObjectContext item) const;
