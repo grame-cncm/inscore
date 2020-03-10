@@ -141,7 +141,7 @@ console.log("doc url: " + document.URL);
 	
 	postMessage (reader : FileReader, targetScene: string, name: string, type: string) : TLoadEndHandler { 
 		return () => {
-			let data: string = reader.result;
+			let data: string = reader.result.toString();
 			INScore.postMessage("/ITL/"+ targetScene + "/" + name, ["set", type, data]);
 		}
 	}	

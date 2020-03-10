@@ -73,7 +73,7 @@ class TILoader {
 
    protected _process(reader : FileReader, client: IObject) : TLoadEndHandler { 
    		return () => {
-       		let data: string = reader.result;
+       		let data: string = reader.result.toString();
    			this.process(data, client); 
    		}
    	}
