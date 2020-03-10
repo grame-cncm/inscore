@@ -39,7 +39,10 @@ class INScore {
     moduleInit ( module ) {
         this.fInscore 		= new module.INScoreAdapter();
         this.fJSGlue 		= new module.INScoreJSGlue();
+        INScore.fObjects	= new module.IObjectAdapter();;
     }
+    
+     static objects()		{ return INScore.fObjects; }
         
     //------------------------------------------------------------------------
     // INScore interface
@@ -77,7 +80,7 @@ class INScore {
 	timeTask ()				{ this.fInscoreGlue.timeTask(); }
 	sorterTask()			{ this.fInscoreGlue.sorterTask(); } 
  }
-
+INScore.fObjects = 0;
 
 if ((typeof process !== 'undefined') && (process.release.name === 'node')) {
     module.exports = INScore;
