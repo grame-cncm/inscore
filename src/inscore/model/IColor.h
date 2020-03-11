@@ -85,7 +85,10 @@ class IColor
 		MsgHandler::msgStatus dhsvMsg (const IMessage* msg);
 
 		template <typename T> void print (T& out)	const { out << fR << fG << fB << fA; }
-		
+
+	
+		bool modified() const	{ return fModified; }
+
 		int getR() const { return fR; }
 		int getG() const { return fG; }
 		int getB() const { return fB; }
