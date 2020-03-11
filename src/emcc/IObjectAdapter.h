@@ -25,16 +25,17 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 #include "IObject.h"
-#include "INScoreGlue.h"
+
 
 namespace inscore
 {
 
-
 //--------------------------------------------------------------------------
-/*! \brief the main library interface for emcc
+/*! \brief the interface for iobjects
 */
 class inscore_export IObjectAdapter
 {
@@ -46,27 +47,38 @@ class inscore_export IObjectAdapter
 				 IObjectAdapter(const SIObject& object) : fObject(object) {}
 		virtual ~IObjectAdapter() {}
 		
-		float	getXPos () const			{ return fObject->getXPos(); }
-		float	getYPos () const			{ return fObject->getYPos(); }
-		float	getXOrigin () const			{ return fObject->getXOrigin(); }
-		float	getYOrigin () const			{ return fObject->getYOrigin(); }
-		float	getZOrder() const			{ return fObject->getZOrder(); }
-		float	getScale () const			{ return fObject->getScale(); }
+		float		getXPos () const			{ return fObject->getXPos(); }
+		float		getYPos () const			{ return fObject->getYPos(); }
+		float		getXOrigin () const			{ return fObject->getXOrigin(); }
+		float		getYOrigin () const			{ return fObject->getYOrigin(); }
+		float		getZOrder() const			{ return fObject->getZOrder(); }
+		float		getScale () const			{ return fObject->getScale(); }
 		TFloatPoint	getPos() const			{ return fObject->getPos(); }
-		float	getRotateX() const			{ return fObject->getRotateX(); }
-		float	getRotateY() const			{ return fObject->getRotateY(); }
-		float	getRotateZ() const			{ return fObject->getRotateZ(); }
-		float	getWidth() const			{ return fObject->getWidth(); }
-		float	getHeight() const			{ return fObject->getHeight(); }
-		TFloatSize getDimension() const		{ return fObject->getDimension(); }
-		TFloatSize getShear() const			{ return fObject->getShear(); }
-		bool	getVisible () const			{ return fObject->getVisible(); }
+		float		getRotateX() const			{ return fObject->getRotateX(); }
+		float		getRotateY() const			{ return fObject->getRotateY(); }
+		float		getRotateZ() const			{ return fObject->getRotateZ(); }
+		float		getWidth() const			{ return fObject->getWidth(); }
+		float		getHeight() const			{ return fObject->getHeight(); }
+		TFloatSize	getDimension() const		{ return fObject->getDimension(); }
+		TFloatSize	getShear() const			{ return fObject->getShear(); }
+		bool		getVisible () const			{ return fObject->getVisible(); }
+		std::string getColor () const			{
+			std::stringstream sstr;
+			sstr << "#" << std::setfill('0') << std::hex << std::setw(2) << fObject->getR() << std::setw(2) << fObject->getG() << std::setw(2) << fObject->getB();
+			return sstr.str();
+		
+		}
+		float		getAlpha() const				{ return fObject->getA() / 255.f; }
+		bool		colorChanged () const			{ return ((IColor*)fObject)->modified(); }
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
 
-	IObjectAdapter* create(int id) 	{ IObject* o = (IObject*)id; return new IObjectAdapter(o); }
+		void	updateWidth(float w)		{ IPosition* pos = (IPosition*)fObject; bool modified= pos->modified(); pos->setWidth (w); if (!modified) pos->cleanup(); }
+		void	updateHeight(float h)		{ IPosition* pos = (IPosition*)fObject; bool modified= pos->modified(); pos->setHeight(h); if (!modified) pos->cleanup(); }
 
+	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
+	void 			del(IObjectAdapter* obj) 	{ delete obj; }
 };
 
 }

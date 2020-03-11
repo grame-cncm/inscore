@@ -33,31 +33,109 @@
 using namespace emscripten;
 
 /*
+ * Structure and enum binding.
+ * This structures can be created and manipulated in javascript side like json object and passed to C++ method.
+ */
+EMSCRIPTEN_BINDINGS(CStruct) {
+	
+//	value_object<Guido2MidiParams>("Guido2MidiParams")
+//			.field("fTempo", &Guido2MidiParams::fTempo)
+//			.field("fTicks", &Guido2MidiParams::fTicks)
+//			.field("fChan", &Guido2MidiParams::fChan)
+//			.field("fIntensity", &Guido2MidiParams::fIntensity)
+//			.field("fAccentFactor", &Guido2MidiParams::fAccentFactor)
+//			.field("fMarcatoFactor", &Guido2MidiParams::fMarcatoFactor)
+//			.field("fDFactor", &Guido2MidiParams::fDFactor)
+//			.field("fStaccatoFactor", &Guido2MidiParams::fStaccatoFactor)
+//			.field("fSlurFactor", &Guido2MidiParams::fSlurFactor)
+//			.field("fTenutoFactor", &Guido2MidiParams::fTenutoFactor)
+//			.field("fFermataFactor", &Guido2MidiParams::fFermataFactor);
+//
+//	value_object<GuidoLayoutSettings>("GuidoLayoutSettings")
+//			.field("systemsDistance", &GuidoLayoutSettings::systemsDistance)
+//			.field("systemsDistribution", &GuidoLayoutSettings::systemsDistribution)
+//			.field("systemsDistribLimit", &GuidoLayoutSettings::systemsDistribLimit)
+//			.field("force", &GuidoLayoutSettings::force)
+//			.field("spring", &GuidoLayoutSettings::spring)
+//			.field("neighborhoodSpacing", &GuidoLayoutSettings::neighborhoodSpacing)
+//			.field("optimalPageFill", &GuidoLayoutSettings::optimalPageFill)
+//			.field("resizePage2Music", &GuidoLayoutSettings::resizePage2Music)
+//			.field("proportionalRenderingForceMultiplicator", &GuidoLayoutSettings::proportionalRenderingForceMultiplicator)
+//			.field("checkLyricsCollisions", &GuidoLayoutSettings::checkLyricsCollisions);
+//
+//
+//	enum_<GuidoErrCode>("GuidoErrCode")
+//			.value("guidoNoErr", GuidoErrCode::guidoNoErr)
+//			.value("guidoErrParse", guidoErrParse)
+//			.value("guidoErrMemory", GuidoErrCode::guidoErrMemory)
+//			.value("guidoErrFileAccess", GuidoErrCode::guidoErrFileAccess)
+//			.value("guidoErrUserCancel", GuidoErrCode::guidoErrUserCancel)
+//			.value("guidoErrNoMusicFont", GuidoErrCode::guidoErrNoMusicFont)
+//			.value("guidoErrNoTextFont", GuidoErrCode::guidoErrNoTextFont)
+//			.value("guidoErrBadParameter", GuidoErrCode::guidoErrBadParameter)
+//			.value("guidoErrInvalidHandle", GuidoErrCode::guidoErrInvalidHandle)
+//			.value("guidoErrNotInitialized", GuidoErrCode::guidoErrNotInitialized)
+//			.value("guidoErrActionFailed", GuidoErrCode::guidoErrActionFailed);
+//
+//
+//	// Pitch constants
+//	constant("kCLine", kCLine);
+//	constant("kCSharpLine", kCSharpLine);
+//	constant("kDLine", kDLine);
+//	constant("kDSharpLine", kDSharpLine);
+//	constant("kELine", kELine);
+//	constant("kFLine", kFLine);
+//	constant("kFSharpLine", kFSharpLine);
+//	constant("kGLine", kGLine);
+//	constant("kGSharpLine", kGSharpLine);
+//	constant("kALine", kALine);
+//	constant("kASharpLine", kASharpLine);
+//	constant("kBLine", kBLine);
+//	constant("kAutoLines", kAutoLines);
+//	constant("kNoLine", kNoLine);
+}
+
+
+/*
  * C++ class binding.
  * The javascript interface to inscore classes
  */
-
 using namespace inscore;
 EMSCRIPTEN_BINDINGS(EngineAdapter) {
+	
+	class_<TFloatPoint>("TFloatPoint")
+		.function("x", 			&TFloatPoint::x)
+		.function("y", 			&TFloatPoint::y);
+	
+	class_<TFloatSize>("TFloatSize")
+		.function("width", 		&TFloatSize::width)
+		.function("height", 	&TFloatSize::height);
 
 	class_<IObjectAdapter>("IObjectAdapter")
 		.constructor<>()
-//		.constructor<const SIObject&>()
-//		.constructor<int>()
 
 		.function("create", 		&IObjectAdapter::create, allow_raw_pointers())
+		.function("del", 			&IObjectAdapter::del, allow_raw_pointers())
 
 		.function("getXPos", 		&IObjectAdapter::getXPos)
 		.function("getYPos", 		&IObjectAdapter::getYPos)
 		.function("getWidth", 		&IObjectAdapter::getWidth)
 		.function("getHeight", 		&IObjectAdapter::getHeight)
 		.function("getScale", 		&IObjectAdapter::getScale)
+		.function("getZOrder", 		&IObjectAdapter::getZOrder)
 		.function("getVisible", 	&IObjectAdapter::getVisible)
 		.function("getXOrigin", 	&IObjectAdapter::getXOrigin)
 		.function("getYOrigin", 	&IObjectAdapter::getYOrigin)
 		.function("getRotateX", 	&IObjectAdapter::getRotateX)
 		.function("getRotateY", 	&IObjectAdapter::getRotateY)
-		.function("getRotateZ", 	&IObjectAdapter::getRotateZ);
+		.function("getRotateZ", 	&IObjectAdapter::getRotateZ)
+		.function("getPos", 		&IObjectAdapter::getPos)
+		.function("getColor", 		&IObjectAdapter::getColor, allow_raw_pointers())
+		.function("getAlpha", 		&IObjectAdapter::getAlpha)
+		.function("colorChanged", 	&IObjectAdapter::colorChanged)
+
+		.function("updateWidth", 	&IObjectAdapter::updateWidth)
+		.function("updateHeight", 	&IObjectAdapter::updateHeight);
 
 
 	// Binding C++ class adapter for INScore
