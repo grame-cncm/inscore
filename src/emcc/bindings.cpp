@@ -31,6 +31,7 @@
 #include "IObjectAdapter.h"
 
 using namespace emscripten;
+using namespace inscore;
 
 /*
  * Structure and enum binding.
@@ -51,19 +52,6 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 //			.field("fTenutoFactor", &Guido2MidiParams::fTenutoFactor)
 //			.field("fFermataFactor", &Guido2MidiParams::fFermataFactor);
 //
-//	value_object<GuidoLayoutSettings>("GuidoLayoutSettings")
-//			.field("systemsDistance", &GuidoLayoutSettings::systemsDistance)
-//			.field("systemsDistribution", &GuidoLayoutSettings::systemsDistribution)
-//			.field("systemsDistribLimit", &GuidoLayoutSettings::systemsDistribLimit)
-//			.field("force", &GuidoLayoutSettings::force)
-//			.field("spring", &GuidoLayoutSettings::spring)
-//			.field("neighborhoodSpacing", &GuidoLayoutSettings::neighborhoodSpacing)
-//			.field("optimalPageFill", &GuidoLayoutSettings::optimalPageFill)
-//			.field("resizePage2Music", &GuidoLayoutSettings::resizePage2Music)
-//			.field("proportionalRenderingForceMultiplicator", &GuidoLayoutSettings::proportionalRenderingForceMultiplicator)
-//			.field("checkLyricsCollisions", &GuidoLayoutSettings::checkLyricsCollisions);
-//
-//
 //	enum_<GuidoErrCode>("GuidoErrCode")
 //			.value("guidoNoErr", GuidoErrCode::guidoNoErr)
 //			.value("guidoErrParse", guidoErrParse)
@@ -78,21 +66,28 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 //			.value("guidoErrActionFailed", GuidoErrCode::guidoErrActionFailed);
 //
 //
-//	// Pitch constants
-//	constant("kCLine", kCLine);
-//	constant("kCSharpLine", kCSharpLine);
-//	constant("kDLine", kDLine);
-//	constant("kDSharpLine", kDSharpLine);
-//	constant("kELine", kELine);
-//	constant("kFLine", kFLine);
-//	constant("kFSharpLine", kFSharpLine);
-//	constant("kGLine", kGLine);
-//	constant("kGSharpLine", kGSharpLine);
-//	constant("kALine", kALine);
-//	constant("kASharpLine", kASharpLine);
-//	constant("kBLine", kBLine);
-//	constant("kAutoLines", kAutoLines);
-//	constant("kNoLine", kNoLine);
+//	// Brush constants
+	constant("kSolidStyle", 	IShape::kSolidStyle);
+	constant("kDashStyle", 		IShape::kDashStyle);
+	constant("kDotStyle", 		IShape::kDotStyle);
+	constant("kDashDotStyle", 	IShape::kDashDotStyle);
+	constant("kDashDotDotStyle", IShape::kDashDotDotStyle);
+
+	constant("kSolidBrushStyle", 	IShape::kSolidBrushStyle);
+	constant("kDense1BrushStyle", 	IShape::kDense1BrushStyle);
+	constant("kDense2BrushStyle", 	IShape::kDense2BrushStyle);
+	constant("kDense3BrushStyle", 	IShape::kDense3BrushStyle);
+	constant("kDense4BrushStyle", 	IShape::kDense4BrushStyle);
+	constant("kDense5BrushStyle", 	IShape::kDense5BrushStyle);
+	constant("kDense6BrushStyle", 	IShape::kDense6BrushStyle);
+	constant("kDense7BrushStyle", 	IShape::kDense7BrushStyle);
+	constant("kNoBrushStyle", 		IShape::kNoBrushStyle);
+	constant("kHorBrushStyle", 		IShape::kHorBrushStyle);
+	constant("kVerBrushStyle", 		IShape::kVerBrushStyle);
+	constant("kCrossBrushStyle", 	IShape::kCrossBrushStyle);
+	constant("kBDiagBrushStyle", 	IShape::kBDiagBrushStyle);
+	constant("kFDiagBrushStyle", 	IShape::kFDiagBrushStyle);
+	constant("kDiagCrossBrushStyle",IShape::kDiagCrossBrushStyle);
 }
 
 
@@ -133,6 +128,12 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getColor", 		&IObjectAdapter::getColor, allow_raw_pointers())
 		.function("getAlpha", 		&IObjectAdapter::getAlpha)
 		.function("colorChanged", 	&IObjectAdapter::colorChanged)
+
+		.function("getPenWidth", 	&IObjectAdapter::getPenWidth)
+		.function("getPenColor", 	&IObjectAdapter::getPenColor, allow_raw_pointers())
+		.function("getPenStyle", 	&IObjectAdapter::getPenStyle, allow_raw_pointers())
+		.function("getBrushStyle", 	&IObjectAdapter::getBrushStyle, allow_raw_pointers())
+		.function("brushChanged", 	&IObjectAdapter::brushChanged)
 
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
 		.function("updateHeight", 	&IObjectAdapter::updateHeight);
