@@ -39,7 +39,7 @@ class INScore {
     moduleInit ( module ) {
         this.fInscore 		= new module.INScoreAdapter();
         this.fJSGlue 		= new module.INScoreJSGlue();
-        INScore.fObjects	= new module.IObjectAdapter();;
+        INScore.fObjects	= new module.IObjectAdapter();
     }
     
      static objects()		{ return INScore.fObjects; }
