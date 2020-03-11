@@ -5,31 +5,32 @@
 //----------------------------------------------------------------------------
 class JSObjectView {
 
-    constructor(parent) { 
+    constructor(elt, parent) { 
 		this.id = ++JSObjectView.fGlobalID; 	// create a unique identifier
     	JSObjectView.fObjects[this.id] = this; 	// store the div using its id
     	this.fParent = parent; 
+    	this.fElement = elt; 
 	}
 	
+	getElement()				{ return this.fElement; }
+	parentWidth()				{ return this.fElement.clientWidth; }
+	parentHeight()				{ return this.fElement.clientHeight; }
+
+
     getId() 			{ return this.id; }
-    updateView(obj) 	{ 
-    	console.log ("JSObjectView::updateView w/h : " + obj.getWidth() + " " + obj.getHeight()); 
-    	
-    }
+	colorTarget() 		{ return this.fDiv; }
 
 	updateView(obj) {
 		//this.updatePos(obj);
-		this.updateColor(obj);
+		this.updateColor(obj, this.colorTarget());
 		// this.updatePenControl(obj);
 		// this.updateEffects(obj);
 		// this.updateEvents(obj);
 	}
 
-	colorTarget() {	return this.fDiv; }
 
-	updateColor(obj) {
+	updateColor(obj, elt) {
 		if (obj.colorChanged()) {
-			let elt = this.colorTarget();
 			elt.style.color = obj.getColor();
 			elt.style.opacity = obj.getAlpha().toString();
 		}
