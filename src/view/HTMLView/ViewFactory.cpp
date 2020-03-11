@@ -61,23 +61,21 @@ namespace inscore
 {
 
 #ifdef EMCC
-int JSSceneCreate (const char* id) {
-	return EM_ASM_INT( { return ViewFactory.createScene(Module.UTF8ToString($0));}, id);
+int JSSceneCreate (const char* id, const IObject* obj) {
+	return EM_ASM_INT( { return JSViewFactory.createScene(Module.UTF8ToString($0), $1);}, id, int(obj));
 }
-int JSObjectCreate (int parent, const char* type) {
-	return EM_ASM_INT( { return ViewFactory.create($0, Module.UTF8ToString($1));}, parent, type);
+int JSObjectCreate (int parent, const char* type, const IObject* obj) {
+	return EM_ASM_INT( { return JSViewFactory.create($0, Module.UTF8ToString($1), $2);}, parent, type, int(obj));
 }
-#define JSVIEWCREATE(id)	EM_ASM_INT( { return ViewFactory.create(Module.UTF8ToString($0));}, id);
 #else
-int JSSceneCreate  (const char* id) 				{ return 0; }
-int JSObjectCreate (int parent, const char* type)	{ return 0; }
-#define JSVIEWCREATE(id)	0;
+int JSSceneCreate  (const char* , const IObject* ) 			{ return 0; }
+int JSObjectCreate (int , const char* , const IObject* )	{ return 0; }
 #endif
 
 //--------------------------------------------------------------------------
 VObjectView*	ViewFactory::create (const IObject* obj, HTMLObjectView* parent)
 {
-	int id = JSObjectCreate(parent->getID(), obj->getTypeString().c_str());
+	int id = JSObjectCreate(parent->getID(), obj->getTypeString().c_str(), obj);
 	cout << "ViewFactory::create object " << obj->name() << " div id: " << id  << " parent: " << (void*)parent << endl;
 	return new HTMLObjectView (id, parent);
 }
@@ -115,7 +113,7 @@ VObjectView*	ViewFactory::create (const IObject* obj, HTMLObjectView* parent)
 VSceneView* ViewFactory::create(const IScene* obj)
 {
 	const char* name = obj->name().c_str();
-	int id = JSSceneCreate(name);
+	int id = JSSceneCreate(name, obj);
 	cout << "ViewFactory::create scene " << name << " div id: " << id << endl;
 	return new VSceneView (id);
 }
