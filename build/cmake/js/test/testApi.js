@@ -1,4 +1,24 @@
 
+"use strict";
+
+//----------------------------------------------------------------------------
+// Classes required by the wasm library
+//----------------------------------------------------------------------------
+class JSViewFactory {	
+	static createScene (id) 		{ return 0; }
+	static create (parent, type) 	{ return 0; } 
+}
+class JSObjectView {
+    static updateObjectView (id, oid)	{ }
+}
+
+
+var newScene =  "/ITL/scene new;";
+if ((typeof process !== 'undefined') && (process.release.name === 'node')) {
+	// can't get the above classes (called from wasm) properly exported in node
+	// thus skip the new scene creation
+	newScene = "";
+}
 
 
 //----------------------------------------------------------------------------
@@ -45,11 +65,11 @@ function infos (inscore, log )
 //----------------------------------------------------------------------------
 function load (inscore, log )
 {
-	var scriptv1 = "/ITL/scene new; /ITL/scene/rect1 set rect 0.2 0.2;"
+	var scriptv1 = newScene + " /ITL/scene/rect1 set rect 0.2 0.2;"
 	scriptv1 += "/ITL/scene/rect1 x 0.5;"
 	scriptv1 += "/ITL/scene/rect1 y 0.1;"
 
-	var scriptv2 = "/ITL/scene new; /ITL/scene/label (set txt label), (yorigin 1.1), (y 0.5), (x 0), (fontSize 11);"
+	var scriptv2 = newScene + " /ITL/scene/label (set txt label), (yorigin 1.1), (y 0.5), (x 0), (fontSize 11);"
 
 	log( "\nLoading scripts:");
 	log( "  loadInscore:       " + inscore.loadInscore(scriptv1));

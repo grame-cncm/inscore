@@ -24,13 +24,6 @@ var div = document.getElementById("log");
 function log (str) 			{ div.innerHTML += str + '\n'; }
 function svg (str, name) 	{ log (str); }
 
-class ViewFactory {	
-	static createScene (id) 		{ return 0; }
-	static create (parent, type) 	{ return 0; } 
-}
-class JSObjectView {
-    static updateView (id, oid)	{ }
-}
 
 function doit (engine) {
 	log ("INScore version " + inscore.version());
