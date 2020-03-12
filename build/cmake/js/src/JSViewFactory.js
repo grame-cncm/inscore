@@ -8,8 +8,16 @@ class JSViewFactory {
 		return scene.getId();
 	}
 
-	static create (parent, type, objid) 	{ 
+
+	static create (parentid, type, objid) 	{ 
+		let parent = JSObjectView.getVObject(parentid);
 		switch (type) {
+			case "txt":
+console.log ("JSViewFactory::create text parent id: " + parentid);
+			let view = new JSHtmlView(parent);
+			view.updateObjectSize (objid);
+			return view.getId(); 
+
 			case "arc":
 			case "audio":
 			case "curve":
@@ -20,33 +28,35 @@ class JSViewFactory {
 			case "radialgraph":
 			case "grid":
 			case "gmn":
-			case "gmnf":
 			case "pianoroll":
-			case "pianorollf":
 			case "pianorollstream":
 			case "gmnstream":
 			case "html":
-			case "htmlf":
 			case "img":
 			case "layer":
 			case "line":
 			case "memimg":
 			case "musicxml":
-			case "musicxmlf":
 			case "polygon":
 			case "rect":			
 			case "rshape":
 			case "svg":
-			case "svgf":
 			case "scene":
 			case "sig":
 			case "signode":
-			case "txt":
-			case "txtf":
 			case "video":
 console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
-				return new JSObjectView().getId(); 
-									
+				return new JSObjectView(parent).getId(); 
+
+			case "gmnf":
+			case "pianorollf":
+			case "htmlf":
+			case "musicxmlf":
+			case "svgf":
+			case "txtf":
+		console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
+				return new JSObjectView(parent).getId(); 
+		
 			default:
 console.log ("JSViewFactory::create unknown type " + type + " parent id: " + parent);
 				return null;

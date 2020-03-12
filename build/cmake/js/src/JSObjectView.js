@@ -5,37 +5,55 @@
 //----------------------------------------------------------------------------
 class JSObjectView {
 
-    constructor(elt, parent) { 
-		this.id = ++JSObjectView.fGlobalID; 	// create a unique identifier
-    	JSObjectView.fObjects[this.id] = this; 	// store the div using its id
+    constructor(elt, parent, absolute=true) { 
+		this.fID = ++JSObjectView.fGlobalID; 	// create a unique identifier
+    	JSObjectView.fObjects[this.fID] = this; 	// store the div using its id
     	this.fParent = parent; 
-    	this.fElement = elt; 
+		this.fElement = elt; 
+		if (parent) parent.getElement().appendChild (elt);
+		if (absolute) elt.style.position = "absolute";
 	}
 	
 	getElement()				{ return this.fElement; }
 	parentWidth()				{ return this.fElement.clientWidth; }
 	parentHeight()				{ return this.fElement.clientHeight; }
 
-
-    getId() 			{ return this.id; }
-	colorTarget() 		{ return this.fDiv; }
+    getId() 			{ return this.fID; }
+	colorTarget() 		{ return this.fElement; }
+	posTarget() 		{ return this.fElement; }
+	updateSpecial(obj)	{}
 
 	updateView(obj) {
-		//this.updatePos(obj);
-		this.updateColor(obj, this.colorTarget());
+		let infos = obj.getUpdateInfos();
+		if (infos.newdata) 
+			this.updateSpecial (obj); 
+		if ( infos.updatepos) 
+			this.updatePosition(infos.position, this.posTarget());
+		if ( infos.updatecolor) 
+			this.updateColor(infos.color, this.colorTarget());
 		// this.updatePenControl(obj);
 		// this.updateEffects(obj);
 		// this.updateEvents(obj);
 	}
 
 
-	updateColor(obj, elt) {
-		if (obj.colorChanged()) {
-			elt.style.color = obj.getColor();
-			elt.style.opacity = obj.getAlpha().toString();
-		}
+	updateColor(color, elt) {
+		elt.style.color = color.rgb;
+		elt.style.opacity = color.alpha.toString();
 	}
 
+	updatePosition(pos, elt) {
+		elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
+		elt.style.left 	= this.relative2SceneX(pos.x) + "px";
+		elt.style.top  	= this.relative2SceneY(pos.y) + "px";
+		elt.style.zIndex = pos.zorder.toString();
+		this.updateDimensions (pos, elt);
+	}
+
+	updateDimensions(pos, elt) {
+		elt.style.width = this.relative2SceneWidth(pos.width) + "px";
+		elt.style.height = this.relative2SceneHeight(pos.height) + "px";
+	}
 	// updatePos(obj: IObject): void {
 	// 	let pos = this.fPositionHandler();
 	// 	if (pos.x == kNoPosition) {
@@ -60,8 +78,8 @@ class JSObjectView {
 	// 	elt.style.visibility = obj.fPosition.getVisible() ? "inherit" : "hidden";
 	// }
 
-	parentWidth()				{ return this.fParent.clientWidth; }
-	parentHeight()				{ return this.fParent.clientHeight; }
+	parentWidth()				{ return this.fParent ? this.fParent.clientWidth : document.body.clientWidth; }
+	parentHeight()				{ return this.fParent ? this.fParent.clientHeight : document.body.clientHeight; }
 
 	relative2SceneY(y) 			{ return this.parentHeight() * (y + 1.0) / 2.0; }
 	relative2SceneX(x) 			{ return this.parentWidth() * (x + 1.0) / 2.0; }
@@ -71,6 +89,13 @@ class JSObjectView {
 	scene2RelativeHeight(height){ return (height * 2.0) / this.parentHeight(); }
 	scene2RelativeX(x) 			{ return x / (this.parentWidth() / 2.0) - 1; }
 	scene2RelativeY(y) 			{ return y / (this.parentHeight() / 2.0) - 1; }
+
+	updateObjectSize (objid) {
+		let obj = INScore.objects().create(objid);
+		obj.updateWidth  (this.scene2RelativeWidth  (this.getElement().clientWidth)); 
+		obj.updateHeight (this.scene2RelativeHeight (this.getElement().clientHeight)); 
+		INScore.objects().del (obj);		
+	}
 
     static getVObject (id)		{ return JSObjectView.fObjects[id]; }
     static updateObjectView (id, oid)	{ 

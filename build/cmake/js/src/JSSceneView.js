@@ -6,27 +6,26 @@
 class JSSceneView extends JSObjectView {
 
     constructor(id, objid) {
-    	super(document.getElementById(id), null);
+    	super(document.getElementById(id), null, false);
 		this.updateObjectSize (objid);
+		this.firstUpdate = true;
     }
 
 	parentWidth()				{ return document.body.clientWidth; }
 	parentHeight()				{ return document.body.clientHeight; }
 	colorTarget() 				{ return this.getElement(); }
 
-	updateColor(obj, div) {
-		if (obj.colorChanged()) {
-			div.style.background = obj.getColor();
-			div.style.opacity = obj.getAlpha().toString();
-		}
+	updateColor(color, div) {
+		div.style.background = color.rgb;
+		div.style.opacity 	 = color.alpha.toString();
 	}
 
-	updateObjectSize (objid) {
-		let obj = INScore.objects().create(objid);
-		obj.updateWidth  (super.scene2RelativeWidth  (this.getElement().clientWidth)); 
-		obj.updateHeight (super.scene2RelativeHeight (this.getElement().clientHeight)); 
-		INScore.objects().del (obj);		
+
+	updateDimensions(pos, elt) {
+console.log ("JSSceneView::updateDimensions " + elt.style.width + " " + elt.style.height)
+		// super.updateDimensions(pos, elt);
 	}
+
 }
 
 
