@@ -56,16 +56,32 @@ struct JSBrush {
 	std::string brushStyle;
 };
 
+struct JSColor {
+	std::string rgb;
+	std::string rgba;
+	float alpha;
+};
+
 struct JSUpdateInfos {
 	JSPosition 	position;
 	JSBrush		brush;
-	std::string color;
+	JSColor  	color;
 	bool updatepos = false;
 	bool updatebrush = false;
 	bool updatecolor = false;
 	bool deleted = false;
 	bool newdata = false;
 };
+
+struct JSTextInfos {
+	std::string	text;
+	int 		size;
+	std::string family;
+	std::string weight;
+	std::string style;
+};
+
+class IText;
 
 //--------------------------------------------------------------------------
 /*! \brief the interface for iobjects
@@ -74,11 +90,12 @@ class inscore_export IObjectAdapter
 {
 	SIObject fObject;
 	
-	static std::string color2htmlColor (const IColor& color);
+	static std::string color2htmlColor (const IColor& color, bool withalpha);
 	static void _updateWidth (IPosition* pos, float w);
 	static void _updateHeight (IPosition* pos, float h);
-	static bool _getPosition (IPosition* obj, JSPosition& pos);
-	static bool _getColor (IColor* obj, std::string& color);
+	static bool _getPosition (const IPosition* obj, JSPosition& pos);
+	static bool _getColor (const IColor* obj, JSColor& color);
+	static bool _getText  (const IText* obj, JSTextInfos& infos);
 
 
 	public:
@@ -89,13 +106,14 @@ class inscore_export IObjectAdapter
 		virtual ~IObjectAdapter() {}
 		
 		JSUpdateInfos getUpdateInfos () const;
+		JSTextInfos   getTextInfos () const;
 		float		getXPos () const			{ return fObject->getXPos(); }
 		float		getYPos () const			{ return fObject->getYPos(); }
 		float		getXOrigin () const			{ return fObject->getXOrigin(); }
 		float		getYOrigin () const			{ return fObject->getYOrigin(); }
 		float		getZOrder() const			{ return fObject->getZOrder(); }
 		float		getScale () const			{ return fObject->getScale(); }
-		TFloatPoint	getPos() const			{ return fObject->getPos(); }
+		TFloatPoint	getPos() const				{ return fObject->getPos(); }
 		float		getRotateX() const			{ return fObject->getRotateX(); }
 		float		getRotateY() const			{ return fObject->getRotateY(); }
 		float		getRotateZ() const			{ return fObject->getRotateZ(); }
@@ -104,12 +122,12 @@ class inscore_export IObjectAdapter
 		TFloatSize	getDimension() const		{ return fObject->getDimension(); }
 		TFloatSize	getShear() const			{ return fObject->getShear(); }
 		bool		getVisible () const			{ return fObject->getVisible(); }
-		std::string getColor () const			{ return color2htmlColor (*fObject); }
+		std::string getColor () const			{ return color2htmlColor (*fObject, false); }
 		float		getAlpha() const			{ return fObject->getA() / 255.f; }
 		bool		colorChanged () const		{ return ((IColor*)fObject)->modified(); }
 
 		float		getPenWidth() const			{ return fObject->getPenWidth(); }
-		std::string	getPenColor() const			{ return color2htmlColor( fObject->getPenColor()); }
+		std::string	getPenColor() const			{ return color2htmlColor( fObject->getPenColor(), false); }
         std::string	getPenStyle() const			{ return fObject->getPenStyle(); }
         std::string	getBrushStyle() const		{ return fObject->getBrushStyle(); }
 		bool		brushChanged () const		{ return ((IShape*)fObject)->modified(); }

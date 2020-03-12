@@ -24,43 +24,19 @@
 
 
 #include "IObjectAdapter.h"
+#include "IText.h"
 
 using namespace std;
 
 namespace inscore
 {
 
-//struct JSPosition {
-//	float x;
-//	float y;
-//	float width;
-//	float height;
-//	float xorigin;
-//	float yorigin;
-//	float zorder;
-//	float scale;
-//	bool  hidden;
-//	float xangle;
-//	float yangle;
-//	float zangle;
-//};
-//
-//struct JSBrush {
-//	float  penWidth;
-//	std::string penColor;
-//	std::string penStyle;
-//	std::string brushStyle;
-//}
-//
-//struct JSUpdateInfos {
-//	JSPosition* position;
-//	JSBrush*	brush;
-//};
-
 //--------------------------------------------------------------------------
-string IObjectAdapter::color2htmlColor (const IColor& color) {
+string IObjectAdapter::color2htmlColor (const IColor& color, bool withalpha) {
 	std::stringstream sstr;
 	sstr << "#" << std::setfill('0') << std::hex << std::setw(2) << color.getR() << std::setw(2) << color.getG() << std::setw(2) << color.getB();
+	if (withalpha)
+		sstr << std::setw(2) << color.getA();
 	return sstr.str();
 }
 		
@@ -79,17 +55,19 @@ void IObjectAdapter::_updateHeight (IPosition* pos, float h) {
 }
 
 //--------------------------------------------------------------------------
-bool IObjectAdapter::_getColor (IColor* obj, string& color)
+bool IObjectAdapter::_getColor (const IColor* obj, JSColor& color)
 {
 	if (obj->modified()) {
-		color		= color2htmlColor(*obj);
+		color.rgb		= color2htmlColor(*obj, false);
+		color.rgba		= color2htmlColor(*obj, true);
+		color.alpha		= obj->getA() / 255.f;
 		return true;
 	}
 	return false;
 }
 
 //--------------------------------------------------------------------------
-bool IObjectAdapter::_getPosition (IPosition* obj, JSPosition& pos)
+bool IObjectAdapter::_getPosition (const IPosition* obj, JSPosition& pos)
 {
 	if (obj->modified()) {
 		pos.x 		= obj->getXPos();
@@ -109,6 +87,32 @@ bool IObjectAdapter::_getPosition (IPosition* obj, JSPosition& pos)
 	return false;
 }
 
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getText (const IText* obj, JSTextInfos& infos)
+{
+	if (obj) {
+		infos.text 	 = obj->getText();
+		infos.size 	 = obj->getFontSize();
+		infos.family = obj->getFontFamily();
+		infos.weight = obj->getFontWeight();
+		infos.style	 = obj->getFontStyle();
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+// public methods
+//--------------------------------------------------------------------------
+JSTextInfos IObjectAdapter::getTextInfos () const
+{
+	JSTextInfos infos;
+	if (!_getText (dynamic_cast<const IText*>((IObject*)fObject), infos))
+		cerr << "IObjectAdapter::_getText: unexpected null object!" << endl;
+	return infos;
+}
+
+//--------------------------------------------------------------------------
 JSUpdateInfos IObjectAdapter::getUpdateInfos () const
 {
 	JSUpdateInfos infos;

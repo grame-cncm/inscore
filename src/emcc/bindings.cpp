@@ -52,13 +52,18 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("yangle",  &JSPosition::yangle)
 		.field("zangle",  &JSPosition::zangle)
 		.field("zorder",  &JSPosition::zorder);
-
+	
 	value_object<JSBrush>("JSBrush")
 		.field("penWidth",   &JSBrush::penWidth)
 		.field("penColor",   &JSBrush::penColor)
 		.field("penStyle",   &JSBrush::penStyle)
 		.field("brushStyle", &JSBrush::brushStyle);
-
+	
+	value_object<JSColor>("JSColor")
+		.field("rgb",   &JSColor::rgb)
+		.field("rgba",  &JSColor::rgba)
+		.field("alpha", &JSColor::alpha);
+	
 	value_object<JSUpdateInfos>("JSUpdateInfos")
 		.field("position",  &JSUpdateInfos::position)
 		.field("brush",   	&JSUpdateInfos::brush)
@@ -68,7 +73,13 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("updatecolor", &JSUpdateInfos::updatecolor)
 		.field("deleted", 	&JSUpdateInfos::deleted)
 		.field("newdata", 	&JSUpdateInfos::newdata);
-//
+
+	value_object<JSTextInfos>("JSTextInfos")
+		.field("text",  	&JSTextInfos::text)
+		.field("size",   	&JSTextInfos::size)
+		.field("family",   	&JSTextInfos::family)
+		.field("style", 	&JSTextInfos::style);
+
 //	enum_<GuidoErrCode>("GuidoErrCode")
 //			.value("guidoNoErr", GuidoErrCode::guidoNoErr)
 //			.value("guidoErrParse", guidoErrParse)
@@ -130,6 +141,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("del", 			&IObjectAdapter::del, allow_raw_pointers())
 
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
+		.function("getTextInfos",   &IObjectAdapter::getTextInfos, allow_raw_pointers())
 
 
 		.function("getXPos", 		&IObjectAdapter::getXPos)
