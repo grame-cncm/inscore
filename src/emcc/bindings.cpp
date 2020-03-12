@@ -39,18 +39,35 @@ using namespace inscore;
  */
 EMSCRIPTEN_BINDINGS(CStruct) {
 	
-//	value_object<Guido2MidiParams>("Guido2MidiParams")
-//			.field("fTempo", &Guido2MidiParams::fTempo)
-//			.field("fTicks", &Guido2MidiParams::fTicks)
-//			.field("fChan", &Guido2MidiParams::fChan)
-//			.field("fIntensity", &Guido2MidiParams::fIntensity)
-//			.field("fAccentFactor", &Guido2MidiParams::fAccentFactor)
-//			.field("fMarcatoFactor", &Guido2MidiParams::fMarcatoFactor)
-//			.field("fDFactor", &Guido2MidiParams::fDFactor)
-//			.field("fStaccatoFactor", &Guido2MidiParams::fStaccatoFactor)
-//			.field("fSlurFactor", &Guido2MidiParams::fSlurFactor)
-//			.field("fTenutoFactor", &Guido2MidiParams::fTenutoFactor)
-//			.field("fFermataFactor", &Guido2MidiParams::fFermataFactor);
+	value_object<JSPosition>("JSPosition")
+		.field("x", 	  &JSPosition::x)
+		.field("y", 	  &JSPosition::y)
+		.field("width",   &JSPosition::width)
+		.field("height",  &JSPosition::height)
+		.field("xorigin", &JSPosition::xorigin)
+		.field("yorigin", &JSPosition::yorigin)
+		.field("scale",   &JSPosition::scale)
+		.field("hidden",  &JSPosition::hidden)
+		.field("xangle",  &JSPosition::xangle)
+		.field("yangle",  &JSPosition::yangle)
+		.field("zangle",  &JSPosition::zangle)
+		.field("zorder",  &JSPosition::zorder);
+
+	value_object<JSBrush>("JSBrush")
+		.field("penWidth",   &JSBrush::penWidth)
+		.field("penColor",   &JSBrush::penColor)
+		.field("penStyle",   &JSBrush::penStyle)
+		.field("brushStyle", &JSBrush::brushStyle);
+
+	value_object<JSUpdateInfos>("JSUpdateInfos")
+		.field("position",  &JSUpdateInfos::position)
+		.field("brush",   	&JSUpdateInfos::brush)
+		.field("color",   	&JSUpdateInfos::color)
+		.field("updatepos", &JSUpdateInfos::updatepos)
+		.field("updatebrush", &JSUpdateInfos::updatebrush)
+		.field("updatecolor", &JSUpdateInfos::updatecolor)
+		.field("deleted", 	&JSUpdateInfos::deleted)
+		.field("newdata", 	&JSUpdateInfos::newdata);
 //
 //	enum_<GuidoErrCode>("GuidoErrCode")
 //			.value("guidoNoErr", GuidoErrCode::guidoNoErr)
@@ -111,6 +128,9 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("create", 		&IObjectAdapter::create, allow_raw_pointers())
 		.function("del", 			&IObjectAdapter::del, allow_raw_pointers())
+
+		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
+
 
 		.function("getXPos", 		&IObjectAdapter::getXPos)
 		.function("getYPos", 		&IObjectAdapter::getYPos)

@@ -34,6 +34,39 @@
 namespace inscore
 {
 
+struct JSPosition {
+	float x;
+	float y;
+	float width;
+	float height;
+	float xorigin;
+	float yorigin;
+	float scale;
+	bool  hidden;
+	float xangle;
+	float yangle;
+	float zangle;
+	float zorder;
+};
+
+struct JSBrush {
+	float  penWidth;
+	std::string penColor;
+	std::string penStyle;
+	std::string brushStyle;
+};
+
+struct JSUpdateInfos {
+	JSPosition 	position;
+	JSBrush		brush;
+	std::string color;
+	bool updatepos = false;
+	bool updatebrush = false;
+	bool updatecolor = false;
+	bool deleted = false;
+	bool newdata = false;
+};
+
 //--------------------------------------------------------------------------
 /*! \brief the interface for iobjects
 */
@@ -41,12 +74,13 @@ class inscore_export IObjectAdapter
 {
 	SIObject fObject;
 	
-	static std::string color2htmlColor (const IColor& color) {
-		std::stringstream sstr;
-		sstr << "#" << std::setfill('0') << std::hex << std::setw(2) << color.getR() << std::setw(2) << color.getG() << std::setw(2) << color.getB();
-		return sstr.str();
-	}
-	
+	static std::string color2htmlColor (const IColor& color);
+	static void _updateWidth (IPosition* pos, float w);
+	static void _updateHeight (IPosition* pos, float h);
+	static bool _getPosition (IPosition* obj, JSPosition& pos);
+	static bool _getColor (IColor* obj, std::string& color);
+
+
 	public:
 		typedef const std::string	jsString;
 	
@@ -54,6 +88,7 @@ class inscore_export IObjectAdapter
 				 IObjectAdapter(const SIObject& object) : fObject(object) {}
 		virtual ~IObjectAdapter() {}
 		
+		JSUpdateInfos getUpdateInfos () const;
 		float		getXPos () const			{ return fObject->getXPos(); }
 		float		getYPos () const			{ return fObject->getYPos(); }
 		float		getXOrigin () const			{ return fObject->getXOrigin(); }
@@ -82,8 +117,8 @@ class inscore_export IObjectAdapter
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
 
-		void	updateWidth(float w)		{ IPosition* pos = (IPosition*)fObject; bool modified= pos->modified(); pos->setWidth (w); if (!modified) pos->cleanup(); }
-		void	updateHeight(float h)		{ IPosition* pos = (IPosition*)fObject; bool modified= pos->modified(); pos->setHeight(h); if (!modified) pos->cleanup(); }
+		void	updateWidth(float w)		{ _updateWidth (fObject, w); }
+		void	updateHeight(float h)		{ _updateHeight(fObject, h); }
 
 	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
 	void 			del(IObjectAdapter* obj) 	{ delete obj; }
