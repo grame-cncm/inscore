@@ -20,12 +20,5 @@ class JSSceneView extends JSObjectView {
 		div.style.opacity 	 = color.alpha.toString();
 	}
 
-
-	updateDimensions(pos, elt) {
-console.log ("JSSceneView::updateDimensions " + elt.style.width + " " + elt.style.height)
-		// super.updateDimensions(pos, elt);
-	}
-
+	toString() 					{ return "VSceneView"; }
 }
-
-

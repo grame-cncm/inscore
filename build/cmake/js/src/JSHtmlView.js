@@ -6,6 +6,8 @@ class JSHtmlView extends JSAutoSize {
         this.getElement().className = "inscore-html";
     }
 
+	toString()					{ return "JSHtmlView"; }
+
 	// CSS weight are used as numbers
 	static fontWeight2Num	( weight) {
 		switch (weight) {

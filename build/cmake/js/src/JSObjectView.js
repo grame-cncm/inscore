@@ -14,6 +14,7 @@ class JSObjectView {
 		if (absolute) elt.style.position = "absolute";
 	}
 	
+	toString()					{ return "JSObjectView"; }
 	getElement()				{ return this.fElement; }
 	parentWidth()				{ return this.fElement.clientWidth; }
 	parentHeight()				{ return this.fElement.clientHeight; }
@@ -24,6 +25,7 @@ class JSObjectView {
 	updateSpecial(obj)	{}
 
 	updateView(obj) {
+console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 		let infos = obj.getUpdateInfos();
 		if (infos.newdata) 
 			this.updateSpecial (obj); 
