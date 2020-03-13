@@ -120,6 +120,8 @@ template<> SIObject _create<IScene>(const std::string& name , IObject* parent)
 	if (obj) {
 		VSceneView *sceneView = ViewFactory::create(obj);
 		obj->setView ((VObjectView*)sceneView);
+		obj->cleanup();			// no update at object creation
+		obj->setState(IObject::kClean);
 	}
 	return obj->getView() ? obj : 0;
 }
