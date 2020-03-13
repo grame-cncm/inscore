@@ -80,41 +80,12 @@ VObjectView*	ViewFactory::create (const IObject* obj, HTMLObjectView* parent)
 	return new HTMLObjectView (id, parent);
 }
 
-//VObjectView*	ViewFactory::create (const IArc* obj,		HTMLObjectView* parent)		{ return new HTMLObjectView (JSObjectCreate(parent->getID(), obj->getTypeString()), parent); }
-//VObjectView*	ViewFactory::create (const IAudio* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const ICurve* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IEllipse* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IGraphicSignal* obj,  HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const ISGraphicSignal* obj, HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IRGraphicSignal* obj, HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IGuidoCode* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IGuidoPianoRoll* obj, HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IGuidoPianoRollStream* obj, HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IGuidoFile* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IGuidoPianoRollFile* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IMusicXMLCode* obj,HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IMusicXMLFile* obj,HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IHtml* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IHtmlFile* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IImage* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IMemImage* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const ILine* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IPolygon* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IGrid* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const ILayer* obj,     HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IRect* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const ISVG* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const ISVGFile* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IText* obj,		HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const ITextFile* obj,	HTMLObjectView* parent);
-//VObjectView*	ViewFactory::create (const IVideo* obj,		HTMLObjectView* parent);
-
 //--------------------------------------------------------------------------
 VSceneView* ViewFactory::create(const IScene* obj)
 {
 	const char* name = obj->name().c_str();
 	int id = JSSceneCreate(name, obj);
-	cout << "ViewFactory::create scene " << name << " div id: " << id << endl;
+//	cout << "ViewFactory::create scene " << name << " div id: " << id << " state: " << obj->getState() << " new: " << obj->newData() << endl;
 	return new VSceneView (id);
 }
 
