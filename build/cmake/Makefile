@@ -18,6 +18,7 @@ system	:= $(shell uname -s)
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
 
 
+
 ifeq ($(TARGET), windows)
 	GENERATOR ?= "Visual Studio 14 2015 Win64"
 	J ?= /maxcpucount:4
@@ -41,6 +42,8 @@ endif
 GENERATOR ?= "Unix Makefiles"	# default generator
 J  ?= -j 4
 
+TSDIR := js/src
+TSSRC := $(wildcard $(TSDIR)/*.ts)
 
 all :
 	$(MAKE) library
@@ -88,12 +91,16 @@ js/libINScore.wasm: lib/libINScore.wasm
 cmakejs : $(EMCCDIR)
 	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
 
-js: $(EMCCDIR)
+js: $(EMCCDIR) js/inscoreview.js
 	make -C $(EMCCDIR) wasmlib
 
 $(EMCCDIR):
 	mkdir $(EMCCDIR)
 	$(MAKE) cmakejs
+
+js/inscoreview.js : $(TSSRC) js/libINScore.d.ts $(TSDIR)/tsconfig.json
+	cd $(TSDIR) && tsc
+
 
 #===============================================================
 # install target
