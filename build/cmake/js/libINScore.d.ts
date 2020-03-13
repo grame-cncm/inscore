@@ -1,7 +1,6 @@
 
 interface INScoreModule {}
 interface TMessage     {}
-interface TObject      {}
         
 //------------------------------------------------------------------------
 // INScore glue interface 
@@ -107,9 +106,12 @@ interface OUpdateInfos {
 }
 
 interface INScoreObject {
-    create(id: number) : TObject;
-    del(obj: TObject)  : void;
+    create(id: number)       : INScoreObject;
+    del(obj: INScoreObject)  : void;
 
     getUpdateInfos() : OUpdateInfos;
     getTextInfos()   : OTextInfo;
+	updateWidth (w: number) : void;
+	updateHeight(h: number)	: void;
+
 }

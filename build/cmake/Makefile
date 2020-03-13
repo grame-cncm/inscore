@@ -42,8 +42,10 @@ endif
 GENERATOR ?= "Unix Makefiles"	# default generator
 J  ?= -j 4
 
+CHECKDIR := checkout
 TSDIR := js/src
 TSSRC := $(wildcard $(TSDIR)/*.ts)
+OUT	  := $(patsubst $(TSDIR)/%.ts, $(CHECKDIR)/%.js, $(TSSRC))
 
 all :
 	$(MAKE) library
@@ -78,6 +80,22 @@ $(LIBDIR):
 	$(MAKE) cmake
 
 #===============================================================
+# building inscore ts view
+#===============================================================
+js/inscoreview.js : $(TSSRC) js/libINScore.d.ts $(TSDIR)/tsconfig.json
+	cd $(TSDIR) && tsc
+
+check: $(CHECKDIR) $(OUT)
+
+$(CHECKDIR) :
+	mkdir $(CHECKDIR)
+
+TSOPT  :=  --lib 'es2015' --lib 'dom' --noImplicitAny  --noImplicitReturns --alwaysStrict
+$(CHECKDIR)/%.js: $(TSDIR)/%.ts
+	tsc $(TSOPT) -out $@ $< 
+
+
+#===============================================================
 # building inscore wasm library
 #===============================================================
 jstest : js/libINScore.js js/libINScore.wasm
@@ -98,8 +116,6 @@ $(EMCCDIR):
 	mkdir $(EMCCDIR)
 	$(MAKE) cmakejs
 
-js/inscoreview.js : $(TSSRC) js/libINScore.d.ts $(TSDIR)/tsconfig.json
-	cd $(TSDIR) && tsc
 
 
 #===============================================================
