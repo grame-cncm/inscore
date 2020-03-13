@@ -35,10 +35,11 @@ class JSHtmlView extends JSAutoSize {
 	// 	this.getHtml().style.textShadow = color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px";
 	// }
 
-	updateSpecial ( obj ) {
+	updateSpecial ( obj, objid ) {		
         let text = obj.getTextInfos();
     	let elt = this.getElement();
         elt.innerHTML  = text.text;
 		this.setFont (text);
+		return super.updateSpecial (obj, objid );
 	}
 }

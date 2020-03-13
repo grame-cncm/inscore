@@ -10,17 +10,25 @@ class JSAutoSize extends JSObjectView
         this.fSizeSynced = false;
     }
 
-	updateObjectSize (objid) {
+    updateSpecial (obj, objid)	{
+        this.fSizeSynced = false;
+        return this.waitForSize (objid);
+
+    }
+
+	waitForSize (objid) {
         if (!this.fSizeSynced) {
             let elt = this.getElement();
             let w = elt.clientWidth;
             let h = elt.clientHeight;
-            if (!w || !h)  setTimeout (() => this.updateObjectSize (objid), 50) ;
+            if (!w || !h)  setTimeout (() => this.waitForSize (objid), 50) ;
+            return false;
         }
         else {
             super.updateObjectSize (objid);
             this.fSizeSynced = true;
             JSObjectView.updateObjectView (this.getId(), objid);
+            return true;
         }
 	}
 }

@@ -14,21 +14,22 @@ class JSObjectView {
 		if (absolute) elt.style.position = "absolute";
 	}
 	
-	toString()					{ return "JSObjectView"; }
-	getElement()				{ return this.fElement; }
-	parentWidth()				{ return this.fElement.clientWidth; }
-	parentHeight()				{ return this.fElement.clientHeight; }
+	toString()				{ return "JSObjectView"; }
+	getElement()			{ return this.fElement; }
+	getParent()				{ return this.fParent; }
+	parentWidth()			{ return this.getParent().clientWidth; }
+	parentHeight()			{ return this.getParent().clientHeight; }
 
-    getId() 			{ return this.fID; }
-	colorTarget() 		{ return this.fElement; }
-	posTarget() 		{ return this.fElement; }
-	updateSpecial(obj)	{}
+    getId() 				{ return this.fID; }
+	colorTarget() 			{ return this.fElement; }
+	posTarget() 			{ return this.fElement; }
+	updateSpecial(obj, oid)	{ return true; }
 
-	updateView(obj) {
+	updateView(obj, oid) {
 console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 		let infos = obj.getUpdateInfos();
-		if (infos.newdata) 
-			this.updateSpecial (obj); 
+		if (infos.newdata)
+			if (!this.updateSpecial (obj, oid)) return;
 		if ( infos.updatepos) 
 			this.updatePosition(infos.position, this.posTarget());
 		if ( infos.updatecolor) 
@@ -46,8 +47,9 @@ console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 
 	updatePosition(pos, elt) {
 		elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
-		elt.style.left 	= this.relative2SceneX(pos.x) + "px";
-		elt.style.top  	= this.relative2SceneY(pos.y) + "px";
+		elt.style.left 	= this.relative2SceneX(pos.x).toString() + "px";
+		elt.style.top  	= this.relative2SceneY(pos.y).toString() + "px";
+	console.log("JSObjectView::updatePosition " + this + " left: " + elt.style.left + " x: " + pos.x );
 		elt.style.zIndex = pos.zorder.toString();
 		this.updateDimensions (pos, elt);
 	}
@@ -94,6 +96,7 @@ console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 
 	updateObjectSize (objid) {
 		let obj = INScore.objects().create(objid);
+console.log("JSObjectView::updateObjectSize " + this + " " + this.getElement().clientWidth + " -> " + this.parentWidth());
 		obj.updateWidth  (this.scene2RelativeWidth  (this.getElement().clientWidth)); 
 		obj.updateHeight (this.scene2RelativeHeight (this.getElement().clientHeight)); 
 		INScore.objects().del (obj);		
@@ -104,7 +107,7 @@ console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
     	let view = JSObjectView.fObjects[id];
     	if (view) {
 	    	let obj = INScore.objects().create(oid);
-    		view.updateView (obj); 
+    		view.updateView (obj, oid); 
     		INScore.objects().del (obj);
     	}
     }
