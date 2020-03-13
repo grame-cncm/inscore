@@ -158,7 +158,6 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
 		int status = obj->execute(newmsg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) {
 			parent->add(obj);
-			obj->setModified();
 			if (newobj) *newobj = obj;
 			return MsgHandler::kProcessed;
 		}
