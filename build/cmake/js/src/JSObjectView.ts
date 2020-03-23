@@ -3,8 +3,6 @@
 ///<reference path="inscore.ts"/>
 
 
-enum TPenStyle {  kSolid, kDash, kDot, kDashDot, kDashDotDot }
-
 //----------------------------------------------------------------------------
 class JSObjectView {
 
@@ -31,8 +29,8 @@ class JSObjectView {
 	parentHeight() : number			{ return this.getElement().parentElement.clientHeight; }
 	localX() : number				{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.left; }
 	localY() : number				{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.top; }
-	localWidth() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.right - r.left; }
-	localHeight() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.bottom - r.top; }
+	// localWidth() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.right - r.left; }
+	// localHeight() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.bottom - r.top; }
 	posTarget() : HTMLElement		{ return this.fElement; }
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
@@ -48,12 +46,12 @@ class JSObjectView {
 
 		if (infos.newdata)
 			if (!this.updateSpecial (obj, oid)) return;
-		if ( infos.updatepos) 
-			this.updatePosition(infos.position, this.posTarget());
 		if ( infos.updatecolor) 
 			this.updateColor(infos.color);
 		if (infos.updatebrush)
 			this.updatePenControl(infos.brush);
+		if ( infos.updatepos) 
+			this.updatePosition(infos.position, this.posTarget());
 		this.updateSpecific (obj);
 		// this.updateEffects(obj);
 		// this.updateEvents(obj);
@@ -69,7 +67,6 @@ class JSObjectView {
 		let elt = this.getElement();
 		elt.style.borderWidth = brush.penWidth + 'px';
 		elt.style.borderColor = brush.penColor;
-console.log ("JSObjectView::updatePenControl penStyle: " + brush.penStyle);
 		elt.style.borderStyle = JSObjectView.penStyle2Css (brush.penStyle);
 	}
 
@@ -81,10 +78,11 @@ console.log ("JSObjectView::updatePenControl penStyle: " + brush.penStyle);
 		elt.style.left 	= (x - offset.ox).toString() + "px";
 		elt.style.top  	= (y - offset.oy).toString() + "px";
 		elt.style.zIndex = pos.zorder.toString();
-		this.updateDimensions (pos, elt);
+		this.updateDimensions (pos);
 	}
 
-	updateDimensions(pos: OPosition, elt: HTMLElement) : void {
+	updateDimensions(pos: OPosition) : void {
+		let elt = this.getElement();
 		elt.style.width = this.relative2SceneWidth(pos.width) + "px";
 		elt.style.height = this.relative2SceneHeight(pos.height) + "px";
 	}
@@ -93,9 +91,9 @@ console.log ("JSObjectView::updatePenControl penStyle: " + brush.penStyle);
 		let r = this.getElement().getBoundingClientRect();
 		let w = (r.right - r.left);
 		let h = (r.bottom - r.top);
-		console.log("JSObjectView::getOriginOffset " + this + " " + w + " / " + h + " cw: " + this.getElement().clientWidth);
 		return { ox: w * (xo + 1) / 2, oy: h * (yo + 1) / 2 }; 
 	}
+
 	relative2SceneX(x : number)  : number			{ return this.parentWidth() * (x + 1.0) / 2.0; }
 	relative2SceneY(y : number)  : number			{ return this.parentHeight() * (y + 1.0) / 2.0; }
 	relative2SceneWidth(width : number)  : number	{ return Math.min(this.parentWidth(), this.parentHeight()) * width / 2.0; }
@@ -116,10 +114,10 @@ console.log ("JSObjectView::updatePenControl penStyle: " + brush.penStyle);
 	static penStyle2Css(style: number): string {
 		let str = "solid";
 		switch (style) {
-			case TPenStyle.kDashDot:
-			case TPenStyle.kDash:			str = "dashed"; break;
-			case TPenStyle.kDashDotDot:
-			case TPenStyle.kDot:			str = "dotted"; break;
+			case INScoreModule.kDashDotStyle:
+			case INScoreModule.kDashStyle:			str = "dashed"; break;
+			case INScoreModule.kDashDotDotStyle:
+			case INScoreModule.kDotStyle:			str = "dotted"; break;
 		}
 		return str;
 	}

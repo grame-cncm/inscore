@@ -14,13 +14,13 @@ class JSRectView extends JSSvgView {
     getSVGTarget() : SVGShape  { return this.fRect; }
 
 
-    updateDimensions(pos: OPosition, elt: HTMLElement) : void {
+    updateDimensions(pos: OPosition) : void {
 		this.fRect.style.width = this.relative2SceneWidth(pos.width) + "px";
         this.fRect.style.height = this.relative2SceneHeight(pos.height) + "px";
-        super.updateDimensions (pos, elt);
+        super.updateDimensions (pos);
 	}
-    // getSVGTarget() : SVGSVGElement  { return this.fRect; }
 
+    
 	// updateView	( obj: IObject) : void {
 	// 	super.updateView(obj);
 	// 	let size = this.getInnerSize(obj);

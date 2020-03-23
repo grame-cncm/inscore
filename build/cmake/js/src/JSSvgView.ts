@@ -6,15 +6,21 @@ interface SVGStyle {
     fill: string;
     fillOpacity: string;
     transform: string;
+    stroke: string;
+    strokeWidth: string;
+	strokeDasharray: string;
+	width: string;
+	height: string;
 }
 
 interface SVGShape {
 	setAttribute (a: string, v: string) : void;
+	getBoundingClientRect() : DOMRect;
     style: SVGStyle;
 }
 
 abstract class JSSvgView extends JSObjectView {
-   	protected fSVG:SVGSVGElement;
+	protected fSVG:SVGSVGElement;
 
     constructor(parent: JSObjectView) {
     	super (document.createElement('div'), parent);
@@ -22,21 +28,33 @@ abstract class JSSvgView extends JSObjectView {
 		this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
 		this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
 		this.fSVG.setAttribute('version', "1.1");
+		// this.fSVG.style.paintOrder = "stroke";
 		this.getElement().appendChild(this.fSVG);
 	}
-
-	updateDimensions(pos: OPosition, elt: HTMLElement) : void {
-		this.fSVG.style.width = this.relative2SceneWidth(pos.width) + "px";
-		this.fSVG.style.height = this.relative2SceneHeight(pos.height) + "px";
-	}
     abstract getSVGTarget() : SVGShape;
+
+	updateDimensions(pos: OPosition) : void {
+		let elt = this.getSVGTarget();
+		let r = elt.getBoundingClientRect();
+		this.fSVG.style.width  = (r.right - r.left) + "px";
+		this.fSVG.style.height = (r.bottom - r.top) + "px";
+		// this.fSVG.style.width  = this.relative2SceneWidth(pos.width) + "px";
+		// this.fSVG.style.height = this.relative2SceneHeight(pos.height) + "px";
+	}
 
     updateColor(color: OColor) : void {
 		let target = this.getSVGTarget();
 		target.style.fill = color.rgb;
 		target.style.fillOpacity = color.alpha.toString();
 	}
-		
+
+	updatePenControl(brush: OBrush) : void {
+		let elt = this.getSVGTarget();
+		elt.style.strokeWidth = brush.penWidth.toString();
+		elt.style.stroke = brush.penColor;
+		elt.style.strokeDasharray = JSSvgView.penStyle2Dash(brush.penStyle);
+	}
+	
 	// getInnerSize (obj: IObject):  {w: number, h: number } {
 	// 	let strokeWidth = obj.fPenControl.getPenWidth();
     //     let w   	 = this.fWidth - strokeWidth;
@@ -94,10 +112,10 @@ abstract class JSSvgView extends JSObjectView {
 	static penStyle2Dash(style : number) : string
 	{
 		switch(style) {
-			case 1 :	return "4, 4";
-			case 2 :	return "1, 5";
-			case 3 :	return "4, 4, 1, 5";
-			case 4 :	return "4, 4, 1, 5, 1, 5";
+			case INScoreModule.kDashStyle:	 	return "4, 4";
+			case INScoreModule.kDotStyle:		return "2 2";
+			case INScoreModule.kDashDotStyle: 	return "4 2";
+			case INScoreModule.kDashDotDotStyle:	return "4 4 2";
 			default : 	return "";
 		}
 	}

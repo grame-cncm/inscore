@@ -38,7 +38,7 @@ class JSHtmlView extends JSAutoSize {
 	// }
 
 	// don't update text dimensions
-	updateDimensions(pos: OPosition, elt: HTMLElement) : void {}
+	updateDimensions(pos: OPosition) : void {}
 
 	updateSpecific(obj: INScoreObject)	: void { 
 		this.setFont (obj.getTextInfos());
