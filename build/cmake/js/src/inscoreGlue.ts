@@ -31,8 +31,18 @@ class INScoreGlue {
 	initDiv (div: HTMLElement, v2: boolean) : void {
 		let scene = div.id;
 		if (!scene) scene = "scene";
-		this.fInscore.postMessageStr ("/ITL/"+scene, "new");	
+		// this.fInscore.postMessageStr ("/ITL/"+scene, "new");	
+		this.fInscore.loadInscore ("/ITL/"+scene + " new;");	
 		this.allowdrop (div);
+		let content = div.innerText;
+		div.innerText = "";
+		if (content.length) {
+// console.log ("initDiv load: " + content);
+			if (v2)
+				this.fInscore.loadInscore2 (content);
+			else
+				this.fInscore.loadInscore (content);
+		}
 	}
 
     //------------------------------------------------------------------------
