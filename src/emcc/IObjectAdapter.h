@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <map>
 
 #include "IObject.h"
 
@@ -49,11 +50,15 @@ struct JSPosition {
 	float zorder;
 };
 
+enum TPenStyle 		{ kSolid, kDash, kDot, kDashDot, kDashDotDot };
+enum TBrushStyle 	{ kDense1, kDense2, kDense3, kDense4, kDense5, kDense6, kDense7,
+					  kNoBrush, kBrushHor, kBrushVer, kCross, kBDiag, kFDiag, kDiagCross };
+
 struct JSBrush {
 	float  penWidth;
 	std::string penColor;
-	std::string penStyle;
-	std::string brushStyle;
+	int penStyle;
+	int brushStyle;
 };
 
 struct JSColor {
@@ -90,18 +95,21 @@ class inscore_export IObjectAdapter
 {
 	SIObject fObject;
 	
+	static std::map<std::string, int> fBrushStyles;
+	static std::map<std::string, int> fPenStyles;
 	static std::string color2htmlColor (const IColor& color, bool withalpha);
 	static void _updateWidth (IPosition* pos, float w);
 	static void _updateHeight (IPosition* pos, float h);
 	static bool _getPosition (const IPosition* obj, JSPosition& pos);
 	static bool _getColor (const IColor* obj, JSColor& color);
+	static bool _getPenBrush (const IShape* obj, JSBrush& brush);
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
 
 
 	public:
 		typedef const std::string	jsString;
 	
-				 IObjectAdapter() : fObject(0) {}
+				 IObjectAdapter();
 				 IObjectAdapter(const SIObject& object) : fObject(object) {}
 		virtual ~IObjectAdapter() {}
 		

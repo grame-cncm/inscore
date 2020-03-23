@@ -67,6 +67,19 @@ bool IObjectAdapter::_getColor (const IColor* obj, JSColor& color)
 }
 
 //--------------------------------------------------------------------------
+bool IObjectAdapter::_getPenBrush (const IShape* obj, JSBrush& brush)
+{
+	if (obj->modified()) {
+		brush.penWidth = obj->getPenWidth();
+		brush.penColor = color2htmlColor(obj->getPenColor(), true);
+        brush.penStyle = fPenStyles[obj->getPenStyle()];
+        brush.brushStyle = fBrushStyles[obj->getBrushStyle()];
+        return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
 bool IObjectAdapter::_getPosition (const IPosition* obj, JSPosition& pos)
 {
 	if (obj->modified()) {
@@ -101,9 +114,37 @@ bool IObjectAdapter::_getText (const IText* obj, JSTextInfos& infos)
 	return false;
 }
 
+std::map<string, int> IObjectAdapter::fPenStyles;
+std::map<string, int> IObjectAdapter::fBrushStyles;
 //--------------------------------------------------------------------------
 // public methods
 //--------------------------------------------------------------------------
+IObjectAdapter::IObjectAdapter() : fObject(0)
+{
+	if (fPenStyles.empty()) {
+		fPenStyles[SOLID_STYLE] 		= kSolid;
+		fPenStyles[DASH_STYLE] 			= kDash;
+		fPenStyles[DOT_STYLE] 			= kDot;
+		fPenStyles[DASH_DOT_STYLE] 		= kDashDot;
+		fPenStyles[DASH_DOT_DOT_STYLE]	= kDashDotDot;
+
+		fBrushStyles[DENSE1_BRUSH_STYLE]	= kDense1;
+		fBrushStyles[DENSE2_BRUSH_STYLE]	= kDense2;
+		fBrushStyles[DENSE3_BRUSH_STYLE]	= kDense3;
+		fBrushStyles[DENSE4_BRUSH_STYLE]	= kDense4;
+		fBrushStyles[DENSE5_BRUSH_STYLE]	= kDense5;
+		fBrushStyles[DENSE6_BRUSH_STYLE]	= kDense6;
+		fBrushStyles[DENSE7_BRUSH_STYLE]	= kDense7;
+		fBrushStyles[NO_BRUSH_STYLE]	= kNoBrush;
+		fBrushStyles[HOR_BRUSH_STYLE]	= kBrushHor;
+		fBrushStyles[VER_BRUSH_STYLE]	= kBrushVer;
+		fBrushStyles[CROSS_BRUSH_STYLE]	= kCross;
+		fBrushStyles[BDIAG_BRUSH_STYLE]	= kBDiag;
+		fBrushStyles[FDIAG_BRUSH_STYLE]	= kFDiag;
+		fBrushStyles[DIAG_CROSS_BRUSH_STYLE] = kDiagCross;
+	}
+}
+
 JSTextInfos IObjectAdapter::getTextInfos () const
 {
 	JSTextInfos infos;
@@ -122,6 +163,7 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos () const
 		infos.newdata = fObject->newData();
 		infos.updatepos = _getPosition (fObject, infos.position);
 		infos.updatecolor = _getColor (fObject, infos.color);
+		infos.updatebrush = _getPenBrush (fObject, infos.brush);
 	}
 	return infos;
 }
