@@ -114,6 +114,23 @@ bool IObjectAdapter::_getText (const IText* obj, JSTextInfos& infos)
 	return false;
 }
 
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getLine (const ILine* obj, JSLineInfos& infos)
+{
+	if (obj) {
+		TFloatPoint p = obj->getPoint();
+		infos.x = p.x();
+		infos.y = p.y();
+		infos.arrowLeft		= obj->getArrowLeft();
+		infos.arrowRight	= obj->getArrowRight();
+		infos.arrowLeftSize = obj->getArrowSizeLeft();
+		infos.arrowRightSize= obj->getArrowSizeRight();
+		return true;
+	}
+	return false;
+}
+
 std::map<string, int> IObjectAdapter::fPenStyles;
 std::map<string, int> IObjectAdapter::fBrushStyles;
 //--------------------------------------------------------------------------
@@ -145,13 +162,24 @@ IObjectAdapter::IObjectAdapter() : fObject(0)
 	}
 }
 
+//--------------------------------------------------------------------------
 JSTextInfos IObjectAdapter::getTextInfos () const
 {
 	JSTextInfos infos;
 	if (!_getText (dynamic_cast<const IText*>((IObject*)fObject), infos))
-		cerr << "IObjectAdapter::_getText: unexpected null object!" << endl;
+		cerr << "IObjectAdapter::getTextInfos: unexpected null object!" << endl;
 	return infos;
 }
+
+//--------------------------------------------------------------------------
+JSLineInfos IObjectAdapter::getLineInfos () const
+{
+	JSLineInfos infos;
+	if (!_getLine (dynamic_cast<const ILine*>((IObject*)fObject), infos))
+		cerr << "IObjectAdapter::getLineInfos: unexpected null object!" << endl;
+	return infos;
+}
+
 
 //--------------------------------------------------------------------------
 JSUpdateInfos IObjectAdapter::getUpdateInfos () const

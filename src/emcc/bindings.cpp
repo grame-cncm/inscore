@@ -73,28 +73,28 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("updatecolor", &JSUpdateInfos::updatecolor)
 		.field("deleted", 	&JSUpdateInfos::deleted)
 		.field("newdata", 	&JSUpdateInfos::newdata);
-
+	
 	value_object<JSTextInfos>("JSTextInfos")
 		.field("text",  	&JSTextInfos::text)
 		.field("size",   	&JSTextInfos::size)
 		.field("family",   	&JSTextInfos::family)
 		.field("style", 	&JSTextInfos::style);
+	
+	value_object<JSLineInfos>("JSLineInfos")
+		.field("x",  	&JSLineInfos::x)
+		.field("y",   	&JSLineInfos::y)
+		.field("arrowLeft",   	&JSLineInfos::arrowLeft)
+		.field("arrowRight",   	&JSLineInfos::arrowRight)
+		.field("arrowLeftSize",   	&JSLineInfos::arrowLeftSize)
+		.field("arrowRightSize", 	&JSLineInfos::arrowRightSize);
 
-//	enum_<GuidoErrCode>("GuidoErrCode")
-//			.value("guidoNoErr", GuidoErrCode::guidoNoErr)
-//			.value("guidoErrParse", guidoErrParse)
-//			.value("guidoErrMemory", GuidoErrCode::guidoErrMemory)
-//			.value("guidoErrFileAccess", GuidoErrCode::guidoErrFileAccess)
-//			.value("guidoErrUserCancel", GuidoErrCode::guidoErrUserCancel)
-//			.value("guidoErrNoMusicFont", GuidoErrCode::guidoErrNoMusicFont)
-//			.value("guidoErrNoTextFont", GuidoErrCode::guidoErrNoTextFont)
-//			.value("guidoErrBadParameter", GuidoErrCode::guidoErrBadParameter)
-//			.value("guidoErrInvalidHandle", GuidoErrCode::guidoErrInvalidHandle)
-//			.value("guidoErrNotInitialized", GuidoErrCode::guidoErrNotInitialized)
-//			.value("guidoErrActionFailed", GuidoErrCode::guidoErrActionFailed);
-//
-//
-//	// Brush constants
+	// Line constants
+	constant("kArrowNone", 		ILine::NONE);
+	constant("kArrowTriangle", 	ILine::TRIANGLE);
+	constant("kArrowDiamond", 	ILine::DIAMOND);
+	constant("kArrowDisk", 		ILine::DISK);
+	
+	// Brush constants
 	constant("kSolidStyle", 	IShape::kSolidStyle);
 	constant("kDashStyle", 		IShape::kDashStyle);
 	constant("kDotStyle", 		IShape::kDotStyle);
@@ -142,30 +142,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
 		.function("getTextInfos",   &IObjectAdapter::getTextInfos, allow_raw_pointers())
-
-
-		.function("getXPos", 		&IObjectAdapter::getXPos)
-		.function("getYPos", 		&IObjectAdapter::getYPos)
-		.function("getWidth", 		&IObjectAdapter::getWidth)
-		.function("getHeight", 		&IObjectAdapter::getHeight)
-		.function("getScale", 		&IObjectAdapter::getScale)
-		.function("getZOrder", 		&IObjectAdapter::getZOrder)
-		.function("getVisible", 	&IObjectAdapter::getVisible)
-		.function("getXOrigin", 	&IObjectAdapter::getXOrigin)
-		.function("getYOrigin", 	&IObjectAdapter::getYOrigin)
-		.function("getRotateX", 	&IObjectAdapter::getRotateX)
-		.function("getRotateY", 	&IObjectAdapter::getRotateY)
-		.function("getRotateZ", 	&IObjectAdapter::getRotateZ)
-		.function("getPos", 		&IObjectAdapter::getPos)
-		.function("getColor", 		&IObjectAdapter::getColor, allow_raw_pointers())
-		.function("getAlpha", 		&IObjectAdapter::getAlpha)
-		.function("colorChanged", 	&IObjectAdapter::colorChanged)
-
-		.function("getPenWidth", 	&IObjectAdapter::getPenWidth)
-		.function("getPenColor", 	&IObjectAdapter::getPenColor, allow_raw_pointers())
-		.function("getPenStyle", 	&IObjectAdapter::getPenStyle, allow_raw_pointers())
-		.function("getBrushStyle", 	&IObjectAdapter::getBrushStyle, allow_raw_pointers())
-		.function("brushChanged", 	&IObjectAdapter::brushChanged)
+		.function("getLineInfos",   &IObjectAdapter::getLineInfos, allow_raw_pointers())
 
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
 		.function("updateHeight", 	&IObjectAdapter::updateHeight);

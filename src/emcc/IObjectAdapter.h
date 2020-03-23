@@ -30,6 +30,7 @@
 #include <map>
 
 #include "IObject.h"
+#include "ILine.h"
 
 
 namespace inscore
@@ -86,7 +87,17 @@ struct JSTextInfos {
 	std::string style;
 };
 
+struct JSLineInfos {
+	float 	x;
+	float 	y;
+	int		arrowLeft;
+	int		arrowRight;
+	float	arrowLeftSize;
+	float	arrowRightSize;
+};
+
 class IText;
+class ILine;
 
 //--------------------------------------------------------------------------
 /*! \brief the interface for iobjects
@@ -104,6 +115,7 @@ class inscore_export IObjectAdapter
 	static bool _getColor (const IColor* obj, JSColor& color);
 	static bool _getPenBrush (const IShape* obj, JSBrush& brush);
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
+	static bool _getLine  (const ILine* obj, JSLineInfos& infos);
 
 
 	public:
@@ -115,30 +127,7 @@ class inscore_export IObjectAdapter
 		
 		JSUpdateInfos getUpdateInfos () const;
 		JSTextInfos   getTextInfos () const;
-		float		getXPos () const			{ return fObject->getXPos(); }
-		float		getYPos () const			{ return fObject->getYPos(); }
-		float		getXOrigin () const			{ return fObject->getXOrigin(); }
-		float		getYOrigin () const			{ return fObject->getYOrigin(); }
-		float		getZOrder() const			{ return fObject->getZOrder(); }
-		float		getScale () const			{ return fObject->getScale(); }
-		TFloatPoint	getPos() const				{ return fObject->getPos(); }
-		float		getRotateX() const			{ return fObject->getRotateX(); }
-		float		getRotateY() const			{ return fObject->getRotateY(); }
-		float		getRotateZ() const			{ return fObject->getRotateZ(); }
-		float		getWidth() const			{ return fObject->getWidth(); }
-		float		getHeight() const			{ return fObject->getHeight(); }
-		TFloatSize	getDimension() const		{ return fObject->getDimension(); }
-		TFloatSize	getShear() const			{ return fObject->getShear(); }
-		bool		getVisible () const			{ return fObject->getVisible(); }
-		std::string getColor () const			{ return color2htmlColor (*fObject, false); }
-		float		getAlpha() const			{ return fObject->getA() / 255.f; }
-		bool		colorChanged () const		{ return ((IColor*)fObject)->modified(); }
-
-		float		getPenWidth() const			{ return fObject->getPenWidth(); }
-		std::string	getPenColor() const			{ return color2htmlColor( fObject->getPenColor(), false); }
-        std::string	getPenStyle() const			{ return fObject->getPenStyle(); }
-        std::string	getBrushStyle() const		{ return fObject->getBrushStyle(); }
-		bool		brushChanged () const		{ return ((IShape*)fObject)->modified(); }
+		JSLineInfos   getLineInfos () const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
