@@ -54,9 +54,9 @@ class INScoreJSGlue: public INScoreApplicationGlue
 		virtual ~INScoreJSGlue() {}
 
 		virtual void 	showMouse (bool state) 			{ std::cerr << "INScoreJSGlue::showMouse " << state << std::endl; }
-		virtual bool 	openUrl (const std::string& url){ std::cerr << "INScoreJSGlue::openUrl " << url << std::endl; return true; }
-		virtual void	startView () 					{ std::cerr << "INScoreJSGlue::startView" << std::endl; }
-		virtual void	stopView  () 					{ std::cerr << "INScoreJSGlue::stopView" << std::endl; }
+		virtual bool 	openUrl (const std::string& url){ return true; }
+		virtual void	startView () 					{}
+		virtual void	stopView  () 					{}
 
 		virtual std::string viewVersion() const 	{ return "JSView version 0.1a"; }
 		virtual std::string getIP() const			{ return "localhost"; }
