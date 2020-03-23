@@ -31,29 +31,7 @@
 #include "VSceneView.h"
 #ifdef EMCC
 #include <emscripten.h>
-#include "wasmglue.h"
 #endif
-
-//#include "VArcView.h"
-//#include "VAudioView.h"
-//#include "VCurveView.h"
-//#include "VEllipseView.h"
-//#include "VGestureFollowerView.h"
-//#include "VGraphView.h"
-//#include "VGridView.h"
-//#include "VGuidoItemView.h"
-//#include "VHttpdView.h"
-//#include "VImageView.h"
-//#include "VLayerView.h"
-//#include "VLineView.h"
-//#include "VObjectView.h"
-//#include "VPianoRollView.h"
-//#include "VPolygonView.h"
-//#include "VRectView.h"
-//#include "VSVGView.h"
-//#include "VTextView.h"
-//#include "VUrlIntermediateObjectView.h"
-//#include "VVideoView.h"
 
 using namespace std;
 
@@ -76,7 +54,7 @@ int JSObjectCreate (int , const char* , const IObject* )	{ return 0; }
 VObjectView*	ViewFactory::create (const IObject* obj, HTMLObjectView* parent)
 {
 	int id = JSObjectCreate(parent->getID(), obj->getTypeString().c_str(), obj);
-	cout << "ViewFactory::create object " << obj->name() << " div id: " << id  << " parent: " << (void*)parent << endl;
+//	cout << "ViewFactory::create object " << obj->name() << " div id: " << id  << " parent: " << (void*)parent << endl;
 	return new HTMLObjectView (id, parent);
 }
 

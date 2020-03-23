@@ -44,36 +44,7 @@ class ViewFactory
 
 	static VObjectView*		create (const IAppl* object);
 	static VSceneView*		create (const IScene* object);
-
 	static VObjectView*		create (const IObject* object,	HTMLObjectView* parent);
-//	static VObjectView*		create (const IArc* object,			HTMLObjectView* parent);
-//	static VObjectView*		create (const IAudio* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const ICurve* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const IEllipse* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const IGraphicSignal* object,  HTMLObjectView* parent);
-//	static VObjectView*		create (const ISGraphicSignal* object, HTMLObjectView* parent);
-//	static VObjectView*		create (const IRGraphicSignal* object, HTMLObjectView* parent);
-//	static VObjectView*		create (const IGuidoCode* object,	HTMLObjectView* parent);
-//	static VObjectView*		create (const IGuidoPianoRoll* object, HTMLObjectView* parent);
-//	static VObjectView*		create (const IGuidoPianoRollStream* object, HTMLObjectView* parent);
-//	static VObjectView*		create (const IGuidoFile* object,	HTMLObjectView* parent);
-//	static VObjectView*		create (const IGuidoPianoRollFile* object,	HTMLObjectView* parent);
-//	static VObjectView*		create (const IMusicXMLCode* object,HTMLObjectView* parent);
-//	static VObjectView*		create (const IMusicXMLFile* object,HTMLObjectView* parent);
-//	static VObjectView*		create (const IHtml* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const IHtmlFile* object,	HTMLObjectView* parent);
-//	static VObjectView*		create (const IImage* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const IMemImage* object,	HTMLObjectView* parent);
-//	static VObjectView*		create (const ILine* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const IPolygon* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const IGrid* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const ILayer* object,       HTMLObjectView* parent);
-//	static VObjectView*		create (const IRect* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const ISVG* object,			HTMLObjectView* parent);
-//	static VObjectView*		create (const ISVGFile* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const IText* object,		HTMLObjectView* parent);
-//	static VObjectView*		create (const ITextFile* object,	HTMLObjectView* parent);
-//	static VObjectView*		create (const IVideo* object,		HTMLObjectView* parent);
 };
 
 /*!@} */

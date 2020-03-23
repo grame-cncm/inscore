@@ -29,10 +29,6 @@
 #include "IColor.h"
 #include "INScore.h"
 
-#ifdef EMCC
-#include "wasmglue.h"
-#endif
-
 using namespace std;
 
 namespace inscore
