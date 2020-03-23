@@ -5,6 +5,7 @@
 ///<reference path="JSSceneView.ts"/>
 ///<reference path="JSRectView.ts"/>
 ///<reference path="JSEllipseView.ts"/>
+///<reference path="JSLineView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -24,12 +25,9 @@ class JSViewFactory {
 				view = new JSHtmlView(parent);
 				view.waitForSize (objid);
 				break; 			
-			case "rect":			
-				view = new JSRectView(parent);
-				break; 
-			case "ellipse":
-				view = new JSEllipseView(parent);
-				break; 
+			case "rect":	view = new JSRectView(parent); break; 
+			case "ellipse": view = new JSEllipseView(parent); break; 
+			case "line": 	view = new JSLineView(parent); break; 
 
 			case "arc":
 			case "audio":
@@ -46,7 +44,6 @@ class JSViewFactory {
 			case "html":
 			case "img":
 			case "layer":
-			case "line":
 			case "memimg":
 			case "musicxml":
 			case "polygon":
