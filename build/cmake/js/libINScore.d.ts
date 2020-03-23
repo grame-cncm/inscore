@@ -57,6 +57,14 @@ interface INScoreJSGlue {
 
 //------------------------------------------------------------------------
 // INScore objects interface 
+interface OLineInfo {
+	x: number;
+	y: number;
+	arrowLeft: 	number;
+	arrowRight: number;
+	arrowSizeLeft: number;
+	arrowSizeRight: number;
+}
 
 interface OTextInfo {
     text:   string;
@@ -111,6 +119,7 @@ interface INScoreObject {
 
     getUpdateInfos():  OUpdateInfos;
     getTextInfos():    OTextInfo;
+	getLineInfos():    OLineInfo;
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 
