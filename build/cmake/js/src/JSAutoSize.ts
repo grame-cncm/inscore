@@ -13,9 +13,7 @@ class JSAutoSize extends JSObjectView
     }
 
     updateSpecial (obj: INScoreObject, objid: number)	: boolean {
-        this.fSizeSynced = false;
         return this.waitForSize (objid);
-
     }
 
 	waitForSize (objid: number) : boolean {
@@ -23,14 +21,14 @@ class JSAutoSize extends JSObjectView
             let elt = this.getElement();
             let w = elt.clientWidth;
             let h = elt.clientHeight;
+// console.log("JSAutoSize::waitForSize " + this + " " + w + " -> " + h);
             if (!w || !h)  setTimeout (() => this.waitForSize (objid), 50) ;
-            return false;
+            else {
+                super.updateObjectSize (objid);
+                this.fSizeSynced = true;
+                JSObjectView.updateObjectView (this.getId(), objid);
+            }    
         }
-        else {
-            super.updateObjectSize (objid);
-            this.fSizeSynced = true;
-            JSObjectView.updateObjectView (this.getId(), objid);
-            return true;
-        }
+        return this.fSizeSynced;
 	}
 }

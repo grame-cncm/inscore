@@ -15,7 +15,7 @@ class INScoreGlue {
     // initialization
     initialize () : void {
 		this.fInscore.start();
-		this.fTimeTask = setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
+		this.fTimeTask = window.setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
 		let divs = document.getElementsByClassName("inscore") as HTMLCollectionOf<HTMLElement>;
 // console.log("JS INScoreGlue::initialize inscore " + divs.length)
 		for (let i=0; i<divs.length; i++)

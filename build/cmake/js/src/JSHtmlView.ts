@@ -37,6 +37,13 @@ class JSHtmlView extends JSAutoSize {
 	// 	this.getHtml().style.textShadow = color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px";
 	// }
 
+	// don't update text dimensions
+	updateDimensions(pos: OPosition, elt: HTMLElement) : void {}
+
+	updateSpecific(obj: INScoreObject)	: void { 
+		this.setFont (obj.getTextInfos());
+	}
+
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
         let text = obj.getTextInfos();
     	let elt = this.getElement();

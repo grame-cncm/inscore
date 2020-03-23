@@ -3,6 +3,9 @@
 ///<reference path="JSObjectView.ts"/>
 ///<reference path="JSHtmlView.ts"/>
 ///<reference path="JSSceneView.ts"/>
+///<reference path="JSRectView.ts"/>
+///<reference path="JSEllipseView.ts"/>
+
 
 //----------------------------------------------------------------------------
 class JSViewFactory {	
@@ -14,17 +17,23 @@ class JSViewFactory {
 
 	static create (parentid: number, type: string, objid: number) : number	{ 
 		let parent = JSObjectView.getVObject(parentid);
+		let view = null;
+
 		switch (type) {
 			case "txt":
-console.log ("JSViewFactory::create text parent id: " + parentid);
-			let view = new JSHtmlView(parent);
-			view.updateObjectSize (objid);
-			return view.getId(); 
+				view = new JSHtmlView(parent);
+				view.waitForSize (objid);
+				break; 			
+			case "rect":			
+				view = new JSRectView(parent);
+				break; 
+			case "ellipse":
+				view = new JSEllipseView(parent);
+				break; 
 
 			case "arc":
 			case "audio":
 			case "curve":
-			case "ellipse":
 			case "fileWatcher":
 			case "graph":
 			case "fastgraph":
@@ -49,7 +58,7 @@ console.log ("JSViewFactory::create text parent id: " + parentid);
 			case "signode":
 			case "video":
 console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
-				return null; 
+				break; 
 
 			case "gmnf":
 			case "pianorollf":
@@ -58,12 +67,12 @@ console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 			case "svgf":
 			case "txtf":
 		console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
-				return null; 
+				break; 
 		
 			default:
 console.log ("JSViewFactory::create unknown type " + type + " parent id: " + parent);
-				return null;
 		}
+		return view ? view.getId() : 0;
 	}
 }
 

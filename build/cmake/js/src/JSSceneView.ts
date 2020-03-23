@@ -11,15 +11,13 @@ class JSSceneView extends JSObjectView {
 		this.updateObjectSize (objid);
 		this.firstUpdate = true;
     }
-
-	parentWidth() : number				{ return document.body.clientWidth; }
-	parentHeight() : number				{ return document.body.clientHeight; }
-	colorTarget() : HTMLElement			{ return this.getElement(); }
-
-	updateColor(color: OColor, div: HTMLElement) {
+	
+	updateColor(color: OColor) {
+		let div = this.getElement();
 		div.style.background = color.rgb;
 		div.style.opacity 	 = color.alpha.toString();
 	}
 
-	toString() : string					{ return "VSceneView"; }
+
+	toString() : string					{ return "JSSceneView"; }
 }

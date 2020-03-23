@@ -1,6 +1,5 @@
 ///<reference path="../libINScore.d.ts"/>
 
-declare var require: any
 
 //----------------------------------------------------------------------------
 // INScore interface
@@ -13,15 +12,15 @@ class INScore {
     private	fJSGlue        :   INScoreJSGlue;
 
     async initialise():Promise<any> { 
-        return new Promise(function(resolve, reject) {
-        const Module = require("../libINScore");
-                Module().then(function(module: any) {
-                    this.moduleInit (module);
-                    resolve();
-                });
+        var module = INScoreModule();
+        return new Promise( (success: any, failure: any) => {
+            module['onRuntimeInitialized'] = () => {
+                this.moduleInit (module);
+                success ( this ); 
+                }
         });
     }
-        
+            
     //------------------------------------------------------------------------
     // async initialization
     moduleInit ( module : any ) : void {

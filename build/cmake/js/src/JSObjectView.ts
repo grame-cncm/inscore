@@ -3,6 +3,8 @@
 ///<reference path="inscore.ts"/>
 
 
+enum TPenStyle {  kSolid, kDash, kDot, kDashDot, kDashDotDot }
+
 //----------------------------------------------------------------------------
 class JSObjectView {
 
@@ -22,41 +24,62 @@ class JSObjectView {
 	}
 	
 	toString() : string				{ return "JSObjectView"; }
+	getId() : number	 			{ return this.fID; }
 	getElement() : HTMLElement		{ return this.fElement; }
 	getParent() : JSObjectView		{ return this.fParent; }
-	parentWidth() : number			{ return this.getParent().getElement().clientWidth; }
-	parentHeight() : number			{ return this.getParent().getElement().clientHeight; }
-
-    getId() : number	 				{ return this.fID; }
-	colorTarget() : HTMLElement			{ return this.fElement; }
-	posTarget() : HTMLElement			{ return this.fElement; }
+	parentWidth() : number			{ return this.getElement().parentElement.clientWidth; }
+	parentHeight() : number			{ return this.getElement().parentElement.clientHeight; }
+	localX() : number				{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.left; }
+	localY() : number				{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.top; }
+	localWidth() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.right - r.left; }
+	localHeight() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.bottom - r.top; }
+	posTarget() : HTMLElement		{ return this.fElement; }
+	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
+	updateSpecific(obj: INScoreObject)	: void { }
 
 	updateView(obj: INScoreObject, oid: number) : void {
-console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
+// console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 		let infos = obj.getUpdateInfos();
+		if (infos.deleted) {
+			this.getElement().parentNode.removeChild(this.getElement());
+			return;
+		}
+
 		if (infos.newdata)
 			if (!this.updateSpecial (obj, oid)) return;
 		if ( infos.updatepos) 
 			this.updatePosition(infos.position, this.posTarget());
 		if ( infos.updatecolor) 
-			this.updateColor(infos.color, this.colorTarget());
-		// this.updatePenControl(obj);
+			this.updateColor(infos.color);
+		if (infos.updatebrush)
+			this.updatePenControl(infos.brush);
+		this.updateSpecific (obj);
 		// this.updateEffects(obj);
 		// this.updateEvents(obj);
 	}
 
 
-	updateColor(color: OColor, elt: HTMLElement) : void {
-		elt.style.color = color.rgb;
-		elt.style.opacity = color.alpha.toString();
+	updateColor(color: OColor) : void {
+		this.fElement.style.color = color.rgb;
+		this.fElement.style.opacity = color.alpha.toString();
+	}
+
+	updatePenControl(brush: OBrush) : void {
+		let elt = this.getElement();
+		elt.style.borderWidth = brush.penWidth + 'px';
+		elt.style.borderColor = brush.penColor;
+console.log ("JSObjectView::updatePenControl penStyle: " + brush.penStyle);
+		elt.style.borderStyle = JSObjectView.penStyle2Css (brush.penStyle);
 	}
 
 	updatePosition(pos: OPosition, elt: HTMLElement) : void {
 		elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
-		elt.style.left 	= this.relative2SceneX(pos.x).toString() + "px";
-		elt.style.top  	= this.relative2SceneY(pos.y).toString() + "px";
-	console.log("JSObjectView::updatePosition " + this + " left: " + elt.style.left + " x: " + pos.x );
+		let x = this.localX() + this.relative2SceneX(pos.x);
+		let y = this.localY() + this.relative2SceneY(pos.y);
+		let offset = this.getOriginOffset (pos.xorigin, pos.yorigin);
+		elt.style.left 	= (x - offset.ox).toString() + "px";
+		elt.style.top  	= (y - offset.oy).toString() + "px";
 		elt.style.zIndex = pos.zorder.toString();
 		this.updateDimensions (pos, elt);
 	}
@@ -65,35 +88,16 @@ console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 		elt.style.width = this.relative2SceneWidth(pos.width) + "px";
 		elt.style.height = this.relative2SceneHeight(pos.height) + "px";
 	}
-	// updatePos(obj: IObject): void {
-	// 	let pos = this.fPositionHandler();
-	// 	if (pos.x == kNoPosition) {
-	// 		this.getHtml().style.visibility = "hidden";
-	// 		return;
-	// 	}
 
-	// 	let size = this.getSize(obj);
-	// 	let z = obj.fPosition.getZOrder();
-	// 	let left = this.relative2SceneX(pos.x);
-	// 	let top = this.relative2SceneY(pos.y);
-	// 	this.setPos(top, left, size.w, size.h);		// store the metrics
-	// 	let shear = obj.fPosition.getShear();
-
-	// 	let elt = this.getHtml();
-	// 	elt.style.width = size.w + "px";
-	// 	elt.style.height = size.h + "px";
-	// 	elt.style.left = left + "px";
-	// 	elt.style.top = top + "px";
-	// 	elt.style.zIndex = z.toString();
-	// 	elt.style.transform = this.getTransform(obj) + " skewX(" + shear[0] + "rad) skewY(" + shear[1] + "rad)";
-	// 	elt.style.visibility = obj.fPosition.getVisible() ? "inherit" : "hidden";
-	// }
-
-	// parentWidth() : number				{ return this.fParent ? this.fParent.clientWidth : document.body.clientWidth; }
-	// parentHeight() : number				{ return this.fParent ? this.fParent.clientHeight : document.body.clientHeight; }
-
-	relative2SceneY(y : number)  : number			{ return this.parentHeight() * (y + 1.0) / 2.0; }
+	getOriginOffset(xo : number, yo: number)  : {ox: number, oy: number} { 
+		let r = this.getElement().getBoundingClientRect();
+		let w = (r.right - r.left);
+		let h = (r.bottom - r.top);
+		console.log("JSObjectView::getOriginOffset " + this + " " + w + " / " + h + " cw: " + this.getElement().clientWidth);
+		return { ox: w * (xo + 1) / 2, oy: h * (yo + 1) / 2 }; 
+	}
 	relative2SceneX(x : number)  : number			{ return this.parentWidth() * (x + 1.0) / 2.0; }
+	relative2SceneY(y : number)  : number			{ return this.parentHeight() * (y + 1.0) / 2.0; }
 	relative2SceneWidth(width : number)  : number	{ return Math.min(this.parentWidth(), this.parentHeight()) * width / 2.0; }
 	relative2SceneHeight(height : number) : number	{ return Math.min(this.parentWidth(), this.parentHeight()) * height / 2.0; }
 	scene2RelativeWidth(width : number)	 : number	{ return (width * 2.0) / this.parentWidth(); }
@@ -103,10 +107,21 @@ console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 
 	updateObjectSize (objid : number) : void {
 		let obj = INScore.objects().create(objid);
-console.log("JSObjectView::updateObjectSize " + this + " " + this.getElement().clientWidth + " -> " + this.parentWidth());
+// console.log("JSObjectView::updateObjectSize " + this + " " + this.getElement().clientWidth + " -> " + this.parentWidth());
 		obj.updateWidth  (this.scene2RelativeWidth  (this.getElement().clientWidth)); 
 		obj.updateHeight (this.scene2RelativeHeight (this.getElement().clientHeight)); 
 		INScore.objects().del (obj);		
+	}
+
+	static penStyle2Css(style: number): string {
+		let str = "solid";
+		switch (style) {
+			case TPenStyle.kDashDot:
+			case TPenStyle.kDash:			str = "dashed"; break;
+			case TPenStyle.kDashDotDot:
+			case TPenStyle.kDot:			str = "dotted"; break;
+		}
+		return str;
 	}
 
     static getVObject (id : number)	: JSObjectView	{ return JSObjectView.fObjects[id]; }

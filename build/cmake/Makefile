@@ -42,7 +42,7 @@ endif
 GENERATOR ?= "Unix Makefiles"	# default generator
 J  ?= -j 4
 
-CHECKDIR := checkout
+CHECKDIR := js/check
 TSDIR := js/src
 TSSRC := $(wildcard $(TSDIR)/*.ts)
 OUT	  := $(patsubst $(TSDIR)/%.ts, $(CHECKDIR)/%.js, $(TSSRC))
@@ -55,13 +55,17 @@ help :
 	@echo "This makefile is intended to build the INScore model library."
 	@echo "Available targets are : "
 	@echo "  library : to build the library (default)"
+	@echo "  ts      : to build the typescript library"
 	@echo "  js      : to build the wasm library"
 	@echo "  jstest  : copy the wasm output to js"
 	@echo
 	@echo "Project management: "
-	@echo "  cmake    : to (re)generate the projects"
-	@echo "  cmakejs  : to (re)generate the emcc projects"
-	@echo "  voidview : to regenerate the projects with no view inside a 'noview' folder"
+	@echo "  tsclean   : remove output of ts target"
+	@echo "  check     : check typescript code"
+	@echo "  checkclean: remove output of check target"
+	@echo "  cmake     : to (re)generate the projects"
+	@echo "  cmakejs   : to (re)generate the emcc projects"
+	@echo "  voidview  : to regenerate the projects with no view inside a 'noview' folder"
 	@echo
 	@echo "Options:"
 	@echo "  CMAKEOPT : options passed to cmake at project generation"
@@ -82,17 +86,23 @@ $(LIBDIR):
 #===============================================================
 # building inscore ts view
 #===============================================================
+ts: js/inscoreview.js
+tsclean : 
+	rm -f js/inscoreview.js
+
 js/inscoreview.js : $(TSSRC) js/libINScore.d.ts $(TSDIR)/tsconfig.json
 	cd $(TSDIR) && tsc
 
 check: $(CHECKDIR) $(OUT)
+checkclean: 
+	rm -f $(OUT)
 
 $(CHECKDIR) :
 	mkdir $(CHECKDIR)
 
-TSOPT  :=  --lib 'es2015' --lib 'dom' --noImplicitAny  --noImplicitReturns --alwaysStrict
+TSOPT  := --jsx react --target es3 --lib es2015,dom --noImplicitAny  --noImplicitReturns --alwaysStrict
 $(CHECKDIR)/%.js: $(TSDIR)/%.ts
-	tsc $(TSOPT) -out $@ $< 
+	tsc $(TSOPT) -out $@ $< || rm $@
 
 
 #===============================================================
@@ -110,7 +120,8 @@ cmakejs : $(EMCCDIR)
 	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
 
 js: $(EMCCDIR) js/inscoreview.js
-	make -C $(EMCCDIR) wasmlib
+	$(MAKE) -C $(EMCCDIR) wasmlib
+	$(MAKE) jstest
 
 $(EMCCDIR):
 	mkdir $(EMCCDIR)
