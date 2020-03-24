@@ -11,26 +11,40 @@ class JSObjectView {
 	private fID = 0;
 	private fElement : HTMLElement;
 	private fParent  : JSObjectView;
+	private fAbsolutePos : boolean;
 
     constructor(elt: HTMLElement, parent: JSObjectView, absolute=true) { 
-		this.fID = ++JSObjectView.fGlobalID; 	// create a unique identifier
+		this.fID = ++JSObjectView.fGlobalID; 		// create a unique identifier
     	JSObjectView.fObjects[this.fID] = this; 	// store the div using its id
     	this.fParent = parent; 
 		this.fElement = elt; 
 		if (parent) parent.getElement().appendChild (elt);
+		this.fAbsolutePos = absolute;
 		if (absolute) elt.style.position = "absolute";
 	}
 	
 	toString() : string				{ return "JSObjectView"; }
 	getId() : number	 			{ return this.fID; }
+	absolutePos() : boolean			{ return this.fAbsolutePos; }
 	getElement() : HTMLElement		{ return this.fElement; }
 	getParent() : JSObjectView		{ return this.fParent; }
-	parentWidth() : number			{ return this.getElement().parentElement.clientWidth; }
-	parentHeight() : number			{ return this.getElement().parentElement.clientHeight; }
-	localX() : number				{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.left; }
-	localY() : number				{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.top; }
-	// localWidth() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.right - r.left; }
-	// localHeight() : number			{ let r = this.getElement().parentElement.getBoundingClientRect(); return r.bottom - r.top; }
+	parentWidth() : number			{ 
+		let elt = this.getElement().parentElement;
+		return Math.min(elt.clientWidth, elt.clientHeight); 
+	}
+	parentHeight() : number			{ 
+		let elt = this.getElement().parentElement;
+		return Math.min(elt.clientWidth, elt.clientHeight); 
+	}
+	parentPos() : {x: number, y: number} { 
+		if (!this.getParent() || this.getParent().absolutePos())
+			return { x: 0, y: 0 };
+		let r = this.getElement().parentElement.getBoundingClientRect();
+		let width = r.right - r.left;
+		let height = r.bottom - r.top;
+		let offset = (width - height) / 2;
+		return  (width > height) ? { x: r.left + offset, y: r.top } : { x: r.left, y: r.top - offset };
+	}
 	posTarget() : HTMLElement		{ return this.fElement; }
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
@@ -39,20 +53,22 @@ class JSObjectView {
 	updateView(obj: INScoreObject, oid: number) : void {
 // console.log("JSObjectView::updateView : " + this + " id: " + this.fID );
 		let infos = obj.getUpdateInfos();
-		if (infos.deleted) {
+		if (infos.deleted  && this.getElement().parentNode) { // parent could be deleted
 			this.getElement().parentNode.removeChild(this.getElement());
 			return;
 		}
 
-		if (infos.newdata)
+		if (infos.newdata) {
 			if (!this.updateSpecial (obj, oid)) return;
+			else infos.updatepos = true;
+		}
 		if ( infos.updatecolor) 
 			this.updateColor(infos.color);
 		if (infos.updatebrush)
 			this.updatePenControl(infos.brush);
-		if ( infos.updatepos) 
-			this.updatePosition(infos.position, this.posTarget());
 		this.updateSpecific (obj);
+		if (infos.updatepos || infos.updatebrush)
+			this.updatePosition(infos.position, this.posTarget());
 		// this.updateEffects(obj);
 		// this.updateEvents(obj);
 	}
@@ -72,8 +88,9 @@ class JSObjectView {
 
 	updatePosition(pos: OPosition, elt: HTMLElement) : void {
 		elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
-		let x = this.localX() + this.relative2SceneX(pos.x);
-		let y = this.localY() + this.relative2SceneY(pos.y);
+		let ppos = this.parentPos();
+		let x = ppos.x + this.relative2SceneX(pos.x);
+		let y = ppos.y + this.relative2SceneY(pos.y);
 		let offset = this.getOriginOffset (pos.xorigin, pos.yorigin);
 		elt.style.left 	= (x - offset.ox).toString() + "px";
 		elt.style.top  	= (y - offset.oy).toString() + "px";
