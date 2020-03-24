@@ -4,3 +4,6 @@ js/libINScore.js
 js/libINScore.wasm
 lib/
 libdir/
+js/check/
+js/inscoreview.js
+js/src/js/
