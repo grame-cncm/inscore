@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <title>HTML Tests</title>
+
+	<style>
+	body { margin: 50; background: gainsboro }
+	.box {  margin: 20; width: 50%; height: 50%; border: 1px black solid; }
+	</style>
+</head>
+
+<script> 
+	function size (elt) {
+		let width = elt.clientWidth;
+		let height = elt.clientHeight;
+		return "w/h: " + width + " x " + height;
+	
+	}
+	function pos (elt) {
+		let r = elt.getBoundingClientRect();
+		let x = r.left;
+		let y = r.top;
+		return "x: " + x + " y: " + y;
+	}
+	function info (elt) {
+		let out = elt.toString() + " " + elt.getAttribute("name") + " " + size(elt) + " " + pos(elt) +"\n";
+		if (elt.parentElement) {
+			out += "parent: " + elt.parentElement.toString();
+			out += "\n" + info(elt.parentElement);
+		}
+		return out;
+	}
+	function infos () {
+		var out = info(document.getElementById("a"));
+		out += "\n\n" + info(document.getElementById("b"));
+		var div = document.getElementById("info");
+		div.innerHTML = out;
+	}
+</script>
+
+<body style="margin: 40px">
+
+<div class="box" id="a"  name=box1>
+Hello world!
+</div>
+<div class="box" name=box2>
+<div class="box" id="b" name=inside>
+Hello boy!
+</div>
+</div>
+
+
+<pre id="info">
+	<script> infos(); </script>
+</pre>
+
+</body>
+
+</html>
+
+
