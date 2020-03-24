@@ -69,35 +69,29 @@ bool IObjectAdapter::_getColor (const IColor* obj, JSColor& color)
 //--------------------------------------------------------------------------
 bool IObjectAdapter::_getPenBrush (const IShape* obj, JSBrush& brush)
 {
-	if (obj->modified()) {
-		brush.penWidth = obj->getPenWidth();
-		brush.penColor = color2htmlColor(obj->getPenColor(), true);
-        brush.penStyle = fPenStyles[obj->getPenStyle()];
-        brush.brushStyle = fBrushStyles[obj->getBrushStyle()];
-        return true;
-	}
-	return false;
+	brush.penWidth = obj->getPenWidth();
+	brush.penColor = color2htmlColor(obj->getPenColor(), true);
+	brush.penStyle = fPenStyles[obj->getPenStyle()];
+	brush.brushStyle = fBrushStyles[obj->getBrushStyle()];
+	return obj->modified();
 }
 
 //--------------------------------------------------------------------------
 bool IObjectAdapter::_getPosition (const IPosition* obj, JSPosition& pos)
 {
-	if (obj->modified()) {
-		pos.x 		= obj->getXPos();
-		pos.y 		= obj->getYPos();
-		pos.width 	= obj->getWidth();
-		pos.height 	= obj->getHeight();
-		pos.xorigin	= obj->getXOrigin();
-		pos.yorigin	= obj->getYOrigin();
-		pos.zorder	= obj->getZOrder();
-		pos.scale	= obj->getScale();
-		pos.hidden	= !obj->getVisible();
-		pos.xangle	= obj->getRotateX();
-		pos.yangle	= obj->getRotateY();
-		pos.zangle	= obj->getRotateZ();
-		return true;
-	}
-	return false;
+	pos.x 		= obj->getXPos();
+	pos.y 		= obj->getYPos();
+	pos.width 	= obj->getWidth();
+	pos.height 	= obj->getHeight();
+	pos.xorigin	= obj->getXOrigin();
+	pos.yorigin	= obj->getYOrigin();
+	pos.zorder	= obj->getZOrder();
+	pos.scale	= obj->getScale();
+	pos.hidden	= !obj->getVisible();
+	pos.xangle	= obj->getRotateX();
+	pos.yangle	= obj->getRotateY();
+	pos.zangle	= obj->getRotateZ();
+	return obj->modified();
 }
 
 //--------------------------------------------------------------------------
