@@ -13,6 +13,9 @@ class JSLineView extends JSSvgView {
     }    
 
     getSVGTarget() : SVGShape  { return this.fLine; }
+	toString() : string		   { return "JSLineView"; }
+
+	updateSVGDimensions(w: number, h: number) : void {}
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
 		let line = obj.getLineInfos();
