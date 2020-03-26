@@ -78,9 +78,12 @@ o = 1;
 /ITL/scene/rect get x y xorigin yorigin;
 
 /ITL/scene/line set line wa 1 0;
+/ITL/scene/line set line wa 1 45;
 /ITL/scene/line penWidth 14;
+/ITL/scene/line penWidth 1;
 /ITL/scene/line penColor blue;
 
+/ITL/scene/title set txt "Hello";
 /ITL/scene/title fontFamily "Times New Roman";
 /ITL/scene/title color blue;
 /ITL/scene/title set rect 0.1 0.1;
