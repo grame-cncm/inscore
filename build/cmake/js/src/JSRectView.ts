@@ -11,26 +11,11 @@ class JSRectView extends JSSvgView {
     	this.fSVG.appendChild(this.fRect)
     }    
 
-    getSVGTarget() : SVGShape  { return this.fRect; }
+    getSVGTarget() : SVGShape   { return this.fRect; }
+	toString() : string		    { return "JSRectView"; }
 
-
-    updateDimensions(pos: OPosition) : void {
-		this.fRect.style.width = this.relative2SceneWidth(pos.width) + "px";
-        this.fRect.style.height = this.relative2SceneHeight(pos.height) + "px";
-        super.updateDimensions (pos);
+	updateSVGDimensions(w: number, h: number) : void {
+        this.fRect.style.width  = w + "px";
+        this.fRect.style.height = h + "px";
 	}
-
-    
-	// updateView	( obj: IObject) : void {
-	// 	super.updateView(obj);
-	// 	let size = this.getInnerSize(obj);
-    //     this.updateCommonSVG(obj, size.w, size.h);
-
-    //     let rect = <IRect>obj;
-    //     let radius = rect.getRadius();
-    //     if (radius) {
-	//         this.fRect.setAttribute('rx', radius[0].toString());
-	//         this.fRect.setAttribute('ry', radius[1].toString());
-	//     }
-    // }
 }

@@ -32,15 +32,20 @@ abstract class JSSvgView extends JSObjectView {
 		this.getElement().appendChild(this.fSVG);
 	}
     abstract getSVGTarget() : SVGShape;
+	abstract updateSVGDimensions(w: number, h: number) : void;
 
-	updateDimensions(pos: OPosition) : void {
-		let elt = this.getSVGTarget();
-		let r = elt.getBoundingClientRect();
-		this.fSVG.style.width  = (r.right - r.left) + "px";
-		this.fSVG.style.height = (r.bottom - r.top) + "px";
-		// this.fSVG.style.width  = this.relative2SceneWidth(pos.width) + "px";
-		// this.fSVG.style.height = this.relative2SceneHeight(pos.height) + "px";
-	}
+	updateDimensions(pos: OPosition, strokewidth: number, ) : void {
+		// let target = this.getSVGTarget();
+    	let w = this.relative2SceneWidth(pos.width);
+		let h = this.relative2SceneHeight(pos.height);
+		this.updateSVGDimensions (w, h);
+		// strokewidth *= 2;
+ 		// let r = this.getSVGTarget().getBoundingClientRect();
+		// this.fSVG.style.width  = r.width + "px";
+		// this.fSVG.style.height = r.height + "px";
+		 this.fSVG.style.width  = (w + strokewidth) + "px";
+		 this.fSVG.style.height = (h + strokewidth) + "px";
+	  }
 
     updateColor(color: OColor) : void {
 		let target = this.getSVGTarget();
@@ -55,52 +60,18 @@ abstract class JSSvgView extends JSObjectView {
 		elt.style.strokeDasharray = JSSvgView.penStyle2Dash(brush.penStyle);
 	}
 	
-	// getInnerSize (obj: IObject):  {w: number, h: number } {
-	// 	let strokeWidth = obj.fPenControl.getPenWidth();
-    //     let w   	 = this.fWidth - strokeWidth;
-    //     let h 		 = this.fHeight - strokeWidth;
-	// 	return { w: (w ? w : 1), h: (h ? h : 1) };
-	// }
-
-	// updateView	( obj: IObject) : void {
-	// 	super.updateView(obj);
-	// 	this.fSVG.style.width = this.fWidth + "px";
-    //     this.fSVG.style.height = this.fHeight + "px";
-    //     this.fSVG.style.verticalAlign = "top";
-	// 	this.fSVG.style.overflow = "visible";
-	// }
+	updatePosition(pos: OPosition, strokewidth: number, elt: HTMLElement) : void {
+		// strokewidth /= 2;
+		super.updatePosition (pos, strokewidth, elt);
+		// let target = this.getSVGTarget();
+		// target.style.transform = strokewidth ? `translate(${strokewidth}px,${strokewidth}px) ` : "none"
+	}
 
 	// basePenControl(obj:IObject): void {	// provided to bypass the SVG behavior
 	// 	super.updatePenControl (obj);
 	// }
 
-	// updatePenControl(obj:IObject): void {
-	// 	if (obj.fPenControl.modified()) {
-	// 		this.fSVG.style.strokeWidth = obj.fPenControl.getPenWidth().toString();
-	// 		this.fSVG.style.stroke = obj.fPenControl.getPenColor().getRGBString();
-	// 		this.fSVG.style.strokeOpacity = (obj.fPenControl.getPenAlpha()/255).toString();
-	// 		this.fSVG.style.strokeDasharray = VHtmlSvg.penStyle2Dash(obj.fPenControl.getPenStyleNum());
-	// 	}
-	// }
-
 	// getViewScale (obj: IObject): number { return obj.fPosition.getScale(); }
-
-	// updateCommonSVG (obj: IObject, w: number, h: number) : void {
-    //    	let target = this.getSVGTarget();
-	// 	target.setAttribute('width', w.toString());
-	// 	target.setAttribute('height', h.toString());
-    //     target.style.transform = this.strokeTranslate(obj);
-	// }
-
-	// innerTranslate  (obj: IObject): {x: number, y: number} {
-    // 	let w = obj.fPenControl.getPenWidth() / 2;
-    // 	return {x: w, y: w}
-	// }
-
-    // strokeTranslate(obj:IObject) : string {
-    // 	let t = this.innerTranslate(obj);
-    //     return (t.x || t.y) ? `translate(${t.x}px,${t.y}px) ` : "none";
-    // }
 
 	// setNone () : void 				{ this.fSVG.setAttribute("filter", "blur(0px)");  }
 	// setBlur (val: number) : void 	{ this.fSVG.setAttribute("filter", "blur(" + val + "px)"); }

@@ -14,14 +14,14 @@ class JSEllipseView extends JSSvgView {
     }    
 
     getSVGTarget() : SVGShape  { return this.fEllipse; }
+	toString() : string		   { return "JSEllipseView"; }
 
-    updateDimensions(pos: OPosition) : void {
-        let rx = this.relative2SceneWidth(pos.width) / 2;
-        let ry = this.relative2SceneHeight(pos.height) / 2;
+    updateSVGDimensions(w: number, h: number) : void {
+        let rx = w / 2;
+        let ry = h / 2;
         this.fEllipse.setAttribute('cx', rx.toString());
         this.fEllipse.setAttribute('cy', ry.toString());
         this.fEllipse.setAttribute('rx', rx.toString());
         this.fEllipse.setAttribute('ry', ry.toString());
-        super.updateDimensions (pos);
-	}
+    }
 }
