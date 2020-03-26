@@ -40,6 +40,8 @@ __END__
 /ITL/scene get width height;
 
 /ITL/scene/text set txt "Hello world";
+/ITL/scene/text y 1;
+/ITL/scene/text x 1;
 /ITL/scene/text fontSize 20;
 /ITL/scene/text get width height;
 /ITL/scene/text color 25 61 200 100;
@@ -51,40 +53,57 @@ __END__
 /ITL/scene/rect set rect 0.2 0.2;
 /ITL/scene/rect set rect 1 1 ;
 /ITL/scene/rect color 255 160 0 ;
-pos = 0;
+pos = 0.5;
 /ITL/scene/rect x $pos ;
 /ITL/scene/rect y $pos ;
-o = 0;
+o = 1;
 /ITL/scene/rect xorigin $o ;
 /ITL/scene/rect yorigin $o ;
+/ITL/scene/rect xorigin 1 ;
+/ITL/scene/rect yorigin -1 ;
 /ITL/scene/rect penWidth 12;
 /ITL/scene/rect penColor blue;
 /ITL/scene/rect penStyle dashDotDot;
 /ITL/scene/rect penAlpha 250;
 /ITL/scene/rect alpha 100;
+/ITL/scene/rect angle 45;
+/ITL/scene/rect angle 0;
+/ITL/scene/rect width 1;
+/ITL/scene/rect scale 1;
+/ITL/scene/rect scale 1.5;
+/ITL/scene/rect scale 0.5;
+/ITL/scene/rect show 1;
 /ITL/scene/rect del;
 
-/ITL/scene/rect get xorigin yorigin;
+/ITL/scene/rect get x y xorigin yorigin;
 
 /ITL/scene/line set line wa 1 0;
-/ITL/scene/line penWidth 8;
+/ITL/scene/line penWidth 14;
 /ITL/scene/line penColor blue;
 
 /ITL/scene/title fontFamily "Times New Roman";
 /ITL/scene/title color blue;
 /ITL/scene/title set rect 0.1 0.1;
 /ITL/scene/title z 1;
+/ITL/scene/title scale 0.8;
+/ITL/scene/title x 0;
+/ITL/scene/title angle 10;
 
 /ITL/scene/title penWidth 0;
 
+/ITL/scene/line width 1;
 
 /ITL/scene/circ/circ set ellipse 0.2 0.2;
 pos = 0;
 /ITL/scene/circ/circ x $pos;
 /ITL/scene/circ/circ y $pos;
-pos = -0.5;
+/ITL/scene/circ/circ color white;
+pos = 0;
 /ITL/scene/circ x $pos;
 /ITL/scene/circ y $pos;
+o = 1;
+/ITL/scene/circ xorigin $o;
+/ITL/scene/circ yorigin $o;
 /ITL/scene/circ set ellipse 0.4 0.4;
 /ITL/scene/circ set ellipse 1 1 ;
 /ITL/scene/circ color 200 200 200 ;
