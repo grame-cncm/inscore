@@ -22,6 +22,7 @@
 
 */
 
+#include <algorithm>
 
 #include "IObjectAdapter.h"
 #include "IText.h"
@@ -110,12 +111,35 @@ bool IObjectAdapter::_getText (const IText* obj, JSTextInfos& infos)
 
 
 //--------------------------------------------------------------------------
-bool IObjectAdapter::_getLine (const ILine* obj, JSLineInfos& infos)
+bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 {
 	if (obj) {
+		float xo = 0;
+		float yo = 0;
 		TFloatPoint p = obj->getPoint();
-		infos.x = p.x();
-		infos.y = p.y();
+		float x = p.x();
+		float y = p.y();
+		if ((x < 0) && (y < 0)) {
+			x = -x;
+			y = -y;
+		} else if (x < 0) {
+			yo = y;
+			x = -x;
+			y = 0;
+		}
+		else if (y < 0) {
+			yo = -y;
+			y = 0;
+		}
+		float w = std::abs(x - xo);
+		float h = std::abs(y - yo);
+		obj->setWidth (w);
+		obj->setHeight(h);
+		
+		infos.x1 = std::min(x, xo);
+		infos.y1 = std::min(y, yo);
+		infos.x2 = std::max(x, xo);
+		infos.y2 = std::max(y, yo);
 		infos.arrowLeft		= obj->getArrowLeft();
 		infos.arrowRight	= obj->getArrowRight();
 		infos.arrowLeftSize = obj->getArrowSizeLeft();
@@ -169,7 +193,7 @@ JSTextInfos IObjectAdapter::getTextInfos () const
 JSLineInfos IObjectAdapter::getLineInfos () const
 {
 	JSLineInfos infos;
-	if (!_getLine (dynamic_cast<const ILine*>((IObject*)fObject), infos))
+	if (!_getLine (dynamic_cast<ILine*>((IObject*)fObject), infos))
 		cerr << "IObjectAdapter::getLineInfos: unexpected null object!" << endl;
 	return infos;
 }

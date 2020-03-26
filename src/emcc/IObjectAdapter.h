@@ -88,8 +88,10 @@ struct JSTextInfos {
 };
 
 struct JSLineInfos {
-	float 	x;
-	float 	y;
+	float 	x1;
+	float 	y1;
+	float 	x2;
+	float 	y2;
 	int		arrowLeft;
 	int		arrowRight;
 	float	arrowLeftSize;
@@ -115,7 +117,7 @@ class inscore_export IObjectAdapter
 	static bool _getColor (const IColor* obj, JSColor& color);
 	static bool _getPenBrush (const IShape* obj, JSPen& brush);
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
-	static bool _getLine  (const ILine* obj, JSLineInfos& infos);
+	static bool _getLine  (ILine* obj, JSLineInfos& infos);
 
 
 	public:

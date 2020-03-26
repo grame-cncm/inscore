@@ -82,8 +82,10 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("style", 	&JSTextInfos::style);
 	
 	value_object<JSLineInfos>("JSLineInfos")
-		.field("x",  	&JSLineInfos::x)
-		.field("y",   	&JSLineInfos::y)
+		.field("x1",  	&JSLineInfos::x1)
+		.field("y1",   	&JSLineInfos::y1)
+		.field("x2",  	&JSLineInfos::x2)
+		.field("y2",   	&JSLineInfos::y2)
 		.field("arrowLeft",   	&JSLineInfos::arrowLeft)
 		.field("arrowRight",   	&JSLineInfos::arrowRight)
 		.field("arrowLeftSize",   	&JSLineInfos::arrowLeftSize)
