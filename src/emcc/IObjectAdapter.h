@@ -36,6 +36,13 @@
 namespace inscore
 {
 
+struct JSPen {
+	float  penWidth;
+	std::string penColor;
+	int penStyle;
+	int brushStyle;
+};
+
 struct JSPosition {
 	float x;
 	float y;
@@ -49,18 +56,12 @@ struct JSPosition {
 	float yangle;
 	float zangle;
 	float zorder;
+	JSPen pen;
 };
 
 enum TPenStyle 		{ kSolid, kDash, kDot, kDashDot, kDashDotDot };
 enum TBrushStyle 	{ kDense1, kDense2, kDense3, kDense4, kDense5, kDense6, kDense7,
 					  kNoBrush, kBrushHor, kBrushVer, kCross, kBDiag, kFDiag, kDiagCross };
-
-struct JSBrush {
-	float  penWidth;
-	std::string penColor;
-	int penStyle;
-	int brushStyle;
-};
 
 struct JSColor {
 	std::string rgb;
@@ -70,7 +71,6 @@ struct JSColor {
 
 struct JSUpdateInfos {
 	JSPosition 	position;
-	JSBrush		brush;
 	JSColor  	color;
 	bool updatepos = false;
 	bool updatebrush = false;
@@ -113,7 +113,7 @@ class inscore_export IObjectAdapter
 	static void _updateHeight (IPosition* pos, float h);
 	static bool _getPosition (const IPosition* obj, JSPosition& pos);
 	static bool _getColor (const IColor* obj, JSColor& color);
-	static bool _getPenBrush (const IShape* obj, JSBrush& brush);
+	static bool _getPenBrush (const IShape* obj, JSPen& brush);
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
 	static bool _getLine  (const ILine* obj, JSLineInfos& infos);
 

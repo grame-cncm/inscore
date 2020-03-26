@@ -80,7 +80,7 @@ interface OColor {
 	alpha:   number;
 }
 
-interface OBrush {
+interface OPen {
 	penWidth:   number;
 	penColor:   string;
 	penStyle:   number;
@@ -100,11 +100,11 @@ interface OPosition {
 	yangle:    number;
 	zangle:    number;
 	zorder:    number;
+	pen: 	OPen;
 }
 
 interface OUpdateInfos {
 	position:  OPosition;
-	brush:     OBrush;
 	color:     OColor;
 	updatepos:  boolean;
 	updatebrush:  boolean;

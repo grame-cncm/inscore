@@ -34,11 +34,11 @@ abstract class JSSvgView extends JSObjectView {
     abstract getSVGTarget() : SVGShape;
 	abstract updateSVGDimensions(w: number, h: number) : void;
 
-	updateDimensions(pos: OPosition, strokewidth: number, ) : void {
+	updateDimensions(pos: OPosition) : void {
     	let w = this.relative2SceneWidth(pos.width);
 		let h = this.relative2SceneHeight(pos.height);
 		this.updateSVGDimensions (w, h);
-		strokewidth *= 2;
+		let strokewidth = pos.pen.penWidth * 2;
 		this.fSVG.style.width  = (w + strokewidth) + "px";
 		this.fSVG.style.height = (h + strokewidth) + "px";
 	  }
@@ -49,16 +49,17 @@ abstract class JSSvgView extends JSObjectView {
 		target.style.fillOpacity = color.alpha.toString();
 	}
 
-	updatePenControl(brush: OBrush) : void {
+	updatePenControl(pen: OPen) : void {
 		let elt = this.getSVGTarget();
-		elt.style.strokeWidth = brush.penWidth.toString();
-		elt.style.stroke = brush.penColor;
-		elt.style.strokeDasharray = JSSvgView.penStyle2Dash(brush.penStyle);
+		elt.style.strokeWidth = pen.penWidth.toString();
+		elt.style.stroke = pen.penColor;
+		elt.style.strokeDasharray = JSSvgView.penStyle2Dash(pen.penStyle);
 	}
 	
-	getPos(pos: OPosition, strokewidth: number) : Point {
+	getPos(pos: OPosition) : Point {
+		let strokewidth = pos.pen.penWidth;
 		this.getSVGTarget().style.transform = strokewidth ? `translate(${strokewidth}px,${strokewidth}px)` : "";
-		return super.getPos(pos, strokewidth);
+		return super.getPos(pos);
 	}
 
 	// setNone () : void 				{ this.fSVG.setAttribute("filter", "blur(0px)");  }

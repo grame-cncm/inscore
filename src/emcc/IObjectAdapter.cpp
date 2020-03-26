@@ -67,12 +67,12 @@ bool IObjectAdapter::_getColor (const IColor* obj, JSColor& color)
 }
 
 //--------------------------------------------------------------------------
-bool IObjectAdapter::_getPenBrush (const IShape* obj, JSBrush& brush)
+bool IObjectAdapter::_getPenBrush (const IShape* obj, JSPen& pen)
 {
-	brush.penWidth = obj->getPenWidth();
-	brush.penColor = color2htmlColor(obj->getPenColor(), true);
-	brush.penStyle = fPenStyles[obj->getPenStyle()];
-	brush.brushStyle = fBrushStyles[obj->getBrushStyle()];
+	pen.penWidth = obj->getPenWidth();
+	pen.penColor = color2htmlColor(obj->getPenColor(), true);
+	pen.penStyle = fPenStyles[obj->getPenStyle()];
+	pen.brushStyle = fBrushStyles[obj->getBrushStyle()];
 	return obj->modified();
 }
 
@@ -184,8 +184,9 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos () const
 	else {
 		infos.newdata = fObject->newData();
 		infos.updatepos = _getPosition (fObject, infos.position);
+		infos.updatebrush = _getPenBrush (fObject, infos.position.pen);
+		if (infos.updatebrush) infos.updatepos = true;
 		infos.updatecolor = _getColor (fObject, infos.color);
-		infos.updatebrush = _getPenBrush (fObject, infos.brush);
 	}
 	return infos;
 }

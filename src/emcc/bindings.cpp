@@ -38,7 +38,13 @@ using namespace inscore;
  * This structures can be created and manipulated in javascript side like json object and passed to C++ method.
  */
 EMSCRIPTEN_BINDINGS(CStruct) {
-	
+
+	value_object<JSPen>("JSPen")
+		.field("penWidth",   &JSPen::penWidth)
+		.field("penColor",   &JSPen::penColor)
+		.field("penStyle",   &JSPen::penStyle)
+		.field("brushStyle", &JSPen::brushStyle);
+
 	value_object<JSPosition>("JSPosition")
 		.field("x", 	  &JSPosition::x)
 		.field("y", 	  &JSPosition::y)
@@ -51,13 +57,8 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("xangle",  &JSPosition::xangle)
 		.field("yangle",  &JSPosition::yangle)
 		.field("zangle",  &JSPosition::zangle)
-		.field("zorder",  &JSPosition::zorder);
-	
-	value_object<JSBrush>("JSBrush")
-		.field("penWidth",   &JSBrush::penWidth)
-		.field("penColor",   &JSBrush::penColor)
-		.field("penStyle",   &JSBrush::penStyle)
-		.field("brushStyle", &JSBrush::brushStyle);
+		.field("zorder",  &JSPosition::zorder)
+		.field("pen",     &JSPosition::pen);
 	
 	value_object<JSColor>("JSColor")
 		.field("rgb",   &JSColor::rgb)
@@ -66,7 +67,7 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	
 	value_object<JSUpdateInfos>("JSUpdateInfos")
 		.field("position",  &JSUpdateInfos::position)
-		.field("brush",   	&JSUpdateInfos::brush)
+//		.field("brush",   	&JSUpdateInfos::brush)
 		.field("color",   	&JSUpdateInfos::color)
 		.field("updatepos", &JSUpdateInfos::updatepos)
 		.field("updatebrush", &JSUpdateInfos::updatebrush)
