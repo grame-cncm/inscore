@@ -8,6 +8,12 @@
 	<style>
 	body { margin: 50; background: gainsboro }
 	.box {  margin: 20; width: 50%; height: 50%; border: 1px black solid; }
+	.abs {  position: absolute; 
+			width: 100px; height: 100px; 
+			top: 550px; left: 450px; 
+			border: 3px red solid; 
+			transform: scale(1.5) rotateZ(10deg);
+		}
 	</style>
 </head>
 
@@ -15,17 +21,33 @@
 	function size (elt) {
 		let width = elt.clientWidth;
 		let height = elt.clientHeight;
-		return "w/h: " + width + " x " + height;
+		let r = elt.getBoundingClientRect();
+		return " w/h: " + width + " x " + height + " DOMRect: " + r.width + " x " + r.height
+ 			+ " offsetW/H: " + elt.offsetWidth + " x " + elt.offsetHeight;
 	
 	}
 	function pos (elt) {
 		let r = elt.getBoundingClientRect();
 		let x = r.left;
 		let y = r.top;
-		return "x: " + x + " y: " + y;
+		return " x: " + x + " y: " + y;
 	}
+	function scale (elt) {
+// 		let r = elt.getBoundingClientRect();
+// 		let sx = r.width / elt.offsetWidth;
+// 		let sy = r.height / elt.offsetHeight;
+		let scale = elt.getAttribute ("position");
+		return " scale: " + scale;
+	}
+	function border(elt) {
+		let r = elt.getBoundingClientRect();
+		let bw = elt.offsetWidth - r.width;
+	 	return " border width " + bw;
+	}
+
 	function info (elt) {
-		let out = elt.toString() + " " + elt.getAttribute("name") + " " + size(elt) + " " + pos(elt) +"\n";
+		let out = elt.toString() + " " + elt.getAttribute("name") + size(elt) 
+								 + "\n       " + pos(elt)  + scale(elt) /*+ border(elt)*/ + "\n";
 		if (elt.parentElement) {
 			out += "parent: " + elt.parentElement.toString();
 			out += "\n" + info(elt.parentElement);
@@ -35,6 +57,7 @@
 	function infos () {
 		var out = info(document.getElementById("a"));
 		out += "\n\n" + info(document.getElementById("b"));
+		out += "\n\n" + info(document.getElementById("c"));
 		var div = document.getElementById("info");
 		div.innerHTML = out;
 	}
@@ -51,6 +74,14 @@ Hello boy!
 </div>
 </div>
 
+<div class=abs id="c" name=absolute>
+	Hi all!
+	<svg>
+		<rect width=50px height=50px> </rect>
+	</svg>
+</div>
+<div class=abs id="d" name=rotate style="transform: rotateZ(-10deg)">
+</div>
 
 <pre id="info">
 	<script> infos(); </script>
