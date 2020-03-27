@@ -68,9 +68,10 @@ libmapping::rational IDate::getDate () const
 //--------------------------------------------------------------------------
 void IDate::setDate (const rational& date)
 { 
-if (date.getNumerator() < 0)
-	cerr << "IDate::setDate " << date << endl;
+	if (date.getNumerator() < 0)
+		cerr << "IDate::setDate " << date << endl;
 	if (date.getDenominator() == 0) return;
+
 	if (fDate != date) {
 		handleTimeChange(fDate, date);
 		fDate = date;
