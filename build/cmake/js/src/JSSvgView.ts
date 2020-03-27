@@ -55,9 +55,11 @@ abstract class JSSvgView extends JSObjectView {
 		elt.style.stroke = pen.penColor;
 		elt.style.strokeDasharray = JSSvgView.penStyle2Dash(pen.penStyle);
 	}
-	
+
+	getTranslate(pos: OPosition) : number { return pos.pen.penWidth; }
+
 	getPos(pos: OPosition) : Point {
-		let strokewidth = pos.pen.penWidth;
+		let strokewidth = this.getTranslate(pos);
 		this.getSVGTarget().style.transform = strokewidth ? `translate(${strokewidth}px,${strokewidth}px)` : "";
 		return super.getPos(pos);
 	}

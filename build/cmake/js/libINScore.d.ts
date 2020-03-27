@@ -115,6 +115,11 @@ interface OUpdateInfos {
 	newdata:      boolean;
 }
 
+interface ORadius {
+	x:  number;
+	y:  number;
+}
+
 interface INScoreObject {
     create(id: number):        INScoreObject;
     del(obj: INScoreObject):   void;
@@ -122,6 +127,8 @@ interface INScoreObject {
     getUpdateInfos():  OUpdateInfos;
     getTextInfos():    OTextInfo;
 	getLineInfos():    OLineInfo;
+	getFile():         string;
+	getRadius():       ORadius;
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 

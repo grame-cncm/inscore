@@ -18,4 +18,10 @@ class JSRectView extends JSSvgView {
         this.fRect.style.width  = w + "px";
         this.fRect.style.height = h + "px";
 	}
+
+    updateSpecific(obj: INScoreObject)	: void { 
+        let radius = obj.getRadius();
+        this.fRect.setAttribute('rx', radius.x.toString());
+        this.fRect.setAttribute('ry', radius.y.toString());
+    }
 }

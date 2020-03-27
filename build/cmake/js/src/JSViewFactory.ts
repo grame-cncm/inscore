@@ -6,6 +6,7 @@
 ///<reference path="JSRectView.ts"/>
 ///<reference path="JSEllipseView.ts"/>
 ///<reference path="JSLineView.ts"/>
+///<reference path="JSImageView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -28,6 +29,7 @@ class JSViewFactory {
 			case "rect":	view = new JSRectView(parent); break; 
 			case "ellipse": view = new JSEllipseView(parent); break; 
 			case "line": 	view = new JSLineView(parent); break; 
+			case "img":  	view = new JSImageView(parent); break;
 
 			case "arc":
 			case "audio":
@@ -42,7 +44,6 @@ class JSViewFactory {
 			case "pianorollstream":
 			case "gmnstream":
 			case "html":
-			case "img":
 			case "layer":
 			case "memimg":
 			case "musicxml":

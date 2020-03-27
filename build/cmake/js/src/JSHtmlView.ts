@@ -45,9 +45,9 @@ class JSHtmlView extends JSAutoSize {
 	}
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
-        let text = obj.getTextInfos();
-    	let elt = this.getElement();
-        elt.innerHTML  = text.text;
+		let text = obj.getTextInfos();
+		let str = text.text.split("\n").join("<br />");
+        this.getElement().innerHTML  = str;
 		this.setFont (text);
 		return super.updateSpecial (obj, objid );
 	}
