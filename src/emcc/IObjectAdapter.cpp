@@ -26,6 +26,7 @@
 
 #include "IObjectAdapter.h"
 #include "IText.h"
+#include "TFile.h"
 
 using namespace std;
 
@@ -147,6 +148,27 @@ bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 		return true;
 	}
 	return false;
+}
+
+//--------------------------------------------------------------------------
+JSRadius IObjectAdapter::getRadius () const
+{
+	JSRadius r;
+	r.x = r.y = 0;
+	const IRect* rect = dynamic_cast<const IRect*>((IObject*)fObject);
+	if (rect) {
+		TFloatSize size = rect->getRadius();
+		r.x = size.width();
+		r.y = size.height();
+	}
+	return r;
+}
+
+//--------------------------------------------------------------------------
+string IObjectAdapter::getFile () const
+{
+	const TFile* file = dynamic_cast<const TFile*>((IObject*)fObject);
+	return file ? file->getFile() : "";
 }
 
 std::map<string, int> IObjectAdapter::fPenStyles;

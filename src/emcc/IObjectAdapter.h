@@ -31,6 +31,7 @@
 
 #include "IObject.h"
 #include "ILine.h"
+#include "IRect.h"
 
 
 namespace inscore
@@ -98,6 +99,11 @@ struct JSLineInfos {
 	float	arrowRightSize;
 };
 
+struct JSRadius {
+	float 	x;
+	float 	y;
+};
+
 class IText;
 class ILine;
 
@@ -119,7 +125,6 @@ class inscore_export IObjectAdapter
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
 	static bool _getLine  (ILine* obj, JSLineInfos& infos);
 
-
 	public:
 		typedef const std::string	jsString;
 	
@@ -130,6 +135,8 @@ class inscore_export IObjectAdapter
 		JSUpdateInfos getUpdateInfos () const;
 		JSTextInfos   getTextInfos () const;
 		JSLineInfos   getLineInfos () const;
+		std::string   getFile () const;			// for file based object (e.g. image)
+		JSRadius      getRadius () const;		// for IRect
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
