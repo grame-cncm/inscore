@@ -77,11 +77,19 @@ o = 1;
 
 /ITL/scene/rect get x y xorigin yorigin;
 
+/ITL/scene/img set img P1090915.JPG;
+
+
 /ITL/scene/line set line wa 1 0;
 /ITL/scene/line set line wa 1 45;
 /ITL/scene/line penWidth 14;
 /ITL/scene/line penWidth 1;
 /ITL/scene/line penColor blue;
+/ITL/scene/line angle 45;
+/ITL/scene/line angle 0;
+/ITL/scene/line get width height;
+
+/ITL/log level 2;
 
 /ITL/scene/title set txt "Hello";
 /ITL/scene/title fontFamily "Times New Roman";
