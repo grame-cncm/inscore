@@ -41,7 +41,6 @@ void HTMLUpdater::update (IObject* object)
 	if (needupdate (object)) {
 		VObjectView* view = object->getView();
 		if (view) {
-//cerr << "HTMLUpdater::update " << object->name() << " state: " << object->getState() << endl;
 			view->updateView(object);
 		}
 	}
