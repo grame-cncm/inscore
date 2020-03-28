@@ -64,4 +64,10 @@ class INScore {
     getRate() 		: number        { return this.fInscoreGlue.getRate(); } 
 	timeTask ()	    : void          { this.fInscoreGlue.timeTask(); }
 	sorterTask()	: void          { this.fInscoreGlue.sorterTask(); }
- }
+}
+
+enum TPenStyle 		{ kSolid, kDash, kDot, kDashDot, kDashDotDot }
+enum TBrushStyle 	{ kDense1, kDense2, kDense3, kDense4, kDense5, kDense6, kDense7,
+					  kNoBrush, kBrushHor, kBrushVer, kCross, kBDiag, kFDiag, kDiagCross }
+enum ArrowHead      { NONE, TRIANGLE, DIAMOND, DISK }
+            
