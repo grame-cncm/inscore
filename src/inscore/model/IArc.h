@@ -65,6 +65,8 @@ class IArc : public IRectShape
 				bool	closed () const					{ return fCloseArc; }
 
         virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
+		virtual void setWidth(float width)			{ IRectShape::setWidth(width); newData(true); }
+		virtual void setHeight(float height)		{ IRectShape::setHeight(height); newData(true); }
 
 	protected:
 				 IArc( const std::string& name, IObject* parent );
