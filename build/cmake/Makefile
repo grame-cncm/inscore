@@ -119,7 +119,7 @@ js/libINScore.wasm: lib/libINScore.wasm
 cmakejs : $(EMCCDIR)
 	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
 
-js: $(EMCCDIR) js/inscoreview.js
+js: $(EMCCDIR)
 	$(MAKE) -C $(EMCCDIR) wasmlib
 	$(MAKE) jstest
 
