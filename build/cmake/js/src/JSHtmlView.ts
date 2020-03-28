@@ -44,11 +44,13 @@ class JSHtmlView extends JSAutoSize {
 		this.setFont (obj.getTextInfos());
 	}
 
+	getText (infos: OTextInfo) : string { return infos.text; }
+
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
-		let text = obj.getTextInfos();
-		let str = text.text.split("\n").join("<br />");
-        this.getElement().innerHTML  = str;
-		this.setFont (text);
+		let infos = obj.getTextInfos();
+// console.log(this + " content : " + this.getText(infos) );
+		this.getElement().innerHTML  = this.getText(infos);
+		this.setFont (infos);
 		return super.updateSpecial (obj, objid );
 	}
 }
