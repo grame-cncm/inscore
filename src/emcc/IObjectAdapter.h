@@ -38,10 +38,12 @@ namespace inscore
 {
 
 struct JSPen {
-	float  penWidth;
+	float  penWidth = 0;
 	std::string penColor;
 	int penStyle;
 	int brushStyle;
+	std::string color;
+	float alpha;
 };
 
 struct JSPosition {
@@ -99,9 +101,17 @@ struct JSLineInfos {
 	float	arrowRightSize;
 };
 
+struct JSArcInfos {
+	float width = 0;
+	float height = 0;
+	float 	start = 0;
+	float 	range = 0;
+	bool	closed = false;
+};
+
 struct JSRadius {
-	float 	x;
-	float 	y;
+	float 	x = 0;
+	float 	y = 0;
 };
 
 class IText;
@@ -137,6 +147,7 @@ class inscore_export IObjectAdapter
 		JSLineInfos   getLineInfos () const;
 		std::string   getFile () const;			// for file based object (e.g. image)
 		JSRadius      getRadius () const;		// for IRect
+		JSArcInfos    getArcInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

@@ -27,6 +27,7 @@
 #include "IObjectAdapter.h"
 #include "IText.h"
 #include "TFile.h"
+#include "IArc.h"
 
 using namespace std;
 
@@ -137,10 +138,10 @@ bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 		obj->setWidth (w);
 		obj->setHeight(h);
 		
-		infos.x1 = std::min(x, xo);
-		infos.y1 = std::min(y, yo);
-		infos.x2 = std::max(x, xo);
-		infos.y2 = std::max(y, yo);
+		infos.x1 = xo;
+		infos.y1 = yo;
+		infos.x2 = x;
+		infos.y2 = y;
 		infos.arrowLeft		= obj->getArrowLeft();
 		infos.arrowRight	= obj->getArrowRight();
 		infos.arrowLeftSize = obj->getArrowSizeLeft();
@@ -154,7 +155,7 @@ bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 JSRadius IObjectAdapter::getRadius () const
 {
 	JSRadius r;
-	r.x = r.y = 0;
+//	r.x = r.y = 0;
 	const IRect* rect = dynamic_cast<const IRect*>((IObject*)fObject);
 	if (rect) {
 		TFloatSize size = rect->getRadius();
@@ -162,6 +163,23 @@ JSRadius IObjectAdapter::getRadius () const
 		r.y = size.height();
 	}
 	return r;
+}
+
+//--------------------------------------------------------------------------
+JSArcInfos IObjectAdapter::getArcInfos() const
+{
+	JSArcInfos infos;
+//	infos.start = infos.range = 0.f;
+//	infos.closed = false
+	const IArc* arc = dynamic_cast<const IArc*>((IObject*)fObject);
+	if (arc) {
+		infos.width = arc->getWidth();
+		infos.height = arc->getHeight();
+		infos.start = arc->getStartAngle();
+		infos.range = arc->getAngularRange();
+		infos.closed= arc->closed();
+	}
+	return infos;
 }
 
 //--------------------------------------------------------------------------
@@ -231,6 +249,8 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos () const
 		infos.newdata = fObject->newData();
 		infos.updatepos = _getPosition (fObject, infos.position);
 		infos.updatebrush = _getPenBrush (fObject, infos.position.pen);
+		infos.position.pen.color = color2htmlColor(*fObject, false);
+		infos.position.pen.alpha = fObject->getA() / 255.f;
 		if (infos.updatebrush) infos.updatepos = true;
 		infos.updatecolor = _getColor (fObject, infos.color);
 	}
