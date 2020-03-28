@@ -60,6 +60,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getLineInfos",   &IObjectAdapter::getLineInfos, allow_raw_pointers())
 		.function("getFile",   		&IObjectAdapter::getFile, allow_raw_pointers())
 		.function("getRadius",   	&IObjectAdapter::getRadius, allow_raw_pointers())
+		.function("getArcInfos",   	&IObjectAdapter::getArcInfos, allow_raw_pointers())
 
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
 		.function("updateHeight", 	&IObjectAdapter::updateHeight);

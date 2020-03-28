@@ -22,12 +22,9 @@
 
 */
 
-#include <string>
 #include <emscripten.h>
 #include <emscripten/bind.h>
 
-//#include "INScoreAdapter.h"
-//#include "INScoreGlue.h"
 #include "IObjectAdapter.h"
 
 using namespace emscripten;
@@ -47,7 +44,9 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("penWidth",   &JSPen::penWidth)
 		.field("penColor",   &JSPen::penColor)
 		.field("penStyle",   &JSPen::penStyle)
-		.field("brushStyle", &JSPen::brushStyle);
+		.field("brushStyle", &JSPen::brushStyle)
+		.field("color",      &JSPen::color)
+		.field("alpha",  	 &JSPen::alpha);
 
 	value_object<JSPosition>("JSPosition")
 		.field("x", 	  &JSPosition::x)
@@ -94,116 +93,11 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("arrowRight",   	&JSLineInfos::arrowRight)
 		.field("arrowLeftSize",   	&JSLineInfos::arrowLeftSize)
 		.field("arrowRightSize", 	&JSLineInfos::arrowRightSize);
-
-	// Line constants
-	constant("kArrowNone", 		ILine::NONE);
-	constant("kArrowTriangle", 	ILine::TRIANGLE);
-	constant("kArrowDiamond", 	ILine::DIAMOND);
-	constant("kArrowDisk", 		ILine::DISK);
 	
-	// Brush constants
-	constant("kSolidStyle", 	IShape::kSolidStyle);
-	constant("kDashStyle", 		IShape::kDashStyle);
-	constant("kDotStyle", 		IShape::kDotStyle);
-	constant("kDashDotStyle", 	IShape::kDashDotStyle);
-	constant("kDashDotDotStyle", IShape::kDashDotDotStyle);
-
-	constant("kSolidBrushStyle", 	IShape::kSolidBrushStyle);
-	constant("kDense1BrushStyle", 	IShape::kDense1BrushStyle);
-	constant("kDense2BrushStyle", 	IShape::kDense2BrushStyle);
-	constant("kDense3BrushStyle", 	IShape::kDense3BrushStyle);
-	constant("kDense4BrushStyle", 	IShape::kDense4BrushStyle);
-	constant("kDense5BrushStyle", 	IShape::kDense5BrushStyle);
-	constant("kDense6BrushStyle", 	IShape::kDense6BrushStyle);
-	constant("kDense7BrushStyle", 	IShape::kDense7BrushStyle);
-	constant("kNoBrushStyle", 		IShape::kNoBrushStyle);
-	constant("kHorBrushStyle", 		IShape::kHorBrushStyle);
-	constant("kVerBrushStyle", 		IShape::kVerBrushStyle);
-	constant("kCrossBrushStyle", 	IShape::kCrossBrushStyle);
-	constant("kBDiagBrushStyle", 	IShape::kBDiagBrushStyle);
-	constant("kFDiagBrushStyle", 	IShape::kFDiagBrushStyle);
-	constant("kDiagCrossBrushStyle",IShape::kDiagCrossBrushStyle);
+	value_object<JSArcInfos>("JSArcInfos")
+		.field("width",  	&JSArcInfos::width)
+		.field("height",   	&JSArcInfos::height)
+		.field("start",  	&JSArcInfos::start)
+		.field("range",   	&JSArcInfos::range)
+		.field("closed",  	&JSArcInfos::closed);
 }
-
-
-/*
- * C++ class binding.
- * The javascript interface to inscore classes
- */
-//using namespace inscore;
-//EMSCRIPTEN_BINDINGS(EngineAdapter) {
-//
-//	class_<TFloatPoint>("TFloatPoint")
-//		.function("x", 			&TFloatPoint::x)
-//		.function("y", 			&TFloatPoint::y);
-//
-//	class_<TFloatSize>("TFloatSize")
-//		.function("width", 		&TFloatSize::width)
-//		.function("height", 	&TFloatSize::height);
-//
-//	class_<IObjectAdapter>("IObjectAdapter")
-//		.constructor<>()
-//
-//		.function("create", 		&IObjectAdapter::create, allow_raw_pointers())
-//		.function("del", 			&IObjectAdapter::del, allow_raw_pointers())
-//
-//		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
-//		.function("getTextInfos",   &IObjectAdapter::getTextInfos, allow_raw_pointers())
-//		.function("getLineInfos",   &IObjectAdapter::getLineInfos, allow_raw_pointers())
-//		.function("getFile",   		&IObjectAdapter::getFile, allow_raw_pointers())
-//
-//		.function("updateWidth", 	&IObjectAdapter::updateWidth)
-//		.function("updateHeight", 	&IObjectAdapter::updateHeight);
-//
-//
-//	// Binding C++ class adapter for INScore
-//	class_<INScoreAdapter>("INScoreAdapter")
-//			.constructor<>()
-//
-//			.function("start", 				&INScoreAdapter::start, allow_raw_pointers())
-//			.function("stop", 				&INScoreAdapter::stop, allow_raw_pointers())
-////			.function("restartNetwork", 	&INScoreAdapter::restartNetwork )
-////			.function("stopNetwork", 		&INScoreAdapter::stopNetwork )
-//
-//			.function("postMessage", 		select_overload<void( const std::string&, MessagePtr)> 					(&INScoreAdapter::postMessage), allow_raw_pointers())
-//			.function("postMessageStr", 	select_overload<void( const std::string&, const std::string&)>			(&INScoreAdapter::postMessage), allow_raw_pointers())
-//			.function("postMessageStrI", 	select_overload<void( const std::string&, const std::string&, int)>		(&INScoreAdapter::postMessage), allow_raw_pointers())
-//			.function("postMessageStrF", 	select_overload<void( const std::string&, const std::string&, float)>	(&INScoreAdapter::postMessage), allow_raw_pointers())
-//			.function("postMessageStrStr", 	select_overload<void( const std::string&, const std::string&,  const std::string&)>(&INScoreAdapter::postMessage), allow_raw_pointers())
-//
-//			.function("loadInscore", 		&INScoreAdapter::loadInscore, allow_raw_pointers())
-//			.function("loadInscore2", 		&INScoreAdapter::loadInscore2, allow_raw_pointers())
-//
-//			.function("delayMessage", 		&INScoreAdapter::delayMessage, allow_raw_pointers())
-//			.function("newMessage", 		&INScoreAdapter::newMessage, allow_raw_pointers())
-//			.function("newMessageM", 		&INScoreAdapter::newMessageM, allow_raw_pointers())
-//			.function("delMessage", 		&INScoreAdapter::delMessage, allow_raw_pointers())
-//
-//			.function("msgAddStr", 			select_overload<void(MessagePtr, const std::string&)> 	(&INScoreAdapter::add), allow_raw_pointers())
-//			.function("msgAddF", 			select_overload<void(MessagePtr, float)>		(&INScoreAdapter::add), allow_raw_pointers())
-//			.function("msgAddI", 			select_overload<void(MessagePtr, int)>			(&INScoreAdapter::add), allow_raw_pointers())
-//
-//			.function("version", 			&INScoreAdapter::version )
-//			.function("versionStr", 		&INScoreAdapter::versionStr )
-//			.function("guidoversion", 		&INScoreAdapter::guidoversion )
-//			.function("musicxmlversion", 	&INScoreAdapter::musicxmlversion );
-//
-//	// Binding C++ class for INScoreGlue
-//	class_<INScoreJSGlue>("INScoreJSGlue")
-//			.constructor<>()
-//
-//			.function("showMouse", 			&INScoreJSGlue::showMouse)
-//			.function("openUrl", 			&INScoreJSGlue::openUrl, allow_raw_pointers())
-//			.function("startView", 			&INScoreJSGlue::startView )
-//			.function("stopView", 			&INScoreJSGlue::stopView )
-//			.function("viewVersion", 		&INScoreJSGlue::viewVersion )
-//			.function("getIP", 				&INScoreJSGlue::getIP );
-//
-//	class_<INScoreGlue>("INScoreGlue")
-//			.function("getRate", 			&INScoreGlue::getRate)
-//			.function("timeTask", 			&INScoreGlue::timeTask)
-//			.function("sorterTask", 		&INScoreGlue::sorterTask );
-//
-//	// Black box object, just for passing argument pointer in method to and from javascript.
-//	class_<Message>("Message");
-//}
