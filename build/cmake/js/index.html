@@ -11,7 +11,7 @@
 /* 
 	.inscore { margin: 20; }
  */
-	.box {  margin: 20; width: 50%; height: 50%; border-radius: 15px; }
+	.box {  margin: 20; width: 50%; height: 70%; border-radius: 15px; }
 	</style>
 </head>
 
@@ -19,6 +19,7 @@
 
 <h1>INScore JS Tests</h1>
 <div class="inscore box" id="scene">
+
 /ITL/scene/title set txt "Welcome to INScoreJS";
 /ITL/scene/title fontSize 20;
 /ITL/scene/title fontWeight bold;
@@ -51,6 +52,13 @@
 
 /ITL/scene/circ/circ set ellipse 0.4 0.4;
 /ITL/scene/circ/circ color white;
+
+w = 1.2;
+/ITL/scene/arc set arc $w $w -40 260;
+
+/ITL/scene/html set html '<h1>I am an html text (don\'t work!)</h1>';
+/ITL/scene/html y 0.8;
+/ITL/scene/html color gray;
 
 </div>
 
