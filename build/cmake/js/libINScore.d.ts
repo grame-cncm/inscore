@@ -87,6 +87,8 @@ interface OPen {
 	penColor:   string;
 	penStyle:   number;
 	brushStyle: number;
+	color: string;
+	alpha: number;
 }
 
 interface OPosition {
@@ -120,6 +122,14 @@ interface ORadius {
 	y:  number;
 }
 
+interface OArc {
+	width: number;
+	height: number;
+	start:  number;
+	range:  number;
+	closed: boolean;
+}
+
 interface INScoreObject {
     create(id: number):        INScoreObject;
     del(obj: INScoreObject):   void;
@@ -129,6 +139,7 @@ interface INScoreObject {
 	getLineInfos():    OLineInfo;
 	getFile():         string;
 	getRadius():       ORadius;
+	getArcInfos():     OArc;
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 
