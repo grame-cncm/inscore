@@ -28,6 +28,7 @@
 #include "IText.h"
 #include "TFile.h"
 #include "IArc.h"
+#include "IPolygon.h"
 
 using namespace std;
 
@@ -169,8 +170,6 @@ JSRadius IObjectAdapter::getRadius () const
 JSArcInfos IObjectAdapter::getArcInfos() const
 {
 	JSArcInfos infos;
-//	infos.start = infos.range = 0.f;
-//	infos.closed = false
 	const IArc* arc = dynamic_cast<const IArc*>((IObject*)fObject);
 	if (arc) {
 		infos.width = arc->getWidth();
@@ -180,6 +179,20 @@ JSArcInfos IObjectAdapter::getArcInfos() const
 		infos.closed= arc->closed();
 	}
 	return infos;
+}
+
+//--------------------------------------------------------------------------
+std::vector<float> IObjectAdapter::getPolygonInfos() const
+{
+	std::vector<float> data;
+	const IPolygon* poly = dynamic_cast<const IPolygon*>((IObject*)fObject);
+	if (poly) {
+		for (auto a: poly->getPoints()) {
+			data.push_back (a.x());
+			data.push_back (a.y());
+		}
+	}
+	return data;
 }
 
 //--------------------------------------------------------------------------

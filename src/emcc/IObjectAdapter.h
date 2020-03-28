@@ -28,6 +28,7 @@
 #include <sstream>
 #include <iomanip>
 #include <map>
+#include <vector>
 
 #include "IObject.h"
 #include "ILine.h"
@@ -148,6 +149,7 @@ class inscore_export IObjectAdapter
 		std::string   getFile () const;			// for file based object (e.g. image)
 		JSRadius      getRadius () const;		// for IRect
 		JSArcInfos    getArcInfos() const;
+	    std::vector<float> getPolygonInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

@@ -8,6 +8,7 @@
 ///<reference path="JSLineView.ts"/>
 ///<reference path="JSImageView.ts"/>
 ///<reference path="JSArcView.ts"/>
+///<reference path="JSPolygonView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -37,6 +38,7 @@ class JSViewFactory {
 			case "line": 	view = new JSLineView(parent); break; 
 			case "img":  	view = new JSImageView(parent); break;
 			case "arc": 	view = new JSArcView(parent); break;
+			case "polygon": view = new JSPolygonView(parent); break;
 
 			case "audio":
 			case "curve":
@@ -52,7 +54,6 @@ class JSViewFactory {
 			case "layer":
 			case "memimg":
 			case "musicxml":
-			case "polygon":
 			case "rshape":
 			case "svg":
 			case "scene":

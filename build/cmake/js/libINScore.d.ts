@@ -130,6 +130,11 @@ interface OArc {
 	closed: boolean;
 }
 
+interface FloatVector {
+	size(): number;
+	get(i: number) : number;
+}
+
 interface INScoreObject {
     create(id: number):        INScoreObject;
     del(obj: INScoreObject):   void;
@@ -140,6 +145,7 @@ interface INScoreObject {
 	getFile():         string;
 	getRadius():       ORadius;
 	getArcInfos():     OArc;
+	getPolygonInfos(): FloatVector;
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 

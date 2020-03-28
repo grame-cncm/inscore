@@ -63,7 +63,10 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getArcInfos",   	&IObjectAdapter::getArcInfos, allow_raw_pointers())
 
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
-		.function("updateHeight", 	&IObjectAdapter::updateHeight);
+		.function("updateHeight", 	&IObjectAdapter::updateHeight)
+		.function("getPolygonInfos",&IObjectAdapter::getPolygonInfos);
+	
+	register_vector<float>("vector<float>");
 
 
 	// Binding C++ class adapter for INScore
