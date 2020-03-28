@@ -1,12 +1,13 @@
 
 ///<reference path="inscoreGlue.ts"/>
 ///<reference path="JSObjectView.ts"/>
-///<reference path="JSHtmlView.ts"/>
+///<reference path="JSTextView.ts"/>
 ///<reference path="JSSceneView.ts"/>
 ///<reference path="JSRectView.ts"/>
 ///<reference path="JSEllipseView.ts"/>
 ///<reference path="JSLineView.ts"/>
 ///<reference path="JSImageView.ts"/>
+///<reference path="JSArcView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -23,15 +24,20 @@ class JSViewFactory {
 
 		switch (type) {
 			case "txt":
+				view = new JSTextView(parent);
+				view.waitForSize (objid);
+				break; 			
+			case "html":
 				view = new JSHtmlView(parent);
 				view.waitForSize (objid);
 				break; 			
+			
 			case "rect":	view = new JSRectView(parent); break; 
 			case "ellipse": view = new JSEllipseView(parent); break; 
 			case "line": 	view = new JSLineView(parent); break; 
 			case "img":  	view = new JSImageView(parent); break;
+			case "arc": 	view = new JSArcView(parent); break;
 
-			case "arc":
 			case "audio":
 			case "curve":
 			case "fileWatcher":
@@ -43,12 +49,10 @@ class JSViewFactory {
 			case "pianoroll":
 			case "pianorollstream":
 			case "gmnstream":
-			case "html":
 			case "layer":
 			case "memimg":
 			case "musicxml":
 			case "polygon":
-			case "rect":			
 			case "rshape":
 			case "svg":
 			case "scene":
