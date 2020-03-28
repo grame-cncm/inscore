@@ -51,9 +51,17 @@ abstract class JSSvgView extends JSObjectView {
 
 	updatePenControl(pen: OPen) : void {
 		let elt = this.getSVGTarget();
+console.log (this + " update pen control brush: " + pen.brushStyle + " (" + TBrushStyle.kNoBrush + ")" );
 		elt.style.strokeWidth = pen.penWidth.toString();
 		elt.style.stroke = pen.penColor;
 		elt.style.strokeDasharray = JSSvgView.penStyle2Dash(pen.penStyle);
+		if (pen.brushStyle == TBrushStyle.kNoBrush)
+			elt.style.fill = "none";
+		else {
+	        elt.style.fill = pen.color;
+	        elt.style.fillOpacity = pen.alpha.toString();
+		}
+
 	}
 
 	getTranslate(pos: OPosition) : number { return pos.pen.penWidth; }
