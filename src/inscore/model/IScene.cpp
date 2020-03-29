@@ -70,8 +70,9 @@ IScene::IScene(const std::string& name, IObject * parent)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
-	setWidth(1.0f);
-	setHeight(1.0f);
+	fWidth = fHeight = 1.0f;
+//	setWidth(1.0f);
+//	setHeight(1.0f);
 	
 	fMsgHandlerMap[knew_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
 	fMsgHandlerMap[kreset_SetMethod]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
