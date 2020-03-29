@@ -20,6 +20,10 @@
 					(x 0),
 					(fontSize 11);
 
+
+/ITL parse v2;
+/ITL parse v1;
+
 __END__
 
 /ITL forward "192.168.1.170";
@@ -35,8 +39,11 @@ __END__
 /ITL/scene color cyan;
 /ITL/scene color orange;
 /ITL/scene color white;
-/ITL/scene width 2;
-/ITL/scene height 1.5;
+/ITL/scene width 1.5;
+/ITL/scene height 1.8;
+/ITL/scene x 1;
+/ITL/scene y 0;
+
 /ITL/scene get width height;
 
 /ITL/scene/text set txt "Hello world";
@@ -73,11 +80,18 @@ o = 1;
 /ITL/scene/rect scale 1.5;
 /ITL/scene/rect scale 0.5;
 /ITL/scene/rect show 1;
+/ITL/scene/rect radius 15 15;
 /ITL/scene/rect del;
 
-/ITL/scene/rect get x y xorigin yorigin;
+/ITL/scene/rect get x y xorigin yorigin radius;
 
 /ITL/scene/img set img P1090915.JPG;
+/ITL/scene/img scale 0.06;
+/ITL/scene/img x -1.2;
+/ITL/scene/img get width height;
+/ITL/scene/img penWidth 5;
+/ITL/scene/img penColor blue;
+/ITL/scene/img angle 90;
 
 
 /ITL/scene/line set line wa 1 0;
@@ -88,6 +102,11 @@ o = 1;
 /ITL/scene/line angle 45;
 /ITL/scene/line angle 0;
 /ITL/scene/line get width height;
+
+/ITL/scene/arc brushStyle none;
+/ITL/scene/arc width 1.5;
+/ITL/scene/rect brushStyle solid;
+/ITL/scene/arc get width height;
 
 /ITL/log level 2;
 
@@ -103,6 +122,10 @@ o = 1;
 /ITL/scene/title penWidth 0;
 
 /ITL/scene/line width 1;
+/ITL/scene/polygon set polygon -1 0 0 0 -0.5 0.5;
+/ITL/scene/polygon color 0 0 255 50;
+/ITL/scene/polygon alpha 50;
+/ITL/scene/polygon scale 2;
 
 /ITL/scene/circ/circ set ellipse 0.2 0.2;
 pos = 0;
@@ -163,7 +186,7 @@ pos = 1;
 /drect 0.01 2;
 /xyrect 0.05;
 /xyrect 0.05 0.05;
-/scalerect 50;
+/scalerect 100;
 w = 0.2;
 /scalexy $w $w ;
 
@@ -171,5 +194,3 @@ w = 0.2;
 /ITL/scene opengl 0;
 
 /ITL/scene export;
-
-/ITL parse v2;
