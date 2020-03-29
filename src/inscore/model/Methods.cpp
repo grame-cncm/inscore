@@ -227,5 +227,9 @@ const char* kmax_GetSetMethod			= "max";					// Get Set
 const char* kmode_GetSetMethod			= "mode";					// Get Set
 const char* ksmooth_GetSetMethod		= "smooth";					// Get Set
 
+// refresh method
+// introduced for the javascript implementation
+const char* krefresh_SetMethod		= "refresh";					// Set
+
 
 } //namespace

@@ -111,6 +111,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap[kpush_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
 	fMsgHandlerMap[kpop_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
 
+	fMsgHandlerMap[krefresh_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::refresh);
+
 	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 	fGetMultiMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
 	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
@@ -1659,6 +1661,18 @@ MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
 	}
 	fEdit = true;						// a flag to trigger the edit dialog from the view
 	return MsgHandler::kProcessed;
+}
+
+
+//--------------------------------------------------------------------------
+void IObject::refresh ()
+{
+	if (elements().size()) setState (kSubModified);
+	for (auto elt: elements()) {
+		elt->refresh();
+		elt->setState (kModified);
+//		elt->modify();
+	}
 }
 
 //--------------------------------------------------------------------------

@@ -225,6 +225,7 @@ extern const char* kmax_GetSetMethod;
 extern const char* kmode_GetSetMethod;
 extern const char* ksmooth_GetSetMethod;
 
+extern const char* krefresh_SetMethod;
 
 } //namespace
 

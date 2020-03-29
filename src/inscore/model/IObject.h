@@ -676,6 +676,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief object \c 'edit' message handler.
 		virtual MsgHandler::msgStatus editMsg (const IMessage* msg);
 
+		/// \brief object \c 'edit' message handler.
+		virtual void refresh ();
+
 };
 
 IMessage&		operator << (IMessage&, const SGetParamMsgHandler&);
