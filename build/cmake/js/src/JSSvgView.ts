@@ -34,6 +34,7 @@ abstract class JSSvgView extends JSObjectView {
     abstract getSVGTarget() : SVGShape;
 	abstract updateSVGDimensions(w: number, h: number) : void;
 
+	needSpecialUpdate(infos: OUpdateInfos) : boolean { return true; }
 	updateDimensions(pos: OPosition) : void {
     	let w = this.relative2SceneWidth(pos.width);
 		let h = this.relative2SceneHeight(pos.height);
@@ -68,6 +69,14 @@ abstract class JSSvgView extends JSObjectView {
 		let strokewidth = this.getTranslate(pos);
 		this.getSVGTarget().style.transform = strokewidth ? `translate(${strokewidth}px,${strokewidth}px)` : "";
 		return super.getPos(pos);
+	}
+
+	removeEffect(elt: HTMLElement): void { this.fSVG.setAttribute("filter", "blur(0px)"); }
+	setBlur(elt: HTMLElement, val: number): void {
+		this.fSVG.setAttribute("filter", `blur(${val}px)`);
+	}
+	setShadow(elt: HTMLElement, val: OShadow): void {
+		this.fSVG.setAttribute("filter", `drop-shadow(${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px)`);
 	}
 
 	// setNone () : void 				{ this.fSVG.setAttribute("filter", "blur(0px)");  }

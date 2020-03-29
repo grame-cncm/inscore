@@ -22,7 +22,6 @@ class JSPolygonView extends JSSvgView {
         let minx = 0x1fffffff;
         let miny = 0x1fffffff;
         let n = points.size();
- console.log(this + " vec size: " + n);
         for (let i = 0; i < n; i++) {
             minx = Math.min(minx, points.get(i++));
             miny = Math.min(miny, points.get(i));

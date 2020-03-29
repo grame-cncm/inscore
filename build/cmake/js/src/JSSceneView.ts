@@ -8,7 +8,10 @@ class JSSceneView extends JSObjectView {
     	super(document.getElementById(id), null, false);
 		this.updateObjectSize (objid);
     }
-	
+
+	parentWidth() : number			{ return this.getElement().parentElement.offsetWidth; }
+	parentHeight() : number			{ return this.getElement().parentElement.offsetHeight; }
+
 	updateColor(color: OColor) {
 		let div = this.getElement();
 		div.style.background = color.rgb;

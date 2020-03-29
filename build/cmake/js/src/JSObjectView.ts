@@ -59,6 +59,7 @@ class JSObjectView {
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
 	updateSpecific(obj: INScoreObject)	: void { }
+	needSpecialUpdate(infos: OUpdateInfos) : boolean { return false; }
 
 	//---------------------------------------------------------------------
 	// update methods
@@ -70,7 +71,7 @@ class JSObjectView {
 			return;
 		}
 
-		if (infos.newdata) {
+		if (infos.newdata || this.needSpecialUpdate(infos)) {
 			if (!this.updateSpecial (obj, oid)) return;
 			else infos.updatepos = true;
 		}
@@ -81,7 +82,8 @@ class JSObjectView {
 		this.updateSpecific (obj);
 		if (infos.updatepos || infos.updatebrush)
 			this.updatePosition(infos.position, this.posTarget());
-		// this.updateEffects(obj);
+		if (infos.updateeffect)
+			this.updateEffects(infos.effect);
 		// this.updateEvents(obj);
 	}
 
@@ -134,6 +136,36 @@ class JSObjectView {
 		let w = this.getElement().offsetWidth;
 		let h = this.getElement().offsetHeight;
 		return { x: -w * xo/2, y: -h * yo/2 }; 
+	}
+
+	//------------------------------------------------------------------------------------
+	// update effects
+	updateEffects(effect: OEffect): void {
+console.log (this + " updateEffects type: " + effect.type);
+		let elt = this.getElement();
+		switch (effect.type) {
+			case Effect.kNone: this.removeEffect (elt);
+				break;
+			case Effect.kBlur: this.setBlur (elt, effect.blur.radius);
+				break;
+			case Effect.kColorize: console.log (this + ": colorize effect is not supported");
+				break;
+			case Effect.kShadow: this.setShadow(elt, effect.shadow);
+				break;
+		}
+	}
+
+	removeEffect(elt: HTMLElement): void { this.setBlur(elt, 0); }
+	setBlur(elt: HTMLElement, val: number): void {
+		elt.style.boxShadow = "(0px 0px)";
+		elt.style.filter = `blur(${val}px)`;
+	}
+
+	setShadow(elt: HTMLElement, val: OShadow): void {
+console.log (this + " setShadow " + `${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px`);
+		elt.setAttribute("filter", `drop-shadow(${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px)`);
+		// elt.style.boxShadow = `${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px`;
+		// elt.style.filter = "blur(0)";
 	}
 
 	//---------------------------------------------------------------------

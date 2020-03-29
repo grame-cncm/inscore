@@ -1,9 +1,19 @@
 ///<reference path="inscore.ts"/>
- 
+
+class INScoreDiv {
+	fDiv: 		HTMLElement;
+	fVersion:	number;
+	constructor(div: HTMLElement, version: number) {
+    	this.fDiv = div;
+		this.fVersion = version;
+	}
+}
+
 //----------------------------------------------------------------------------
 class INScoreGlue {
 	private fInscore : INScore;
 	private fTimeTask : number;
+	private fDivs: Array<INScoreDiv>;
 
     constructor() {
     	this.fInscore = new INScore;
@@ -12,32 +22,43 @@ class INScoreGlue {
     }
 	
     //------------------------------------------------------------------------
-    // initialization
+	// internals
+	private getSceneAddress (div: HTMLElement) : string {
+		let scene = div.id;
+		return "/ITL/" + (scene ? scene : "scene");
+	}
+
+	private getInscoreDivs() : void {
+		this.fDivs = new Array<INScoreDiv>();
+		let divs = document.getElementsByClassName("inscore") as HTMLCollectionOf<HTMLElement>;
+		for (let i=0; i<divs.length; i++)
+			this.fDivs.push (new INScoreDiv(divs[i], 1));
+		divs = document.getElementsByClassName("inscore2") as HTMLCollectionOf<HTMLElement>;
+		for (let i=0; i<divs.length; i++)
+			this.fDivs.push (new INScoreDiv(divs[i], 2));
+	}
+	
+    //------------------------------------------------------------------------
+	// initialization
     initialize () : void {
+		this.getInscoreDivs();
 		this.fInscore.start();
 		this.fTimeTask = window.setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
-		let divs = document.getElementsByClassName("inscore") as HTMLCollectionOf<HTMLElement>;
-// console.log("JS INScoreGlue::initialize inscore " + divs.length)
-		for (let i=0; i<divs.length; i++)
-			this.initDiv (divs[i], false);
-		divs = document.getElementsByClassName("inscore2") as HTMLCollectionOf<HTMLElement>;
-// console.log("JS INScoreGlue::initialize inscore2 " + divs.length)
-		for (let i=0; i<divs.length; i++)
-			this.initDiv (divs[i], true);
+		for (let i=0; i< this.fDivs.length; i++)
+			this.initDiv (this.fDivs[i].fDiv, this.fDivs[i].fVersion==2);
+		this.watchResize();
 	}
     
     //------------------------------------------------------------------------
     // inscore div initialization
 	initDiv (div: HTMLElement, v2: boolean) : void {
-		let scene = div.id;
-		if (!scene) scene = "scene";
-		// this.fInscore.postMessageStr ("/ITL/"+scene, "new");	
-		this.fInscore.loadInscore ("/ITL/"+scene + " new;");	
+		// do not post the message otherwise content will be loaded before the scene is created
+		this.fInscore.loadInscore (this.getSceneAddress(div) + " new;");	
 		this.allowdrop (div);
+		// this.watchResize (div);
 		let content = div.innerText;
 		div.innerText = "";
 		if (content.length) {
-// console.log ("initDiv load: " + content);
 			if (v2)
 				this.fInscore.loadInscore2 (content);
 			else
@@ -50,7 +71,6 @@ class INScoreGlue {
     getFileProperties(file: string) {
 		let ext 	= file.substring(file.lastIndexOf('.')+1, file.length);
 		let name 	= file.substring(0, file.lastIndexOf('.'));
-// 		name = this.buildCorrectName(name);
 		return { name: name, ext: ext }	
 	}
 
@@ -104,6 +124,17 @@ class INScoreGlue {
 		div.addEventListener ("dragover",  (event : DragEvent) : void => { event.preventDefault(); }, false);
 		div.addEventListener ("drop",      (event : DragEvent) : void=> { event.preventDefault(); this.drop ( event );} , false);
     }    
- }
+		
+    //------------------------------------------------------------------------
+    // activate drag & drop on inscore divs
+	watchResize () : void {
+		window.addEventListener ("resize", (e: UIEvent) : void => { 
+			for (let i=0; i< this.fDivs.length; i++) {
+				this.fInscore.postMessageStr (this.getSceneAddress(this.fDivs[i].fDiv), "refresh");
+			}
+		});
+    }    
+
+}
 
 var gGlue = new INScoreGlue;

@@ -29,6 +29,7 @@
 #include "TFile.h"
 #include "IArc.h"
 #include "IPolygon.h"
+#include "IEffect.h"
 
 using namespace std;
 
@@ -43,7 +44,16 @@ string IObjectAdapter::color2htmlColor (const IColor& color, bool withalpha) {
 		sstr << std::setw(2) << color.getA();
 	return sstr.str();
 }
-		
+
+//--------------------------------------------------------------------------
+string IObjectAdapter::color2RGBAColor (const IColor& color) {
+	std::stringstream sstr;
+	sstr << "rgba("
+		<< color.getR() << ", " << color.getG() << ", " << color.getB() << ", " << color.getA()
+		<< ")";
+	return sstr.str();
+}
+
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateWidth (IPosition* pos, float w) {
 	bool modified= pos->modified();
@@ -148,6 +158,32 @@ bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 		infos.arrowLeftSize = obj->getArrowSizeLeft();
 		infos.arrowRightSize= obj->getArrowSizeRight();
 		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getEffect  (const IEffect* effect, JSEffect& infos)
+{
+	if (effect) {
+		infos.type = effect->effectType();
+		switch (infos.type) {
+			case IEffect::kBlur:
+				infos.blur.radius = effect->fBlur.fRadius;
+				infos.blur.hint = effect->fBlur.fHint;
+				break;
+			case IEffect::kColorize:
+				infos.colorize.strength = effect->fColorize.fStrength;
+				infos.colorize.color = color2RGBAColor (effect->fColorize.fColor);
+				break;
+			case IEffect::kShadow:
+				infos.shadow.xOffset = effect->fShadow.fXOffset;
+				infos.shadow.yOffset = effect->fShadow.fYOffset;
+				infos.shadow.color   = color2RGBAColor (effect->fShadow.fColor);
+				infos.shadow.blur    = effect->fShadow.fBlur;
+				break;
+		}
+		return effect->modified();
 	}
 	return false;
 }
@@ -265,7 +301,8 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos () const
 		infos.position.pen.color = color2htmlColor(*fObject, false);
 		infos.position.pen.alpha = fObject->getA() / 255.f;
 		if (infos.updatebrush) infos.updatepos = true;
-		infos.updatecolor = _getColor (fObject, infos.color);
+		infos.updatecolor 	= _getColor (fObject, infos.color);
+		infos.updateeffect	= _getEffect (fObject->getEffect(), infos.effect);
 	}
 	return infos;
 }

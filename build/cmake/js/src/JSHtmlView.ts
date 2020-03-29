@@ -30,12 +30,13 @@ class JSHtmlView extends JSAutoSize {
         elt.style.fontWeight 	= JSHtmlView.fontWeight2Num(font.weight);
     }
 
-	setNone ()	: void				{ this.getElement().style.textShadow = "0px 0px 0px";  }
-	setBlur (val: number) : void  	{ this.getElement().style.textShadow = "0px 0px " + val + "px"; }
-	// setShadow (params: Array<number>) : void {
-	// 	let color = new IColor( params.slice(2,6) );
-	// 	this.getHtml().style.textShadow = color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px";
-	// }
+	removeEffect(elt: HTMLElement): void { 
+		super.removeEffect(elt); 
+		elt.style.textShadow = "0px 0px";
+	}
+	setShadow (elt: HTMLElement, val: OShadow) : void {
+		elt.style.textShadow = `${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px`;
+	}
 
 	// don't update text dimensions
 	updateDimensions(pos: OPosition) : void {}
@@ -48,9 +49,9 @@ class JSHtmlView extends JSAutoSize {
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
 		let infos = obj.getTextInfos();
-// console.log(this + " content : " + this.getText(infos) );
 		this.getElement().innerHTML  = this.getText(infos);
 		this.setFont (infos);
-		return super.updateSpecial (obj, objid );
+		super.updateSpecial (obj, objid );
+		return true;
 	}
 }

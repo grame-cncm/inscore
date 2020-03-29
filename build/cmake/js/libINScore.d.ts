@@ -91,6 +91,27 @@ interface OPen {
 	alpha: number;
 }
 
+interface OBlur {
+	radius: number;
+	hint: number;
+}
+interface OColorize {
+	strength: number;
+	color: string;
+}
+interface OShadow {
+	xOffset: number;
+	yOffset: number;
+	color: string;
+	blur: number;
+}
+interface OEffect {
+	type: number;
+	blur: OBlur;
+	colorize: OColorize;
+	shadow: OShadow;
+}
+
 interface OPosition {
 	x:   number;
 	y:   number;
@@ -110,9 +131,11 @@ interface OPosition {
 interface OUpdateInfos {
 	position:  OPosition;
 	color:     OColor;
+	effect:    OEffect;
 	updatepos:  boolean;
 	updatebrush:  boolean;
 	updatecolor:  boolean;
+	updateeffect: boolean;
 	deleted:      boolean;
 	newdata:      boolean;
 }

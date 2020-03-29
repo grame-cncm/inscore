@@ -1669,9 +1669,8 @@ void IObject::refresh ()
 {
 	if (elements().size()) setState (kSubModified);
 	for (auto elt: elements()) {
-		elt->refresh();
 		elt->setState (kModified);
-//		elt->modify();
+		elt->refresh();
 	}
 }
 

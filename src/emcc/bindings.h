@@ -62,7 +62,24 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("zangle",  &JSPosition::zangle)
 		.field("zorder",  &JSPosition::zorder)
 		.field("pen",     &JSPosition::pen);
-	
+
+	value_object<JSBlur>("JSBlur")
+		.field("radius",  &JSBlur::radius)
+		.field("hint", 	  &JSBlur::hint);
+	value_object<JSColorize>("JSColorize")
+		.field("strength",  &JSColorize::strength)
+		.field("color", 	&JSColorize::color);
+	value_object<JSShadow>("JSShadow")
+		.field("xOffset",  &JSShadow::xOffset)
+		.field("yOffset",  &JSShadow::yOffset)
+		.field("color",    &JSShadow::color)
+		.field("blur",     &JSShadow::blur);
+	value_object<JSEffect>("JSEffect")
+		.field("type",  	&JSEffect::type)
+		.field("blur",  	&JSEffect::blur)
+		.field("colorize",	&JSEffect::colorize)
+		.field("shadow",	&JSEffect::shadow);
+
 	value_object<JSColor>("JSColor")
 		.field("rgb",   &JSColor::rgb)
 		.field("rgba",  &JSColor::rgba)
@@ -72,9 +89,11 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("position",  &JSUpdateInfos::position)
 //		.field("brush",   	&JSUpdateInfos::brush)
 		.field("color",   	&JSUpdateInfos::color)
+		.field("effect",   	&JSUpdateInfos::effect)
 		.field("updatepos", &JSUpdateInfos::updatepos)
 		.field("updatebrush", &JSUpdateInfos::updatebrush)
 		.field("updatecolor", &JSUpdateInfos::updatecolor)
+		.field("updateeffect", &JSUpdateInfos::updateeffect)
 		.field("deleted", 	&JSUpdateInfos::deleted)
 		.field("newdata", 	&JSUpdateInfos::newdata);
 	

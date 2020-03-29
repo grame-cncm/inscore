@@ -66,6 +66,8 @@ struct JSPosition {
 enum TPenStyle 		{ kSolid, kDash, kDot, kDashDot, kDashDotDot };
 enum TBrushStyle 	{ kDense1, kDense2, kDense3, kDense4, kDense5, kDense6, kDense7,
 					  kNoBrush, kBrushHor, kBrushVer, kCross, kBDiag, kFDiag, kDiagCross };
+enum TEffect 	{ kNone, kBlur, kColorize, kShadow };
+enum TBlurhint	{ kPerformance, kQuality, kAnimation };
 
 struct JSColor {
 	std::string rgb;
@@ -73,12 +75,38 @@ struct JSColor {
 	float alpha;
 };
 
+struct JSBlur {
+	int 	radius = 0;
+	int		hint = TBlurhint::kPerformance;
+};
+
+struct JSColorize {
+	float 		strength = 1.0;
+	std::string	color;
+};
+
+struct JSShadow {
+	int 		xOffset = 10;
+	int 		yOffset = 10;
+	std::string	color;
+	int			blur = 8;
+};
+
+struct JSEffect {
+	int 		type = TEffect::kNone;
+	JSBlur 		blur;
+	JSColorize 	colorize;
+	JSShadow 	shadow;
+};
+
 struct JSUpdateInfos {
 	JSPosition 	position;
 	JSColor  	color;
+	JSEffect	effect;
 	bool updatepos = false;
 	bool updatebrush = false;
 	bool updatecolor = false;
+	bool updateeffect= false;
 	bool deleted = false;
 	bool newdata = false;
 };
@@ -117,6 +145,7 @@ struct JSRadius {
 
 class IText;
 class ILine;
+class IEffect;
 
 //--------------------------------------------------------------------------
 /*! \brief the interface for iobjects
@@ -128,6 +157,8 @@ class inscore_export IObjectAdapter
 	static std::map<std::string, int> fBrushStyles;
 	static std::map<std::string, int> fPenStyles;
 	static std::string color2htmlColor (const IColor& color, bool withalpha);
+	static std::string color2RGBAColor (const IColor& color);
+	
 	static void _updateWidth (IPosition* pos, float w);
 	static void _updateHeight (IPosition* pos, float h);
 	static bool _getPosition (const IPosition* obj, JSPosition& pos);
@@ -135,6 +166,7 @@ class inscore_export IObjectAdapter
 	static bool _getPenBrush (const IShape* obj, JSPen& brush);
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
 	static bool _getLine  (ILine* obj, JSLineInfos& infos);
+	static bool _getEffect  (const IEffect* obj, JSEffect& infos);
 
 	public:
 		typedef const std::string	jsString;
