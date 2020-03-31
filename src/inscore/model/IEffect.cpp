@@ -112,15 +112,17 @@ MsgHandler::msgStatus IEffect::shadowEffect (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IEffect::setEffect (const IMessage* msg)
 {
+	MsgHandler::msgStatus result = MsgHandler::kBadParameters;
 	if (msg->size() >= 1) {
 		std::string effect;
-		if (!msg->param(0, effect)) 		return MsgHandler::kBadParameters;
-		if ( effect == kNoneStr) 			{ fEffect = kNone; return MsgHandler::kProcessed; }
-		else if ( effect == kBlurStr)		return blurEffect (msg);
-		else if ( effect == kColorizeStr) 	return colorizeEffect (msg);
-		else if ( effect == kShadowStr) 	return shadowEffect (msg);
+		if (!msg->param(0, effect)) 		result = MsgHandler::kBadParameters;
+		if ( effect == kNoneStr) 			{ fEffect = kNone; result = MsgHandler::kProcessed; }
+		else if ( effect == kBlurStr)		result = blurEffect (msg);
+		else if ( effect == kColorizeStr) 	result = colorizeEffect (msg);
+		else if ( effect == kShadowStr) 	result = shadowEffect (msg);
 	}
-	return MsgHandler::kBadParameters;
+	if (result == MsgHandler::kProcessed) fChanged = true;
+	return result;
 }
 
 //--------------------------------------------------------------------------

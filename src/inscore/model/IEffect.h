@@ -40,7 +40,7 @@ namespace inscore
 class IEffect
 {
 	protected:
-		bool	fChanged = true;
+		bool	fChanged = false;
 
 				 IEffect() {}
 		virtual ~IEffect() {}
