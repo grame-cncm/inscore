@@ -8,7 +8,6 @@ interface Point {
 	y: number;
 }
 
-
 //----------------------------------------------------------------------------
 class JSObjectView {
 
@@ -17,7 +16,6 @@ class JSObjectView {
 	private fID = 0;
 	private fElement : HTMLElement;
 	private fParent  : JSObjectView;
-	private fAbsolutePos : boolean;
 
     constructor(elt: HTMLElement, parent: JSObjectView, absolute=true) { 
 		this.fID = ++JSObjectView.fGlobalID; 		// create a unique identifier
@@ -25,37 +23,21 @@ class JSObjectView {
     	this.fParent = parent; 
 		this.fElement = elt; 
 		if (parent) parent.getElement().appendChild (elt);
-		this.fAbsolutePos = absolute;
 		if (absolute) elt.style.position = "absolute";
 	}
 	
 	toString() : string				{ return "JSObjectView"; }
 	getId() : number	 			{ return this.fID; }
-	absolutePos() : boolean			{ return this.fAbsolutePos; }
 	getElement() : HTMLElement		{ return this.fElement; }
 	getParent() : JSObjectView		{ return this.fParent; }
 	parentWidth() : number			{ 
 		let elt = this.getElement().parentElement;
-		return Math.min(elt.offsetWidth, elt.offsetHeight); 
+		return Math.min(elt.clientWidth, elt.clientHeight); 
 	}
 	parentHeight() : number			{ 
 		let elt = this.getElement().parentElement;
-		return Math.min(elt.offsetWidth, elt.offsetHeight); 
+		return Math.min(elt.clientWidth, elt.clientHeight); 
 	}
-
-	//---------------------------------------------------------------------
-	// parentPos gives the coordinates of the object using inscore schema
-	// i.e. the output x and y refers to the center of the element
-	parentPos() : Point { 
-		let parent = this.getElement().parentElement;
-		if (!parent || !this.getParent())
-			return { x: 0, y: 0 };
-		if (this.getParent().absolutePos())
-			return { x: parent.offsetWidth/2, y: parent.offsetHeight/2 };
-		let r = parent.getBoundingClientRect();
-		return  { x: r.left + parent.offsetWidth/2, y: r.top + parent.offsetHeight / 2};
-	}
-	posTarget() : HTMLElement		{ return this.fElement; }
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
 	updateSpecific(obj: INScoreObject)	: void { }
@@ -64,7 +46,7 @@ class JSObjectView {
 	//---------------------------------------------------------------------
 	// update methods
 	//---------------------------------------------------------------------
-	updateView(obj: INScoreObject, oid: number) : void {
+	updateView(obj: INScoreObject, oid: number, force = false) : void {
 		let infos = obj.getUpdateInfos();
 		if (infos.deleted  && this.getElement().parentNode) { // parent could be deleted
 			this.getElement().parentNode.removeChild(this.getElement());
@@ -75,13 +57,13 @@ class JSObjectView {
 			if (!this.updateSpecial (obj, oid)) return;
 			else infos.updatepos = true;
 		}
-		if ( infos.updatecolor) 
+		if (infos.updatecolor) 
 			this.updateColor(infos.color);
 		if (infos.updatebrush)
 			this.updatePenControl(infos.position.pen);
 		this.updateSpecific (obj);
-		if (infos.updatepos || infos.updatebrush)
-			this.updatePosition(infos.position, this.posTarget());
+		if (infos.updatepos || infos.updatebrush || force)
+			this.updatePosition(infos.position, this.getElement());
 		if (infos.updateeffect)
 			this.updateEffects(infos.effect);
 		// this.updateEvents(obj);
@@ -100,21 +82,26 @@ class JSObjectView {
 		elt.style.borderStyle = JSObjectView.penStyle2Css (brush.penStyle);
 	}
 
+	getOrigin() : Point { 
+		let div = this.getElement();
+		return { x: div.clientWidth/2, y: div.clientHeight/2 };
+	}
+
 	getPos(pos: OPosition) : Point {
-		let ppos = this.parentPos();
-		let x = ppos.x + this.relative2SceneWidth (pos.x - (pos.width * (1 + pos.xorigin * pos.scale) / 2 ));
-		let y = ppos.y + this.relative2SceneHeight(pos.y - (pos.height * (1 + pos.yorigin * pos.scale) / 2 ));
+		let ppos = this.getParent().getOrigin();
+		let x = ppos.x + this.relative2SceneWidth (pos.x) - (this.getElement().clientWidth * (1 + pos.xorigin * pos.scale) / 2 );
+		let y = ppos.y + this.relative2SceneHeight(pos.y) - (this.getElement().clientHeight * (1 + pos.yorigin * pos.scale) / 2 );
 		return { x: x, y: y};
 	}
 
 	updatePosition(pos: OPosition, elt: HTMLElement) : void {
 		elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
 		this.updateDimensions (pos);
+		elt.style.transform = this.getTransform (pos);
 		let p = this.getPos (pos);
 		elt.style.left 	= p.x + "px";
 		elt.style.top  	= p.y + "px";
 		elt.style.zIndex = pos.zorder.toString();
-		elt.style.transform = this.getTransform (pos);
 	}
 
 	getTransform(pos: OPosition) : string {
@@ -132,16 +119,9 @@ class JSObjectView {
 		elt.style.height = this.relative2SceneHeight(pos.height) + "px";
 	}
 
-	getOriginOffset(xo : number, yo: number)  : Point { 
-		let w = this.getElement().offsetWidth;
-		let h = this.getElement().offsetHeight;
-		return { x: -w * xo/2, y: -h * yo/2 }; 
-	}
-
 	//------------------------------------------------------------------------------------
 	// update effects
 	updateEffects(effect: OEffect): void {
-console.log (this + " updateEffects type: " + effect.type);
 		let elt = this.getElement();
 		switch (effect.type) {
 			case Effect.kNone: this.removeEffect (elt);
@@ -157,15 +137,11 @@ console.log (this + " updateEffects type: " + effect.type);
 
 	removeEffect(elt: HTMLElement): void { this.setBlur(elt, 0); }
 	setBlur(elt: HTMLElement, val: number): void {
-		elt.style.boxShadow = "(0px 0px)";
+		elt.style.boxShadow = "0px 0px";
 		elt.style.filter = `blur(${val}px)`;
 	}
-
 	setShadow(elt: HTMLElement, val: OShadow): void {
-console.log (this + " setShadow " + `${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px`);
 		elt.setAttribute("filter", `drop-shadow(${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px)`);
-		// elt.style.boxShadow = `${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px`;
-		// elt.style.filter = "blur(0)";
 	}
 
 	//---------------------------------------------------------------------
@@ -180,13 +156,12 @@ console.log (this + " setShadow " + `${val.color} ${val.xOffset}px ${val.yOffset
 	scene2RelativeY(y : number)  : number			{ return y / (this.parentHeight() / 2.0) - 1; }
 
 	//---------------------------------------------------------------------
-	// called from javascript to update object size on model side
+	// called to update object size on model side
 	updateObjectSize (objid : number) : void {
 		let obj = INScore.objects().create(objid);
-// console.log("JSObjectView::updateObjectSize " + this + " " + this.getElement().clientWidth + " -> " + this.parentWidth());
-		let r = this.getElement().getBoundingClientRect();
-		obj.updateWidth  (this.scene2RelativeWidth  (r.width)); 
-		obj.updateHeight (this.scene2RelativeHeight (r.height)); 
+		let div = this.getElement();
+		obj.updateWidth  (this.scene2RelativeWidth  (div.offsetWidth)); 
+		obj.updateHeight (this.scene2RelativeHeight (div.offsetHeight)); 
 		INScore.objects().del (obj);		
 	}
 
@@ -217,14 +192,14 @@ console.log (this + " setShadow " + `${val.color} ${val.xOffset}px ${val.yOffset
  
 	//---------------------------------------------------------------------
 	// main update method
-	static updateObjectView (id : number, oid : number)	: void { 
+	static updateObjectView (id : number, oid : number, forcepos=false)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {
 	    	let obj = INScore.objects().create(oid);
-    		view.updateView (obj, oid); 
+			view.updateView (obj, oid, forcepos); 
     		INScore.objects().del (obj);
     	}
     }
 
-    static getVObject (id : number)	: JSObjectView	{ return JSObjectView.fObjects[id]; }
+    static getVObject (id : number)		: JSObjectView	{ return JSObjectView.fObjects[id]; }
 }
