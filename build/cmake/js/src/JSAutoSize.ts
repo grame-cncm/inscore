@@ -21,12 +21,11 @@ class JSAutoSize extends JSObjectView
             let elt = this.getElement();
             let w = elt.clientWidth;
             let h = elt.clientHeight;
-// console.log("JSAutoSize::waitForSize " + this + " " + w + " -> " + h);
             if (!w || !h)  setTimeout (() => this.waitForSize (objid), 50) ;
             else {
-                super.updateObjectSize (objid);
+                this.updateObjectSize (objid);
                 this.fSizeSynced = true;
-                JSObjectView.updateObjectView (this.getId(), objid);
+                JSObjectView.updateObjectView (this.getId(), objid, true);
             }    
         }
         return this.fSizeSynced;
