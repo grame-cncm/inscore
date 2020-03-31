@@ -31,10 +31,15 @@ class JSHtmlView extends JSAutoSize {
     }
 
 	removeEffect(elt: HTMLElement): void { 
-		super.removeEffect(elt); 
+		elt.style.filter = "blur(0px)";
 		elt.style.textShadow = "0px 0px";
 	}
+	setBlur(elt: HTMLElement, val: number): void {
+		elt.style.textShadow = "0px 0px";
+		elt.style.filter = `blur(${val}px)`;
+	}
 	setShadow (elt: HTMLElement, val: OShadow) : void {
+		elt.style.filter = "blur(0px)";
 		elt.style.textShadow = `${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px`;
 	}
 
