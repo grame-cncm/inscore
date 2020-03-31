@@ -71,20 +71,11 @@ abstract class JSSvgView extends JSObjectView {
 		return super.getPos(pos);
 	}
 
-	removeEffect(elt: HTMLElement): void { this.fSVG.setAttribute("filter", "blur(0px)"); }
-	setBlur(elt: HTMLElement, val: number): void {
-		this.fSVG.setAttribute("filter", `blur(${val}px)`);
-	}
+	removeEffect(elt: HTMLElement): void 			{ this.fSVG.setAttribute("filter", "blur(0px)"); }
+	setBlur(elt: HTMLElement, val: number): void 	{ this.fSVG.setAttribute("filter", `blur(${val}px)`); }
 	setShadow(elt: HTMLElement, val: OShadow): void {
 		this.fSVG.setAttribute("filter", `drop-shadow(${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px)`);
 	}
-
-	// setNone () : void 				{ this.fSVG.setAttribute("filter", "blur(0px)");  }
-	// setBlur (val: number) : void 	{ this.fSVG.setAttribute("filter", "blur(" + val + "px)"); }
-	// setShadow (params: Array<number>) : void {
-	// 	let color = new IColor( params.slice(2,6) );
-	// 	this.fSVG.setAttribute("filter", "drop-shadow(" + color.getCSSRGBAString() + params[0] +"px " + params[1] +"px " + params[6] +"px)");
-	// }
 
 	static penStyle2Dash(style : number) : string
 	{
