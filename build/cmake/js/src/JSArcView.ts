@@ -18,12 +18,12 @@ class JSArcView extends JSSvgView
     updateSVGDimensions(w: number, h: number) : void {}
 
     updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
-            let arc = obj.getArcInfos();
+        let arc = obj.getArcInfos();
         let r1 = this.relative2SceneWidth (arc.width) / 2;
         let r2 = this.relative2SceneHeight (arc.height) / 2;
         if (!r1 || !r2) return false;
         let startAngle  = JSArcView.normalize(arc.start);
-        let range = JSArcView.clip(arc.range);
+        let range       = JSArcView.clip(arc.range);
         let endAngle    = JSArcView.normalize(startAngle + range);
         let startPoint  = JSArcView.getPoint(r1, r2, startAngle );
         let endPoint    = JSArcView.getPoint(r1, r2, endAngle);

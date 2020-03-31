@@ -28,7 +28,6 @@ abstract class JSSvgView extends JSObjectView {
 		this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
 		this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
 		this.fSVG.setAttribute('version', "1.1");
-		// this.fSVG.style.paintOrder = "stroke";
 		this.getElement().appendChild(this.fSVG);
 	}
     abstract getSVGTarget() : SVGShape;
