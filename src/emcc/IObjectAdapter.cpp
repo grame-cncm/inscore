@@ -28,6 +28,7 @@
 #include "IText.h"
 #include "TFile.h"
 #include "IArc.h"
+#include "ICurve.h"
 #include "IPolygon.h"
 #include "IEffect.h"
 
@@ -284,6 +285,59 @@ JSLineInfos IObjectAdapter::getLineInfos () const
 	JSLineInfos infos;
 	if (!_getLine (dynamic_cast<ILine*>((IObject*)fObject), infos))
 		cerr << "IObjectAdapter::getLineInfos: unexpected null object!" << endl;
+	return infos;
+}
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getCurve  (const ICurve* obj, std::vector<float>& infos)
+{
+//	float minx, miny, maxx, maxy;
+//	minx = miny = 9999999.f;
+//	maxx = maxy = -999999.f;
+	if (obj) {
+		const ICurve::CurveData& data = obj->getPoints();
+		for (auto elt: data) {
+			infos.push_back (elt.fPointA.first);
+//			maxx = std::max(maxx, elt.fPointA.first);
+//			minx = std::min(minx, elt.fPointA.first);
+			infos.push_back (elt.fPointA.second);
+//			maxy = std::max(maxy, elt.fPointA.second);
+//			miny = std::min(miny, elt.fPointA.second);
+
+			infos.push_back (elt.fPointB.first);
+//			maxx = std::max(maxx, elt.fPointB.first);
+//			minx = std::min(minx, elt.fPointB.first);
+			infos.push_back (elt.fPointB.second);
+//			maxy = std::max(maxy, elt.fPointB.second);
+//			miny = std::min(miny, elt.fPointB.second);
+
+			infos.push_back (elt.fPointC.first);
+//			maxx = std::max(maxx, elt.fPointC.first);
+//			minx = std::min(minx, elt.fPointC.first);
+			infos.push_back (elt.fPointC.second);
+//			maxy = std::max(maxy, elt.fPointC.second);
+//			miny = std::min(miny, elt.fPointC.second);
+
+			infos.push_back (elt.fPointD.first);
+//			maxx = std::max(maxx, elt.fPointD.first);
+//			minx = std::min(minx, elt.fPointD.first);
+			infos.push_back (elt.fPointD.second);
+//			maxy = std::max(maxy, elt.fPointD.second);
+//			miny = std::min(miny, elt.fPointD.second);
+		}
+//		obj->setWidth (maxx - minx);
+//		obj->setHeight (maxy - miny);
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+std::vector<float> IObjectAdapter::getCurveInfos() const
+{
+	std::vector<float> infos;
+	if (!_getCurve (dynamic_cast<ICurve*>((IObject*)fObject), infos))
+		cerr << "IObjectAdapter::getCurveInfos: unexpected null object!" << endl;
 	return infos;
 }
 

@@ -145,6 +145,7 @@ struct JSRadius {
 
 class IText;
 class ILine;
+class ICurve;
 class IEffect;
 
 //--------------------------------------------------------------------------
@@ -166,7 +167,8 @@ class inscore_export IObjectAdapter
 	static bool _getPenBrush (const IShape* obj, JSPen& brush);
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
 	static bool _getLine  (ILine* obj, JSLineInfos& infos);
-	static bool _getEffect  (const IEffect* obj, JSEffect& infos);
+	static bool _getEffect (const IEffect* obj, JSEffect& infos);
+	static bool _getCurve  (const ICurve* obj, std::vector<float>& infos);
 
 	public:
 		typedef const std::string	jsString;
@@ -182,6 +184,7 @@ class inscore_export IObjectAdapter
 		JSRadius      getRadius () const;		// for IRect
 		JSArcInfos    getArcInfos() const;
 	    std::vector<float> getPolygonInfos() const;
+		std::vector<float> getCurveInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

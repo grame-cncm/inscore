@@ -9,6 +9,7 @@
 ///<reference path="JSImageView.ts"/>
 ///<reference path="JSArcView.ts"/>
 ///<reference path="JSPolygonView.ts"/>
+///<reference path="JSCurveView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -39,9 +40,9 @@ class JSViewFactory {
 			case "img":  	view = new JSImageView(parent); break;
 			case "arc": 	view = new JSArcView(parent); break;
 			case "polygon": view = new JSPolygonView(parent); break;
+			case "curve":   view = new JSCurveView(parent); break;
 
 			case "audio":
-			case "curve":
 			case "fileWatcher":
 			case "graph":
 			case "fastgraph":

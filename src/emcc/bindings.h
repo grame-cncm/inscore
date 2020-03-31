@@ -39,7 +39,7 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	value_object<JSRadius>("JSRadius")
 		.field("x",    &JSRadius::x)
 		.field("y",    &JSRadius::y);
-	
+
 	value_object<JSPen>("JSPen")
 		.field("penWidth",   &JSPen::penWidth)
 		.field("penColor",   &JSPen::penColor)
@@ -87,7 +87,6 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	
 	value_object<JSUpdateInfos>("JSUpdateInfos")
 		.field("position",  &JSUpdateInfos::position)
-//		.field("brush",   	&JSUpdateInfos::brush)
 		.field("color",   	&JSUpdateInfos::color)
 		.field("effect",   	&JSUpdateInfos::effect)
 		.field("updatepos", &JSUpdateInfos::updatepos)

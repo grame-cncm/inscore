@@ -140,17 +140,17 @@ interface OUpdateInfos {
 	newdata:      boolean;
 }
 
-interface ORadius {
-	x:  number;
-	y:  number;
-}
-
 interface OArc {
 	width: number;
 	height: number;
 	start:  number;
 	range:  number;
 	closed: boolean;
+}
+
+interface ORadius {
+	x:  number;
+	y:  number;
 }
 
 interface FloatVector {
@@ -169,6 +169,7 @@ interface INScoreObject {
 	getRadius():       ORadius;
 	getArcInfos():     OArc;
 	getPolygonInfos(): FloatVector;
+	getCurveInfos():   FloatVector;
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 

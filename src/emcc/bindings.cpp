@@ -64,8 +64,9 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
 		.function("updateHeight", 	&IObjectAdapter::updateHeight)
-		.function("getPolygonInfos",&IObjectAdapter::getPolygonInfos);
-	
+		.function("getPolygonInfos",&IObjectAdapter::getPolygonInfos)
+		.function("getCurveInfos",  &IObjectAdapter::getCurveInfos);
+
 	register_vector<float>("vector<float>");
 
 
