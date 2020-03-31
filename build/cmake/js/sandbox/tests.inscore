@@ -39,12 +39,30 @@ __END__
 /ITL/scene color cyan;
 /ITL/scene color orange;
 /ITL/scene color white;
-/ITL/scene width 1.5;
-/ITL/scene height 1.8;
-/ITL/scene x 1;
+/ITL/scene width 1;
+/ITL/scene height 1.5;
+/ITL/scene x 0.5;
+/ITL/scene y 16;
+/ITL/scene x 0;
 /ITL/scene y 0;
+/ITL/scene x -1;
+/ITL/scene y -1;
+/ITL/scene x 1;
+/ITL/scene y 1;
+/ITL/scene scale 1.2;
+/ITL/scene scale 1;
+/ITL/scene refresh;
+/ITL/scene xorigin -1;
+/ITL/scene yorigin -1;
+/ITL/scene xorigin 1;
+/ITL/scene yorigin 1;
+/ITL/scene xorigin 0;
+/ITL/scene yorigin 0;
+/ITL/scene effect none;
+/ITL/scene angle 12;
 
 /ITL/scene get width height;
+/ITL/scene show 0;
 
 /ITL/scene/text set txt "Hello world";
 /ITL/scene/text y 1;
@@ -105,12 +123,13 @@ o = 1;
 
 /ITL/scene/arc brushStyle none;
 /ITL/scene/arc width 1.5;
+/ITL/scene/arc close 0;
 /ITL/scene/rect brushStyle solid;
 /ITL/scene/arc get width height;
 
 /ITL/log level 2;
 
-/ITL/scene/title set txt "Hello";
+/ITL/scene/title set txt "Welcome to INScore";
 /ITL/scene/title fontFamily "Times New Roman";
 /ITL/scene/title color blue;
 /ITL/scene/title set rect 0.1 0.1;
@@ -147,6 +166,14 @@ pos = 1;
 /ITL/scene/circ x $pos ;
 /ITL/scene/circ y $pos ;
 
+/ITL/scene/title effect blur 8;
+/ITL/scene/img effect blur 8;
+/ITL/scene/img effect shadow 10 10 100 100 100 150 2;
+
+/ITL/scene/* effect blur 8;
+/ITL/scene/* effect none;
+/ITL/scene/* scale 0.08;
+/ITL/scene/* effect shadow 10 10 100 100 100 150 4;
 
 
 /ITL hello;
