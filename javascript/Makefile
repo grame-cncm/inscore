@@ -4,7 +4,7 @@
 
 .PHONY : 
 
-MAKE   ?= make
+MAKE ?= make
 
 CHECKDIR := TSCheck
 TSDIR := src
@@ -15,6 +15,7 @@ VIEW := inscoreview.js
 
 all :
 	$(MAKE) $(VIEW)
+	$(MAKE) -C emcc
 
 
 help :
