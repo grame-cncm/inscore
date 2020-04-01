@@ -1,0 +1,9 @@
+node_modules
+inscoreview.js
+libINScore.js
+libINScore.wasm
+emcc/emccdir
+emcc/libdir
+emcc/lib
+package.lock.json
+TSCheck
