@@ -95,6 +95,7 @@ class IShape
         const std::string&	getBrushStyle() const	{ return fBrushStyle; }
 
 		bool modified() const						{ return fModified; }
+		void cleanup()								{ fModified = false; }
 
 		virtual void	print(std::ostream& out) const;
 

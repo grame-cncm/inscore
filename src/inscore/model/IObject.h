@@ -249,10 +249,13 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief returns true when the object has no subnode
 		virtual bool	empty () const				{ return size() == 0; }
-				
+						
 		/// \brief returns the object globalmodification state
 				int		getState () const			{ return fState; }
-				
+			
+		/// \brief returns the object globalmodification state
+				void	clearState () 				{ fState = kClean; }
+
 		/// \brief sets the object global modification state \see getState
 		virtual	void	setState (state s);
 		/// \brief sets the object modification state and propagate \c kSubModified up
@@ -676,7 +679,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief object \c 'edit' message handler.
 		virtual MsgHandler::msgStatus editMsg (const IMessage* msg);
 
-		/// \brief object \c 'edit' message handler.
+		/// \brief set the object hierarchy modified
 		virtual void refresh ();
 
 };
