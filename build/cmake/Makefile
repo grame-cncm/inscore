@@ -5,97 +5,48 @@
 .PHONY : cmake js
 
 MAKE   ?= make
-CMAKE  ?= cmake
-TARGET := undefined
-LIBDIR  ?= libdir
-EMCCDIR ?= emccdir
 
-CMAKEOPT ?= 
-
-
-system	:= $(shell uname -s)
-# normalizes MINGW versions
-system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
-
-
-
-ifeq ($(TARGET), windows)
-	GENERATOR ?= "Visual Studio 14 2015 Win64"
-	J ?= /maxcpucount:4
-endif
-
-
-ifeq ($(system), Darwin)
-	PREFIX  ?= /usr/local
- 	GENERATOR ?= "Xcode"
-	J ?= -jobs 8   # parallele jobs for xcode
-endif
-
-ifeq ($(system), MINGW)
-	PREFIX  ?= "C:/Program Files"
-endif
-
-ifeq ($(system), Linux)
-	PREFIX  ?= /usr/local
-endif
-
-GENERATOR ?= "Unix Makefiles"	# default generator
-J  ?= -j 4
-
-CHECKDIR := js/check
-TSDIR := js/src
+CHECKDIR := TSCheck
+TSDIR := src
 TSSRC := $(wildcard $(TSDIR)/*.ts)
 OUT	  := $(patsubst $(TSDIR)/%.ts, $(CHECKDIR)/%.js, $(TSSRC))
 
+VIEW := inscoreview.js
+
 all :
-	$(MAKE) library
+	$(MAKE) $(VIEW)
 
 
 help :
-	@echo "This makefile is intended to build the INScore model library."
+	@echo "This makefile is intended to build the INScore Javascript library."
 	@echo "Available targets are : "
-	@echo "  library : to build the library (default)"
-	@echo "  ts      : to build the typescript library"
-	@echo "  js      : to build the wasm library"
-	@echo "  jstest  : copy the wasm output to js"
+	@echo "  ts      : to build the library (default)"
 	@echo
 	@echo "Project management: "
-	@echo "  tsclean   : remove output of ts target"
+	@echo "  clean     : remove all outputs"
 	@echo "  check     : check typescript code"
-	@echo "  checkclean: remove output of check target"
-	@echo "  cmake     : to (re)generate the projects"
-	@echo "  cmakejs   : to (re)generate the emcc projects"
-	@echo "  voidview  : to regenerate the projects with no view inside a 'noview' folder"
+	@echo "  install   : install the required components"
 	@echo
-	@echo "Options:"
-	@echo "  CMAKEOPT : options passed to cmake at project generation"
-
-#===============================================================
-# building inscore library
-#===============================================================
-cmake : $(LIBDIR)
-	cd  $(LIBDIR) && $(CMAKE) .. $(CMAKEOPT) -G $(GENERATOR)
-
-library : $(LIBDIR)
-	$(CMAKE) --build $(LIBDIR) --config Release -- $(J)
-
-$(LIBDIR):
-	mkdir $(LIBDIR)
-	$(MAKE) cmake
 
 #===============================================================
 # building inscore ts view
 #===============================================================
-ts: js/inscoreview.js
-tsclean : 
-	rm -f js/inscoreview.js
+ts: $(VIEW)
 
-js/inscoreview.js : $(TSSRC) js/libINScore.d.ts $(TSDIR)/tsconfig.json
+$(VIEW) : $(TSSRC) libINScore.d.ts $(TSDIR)/tsconfig.json
 	cd $(TSDIR) && tsc
 
-check: $(CHECKDIR) $(OUT)
-checkclean: 
+#===============================================================
+# project management
+#===============================================================
+install:
+	npm install
+
+clean : 
+	rm -f $(VIEW)
 	rm -f $(OUT)
+
+check: $(CHECKDIR) $(OUT)
 
 $(CHECKDIR) :
 	mkdir $(CHECKDIR)
@@ -103,34 +54,5 @@ $(CHECKDIR) :
 TSOPT  := --jsx react --target es3 --lib es2015,dom --noImplicitAny  --noImplicitReturns --alwaysStrict
 $(CHECKDIR)/%.js: $(TSDIR)/%.ts
 	tsc $(TSOPT) -out $@ $< || rm $@
-
-
-#===============================================================
-# building inscore wasm library
-#===============================================================
-jstest : js/libINScore.js js/libINScore.wasm
-
-js/libINScore.js: lib/libINScore.js
-	cp lib/libINScore.js js
-
-js/libINScore.wasm: lib/libINScore.wasm
-	cp lib/libINScore.wasm js
-
-cmakejs : $(EMCCDIR)
-	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
-
-js: $(EMCCDIR)
-	$(MAKE) -C $(EMCCDIR) wasmlib
-	$(MAKE) jstest
-
-$(EMCCDIR):
-	mkdir $(EMCCDIR)
-	$(MAKE) cmakejs
-
-
-
-#===============================================================
-# install target
-#===============================================================
 
 	
