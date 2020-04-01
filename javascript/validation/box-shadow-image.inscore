@@ -1,7 +1,7 @@
 /ITL/scene/* del;
 
-/ITL/scene/img set img "imgs/Graphic1.png";
-/ITL/scene/* effect shadow 10 10 100 100 100 200 5;
+/ITL/scene/img set img "img/INScoreViewer.png";
+/ITL/scene/* effect shadow 10 10 100 100 100 200 15;
 
 __END__
 
