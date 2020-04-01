@@ -5,5 +5,5 @@ libINScore.wasm
 emcc/emccdir
 emcc/libdir
 emcc/lib
-package.lock.json
+package-lock.json
 TSCheck
