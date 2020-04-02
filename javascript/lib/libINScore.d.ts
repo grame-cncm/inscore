@@ -148,6 +148,11 @@ interface OArc {
 	closed: boolean;
 }
 
+interface OGuido {
+	gmn: string;
+	page: number;
+}
+
 interface ORadius {
 	x:  number;
 	y:  number;
@@ -170,6 +175,8 @@ interface INScoreObject {
 	getArcInfos():     OArc;
 	getPolygonInfos(): FloatVector;
 	getCurveInfos():   FloatVector;
+	getGuidoInfos():   OGuido;
+
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 
