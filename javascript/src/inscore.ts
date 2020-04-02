@@ -1,4 +1,4 @@
-///<reference path="../libINScore.d.ts"/>
+///<reference path="../lib/libINScore.d.ts"/>
 
 
 //----------------------------------------------------------------------------

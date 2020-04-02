@@ -1,8 +1,9 @@
 ///<reference path="inscore.ts"/>
+///<reference path="libraries.ts"/>
 
 class INScoreDiv {
 	fDiv: 		HTMLElement;
-	fVersion:	number;
+	fVersion:	number;			// the inscore lang version supported by the div
 	constructor(div: HTMLElement, version: number) {
     	this.fDiv = div;
 		this.fVersion = version;
@@ -14,11 +15,13 @@ class INScoreGlue {
 	private fInscore : INScore;
 	private fTimeTask : number;
 	private fDivs: Array<INScoreDiv>;
+	private fLibraries : libraries;
 
     constructor() {
-    	this.fInscore = new INScore;
+		this.fInscore = new INScore;
+		this.fLibraries = new libraries;
     	this.fTimeTask = 0;
-    	this.fInscore.initialise ().then (() => { this.initialize(); });
+    	this.fInscore.initialise ().then (() => { this.start(); });
     }
 	
     //------------------------------------------------------------------------
@@ -40,14 +43,23 @@ class INScoreGlue {
 	
     //------------------------------------------------------------------------
 	// initialization
-    initialize () : void {
-		this.getInscoreDivs();
+    start () : void {
 		this.fInscore.start();
+		this.fLibraries.initialise().then (() => { this.initialise(); });
+	}
+
+	initialise () : void {
+		this.getInscoreDivs();
+		// this.fInscore.start();
 		this.fTimeTask = window.setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
 		for (let i=0; i< this.fDivs.length; i++)
 			this.initDiv (this.fDivs[i].fDiv, this.fDivs[i].fVersion==2);
 		this.watchResize();
 	}
+    
+    //------------------------------------------------------------------------
+	// librairies access
+	guido() : GuidoEngine 		{ return this.fLibraries.guido(); }
     
     //------------------------------------------------------------------------
     // inscore div initialization

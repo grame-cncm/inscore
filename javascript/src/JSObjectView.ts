@@ -1,5 +1,5 @@
 
-///<reference path="../libINScore.d.ts"/>
+///<reference path="../lib/libINScore.d.ts"/>
 ///<reference path="inscore.ts"/>
 
 
@@ -163,6 +163,11 @@ class JSObjectView {
 		obj.updateWidth  (this.scene2RelativeWidth  (div.offsetWidth)); 
 		obj.updateHeight (this.scene2RelativeHeight (div.offsetHeight)); 
 		INScore.objects().del (obj);		
+	}
+
+	updateObjectSizeSync (obj: INScoreObject, w: number, h: number) : void {
+		obj.updateWidth  (this.scene2RelativeWidth  (w)); 
+		obj.updateHeight (this.scene2RelativeHeight (h)); 
 	}
 
 	//---------------------------------------------------------------------

@@ -29,9 +29,10 @@ class JSCurveView extends JSSvgView {
 
 			// update object size
 			let obj = INScore.objects().create(objid);
-			let div = this.getElement();
-			obj.updateWidth  (this.scene2RelativeWidth  (r.width)); 
-			obj.updateHeight (this.scene2RelativeHeight (r.height)); 
+			// let div = this.getElement();
+			this.updateObjectSizeSync (obj, r.width, r.height);
+			// obj.updateWidth  (this.scene2RelativeWidth  (r.width)); 
+			// obj.updateHeight (this.scene2RelativeHeight (r.height)); 
 			INScore.objects().del (obj);
 		}
 		return true;
