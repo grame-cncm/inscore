@@ -53,6 +53,10 @@
 #  include "VQtUpdater.h"
 #endif
 
+#ifdef EMCC
+#include "JSCall.h"
+#endif
+
 using namespace std;
 namespace inscore 
 {
@@ -157,33 +161,29 @@ bool INScore::loadInscore2(const char *script)
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-const char* INScore::guidoversion()
+string INScore::guidoversion()
 {
 #ifdef EMCC
-	return "not available";
+	return jscall::getGuidoVersion();
 #else
-	int major, minor, sub;
-	GuidoGetVersionNums(&major, &minor, &sub);
-	stringstream s;
-	s << major << '.' << minor << '.' << sub;
-	
-	static string version = s.str();
-	return version.c_str();
+	return GuidoGetVersionStr();
+//	stringstream s;
+//	s << major << '.' << minor << '.' << sub;
+//
+//	static string version = s.str();
+//	return version.c_str();
 #endif
 }
 
 //--------------------------------------------------------------------------
-const char* INScore::musicxmlversion()
+string INScore::musicxmlversion()
 {
 	if (XMLImporter::musicxmlSupported())
 	{
-		static string version;
-		if (!version.size()) {
-			version = XMLImporter::musicxmlVersion();
-			version += " using the guido converter version ";
-			version += XMLImporter::musicxml2guidoVersion();
-		}
-		return version.c_str();
+		string version = XMLImporter::musicxmlVersion();
+		version += " using the guido converter version ";
+		version += XMLImporter::musicxml2guidoVersion();
+		return version;
 	}
 	return "not available";
 }

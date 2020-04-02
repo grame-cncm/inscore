@@ -220,11 +220,11 @@ class inscore_export INScore
 	static void add (MessagePtr msg, int n);
 	
 	
-	static float version()				{ return 1.26f; }	///< gives the library version number
-	static const char* versionStr()		{ return "1.26"; }	///< gives the library version number as a string
+	static float version()					{ return 1.26f; }	///< gives the library version number
+	static std::string versionStr()	{ return "1.26"; }	///< gives the library version number as a string
 
-	static const char* guidoversion();						///< gives the guido library version number as a string
-	static const char* musicxmlversion();					///< gives the musicxml library version number as a string
+	static std::string guidoversion();					///< gives the guido library version number as a string
+	static std::string musicxmlversion();					///< gives the musicxml library version number as a string
 };
 
 /*! @} */
