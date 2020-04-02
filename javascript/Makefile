@@ -17,7 +17,7 @@ GUIDOLIB    := lib/libGUIDOEngine.d.ts lib/libGUIDOEngine.js lib/libGUIDOEngine.
 GUIDOMODULE := $(GUIDOLIB:lib/%=$(GUIDO)/%)
 
 MXML        := $(MODULES)/libmusicxml
-XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm
+XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm lib/libmusicxml.d.ts src/libmusicxml.ts
 XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
 VIEW := inscoreview.js
 
@@ -58,18 +58,24 @@ install:
 	$(MAKE) modules
 
 modules: $(GUIDOLIB) $(XMLLIB)
+
 lib/libGUIDOEngine.d.ts : $(GUIDO)/libGUIDOEngine.d.ts
 	cp $< $@
 lib/libGUIDOEngine.js  : $(GUIDO)/libGUIDOEngine.js
 	cp $< $@
 lib/libGUIDOEngine.wasm : $(GUIDO)/libGUIDOEngine.wasm
 	cp $< $@
+src/guidoengine.ts:  $(GUIDO)/guidoengine.ts
+	sed -e 's/libGUIDOEngine.d.ts/..\/lib\/libGUIDOEngine.d.ts/'  $<  > $@
+
 lib/libmusicxml.js : $(MXML)/libmusicxml.js
 	cp $< $@
 lib/libmusicxml.wasm : $(MXML)/libmusicxml.wasm
 	cp $< $@
-src/guidoengine.ts:  $(GUIDO)/guidoengine.ts
-	sed -e 's/libGUIDOEngine.d.ts/..\/lib\/libGUIDOEngine.d.ts/'  $<  > $@
+lib/libmusicxml.d.ts : $(MXML)/libmusicxml.d.ts
+	cp $< $@
+src/libmusicxml.ts : $(MXML)/libmusicxml.ts
+	sed -e 's/libmusicxml.d.ts/..\/lib\/libmusicxml.d.ts/'  $<  > $@
 
 clean : 
 	rm -f $(VIEW)

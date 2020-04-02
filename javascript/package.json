@@ -22,7 +22,7 @@
   "homepage": "https://inscore.grame.fr",
   "dependencies": {
     "@grame/guidolib": "^1.6.8-a",
-    "@grame/libmusicxml": "^3.1.7",
+    "@grame/libmusicxml": "^3.19.1",
     "@types/node": "^13.9.8"
   }
 }
