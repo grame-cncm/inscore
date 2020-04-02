@@ -1,9 +1,14 @@
-node_modules
+
+node_modules/
+
 inscoreview.js
-libINScore.js
-libINScore.wasm
 emcc/emccdir
 emcc/libdir
 emcc/lib
 package-lock.json
 TSCheck
+
+lib/libGUIDOEngine.*
+lib/libmusicxml.*
+lib/libINScore.js
+lib/libINScore.wasm
