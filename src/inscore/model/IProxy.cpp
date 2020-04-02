@@ -135,6 +135,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
     SIMessage newmsg;
     if(objType == ITextFile::kTextFileType || objType == IImage::kImageType || objType == IGuidoFile::kGuidoFileType || objType == IHtmlFile::kHtmlFileType || objType == IMusicXMLFile::kMusicXMLFileType || objType == ISVGFile::kSVGFileType)
     {
+#ifndef EMCC
         std::string path;
         if (!msg->param(1, path)) return MsgHandler::kBadParameters;
 
@@ -147,6 +148,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
             objType = IUrlIntermediateObject::kUrlIntermediateType;
         }
         else
+#endif
             newmsg = IMessage::create(*msg);
     }
     else
