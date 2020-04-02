@@ -118,4 +118,8 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("start",  	&JSArcInfos::start)
 		.field("range",   	&JSArcInfos::range)
 		.field("closed",  	&JSArcInfos::closed);
+	
+	value_object<JSGuidoInfos>("JSGuidoInfos")
+		.field("gmn",  	&JSGuidoInfos::gmn)
+		.field("page",  &JSGuidoInfos::page);
 }

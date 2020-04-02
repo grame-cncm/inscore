@@ -34,9 +34,10 @@ __END__
 /ITL mouse hide;
 /ITL get mouse;
 /ITL get rate;
+/ITL get version "guido-version" "musicxml-version";
 
 /ITL/scene/* del;
-/ITL/scene color cyan;
+/ITL/scene color grey;
 /ITL/scene color orange;
 /ITL/scene color white;
 /ITL/scene width 1;
@@ -63,6 +64,9 @@ __END__
 
 /ITL/scene get width height;
 /ITL/scene show 0;
+
+/ITL/scene/curve1 set curve  0.06 0.4 0.8 1.0 0.3 0.14 1.0 0.7;
+/ITL/scene/curve1 get width height;
 
 /ITL/scene/text set txt "Hello world";
 /ITL/scene/text y 1;
@@ -129,6 +133,19 @@ o = 1;
 
 /ITL/log level 2;
 
+/ITL/scene/gmn del;
+/ITL/scene/gmn set gmn "[ g e f d c f g e d e ]";
+/ITL/scene/gmn scale 1.5;
+/ITL/scene/gmn scale 0.5;
+/ITL/scene/gmn x 0.5;
+/ITL/scene/gmn y 0.5;
+/ITL/scene/gmn color red;
+/ITL/scene/gmn effect shadow 5 5 100 100 100 150 1;
+/ITL/scene/gmn rotatez 0;
+/ITL/scene/gmn rotatex 60;
+/ITL/scene/gmn rotatey 0;
+/ITL/scene/gmn rotatey -80;
+
 /ITL/scene/title set txt "Welcome to INScore";
 /ITL/scene/title fontFamily "Times New Roman";
 /ITL/scene/title color blue;
@@ -177,29 +194,6 @@ pos = 1;
 
 
 /ITL hello;
-/ITL time 0;
-/ITL get time;
-/ITL/scene get;
-/ITL/scene get width height;
-/ITL/altscene get;
-
-/ITL/scene new;
-/ITL/scene/rect1 set rect 0.2 0.2;
-/ITL/scene/rect1 x 0.5;
-/ITL/scene/rect1 y 0.1;
-/ITL/scene/rect1 color DarkRed ;
-/ITL/scene/rect1 color deepPink ;
-/ITL/scene/rect set rect 0.2 0.2;
-/ITL/scene/rect  color 0xa0a0a0;
-/ITL/scene/rect  color 0xa0a0a0a0;
-
-/ITL/scene/rect set rect 0.2 0.2;
-/ITL/altscene/rect set rect 0.2 0.2;
-/ITL/altscene/rect/rect set rect 0.2 0.2;
-
-/ITL/scene/rect1 ddate 1;
-/ITL/scene/rect1 ddate 0.5;
-/ITL/scene/rect1 get date;
 
 /ITL/scene/rect get alias;
 /ITL/scene/rect alias '/rect';
@@ -216,8 +210,5 @@ pos = 1;
 /scalerect 100;
 w = 0.2;
 /scalexy $w $w ;
-
-/ITL/scene opengl 1;
-/ITL/scene opengl 0;
 
 /ITL/scene export;

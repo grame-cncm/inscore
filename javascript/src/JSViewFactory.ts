@@ -10,6 +10,7 @@
 ///<reference path="JSArcView.ts"/>
 ///<reference path="JSPolygonView.ts"/>
 ///<reference path="JSCurveView.ts"/>
+///<reference path="JSGMNView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -41,6 +42,7 @@ class JSViewFactory {
 			case "arc": 	view = new JSArcView(parent); break;
 			case "polygon": view = new JSPolygonView(parent); break;
 			case "curve":   view = new JSCurveView(parent); break;
+			case "gmn":     view = new JSGMNView(parent, gGlue.guido()); break;
 
 			case "audio":
 			case "fileWatcher":
@@ -48,7 +50,6 @@ class JSViewFactory {
 			case "fastgraph":
 			case "radialgraph":
 			case "grid":
-			case "gmn":
 			case "pianoroll":
 			case "pianorollstream":
 			case "gmnstream":
