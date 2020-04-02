@@ -143,10 +143,16 @@ struct JSRadius {
 	float 	y = 0;
 };
 
+struct JSGuidoInfos {
+	std::string gmn;
+	int    page;
+};
+
 class IText;
 class ILine;
 class ICurve;
 class IEffect;
+class IGuidoCode;
 
 //--------------------------------------------------------------------------
 /*! \brief the interface for iobjects
@@ -169,6 +175,7 @@ class inscore_export IObjectAdapter
 	static bool _getLine  (ILine* obj, JSLineInfos& infos);
 	static bool _getEffect (const IEffect* obj, JSEffect& infos);
 	static bool _getCurve  (const ICurve* obj, std::vector<float>& infos);
+	static bool _getGuido  (const IGuidoCode* obj, JSGuidoInfos& infos);
 
 	public:
 		typedef const std::string	jsString;
@@ -185,6 +192,7 @@ class inscore_export IObjectAdapter
 		JSArcInfos    getArcInfos() const;
 	    std::vector<float> getPolygonInfos() const;
 		std::vector<float> getCurveInfos() const;
+		JSGuidoInfos  getGuidoInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
