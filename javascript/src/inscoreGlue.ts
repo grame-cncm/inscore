@@ -1,5 +1,6 @@
 ///<reference path="inscore.ts"/>
 ///<reference path="libraries.ts"/>
+///<reference path="constants.ts"/>
 
 class INScoreDiv {
 	fDiv: 		HTMLElement;
@@ -16,16 +17,44 @@ class INScoreGlue {
 	private fTimeTask : number;
 	private fDivs: Array<INScoreDiv>;
 	private fLibraries : libraries;
+	private fExtHandlers: { [id: string] : string; } = {};
 
     constructor() {
 		this.fInscore = new INScore;
 		this.fLibraries = new libraries;
-    	this.fTimeTask = 0;
-    	this.fInscore.initialise ().then (() => { this.start(); });
+		this.fTimeTask = 0;
+		this.makeExtTable();
+		this.fInscore.initialise ().then (() => { this.start(); });
     }
 	
     //------------------------------------------------------------------------
 	// internals
+    private makeExtTable(): void {
+        this.fExtHandlers["txt"] 		= kTextType;
+        this.fExtHandlers["text"] 		= kTextType;
+        this.fExtHandlers["mei"]		= kVerovioType;
+        this.fExtHandlers["xml"]		= kMusicxmlType;
+        this.fExtHandlers["svg"]		= kSvgType;
+        this.fExtHandlers["html"] 		= kHtmlType;
+		this.fExtHandlers["htm"] 		= kHtmlType;
+		this.fExtHandlers["gmn"] 		= kGuidoCodeType;
+		this.fExtHandlers["dsp"] 		= kFaustType;
+		this.fExtHandlers["jpg"] 		= kImgType;
+		this.fExtHandlers["jpeg"] 		= kImgType;
+		this.fExtHandlers["gif"] 		= kImgType;
+		this.fExtHandlers["png"] 		= kImgType;
+		this.fExtHandlers["bmp"] 		= kImgType;
+		this.fExtHandlers["tiff"] 		= kImgType;
+		this.fExtHandlers["wmv"] 		= kVideoType;
+		this.fExtHandlers["avi"] 		= kVideoType;
+		this.fExtHandlers["mpg"] 		= kVideoType;
+		this.fExtHandlers["mpeg"] 		= kVideoType;
+		this.fExtHandlers["mp4"] 		= kVideoType;
+		this.fExtHandlers["m4v"] 		= kVideoType;
+		this.fExtHandlers["mov"] 		= kVideoType;
+		this.fExtHandlers["vob"] 		= kVideoType;		
+    }
+
 	private getSceneAddress (div: HTMLElement) : string {
 		let scene = div.id;
 		return "/ITL/" + (scene ? scene : "scene");
@@ -97,6 +126,63 @@ class INScoreGlue {
 			reader.onloadend = (event) => { this.fInscore.loadInscore (reader.result.toString())};
 	}
 
+
+	//------------------------------------------------------------------------
+	// build a receivable name for an INScore object
+	fileName2InscoreName(name: string): string {
+		let myRegex = /^[a-zA-Z-_][-_a-zA-Z0-9]+$/.test(name);
+		if (!myRegex) {
+			let first: string = name[0];
+			let myRegex = /^[0-9]$/.test(first);
+			if (myRegex) {
+				name = '_' + name;
+			}
+			for (let i =1; i < name.length; i++ ) {
+				let myRegex = /^[-_a-zA-Z0-9]$/.test(name[i]);
+				if (!myRegex) {
+					name = name.replace(name[i], "_");
+				}	
+			}			
+		}	
+		return name	
+	}
+
+	//------------------------------------------------------------------------
+    // load an arbitrary file
+	loadText (file: File, type:string, dest: string) : void {
+		let reader = new FileReader();				
+		reader.readAsText (file);
+		reader.onloadend = (event) => {
+			let msg = this.fInscore.newMessageM ("set");
+			this.fInscore.msgAddStr (msg, type);
+			this.fInscore.msgAddStr (msg, reader.result.toString());
+			this.fInscore.postMessage (dest, msg);
+		};
+	}
+
+	//------------------------------------------------------------------------
+    // load an arbitrary file
+	loadFile (file: File, fileName: string, type:string, div: HTMLElement) : void {
+		let dst = this.getSceneAddress(div) + "/" + this.fileName2InscoreName (fileName);
+		switch (type) {
+			case kFaustType:
+				break;
+			case kGuidoCodeType: 
+			case kMusicxmlType:
+			case kSvgType:
+			case kHtmlType:
+			case kTextType:
+			case kVerovioType:
+				this.loadText (file, type, dst);
+				break;
+
+			case kImgType:
+				break;
+			case kVideoType:		
+				break;
+		}
+	}
+
     //------------------------------------------------------------------------
     // files drop support
 	filedropped(e : DragEvent) : void {
@@ -113,11 +199,11 @@ class INScoreGlue {
 			if (ext == "inscore") 		this.loadInscore (file, false);
 			else if (ext == "inscore2") this.loadInscore (file, true);
 			else {
-				console.log ("not an inscore file " + name);
+				let type = this.fExtHandlers[ext];
+				this.loadFile (file, fileName, type, <HTMLElement>e.target);
 			}
 		}
 	}
-
 
 	drop( e : DragEvent) : void {
 		let data = e.dataTransfer.getData("Text");
