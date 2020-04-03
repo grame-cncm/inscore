@@ -24,23 +24,26 @@ class JSGMNView extends JSSvgView {
 		return { x: parseInt(w), y: parseInt(h) };
 	}
 
+	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
+		let ar = this.fGuido.string2AR (this.fParser, gmn);
+		if (ar) {
+			let gr = this.fGuido.ar2gr (ar);
+			let svg = this.fGuido.gr2SVG (gr, page, false, 0);
+			this.fSVG.innerHTML = svg;
+			this.fGuido.freeGR(gr);
+			this.fGuido.freeAR(ar);
+
+			// update object size
+			let p = this.getSize(svg.substr(svg.indexOf ("viewBox"), 50));
+			this.updateObjectSizeSync (obj, p.x, p.y);
+			return true;
+		}
+		return false;
+	}
+
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
 		let guido = obj.getGuidoInfos();
-		if (this.fGuido) {
-			let ar = this.fGuido.string2AR (this.fParser, guido.gmn);
-			if (ar) {
-				let gr = this.fGuido.ar2gr (ar);
-				let svg = this.fGuido.gr2SVG (gr, guido.page, false, 0);
-				this.fSVG.innerHTML = svg;
-				this.fGuido.freeGR(gr);
-				this.fGuido.freeAR(ar);
-
-				// update object size
-				let p = this.getSize(svg.substr(svg.indexOf ("viewBox"), 50));
-				this.updateObjectSizeSync (obj, p.x, p.y);
-				return true;
-			}
-		}
+		if (this.fGuido)  return this.gmn2svg (obj, guido.code, guido.page);
 		else console.log ("Guido engine not available");
 		return false;
     }

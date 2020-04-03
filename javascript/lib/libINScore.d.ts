@@ -111,6 +111,14 @@ interface OEffect {
 	colorize: OColorize;
 	shadow: OShadow;
 }
+interface OEvents {
+	watchMouseEnter  : boolean;
+	watchMouseLeave  : boolean;
+	watchMouseMove   : boolean;
+	watchMouseDown   : boolean;
+	watchMouseUp     : boolean;
+	watchMouseDClick : boolean;
+}
 
 interface OPosition {
 	x:   number;
@@ -132,10 +140,12 @@ interface OUpdateInfos {
 	position:  OPosition;
 	color:     OColor;
 	effect:    OEffect;
+	events:	   OEvents;
 	updatepos:  boolean;
 	updatebrush:  boolean;
 	updatecolor:  boolean;
 	updateeffect: boolean;
+	updateevents: boolean;
 	deleted:      boolean;
 	newdata:      boolean;
 }
@@ -148,8 +158,8 @@ interface OArc {
 	closed: boolean;
 }
 
-interface OGuido {
-	gmn: string;
+interface OScore {
+	code: string;
 	page: number;
 }
 
@@ -175,7 +185,8 @@ interface INScoreObject {
 	getArcInfos():     OArc;
 	getPolygonInfos(): FloatVector;
 	getCurveInfos():   FloatVector;
-	getGuidoInfos():   OGuido;
+	getGuidoInfos():   OScore;
+	getXMLInfos():     OScore;
 
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;

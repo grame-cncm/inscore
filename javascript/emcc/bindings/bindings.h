@@ -79,20 +79,29 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("blur",  	&JSEffect::blur)
 		.field("colorize",	&JSEffect::colorize)
 		.field("shadow",	&JSEffect::shadow);
+	value_object<JSEvents>("JSEvents")
+		.field("watchMouseEnter",  	&JSEvents::watchMouseEnter)
+		.field("watchMouseLeave",  	&JSEvents::watchMouseLeave)
+		.field("watchMouseMove",	&JSEvents::watchMouseMove)
+		.field("watchMouseDown",	&JSEvents::watchMouseDown)
+		.field("watchMouseUp",		&JSEvents::watchMouseUp)
+		.field("watchMouseDClick",	&JSEvents::watchMouseDClick);
 
 	value_object<JSColor>("JSColor")
 		.field("rgb",   &JSColor::rgb)
 		.field("rgba",  &JSColor::rgba)
 		.field("alpha", &JSColor::alpha);
-	
+
 	value_object<JSUpdateInfos>("JSUpdateInfos")
 		.field("position",  &JSUpdateInfos::position)
 		.field("color",   	&JSUpdateInfos::color)
 		.field("effect",   	&JSUpdateInfos::effect)
+		.field("events",   	&JSUpdateInfos::events)
 		.field("updatepos", &JSUpdateInfos::updatepos)
 		.field("updatebrush", &JSUpdateInfos::updatebrush)
 		.field("updatecolor", &JSUpdateInfos::updatecolor)
 		.field("updateeffect", &JSUpdateInfos::updateeffect)
+		.field("updateevents", &JSUpdateInfos::updateevents)
 		.field("deleted", 	&JSUpdateInfos::deleted)
 		.field("newdata", 	&JSUpdateInfos::newdata);
 	
@@ -119,7 +128,7 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("range",   	&JSArcInfos::range)
 		.field("closed",  	&JSArcInfos::closed);
 	
-	value_object<JSGuidoInfos>("JSGuidoInfos")
-		.field("gmn",  	&JSGuidoInfos::gmn)
-		.field("page",  &JSGuidoInfos::page);
+	value_object<JSScoreInfos>("JSScoreInfos")
+		.field("code",  &JSScoreInfos::code)
+		.field("page",  &JSScoreInfos::page);
 }

@@ -32,6 +32,7 @@
 #include "IPolygon.h"
 #include "IEffect.h"
 #include "IGuidoCode.h"
+#include "IMusicXMLCode.h"
 
 using namespace std;
 
@@ -190,6 +191,25 @@ bool IObjectAdapter::_getEffect  (const IEffect* effect, JSEffect& infos)
 	return false;
 }
 
+extern const char* kMouseMoveEvent;
+extern const char* kMouseDownEvent;
+extern const char* kMouseUpEvent;
+extern const char* kMouseEnterEvent;
+extern const char* kMouseLeaveEvent;
+extern const char* kMouseDoubleClickEvent;
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getEvents (const EventsAble* obj, JSEvents& infos)
+{
+	infos.watchMouseEnter		= obj->countMouseMsgs (kMouseEnterEvent);
+	infos.watchMouseLeave		= obj->countMouseMsgs (kMouseLeaveEvent);
+	infos.watchMouseMove		= obj->countMouseMsgs (kMouseMoveEvent);
+	infos.watchMouseDown		= obj->countMouseMsgs (kMouseDownEvent);
+	infos.watchMouseUp			= obj->countMouseMsgs (kMouseUpEvent);
+	infos.watchMouseDClick 		= obj->countMouseMsgs (kMouseDoubleClickEvent);
+	return obj->modified();
+}
+
 //--------------------------------------------------------------------------
 JSRadius IObjectAdapter::getRadius () const
 {
@@ -313,10 +333,10 @@ bool IObjectAdapter::_getCurve  (const ICurve* obj, std::vector<float>& infos)
 }
 
 //--------------------------------------------------------------------------
-bool IObjectAdapter::_getGuido  (const IGuidoCode* obj, JSGuidoInfos& infos)
+bool IObjectAdapter::_getGuido  (const IGuidoCode* obj, JSScoreInfos& infos)
 {
 	if (obj) {
-		infos.gmn 	= obj->getGMN();
+		infos.code 	= obj->getGMN();
 		infos.page 	= obj->getPage();
 		return true;
 	}
@@ -324,11 +344,31 @@ bool IObjectAdapter::_getGuido  (const IGuidoCode* obj, JSGuidoInfos& infos)
 }
 
 //--------------------------------------------------------------------------
-JSGuidoInfos IObjectAdapter::getGuidoInfos() const
+JSScoreInfos IObjectAdapter::getGuidoInfos() const
 {
-	JSGuidoInfos infos;
+	JSScoreInfos infos;
 	if (!_getGuido (dynamic_cast<IGuidoCode*>((IObject*)fObject), infos))
 		cerr << "IObjectAdapter::getGuidoInfos: unexpected null object!" << endl;
+	return infos;
+}
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getXML (const IMusicXMLCode* obj, JSScoreInfos& infos)
+{
+	if (obj) {
+		infos.code 	= obj->getMusicXML();
+		infos.page 	= obj->getPage();
+		return true;
+	}
+	else return false;
+}
+
+//--------------------------------------------------------------------------
+JSScoreInfos IObjectAdapter::getXMLInfos() const
+{
+	JSScoreInfos infos;
+	if (!_getXML (dynamic_cast<IMusicXMLCode*>((IObject*)fObject), infos))
+		cerr << "IObjectAdapter::getXMLInfos: unexpected null object!" << endl;
 	return infos;
 }
 
@@ -357,6 +397,7 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos () const
 		if (infos.updatebrush) infos.updatepos = true;
 		infos.updatecolor 	= _getColor (fObject, infos.color);
 		infos.updateeffect	= _getEffect (fObject->getEffect(), infos.effect);
+		infos.updateevents	= _getEvents (fObject, infos.events);
 	}
 	return infos;
 }

@@ -99,14 +99,25 @@ struct JSEffect {
 	JSShadow 	shadow;
 };
 
+struct JSEvents {
+	bool watchMouseEnter;
+	bool watchMouseLeave;
+	bool watchMouseMove;
+	bool watchMouseDown;
+	bool watchMouseUp;
+	bool watchMouseDClick;
+};
+
 struct JSUpdateInfos {
 	JSPosition 	position;
 	JSColor  	color;
 	JSEffect	effect;
+	JSEvents	events;
 	bool updatepos = false;
 	bool updatebrush = false;
 	bool updatecolor = false;
 	bool updateeffect= false;
+	bool updateevents= false;
 	bool deleted = false;
 	bool newdata = false;
 };
@@ -143,8 +154,8 @@ struct JSRadius {
 	float 	y = 0;
 };
 
-struct JSGuidoInfos {
-	std::string gmn;
+struct JSScoreInfos {
+	std::string code;
 	int    page;
 };
 
@@ -153,6 +164,7 @@ class ILine;
 class ICurve;
 class IEffect;
 class IGuidoCode;
+class IMusicXMLCode;
 
 //--------------------------------------------------------------------------
 /*! \brief the interface for iobjects
@@ -174,8 +186,10 @@ class inscore_export IObjectAdapter
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
 	static bool _getLine  (ILine* obj, JSLineInfos& infos);
 	static bool _getEffect (const IEffect* obj, JSEffect& infos);
+	static bool _getEvents (const EventsAble* obj, JSEvents& infos);
 	static bool _getCurve  (const ICurve* obj, std::vector<float>& infos);
-	static bool _getGuido  (const IGuidoCode* obj, JSGuidoInfos& infos);
+	static bool _getGuido  (const IGuidoCode* obj, JSScoreInfos& infos);
+	static bool _getXML    (const IMusicXMLCode* obj, JSScoreInfos& infos);
 
 	public:
 		typedef const std::string	jsString;
@@ -192,7 +206,8 @@ class inscore_export IObjectAdapter
 		JSArcInfos    getArcInfos() const;
 	    std::vector<float> getPolygonInfos() const;
 		std::vector<float> getCurveInfos() const;
-		JSGuidoInfos  getGuidoInfos() const;
+		JSScoreInfos  getGuidoInfos() const;
+		JSScoreInfos  getXMLInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

@@ -68,11 +68,11 @@ MsgHandler::msgStatus IMusicXMLCode::set ( const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
 
+#ifndef EMCC
 	if (!XMLImporter::musicxmlSupported()) {
 		ITLErr << "MusicXML import is not available" << ITLEndl;
 		return MsgHandler::kCreateFailure;
 	}
-
 	string t;
 	if ((msg->size() == 2) && msg->param(1, t)) {
 		if ( t != getMusicXML() ) {
@@ -91,6 +91,16 @@ MsgHandler::msgStatus IMusicXMLCode::set ( const IMessage* msg )
 
 	}
 	else status = MsgHandler::kBadParameters;
+#else
+	string t;
+	if ((msg->size() == 2) && msg->param(1, t))	{
+		fXML = t;
+		status = MsgHandler::kProcessed;
+		newData(true);
+	}
+	else status = MsgHandler::kBadParameters;
+
+#endif
 	return status;
 }
 

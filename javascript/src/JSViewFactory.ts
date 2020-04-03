@@ -11,6 +11,7 @@
 ///<reference path="JSPolygonView.ts"/>
 ///<reference path="JSCurveView.ts"/>
 ///<reference path="JSGMNView.ts"/>
+///<reference path="JSXMLView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -35,14 +36,15 @@ class JSViewFactory {
 				view.waitForSize (objid);
 				break; 			
 			
-			case "rect":	view = new JSRectView(parent); break; 
-			case "ellipse": view = new JSEllipseView(parent); break; 
-			case "line": 	view = new JSLineView(parent); break; 
-			case "img":  	view = new JSImageView(parent); break;
-			case "arc": 	view = new JSArcView(parent); break;
-			case "polygon": view = new JSPolygonView(parent); break;
-			case "curve":   view = new JSCurveView(parent); break;
-			case "gmn":     view = new JSGMNView(parent, gGlue.guido()); break;
+			case "rect":	 view = new JSRectView(parent); break; 
+			case "ellipse":  view = new JSEllipseView(parent); break; 
+			case "line": 	 view = new JSLineView(parent); break; 
+			case "img":  	 view = new JSImageView(parent); break;
+			case "arc": 	 view = new JSArcView(parent); break;
+			case "polygon":  view = new JSPolygonView(parent); break;
+			case "curve":    view = new JSCurveView(parent); break;
+			case "gmn":      view = new JSGMNView(parent, gGlue.guido()); break;
+			case "musicxml": view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
 
 			case "audio":
 			case "fileWatcher":

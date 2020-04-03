@@ -88,7 +88,10 @@ class INScoreGlue {
     
     //------------------------------------------------------------------------
 	// librairies access
-	guido() : GuidoEngine 		{ return this.fLibraries.guido(); }
+	guido()  : GuidoEngine 		{ return this.fLibraries.guido(); }
+	guidoversion() : number 	{ return this.guido() ? this.guido().getFloatVersion() : 0; }
+	xmllib() : libmusicxml 		{ return this.fLibraries.xmllib(); }
+	xmllibversion() : number 	{ return this.xmllib() ? this.xmllib().libVersion() : 0; }
     
     //------------------------------------------------------------------------
     // inscore div initialization
