@@ -30,7 +30,7 @@ namespace jscall
 {
 
 std::string getGuidoVersion() {
-	float v = EM_ASM_DOUBLE( { return gGlue.guido() ? gGlue.guido().getFloatVersion() : 0;});
+	float v = EM_ASM_DOUBLE( { return gGlue.guidoversion(); });
 	return v ? to_string(v) : "not available";
 }
 
