@@ -87,16 +87,18 @@ EventsAble::~EventsAble ()	{}
 void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 {
 	fMsgMap.set(fHash(t), msgs);
-
-	if(msgs && isMouseEvent(t)){
-		if(fMouseSensible){
-			if(!msgs->list().size() && !checkMouseSensibility()){
-				fMouseSensible = false;
-				setMouseEventSensibility(false);
+	if (isMouseEvent(t)) {
+		fModified = true;
+		if(msgs) {
+			if(fMouseSensible){
+				if(!msgs->list().size() && !checkMouseSensibility()){
+					fMouseSensible = false;
+					setMouseEventSensibility(false);
+				}
+			}else if(!msgs->list().empty()){
+				fMouseSensible = true;
+				setMouseEventSensibility(true);
 			}
-		}else if(!msgs->list().empty()){
-			fMouseSensible = true;
-			setMouseEventSensibility(true);
 		}
 	}
 }
@@ -104,11 +106,15 @@ void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 //----------------------------------------------------------------------
 void EventsAble::addMsg(EventsAble::eventype t, SIMessageList msgs)
 {
-	fMsgMap.add(fHash(t), msgs);
-
-	if(!fMouseSensible && isMouseEvent(t)) {
-		fMouseSensible = true;
-		setMouseEventSensibility(true);
+	size_t hash = fHash(t);
+	size_t prevcount = fMsgMap.count(hash);
+	fMsgMap.add(hash, msgs);
+	if (isMouseEvent(t)) {
+		fModified = prevcount == 0;
+		if(!fMouseSensible) {
+			fMouseSensible = true;
+			setMouseEventSensibility(true);
+		}
 	}
 }
 
@@ -116,6 +122,7 @@ void EventsAble::addMsg(EventsAble::eventype t, SIMessageList msgs)
 //----------------------------------------------------------------------
 void EventsAble::reset ()
 { 
+	fModified = true;
 	fMsgMap.clear();
 	fTimeEnterMsgMap.clear();
 	fTimeLeaveMsgMap.clear();

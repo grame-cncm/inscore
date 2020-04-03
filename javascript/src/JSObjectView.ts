@@ -66,7 +66,8 @@ class JSObjectView {
 			this.updatePosition(infos.position, this.getElement());
 		if (infos.updateeffect)
 			this.updateEffects(infos.effect);
-		// this.updateEvents(obj);
+		if (infos.updateevents)
+			this.updateEvents(infos.events);
 	}
 
 
@@ -117,6 +118,12 @@ class JSObjectView {
 		let elt = this.getElement();
 		elt.style.width = this.relative2SceneWidth(pos.width) + "px";
 		elt.style.height = this.relative2SceneHeight(pos.height) + "px";
+	}
+
+	//------------------------------------------------------------------------------------
+	// update events (mouse)
+	updateEvents(events: OEvents): void {
+console.log (this + " update events " + events.watchMouseDown + " " + events.watchMouseUp + " " + events.watchMouseEnter + " " + events.watchMouseLeave);
 	}
 
 	//------------------------------------------------------------------------------------

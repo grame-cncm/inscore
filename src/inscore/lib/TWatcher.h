@@ -65,6 +65,10 @@ template <typename T> class TWatcher
 		const IMessageList* get (const T& key) const			{	const_iterator i = fWatchList.find(key);
 																	return (i != end()) ? i->second : 0;
 																}
+
+		const size_t 	count (const T& key) const				{	const_iterator i = fWatchList.find(key);
+																	return (i != end()) ? 1 : 0;
+																}
 		/// \brief set a key associated messages
 		virtual void set (const T& key, SIMessageList msgs)		{	if (msgs) fWatchList[key] = msgs;
 																	else {
