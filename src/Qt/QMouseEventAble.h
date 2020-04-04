@@ -44,13 +44,11 @@ struct EventContext;
 
 class _MouseEventAble
 {
-	static SIMessageList eval (const IMessageList* msgs, float x, float y, EventContext& env);
+//	static SIMessageList eval (const IMessageList* msgs, float x, float y, EventContext& env);
 
 	public:
 		
 		static void handleEvent (const IObject * obj, float x, float y,  EventsAble::eventype type);
-		// converts a point to a date in the context of an object and a given map
-		static libmapping::rational point2date (const IObject * obj, float x, float y, const std::string& mapname, int n);
 		// retrieves a touch event coordinates
 		static TFloatPoint touchPos	( QTouchEvent* event );
 };

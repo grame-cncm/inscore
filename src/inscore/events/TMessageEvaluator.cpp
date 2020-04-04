@@ -581,5 +581,57 @@ SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, const EventCont
 	return outmsgs;
 }
 
+//----------------------------------------------------------------------
+/** \brief converts a point to a date in the context of an object and a given map
+*
+*	\param obj		the object context
+*	\param x		the point x coordinate
+*	\param y		the point y coordinate
+*	\param mapname	the map to be used for conversion
+*	\param n		the repeat number to be retrieved (indexed from 0)
+*/
+rational TMessageEvaluator::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n) const
+{
+	rational nodate(0,0);
+	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);	// get the mapping first
+	if (!mapping) return nodate;												// failed to get the mapping
+
+	const Graphic2RelativeTimeRelation& g2t = mapping->reverse();	// get the graphic to time relation
+	for (TRelation<float,2,libmapping::rational,1>::const_iterator i = g2t.begin(); i != g2t.end(); i++) {
+		if (i->first.include (x, y)) {								// check if graphic segment includes the location
+			std::set<RelativeTimeSegment> s = i->second;			// if yes, get the corresponding time segments
+			int repeat = n;											// initializes the repeat count
+			double a = (x - i->first.xinterval().first()) / i->first.xinterval().size(); // this is the relative point position
+			for (std::set<RelativeTimeSegment>::const_iterator si = s.begin(); si != s.end(); si++) {
+				if (!repeat--) {									// expected repeat reached
+					// the date is computed as a float value to avoid overflow of rational values
+					float date = float(si->start()) + float(si->size()) * a;
+					return rational(date);							// and return the float value as a rational
+				}
+			}
+		}
+	}
+	return nodate;							// no such segment or repeat
+}
+
+//----------------------------------------------------------------------
+// evaluates a mouse event
+SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, EventContext& env)
+{
+	SIMessageList outmsgs = IMessageList::create();
+	for (unsigned int i=0; i < msgs->list().size(); i++) {
+		const IMessage* msg = msgs->list()[i];
+
+		std::string mapname;
+		if (hasDateVar (msg, mapname))
+			// resolves the date in a normalized x and y coordinate space [-1 1]
+			env.date = point2date (env.object, env.mouse.fx * 2 - 1, env.mouse.fy * 2 - 1, mapname, 0);
+
+		SIMessage evaluated = eval (msg, env);
+		if (evaluated) outmsgs->list().push_back(evaluated);
+	}
+	return outmsgs;
+}
+
 } // end namespoace
 

@@ -48,29 +48,29 @@ namespace inscore
 *	\param mapname	the map to be used for conversion
 *	\param n		the repeat number to be retrieved (indexed from 0)
 */
-rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n)
-{
-	rational nodate(0,0);
-	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);	// get the mapping first
-	if (!mapping) return nodate;												// failed to get the mapping
-
-	const Graphic2RelativeTimeRelation& g2t = mapping->reverse();	// get the graphic to time relation
-	for (TRelation<float,2,libmapping::rational,1>::const_iterator i = g2t.begin(); i != g2t.end(); i++) {
-		if (i->first.include (x, y)) {								// check if graphic segment includes the location
-			std::set<RelativeTimeSegment> s = i->second;			// if yes, get the corresponding time segments
-			int repeat = n;											// initializes the repeat count
-			double a = (x - i->first.xinterval().first()) / i->first.xinterval().size(); // this is the relative point position
-			for (std::set<RelativeTimeSegment>::const_iterator si = s.begin(); si != s.end(); si++) {
-				if (!repeat--) {									// expected repeat reached
-					// the date is computed as a float value to avoid overflow of rational values
-					float date = float(si->start()) + float(si->size()) * a;
-					return rational(date);							// and return the float value as a rational
-				}
-			}
-		}
-	}
-	return nodate;							// no such segment or repeat
-}
+//rational _MouseEventAble::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n)
+//{
+//	rational nodate(0,0);
+//	const SRelativeTime2GraphicMapping&	mapping = obj->getMapping (mapname);	// get the mapping first
+//	if (!mapping) return nodate;												// failed to get the mapping
+//
+//	const Graphic2RelativeTimeRelation& g2t = mapping->reverse();	// get the graphic to time relation
+//	for (TRelation<float,2,libmapping::rational,1>::const_iterator i = g2t.begin(); i != g2t.end(); i++) {
+//		if (i->first.include (x, y)) {								// check if graphic segment includes the location
+//			std::set<RelativeTimeSegment> s = i->second;			// if yes, get the corresponding time segments
+//			int repeat = n;											// initializes the repeat count
+//			double a = (x - i->first.xinterval().first()) / i->first.xinterval().size(); // this is the relative point position
+//			for (std::set<RelativeTimeSegment>::const_iterator si = s.begin(); si != s.end(); si++) {
+//				if (!repeat--) {									// expected repeat reached
+//					// the date is computed as a float value to avoid overflow of rational values
+//					float date = float(si->start()) + float(si->size()) * a;
+//					return rational(date);							// and return the float value as a rational
+//				}
+//			}
+//		}
+//	}
+//	return nodate;							// no such segment or repeat
+//}
 
 //----------------------------------------------------------------------
 // shift the relative coordinates regarding the object origin
@@ -85,23 +85,27 @@ static void originshift (const IObject * obj, float& relx, float& rely)
 }
 
 //----------------------------------------------------------------------
-SIMessageList _MouseEventAble::eval (const IMessageList* msgs, float x, float y, EventContext& env)
-{
-	TMessageEvaluator me;
-	SIMessageList outmsgs = IMessageList::create();
-	for (unsigned int i=0; i < msgs->list().size(); i++) {
-		const IMessage* msg = msgs->list()[i];
+//SIMessageList _MouseEventAble::eval (const IMessageList* msgs, float x, float y, EventContext& env)
+//{
+//	TMessageEvaluator me;
+//	return me.eval (msgs, env);
 
-		std::string mapname;
-		if (me.hasDateVar (msg, mapname))
-			// resolves the date in a normalized x and y coordinate space [-1 1]
-			env.date = point2date (env.object, x * 2 - 1, y * 2 - 1, mapname, 0);
+//	return me.eval (msgs, x, y, env);
 
-		SIMessage evaluated = me.eval (msg, env);
-		if (evaluated) outmsgs->list().push_back(evaluated);
-	}
-	return outmsgs;
-}
+//	SIMessageList outmsgs = IMessageList::create();
+//	for (unsigned int i=0; i < msgs->list().size(); i++) {
+//		const IMessage* msg = msgs->list()[i];
+//
+//		std::string mapname;
+//		if (me.hasDateVar (msg, mapname))
+//			// resolves the date in a normalized x and y coordinate space [-1 1]
+//			env.date = point2date (env.object, x * 2 - 1, y * 2 - 1, mapname, 0);
+//
+//		SIMessage evaluated = me.eval (msg, env);
+//		if (evaluated) outmsgs->list().push_back(evaluated);
+//	}
+//	return outmsgs;
+//}
 
 //----------------------------------------------------------------------
 TFloatPoint _MouseEventAble::touchPos	( QTouchEvent* event )	{
@@ -142,7 +146,8 @@ void _MouseEventAble::handleEvent (const IObject * obj, float x, float y,  Event
 	originshift (obj, mouse.fx, mouse.fy);						// shift x and y accordind to the object xorigin and yorigin
 	
 	EventContext env(mouse, rational(0,1), obj);				// create a context
-	SIMessageList outmsgs = eval (msgs, relx, rely, env);		// evaluates the variable parts of the message list
+	TMessageEvaluator me;
+	SIMessageList outmsgs = me.eval (msgs, env);
 	if (outmsgs && outmsgs->list().size()) outmsgs->send();		// when not empty, sends the evaluated messages
 }
 

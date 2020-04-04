@@ -1600,14 +1600,31 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 	if (n >= 1) {
 		string event;
 		if (!msg->param(0, event)) return MsgHandler::kBadParameters;
-		
+
 		if (EventsAble::isMouseEvent(event.c_str())) {		// this is a mouse related event
-			if (n == 3) {									// x and  y parameters are expected
-				int x, y;
-				if (msg->param(1, x) && msg->param(2, y)) {
+			if (n >= 3) {									// x and  y parameters are expected
+				float x, y;
+				if (msg->cast_param(1, x) && msg->cast_param(2, y)) {
+					float ox, oy, sx, sy;
+					ox = oy = sx = sy = 0.f;
+					if (n == 7) {								// obj and scene x and  y parameters are expected
+						if (!msg->cast_param(3, ox) || !msg->cast_param(4, oy) || !msg->cast_param(5, sx) || !msg->cast_param(6, sy))
+							return MsgHandler::kBadParameters;
+					}
+#ifdef EMCC
+					const IMessageList* msgs = getMouseMsgs (event.c_str());
+					if (!msgs || msgs->list().empty()) return MsgHandler::kProcessed;		// nothing to do, no associated message
+
+					MouseLocation mouse (x, y, ox, oy, sx, sy);
+					EventContext env(mouse, rational(0,1), this);
+					TMessageEvaluator me;
+					SIMessageList outmsgs = me.eval (msgs, env);
+					if (outmsgs && outmsgs->list().size()) outmsgs->send();		// when not empty, sends the evaluated messages
+#else
 					VObjectView	* view = getView();
 					if (view)
 						view->handleEvent (this, x, y, event.c_str());
+#endif
 					return MsgHandler::kProcessed;
 				}
 			}
