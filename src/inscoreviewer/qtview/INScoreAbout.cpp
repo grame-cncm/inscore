@@ -53,7 +53,7 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 
 	int h = height();
 	QString version("INScore v.");
-	version += INScore::versionStr();
+	version += INScore::versionStr().c_str();
 	QLabel* text = new QLabel(version, this);
 	text->setFont(font);
 	text->move(27, h - 45);
@@ -65,7 +65,7 @@ INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
 	text->move(22, h - 33);
 
 	QString guido("Using Guido Engine v.");
-	guido += INScore::guidoversion();
+	guido += INScore::guidoversion().c_str();
 	text = new QLabel(guido, this);
 	text->setFont(font);
 	text->move(17, h - 21);
