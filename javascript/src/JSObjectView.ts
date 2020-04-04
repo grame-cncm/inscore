@@ -1,6 +1,8 @@
 
 ///<reference path="../lib/libINScore.d.ts"/>
 ///<reference path="inscore.ts"/>
+///<reference path="inscoreGlue.ts"/>
+///<reference path="constants.ts"/>
 
 
 interface Point {
@@ -67,7 +69,7 @@ class JSObjectView {
 		if (infos.updateeffect)
 			this.updateEffects(infos.effect);
 		if (infos.updateevents)
-			this.updateEvents(infos.events);
+			this.updateEvents(infos.events, oid);
 	}
 
 
@@ -121,9 +123,70 @@ class JSObjectView {
 	}
 
 	//------------------------------------------------------------------------------------
-	// update events (mouse)
-	updateEvents(events: OEvents): void {
-console.log (this + " update events " + events.watchMouseDown + " " + events.watchMouseUp + " " + events.watchMouseEnter + " " + events.watchMouseLeave);
+	// mouse events handlers and update
+	getPoints(event: MouseEvent): { relative: Point, obj: Point, scene: Point} {
+		let div = this.getElement();
+		let x = (event.offsetX / div.clientWidth * 2) -1 ;
+		let y = (event.offsetY / div.clientHeight * 2) -1 ;
+
+		let pdiv = this.getParent().getElement();
+		let r = pdiv.getBoundingClientRect();
+		let sx = ((event.clientX - r.left) / pdiv.clientWidth * 2) -1 ;
+		let sy = ((event.clientY - r.top) / pdiv.clientHeight * 2) -1 ;
+		return { relative: {x: x, y: y}, obj: {x: event.offsetX, y: event.offsetY}, scene: {x: sx, y: sy}} ;
+	}
+
+	accept(event: MouseEvent, id: number): boolean {
+		if (id == kMouseLeaveID) return true;
+		let div = this.getElement();
+		return (event.offsetX >= 0) && (event.offsetY >= 0) && (event.offsetX <= div.clientWidth) && (event.offsetY <= div.clientHeight);
+	}
+
+	notify(event: MouseEvent, id: number, oid: number): void {
+		if (!this.accept(event, id)) return;
+		if ((id == kMouseMoveID) && (event.buttons != 1)) return;	// ignore move event without mouse button
+		let mevent = null;
+		switch (id) {
+			case kMouseEnterID:	 mevent = "mouseEnter"; break;
+			case kMouseLeaveID:  mevent = "mouseLeave"; break;
+			case kMouseDownID: 	 mevent = "mouseDown"; break;
+			case kMouseUpID:	 mevent = "mouseUp"; break;
+			case kMouseMoveID: 	 mevent = "mouseMove"; break;
+			case kMouseDClickID: mevent = "doubleClick"; break;
+			default: return;  // unexpected event
+		}
+
+		let obj = INScore.objects().create(oid);
+		let dest = obj.getOSCAddress();
+		INScore.objects().del (obj);		
+
+		let inscore = gGlue.inscore();
+		let msg = inscore.newMessageM ("event");
+		inscore.msgAddStr (msg, mevent);
+		let p = this.getPoints (event);
+		inscore.msgAddF (msg, p.relative.x)
+		inscore.msgAddF (msg, p.relative.y)
+		inscore.msgAddF (msg, p.obj.x)
+		inscore.msgAddF (msg, p.obj.y)
+		inscore.msgAddF (msg, p.scene.x)
+		inscore.msgAddF (msg, p.scene.y)
+		inscore.postMessage (dest, msg);
+	}
+
+	updateEvents(events: OEvents, oid: number): void {
+		let div = this.getElement();
+		if (events.watchMouseEnter) div.onmouseenter = (event : MouseEvent) : void => { this.notify(event, kMouseEnterID, oid); };
+		else div.onmouseenter = null;
+		if (events.watchMouseLeave) div.onmouseleave = (event : MouseEvent) : void => { this.notify(event, kMouseLeaveID, oid); };
+		else div.onmouseleave = null;
+		if (events.watchMouseDown) 	div.onmousedown = (event : MouseEvent) : void => { this.notify(event, kMouseDownID, oid); };
+		else div.onmousedown = null;
+		if (events.watchMouseUp) 	div.onmouseup = (event : MouseEvent) : void => { this.notify(event, kMouseUpID, oid); };
+		else div.onmouseup = null;
+		if (events.watchMouseMove) 	div.onmousemove = (event : MouseEvent) : void => { this.notify(event, kMouseMoveID, oid); };
+		else div.onmousemove = null;
+		if (events.watchMouseDClick) div.ondblclick = (event : MouseEvent) : void => { this.notify(event, kMouseDClickID, oid); };
+		else div.ondblclick = null;
 	}
 
 	//------------------------------------------------------------------------------------

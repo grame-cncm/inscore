@@ -23,3 +23,11 @@ const kVideoType            : string	= "video";
 const kVerovioType        	: string	= "verovio";
 const kVeroviofType        	: string	= "veroviof";
 const kWebSocketType        : string	= "websocket";
+
+// events types
+const kMouseEnterID 	= 1;
+const kMouseLeaveID 	= 2;
+const kMouseDownID  	= 3;
+const kMouseUpID    	= 4;
+const kMouseMoveID  	= 5;
+const kMouseDClickID	= 6;
