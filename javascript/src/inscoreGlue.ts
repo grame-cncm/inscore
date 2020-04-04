@@ -87,6 +87,10 @@ class INScoreGlue {
 	}
     
     //------------------------------------------------------------------------
+	// inscore access
+    inscore() : INScore			{ return this.fInscore; }
+
+	//------------------------------------------------------------------------
 	// librairies access
 	guido()  : GuidoEngine 		{ return this.fLibraries.guido(); }
 	guidoversion() : number 	{ return this.guido() ? this.guido().getFloatVersion() : 0; }
