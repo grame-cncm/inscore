@@ -188,6 +188,7 @@ interface INScoreObject {
 	getCurveInfos():   FloatVector;
 	getGuidoInfos():   OScore;
 	getXMLInfos():     OScore;
+	getSVGInfos():     string;
 
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;

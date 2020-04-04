@@ -202,6 +202,7 @@ class inscore_export IObjectAdapter
 		JSTextInfos   getTextInfos () const;
 		JSLineInfos   getLineInfos () const;
 		std::string   getFile () const;			// for file based object (e.g. image)
+		std::string   getSVGInfos () const;
 		JSRadius      getRadius () const;		// for IRect
 		JSArcInfos    getArcInfos() const;
 	    std::vector<float> getPolygonInfos() const;

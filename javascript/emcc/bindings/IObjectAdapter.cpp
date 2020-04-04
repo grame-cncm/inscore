@@ -33,6 +33,7 @@
 #include "IEffect.h"
 #include "IGuidoCode.h"
 #include "IMusicXMLCode.h"
+#include "ISVG.h"
 
 using namespace std;
 
@@ -361,6 +362,17 @@ bool IObjectAdapter::_getXML (const IMusicXMLCode* obj, JSScoreInfos& infos)
 		return true;
 	}
 	else return false;
+}
+
+//--------------------------------------------------------------------------
+std::string IObjectAdapter::getSVGInfos () const
+{
+	const ISVG* obj = dynamic_cast<ISVG*>((IObject*)fObject);
+	if (!obj)
+		cerr << "IObjectAdapter::getSVG: unexpected null object!" << endl;
+	else return obj->getText();
+	return "";
+
 }
 
 //--------------------------------------------------------------------------

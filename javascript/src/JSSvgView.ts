@@ -1,89 +1,22 @@
 
-///<reference path="JSObjectView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 
-interface SVGStyle {
-    color: string;
-    fill: string;
-    fillOpacity: string;
-    transform: string;
-    stroke: string;
-    strokeWidth: string;
-	strokeDasharray: string;
-	width: string;
-	height: string;
-}
+class JSSVGView extends JSSvgBase {
 
-interface SVGShape {
-	setAttribute (a: string, v: string) : void;
-	getBoundingClientRect() : DOMRect;
-    style: SVGStyle;
-}
-
-abstract class JSSvgView extends JSObjectView {
-	protected fSVG:SVGSVGElement;
-
-    constructor(parent: JSObjectView) {
-    	super (document.createElement('div'), parent);
-		this.fSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
-		this.fSVG.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-		this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
-		this.fSVG.setAttribute('version', "1.1");
-		this.getElement().appendChild(this.fSVG);
-	}
-    abstract getSVGTarget() : SVGShape;
-	abstract updateSVGDimensions(w: number, h: number) : void;
-
-	needSpecialUpdate(infos: OUpdateInfos) : boolean { return true; }
-	updateDimensions(pos: OPosition) : void {
-    	let w = this.relative2SceneWidth(pos.width);
-		let h = this.relative2SceneHeight(pos.height);
-		this.updateSVGDimensions (w, h);
-		let strokewidth = pos.pen.penWidth * 2;
-		this.fSVG.style.width  = (w + strokewidth) + "px";
-		this.fSVG.style.height = (h + strokewidth) + "px";
-	  }
-
-    updateColor(color: OColor) : void {
-		let target = this.getSVGTarget();
-		target.style.fill = color.rgb;
-		target.style.fillOpacity = color.alpha.toString();
+	constructor(parent: JSObjectView) {
+		super(parent);
+		this.getElement().className = "inscore-svg";
 	}
 
-	updatePenControl(pen: OPen) : void {
-		let elt = this.getSVGTarget();
-		elt.style.strokeWidth = pen.penWidth.toString();
-		elt.style.stroke = pen.penColor;
-		elt.style.strokeDasharray = JSSvgView.penStyle2Dash(pen.penStyle);
-		if (pen.brushStyle == TBrushStyle.kNoBrush)
-			elt.style.fill = "none";
-		else {
-	        elt.style.fill = pen.color;
-	        elt.style.fillOpacity = pen.alpha.toString();
-		}
-	}
+	getSVGTarget() : SVGShape   { return this.fSVG; }
+	toString() : string		    { return "JSSVGView"; }
+	updateSVGDimensions(w: number, h: number) : void { }
 
-	getTranslate(pos: OPosition) : number { return pos.pen.penWidth; }
-
-	getPos(pos: OPosition) : Point {
-		let strokewidth = this.getTranslate(pos);
-		this.getSVGTarget().style.transform = strokewidth ? `translate(${strokewidth}px,${strokewidth}px)` : "";
-		return super.getPos(pos);
-	}
-
-	removeEffect(elt: HTMLElement): void 			{ this.fSVG.setAttribute("filter", "blur(0px)"); }
-	setBlur(elt: HTMLElement, val: number): void 	{ this.fSVG.setAttribute("filter", `blur(${val}px)`); }
-	setShadow(elt: HTMLElement, val: OShadow): void {
-		this.fSVG.setAttribute("filter", `drop-shadow(${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px)`);
-	}
-
-	static penStyle2Dash(style : number) : string
-	{
-		switch(style) {
-			case INScoreModule.kDashStyle:	 	return "4, 4";
-			case INScoreModule.kDotStyle:		return "2 2";
-			case INScoreModule.kDashDotStyle: 	return "4 2";
-			case INScoreModule.kDashDotDotStyle:	return "4 4 2";
-			default : 	return "";
-		}
-	}
+	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+		let svg = obj.getSVGInfos();
+		this.fSVG.innerHTML = svg;
+		let bb = this.fSVG.getBBox();
+		this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+		return true;
+    }
 }

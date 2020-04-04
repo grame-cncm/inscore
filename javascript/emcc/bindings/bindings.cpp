@@ -68,8 +68,9 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getPolygonInfos",&IObjectAdapter::getPolygonInfos)
 		.function("getCurveInfos",  &IObjectAdapter::getCurveInfos)
 		.function("getGuidoInfos",  &IObjectAdapter::getGuidoInfos)
-		.function("getXMLInfos",    &IObjectAdapter::getXMLInfos);
-	
+		.function("getXMLInfos",    &IObjectAdapter::getXMLInfos)
+		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos);
+
 	register_vector<float>("vector<float>");
 
 
