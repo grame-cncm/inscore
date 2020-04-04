@@ -18,7 +18,8 @@ class JSGMNView extends JSSvgView {
 	toString() : string		    { return "JSGMNView"; }
 	updateSVGDimensions(w: number, h: number) : void { }
 
-    getSize (svg: string) : Point { 
+	// gives the size of the element from it's viewport
+	getSize (svg: string) : Point { 
 		let w = svg.replace (/^..*="0 0 ([0-9]+)..*/, "$1");
 		let h = svg.replace (/^..*="0 0 [0-9]+ ([0-9]+)..*/, "$1");
 		return { x: parseInt(w), y: parseInt(h) };
