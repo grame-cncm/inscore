@@ -1,7 +1,7 @@
 
-///<reference path="JSSVGView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 
-class JSEllipseView extends JSSvgView {
+class JSEllipseView extends JSSvgBase {
     protected fEllipse: SVGEllipseElement;
     protected fPixWidth: number;		// the element width in pixels
     protected fPixHeight: number;		// the element height in pixels

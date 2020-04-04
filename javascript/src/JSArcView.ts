@@ -1,7 +1,7 @@
 
-///<reference path="JSSVGView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 
-class JSArcView extends JSSvgView
+class JSArcView extends JSSvgBase
 {
     protected fArc   : SVGPathElement;
 

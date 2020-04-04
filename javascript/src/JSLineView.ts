@@ -1,7 +1,7 @@
 
-///<reference path="JSSVGView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 
-class JSLineView extends JSSvgView {
+class JSLineView extends JSSvgBase {
 
     protected fLine: SVGLineElement;
 	fWidth: number;

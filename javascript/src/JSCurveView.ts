@@ -1,7 +1,7 @@
 
-///<reference path="JSSVGView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 
-class JSCurveView extends JSSvgView {
+class JSCurveView extends JSSvgBase {
     protected fCurve: 	SVGPathElement;
     // protected fStart: 	TPoint;
     // protected fEnd: 	TPoint;

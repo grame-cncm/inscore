@@ -1,7 +1,7 @@
 
-///<reference path="JSSVGView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 
-class JSRectView extends JSSvgView {
+class JSRectView extends JSSvgBase {
     protected fRect: SVGRectElement;
     
     constructor(parent: JSObjectView) {

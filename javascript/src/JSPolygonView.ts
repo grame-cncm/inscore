@@ -1,7 +1,7 @@
 
-///<reference path="JSSVGView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 
-class JSPolygonView extends JSSvgView {
+class JSPolygonView extends JSSvgBase {
 
     protected fPolygon: SVGPolygonElement;
 

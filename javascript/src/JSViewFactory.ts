@@ -12,6 +12,7 @@
 ///<reference path="JSCurveView.ts"/>
 ///<reference path="JSGMNView.ts"/>
 ///<reference path="JSXMLView.ts"/>
+///<reference path="JSSVGView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -45,6 +46,7 @@ class JSViewFactory {
 			case "curve":    view = new JSCurveView(parent); break;
 			case "gmn":      view = new JSGMNView(parent, gGlue.guido()); break;
 			case "musicxml": view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
+			case "svg":      view = new JSSVGView(parent); break;
 
 			case "audio":
 			case "fileWatcher":
@@ -57,10 +59,7 @@ class JSViewFactory {
 			case "gmnstream":
 			case "layer":
 			case "memimg":
-			case "musicxml":
 			case "rshape":
-			case "svg":
-			case "scene":
 			case "sig":
 			case "signode":
 			case "video":

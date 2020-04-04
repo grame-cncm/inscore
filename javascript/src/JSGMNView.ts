@@ -1,8 +1,8 @@
 
-///<reference path="JSSVGView.ts"/>
+///<reference path="JSSVGBase.ts"/>
 ///<reference path="guidoengine.ts"/>
 
-class JSGMNView extends JSSvgView {
+class JSGMNView extends JSSvgBase {
 
 	private fGuido: GuidoEngine;
 	private fParser: GuidoParser;
@@ -19,24 +19,31 @@ class JSGMNView extends JSSvgView {
 	updateSVGDimensions(w: number, h: number) : void { }
 
 	// gives the size of the element from it's viewport
-	getSize (svg: string) : Point { 
-		let w = svg.replace (/^..*="0 0 ([0-9]+)..*/, "$1");
-		let h = svg.replace (/^..*="0 0 [0-9]+ ([0-9]+)..*/, "$1");
-		return { x: parseInt(w), y: parseInt(h) };
+	// getSize (svg: string) : Point { 
+	// 	let w = svg.replace (/^..*="0 0 ([0-9]+)..*/, "$1");
+	// 	let h = svg.replace (/^..*="0 0 [0-9]+ ([0-9]+)..*/, "$1");
+	// 	return { x: parseInt(w), y: parseInt(h) };
+	// }
+
+	removeViewBox (svg: string) : string { 
+		return svg.replace (/viewBox="[^"]" /, "");
 	}
+
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
 		let ar = this.fGuido.string2AR (this.fParser, gmn);
 		if (ar) {
 			let gr = this.fGuido.ar2gr (ar);
 			let svg = this.fGuido.gr2SVG (gr, page, false, 0);
-			this.fSVG.innerHTML = svg;
+			this.fSVG.innerHTML = svg; // this.removeViewBox(svg);
 			this.fGuido.freeGR(gr);
 			this.fGuido.freeAR(ar);
 
 			// update object size
-			let p = this.getSize(svg.substr(svg.indexOf ("viewBox"), 50));
-			this.updateObjectSizeSync (obj, p.x, p.y);
+			// let p = this.getSize(svg.substr(svg.indexOf ("viewBox"), 50));
+
+			let bb = this.fSVG.getBBox();
+			this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
 			return true;
 		}
 		return false;
