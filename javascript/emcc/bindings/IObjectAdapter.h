@@ -212,8 +212,9 @@ class inscore_export IObjectAdapter
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
 
-		void	updateWidth(float w)		{ _updateWidth (fObject, w); }
-		void	updateHeight(float h)		{ _updateHeight(fObject, h); }
+		std::string	getOSCAddress() const		{ return fObject->getOSCAddress(); }
+		void	updateWidth(float w)			{ _updateWidth (fObject, w); }
+		void	updateHeight(float h)			{ _updateHeight(fObject, h); }
 
 	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
 	void 			del(IObjectAdapter* obj) 	{ delete obj; }

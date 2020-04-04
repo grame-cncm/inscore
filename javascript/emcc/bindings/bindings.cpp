@@ -55,6 +55,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("create", 		&IObjectAdapter::create, allow_raw_pointers())
 		.function("del", 			&IObjectAdapter::del, allow_raw_pointers())
 
+		.function("getOSCAddress",  &IObjectAdapter::getOSCAddress, allow_raw_pointers())
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
 		.function("getTextInfos",   &IObjectAdapter::getTextInfos, allow_raw_pointers())
 		.function("getLineInfos",   &IObjectAdapter::getLineInfos, allow_raw_pointers())
