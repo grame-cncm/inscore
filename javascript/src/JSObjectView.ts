@@ -96,8 +96,8 @@ class JSObjectView {
 
 	updatePosition(pos: OPosition, elt: HTMLElement) : void {
 		elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
-		this.updateDimensions (pos);
 		elt.style.transform = this.getTransform (pos);
+		this.updateDimensions (pos);
 		let p = this.getPos (pos);
 		elt.style.left 	= p.x + "px";
 		elt.style.top  	= p.y + "px";
