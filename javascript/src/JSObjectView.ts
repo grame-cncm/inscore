@@ -43,22 +43,19 @@ class JSObjectView {
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
 	updateSpecific(obj: INScoreObject)	: void { }
-	needSpecialUpdate(infos: OUpdateInfos) : boolean { return false; }
 
 	//---------------------------------------------------------------------
 	// update methods
 	//---------------------------------------------------------------------
 	updateView(obj: INScoreObject, oid: number, force = false) : void {
-		let infos = obj.getUpdateInfos();
-		if (infos.deleted  && this.getElement().parentNode) { // parent could be deleted
+		if (obj.deleted()  && this.getElement().parentNode) { // parent could be deleted
 			this.getElement().parentNode.removeChild(this.getElement());
 			return;
 		}
 
-		if (infos.newdata || this.needSpecialUpdate(infos)) {
+		if (obj.newData()) 
 			if (!this.updateSpecial (obj, oid)) return;
-			else infos.updatepos = true;
-		}
+		let infos = obj.getUpdateInfos();
 		if (infos.updatecolor) 
 			this.updateColor(infos.color);
 		if (infos.updatebrush)
@@ -129,7 +126,7 @@ class JSObjectView {
 		let x = (event.offsetX / div.clientWidth * 2) -1 ;
 		let y = (event.offsetY / div.clientHeight * 2) -1 ;
 
-		let pdiv = this.getParent().getElement();
+		let pdiv = this.getElement().parentElement;
 		let r = pdiv.getBoundingClientRect();
 		let sx = ((event.clientX - r.left) / pdiv.clientWidth * 2) -1 ;
 		let sy = ((event.clientY - r.top) / pdiv.clientHeight * 2) -1 ;
