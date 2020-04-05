@@ -5,7 +5,8 @@
 /ITL/scene/line2 set line wa 2 90;
 /ITL/scene/line2 penColor 0 0 255;
 
-/ITL/scene/img set img "imgs/Graphic1.png";
+/ITL/scene/img set img "imgs/img.png";
+/ITL/scene/img scale 0.3;
 /ITL/scene/img y -0.5;
 
 /ITL/scene/vid set video "imgs/blading.mp4";
@@ -23,3 +24,5 @@
                           </ul>";
 /ITL/scene/html x 0.5;
 /ITL/scene/html y 0.25;
+
+file:///Users/fober/src/INScore/git/javascript/img/INScoreViewer.png

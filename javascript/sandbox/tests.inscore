@@ -62,7 +62,16 @@ __END__
 /ITL/scene effect none;
 /ITL/scene angle 12;
 
-/ITL/scene get width height;
+/ITL/scene/gmn scale 3;
+/ITL/scene/img scale 1.5;
+/ITL/scene/img scale 0.5;
+/ITL/scene/* scale 2;
+/ITL/scene/* del;
+/ITL/scene/* scale 1;
+/ITL/scene/* get width height;
+/ITL/scene/rect scale 1;
+
+/ITL/scene/* get width height;
 /ITL/scene show 0;
 
 /ITL/scene/curve1 set curve  0.06 0.4 0.8 1.0 0.3 0.14 1.0 0.7;
@@ -196,7 +205,7 @@ pos = 1;
 /ITL hello;
 
 /ITL/scene/rect watch mouseDown  (/ITL/scene/rect x "$sx", /ITL/scene/rect y "$sy");
-/ITL/scene/rect watch mouseMove  (/ITL/scene/rect x "$sx");
+/ITL/scene/rect watch mouseMove  (/ITL/scene/rect x "$sx", /ITL/scene/rect y "$sy");
 /ITL/scene/rect watch mouseEnter (/ITL/scene/rect color red);
 /ITL/scene/rect watch mouseLeave (/ITL/scene/rect color orange);
 /ITL/scene/rect event mouseEnter 0 0;
@@ -207,7 +216,9 @@ pos = 1;
 /ITL/scene/rect watch mouseEnter;
 /ITL/scene/rect watch mouseLeave;
 
-/ITL/scene/rect dx 0.1;
+p = 0;
+/ITL/scene/rect x $p;
+/ITL/scene/rect y $p;
 /ITL/scene/rect get alias;
 /ITL/scene/rect alias '/rect';
 /ITL/scene/rect alias '/drect' dx;

@@ -1,4 +1,5 @@
 
+/ITL/scene/* del;
 
 /ITL/scene/G1 set line wa 2 0;
 /ITL/scene/G2 set line wa 2 90;
