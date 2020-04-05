@@ -177,6 +177,8 @@ interface INScoreObject {
     create(id: number):        INScoreObject;
     del(obj: INScoreObject):   void;
 
+    newData():   	   boolean;
+    deleted():   	   boolean;
     getOSCAddress():   string;
     getUpdateInfos():  OUpdateInfos;
     getTextInfos():    OTextInfo;

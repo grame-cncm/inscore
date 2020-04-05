@@ -198,6 +198,8 @@ class inscore_export IObjectAdapter
 				 IObjectAdapter(const SIObject& object) : fObject(object) {}
 		virtual ~IObjectAdapter() {}
 		
+		bool 		  newData () const		{ return fObject->newData(); }
+		bool 		  deleted () const		{ return fObject->getDeleted(); }
 		JSUpdateInfos getUpdateInfos () const;
 		JSTextInfos   getTextInfos () const;
 		JSLineInfos   getLineInfos () const;
