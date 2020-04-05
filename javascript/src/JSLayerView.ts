@@ -9,5 +9,4 @@ class JSLayerView extends JSObjectView {
     }
 
 	toString() : string					{ return "JSLayerView"; }
-	// updateDimensions(pos: OPosition) : void {}
 }
