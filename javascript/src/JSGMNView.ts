@@ -17,30 +17,19 @@ class JSGMNView extends JSSvgBase {
 	getSVGTarget() : SVGShape   { return this.fSVG; }
 	toString() : string		    { return "JSGMNView"; }
 	updateSVGDimensions(w: number, h: number) : void { }
+	guido() : GuidoEngine		{ return this.fGuido; }
 
-	// gives the size of the element from it's viewport
-	// getSize (svg: string) : Point { 
-	// 	let w = svg.replace (/^..*="0 0 ([0-9]+)..*/, "$1");
-	// 	let h = svg.replace (/^..*="0 0 [0-9]+ ([0-9]+)..*/, "$1");
-	// 	return { x: parseInt(w), y: parseInt(h) };
-	// }
 
-	removeViewBox (svg: string) : string { 
-		return svg.replace (/viewBox="[^"]" /, "");
-	}
-
+	parse(gmn: string)	: ARHandler { return this.fGuido.string2AR (this.fParser, gmn); }
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
-		let ar = this.fGuido.string2AR (this.fParser, gmn);
+		let ar = this.parse (gmn);
 		if (ar) {
 			let gr = this.fGuido.ar2gr (ar);
 			let svg = this.fGuido.gr2SVG (gr, page, false, 0);
-			this.fSVG.innerHTML = svg; // this.removeViewBox(svg);
+			this.fSVG.innerHTML = svg;
 			this.fGuido.freeGR(gr);
 			this.fGuido.freeAR(ar);
-
-			// update object size
-			// let p = this.getSize(svg.substr(svg.indexOf ("viewBox"), 50));
 
 			let bb = this.fSVG.getBBox();
 			this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
