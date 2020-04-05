@@ -60,11 +60,11 @@ __END__
 /ITL/scene xorigin 0;
 /ITL/scene yorigin 0;
 /ITL/scene effect none;
-/ITL/scene angle 12;
+/ITL/scene angle 0;
 
 /ITL/scene/gmn scale 3;
-/ITL/scene/img scale 1.5;
-/ITL/scene/img scale 0.5;
+/ITL/scene/img angle 0;
+/ITL/scene/img width 0.5;
 /ITL/scene/* scale 2;
 /ITL/scene/* del;
 /ITL/scene/* scale 1;
@@ -137,8 +137,7 @@ o = 1;
 /ITL/scene/arc brushStyle none;
 /ITL/scene/arc width 1.5;
 /ITL/scene/arc close 0;
-/ITL/scene/rect brushStyle solid;
-/ITL/scene/arc get width height;
+/ITL/scene/e get width height;
 
 /ITL/log level 2;
 
@@ -153,6 +152,45 @@ o = 1;
 /ITL/scene/gmn rotatez 0;
 /ITL/scene/gmn rotatex 60;
 /ITL/scene/gmn rotatey 0;
+/ITL/scene/* del;
+/ITL/scene/proll set gmn '{
+	[
+		\meter<"2/4"> \stemsUp
+		\beam(g2*1/32 e*1/16 c*3/32) c2*1/8 \beam(a1*1/16 c2 f)
+		\beam(g/32 d/16 h1*3/32) d2*1/8 \beam(h1*1/16 d2 g2)
+	],
+	[	\staff<1> \stemsDown g1*1/8 e \beam(g/16 d f a) a/8 e 
+		\beam(a/16 e g h)
+	],
+	[	\staff<2> \meter<"2/4"> \stemsUp a0*1/4 f h c1 ],
+	[	\staff<2> \stemsDown f0*1/4 d g a ]
+}';
+/ITL/scene/proll set pianoroll '{
+	[
+		\meter<"2/4"> \stemsUp
+		\beam(g2*1/32 e*1/16 c*3/32) c2*1/8 \beam(a1*1/16 c2 f)
+		\beam(g/32 d/16 h1*3/32) d2*1/8 \beam(h1*1/16 d2 g2)
+	],
+	[	\staff<1> \stemsDown g1*1/8 e \beam(g/16 d f a) a/8 e 
+		\beam(a/16 e g h)
+	],
+	[	\staff<2> \meter<"2/4"> \stemsUp a0*1/4 f h c1 ],
+	[	\staff<2> \stemsDown f0*1/4 d g a ]
+}';
+/ITL/scene/proll clipPitch 60 72;
+/ITL/scene/proll clipPitch;
+/ITL/scene/proll clipTime 0 4 2 4;
+/ITL/scene/proll clipTime;
+/ITL/scene/proll keyboard 1;
+/ITL/scene/proll keyboard 0;
+/ITL/scene/proll measureBars 1;
+/ITL/scene/proll measureBars 0;
+/ITL/scene/proll autoVoicesColoration 1;
+/ITL/scene/proll autoVoicesColoration 0;
+/ITL/scene/proll width 1.5;
+/ITL/scene/proll height 1;
+/ITL/scene/proll scale 1.5;
+
 /ITL/scene/gmn rotatey -80;
 
 /ITL/scene/title set txt "Welcome to INScore";

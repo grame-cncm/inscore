@@ -1,6 +1,6 @@
 /ITL/scene/* del;
 
-/ITL/scene/_score set gmn '{
+gmn = '{
 	[
 		\pageFormat<lm=1cm, tm=1cm, bm=1cm, rm=1cm>
 		\meter<"2/4"> \stemsUp
@@ -12,9 +12,13 @@
 	],
 	[	\staff<2> \meter<"2/4"> \stemsUp a0*1/4 f h c1 ],
 	[	\staff<2> \stemsDown f0*1/4 d g a ]
-}
-';
+}';
 
+/ITL/scene/_score set gmn $gmn;
+/ITL/scene/_proll set pianoroll $gmn;
+/ITL/scene/_score y -0.5;
+/ITL/scene/_score scale 1.55;
+/ITL/scene/_proll y 0.2;
 
 # actions
 vpos  = 0.7;
