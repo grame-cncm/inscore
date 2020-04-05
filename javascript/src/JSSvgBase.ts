@@ -80,8 +80,8 @@ abstract class JSSvgBase extends JSObjectView {
 		switch(style) { 
 			case TPenStyle.kDash:	 	return "5,5";
 			case TPenStyle.kDot:		return "2,2";
-			case TPenStyle.kDashDot: 	return "5,2";
-			case TPenStyle.kDashDotDot:	return "5,2,2";
+			case TPenStyle.kDashDot: 	return "5,2,2,2";
+			case TPenStyle.kDashDotDot:	return "5,2,2,2,2,2";
 			default : 	return "";
 		}
 	}
