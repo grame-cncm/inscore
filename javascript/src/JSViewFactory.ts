@@ -14,6 +14,7 @@
 ///<reference path="JSXMLView.ts"/>
 ///<reference path="JSSVGView.ts"/>
 ///<reference path="JSPianorollView.ts"/>
+///<reference path="JSLayerView.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -49,6 +50,7 @@ class JSViewFactory {
 			case "pianoroll": view = new JSPianoRollView(parent, gGlue.xmllib(),gGlue.guido()); break;
 			case "musicxml":  view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
 			case "svg":       view = new JSSVGView(parent); break;
+			case "layer":	  view = new JSLayerView(parent); break;
 
 			case "audio":
 			case "fileWatcher":
@@ -58,7 +60,6 @@ class JSViewFactory {
 			case "grid":
 			case "pianorollstream":
 			case "gmnstream":
-			case "layer":
 			case "memimg":
 			case "rshape":
 			case "sig":
