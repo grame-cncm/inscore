@@ -33,15 +33,14 @@ abstract class JSSvgBase extends JSObjectView {
     abstract getSVGTarget() : SVGShape;
 	abstract updateSVGDimensions(w: number, h: number) : void;
 
-	needSpecialUpdate(infos: OUpdateInfos) : boolean { return true; }
 	updateDimensions(pos: OPosition) : void {
-    	let w = this.relative2SceneWidth(pos.width);
+		let w = this.relative2SceneWidth(pos.width);
 		let h = this.relative2SceneHeight(pos.height);
 		this.updateSVGDimensions (w, h);
 		let strokewidth = pos.pen.penWidth * 2;
 		this.fSVG.style.width  = (w + strokewidth) + "px";
 		this.fSVG.style.height = (h + strokewidth) + "px";
-	  }
+	}
 
     updateColor(color: OColor) : void {
 		let target = this.getSVGTarget();
@@ -78,11 +77,11 @@ abstract class JSSvgBase extends JSObjectView {
 
 	static penStyle2Dash(style : number) : string
 	{
-		switch(style) {
-			case INScoreModule.kDashStyle:	 	return "4, 4";
-			case INScoreModule.kDotStyle:		return "2 2";
-			case INScoreModule.kDashDotStyle: 	return "4 2";
-			case INScoreModule.kDashDotDotStyle:	return "4 4 2";
+		switch(style) { 
+			case TPenStyle.kDash:	 	return "5,5";
+			case TPenStyle.kDot:		return "2,2";
+			case TPenStyle.kDashDot: 	return "5,2";
+			case TPenStyle.kDashDotDot:	return "5,2,2";
 			default : 	return "";
 		}
 	}
