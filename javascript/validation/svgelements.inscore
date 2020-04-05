@@ -1,0 +1,147 @@
+/ITL/scene/* del;
+
+/ITL/scene/_line set line wa 1 0;
+
+/ITL/scene/_elli set ellipse 0.5 0.25;
+/ITL/scene/_elli x 0.3;
+/ITL/scene/_elli y 0.45;
+/ITL/scene/_elli color orange;
+/ITL/scene/_elli penWidth 1;
+/ITL/scene/_elli penStyle dot;
+
+/ITL/scene/_arc set arc 1 1 180 90;
+/ITL/scene/_arc close 1;
+/ITL/scene/_arc x -0.01;
+/ITL/scene/_arc y 0.01;
+/ITL/scene/_arc color peru;
+
+/ITL/scene/_curve set curve 0. 0. 0.5 0.5 0.5 -0.75 0.75 0.5;
+/ITL/scene/_curve x 0.38;
+/ITL/scene/_curve color grey;
+
+/ITL/scene/_polygon set polygon 0.5 0 0 0.5 0.5 0.5;
+/ITL/scene/_polygon x -0.25;
+/ITL/scene/_polygon y -0.25;
+/ITL/scene/_polygon color 255 112 0;
+
+/ITL/scene/_rect set rect 0.3 0.6;
+/ITL/scene/_rect y -0.5;
+/ITL/scene/_rect x 0.15;
+/ITL/scene/_rect color 0 200 200 150;
+/ITL/scene/_rect penWidth 1;
+/ITL/scene/_rect penStyle dashDot;
+
+# actions
+vpos  = 0.7;
+space = 0.045; 
+itempos = $vpos + $space / 3;
+
+# rotations
+/ITL/scene/trotate set txt "Rotate";
+/ITL/scene/trotate y $vpos;
+/ITL/scene/trotate x -0.5;
+/ITL/scene/trotate fontSize 20;
+/ITL/scene/trotatex   set txt "_x_";
+/ITL/scene/trotatey   set txt "_y_";
+/ITL/scene/trotatez   set txt "_z_";
+/ITL/scene/trotatenone   set txt "Stop";
+/ITL/scene/trotate* x -0.5;
+
+/ITL/scene/trotatex    y $itempos + $space;
+/ITL/scene/trotatey    y $itempos + $space + $space;
+/ITL/scene/trotatez    y $itempos + $space + $space + $space;
+/ITL/scene/trotatenone y $itempos + $space + $space + $space + $space;
+
+# scaling
+/ITL/scene/tscale set txt "Scale";
+/ITL/scene/tscale y $vpos;
+/ITL/scene/tscale fontSize 20;
+/ITL/scene/tscaledouble  set txt "x 2";
+/ITL/scene/tscalehalf    set txt "/ 2";
+/ITL/scene/tscalenone    set txt "reset";
+/ITL/scene/tscale* x -0.25;
+
+/ITL/scene/tscaledouble y $itempos + $space;
+/ITL/scene/tscalehalf   y $itempos + $space + $space;
+/ITL/scene/tscalenone   y $itempos + $space + $space + $space;
+
+# origin
+/ITL/scene/torigin set txt "Origin";
+/ITL/scene/torigin y $vpos;
+/ITL/scene/torigin fontSize 20;
+/ITL/scene/toriginleft   set txt "left";
+/ITL/scene/torigintop    set txt "top";
+/ITL/scene/toriginright  set txt "right";
+/ITL/scene/toriginbottom set txt "tbottom";
+/ITL/scene/torigincenter set txt "reset";
+
+/ITL/scene/toriginleft   y $itempos + $space;
+/ITL/scene/torigintop    y $itempos + $space + $space;
+/ITL/scene/toriginright  y $itempos + $space + $space + $space;
+/ITL/scene/toriginbottom y $itempos + $space + $space + $space + $space;
+/ITL/scene/torigincenter y $itempos + $space + $space + $space + $space + $space;
+
+# effects
+/ITL/scene/teffect set txt "Effects";
+/ITL/scene/teffect y $vpos;
+/ITL/scene/teffect fontSize 20;
+/ITL/scene/teffectshadow   set txt "shadow";
+/ITL/scene/teffectblur     set txt "blur";
+/ITL/scene/teffectcolorize set txt "colorize";
+/ITL/scene/teffectnone     set txt "reset";
+/ITL/scene/teffect* x 0.25;
+
+/ITL/scene/teffectshadow   y $itempos + $space;
+/ITL/scene/teffectblur     y $itempos + $space + $space;
+/ITL/scene/teffectcolorize y $itempos + $space + $space + $space;
+/ITL/scene/teffectnone     y $itempos + $space + $space + $space + $space;
+
+# handlers
+/ITL/scene/time set txt "time";
+/ITL/scene/time show 0;
+
+enter = ( /ITL/scene/$self color blue,  /ITL/scene/$self scale 1.2 );
+leave = ( /ITL/scene/$self color black, /ITL/scene/$self scale 1 );
+/ITL/scene/trotate?* watch mouseEnter $enter;
+/ITL/scene/trotate?* watch mouseLeave $leave;
+/ITL/scene/torigin?* watch mouseEnter $enter;
+/ITL/scene/torigin?* watch mouseLeave $leave;
+/ITL/scene/tscale?* watch mouseEnter  $enter;
+/ITL/scene/tscale?* watch mouseLeave  $leave;
+/ITL/scene/teffect?* watch mouseEnter  $enter;
+/ITL/scene/teffect?* watch mouseLeave  $leave;
+
+rstep = 0.5;
+/ITL/scene/trotatex    watch mouseDown ( /ITL/scene/time watch ddate (/ITL/scene/_* drotatex $rstep), /ITL/scene/time tempo 60 );
+/ITL/scene/trotatey    watch mouseDown ( /ITL/scene/time watch ddate (/ITL/scene/_* drotatey $rstep), /ITL/scene/time tempo 60 );
+/ITL/scene/trotatez    watch mouseDown ( /ITL/scene/time watch ddate (/ITL/scene/_* drotatez $rstep), /ITL/scene/time tempo 60 );
+/ITL/scene/trotatenone watch mouseDown ( 
+	/ITL/scene/time watch ddate, 
+	/ITL/scene/time tempo 0, 
+	/ITL/scene/_* rotatex 0, 
+	/ITL/scene/_* rotatey 0, 
+	/ITL/scene/_* rotatez 0
+);
+
+/ITL/scene/tscaledouble  watch mouseDown ( /ITL/scene/_* scale 2 );
+/ITL/scene/tscalehalf    watch mouseDown ( /ITL/scene/_* scale 0.5 ); 
+/ITL/scene/tscalenone    watch mouseDown ( /ITL/scene/_* scale 1 ); 
+
+/ITL/scene/toriginleft    watch mouseDown ( /ITL/scene/_* xorigin -1 );
+/ITL/scene/torigintop     watch mouseDown ( /ITL/scene/_* yorigin -1 );
+/ITL/scene/toriginright   watch mouseDown ( /ITL/scene/_* xorigin 1 );
+/ITL/scene/toriginbottom  watch mouseDown ( /ITL/scene/_* yorigin 1 );
+/ITL/scene/torigincenter  watch mouseDown ( /ITL/scene/_* xorigin 0, /ITL/scene/_* yorigin 0 );
+
+shadow = 10 10  100 100 100 100 5;
+/ITL/scene/teffectshadow   watch mouseDown ( /ITL/scene/_* effect shadow $shadow );
+/ITL/scene/teffectblur     watch mouseDown ( /ITL/scene/_* effect blur 4 );
+/ITL/scene/teffectcolorize watch mouseDown ( /ITL/scene/_* effect colorize 200 0 0); 
+/ITL/scene/teffectnone     watch mouseDown ( /ITL/scene/_* effect none );
+
+__END__
+/ITL/scene refresh;
+
+/ITL/scene/* brushStyle none;
+/ITL/scene/* brushStyle solid;
+

@@ -33,5 +33,5 @@ w = 0.5;
 /ITL/scene/rect* color 220 220 220;
 
 __END__
-/ITL/scene/r* penWidth 1;
-/ITL/scene/rect penStyle dashDotDot;
+/ITL/scene/r* penWidth 3;
+/ITL/scene/rect1 penStyle dashDotDot;
