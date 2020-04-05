@@ -168,6 +168,26 @@ interface ORadius {
 	y:  number;
 }
 
+interface ODate {
+	num:   number;
+	denum: number;
+}
+
+interface OPRollLimits {
+	start : ODate;
+	end   : ODate;
+	lowpitch : number;
+	highpitch: number;
+}
+
+interface OPianorollInfos {
+	code	: string;
+	keyboard		: boolean;
+	autovoicecolor	: boolean;
+	bars			: boolean;
+	limits			: OPRollLimits;
+}
+
 interface FloatVector {
 	size(): number;
 	get(i: number) : number;
@@ -189,10 +209,10 @@ interface INScoreObject {
 	getPolygonInfos(): FloatVector;
 	getCurveInfos():   FloatVector;
 	getGuidoInfos():   OScore;
+	getPianorollInfos():   OPianorollInfos;
 	getXMLInfos():     OScore;
 	getSVGInfos():     string;
 
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
-
 }
