@@ -4,7 +4,7 @@
        "lib": [ "es2015", "dom" ],
        "module": "system",
         "target": "es3",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "outDir": "build",
         "out": "../inscoreview.js",
         "sourceMap": false,
