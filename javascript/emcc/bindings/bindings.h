@@ -132,4 +132,22 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	value_object<JSScoreInfos>("JSScoreInfos")
 		.field("code",  &JSScoreInfos::code)
 		.field("page",  &JSScoreInfos::page);
+	
+	value_object<JSDate>("JSDate")
+		.field("num",  	&JSDate::num)
+		.field("denum", &JSDate::denum);
+	
+	value_object<JSPRollLimits>("JSPRollLimits")
+		.field("start",  	&JSPRollLimits::start)
+		.field("end",  		&JSPRollLimits::end)
+		.field("lowpitch",  &JSPRollLimits::lowpitch)
+		.field("highpitch", &JSPRollLimits::highpitch);
+
+	value_object<JSPianorollInfos>("JSPianorollInfos")
+		.field("code",  	&JSPianorollInfos::code)
+		.field("keyboard",  &JSPianorollInfos::keyboard)
+		.field("autovoicecolor", &JSPianorollInfos::autovoicecolor)
+		.field("bars",  	&JSPianorollInfos::bars)
+		.field("limits",  	&JSPianorollInfos::limits);
+
 }

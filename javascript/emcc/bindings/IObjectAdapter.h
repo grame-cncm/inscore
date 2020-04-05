@@ -159,11 +159,32 @@ struct JSScoreInfos {
 	int    page;
 };
 
+struct JSDate {
+	int	num   = 0;
+	int	denum = 0;
+};
+
+struct JSPRollLimits {
+	JSDate start;
+	JSDate end;
+	int		lowpitch = 0;
+	int		highpitch= 0;
+};
+
+struct JSPianorollInfos {
+	std::string code;
+	bool	keyboard;
+	bool	autovoicecolor;
+	bool 	bars;
+	JSPRollLimits limits;
+};
+
 class IText;
 class ILine;
 class ICurve;
 class IEffect;
 class IGuidoCode;
+class IGuidoPianoRoll;
 class IMusicXMLCode;
 
 //--------------------------------------------------------------------------
@@ -190,6 +211,7 @@ class inscore_export IObjectAdapter
 	static bool _getCurve  (const ICurve* obj, std::vector<float>& infos);
 	static bool _getGuido  (const IGuidoCode* obj, JSScoreInfos& infos);
 	static bool _getXML    (const IMusicXMLCode* obj, JSScoreInfos& infos);
+	static bool _getPianoroll (const IGuidoPianoRoll* obj, JSPianorollInfos& infos);
 
 	public:
 		typedef const std::string	jsString;
@@ -211,6 +233,7 @@ class inscore_export IObjectAdapter
 		std::vector<float> getCurveInfos() const;
 		JSScoreInfos  getGuidoInfos() const;
 		JSScoreInfos  getXMLInfos() const;
+		JSPianorollInfos getPianorollInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

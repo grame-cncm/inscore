@@ -49,14 +49,32 @@ typedef class libmapping::SMARTP<IGuidoPianoRoll>	SIGuidoPianoRoll;
  */
 class IGuidoPianoRoll : public virtual IGuidoCode
 {
-	public:		
+	private:
+		/*!
+		 * \brief applyAllSettings update pianoroll with the display settings
+		 */
+		void applyAllSettings();
+
+		// Pianoroll display settings
+		LimitParams fLimits;
+		bool		fKeyboard;
+		bool		fAutoVoiceColor;
+		std::map<int, IColor> fVoicesColor;
+		bool		fMeasureBars;
+		int			fPitchLines;
+
+	public:
 		static const std::string kGuidoPianoRollType;
 
 		static SIGuidoPianoRoll create(const std::string& name, IObject * parent)	{ return new IGuidoPianoRoll(name, parent); }
 
 		virtual void	accept (Updater*u);
 		PianoRoll * getPianoRoll() {return fPianoRoll;}
-    
+    		
+		bool	keybordEnabled() const	{ return fKeyboard; }
+		bool	autoVoiceColor () const { return fAutoVoiceColor; }
+		bool	measureBars () const 	{ return fMeasureBars; }
+
 		/*!
 		 * \brief getClipTime get the current time limits.
 		 * \return
@@ -151,20 +169,6 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 	
 		ARHandler fArHandler;
 		PianoRoll * fPianoRoll;
-
-	private:
-		/*!
-		 * \brief applyAllSettings update pianoroll with the display settings
-		 */
-		void applyAllSettings();
-
-		// Pianoroll display settings
-		LimitParams fLimits;
-		bool		fKeyboard;
-		bool		fAutoVoiceColor;
-		std::map<int, IColor> fVoicesColor;
-		bool		fMeasureBars;
-		int			fPitchLines;
 };
 
 /*! @} */

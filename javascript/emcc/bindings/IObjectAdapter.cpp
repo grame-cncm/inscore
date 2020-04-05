@@ -32,6 +32,8 @@
 #include "IPolygon.h"
 #include "IEffect.h"
 #include "IGuidoCode.h"
+#include "IGuidoPianoRoll.h"
+
 #include "IMusicXMLCode.h"
 #include "ISVG.h"
 
@@ -350,6 +352,40 @@ JSScoreInfos IObjectAdapter::getGuidoInfos() const
 	JSScoreInfos infos;
 	if (!_getGuido (dynamic_cast<IGuidoCode*>((IObject*)fObject), infos))
 		cerr << "IObjectAdapter::getGuidoInfos: unexpected null object!" << endl;
+	return infos;
+}
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getPianoroll  (const IGuidoPianoRoll* obj, JSPianorollInfos& infos)
+{
+	if (obj) {
+		infos.code 	= obj->getGMN();
+		infos.keyboard = obj->keybordEnabled();
+		infos.autovoicecolor = obj->autoVoiceColor();
+		infos.bars = obj->measureBars();
+		std::vector<int> pc = obj->getClipPitch();
+		if (pc.size() == 2) {
+			infos.limits.lowpitch = pc[0];
+			infos.limits.highpitch = pc[1];
+		}
+		std::vector<int> tc = obj->getClipTime();
+		if (tc.size() == 4) {
+			infos.limits.start.num 		= tc[0];
+			infos.limits.start.denum 	= tc[1];
+			infos.limits.end.num   		= tc[2];
+			infos.limits.end.denum   	= tc[3];
+		}
+		return true;
+	}
+	else return false;
+}
+
+//--------------------------------------------------------------------------
+JSPianorollInfos IObjectAdapter::getPianorollInfos() const
+{
+	JSPianorollInfos infos;
+	if (!_getPianoroll (dynamic_cast<IGuidoPianoRoll*>((IObject*)fObject), infos))
+		cerr << "IObjectAdapter::getPianorollInfos: unexpected null object!" << endl;
 	return infos;
 }
 
