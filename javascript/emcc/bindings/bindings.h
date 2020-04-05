@@ -109,6 +109,7 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("text",  	&JSTextInfos::text)
 		.field("size",   	&JSTextInfos::size)
 		.field("family",   	&JSTextInfos::family)
+		.field("weight",   	&JSTextInfos::weight)
 		.field("style", 	&JSTextInfos::style);
 	
 	value_object<JSLineInfos>("JSLineInfos")
