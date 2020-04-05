@@ -15,7 +15,6 @@ class JSEllipseView extends JSSvgBase {
 
     getSVGTarget() : SVGShape  { return this.fEllipse; }
 	toString() : string		   { return "JSEllipseView"; }
-	needSpecialUpdate(infos: OUpdateInfos) : boolean { return false; }
 
     updateSVGDimensions(w: number, h: number) : void {
         let rx = w / 2;

@@ -13,7 +13,6 @@ class JSRectView extends JSSvgBase {
 
     getSVGTarget() : SVGShape   { return this.fRect; }
 	toString() : string		    { return "JSRectView"; }
-	needSpecialUpdate(infos: OUpdateInfos) : boolean { return false; }
 
 	updateSVGDimensions(w: number, h: number) : void {
         this.fRect.style.width  = w + "px";
