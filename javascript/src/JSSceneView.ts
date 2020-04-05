@@ -25,9 +25,6 @@ class JSSceneView extends JSObjectView {
 		let div = this.getElement();
 		let x = div.offsetWidth / 2;
 		let y = div.offsetHeight / 2;
-// console.log (this + " '" + div.style.width + "'");
-		// let x = div.offsetLeft + div.offsetWidth/2;
-		// let y = div.offsetTop + div.offsetHeight / 2;
 		return  { x: x, y: y};
 	}
 
