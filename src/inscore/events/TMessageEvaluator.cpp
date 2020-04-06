@@ -616,7 +616,7 @@ rational TMessageEvaluator::point2date (const IObject * obj, float x, float y, c
 
 //----------------------------------------------------------------------
 // evaluates a mouse event
-SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, EventContext& env)
+SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, float x, float y, EventContext& env)
 {
 	SIMessageList outmsgs = IMessageList::create();
 	for (unsigned int i=0; i < msgs->list().size(); i++) {
@@ -625,7 +625,7 @@ SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, EventContext& e
 		std::string mapname;
 		if (hasDateVar (msg, mapname))
 			// resolves the date in a normalized x and y coordinate space [-1 1]
-			env.date = point2date (env.object, env.mouse.fx * 2 - 1, env.mouse.fy * 2 - 1, mapname, 0);
+			env.date = point2date (env.object, x * 2 - 1, y * 2 - 1, mapname, 0);
 
 		SIMessage evaluated = eval (msg, env);
 		if (evaluated) outmsgs->list().push_back(evaluated);

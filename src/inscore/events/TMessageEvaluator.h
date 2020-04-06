@@ -196,7 +196,7 @@ class TMessageEvaluator
 			Evaluation of a user defined event consists in replacing the variable parameters with the values
 			taken from the \c args list. Variables are expected to be name $1, $2 etc...
 		*/
-		SIMessageList 	eval (const IMessageList* msgs, EventContext& env);
+		SIMessageList 	eval (const IMessageList* msgs, float x, float y, EventContext& env);
 
 		/**
 		*	\brief evaluates a single user defined message
