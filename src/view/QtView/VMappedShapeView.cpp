@@ -24,6 +24,7 @@
 */
 
 #include "VMappedShapeView.h"
+#include "TLocalMapping.h"
 
 using namespace libmapping;
 
@@ -52,7 +53,7 @@ void VMappedShapeView::updateGraphic2GraphicMapping (IShapeMap* object)
 		VGraphicsItemView::setMapping<float,2>( object , i->first , g2l_mapping , local2time_mapping );
 	}
 	
-	VGraphicsItemView::buildDefaultMapping(object);
+	TDefaultLocalMapping::buildDefaultMapping(object);
 }
 
 } // end namespoace

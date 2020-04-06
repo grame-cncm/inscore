@@ -28,6 +28,7 @@
 #include "VGraphView.h"
 #include "maptypes.h"
 #include "ITLError.h"
+#include "TLocalMapping.h"
 
 #include "IGraphicSignal.h"
 
@@ -142,7 +143,7 @@ void VGraphView::updateLocalMapping (IGraphicSignal* object)
 		object->localMappings()->setMapping( i->first, l2t_mapping );
 		VGraphicsItemView::setMapping<long,1>( object , i->first , g2l_mapping , l2t_mapping );
 	}
-	VGraphicsItemView::buildDefaultMapping( object );
+	TDefaultLocalMapping::buildDefaultMapping( object );
 }
 
 // Computes the GraphicSegment corresponding to the frameSegment of the signal.

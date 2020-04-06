@@ -34,6 +34,7 @@
 #include "QGuidoGraphicsItem.h"
 #include "QGuidoImporter.h"
 #include "ScoreLayoutInfos.h"
+#include "TLocalMapping.h"
 #include "VApplView.h"
 #include "VGuidoItemView.h"
 
@@ -306,7 +307,7 @@ void VGuidoItemView::updateLocalMapping (IGuidoCode* guidoCode)
 	graphMapUpdate (guidoCode, l2t_mapping);
 
 	// checks for default mapping (should be useless for guido code)
-	VGraphicsItemView::buildDefaultMapping (guidoCode);
+	TDefaultLocalMapping::buildDefaultMapping (guidoCode);
 }
 
 //----------------------------------------------------------------------

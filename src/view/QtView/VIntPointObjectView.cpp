@@ -26,8 +26,8 @@
 #include "VIntPointObjectView.h"
 
 #include "IGraphicBasedObject.h"
-
 #include "maptypes.h"
+#include "TLocalMapping.h"
 
 using namespace libmapping;
 
@@ -60,7 +60,7 @@ void VIntPointObjectView::updateLocalMapping (IGraphicBasedObject* object)
 		object->localMappings()->setMapping( i->first, l2t_mapping );
 		VGraphicsItemView::setMapping<long,2>( object , i->first , g2l_mapping , l2t_mapping );
 	}
-	VGraphicsItemView::buildDefaultMapping( object );
+	TDefaultLocalMapping::buildDefaultMapping( object );
 }
 
 

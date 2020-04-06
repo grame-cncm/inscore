@@ -28,6 +28,7 @@
 
 #include "VGridView.h"
 #include "IGrid.h"
+#include "TLocalMapping.h"
 
 using namespace std;
 using namespace libmapping;
@@ -59,7 +60,7 @@ void VGridView::updateLocalMapping (IGrid* grid)
 	int cols = grid->getColumns();
 	int rows = grid->getRows();
 	if ((cols < 2) || (rows < 2))
-		VGraphicsItemView::buildDefaultMapping (grid);
+		TDefaultLocalMapping::buildDefaultMapping (grid);
 	else
 	{
 		float xborder = max(0.f, min(1.f, grid->getXBorder()));

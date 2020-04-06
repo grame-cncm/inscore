@@ -36,6 +36,7 @@
 #include "IGuidoPianoRollStream.h"
 #include "QPRollGraphicsItem.h"
 #include "QGuidoImporter.h"
+#include "TLocalMapping.h"
 
 #include "benchtools.h"
 
@@ -91,12 +92,12 @@ void VPianoRollView::updateMappingCommon (IGuidoPianoRoll* proll)
     GuidoErrCode err = GuidoPianoRollGetMap(proll->getPianoRoll(), itemWidth, itemHeight, map);
 	if (err != guidoNoErr) {
 		ITLErr << proll->getOSCAddress() << "can't get piano roll map:" <<  GuidoGetErrorString(err) << ITLEndl;
-		VGraphicsItemView::buildDefaultMapping (proll);
+		TDefaultLocalMapping::buildDefaultMapping (proll);
 		return;
 	}
 	if (map.empty()) {
 		ITLErr << proll->getOSCAddress() << "unexpected empty piano roll map" << ITLEndl;
-		VGraphicsItemView::buildDefaultMapping (proll);
+		TDefaultLocalMapping::buildDefaultMapping (proll);
 		return;
 	}
 	SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1,float,2>::create();
