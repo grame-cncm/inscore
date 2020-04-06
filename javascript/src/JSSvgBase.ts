@@ -34,8 +34,8 @@ abstract class JSSvgBase extends JSObjectView {
 	abstract updateSVGDimensions(w: number, h: number) : void;
 
 	updateDimensions(pos: OPosition) : void {
-		let w = this.relative2SceneWidth(pos.width);
-		let h = this.relative2SceneHeight(pos.height);
+		let w = Math.max(1, this.relative2SceneWidth(pos.width));
+		let h = Math.max(1, this.relative2SceneHeight(pos.height));
 		this.updateSVGDimensions (w, h);
 		let strokewidth = pos.pen.penWidth * 2;
 		this.fSVG.style.width  = (w + strokewidth) + "px";
