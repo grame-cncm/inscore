@@ -441,6 +441,17 @@ void IObject::ptask ()
 }
 
 //--------------------------------------------------------------------------
+void IObject::originshift (float& relx, float& rely) const
+{
+	float xoriginscaled = (getXOrigin() + 1) / 2.;	// scaled coordinate is in the interval [0, 1]
+	float yoriginscaled = (getYOrigin() + 1) / 2.;	// when the object origin is inside the object
+	relx = xoriginscaled - relx;
+	rely = yoriginscaled - rely;
+	if (relx < 0) relx = -relx;
+	if (rely < 0) rely = -rely;
+}
+
+//--------------------------------------------------------------------------
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------

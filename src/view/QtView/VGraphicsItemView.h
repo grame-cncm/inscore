@@ -85,7 +85,6 @@ class VGraphicsItemView : public VObjectView
     
         virtual void setEffect (const IEffect* effect); //		{ item()->setGraphicsEffect (effect.get()); }
 		virtual void setMouseEventSensibility(bool mouseSensible);
-		static void buildDefaultMapping (IObject* object);
     
 		void	getFrame (const IObject* , std::vector<float>&);
         void 	refreshSyncCache() { itemChanged(); }

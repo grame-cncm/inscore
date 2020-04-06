@@ -546,27 +546,6 @@ static bool checkAutoRefresh (IObject* object, const RelativeTime2GraphicRelatio
 }
 
 //------------------------------------------------------------------------------------------------------------
-void VGraphicsItemView::buildDefaultMapping (IObject* object)
-{
-//	if ((object->namedMappings().size() == 1) && ()) return;  // no need to build the default mapping
-	
-	const SRelativeTime2GraphicMapping& map = object->getMapping("");
-	// Check if the un-named mapping exists or if it needs to be refreshed. 
-	if ( !map ||  checkAutoRefresh(object, map->direct()))	
-	{	
-		// If not, build a default mapping : the current [0 ; duration[ <-> the whole graphic space of the object.
-		RelativeTimeSegment wholeTimeSegment( rational(0,1) , object->getDuration() );
-		GraphicSegment		wholeGraphicSegment( -1 , -1 , 1 , 1 );
-		
-		SRelativeTime2GraphicMapping t2g_mapping = TMapping<rational,1,float,2>::create();
-		t2g_mapping->add ( wholeTimeSegment , wholeGraphicSegment );
-		object->setMapping( "" , t2g_mapping);
-		object->fAutoMap = true;
-		object->localMapModified(true);
-	}
-}
-
-//------------------------------------------------------------------------------------------------------------
 QStretchTilerItem* VGraphicsItemView::buildTiler(SIObject o)
 {
     MouseEventAble<QStretchTilerItem>* item = new MouseEventAble<QStretchTilerItem>( o );

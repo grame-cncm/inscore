@@ -531,7 +531,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return the corresponding handler if any
 		*/
 		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
-	
+
+	void originshift (float& relx, float& rely) const;
+
+
 	protected:	
 		VObjectView* fView;		///< the object view
 		IObject*	fParent;	///< the parent node
