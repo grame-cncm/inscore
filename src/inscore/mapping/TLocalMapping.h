@@ -23,8 +23,7 @@
 */
 
 
-#ifndef __TLocalMapping__
-#define __TLocalMapping__
+#pragma once
 
 #include <map>
 #include <string>
@@ -34,6 +33,8 @@
 #include "smartpointer.h"
 
 namespace inscore {
+
+class IObject;
 
 /*!
 \addtogroup ITLMapping
@@ -80,10 +81,13 @@ template <typename T, unsigned int D> class TLocalMapping : public libmapping::s
 
 		void setMapping	(const std::string& name, const SLocal2TimeMapping& l2t)	{ fMappings[name] = l2t; }
 		void addMapping	(const std::string& name, const SLocal2TimeMapping& l2t)	{ fMappings[name] = l2t; }
+
+};
+
+class TDefaultLocalMapping {
+	public:
+	static void buildDefaultMapping (IObject* object);
 };
 
 /*! @} */
-
 }
-
-#endif
