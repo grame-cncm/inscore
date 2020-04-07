@@ -547,7 +547,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void timeAble ();				///< \brief set the time message handlers
 
 		template <typename T, unsigned int D>
-		void setLocalMapping( //const std::string& mapName, SGraphic2LocalMap<T,D> g2l, SLocal2TimeMap<T,D> local2time, bool refine=false)
+		void updateMappings ( //const std::string& mapName, SGraphic2LocalMap<T,D> g2l, SLocal2TimeMap<T,D> local2time, bool refine=false)
 			const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l,
 			libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > local2time,
 			bool refine=false)
