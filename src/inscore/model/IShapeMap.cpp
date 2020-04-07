@@ -25,6 +25,7 @@
 
 #include "IShapeMap.h"
 #include "TMapMsgHandler.h"
+#include "TMapping.h"
 
 namespace inscore
 {
@@ -68,6 +69,65 @@ MsgHandler::msgStatus IShapeMap::mapAddMsg (const IMessage* msg )
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
 }
+
+//--------------------------------------------------------------------------
+//void IShapeMap::updateGraphic2GraphicMapping ()
+//{
+//	for (auto map: localMappings()->namedMappings()) {
+//		const SGraphic2RelativeTimeMapping & local2time = map.second;
+//		SGraphic2GraphicMapping g2l = libmapping::TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
+//																					// (which is here a 'graphic -> graphic' identity mapping)
+//		for (auto rel: local2time->direct()) {
+//			g2l->add ( rel.first , rel.first);			// Identity mapping.
+//		}
+//		localMappings()->setMapping( map.first, local2time );	// Finally, affect the mapping to object.
+//		setLocalMapping<float,2> (map.first, g2l, local2time );
+////		VGraphicsItemView::setMapping<float,2>( object , i->first , g2l_mapping , local2time_mapping );
+//	}
+//	TDefaultLocalMapping::buildDefaultMapping(object);
+//}
+
+void IShapeMap::updateGraphic2GraphicMapping ()
+{
+	TLocalMapping<float,2>::const_iterator i = localMappings()->namedMappings().begin();
+
+	for ( ; i != localMappings()->namedMappings().end() ; i++ )
+	{
+		const SGraphic2RelativeTimeMapping & local2time_mapping = i->second;
+		Graphic2RelativeTimeRelation::const_iterator iter = local2time_mapping->direct().begin();
+
+		SGraphic2GraphicMapping g2l_mapping = libmapping::TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
+																					// (which is here a 'graphic -> graphic' identity mapping)
+		while (iter != local2time_mapping->direct().end()) {
+			g2l_mapping->add ( iter->first , iter->first);			// Identity mapping.
+			iter++;
+		}
+		localMappings()->setMapping( i->first, local2time_mapping );	// Finally, affect the mapping to object.
+//		VGraphicsItemView::setMapping<float,2>( this , i->first , g2l_mapping , local2time_mapping );
+		setLocalMapping<float,2>(i->first, g2l_mapping, local2time_mapping );
+	}
+	TDefaultLocalMapping::buildDefaultMapping(this);
+}
+
+// Update mapping - implementation from VMappedShapeView
+//TLocalMapping<float,2>::const_iterator i = object->localMappings()->namedMappings().begin();
+//
+//for ( ; i != object->localMappings()->namedMappings().end() ; i++ )
+//{
+//	const SGraphic2RelativeTimeMapping & local2time_mapping = i->second;
+//	Graphic2RelativeTimeRelation::const_iterator iter = local2time_mapping->direct().begin();
+//
+//	SGraphic2GraphicMapping g2l_mapping = TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
+//																				// (which is here a 'graphic -> graphic' identity mapping)
+//
+//	while (iter != local2time_mapping->direct().end()) {
+//		g2l_mapping->add ( iter->first , iter->first);			// Identity mapping.
+//		iter++;
+//	}
+//	object->localMappings()->setMapping( i->first, local2time_mapping );	// Finally, affect the mapping to object.
+//	VGraphicsItemView::setMapping<float,2>( object , i->first , g2l_mapping , local2time_mapping );
+//}
+//TDefaultLocalMapping::buildDefaultMapping(object);
 
 } // end namespoace
 

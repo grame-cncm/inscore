@@ -44,13 +44,12 @@
 #include "maptypes.h"
 #include "Methods.h"
 #include "PeriodicTask.h"
-#include "rational.h"
-#include "smartpointer.h"
+#include "TComposition.h"
+#include "TLocalMapping.h"
 #include "TMapable.h"
+#include "TRefinedComposition.h"
 #include "TRelation.h"
 #include "TSegmentation.h"
-
-
 
 namespace inscore
 {
@@ -546,6 +545,25 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void positionAble ();			///< \brief set the position message handlers
 		virtual void shapeAble ();				///< \brief set the shape message handlers
 		virtual void timeAble ();				///< \brief set the time message handlers
+
+		template <typename T, unsigned int D>
+		void setLocalMapping( //const std::string& mapName, SGraphic2LocalMap<T,D> g2l, SLocal2TimeMap<T,D> local2time, bool refine=false)
+			const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l,
+			libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > local2time,
+			bool refine=false)
+		{
+			// if refined, create the graphic to time composition using a refined composition
+			if (refine) {
+				typedef libmapping::TRefinedComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time->direct(), g2l->reverse() );
+				setMapping( mapName , t2gr );
+			}
+			else {
+				typedef libmapping::TComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time->reverse(), g2l->reverse() );
+				setMapping( mapName , t2gr );
+			}
+		}
 
 		virtual void setMouseEventSensibility(bool mouseSensible);
 

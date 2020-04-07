@@ -81,13 +81,31 @@ template <typename T, unsigned int D> class TLocalMapping : public libmapping::s
 
 		void setMapping	(const std::string& name, const SLocal2TimeMapping& l2t)	{ fMappings[name] = l2t; }
 		void addMapping	(const std::string& name, const SLocal2TimeMapping& l2t)	{ fMappings[name] = l2t; }
-
 };
+
+//typedef TLocalMapping<float,2>					TFloat2DLocalMapping;
+
+//template <typename T, unsigned int D>
+//class TGraphic2LocalMap : public libmapping::TMapping<float,2,T,D> {};
+//template <typename T, unsigned int D>
+//class SGraphic2LocalMap : public libmapping::SMARTP<TGraphic2LocalMap<T, D> > {};
+////libmapping::SMARTP<libmapping::TMapping<float,2,T,D> >
+//
+//template <typename T, unsigned int D>
+//class TLocal2TimeMap : public libmapping::TMapping<T,D, libmapping::rational,1> {};
+//template <typename T, unsigned int D>
+//class SLocal2TimeMap : public libmapping::SMARTP<TLocal2TimeMap<T, D> > {};
+
 
 class TDefaultLocalMapping {
 	public:
 	static void buildDefaultMapping (IObject* object);
 };
+
+//class TGraphic2GraphicMapping {
+//	public:
+//	static void update (IShapeMap* object);
+//};
 
 /*! @} */
 }

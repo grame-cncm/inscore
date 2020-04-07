@@ -58,6 +58,8 @@ class IShapeMap: public IObject
 		const	SLocalMapping& localMappings() const	{ return fLocalMappings; }
 				SLocalMapping& localMappings()			{ return fLocalMappings; }
 
+		virtual void updateGraphic2GraphicMapping ();
+
 		/// \brief the \c 'mapf' message handler
 		MsgHandler::msgStatus mapFileMsg (const IMessage* msg );
 		/// \brief the \c 'map' message handler

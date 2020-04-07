@@ -26,6 +26,7 @@
 #include "TMapping.h"
 #include "TLocalMapping.h"
 #include "IObject.h"
+#include "IShapeMap.h"
 #include "rational.h"
 
 using namespace libmapping;
@@ -59,6 +60,31 @@ void TDefaultLocalMapping::buildDefaultMapping (IObject* object)
 		object->localMapModified(true);
 	}
 }
+
+//void TGraphic2GraphicMapping::update (IShapeMap* object)
+//{
+////	// Update mapping
+////	TLocalMapping<float,2>::const_iterator i = object->localMappings()->namedMappings().begin();
+////
+////	for ( ; i != object->localMappings()->namedMappings().end() ; i++ )
+////	{
+////		const SGraphic2RelativeTimeMapping & local2time_mapping = i->second;
+////		Graphic2RelativeTimeRelation::const_iterator iter = local2time_mapping->direct().begin();
+////
+////		SGraphic2GraphicMapping g2l_mapping = TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
+////																					// (which is here a 'graphic -> graphic' identity mapping)
+////
+////		while (iter != local2time_mapping->direct().end()) {
+////			g2l_mapping->add ( iter->first , iter->first);			// Identity mapping.
+////			iter++;
+////		}
+////		object->localMappings()->setMapping( i->first, local2time_mapping );	// Finally, affect the mapping to object.
+////		VGraphicsItemView::setMapping<float,2>( object , i->first , g2l_mapping , local2time_mapping );
+////	}
+//	
+//	TDefaultLocalMapping::buildDefaultMapping(object);
+//}
+
 
 } // end namespace
 
