@@ -141,7 +141,9 @@ void VSVGView::updateLocalMapping (ISVGFile* svg)
         else
             item()->setFile (svg->getPath().c_str());
 	}
-    VIntPointObjectView::updateLocalMapping( svg );
+	QRectF r = item()->boundingRect();
+	svg->setBoundingRect (long(r.x()), long(r.y()), long(r.width()), long(r.height()));
+	svg->updateLocalMapping();
 }
 
 //----------------------------------------------------------------------

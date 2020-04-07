@@ -57,14 +57,15 @@ void VQtLocalMappingUpdater::updateTo(IRect* o)				{  o->updateGraphic2GraphicMa
 void VQtLocalMappingUpdater::updateTo(IUrlIntermediateObject* o){ o->updateGraphic2GraphicMapping(); }
 void VQtLocalMappingUpdater::updateTo(IVideo* o)			{  o->updateGraphic2GraphicMapping(); }
 
+void VQtLocalMappingUpdater::updateTo(IImage * o)			{  view<VImageView>(o)->updateLocalMapping( o ); }
+void VQtLocalMappingUpdater::updateTo(ISVG* o)				{  view<VSVGView>(o)->updateLocalMapping( o ); }
+
 void VQtLocalMappingUpdater::updateTo(IGraphicSignal* o)	{  view<VGraphView>(o)->updateLocalMapping( o );  }
 void VQtLocalMappingUpdater::updateTo(IGrid* o)				{  view<VGridView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IGuidoCode * o)		{  view<VGuidoItemView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IGuidoPianoRoll * o)	{  view<VPianoRollView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IGuidoPianoRollStream * o) {  view<VPianoRollView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IHtml* o)				{  view<VTextView>(o)->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(IImage * o)			{  view<VImageView>(o)->updateLocalMapping( o ); }
-void VQtLocalMappingUpdater::updateTo(ISVG* o)				{  view<VSVGView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(ISVGFile* o)			{  view<VSVGView>(o)->updateLocalMapping( o ); }
 void VQtLocalMappingUpdater::updateTo(IText* o)				{  view<VTextView>(o)->updateLocalMapping( o ); }
 

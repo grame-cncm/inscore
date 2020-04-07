@@ -53,24 +53,18 @@ void VImageView::updateLocalMapping (IImage* img)
 {
 	// 1. Update image
 	QString file = VApplView::toQString( img->getPath().c_str() );
-	if ( QFile::exists(  file  ) )
-	{
-		if ( !QImageReader( file ).canRead() )
-		{
-			// Invalid/Unsupported file format
+	if ( QFile::exists( file ) ) {
+		if ( !QImageReader( file ).canRead() ) { 	// Invalid/Unsupported file format
 			ITLErr << "invalid image file :" << img->getFile() << ITLEndl;
 		}
 		else setImage( file );
 	}
-	else
-	{
-		// File not found. Do nothing. (Error msg is handled by the model.)
-	}
+	QRectF r = fImageItem->boundingRect();
+    img->setWidth(scene2RelativeWidth(r.width()));
+    img->setHeight(scene2RelativeHeight(r.height()));
 
-    img->setWidth(scene2RelativeWidth(fImageItem->boundingRect().width()));
-    img->setHeight(scene2RelativeHeight(fImageItem->boundingRect().height()));
-
-	VIntPointObjectView::updateLocalMapping( img );
+	img->setBoundingRect (long(r.x()), long(r.y()), long(r.width()), long(r.height()));
+	img->updateLocalMapping();
 }
 
 //----------------------------------------------------------------------
