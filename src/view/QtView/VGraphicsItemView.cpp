@@ -608,7 +608,7 @@ void VGraphicsItemView::findObsoleteSync(std::vector<SMaster> masters)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::setSlave(SIObject o )
 {
-    std::vector<SMaster> masters = o->getParent()? o->getParent()->getMasters(o) : o->getScene()->getMasters(o);
+    std::vector<SMaster> masters = o->getMasters();
     
 	for(unsigned int i = 0; i < masters.size(); i++)    // we first look for new masters, in order to add new representation
     {

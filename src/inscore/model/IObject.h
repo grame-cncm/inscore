@@ -485,6 +485,11 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual subnodes	invertedSort ();
     
     
+		/*! \brief retrieve the masters of an object
+			\return a list of master, empty when not found
+		*/
+		virtual std::vector<SMaster> getMasters() const;
+
 		/*! \brief gives (one of) the masters of an object
 			\param o the object to look for in the synchronization set
 			\return the object master or 0 when not found

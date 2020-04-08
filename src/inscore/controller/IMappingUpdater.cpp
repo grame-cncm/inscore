@@ -199,7 +199,7 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren (IObject* o, const Gr
     for(unsigned int i = 0; i<slaves.size(); i++)				// computes recursively the slaves segments and makes the union
     {
         SIObject slave = slaves[i];
-        std::vector<SMaster> masters = slave->getParent()->getMasters(slave);
+        std::vector<SMaster> masters = slave->getMasters();
         for(unsigned int j = 0; j<masters.size(); j++)
         {
             if(masters[j]->getMaster() == o)
@@ -336,9 +336,7 @@ bool IMappingUpdater::updateNOHStretch (IObject* o, SMaster m)
 //--------------------------------------------------------------------------
 void IMappingUpdater::updateIObject (IObject* object)	
 {
-    const SIObject parent = object->getParent();
-	const std::vector<SMaster> masters = parent ? parent->getMasters(object) : object->getScene()->getMasters(object);
-    
+	const std::vector<SMaster> masters = object->getMasters();
 	if (masters.empty()) return;
 	
     for(unsigned int i = 0; i<masters.size(); i++)

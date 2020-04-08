@@ -293,7 +293,8 @@ void IObject::setdyMsgHandler ()
 //--------------------------------------------------------------------------
 void IObject::setSyncDY (float dy)
 {
-	vector<SMaster> mlist = getParent()->getMasters(this);
+//	vector<SMaster> mlist = getParent()->getMasters(this);
+	vector<SMaster> mlist = getMasters();
 	for (size_t i = 0; i < mlist.size(); i++) {
 		mlist[i]->setDy(dy);
 	}
@@ -398,6 +399,15 @@ void IObject::propagateSignalsState ()
 }
 
 //--------------------------------------------------------------------------
+std::vector<SMaster> IObject::getMasters() const {
+	SIObject so (const_cast<IObject*>(this));
+	return getParent()? getParent()->getMasters(so) : getScene()->getMasters(so);
+}
+
+//--------------------------------------------------------------------------
+// the next getMaster(s) methods take an object argument due to the fact that
+// the query looks for the master in the child node and thus,
+// an object that requests it's masters has to query it's parent
 SMaster IObject::getMaster(SIObject o) const					{ return fSync ? fSync->getMaster(o) : 0; }
 vector<SMaster>  IObject::getMasters(SIObject o, const string& master, const string& map) const
 																{ return fSync->getMasters(o, master, map); }
