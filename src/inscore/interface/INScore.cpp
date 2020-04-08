@@ -167,11 +167,6 @@ string INScore::guidoversion()
 	return jscall::getGuidoVersion();
 #else
 	return GuidoGetVersionStr();
-//	stringstream s;
-//	s << major << '.' << minor << '.' << sub;
-//
-//	static string version = s.str();
-//	return version.c_str();
 #endif
 }
 
