@@ -174,4 +174,12 @@ set_target_properties (${target} PROPERTIES
 		MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${STRVERS}
 		MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION} )
 
+add_executable( inscoretest ${CMAKE_CURRENT_SOURCE_DIR}/tests/main.cpp )
+target_include_directories (inscoretest PRIVATE ${INSCOREDIR}/interface)
+target_link_libraries( inscoretest ${target})
+set_target_properties(inscoretest  PROPERTIES
+	RUNTIME_OUTPUT_DIRECTORY ${BINDIR}
+	RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BINDIR})
+add_dependencies(inscoretest ${target})
+
 endif()
