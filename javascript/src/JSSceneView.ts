@@ -15,6 +15,7 @@ class JSSceneView extends JSObjectView {
 		this.updateObjectSize (objid);
 		div.style.filter = `blur(0px)`;
     }
+	clone (parent: JSObjectView) : JSObjectView { return null; }
 
 	parentWidth() : number			{ return this.getElement().parentElement.clientWidth; }
 	parentHeight() : number			{ return this.getElement().parentElement.clientHeight; }

@@ -3,10 +3,11 @@
 
 class JSPianoRollView extends JSGMNView {
 
-	constructor(parent: JSObjectView, xmllib: libmusicxml, guido: GuidoEngine) {
+	constructor(parent: JSObjectView, guido: GuidoEngine) {
 		super(parent, guido);
 		this.getElement().className = "inscore-pianoroll";
 	}
+	clone (parent: JSObjectView) : JSObjectView { return new JSPianoRollView(parent, this.guido()); }
 
 	toString() : string		    { return "JSPianoRollView"; }
 

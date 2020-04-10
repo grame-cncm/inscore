@@ -7,6 +7,7 @@ class JSLayerView extends JSObjectView {
 		super( document.createElement('div'), parent); 
         this.getElement().className = "inscore-layer";
     }
+    clone (parent: JSObjectView) : JSObjectView { return new JSLayerView(parent); }
 
 	toString() : string					{ return "JSLayerView"; }
 }

@@ -13,6 +13,7 @@ class JSLineView extends JSSvgBase {
         this.getElement().className = "inscore-line";
     	this.fSVG.appendChild(this.fLine)
     }    
+	clone (parent: JSObjectView) : JSObjectView { return new JSLineView(parent); }
 
     getSVGTarget() : SVGShape  { return this.fLine; }
 	toString() : string		   { return "JSLineView"; }

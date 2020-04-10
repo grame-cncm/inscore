@@ -11,6 +11,7 @@ class JSPolygonView extends JSSvgBase {
     	this.getElement().className = "inscore-polygon";
     	this.fSVG.appendChild(this.fPolygon)
     }
+    clone (parent: JSObjectView) : JSObjectView { return new JSPolygonView(parent); }
 
     toString() : string			{ return "JSPolygonView"; }
     getSVGTarget() : SVGShape   { return this.fPolygon; }

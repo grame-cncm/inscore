@@ -11,6 +11,7 @@ class JSArcView extends JSSvgBase
         this.getElement().className = "inscore-arc";
         this.fSVG.appendChild(this.fArc);
     }
+    clone (parent: JSObjectView) : JSObjectView { return new JSArcView(parent); }
 
 	toString() : string			{ return "JSArcView"; }
     getSVGTarget() : SVGShape   { return this.fArc; }

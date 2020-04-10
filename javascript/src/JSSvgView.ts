@@ -7,6 +7,7 @@ class JSSVGView extends JSSvgBase {
 		super(parent);
 		this.getElement().className = "inscore-svg";
 	}
+	clone (parent: JSObjectView) : JSObjectView { return new JSSVGView(parent); }
 
 	getSVGTarget() : SVGShape   { return this.fSVG; }
 	toString() : string		    { return "JSSVGView"; }

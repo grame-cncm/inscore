@@ -7,6 +7,7 @@ class JSHtmlView extends JSAutoSize {
 		super( document.createElement('div'), parent); 
         this.getElement().className = "inscore-html";
     }
+	clone (parent: JSObjectView) : JSObjectView { return new JSHtmlView(parent); }
 
 	toString() : string					{ return "JSHtmlView"; }
 

@@ -12,7 +12,7 @@ interface Point {
 }
 
 //----------------------------------------------------------------------------
-class JSObjectView {
+abstract class JSObjectView {
 
 	private static fGlobalID = 0;
 	private static fObjects = new Array<JSObjectView>();
@@ -30,7 +30,9 @@ class JSObjectView {
 		if (parent) parent.getElement().appendChild (elt);
 		if (absolute) elt.style.position = "absolute";
 	}
-	
+
+	abstract clone (parent: JSObjectView) : JSObjectView;
+
 	setSyncManager(sync: GraphicSyncManager) : void { this.fSyncManager = sync; }
 	toString() : string				{ return "JSObjectView"; }
 	getId() : number	 			{ return this.fID; }

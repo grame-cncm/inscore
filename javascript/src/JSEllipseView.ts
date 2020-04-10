@@ -12,6 +12,8 @@ class JSEllipseView extends JSSvgBase {
         this.getElement().className = "inscore-ellipse";
         this.fSVG.appendChild(this.fEllipse);
     }    
+    
+    clone (parent: JSObjectView) : JSObjectView { return new JSEllipseView(parent); }
 
     getSVGTarget() : SVGShape  { return this.fEllipse; }
 	toString() : string		   { return "JSEllipseView"; }

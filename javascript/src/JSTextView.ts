@@ -7,6 +7,7 @@ class JSTextView extends JSHtmlView {
 		super(parent); 
         this.getElement().className = "inscore-txt";
     }
+	clone (parent: JSObjectView) : JSObjectView { return new JSTextView(parent); }
 
 	toString() : string					{ return "JSTextView"; }
 

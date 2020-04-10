@@ -10,6 +10,7 @@ class JSRectView extends JSSvgBase {
         this.getElement().className = "inscore-rect";
     	this.fSVG.appendChild(this.fRect)
     }    
+    clone (parent: JSObjectView) : JSObjectView { return new JSRectView(parent); }
 
     getSVGTarget() : SVGShape   { return this.fRect; }
 	toString() : string		    { return "JSRectView"; }

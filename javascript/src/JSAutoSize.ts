@@ -2,7 +2,7 @@
 ///<reference path="JSObjectView.ts"/>
 
 
-class JSAutoSize extends JSObjectView 
+abstract class JSAutoSize extends JSObjectView 
 {
     private fSizeSynced = false;
 

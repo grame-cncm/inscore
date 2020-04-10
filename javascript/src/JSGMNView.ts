@@ -13,6 +13,7 @@ class JSGMNView extends JSSvgBase {
 		this.fGuido = guido;
 		if (guido) this.fParser = guido.openParser();
 	}
+	clone (parent: JSObjectView) : JSObjectView { return new JSGMNView(parent, this.fGuido); }
 
 	getSVGTarget() : SVGShape   { return this.fSVG; }
 	toString() : string		    { return "JSGMNView"; }

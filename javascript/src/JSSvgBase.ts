@@ -30,7 +30,8 @@ abstract class JSSvgBase extends JSObjectView {
 		this.fSVG.setAttribute('version', "1.1");
 		this.getElement().appendChild(this.fSVG);
 	}
-    abstract getSVGTarget() : SVGShape;
+
+	abstract getSVGTarget() : SVGShape;
 	abstract updateSVGDimensions(w: number, h: number) : void;
 
 	updateDimensions(pos: OPosition) : void {

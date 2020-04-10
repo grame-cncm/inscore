@@ -11,6 +11,7 @@ class JSXMLView extends JSGMNView {
 		this.getElement().className = "inscore-gmn";
 		this.fXMLLib = xmllib;
 	}
+	clone (parent: JSObjectView) : JSObjectView { return new JSXMLView(parent, this.fXMLLib, this.guido()); }
 
 	toString() : string		    { return "JSXMLView"; }
 
