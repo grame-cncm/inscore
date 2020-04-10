@@ -28,7 +28,7 @@ abstract class JSObjectView {
     	this.fParent = parent; 
 		this.fElement = elt; 
 		this.fSyncManager = null;
-		this.fIObject = null;
+		this.fIObject = 0;
 		if (parent) parent.getElement().appendChild (elt);
 		if (absolute) elt.style.position = "absolute";
 	}
