@@ -25,9 +25,28 @@
 
 
 #include "HTMLUpdater.h"
+#include "IArc.h"
+#include "IAudio.h"
+#include "ICurve.h"
+#include "IEllipse.h"
+#include "IGraphicSignal.h"
+#include "IGrid.h"
+#include "IGuidoCode.h"
+#include "IGuidoPianoRoll.h"
+#include "IGuidoPianoRollStream.h"
+#include "IHtml.h"
+#include "IImage.h"
+#include "ILayer.h"
+#include "ILine.h"
 #include "IObject.h"
-#include "VObjectView.h"
+#include "IPolygon.h"
+#include "IRect.h"
+#include "ISVG.h"
+#include "ISVGFile.h"
 #include "ISync.h"
+#include "IText.h"
+#include "IVideo.h"
+#include "VObjectView.h"
 
 #include <iostream>
 using namespace std;
@@ -54,24 +73,48 @@ void HTMLUpdater::update (IObject* object)
 bool HTMLViewUpdater::needupdate (IObject* o)
 {
 	int state = o->getState();
-	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
+	bool ret = state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified);
+	return ret;
 }
 
 //--------------------------------------------------------------------------
 bool HTMLLocalMapUpdater::needupdate (IObject* o)
 {
-	return ( o->fAutoMap && o->durationModified()) || o->localMapModified() || o->newData();
+	bool ret = (o->fAutoMap && o->durationModified()) || o->localMapModified() || o->newData();
+	return ret;
 }
 
 //--------------------------------------------------------------------------
-bool HTMLSlaveMapUpdater::needupdate (IObject* o)
-{
-	return true;
+void HTMLLocalMapUpdater::updateTo (IArc* o)			{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IAudio* o)			{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (ICurve* o)			{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IEllipse* o)		{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IGraphicSignal* graph)		{}
+void HTMLLocalMapUpdater::updateTo (IGuidoCode* guidoCode)		{}
+void HTMLLocalMapUpdater::updateTo (IGuidoPianoRoll* guidoCode)	{}
+void HTMLLocalMapUpdater::updateTo (IGuidoPianoRollStream* guidoCode) {}
+void HTMLLocalMapUpdater::updateTo (IHtml* text)		{}
+void HTMLLocalMapUpdater::updateTo (IImage* img) {}
+void HTMLLocalMapUpdater::updateTo (ILine* o)			{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IPolygon* o)		{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IRect* o)			{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (ISVG* svg) {}
+void HTMLLocalMapUpdater::updateTo (ISVGFile* svg) {}
+void HTMLLocalMapUpdater::updateTo (IText* text) {}
+void HTMLLocalMapUpdater::updateTo (IVideo* o) {}
+void HTMLLocalMapUpdater::updateTo (IGrid* o) {}
+void HTMLLocalMapUpdater::updateTo (ILayer* o)			{  o->updateGraphic2GraphicMapping(); }
 
-//	return o->localMapModified() || o->dateModified(); // || master->getMaster()->localMapModified() || master->modified();
 
-//	int state = o->getState();
-//	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
-}
+//--------------------------------------------------------------------------
+//bool HTMLSlaveMapUpdater::needupdate (IObject* o)
+//{
+//	return true;
+//
+////	return o->localMapModified() || o->dateModified(); // || master->getMaster()->localMapModified() || master->modified();
+//
+////	int state = o->getState();
+////	return (state & (IObject::kModified + IObject::kNewObject + IObject::kMasterModified));
+//}
 
 } // end namespoace

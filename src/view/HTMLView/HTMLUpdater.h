@@ -62,19 +62,39 @@ class inscore_export HTMLViewUpdater : public HTMLUpdater {
 	static libmapping::SMARTP<HTMLViewUpdater> create()	{ return new HTMLViewUpdater(); }
 };
 
-class inscore_export HTMLLocalMapUpdater : public HTMLUpdater {
+class inscore_export HTMLLocalMapUpdater : public LocalMapUpdater {
 	public:	
 		virtual bool needupdate (IObject*);
 		virtual const char* name()	{ return "LocalMapUpdater"; }
 	static libmapping::SMARTP<HTMLLocalMapUpdater> create()	{ return new HTMLLocalMapUpdater(); }
+	
+	void updateTo (IArc* o);
+	void updateTo (IAudio* o);
+	void updateTo (ICurve* o);
+	void updateTo (IEllipse* o);
+	void updateTo (IGraphicSignal* graph);
+	void updateTo (IGuidoCode* guidoCode);
+	void updateTo (IGuidoPianoRoll* guidoCode);
+	void updateTo (IGuidoPianoRollStream* guidoCode);
+	void updateTo (IHtml* text);
+	void updateTo (IImage* img);
+	void updateTo (ILine* o);
+	void updateTo (IPolygon* o);
+	void updateTo (IRect* o);
+	void updateTo (ISVG* svg);
+	void updateTo (ISVGFile* svg);
+	void updateTo (IText* text);
+	void updateTo (IVideo* o);
+	void updateTo (IGrid* o);
+	void updateTo (ILayer* o);
 };
 
-class inscore_export HTMLSlaveMapUpdater : public HTMLUpdater {
-	public:	
-		virtual bool needupdate (IObject*);
-		virtual const char* name()	{ return "HTMLSlaveMapUpdater"; }
-	static libmapping::SMARTP<HTMLSlaveMapUpdater> create()	{ return new HTMLSlaveMapUpdater(); }
-};
+//class inscore_export HTMLSlaveMapUpdater : public SlaveMapUpdater {
+//	public:	
+//		virtual bool needupdate (IObject*);
+//		virtual const char* name()	{ return "HTMLSlaveMapUpdater"; }
+//	static libmapping::SMARTP<HTMLSlaveMapUpdater> create()	{ return new HTMLSlaveMapUpdater(); }
+//};
 
 
 /*!@} */
