@@ -49,17 +49,11 @@ class TSyncManager implements GraphicSyncManager {
 		removed.forEach ( (element: TMaster, index: number): void => { this.remove(index); } );
 		newmasters.forEach ( (element: JSObjectView, index: number): void => { this.add(element); } );
 
-// let n = obj.getMasters().size();
-// if (n || this.countMasters())
-// console.log(this + ".updateSync " + obj.getMasters().size() + " on input -  remove: " + removed.length  + " - add: " +  newmasters.length + " currents: " + this.countMasters());
-// else return false;
-
 		// the sync list is now updated
 		let updated = 0;
-		this.fSync.forEach( (master: TMaster, index: number) : void => {
-			if (master) {
-				master.slave().updateView (obj, oid);
-//console.log(this + " call update id: " + element.slave().getId() + " " + element.slave()  + " master id: " +  element.master().getId() + " " + element.master());
+		this.fSync.forEach( (m: TMaster, index: number) : void => {
+			if (m) {
+				m.slave().updateView (obj, oid, m.master().getIObject());
 				updated++;
 			}
 		});
@@ -68,7 +62,6 @@ class TSyncManager implements GraphicSyncManager {
 		this.fSync = [];
 		this.fTarget.getParent().getElement().appendChild (this.fTarget.getElement()	);
 		this.fRemoveChild = true;
-// console.log(this + " id: " + this.fTarget.getId() + " updated masters : " + updated);
 		return false;
 	}
 
