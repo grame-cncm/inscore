@@ -57,6 +57,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("newData",  		&IObjectAdapter::newData)
 		.function("deleted",  		&IObjectAdapter::deleted)
+		.function("getMasters",  	&IObjectAdapter::getMasters, allow_raw_pointers())
 		.function("getOSCAddress",  &IObjectAdapter::getOSCAddress, allow_raw_pointers())
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
 		.function("getTextInfos",   &IObjectAdapter::getTextInfos, allow_raw_pointers())
@@ -75,6 +76,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos);
 
 	register_vector<float>("vector<float>");
+	register_vector<int>("vector<int>");
 
 
 	// Binding C++ class adapter for INScore

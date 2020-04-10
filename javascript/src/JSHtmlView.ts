@@ -14,10 +14,10 @@ class JSHtmlView extends JSAutoSize {
 	static fontWeight2Num	( weight: string) : string {
 		switch (weight) {
             case "normal": 		return "400";
-			case "light":		return "200";
-			case "demibold":	return "550";
-			case "bold":		return "700";
-			case "black":		return "900";
+			case "light":		return "50";
+			case "demibold":	return "600";
+			case "bold":		return "800";
+			case "black":		return "1000";
 			default: return "400";
 		}
 	}
@@ -27,7 +27,7 @@ class JSHtmlView extends JSAutoSize {
         elt.style.fontSize 		= font.size+"px";
         elt.style.fontFamily 	= font.family;
         elt.style.fontStyle 	= font.style;
-        elt.style.fontWeight 	= JSHtmlView.fontWeight2Num(font.weight);
+		elt.style.fontWeight 	= JSHtmlView.fontWeight2Num(font.weight);
     }
 
 	removeEffect(elt: HTMLElement): void { 

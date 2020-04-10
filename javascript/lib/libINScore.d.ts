@@ -193,12 +193,18 @@ interface FloatVector {
 	get(i: number) : number;
 }
 
+interface IntVector {
+	size(): number;
+	get(i: number) : number;
+}
+
 interface INScoreObject {
     create(id: number):        INScoreObject;
     del(obj: INScoreObject):   void;
 
     newData():   	   boolean;
     deleted():   	   boolean;
+    getMasters():      IntVector;
     getOSCAddress():   string;
     getUpdateInfos():  OUpdateInfos;
     getTextInfos():    OTextInfo;

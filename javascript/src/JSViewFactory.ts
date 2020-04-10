@@ -15,6 +15,7 @@
 ///<reference path="JSSVGView.ts"/>
 ///<reference path="JSPianorollView.ts"/>
 ///<reference path="JSLayerView.ts"/>
+///<reference path="TSyncManager.ts"/>
 
 
 //----------------------------------------------------------------------------
@@ -80,7 +81,11 @@ console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 			default:
 console.log ("JSViewFactory::create unknown type " + type + " parent id: " + parent);
 		}
-		return view ? view.getId() : 0;
+		if (view) {
+			view.setSyncManager (new TSyncManager(view));
+			return view.getId();
+		}
+		return 0;
 	}
 }
 

@@ -202,6 +202,7 @@ class inscore_export IObjectAdapter
 	static void _updateWidth (IPosition* pos, float w);
 	static void _updateHeight (IPosition* pos, float h);
 	static bool _getPosition (const IPosition* obj, JSPosition& pos);
+	static bool _getSyncPosition (IObject* obj, JSPosition& pos);
 	static bool _getColor (const IColor* obj, JSColor& color);
 	static bool _getPenBrush (const IShape* obj, JSPen& brush);
 	static bool _getText  (const IText* obj, JSTextInfos& infos);
@@ -222,6 +223,7 @@ class inscore_export IObjectAdapter
 		
 		bool 		  newData () const		{ return fObject->newData(); }
 		bool 		  deleted () const		{ return fObject->getDeleted(); }
+		std::vector<int> getMasters () const;
 		JSUpdateInfos getUpdateInfos () const;
 		JSTextInfos   getTextInfos () const;
 		JSLineInfos   getLineInfos () const;

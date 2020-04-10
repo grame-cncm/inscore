@@ -3,6 +3,7 @@
 ///<reference path="inscore.ts"/>
 ///<reference path="inscoreGlue.ts"/>
 ///<reference path="constants.ts"/>
+///<reference path="interfaces.ts"/>
 
 
 interface Point {
@@ -18,16 +19,19 @@ class JSObjectView {
 	private fID = 0;
 	private fElement : HTMLElement;
 	private fParent  : JSObjectView;
+	private fSyncManager : GraphicSyncManager;
 
     constructor(elt: HTMLElement, parent: JSObjectView, absolute=true) { 
 		this.fID = ++JSObjectView.fGlobalID; 		// create a unique identifier
     	JSObjectView.fObjects[this.fID] = this; 	// store the div using its id
     	this.fParent = parent; 
 		this.fElement = elt; 
+		this.fSyncManager = null;
 		if (parent) parent.getElement().appendChild (elt);
 		if (absolute) elt.style.position = "absolute";
 	}
 	
+	setSyncManager(sync: GraphicSyncManager) : void { this.fSyncManager = sync; }
 	toString() : string				{ return "JSObjectView"; }
 	getId() : number	 			{ return this.fID; }
 	getElement() : HTMLElement		{ return this.fElement; }
@@ -53,6 +57,14 @@ class JSObjectView {
 			return;
 		}
 
+		if (this.fSyncManager && this.fSyncManager.updateSync (obj, oid))  return;
+		// if (masters.size()) { 
+		// 	console.log (this + " has " + masters.size() + " masters");
+		// 	for (let i=0; i < masters.size(); i++) {
+		// 		let m = JSObjectView.fObjects[masters.get(i)];
+		// 		console.log ("    synced to " + masters.get(i) + " (" + m + ")");
+		// 	}
+		// }
 		if (obj.newData()) 
 			if (!this.updateSpecial (obj, oid)) return;
 		let infos = obj.getUpdateInfos();
@@ -264,6 +276,7 @@ class JSObjectView {
  
 	//---------------------------------------------------------------------
 	// main update method
+	// id
 	static updateObjectView (id : number, oid : number, forcepos=false)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {
