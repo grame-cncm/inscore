@@ -5,24 +5,27 @@
 class TMaster {
 	private fMaster: JSObjectView;
 	private fSlave: JSObjectView;
+	private fClone: JSObjectView;
 
 	constructor(m: JSObjectView, s: JSObjectView) {
 		this.fMaster = m;
 		this.fSlave = s;
-		// m.getElement().appendChild (s.getElement());
+		this.fClone = s.clone (m);
+		m.getElement().appendChild (this.fClone.getElement());
 	}
 
 	master() : JSObjectView	{ return this.fMaster; }
-	slave() : JSObjectView 	{ return this.fSlave; }
+	slave()  : JSObjectView 	{ return this.fClone; }
 
-	// unsync () : void	{ this.master().removeChild(this.slave().getElement());}
-	unsync () : void	{ }
+	unsync () : void	{ this.master().getElement().removeChild(this.fClone.getElement()); }
+	// unsync () : void	{ }
 }
 
 class TSyncManager implements GraphicSyncManager {
 
-	private fTarget: JSObjectView;
 	private fSync = new Array<TMaster>();
+	private fTarget: JSObjectView;
+	private fRemoveChild = true;
 
 	constructor(obj: JSObjectView) {
 		this.fTarget = obj;
@@ -39,24 +42,33 @@ class TSyncManager implements GraphicSyncManager {
 		let removed = this.obsolete (masters);
 		let newmasters = this.newSync (masters);
 
+		if (this.fRemoveChild) {
+			this.fTarget.getParent().getElement().removeChild(this.fTarget.getElement());
+			this.fRemoveChild = false;
+		}
 		removed.forEach ( (element: TMaster, index: number): void => { this.remove(index); } );
 		newmasters.forEach ( (element: JSObjectView, index: number): void => { this.add(element); } );
 
 // let n = obj.getMasters().size();
 // if (n || this.countMasters())
-console.log(this + ".updateSync " + obj.getMasters().size() + " on input -  remove: " + removed.length  + " - add: " +  newmasters.length + " currents: " + this.countMasters());
+// console.log(this + ".updateSync " + obj.getMasters().size() + " on input -  remove: " + removed.length  + " - add: " +  newmasters.length + " currents: " + this.countMasters());
 // else return false;
 
-// the sync list is now updated
+		// the sync list is now updated
 		let updated = 0;
-		this.fSync.forEach( (element: TMaster, index: number) : void => {
-			if (element) {
+		this.fSync.forEach( (master: TMaster, index: number) : void => {
+			if (master) {
+				master.slave().updateView (obj, oid);
 //console.log(this + " call update id: " + element.slave().getId() + " " + element.slave()  + " master id: " +  element.master().getId() + " " + element.master());
 				updated++;
 			}
 		});
-		if (!updated) this.fSync = [];
-		console.log(this + " id: " + this.fTarget.getId() + " updated masters : " + updated);
+		if (updated) return true;
+
+		this.fSync = [];
+		this.fTarget.getParent().getElement().appendChild (this.fTarget.getElement()	);
+		this.fRemoveChild = true;
+// console.log(this + " id: " + this.fTarget.getId() + " updated masters : " + updated);
 		return false;
 	}
 
@@ -82,23 +94,15 @@ console.log(this + ".updateSync " + obj.getMasters().size() + " on input -  remo
 	}
 		
 	private add (obj: JSObjectView) : void {
-console.log(this + ".add " + obj.getId() + " " + obj);
 		let m = new TMaster(obj, this.fTarget);
 		this.fSync[obj.getId()] = m;
 	}
 
 	private remove (index: number) : void {
-console.log(this + ".remove " + index);
-// 		let master = this.fSync[index];
-// console.log(this + ".remove " + index + " " + master.slave() + " id: " + master.slave().getId());
-// 		master.unsync();
+ 		let master = this.fSync[index];
+ 		master.unsync();
 		this.fSync[index] = null;
 	}
-
-	// private find (tbl: Array<JSObjectView>, obj: JSObjectView) : JSObjectView {
-	// 	let index =  tbl.indexOf (obj);
-	// 	return (index < 0) ? null : obj; 
-	// }
 
 	// give a table of the objects not sync list
 	private newSync (objs: Array<JSObjectView>) : Array<JSObjectView> {
@@ -118,22 +122,4 @@ console.log(this + ".remove " + index);
 		} );
 		return out;
 	}
-
-	// private filter (tbl: Array<TMaster>, f: Array<TMaster>) : Array<TMaster> {
-	// 	let out = new Array<JSObjectView>();
-	// 	tbl.forEach ( (element: TMaster, index: number) : void => {
-	// 		if (!f[index]) out.push(tbl[index]);
-	// 	} );
-	// 	// for (let i=0; i < tbl.length; i++) {
-	// 	// 	if (this.find (f, tbl[i]) != null) i++
-	// 	// 	else out.push(tbl[i]);
-	// 	// }
-	// 	return out;
-	// }
-
-	// concat tables without duplicates
-	// private union (t1: Array<TMaster>, t2: Array<TMaster>) : Array<TMaster> {
-	// 	let t = this.filter (t2, t1);
-	// 	return t1.concat (t)
-	// }	
 }
