@@ -20,6 +20,7 @@ abstract class JSObjectView {
 	private fElement : HTMLElement;
 	private fParent  : JSObjectView;
 	private fSyncManager : GraphicSyncManager;
+	private fIObject : number;			// a pointer to an IObject stored as a number
 
     constructor(elt: HTMLElement, parent: JSObjectView, absolute=true) { 
 		this.fID = ++JSObjectView.fGlobalID; 		// create a unique identifier
@@ -27,6 +28,7 @@ abstract class JSObjectView {
     	this.fParent = parent; 
 		this.fElement = elt; 
 		this.fSyncManager = null;
+		this.fIObject = null;
 		if (parent) parent.getElement().appendChild (elt);
 		if (absolute) elt.style.position = "absolute";
 	}
@@ -34,10 +36,13 @@ abstract class JSObjectView {
 	abstract clone (parent: JSObjectView) : JSObjectView;
 
 	setSyncManager(sync: GraphicSyncManager) : void { this.fSyncManager = sync; }
+	setIObject(id: number) : void   { this.fIObject = id; }
+	getIObject() : number   		{ return this.fIObject; }
 	toString() : string				{ return "JSObjectView"; }
 	getId() : number	 			{ return this.fID; }
 	getElement() : HTMLElement		{ return this.fElement; }
 	getParent() : JSObjectView		{ return this.fParent; }
+
 	parentWidth() : number			{ 
 		let elt = this.getElement().parentElement;
 		return Math.min(elt.clientWidth, elt.clientHeight); 
@@ -53,23 +58,19 @@ abstract class JSObjectView {
 	//---------------------------------------------------------------------
 	// update methods
 	//---------------------------------------------------------------------
-	updateView(obj: INScoreObject, oid: number, force = false) : void {
+	updateView(obj: INScoreObject, oid: number, master: number, force = false) : void {
 		if (obj.deleted()  && this.getElement().parentNode) { // parent could be deleted
-			this.getElement().parentNode.removeChild(this.getElement());
+			this.getElement().parentNode.removeChild (this.getElement());
 			return;
 		}
 
-		if (this.fSyncManager && this.fSyncManager.updateSync (obj, oid))  return;
-		// if (masters.size()) { 
-		// 	console.log (this + " has " + masters.size() + " masters");
-		// 	for (let i=0; i < masters.size(); i++) {
-		// 		let m = JSObjectView.fObjects[masters.get(i)];
-		// 		console.log ("    synced to " + masters.get(i) + " (" + m + ")");
-		// 	}
-		// }
+		if (this.fSyncManager && this.fSyncManager.updateSync (obj, oid))  
+			return;			// object is synchronized, update is done
+
 		if (obj.newData()) 
 			if (!this.updateSpecial (obj, oid)) return;
-		let infos = obj.getUpdateInfos();
+
+		let infos = obj.getUpdateInfos(master);
 		if (infos.updatecolor) 
 			this.updateColor(infos.color);
 		if (infos.updatebrush)
@@ -277,13 +278,16 @@ abstract class JSObjectView {
 	}
  
 	//---------------------------------------------------------------------
-	// main update method
-	// id
+	// Main update method
+	// id  : the view id
+	// oid : the IObject id (actually a pointer stored as number)
+	// forcepos : used to enforce updatePosition
 	static updateObjectView (id : number, oid : number, forcepos=false)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {
+			view.setIObject (oid);
 	    	let obj = INScore.objects().create(oid);
-			view.updateView (obj, oid, forcepos); 
+			view.updateView (obj, oid, 0, forcepos); 
     		INScore.objects().del (obj);
     	}
     }
