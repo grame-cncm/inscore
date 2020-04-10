@@ -48,7 +48,7 @@ class JSViewFactory {
 			case "polygon":   view = new JSPolygonView(parent); break;
 			case "curve":     view = new JSCurveView(parent); break;
 			case "gmn":       view = new JSGMNView(parent, gGlue.guido()); break;
-			case "pianoroll": view = new JSPianoRollView(parent, gGlue.xmllib(),gGlue.guido()); break;
+			case "pianoroll": view = new JSPianoRollView(parent, gGlue.guido()); break;
 			case "musicxml":  view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
 			case "svg":       view = new JSSVGView(parent); break;
 			case "layer":	  view = new JSLayerView(parent); break;
