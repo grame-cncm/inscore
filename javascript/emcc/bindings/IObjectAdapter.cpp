@@ -100,18 +100,16 @@ bool IObjectAdapter::_getPenBrush (const IShape* obj, JSPen& pen)
 }
 
 //--------------------------------------------------------------------------
-bool IObjectAdapter::_getSyncPosition (IObject* obj, JSPosition& pos)
+bool IObjectAdapter::_getSyncPosition (IObject* obj, const IObject* master, JSPosition& pos)
 {
-	std::vector<SMaster> masters = obj->getMasters();
-	if (masters.size()) {
-		const SMaster sync = masters[0];
-		const SIObject master = sync->getMaster();
-		TFloatPoint p = getSyncPosition (obj, sync);
-		pos.x 		= p.fX;
-		pos.y 		= p.fY;
-		pos.scale  *= master->getScale();
-//cerr << "IObjectAdapter::_getSyncPosition " << obj->name() << " synced to " << master->getMaster()->name() << " pos: " << pos.x << " " << pos.y << endl;
-		return sync->modified() || ((IDate*)(obj))->modified();
+	for (auto sync: obj->getMasters()) {
+		const SIObject m = sync->getMaster();
+		if (m == master) {
+			TFloatPoint p = getSyncPosition (obj, sync);
+			pos.x 		= p.fX;
+			pos.y 		= p.fY;
+			return sync->modified() || ((IDate*)(obj))->modified();
+		}
 	}
 	return false;
 }
@@ -126,7 +124,6 @@ vector<int> IObjectAdapter::getMasters () const
 			masters.push_back(view->getID());
 		else
 			cerr << "IObjectAdapter::getMasters: master " << m->getMaster()->name() << " has no view." << endl;
-//		masters.push_back(int(static_cast<IObject*>(m->getMaster())));
 	}
 	return masters;
 }
@@ -466,7 +463,7 @@ std::vector<float> IObjectAdapter::getCurveInfos() const
 
 
 //--------------------------------------------------------------------------
-JSUpdateInfos IObjectAdapter::getUpdateInfos () const
+JSUpdateInfos IObjectAdapter::getUpdateInfos (int masterId) const
 {
 	JSUpdateInfos infos;
 	if (fObject->getDeleted())
@@ -474,7 +471,7 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos () const
 	else {
 		infos.newdata = fObject->newData();
 		infos.updatepos = _getPosition (fObject, infos.position);
-		infos.updatepos |= _getSyncPosition (fObject, infos.position);
+		infos.updatepos |= _getSyncPosition (fObject, (const IObject*)masterId, infos.position);
 		infos.updatebrush = _getPenBrush (fObject, infos.position.pen);
 		infos.position.pen.color = color2htmlColor(*fObject, false);
 		infos.position.pen.alpha = fObject->getA() / 255.f;

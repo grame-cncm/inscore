@@ -39,20 +39,11 @@ static TFloatPoint	date2FramePosition (const IObject* obj, const libmapping::rat
 {
 	TFloatPoint pos;
 	if (obj->date2FramePoint(date, pos)) {
-cerr << "date2FramePosition " << obj->name() << " date " << date << " -> " << pos << endl;
+		pos.fX = (pos.fX * 2) - 1;
+		pos.fY = (pos.fY * 2) - 1;
 		return pos;
 	}
 	return TFloatPoint (kNoWhere, kNoWhere);
-}
-
-//--------------------------------------------------------------------------
-TFloatPoint	relative2absolutePos (const IObject* obj, const TFloatPoint& pos)
-{
-	float x = obj->getXPos() - obj->getWidth()  * (1 - obj->getXOrigin()) / 2;
-	float y = obj->getYPos() - obj->getHeight() * (1 - obj->getYOrigin()) / 2;
-	float scale = obj->getScale();
-	return TFloatPoint ((pos.fX + x) * scale, (pos.fY + y) * scale);
-
 }
 
 //--------------------------------------------------------------------------
@@ -69,9 +60,7 @@ TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master)
 
 	if (mode == Master::kSyncAbsolute) date += masterobj->getDate();
 	if (align == Master::kSyncFrame) {
-//		location = date2FramePosition (masterobj, date);
-		location = relative2absolutePos (master->getMaster(), date2FramePosition (masterobj, date));
-
+		location = date2FramePosition (masterobj, date);
 	}
 	return location;
 }
