@@ -74,6 +74,9 @@ __END__
 /ITL/scene/* get width height;
 /ITL/scene show 0;
 
+/ITL/scene/box penWidth 1;
+
+
 /ITL/scene/curve1 set curve  0.06 0.4 0.8 1.0 0.3 0.14 1.0 0.7;
 /ITL/scene/curve1 get width height;
 
@@ -124,14 +127,22 @@ o = 1;
 /ITL/scene/img penColor blue;
 /ITL/scene/img angle 90;
 
-
+/ITL/scene/line2 set line wa 2 0;
+/ITL/scene/linev set line wa 2 90;
 /ITL/scene/line set line wa 1 0;
+/ITL/scene/line penWidth 10;
+/ITL/scene/line get width height;
+
 /ITL/scene/line set line wa 1 45;
-/ITL/scene/line penWidth 14;
-/ITL/scene/line penWidth 1;
+/ITL/scene/line set line wa 1 -45;
+/ITL/scene/line penWidth 10;
+/ITL/scene/line penWidth 2;
 /ITL/scene/line penColor blue;
 /ITL/scene/line angle 45;
+/ITL/scene/line angle 60;
+/ITL/scene/line angle 50;
 /ITL/scene/line angle 0;
+/ITL/scene/line yorigin -0.5;
 /ITL/scene/line get width height;
 
 /ITL/scene/arc brushStyle none;
