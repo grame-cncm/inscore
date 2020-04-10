@@ -206,7 +206,7 @@ interface INScoreObject {
     deleted():   	   boolean;
     getMasters():      IntVector;
     getOSCAddress():   string;
-    getUpdateInfos():  OUpdateInfos;
+    getUpdateInfos(masterId: number):  OUpdateInfos;
     getTextInfos():    OTextInfo;
 	getLineInfos():    OLineInfo;
 	getFile():         string;
