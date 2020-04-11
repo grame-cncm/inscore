@@ -54,11 +54,15 @@ abstract class JSObjectView {
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
 	updateSpecific(obj: INScoreObject)	: void { }
+	getRatio()	: number { 
+		let div = this.getElement();
+		return Math.min(div.clientWidth, div.clientHeight) / Math.min(div.parentElement.clientWidth, div.parentElement.clientHeight); 
+	}
 
 	//---------------------------------------------------------------------
 	// update methods
 	//---------------------------------------------------------------------
-	updateView(obj: INScoreObject, oid: number, master: number, force = false) : void {
+	updateView(obj: INScoreObject, oid: number, master: number, force: boolean, keepRatio = false) : void {
 		if (obj.deleted()  && this.getElement().parentNode) { // parent could be deleted
 			this.getElement().parentNode.removeChild (this.getElement());
 			return;
@@ -71,6 +75,11 @@ abstract class JSObjectView {
 			if (!this.updateSpecial (obj, oid)) return;
 
 		let infos = obj.getUpdateInfos(master);
+		if (keepRatio) {
+			let r = this.getParent().getRatio();
+			infos.position.scale /= r;
+		}
+		
 		if (infos.updatecolor) 
 			this.updateColor(infos.color);
 		if (infos.updatebrush)

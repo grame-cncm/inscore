@@ -18,7 +18,6 @@ class TMaster {
 	slave()  : JSObjectView 	{ return this.fClone; }
 
 	unsync () : void	{ this.master().getElement().removeChild(this.fClone.getElement()); }
-	// unsync () : void	{ }
 }
 
 class TSyncManager implements GraphicSyncManager {
@@ -53,14 +52,14 @@ class TSyncManager implements GraphicSyncManager {
 		let updated = 0;
 		this.fSync.forEach( (m: TMaster, index: number) : void => {
 			if (m) {
-				m.slave().updateView (obj, oid, m.master().getIObject());
+				m.slave().updateView (obj, oid, m.master().getIObject(), false, true);
 				updated++;
 			}
 		});
 		if (updated) return true;
 
 		this.fSync = [];
-		this.fTarget.getParent().getElement().appendChild (this.fTarget.getElement()	);
+		this.fTarget.getParent().getElement().appendChild (this.fTarget.getElement());
 		this.fRemoveChild = true;
 		return false;
 	}
