@@ -4,8 +4,6 @@
 class JSLineView extends JSSvgBase {
 
     protected fLine: SVGLineElement;
-	fWidth: number;
-	fHeight: number;
 
 	constructor(parent: JSObjectView) {
 		super(parent);
@@ -19,6 +17,11 @@ class JSLineView extends JSSvgBase {
 	toString() : string		   { return "JSLineView"; }
 
 	updateSVGDimensions(w: number, h: number) : void { }
+
+	getRatio()	: number { 
+		let div = this.getElement();
+		return Math.max (Math.min(div.clientWidth, div.clientHeight) / Math.min(div.parentElement.clientWidth, div.parentElement.clientHeight), 0.022); 
+	}
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
 		let line = obj.getLineInfos();

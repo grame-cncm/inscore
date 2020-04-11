@@ -62,6 +62,10 @@ interface OLineInfo {
 	y1: number;
 	x2: number;
 	y2: number;
+	x: number;
+	y: number;
+	angle: number;
+	width: number;
 	arrowLeft: 	number;
 	arrowRight: number;
 	arrowSizeLeft: number;

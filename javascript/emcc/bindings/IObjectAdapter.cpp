@@ -168,6 +168,7 @@ bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 		float xo = 0;
 		float yo = 0;
 		TFloatPoint p = obj->getPoint();
+		TFloatPoint wa = obj->getWA();
 		float x = p.x();
 		float y = p.y();
 		if ((x < 0) && (y < 0)) {
@@ -187,10 +188,14 @@ bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 		obj->setWidth (w);
 		obj->setHeight(h);
 		
+		infos.x = p.x();
+		infos.y = p.y();
 		infos.x1 = xo;
 		infos.y1 = yo;
 		infos.x2 = x;
 		infos.y2 = y;
+		infos.angle = wa.x();
+		infos.width = wa.y();
 		infos.arrowLeft		= obj->getArrowLeft();
 		infos.arrowRight	= obj->getArrowRight();
 		infos.arrowLeftSize = obj->getArrowSizeLeft();

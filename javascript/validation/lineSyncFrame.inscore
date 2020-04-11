@@ -1,0 +1,19 @@
+/ITL/scene/* del;
+
+/ITL/scene/m1 set line wa 1 0;
+/ITL/scene/m2 set line wa 1 45 ;
+/ITL/scene/m3 set line wa 1 -90;
+/ITL/scene/m4 set line wa 1 -45 ;
+
+/ITL/scene/circ set ellipse 0.2 0.2;
+/ITL/scene/circ color orange ;
+/ITL/scene/circ watch timeEnter 1 2 (/ITL/scene/circ date 0);
+
+/ITL/scene/sync circ m1 syncFrame;
+/ITL/scene/sync circ m2 syncFrame;
+/ITL/scene/sync circ m3 syncFrame;
+/ITL/scene/sync circ m4 syncFrame;
+/ITL/scene/sync circ m* syncFrame;
+/ITL/scene/sync circ;
+
+__END__

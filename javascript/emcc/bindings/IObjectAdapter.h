@@ -135,6 +135,10 @@ struct JSLineInfos {
 	float 	y1;
 	float 	x2;
 	float 	y2;
+	float 	x;
+	float 	y;
+	float 	angle;
+	float 	width;
 	int		arrowLeft;
 	int		arrowRight;
 	float	arrowLeftSize;

@@ -41,6 +41,17 @@ static TFloatPoint	date2FramePosition (const IObject* obj, const libmapping::rat
 	if (obj->date2FramePoint(date, pos)) {
 		pos.fX = (pos.fX * 2) - 1;
 		pos.fY = (pos.fY * 2) - 1;
+		float w = obj->getWidth();
+		float h = obj->getHeight();
+		if (w == 0) pos.fX = 0;
+		if (h == 0) pos.fY = 0;
+//cerr << "date2FramePosition " << obj->name() << " "  << date  << " -> pos: " << pos << " dims: " << w << " " << h << endl;
+		if ((w < 0.000001) || (h < 0.00001)) w = h = 0;   // this is only for lines
+		if (h && w) {
+			if (w > h) pos.fX *= w / h;
+			else if (w < h) pos.fY *= h / w;
+		}
+//cerr << "date2FramePosition out: " << pos << endl;
 		return pos;
 	}
 	return TFloatPoint (kNoWhere, kNoWhere);
