@@ -60,6 +60,8 @@ class ILine : public IShapeMap
 
 	private:
 		TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
+		float 		fAngle = 0;
+		float 		fLineWidth = 0;
 		bool		fWAMode;
 
 		// Arrow head for each side of the line
@@ -82,6 +84,7 @@ class ILine : public IShapeMap
 		static SILine create(const std::string& name, IObject* parent)	{ return new ILine(name, parent); }
 
 		const TFloatPoint&	getPoint() const			{ return fPoint; }
+		const TFloatPoint	getWA() const				{ return TFloatPoint (fAngle, fLineWidth); }
 
 
 		virtual void	print(std::ostream& out) const;
@@ -102,7 +105,7 @@ class ILine : public IShapeMap
 		/// \brief the 'get' form without parameter
 		virtual SIMessageList getSetMsg() const;
 
-		void	setPoint(const TFloatPoint& p)		{ fPoint = p; }
+		void	setPoint(const TFloatPoint& p);
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
