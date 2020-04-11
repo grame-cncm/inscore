@@ -3,19 +3,19 @@
 
 /ITL/scene/title  set  txt "Synchronisation modes: using 'syncFrame'";
 /ITL/scene/title color darkBlue;
-/ITL/scene/title fontSize 28;
+/ITL/scene/title fontSize 32;
 /ITL/scene/title fontWeight bold;
-/ITL/scene/title effect shadow 4 4 150 150 150 75 3;
-/ITL/scene/title y -0.80;
+grey = 180;
+/ITL/scene/title effect shadow 3 3 $grey $grey $grey 75 2;
+/ITL/scene/title y -0.85;
 
-ew = 0.1;   # ellipse size
 
 /ITL/scene/rect1 set rect 0.5 0.7;
 /ITL/scene/rect1 color 200 200 200 50;
 /ITL/scene/rect2 set rect 1.5 0.3;
 /ITL/scene/rect2 color 200 200 200 50;
 /ITL/scene/rect2 radius 10 50 ;
-/ITL/scene/c set ellipse $ew $ew;
+/ITL/scene/c set ellipse 0.05 0.05;
 /ITL/scene/c red 240;
 
 /ITL/scene/sync c  rect*  syncFrame;
@@ -27,14 +27,14 @@ ew = 0.1;   # ellipse size
 /ITL/scene/a2 set arc 1.04 1.17 30 120;
 /ITL/scene/a2 y -0.01;
 
-/ITL/scene/c3 set ellipse $ew $ew;
+/ITL/scene/c3 set ellipse 0.05 0.05;
 /ITL/scene/c3 color 50 200 20;
 
 
 /ITL/scene/sync c  e  syncFrame;
 /ITL/scene/sync c3  a*  syncFrame;
 
-/ITL/scene/c2 set ellipse $ew $ew;
+/ITL/scene/c2 set ellipse 0.05 0.05;
 /ITL/scene/c2 blue 240;
 
 /ITL/scene/p1 set polygon 0 0.5 0.6 0 -0.6 0;
@@ -77,10 +77,6 @@ ew = 0.1;   # ellipse size
 	)
 );
 
-
-/ITL/scene/comment  set  txt "INScore version" $rversion "or greater is required for syncFrame mode.";
-/ITL/scene/comment fontSize 16;
-/ITL/scene/comment y 0.9;
 
 __END__
 
