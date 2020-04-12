@@ -85,20 +85,20 @@ bool HTMLLocalMapUpdater::needupdate (IObject* o)
 }
 
 //--------------------------------------------------------------------------
-void HTMLLocalMapUpdater::updateTo (IArc* o)			{  o->updateGraphic2GraphicMapping(); }
-void HTMLLocalMapUpdater::updateTo (IAudio* o)			{  o->updateGraphic2GraphicMapping(); }
-void HTMLLocalMapUpdater::updateTo (ICurve* o)			{  o->updateGraphic2GraphicMapping(); }
-void HTMLLocalMapUpdater::updateTo (IEllipse* o)		{  o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IArc* o)			{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IAudio* o)			{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (ICurve* o)			{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IEllipse* o)		{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IGraphicSignal* graph)		{}
 void HTMLLocalMapUpdater::updateTo (IGuidoCode* guidoCode)		{}
 void HTMLLocalMapUpdater::updateTo (IGuidoPianoRoll* guidoCode)	{}
 void HTMLLocalMapUpdater::updateTo (IGuidoPianoRollStream* guidoCode) {}
-void HTMLLocalMapUpdater::updateTo (IHtml* text)		{}
-void HTMLLocalMapUpdater::updateTo (IImage* img) {}
-void HTMLLocalMapUpdater::updateTo (ILine* o)			{  o->updateGraphic2GraphicMapping(); }
-void HTMLLocalMapUpdater::updateTo (IPolygon* o)		{  o->updateGraphic2GraphicMapping(); }
-void HTMLLocalMapUpdater::updateTo (IRect* o)			{  o->updateGraphic2GraphicMapping(); }
-void HTMLLocalMapUpdater::updateTo (ISVG* svg) {}
+void HTMLLocalMapUpdater::updateTo (IHtml* text)		{ }
+void HTMLLocalMapUpdater::updateTo (IImage* o) 			{ o->updateLocalMapping(); }
+void HTMLLocalMapUpdater::updateTo (ILine* o)			{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IPolygon* o)		{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IRect* o)			{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (ISVG* o) 			{ o->updateLocalMapping(); }
 void HTMLLocalMapUpdater::updateTo (ISVGFile* svg) {}
 void HTMLLocalMapUpdater::updateTo (IText* text) {}
 void HTMLLocalMapUpdater::updateTo (IVideo* o) {}
