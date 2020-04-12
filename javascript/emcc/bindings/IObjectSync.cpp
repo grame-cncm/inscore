@@ -58,14 +58,38 @@ static TFloatPoint	date2FramePosition (const IObject* obj, const libmapping::rat
 }
 
 //--------------------------------------------------------------------------
+static TFloatPoint date2MasterPosition (const SMaster& master, const IObject* slave, const libmapping::rational& date)
+{
+	TFloatPoint pos;
+
+	std::string mapName = master->getMaster()->name() + ":" + master->getMasterMapName();
+//	double width = relative2SceneWidth(o->getSyncWidth(mapName), item);
+//	double height = relative2SceneHeight(o->getSyncHeight(mapName), item);
+
+	pos = slave->getSyncPos(mapName);
+cerr << "date2MasterPosition -> " << pos << endl;
+
+	return pos;
+
+//	item->setRect(QRectF(0,0,width,height));
+//	item->setPos(x, y);
+//	item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
+//	updateTransform (o, item);
+//	QRectF bbrect = item->boundingRect();
+//	double xo = bbrect.width() / 2;
+//	double yo = bbrect.height() / 2;
+//	item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
+}
+
+//--------------------------------------------------------------------------
 TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master)
 {
 	TFloatPoint location;
+
 	libmapping::rational date = obj->getDate ();
-	
 	const SIObject& masterobj = master->getMaster();
 	Master::VAlignType align = master->getAlignment();
-	Master::StretchType	stretch = master->getStretch();
+//	Master::StretchType	stretch = master->getStretch(); // ignored
 	Master::SyncType mode = master->getMode();
 	float dy = master->getDy();
 
@@ -73,6 +97,11 @@ TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master)
 	if (align == Master::kSyncFrame) {
 		location = date2FramePosition (masterobj, date);
 	}
+	else {
+		location = date2MasterPosition (master, obj, date);
+	}
+
+	location.fY += master->getDy();
 	return location;
 }
 
