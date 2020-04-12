@@ -212,11 +212,11 @@ class IPosition
         virtual void setSyncPos(std::string m, TFloatPoint pos);
     
         /// \brief gets the object height corresponding to one master
-        virtual float getSyncHeight (std::string m) {return fHeights.find(m)->second;}
+        virtual float getSyncHeight (std::string m) const 	{ return fHeights.find(m)->second;}
         /// \brief gets the object width corresponding to one master
-        virtual float getSyncWidth (std::string m) {return fWidths.find(m)->second;}
+        virtual float getSyncWidth (std::string m) const 	{ return fWidths.find(m)->second;}
         /// \brief gets the object pos corresponding to one master
-        virtual TFloatPoint getSyncPos (std::string m) {return fPositions.find(m)->second;}
+        virtual TFloatPoint getSyncPos (std::string m) const { return fPositions.find(m)->second;}
 
 		/*! \brief Computes the bounding rect in Scene coordinates.
 		
