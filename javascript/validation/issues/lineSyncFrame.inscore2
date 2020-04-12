@@ -1,0 +1,88 @@
+/ITL/scene/* del;
+
+/ITL/scene/title (set txt "syncFrame issues with lines"),
+				 (fontSize 18),
+				 (y -0.7);
+
+/ITL/scene/m1 set line wa 1 0;
+/ITL/scene/m2 set line wa 1 45 ;
+/ITL/scene/m3 set line wa 1 -90;
+/ITL/scene/m4 set line wa 1 -45 ;
+
+w = 0.15;
+/ITL/scene/circ (set ellipse $w $w),
+				(color orange),
+				(watch timeEnter 1 2 (/ITL/scene/circ date 0));
+
+w = 0.06;
+radius = 4;
+yloc = 0.8;
+
+onoff = (watch mouseDown (
+			(/ITL/scene/$name push),
+			(/ITL/scene/$name color SpringGreen),
+			($msgOn),
+			(/ITL/scene/$name watch mouseDown (
+				(/ITL/scene/$name color SeaShell ),
+				($msgOff),
+				(/ITL/scene/$name pop)
+			))));
+
+push = ((watch mouseDown (
+			(/ITL/scene/$name color SpringGreen),
+			($msgOn))),
+		(watch mouseEnter (/ITL/scene/$name color lightGrey)),
+		(watch mouseLeave (/ITL/scene/$name color white))
+		);
+
+button = ((/ITL/scene/$name (set rect $w $w),
+					(radius $radius $radius),
+					(y $yloc),
+					(x $x),
+					(color SeaShell),
+					(penWidth 1),
+					(penColor SlateGrey),
+					($behavior)),
+			(/ITL/scene/$addr (set txt $caption),
+					(yorigin 2),
+					(y $yloc),
+					(x $x),
+					(fontSize 11)));
+
+
+$button{name=sync1, addr=capt1, caption=1, x=-0.3,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/sync circ m1 syncFrame),  
+		msgOff=(/ITL/scene/sync circ m1 del)};
+
+$button{name=sync2, addr=capt2, caption=2, x=-0.1,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/sync circ m2 syncFrame),  
+		msgOff=(/ITL/scene/sync circ m2 del)};
+
+#$button{name=syncoff, addr=captr, caption=Reset, x=0.0,
+#		behavior=$push,
+#		msgOn=(/ITL/scene/sync circ) };
+
+$button{name=sync3, addr=capt3, caption=3, x=0.1,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/sync circ m3 syncFrame),  
+		msgOff=(/ITL/scene/sync circ m3 del)};
+
+$button{name=sync4, addr=capt4, caption=4, x=0.3,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/sync circ m4 syncFrame),  
+		msgOff=(/ITL/scene/sync circ m4 del)};
+
+
+__END__
+
+
+
+/ITL/scene/sync circ m1 syncFrame;
+/ITL/scene/sync circ m2 syncFrame;
+/ITL/scene/sync circ m3 syncFrame;
+/ITL/scene/sync circ m4 syncFrame;
+/ITL/scene/sync circ m* syncFrame;
+/ITL/scene/sync circ;
+
