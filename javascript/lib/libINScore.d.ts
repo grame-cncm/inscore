@@ -72,19 +72,8 @@ interface OLineInfo {
 	arrowSizeRight: number;
 }
 
-interface OTextInfo {
-    text:   string;
-	size:   number;
-	family: string;
-	weight: string;
-	style:  string;
-}
-
-interface OColor {
-    rgb:     string;
-    rgba:    string;
-	alpha:   number;
-}
+interface OTextInfo { text: string; size: number; family: string; weight: string; style: string; }
+interface OColor { rgb: string; rgba: string; alpha: number; }
 
 interface OPen {
 	penWidth:   number;
@@ -95,26 +84,11 @@ interface OPen {
 	alpha: number;
 }
 
-interface OBlur {
-	radius: number;
-	hint: number;
-}
-interface OColorize {
-	strength: number;
-	color: string;
-}
-interface OShadow {
-	xOffset: number;
-	yOffset: number;
-	color: string;
-	blur: number;
-}
-interface OEffect {
-	type: number;
-	blur: OBlur;
-	colorize: OColorize;
-	shadow: OShadow;
-}
+interface OBlur 	{ radius: number; hint: number; }
+interface OColorize { strength: number; color: string; }
+interface OShadow 	{ xOffset: number; yOffset: number; color: string; blur: number; }
+interface OEffect 	{ type: number; blur: OBlur; colorize: OColorize; shadow: OShadow; }
+
 interface OEvents {
 	watchMouseEnter  : boolean;
 	watchMouseLeave  : boolean;
@@ -162,20 +136,10 @@ interface OArc {
 	closed: boolean;
 }
 
-interface OScore {
-	code: string;
-	page: number;
-}
-
-interface ORadius {
-	x:  number;
-	y:  number;
-}
-
-interface ODate {
-	num:   number;
-	denum: number;
-}
+interface OMedia { playing: boolean; volume: number; rate:  number; mdate:  number; }
+interface OScore 	{ code: string; page: number; }
+interface ORadius 	{ x:  number; y:  number; }
+interface ODate 	{ num:   number; denum: number; }
 
 interface OPRollLimits {
 	start : ODate;
@@ -221,8 +185,10 @@ interface INScoreObject {
 	getGuidoInfos():   OScore;
 	getPianorollInfos():   OPianorollInfos;
 	getXMLInfos():     OScore;
+	getMediaInfos():   OMedia;
 	getSVGInfos():     string;
 
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
+	updateViewBoundingRect(x: number, y: number, w: number, h: number): void;
 }

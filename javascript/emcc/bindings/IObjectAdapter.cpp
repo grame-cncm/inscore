@@ -34,6 +34,9 @@
 #include "IEffect.h"
 #include "IGuidoCode.h"
 #include "IGuidoPianoRoll.h"
+#include "IGraphicBasedObject.h"
+#include "IMedia.h"
+
 
 #include "IMusicXMLCode.h"
 #include "ISVG.h"
@@ -75,6 +78,13 @@ void IObjectAdapter::_updateHeight (IPosition* pos, float h) {
 	bool modified= pos->modified();
 	pos->setHeight (h);
 	if (!modified) pos->cleanup();
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::updateViewBoundingRect(float x, float y, float w, float h) {
+	IGraphicBasedObject* gobj = dynamic_cast<IGraphicBasedObject*>((IObject*)fObject);
+	if (gobj)
+		gobj->setBoundingRect (x, y, w, h);
 }
 
 //--------------------------------------------------------------------------
@@ -423,6 +433,28 @@ JSPianorollInfos IObjectAdapter::getPianorollInfos() const
 	JSPianorollInfos infos;
 	if (!_getPianoroll (dynamic_cast<IGuidoPianoRoll*>((IObject*)fObject), infos))
 		cerr << "IObjectAdapter::getPianorollInfos: unexpected null object!" << endl;
+	return infos;
+}
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getMedia (const IMedia* obj, JSMediaInfos& infos)
+{
+	if (obj) {
+		infos.playing	= obj->playing();
+		infos.volume	= obj->volume();
+		infos.rate		= obj->rateModified()  ? obj->rate() : -1;
+		infos.mdate		= obj->vdateModified() ? obj->vDate() : -1;
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+JSMediaInfos IObjectAdapter::getMediaInfos() const
+{
+	JSMediaInfos infos;
+	if (!_getMedia(dynamic_cast<IMedia*>((IObject*)fObject), infos))
+		cerr << "IObjectAdapter::getMediaInfos: unexpected null object!" << endl;
 	return infos;
 }
 

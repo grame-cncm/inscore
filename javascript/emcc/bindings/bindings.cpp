@@ -57,6 +57,11 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("newData",  		&IObjectAdapter::newData)
 		.function("deleted",  		&IObjectAdapter::deleted)
+
+		.function("updateWidth", 	&IObjectAdapter::updateWidth)
+		.function("updateHeight", 	&IObjectAdapter::updateHeight)
+		.function("updateViewBoundingRect", &IObjectAdapter::updateViewBoundingRect)
+
 		.function("getMasters",  	&IObjectAdapter::getMasters, allow_raw_pointers())
 		.function("getOSCAddress",  &IObjectAdapter::getOSCAddress, allow_raw_pointers())
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
@@ -65,14 +70,12 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getFile",   		&IObjectAdapter::getFile, allow_raw_pointers())
 		.function("getRadius",   	&IObjectAdapter::getRadius, allow_raw_pointers())
 		.function("getArcInfos",   	&IObjectAdapter::getArcInfos, allow_raw_pointers())
-
-		.function("updateWidth", 	&IObjectAdapter::updateWidth)
-		.function("updateHeight", 	&IObjectAdapter::updateHeight)
 		.function("getPolygonInfos",&IObjectAdapter::getPolygonInfos)
 		.function("getCurveInfos",  &IObjectAdapter::getCurveInfos)
 		.function("getGuidoInfos",  &IObjectAdapter::getGuidoInfos)
 		.function("getPianorollInfos", &IObjectAdapter::getPianorollInfos)
 		.function("getXMLInfos",    &IObjectAdapter::getXMLInfos)
+		.function("getMediaInfos",  &IObjectAdapter::getMediaInfos)
 		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos);
 
 	register_vector<float>("vector<float>");

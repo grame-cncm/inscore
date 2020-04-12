@@ -146,12 +146,17 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("end",  		&JSPRollLimits::end)
 		.field("lowpitch",  &JSPRollLimits::lowpitch)
 		.field("highpitch", &JSPRollLimits::highpitch);
-
+	
 	value_object<JSPianorollInfos>("JSPianorollInfos")
 		.field("code",  	&JSPianorollInfos::code)
 		.field("keyboard",  &JSPianorollInfos::keyboard)
 		.field("autovoicecolor", &JSPianorollInfos::autovoicecolor)
 		.field("bars",  	&JSPianorollInfos::bars)
 		.field("limits",  	&JSPianorollInfos::limits);
-
+	
+	value_object<JSMediaInfos>("JSMediaInfos")
+		.field("playing",  	&JSMediaInfos::playing)
+		.field("volume",  &JSMediaInfos::volume)
+		.field("rate", &JSMediaInfos::rate)
+		.field("mdate",  	&JSMediaInfos::mdate);
 }

@@ -183,6 +183,13 @@ struct JSPianorollInfos {
 	JSPRollLimits limits;
 };
 
+struct JSMediaInfos {
+	bool	playing = false;
+	float	volume;
+	float 	rate;		// the requested media rate ( < 0 when no request)
+	int		mdate; 		// the requested media date ( < 0 when no request)
+};
+
 class IText;
 class ILine;
 class ICurve;
@@ -190,6 +197,7 @@ class IEffect;
 class IGuidoCode;
 class IGuidoPianoRoll;
 class IMusicXMLCode;
+class IMedia;
 
 //--------------------------------------------------------------------------
 /*! \brief the interface for iobjects
@@ -205,6 +213,7 @@ class inscore_export IObjectAdapter
 	
 	static void _updateWidth (IPosition* pos, float w);
 	static void _updateHeight (IPosition* pos, float h);
+
 	static bool _getPosition (const IPosition* obj, JSPosition& pos);
 	static bool _getSyncPosition (IObject* obj, const IObject* master, JSPosition& pos);
 	static bool _getColor (const IColor* obj, JSColor& color);
@@ -217,6 +226,7 @@ class inscore_export IObjectAdapter
 	static bool _getGuido  (const IGuidoCode* obj, JSScoreInfos& infos);
 	static bool _getXML    (const IMusicXMLCode* obj, JSScoreInfos& infos);
 	static bool _getPianoroll (const IGuidoPianoRoll* obj, JSPianorollInfos& infos);
+	static bool _getMedia (const IMedia* obj, JSMediaInfos& infos);
 
 	public:
 		typedef const std::string	jsString;
@@ -240,6 +250,7 @@ class inscore_export IObjectAdapter
 		JSScoreInfos  getGuidoInfos() const;
 		JSScoreInfos  getXMLInfos() const;
 		JSPianorollInfos getPianorollInfos() const;
+		JSMediaInfos getMediaInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
@@ -247,6 +258,7 @@ class inscore_export IObjectAdapter
 		std::string	getOSCAddress() const		{ return fObject->getOSCAddress(); }
 		void	updateWidth(float w)			{ _updateWidth (fObject, w); }
 		void	updateHeight(float h)			{ _updateHeight(fObject, h); }
+		void	updateViewBoundingRect(float x, float y, float w, float h);
 
 	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
 	void 			del(IObjectAdapter* obj) 	{ delete obj; }
