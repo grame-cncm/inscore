@@ -95,11 +95,14 @@ TFloatPoint IGraphicBasedObject::view2ItemPoint(const TLongPoint& point) const
 //GraphicSegment IGraphicBasedObject::getGraphicSegment( const IntPointSegment& segment, bool& mapOk ) const
 bool IGraphicBasedObject::getGraphicSegment( const IntPointSegment& segment, GraphicSegment& outSegment ) const
 {
+	if (!fBoundingRect.width() || !fBoundingRect.height())
+		return false;
+
 	const char* msg1 = "pixel mapping of object";
 	const char* msg2 = "refers to 'out of bounds' position:";
 	TLongPoint pa (segment.xinterval().first(),  segment.yinterval().first());
 	TLongPoint pb (segment.xinterval().second(), segment.yinterval().second());
-	
+
 	if ( (pa.y() >= fBoundingRect.height()) || (pa.x() >= fBoundingRect.width()) ) {
 		ITLErr << msg1 << getOSCAddress() << msg2 << "[" << pa.x() << ";" << pa.y() << "]" << ITLEndl;
 		return false;
@@ -114,48 +117,14 @@ bool IGraphicBasedObject::getGraphicSegment( const IntPointSegment& segment, Gra
 	return true;
 }
 
-// VImageView implementation
-//{
-//	TLongPoint intPointA (intPointSegment.xinterval().first(), intPointSegment.yinterval().first());
-//	TLongPoint intPointB (intPointSegment.xinterval().second(), intPointSegment.yinterval().second());
-//
-//	TLongPoint errPoint;
-//	mapOk=true;
-//	if ( (intPointA.y() >= fImageItem->image().height()) || (intPointA.x() >= fImageItem->image().width()) )
-//	{
-//		errPoint = intPointA;
-//		mapOk = false;
-//	}
-//	if ( (intPointB.y() >= fImageItem->image().height()) || (intPointB.x() > fImageItem->image().width()) )
-//	{
-//		errPoint = intPointB;
-//		mapOk = false;
-//	}
-//	if ( !mapOk )
-//	{
-//		const char* msg1 = "pixel mapping of object";
-//		const char* msg2 = "refers to 'out of bounds' position:";
-//		ITLErr << msg1 << object->getOSCAddress() << msg2 << "[" << errPoint.x() << ";" << errPoint.y() << "]" << ITLEndl;
-//		return GraphicSegment();
-//	}
-//	TFloatPoint startPoint = qGraphicsItem2IObject( longPointToQPoint(intPointA) , fImageItem->boundingRect() );
-//	TFloatPoint endPoint = qGraphicsItem2IObject( longPointToQPoint(intPointB) , fImageItem->boundingRect() );
-//
-//	return GraphicSegment( startPoint.x(), startPoint.y(), endPoint.x(), endPoint.y() );
-//}
-
 //-------------------------------------------------------------------------
 void IGraphicBasedObject::updateLocalMapping ()
 {
-	// Update mapping
-	TLocalMapping<long,2>::const_iterator i = localMappings()->namedMappings().begin();
-	
-	for ( ; i != localMappings()->namedMappings().end() ; i++ )
-	{
+	for ( auto named: localMappings()->namedMappings() ) {
 		SGraphic2IntPointMapping g2l_mapping = TMapping<float,2, long,2>::create();	// Build a Graphic -> local mapping.
 		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment( -1 , -1 , 1 , 1 ) );
 
-		const SIntPoint2RelativeTimeMapping & l2t_mapping = i->second;	// Get the 'local -> time' mapping.
+		const SIntPoint2RelativeTimeMapping & l2t_mapping = named.second;	// Get the 'local -> time' mapping.
 		TRelation<long,2, rational,1>::const_iterator iter = l2t_mapping->direct().begin();
 		while (iter != l2t_mapping->direct().end()) {					// Parse each 'local' element of the 'local -> time' mapping.
 			bool ok;
@@ -166,41 +135,11 @@ void IGraphicBasedObject::updateLocalMapping ()
 			}
 			iter++;
 		}
-		localMappings()->setMapping( i->first, l2t_mapping );
-		updateMappings<long,2> (i->first , g2l_mapping , l2t_mapping);
+		localMappings()->setMapping( named.first, l2t_mapping );
+		updateMappings<long,2> (named.first , g2l_mapping , l2t_mapping);
 	}
 	TDefaultLocalMapping::buildDefaultMapping( this );
 }
-
-// VIntPointObjectView implementation
-//{
-//	// Update mapping
-//	TLocalMapping<long,2>::const_iterator i = localMappings()->namedMappings().begin();
-//
-//	for ( ; i != localMappings()->namedMappings().end() ; i++ )
-//	{
-//		SGraphic2IntPointMapping g2l_mapping = TMapping<float,2, long,2>::create();	// Build a Graphic -> local mapping.
-//		SGraphicSegmentation graphicSegmentation = GraphicSegmentation::create( GraphicSegment( -1 , -1 , 1 , 1 ) );
-//
-//		const SIntPoint2RelativeTimeMapping & l2t_mapping = i->second;	// Get the 'local -> time' mapping.
-//		TRelation<long,2, rational,1>::const_iterator iter = l2t_mapping->direct().begin();
-//		while (iter != l2t_mapping->direct().end()) {	// Parse each 'local' element of the 'local -> time' mapping.
-//			bool ok;
-//			GraphicSegment gs = getGraphicSegment( iter->first , object , ok );	// Asks the view object to find the GraphicSegment corresponding to the
-//																				// local segment.
-//			if ( ok )
-//			{
-//				g2l_mapping->add ( gs , iter->first);	// Put the 'graphic -> local' relation into the mapping.
-//				graphicSegmentation->add( gs );
-//			}
-//			iter++;
-//		}
-//		localMappings()->setMapping( i->first, l2t_mapping );
-//		VGraphicsItemView::setMapping<long,2>( object , i->first , g2l_mapping , l2t_mapping );
-//	}
-//	TDefaultLocalMapping::buildDefaultMapping( object );
-//}
-
 
 //--------------------------------------------------------------------------
 void IGraphicBasedObject::accept (Updater* u)

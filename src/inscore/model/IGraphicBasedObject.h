@@ -64,6 +64,7 @@ class IGraphicBasedObject : public IObject
 		
 		void 	updateLocalMapping ();
 		void 	setBoundingRect(long x, long y, long w, long h);
+		const TLongRect getBoundingRect() const { return fBoundingRect; }
 
 		virtual void		accept (Updater*);
 
