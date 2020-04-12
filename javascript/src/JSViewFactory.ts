@@ -15,7 +15,10 @@
 ///<reference path="JSSVGView.ts"/>
 ///<reference path="JSPianorollView.ts"/>
 ///<reference path="JSLayerView.ts"/>
+///<reference path="JSSVGfView.ts"/>
+///<reference path="JSVideoView.ts"/>
 ///<reference path="TSyncManager.ts"/>
+
 
 
 //----------------------------------------------------------------------------
@@ -52,6 +55,8 @@ class JSViewFactory {
 			case "musicxml":  view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
 			case "svg":       view = new JSSVGView(parent); break;
 			case "layer":	  view = new JSLayerView(parent); break;
+			case "svgf": 	  view = new JSSVGfView(parent); break;
+			case "video":	  view = new JSVideoView(parent); break;
 
 			case "audio":
 			case "fileWatcher":
@@ -65,7 +70,6 @@ class JSViewFactory {
 			case "rshape":
 			case "sig":
 			case "signode":
-			case "video":
 console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 				break; 
 
@@ -73,7 +77,6 @@ console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 			case "pianorollf":
 			case "htmlf":
 			case "musicxmlf":
-			case "svgf":
 			case "txtf":
 		console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 				break; 

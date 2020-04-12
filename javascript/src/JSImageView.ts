@@ -17,7 +17,7 @@ class JSImageView extends JSAutoSize
         this.fImage.src  = obj.getFile();
 		return super.updateSpecial (obj, objid );
 	}
-
+    
 	setShadow(elt: HTMLElement, val: OShadow): void {
 		this.fImage.style.boxShadow = `${val.xOffset}px ${val.yOffset}px ${val.blur}px ${val.color}`
 	}

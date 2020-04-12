@@ -56,7 +56,9 @@ abstract class JSObjectView {
 	updateSpecific(obj: INScoreObject)	: void { }
 	getRatio()	: number { 
 		let div = this.getElement();
-		return Math.min(div.clientWidth, div.clientHeight) / Math.min(div.parentElement.clientWidth, div.parentElement.clientHeight); 
+		if (div && div.parentElement)
+			return Math.min(div.clientWidth, div.clientHeight) / Math.min(div.parentElement.clientWidth, div.parentElement.clientHeight);
+		return 1;
 	}
 
 	//---------------------------------------------------------------------
@@ -253,6 +255,7 @@ abstract class JSObjectView {
 		let div = this.getElement();
 		obj.updateWidth  (this.scene2RelativeWidth  (div.offsetWidth)); 
 		obj.updateHeight (this.scene2RelativeHeight (div.offsetHeight)); 
+		obj.updateViewBoundingRect (div.clientLeft, div.clientTop, div.clientWidth, div.clientHeight),
 		INScore.objects().del (obj);		
 	}
 
@@ -288,10 +291,10 @@ abstract class JSObjectView {
  
 	//---------------------------------------------------------------------
 	// Main update method
-	// id  : the view id
+	// id  : the view id 
 	// oid : the IObject id (actually a pointer stored as number)
 	// forcepos : used to enforce updatePosition
-	static updateObjectView (id : number, oid : number, forcepos=false)	: void { 
+	static updateObjectView (id : number, oid : number, forcepos: boolean)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {
 			view.setIObject (oid);
