@@ -34,6 +34,26 @@ namespace inscore
 
 static const float kNoWhere = -9999999.f;
 
+
+//--------------------------------------------------------------------------
+static TFloatPoint	scalePos (const IObject* obj, const TFloatPoint& pos)
+{
+	float x = pos.fX;
+	float y = pos.fY;
+	float w = obj->getWidth();
+	float h = obj->getHeight();
+	if ((w < 0.000001) || (h < 0.00001)) w = h = 0;   // this is only for lines
+	if (h && w) {
+		if (w > h) 		x *= w / h;
+		else if (w < h) y *= h / w;
+	}
+	else {
+		if (!w) x = 0;
+		if (!h) y = 0;
+	}
+	return TFloatPoint (x, y);
+}
+
 //--------------------------------------------------------------------------
 static TFloatPoint	date2FramePosition (const IObject* obj, const libmapping::rational& date)
 {
@@ -41,18 +61,7 @@ static TFloatPoint	date2FramePosition (const IObject* obj, const libmapping::rat
 	if (obj->date2FramePoint(date, pos)) {
 		pos.fX = (pos.fX * 2) - 1;
 		pos.fY = (pos.fY * 2) - 1;
-		float w = obj->getWidth();
-		float h = obj->getHeight();
-		if (w == 0) pos.fX = 0;
-		if (h == 0) pos.fY = 0;
-//cerr << "date2FramePosition " << obj->name() << " "  << date  << " -> pos: " << pos << " dims: " << w << " " << h << endl;
-		if ((w < 0.000001) || (h < 0.00001)) w = h = 0;   // this is only for lines
-		if (h && w) {
-			if (w > h) pos.fX *= w / h;
-			else if (w < h) pos.fY *= h / w;
-		}
-//cerr << "date2FramePosition out: " << pos << endl;
-		return pos;
+		return scalePos(obj, pos);
 	}
 	return TFloatPoint (kNoWhere, kNoWhere);
 }
@@ -62,23 +71,10 @@ static TFloatPoint date2MasterPosition (const SMaster& master, const IObject* sl
 {
 	TFloatPoint pos;
 
-	std::string mapName = master->getMaster()->name() + ":" + master->getMasterMapName();
-//	double width = relative2SceneWidth(o->getSyncWidth(mapName), item);
-//	double height = relative2SceneHeight(o->getSyncHeight(mapName), item);
-
+	const IObject* mobj = master->getMaster();
+	std::string mapName = mobj->name() + ":" + master->getMasterMapName();
 	pos = slave->getSyncPos(mapName);
-cerr << "date2MasterPosition -> " << pos << endl;
-
-	return pos;
-
-//	item->setRect(QRectF(0,0,width,height));
-//	item->setPos(x, y);
-//	item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
-//	updateTransform (o, item);
-//	QRectF bbrect = item->boundingRect();
-//	double xo = bbrect.width() / 2;
-//	double yo = bbrect.height() / 2;
-//	item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
+	return scalePos(mobj, pos);
 }
 
 //--------------------------------------------------------------------------
