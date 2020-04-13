@@ -250,12 +250,12 @@ abstract class JSObjectView {
 
 	//---------------------------------------------------------------------
 	// called to update object size on model side
-	updateObjectSize (objid : number) : void {
+	updateObjectSize (objid : number, w: number, h: number) : void {
 		let obj = INScore.objects().create(objid);
 		let div = this.getElement();
-		obj.updateWidth  (this.scene2RelativeWidth  (div.offsetWidth)); 
-		obj.updateHeight (this.scene2RelativeHeight (div.offsetHeight)); 
-		obj.updateViewBoundingRect (div.clientLeft, div.clientTop, div.clientWidth, div.clientHeight),
+		obj.updateWidth  (this.scene2RelativeWidth  (w)); 
+		obj.updateHeight (this.scene2RelativeHeight (h)); 
+		obj.updateViewBoundingRect (div.clientLeft, div.clientTop, w, h),
 		INScore.objects().del (obj);		
 	}
 

@@ -12,7 +12,7 @@ class JSSceneView extends JSObjectView {
 		let absolute = style.position == "absolute";
 		super(div, null, absolute);
 		this.fAbsolutePos = absolute;
-		this.updateObjectSize (objid);
+		this.updateObjectSize (objid, div.clientWidth, div.clientHeight);
 		div.style.filter = `blur(0px)`;
     }
 	clone (parent: JSObjectView) : JSObjectView { return null; }
