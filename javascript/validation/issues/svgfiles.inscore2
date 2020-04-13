@@ -1,0 +1,52 @@
+/ITL/scene/* del;
+
+/ITL/scene/title (set txt "Size issue with svg files"),
+				 (fontSize 18),
+				 (y -0.7),
+				 (x -0.7);
+
+/ITL/scene/svg1	(set svgf "imgs/butterfly.svg"),
+				(x -0.5),
+				(z 1);
+/ITL/scene/svg2	(set svgf "imgs/tiger.svg"),
+				(x 0.5);
+
+
+w = 0.06;
+radius = 4;
+yloc = 0.8;
+
+onoff = (watch mouseDown (
+			(/ITL/scene/$name push),
+			(/ITL/scene/$name color (? $invert, SeaShell, SpringGreen)),
+			($msgOn),
+			(/ITL/scene/$name watch mouseDown (
+				(/ITL/scene/$name color (? $invert, SpringGreen, SeaShell)),
+				($msgOff),
+				(/ITL/scene/$name pop)
+			))));
+
+button = ((/ITL/scene/$name (set rect $w $w),
+					(radius $radius $radius),
+					(y $yloc),
+					(x $x),
+					(color (? $invert, SpringGreen, SeaShell)),
+					(penWidth 1),
+					(penColor SlateGrey),
+					($behavior)),
+			(/ITL/scene/$addr (set txt $caption),
+					(yorigin 2.5),
+					(y $yloc),
+					(x $x),
+					(fontSize 11)));
+
+
+$button{name=frameCtrl, addr=capt1, caption=Frame, x=0, invert=0,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/svg* penWidth 1),  
+		msgOff=(/ITL/scene/svg* penWidth 0)};
+
+
+__END__
+
+/ITL parse v2;
