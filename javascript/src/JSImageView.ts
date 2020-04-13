@@ -16,6 +16,11 @@ class JSImageView extends JSAutoSize
         this.getElement().className = "inscore-img";
     }    
     clone (parent: JSObjectView) : JSObjectView { return new JSImageView(parent); }
+	toString() : string			{ return "JSImageView"; }
+
+    getAutoSize() : Point {
+        return { x: this.fImage.clientWidth, y: this.fImage.clientHeight };
+    }
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
         this.fImage.src  = obj.getFile();
