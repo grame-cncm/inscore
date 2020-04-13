@@ -6,8 +6,12 @@ class JSImageView extends JSAutoSize
     fImage: HTMLImageElement;
 
     constructor(parent: JSObjectView) {
-		let img = document.createElement('img');
-        super(img , parent); 
+		let div = document.createElement('div');
+        let img = document.createElement('img');
+        // an additional div to cope with synchronisation issue:
+        // broswers don't support div in image div
+        div.appendChild (img);
+        super(div, parent); 
         this.fImage = img;
         this.getElement().className = "inscore-img";
     }    
