@@ -99,7 +99,7 @@ void HTMLLocalMapUpdater::updateTo (ILine* o)			{ o->updateGraphic2GraphicMappin
 void HTMLLocalMapUpdater::updateTo (IPolygon* o)		{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IRect* o)			{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (ISVG* o) 			{ o->updateLocalMapping(); }
-void HTMLLocalMapUpdater::updateTo (ISVGFile* svg) {}
+void HTMLLocalMapUpdater::updateTo (ISVGFile* o) 		{ o->updateLocalMapping(); }
 void HTMLLocalMapUpdater::updateTo (IText* text) {}
 void HTMLLocalMapUpdater::updateTo (IVideo* o) {}
 void HTMLLocalMapUpdater::updateTo (IGrid* o) {}
