@@ -52,7 +52,6 @@ class TSyncManager implements GraphicSyncManager {
 		let updated = 0;
 		this.fSync.forEach( (m: TMaster, index: number) : void => {
 			if (m) {
-console.log (this + " " + m.slave() + " updateView");
 				m.slave().updateView (obj, oid, m.master().getIObject(), false, true);
 				updated++;
 			}
