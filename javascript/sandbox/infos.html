@@ -14,6 +14,9 @@
 			border: 3px red solid; 
 			transform: scale(1.5) rotateZ(10deg);
 		}
+	.abs2 {  position: absolute; 
+			top: 650px; left: 50px; 
+		}
 	img { 
 			width: 300px; 
 			border: 3px red solid; 
@@ -92,7 +95,16 @@ Hello boy!
 <pre id="info">
 	<script> infos(); </script>
 </pre>
-<img src=img.png>
+
+<div class=abs2>
+	<img src=img.png>
+	<div>
+	<svg style="position: absolute; top: 50px; left: 50px">
+		<rect width=50px height=50px> </rect>
+	</svg>
+	</div>
+</div>
+
 </body>
 
 </html>
