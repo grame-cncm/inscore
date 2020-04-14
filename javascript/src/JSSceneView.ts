@@ -50,7 +50,6 @@ class JSSceneView extends JSObjectView {
 		}
 		else {
 			elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
-			// this.updateDimensions (pos);
 			elt.style.transform = this.getTransform (pos);
 		}
 	}
