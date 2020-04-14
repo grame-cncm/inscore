@@ -135,8 +135,9 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	
 	value_object<JSScoreInfos>("JSScoreInfos")
 		.field("code",  &JSScoreInfos::code)
-		.field("page",  &JSScoreInfos::page);
-	
+		.field("page",  &JSScoreInfos::page)
+		.field("mappings",  &JSScoreInfos::mappings);
+
 	value_object<JSDate>("JSDate")
 		.field("num",  	&JSDate::num)
 		.field("denum", &JSDate::denum);

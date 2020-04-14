@@ -31,6 +31,7 @@
 #include "GmnEvaluator.h"
 #include "IExpressionHandler.h"
 #include "Events.h"
+#include "TLocalMapping.h"
 
 using namespace std;
 using namespace libmapping;
@@ -312,14 +313,25 @@ MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
 	else
 		return MsgHandler::kBadParameters;
 
-
-
 	if(!processed || r == getGMN())
 		return MsgHandler::kProcessedNoChange;
 
 	setGMN(r);
 	newData(true);
 	return MsgHandler::kProcessed;
+}
+
+//-------------------------------------------------------------------------
+void IGuidoCode::updateScoreMapping ()
+{
+	// Build the Rolled->Unrolled time mapping
+//	SRelativeTime2RelativeTimeMapping l2t_mapping = TMapping<rational,1, rational,1>::create();	// Create the 'rolled -> unrolled' mapping.
+//	timeMapUpdate (l2t_mapping);
+
+	// Build the time->graphic mapping.
+//	graphMapUpdate (guidoCode, l2t_mapping);
+
+	TDefaultLocalMapping::buildDefaultMapping (this);
 }
 
 }

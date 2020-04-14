@@ -48,17 +48,12 @@ struct JSPen {
 };
 
 struct JSPosition {
-	float x;
-	float y;
-	float width;
-	float height;
-	float xorigin;
-	float yorigin;
+	float x; float y;
+	float width; float height;
+	float xorigin; float yorigin;
 	float scale;
 	bool  hidden;
-	float xangle;
-	float yangle;
-	float zangle;
+	float xangle; float yangle; float zangle;
 	float zorder;
 	JSPen pen;
 };
@@ -69,28 +64,10 @@ enum TBrushStyle 	{ kDense1, kDense2, kDense3, kDense4, kDense5, kDense6, kDense
 enum TEffect 	{ kNone, kBlur, kColorize, kShadow };
 enum TBlurhint	{ kPerformance, kQuality, kAnimation };
 
-struct JSColor {
-	std::string rgb;
-	std::string rgba;
-	float alpha;
-};
-
-struct JSBlur {
-	int 	radius = 0;
-	int		hint = TBlurhint::kPerformance;
-};
-
-struct JSColorize {
-	float 		strength = 1.0;
-	std::string	color;
-};
-
-struct JSShadow {
-	int 		xOffset = 10;
-	int 		yOffset = 10;
-	std::string	color;
-	int			blur = 8;
-};
+struct JSBlur { int radius = 0; int	hint = TBlurhint::kPerformance; };
+struct JSColorize { float strength = 1.0; std::string	color; };
+struct JSColor { std::string rgb; std::string rgba; float alpha; };
+struct JSShadow { int xOffset = 10; int yOffset = 10; std::string	color; int	blur = 8; };
 
 struct JSEffect {
 	int 		type = TEffect::kNone;
@@ -131,14 +108,10 @@ struct JSTextInfos {
 };
 
 struct JSLineInfos {
-	float 	x1;
-	float 	y1;
-	float 	x2;
-	float 	y2;
-	float 	x;
-	float 	y;
-	float 	angle;
-	float 	width;
+	float 	x1; float 	y1;
+	float 	x2; float 	y2;
+	float 	x; float 	y;
+	float 	angle; float width;
 	int		arrowLeft;
 	int		arrowRight;
 	float	arrowLeftSize;
@@ -153,19 +126,13 @@ struct JSArcInfos {
 	bool	closed = false;
 };
 
-struct JSRadius {
-	float 	x = 0;
-	float 	y = 0;
-};
+struct JSRadius { float x = 0; float y = 0; };
+struct JSDate { int	num = 0; int denum = 0; };
 
 struct JSScoreInfos {
 	std::string code;
-	int    page;
-};
-
-struct JSDate {
-	int	num   = 0;
-	int	denum = 0;
+	int page;
+	std::vector<std::string> mappings;
 };
 
 struct JSPRollLimits {
@@ -259,6 +226,8 @@ class inscore_export IObjectAdapter
 		void	updateWidth(float w)			{ _updateWidth (fObject, w); }
 		void	updateHeight(float h)			{ _updateHeight(fObject, h); }
 		void	updateViewBoundingRect(float x, float y, float w, float h);
+		void	updateTime2TimeMap (std::string jsonmap);
+		void	updateGraphic2TimeMap (std::string name, std::string jsonmap);
 
 	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
 	void 			del(IObjectAdapter* obj) 	{ delete obj; }

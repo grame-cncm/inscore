@@ -57,6 +57,11 @@ interface INScoreJSGlue {
 
 //------------------------------------------------------------------------
 // INScore objects interface 
+
+interface FloatVector	{ size(): number; get(i: number) : number; }
+interface StringVector	{ size(): number; get(i: number) : string; }
+interface IntVector 	{ size(): number; get(i: number) : number; }
+
 interface OLineInfo {
 	x1: number;
 	y1: number;
@@ -137,7 +142,7 @@ interface OArc {
 }
 
 interface OMedia { playing: boolean; volume: number; rate:  number; mdate:  number; }
-interface OScore 	{ code: string; page: number; }
+interface OScore 	{ code: string; page: number; mappings: StringVector }
 interface ORadius 	{ x:  number; y:  number; }
 interface ODate 	{ num:   number; denum: number; }
 
@@ -154,16 +159,6 @@ interface OPianorollInfos {
 	autovoicecolor	: boolean;
 	bars			: boolean;
 	limits			: OPRollLimits;
-}
-
-interface FloatVector {
-	size(): number;
-	get(i: number) : number;
-}
-
-interface IntVector {
-	size(): number;
-	get(i: number) : number;
 }
 
 interface INScoreObject {
@@ -191,4 +186,6 @@ interface INScoreObject {
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 	updateViewBoundingRect(x: number, y: number, w: number, h: number): void;
+	updateGraphic2TimeMap(name: string, map: string): void;		// should only be called by guido score, otherwise ignored
+	updateTime2TimeMap(map: string): void;						// should only be called by guido score, otherwise ignored
 }

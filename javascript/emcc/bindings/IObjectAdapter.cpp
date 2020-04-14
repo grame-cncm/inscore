@@ -23,6 +23,7 @@
 */
 
 #include <algorithm>
+#include <sstream>
 
 #include "IObjectAdapter.h"
 #include "IObjectSync.h"
@@ -42,8 +43,11 @@
 #include "ISVG.h"
 #include "ISync.h"
 #include "HTMLObjectView.h"
+#include "MapBuilder.h"
+
 
 using namespace std;
+using namespace libmapping;
 
 namespace inscore
 {
@@ -85,6 +89,28 @@ void IObjectAdapter::updateViewBoundingRect(float x, float y, float w, float h) 
 	IGraphicBasedObject* gobj = dynamic_cast<IGraphicBasedObject*>((IObject*)fObject);
 	if (gobj)
 		gobj->setBoundingRect (x, y, w, h);
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::updateTime2TimeMap (std::string jsonmap)
+{
+	IGuidoCode* obj = dynamic_cast<IGuidoCode*>((IObject*)fObject);
+	if (obj) {
+		MapBuilder mb;
+		mb.updateTime2TimeMap (obj, jsonmap);
+	}
+	else cerr << "unexpected updateTime2TimeMap received by: " << fObject->getOSCAddress() << endl;
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::updateGraphic2TimeMap (string name, string jsonmap)
+{
+	IGuidoCode* obj = dynamic_cast<IGuidoCode*>((IObject*)fObject);
+	if (obj && jsonmap.size()) {
+		MapBuilder mb;
+		mb.updateGraphic2TimeMap (obj, name, jsonmap);
+	}
+	else cerr << "unexpected updateGraphic2TimeMap received by: " << fObject->getOSCAddress() << endl;
 }
 
 //--------------------------------------------------------------------------
@@ -388,6 +414,19 @@ bool IObjectAdapter::_getGuido  (const IGuidoCode* obj, JSScoreInfos& infos)
 	if (obj) {
 		infos.code 	= obj->getGMN();
 		infos.page 	= obj->getPage();
+		infos.mappings = obj->requestedMappings();
+		return true;
+	}
+	else return false;
+}
+
+//--------------------------------------------------------------------------
+bool IObjectAdapter::_getXML (const IMusicXMLCode* obj, JSScoreInfos& infos)
+{
+	if (obj) {
+		infos.code 	= obj->getMusicXML();
+		infos.page 	= obj->getPage();
+		infos.mappings = obj->requestedMappings();
 		return true;
 	}
 	else return false;
@@ -459,17 +498,6 @@ JSMediaInfos IObjectAdapter::getMediaInfos() const
 }
 
 //--------------------------------------------------------------------------
-bool IObjectAdapter::_getXML (const IMusicXMLCode* obj, JSScoreInfos& infos)
-{
-	if (obj) {
-		infos.code 	= obj->getMusicXML();
-		infos.page 	= obj->getPage();
-		return true;
-	}
-	else return false;
-}
-
-//--------------------------------------------------------------------------
 std::string IObjectAdapter::getSVGInfos () const
 {
 	const ISVG* obj = dynamic_cast<ISVG*>((IObject*)fObject);
@@ -497,7 +525,6 @@ std::vector<float> IObjectAdapter::getCurveInfos() const
 		cerr << "IObjectAdapter::getCurveInfos: unexpected null object!" << endl;
 	return infos;
 }
-
 
 //--------------------------------------------------------------------------
 JSUpdateInfos IObjectAdapter::getUpdateInfos (int masterId) const

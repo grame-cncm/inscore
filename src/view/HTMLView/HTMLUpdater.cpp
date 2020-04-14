@@ -90,7 +90,7 @@ void HTMLLocalMapUpdater::updateTo (IAudio* o)			{ o->updateGraphic2GraphicMappi
 void HTMLLocalMapUpdater::updateTo (ICurve* o)			{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IEllipse* o)		{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IGraphicSignal* graph)		{}
-void HTMLLocalMapUpdater::updateTo (IGuidoCode* guidoCode)		{}
+void HTMLLocalMapUpdater::updateTo (IGuidoCode* o)		{ o->updateScoreMapping(); }
 void HTMLLocalMapUpdater::updateTo (IGuidoPianoRoll* guidoCode)	{}
 void HTMLLocalMapUpdater::updateTo (IGuidoPianoRollStream* guidoCode) {}
 void HTMLLocalMapUpdater::updateTo (IHtml* text)		{ }

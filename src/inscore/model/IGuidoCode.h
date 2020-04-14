@@ -113,6 +113,7 @@ class IGuidoCode : public IObject
 		virtual std::vector<int> getSystemsCount() const;
 
 		void	setPageCount(int count);
+		void 	updateScoreMapping ();
 
 
 	protected:

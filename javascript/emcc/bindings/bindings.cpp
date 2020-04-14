@@ -32,6 +32,7 @@
 #include "bindings.h"
 
 using namespace emscripten;
+using namespace std;
 using namespace inscore;
 
 /*
@@ -61,6 +62,8 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
 		.function("updateHeight", 	&IObjectAdapter::updateHeight)
 		.function("updateViewBoundingRect", &IObjectAdapter::updateViewBoundingRect)
+		.function("updateTime2TimeMap", 	&IObjectAdapter::updateTime2TimeMap)
+		.function("updateGraphic2TimeMap",	&IObjectAdapter::updateGraphic2TimeMap)
 
 		.function("getMasters",  	&IObjectAdapter::getMasters, allow_raw_pointers())
 		.function("getOSCAddress",  &IObjectAdapter::getOSCAddress, allow_raw_pointers())
@@ -78,8 +81,9 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getMediaInfos",  &IObjectAdapter::getMediaInfos)
 		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos);
 
-	register_vector<float>("vector<float>");
-	register_vector<int>("vector<int>");
+	register_vector<float>	("vector<float>");
+	register_vector<int>	("vector<int>");
+	register_vector<string> ("vector<string>");
 
 
 	// Binding C++ class adapter for INScore
