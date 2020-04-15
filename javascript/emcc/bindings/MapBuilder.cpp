@@ -24,6 +24,7 @@
 
 #include <iostream>
 
+#include "IGuidoCode.h"
 #include "MapBuilder.h"
 
 
@@ -35,7 +36,26 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-bool MapBuilder::jsonTimeInterval2inscoreTimeInterval (json j, RationalInterval& interval)
+bool MapBuilder::jsonGraphicSegment2inscoreGraphicSegment (json j, GraphicSegment& segment, float width, float height)
+{
+	float top, left, right, bottom;
+	if (j.size() == 4) {
+		for (auto& el : j.items()) {
+			float val = el.value();
+			if (el.key() == "left") 		left 	= 2 * val / width - 1;
+			else if (el.key() == "top") 	top 	= 2 * val / height - 1;
+			else if (el.key() == "right")	right 	= 2 * val / width - 1;
+			else if (el.key() == "bottom")	bottom	= 2 * val / height - 1;
+			else return false;
+		}
+	}
+	else return false;
+	segment = GraphicSegment (FloatInterval(left, right), FloatInterval(top, bottom));
+	return true;
+}
+
+//--------------------------------------------------------------------------
+bool MapBuilder::jsonTimeInterval2inscoreTimeInterval (json j, RelativeTimeSegment& segment)
 {
 	rational start;
 	rational end;
@@ -56,15 +76,15 @@ bool MapBuilder::jsonTimeInterval2inscoreTimeInterval (json j, RationalInterval&
 		}
 	}
 	else return false;
-	interval = RationalInterval (start, end);
+	segment = RelativeTimeSegment (start, end);
 	return true;
 }
 
 //--------------------------------------------------------------------------
-bool MapBuilder::getTime2TimeRelation (json j, RelativeTime2RelativeTimeRelation& rel)
+bool MapBuilder::getTime2TimeRelation (json j, SRelativeTime2RelativeTimeMapping& map)
 {
-	RationalInterval from;
-	RationalInterval to;
+	RelativeTimeSegment from;
+	RelativeTimeSegment to;
 	if (j.size() == 2) {
 		for (auto& el : j.items()) {
 			if (el.key() == "score") {
@@ -77,36 +97,66 @@ bool MapBuilder::getTime2TimeRelation (json j, RelativeTime2RelativeTimeRelation
 		}
 	}
 	else return false;
-	rel.add (from, to);
+	map->add (from, to);
 	return true;
 }
 
+
 //--------------------------------------------------------------------------
-bool MapBuilder::updateTime2TimeMap (IGuidoCode* obj, std::string jsonmap)
+bool MapBuilder::updateTime2TimeMap (IGuidoCode* obj, const string& jsonmap)
 {
 	if (jsonmap.size()) {
 		stringstream sstr (jsonmap);
         json j1 = json::parse(sstr);
-		RelativeTime2RelativeTimeRelation relation;
+		SRelativeTime2RelativeTimeMapping mapping = RelativeTime2RelativeTimeMapping::create();
 		for (auto elt: j1) {
-			if (!getTime2TimeRelation (elt, relation) ) {
+			if (!getTime2TimeRelation (elt, mapping) ) {
 				cerr << "unexpected json element: " << elt << endl;
 				return false;
 			}
 		}
-//cout << "IObjectAdapter::updateTime2TimeMap: " << relation.size() << "\n" << relation << endl;
+//cout << "IObjectAdapter::updateTime2TimeMap: " << mapping->direct().size() << "\n" << mapping->direct() << endl;
+		obj->setTime2TimeMap (mapping);
 	}
 	return true;
 }
 
 //--------------------------------------------------------------------------
-bool MapBuilder::updateGraphic2TimeMap (IGuidoCode* obj, string name, string jsonmap)
+bool MapBuilder::getGraphic2TimeRelation (json j, SRelativeTime2GraphicMapping& map, float width, float height)
+{
+	GraphicSegment graphic;
+	RelativeTimeSegment time;
+	if (j.size() == 2) {
+		for (auto& el : j.items()) {
+			if (el.key() == "graph") {
+				if (!jsonGraphicSegment2inscoreGraphicSegment(el.value(), graphic, width, height) ) return false;
+			}
+			else if (el.key() == "time") {
+				if (!jsonTimeInterval2inscoreTimeInterval(el.value(), time) ) return false;
+			}
+			else return false;
+		}
+	}
+	else return false;
+	map->add (time, graphic);
+	return true;
+}
+
+//--------------------------------------------------------------------------
+bool MapBuilder::updateGraphic2TimeMap (IGuidoCode* obj, const string& name, const string& jsonmap, float width, float height)
 {
 	if (jsonmap.size()) {
 		stringstream sstr (jsonmap);
 		json j1 = json::parse(sstr);
-		
-		cerr << "MapBuilder::updateGraphic2TimeMap: " << name << " -> " << j1.size() << endl;
+		SRelativeTime2GraphicMapping mapping = RelativeTime2GraphicMapping::create();
+		for (auto elt: j1) {
+			if (!getGraphic2TimeRelation (elt, mapping, width, height) ) {
+				cerr << "unexpected json element: " << elt << endl;
+				return false;
+			}
+		}
+//cout << "MapBuilder::updateGraphic2TimeMap: " << mapping->direct().size() << "\n" << mapping->direct() << endl;
+		obj->setTime2GraphicMap (name, mapping);
 	}
 	return true;
 }

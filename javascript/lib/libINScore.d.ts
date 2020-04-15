@@ -186,6 +186,7 @@ interface INScoreObject {
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 	updateViewBoundingRect(x: number, y: number, w: number, h: number): void;
-	updateGraphic2TimeMap(name: string, map: string): void;		// should only be called by guido score, otherwise ignored
-	updateTime2TimeMap(map: string): void;						// should only be called by guido score, otherwise ignored
+	// next methods should only be called by guido score, otherwise ignored
+	updateGraphic2TimeMap(name: string, map: string, width: number, height: number): void;
+	updateTime2TimeMap(map: string): void;
 }

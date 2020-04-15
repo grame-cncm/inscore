@@ -103,12 +103,12 @@ void IObjectAdapter::updateTime2TimeMap (std::string jsonmap)
 }
 
 //--------------------------------------------------------------------------
-void IObjectAdapter::updateGraphic2TimeMap (string name, string jsonmap)
+void IObjectAdapter::updateGraphic2TimeMap (string name, string jsonmap, float width, float height)
 {
 	IGuidoCode* obj = dynamic_cast<IGuidoCode*>((IObject*)fObject);
 	if (obj && jsonmap.size()) {
 		MapBuilder mb;
-		mb.updateGraphic2TimeMap (obj, name, jsonmap);
+		mb.updateGraphic2TimeMap (obj, name, jsonmap, width, height);
 	}
 	else cerr << "unexpected updateGraphic2TimeMap received by: " << fObject->getOSCAddress() << endl;
 }

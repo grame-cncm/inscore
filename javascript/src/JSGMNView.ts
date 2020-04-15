@@ -15,6 +15,18 @@ class JSGMNView extends JSSvgBase {
 	private fPage = 0;
 	private fMaps: SArray = {};
 
+	private scanMap (name: string)	: { name: string, index: number } { 
+		let n = name.match(/([a-z]+)(\d+)/);
+		if (!n) return { name: "", index: 0 };
+		return {name: n[1], index: parseInt(n[2]) };
+	}
+
+	private scanViewBox (vbox: string)	: { width: number, height: number } { 
+		let n = vbox.match(/(\d+) (\d+) (\d+) (\d+)/);
+		if (!n) return { width: 0, height: 0 };
+		return {width: parseInt(n[3]), height: parseInt(n[4]) };
+	}
+
 	constructor(parent: JSObjectView, guido: GuidoEngine) {
 		super(parent);
 		this.getElement().className = "inscore-gmn";
@@ -39,8 +51,9 @@ class JSGMNView extends JSSvgBase {
 			let svg = this.fGuido.gr2SVG (gr, page, false, 0);
 			this.fSVG.innerHTML = svg;
 			
-			let bb = this.fSVG.getBBox();
-			this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+			let innerSvg = this.fSVG.getElementsByTagName('svg');
+			let viewbox = this.scanViewBox (innerSvg[0].getAttribute('viewBox'));	
+			this.updateObjectSizeSync (obj, viewbox.width, viewbox.height);
 			obj.updateTime2TimeMap (this.fGuido.getTimeMap (ar));
 
 			if (this.fGR) {
@@ -64,10 +77,18 @@ class JSGMNView extends JSSvgBase {
 		return false;
     }
 
-	scanMap (name: string)	: { name: string, index: number } { 
-		let n = name.match(/([a-z]+)(\d+)/);
-		if (!n) return { name: "", index: 0 };
-		return {name: n[1], index: parseInt(n[2]) };
+	private getMap (mapname: string, width: number, height: number) : string
+	{
+		if (mapname == "page")
+			return this.fGuido.getPageMap(this.fGR, this.fPage, width, height );
+		if (mapname == "system")
+			return this.fGuido.getSystemMap(this.fGR, this.fPage, width, height );
+		let m = this.scanMap (mapname);
+		if (m.name == "staff") 
+			return this.fGuido.getStaffMap (this.fGR, this.fPage, width, height, m.index);
+		else if (m.name == "voice") 
+			return this.fGuido.getVoiceMap (this.fGR, this.fPage, width, height, m.index);
+		return null;
 	}
 
 	updateSpecific (obj: INScoreObject)	: void { 
@@ -78,30 +99,18 @@ class JSGMNView extends JSSvgBase {
 		for (let i=0; i< maps.size(); i++) {
 			let mapname = maps.get(i);
 			if (mapname.length) {
-				let bb = this.fSVG.getBBox();
 				if (this.fMaps[mapname]) continue;		// already done;
-
-				let map = null;
-				if (mapname == "page")
-					map = this.fGuido.getPageMap(this.fGR, this.fPage, bb.width, bb.height );
-				else if (mapname == "system")
-					map = this.fGuido.getSystemMap(this.fGR, this.fPage, bb.width, bb.height );
-				else {
-					let m = this.scanMap (mapname);
-					if (m.name == "staff") 
-						map = this.fGuido.getStaffMap (this.fGR, this.fPage, bb.width, bb.height, m.index);
-					else if (m.name == "voice") 
-						map = this.fGuido.getVoiceMap (this.fGR, this.fPage, bb.width, bb.height, m.index);
-				}
+				
+				let w = this.fSVG.clientWidth;
+				let h = this.fSVG.clientHeight;
+				let map = this.getMap (mapname, w, h);
 				if (map && map.length) {
-					obj.updateGraphic2TimeMap (mapname, map);
-document.getElementById('debug').innerText = map;
+					obj.updateGraphic2TimeMap (mapname, map, w, h);
 					this.fMaps[mapname] = map;
 				}
 			}
 		}		
 	}
-
 
 	updateColor(color: OColor) : void {
 		let g = this.getFirstGroup(this.fSVG);
@@ -115,16 +124,19 @@ document.getElementById('debug').innerText = map;
 
 	//------------------------------------------------------------------------------------
 	// utilities
-	getFirstGroup(root: Node): SVGSVGElement {
-		let g: Node;
-		let childs = root.childNodes;
-		for (let i = 0; i < childs.length && !g; i++) {
-			if (childs[i].nodeName == 'g') {
-				g = childs[i];
-				break;
-			}
-			g = this.getFirstGroup(childs[i]);
-		}
-		return <SVGSVGElement>g;
+	// getFirstGroup(root: Node): SVGSVGElement {
+	getFirstGroup(root: SVGSVGElement): SVGSVGElement {
+		let g = root.getElementsByTagName('g');
+		return <SVGSVGElement>g[0];
+		// let g: Node;
+		// let childs = root.childNodes;
+		// for (let i = 0; i < childs.length && !g; i++) {
+		// 	if (childs[i].nodeName == 'g') {
+		// 		g = childs[i];
+		// 		break;
+		// 	}
+		// 	g = this.getFirstGroup(childs[i]);
+		// }
+		// return <SVGSVGElement>g;
 	}
 }

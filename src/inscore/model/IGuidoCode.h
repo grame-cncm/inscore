@@ -61,6 +61,7 @@ class IGuidoCode : public IObject
 	protected:
 		typedef libmapping::SMARTP<TLocalMapping<libmapping::rational,1> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
+		SRelativeTime2RelativeTimeMapping fTime2TimeMap;
 		CGRHandler		fGRHandler;
 		int				fCurrentPagesCount;		// the current page count, used to fire the 'pageCount' event
 
@@ -101,6 +102,9 @@ class IGuidoCode : public IObject
 		libmapping::rational	getPageDate(int pagenum) const;
 
 		const IExprHandlerbase*	getExprHandler() const	{return &fExprHandler;}
+		
+		void setTime2TimeMap (SRelativeTime2RelativeTimeMapping& map) 	{ fTime2TimeMap = map; }
+		void setTime2GraphicMap (const std::string& name, SRelativeTime2GraphicMapping& map);
 
 		/// \brief requests that the IGuidoCode build a mapping named 'mapName'. The IGuidoCode stores the number of requests.
 		virtual void requestMapping(const std::string& mapName);

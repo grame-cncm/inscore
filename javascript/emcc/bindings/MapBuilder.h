@@ -26,23 +26,21 @@
 #include "maptypes.h"
 
 
-using namespace std;
-using namespace libmapping;
-
 namespace inscore
 {
 
 class IGuidoCode;
 class MapBuilder {
 
-	bool jsonTimeInterval2inscoreTimeInterval (nlohmann::json j, RationalInterval& interval);
-	bool getTime2TimeRelation (nlohmann::json j, RelativeTime2RelativeTimeRelation& rel);
-	bool getGraphic2TimeRelation (nlohmann::json j, RelativeTime2RelativeTimeRelation& rel);
+	bool jsonTimeInterval2inscoreTimeInterval (nlohmann::json j, RelativeTimeSegment& interval);
+	bool jsonGraphicSegment2inscoreGraphicSegment (nlohmann::json j, GraphicSegment& segment, float width, float height);
+	bool getTime2TimeRelation (nlohmann::json j, SRelativeTime2RelativeTimeMapping& rel);
+	bool getGraphic2TimeRelation (nlohmann::json j, SRelativeTime2GraphicMapping& map, float width, float height);
 
 	public:
 		
-		bool updateTime2TimeMap (IGuidoCode* obj, std::string jsonmap);
-		bool updateGraphic2TimeMap (IGuidoCode* obj, string name, string jsonmap);
+		bool updateTime2TimeMap (IGuidoCode* obj, const std::string& jsonmap);
+		bool updateGraphic2TimeMap (IGuidoCode* obj,  const std::string& name, const std::string& jsonmap, float width, float height);
 
 };
 

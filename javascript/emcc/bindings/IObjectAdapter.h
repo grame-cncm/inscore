@@ -227,7 +227,7 @@ class inscore_export IObjectAdapter
 		void	updateHeight(float h)			{ _updateHeight(fObject, h); }
 		void	updateViewBoundingRect(float x, float y, float w, float h);
 		void	updateTime2TimeMap (std::string jsonmap);
-		void	updateGraphic2TimeMap (std::string name, std::string jsonmap);
+		void	updateGraphic2TimeMap (std::string name, std::string jsonmap, float width, float height);
 
 	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
 	void 			del(IObjectAdapter* obj) 	{ delete obj; }

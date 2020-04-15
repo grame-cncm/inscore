@@ -322,6 +322,12 @@ MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
 }
 
 //-------------------------------------------------------------------------
+void IGuidoCode::setTime2GraphicMap (const std::string& name, SRelativeTime2GraphicMapping& map)
+{
+	setMapping (name, map);
+}
+
+//-------------------------------------------------------------------------
 void IGuidoCode::updateScoreMapping ()
 {
 	// Build the Rolled->Unrolled time mapping
