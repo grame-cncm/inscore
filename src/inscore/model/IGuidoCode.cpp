@@ -342,13 +342,6 @@ void IGuidoCode::setTime2GraphicMap (const std::string& name, SRelativeTime2Grap
 //-------------------------------------------------------------------------
 void IGuidoCode::updateScoreMapping ()
 {
-	// Build the Rolled->Unrolled time mapping
-//	SRelativeTime2RelativeTimeMapping l2t_mapping = TMapping<rational,1, rational,1>::create();	// Create the 'rolled -> unrolled' mapping.
-//	timeMapUpdate (l2t_mapping);
-
-	// Build the time->graphic mapping.
-//	graphMapUpdate (guidoCode, l2t_mapping);
-
 	TDefaultLocalMapping::buildDefaultMapping (this);
 }
 
