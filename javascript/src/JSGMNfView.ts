@@ -7,8 +7,8 @@ class JSGMNfView extends JSGMNView {
 
 	constructor(parent: JSObjectView, guido: GuidoEngine) {
 		super(parent, guido);
-		console.log (this + " constructor");
 	}
+
 	toString() : string		    { return "JSGMNfView"; }
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
