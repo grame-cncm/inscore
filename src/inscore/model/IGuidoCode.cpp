@@ -23,15 +23,17 @@
 
 */
 
+#include "Events.h"
+#include "GmnEvaluator.h"
+#include "GUIDOEngine.h"
+#include "IExpressionHandler.h"
 #include "IGuidoCode.h"
-#include "Updater.h"
 #include "IMessage.h"
 #include "IMessageHandlers.h"
-#include "GUIDOEngine.h"
-#include "GmnEvaluator.h"
-#include "IExpressionHandler.h"
-#include "Events.h"
+#include "MapTools.h"
 #include "TLocalMapping.h"
+#include "TRefinedComposition.h"
+#include "Updater.h"
 
 using namespace std;
 using namespace libmapping;
@@ -322,9 +324,19 @@ MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
 }
 
 //-------------------------------------------------------------------------
+void IGuidoCode::setTime2TimeMap (SRelativeTime2RelativeTimeMapping& map)
+{
+	// the steps below are required to make sure that the time to time and the time to graphic mappings
+	// share the same time segmentation, which is  not the case for system map for example
+	fTime2TimeMap = MapTools::reduce(map);			// reduce the time to time mapping
+}
+
+//-------------------------------------------------------------------------
 void IGuidoCode::setTime2GraphicMap (const std::string& name, SRelativeTime2GraphicMapping& map)
 {
-	setMapping (name, map);
+	if (fTime2TimeMap)
+		setMapping(name, TRefinedComposition<rational, 1, rational, 1, float, 2>::create(fTime2TimeMap->direct(), map->direct()));
+	else setMapping (name, map);
 }
 
 //-------------------------------------------------------------------------

@@ -103,7 +103,7 @@ class IGuidoCode : public IObject
 
 		const IExprHandlerbase*	getExprHandler() const	{return &fExprHandler;}
 		
-		void setTime2TimeMap (SRelativeTime2RelativeTimeMapping& map) 	{ fTime2TimeMap = map; }
+		void setTime2TimeMap (SRelativeTime2RelativeTimeMapping& map);
 		void setTime2GraphicMap (const std::string& name, SRelativeTime2GraphicMapping& map);
 
 		/// \brief requests that the IGuidoCode build a mapping named 'mapName'. The IGuidoCode stores the number of requests.
