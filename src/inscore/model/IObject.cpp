@@ -1707,11 +1707,13 @@ MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
 void IObject::refresh ()
 {
 	setState (kModified);
+	newData(true);
 	if (elements().size()) setState (kSubModified);
 	for (auto elt: elements()) {
-		elt->setState (kModified);
+//		elt->setState (kModified);
 		elt->refresh();
 	}
+	propagateSubModified();
 }
 
 //--------------------------------------------------------------------------
