@@ -13,8 +13,10 @@ class JSSVGView extends JSSvgBase {
 	toString() : string		    { return "JSSVGView"; }
 	updateSVGDimensions(w: number, h: number) : void { }
 
+	getSvg (obj: INScoreObject) : string { return obj.getSVGInfos(); }
+
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-		let svg = obj.getSVGInfos();
+		let svg = this.getSvg (obj);
 		this.fSVG.innerHTML = svg;
 		let bb = this.fSVG.getBBox();
 		this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
