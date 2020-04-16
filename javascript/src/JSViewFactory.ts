@@ -11,6 +11,7 @@
 ///<reference path="JSPolygonView.ts"/>
 ///<reference path="JSCurveView.ts"/>
 ///<reference path="JSGMNView.ts"/>
+///<reference path="JSGMNfView.ts"/>
 ///<reference path="JSXMLView.ts"/>
 ///<reference path="JSSVGView.ts"/>
 ///<reference path="JSPianorollView.ts"/>
@@ -18,7 +19,6 @@
 ///<reference path="JSSVGfView.ts"/>
 ///<reference path="JSVideoView.ts"/>
 ///<reference path="TSyncManager.ts"/>
-
 
 
 //----------------------------------------------------------------------------
@@ -51,6 +51,7 @@ class JSViewFactory {
 			case "polygon":   view = new JSPolygonView(parent); break;
 			case "curve":     view = new JSCurveView(parent); break;
 			case "gmn":       view = new JSGMNView(parent, gGlue.guido()); break;
+			case "gmnf":	  view = new JSGMNfView(parent, gGlue.guido()); break;
 			case "pianoroll": view = new JSPianoRollView(parent, gGlue.guido()); break;
 			case "musicxml":  view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
 			case "svg":       view = new JSSVGView(parent); break;
@@ -73,7 +74,6 @@ class JSViewFactory {
 console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 				break; 
 
-			case "gmnf":
 			case "pianorollf":
 			case "htmlf":
 			case "musicxmlf":
