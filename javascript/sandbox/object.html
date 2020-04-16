@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <title>HTML Object Tests</title>
+
+	<style>
+	body { margin: 50; background: gainsboro }
+	.box {  margin: 20; width: 50%; height: 50%; border: 1px black solid; }
+	img { 
+			width: 300px; 
+			border: 1px red solid; 
+/* 			border-style: inset; */
+			box-shadow: 10px 10px 5px grey;
+		}
+	</style>
+</head>
+<script>
+function loaded (obj) {
+	let toto = document.getElementById('toto');
+	console.log ("loaded: " + obj);
+	console.log ("data: " + obj.data);
+	console.log ("type: " + obj.type);
+	let doc = obj.contentDocument;
+	console.log ("doc: " + doc);
+	if (doc) {
+		let content = "";
+		let div = doc.getElementsByTagName('pre');
+console.log ("first div: " + div + " " + div.length);
+		if (div && div.length) content = div[0].innerText;
+		else {
+			div = div = doc.getElementsByTagName('svg');;
+			if (div && div.length) content = div[0].innerText;
+			console.log ("div: " + div + " " + div.length);
+		}
+		console.log ("content: " + content);
+		toto.innerText = content.innerText;
+	}
+}
+</script>
+
+
+<body style="margin: 40px">
+
+<slot name='testslot'>This is my slot</slot>
+
+<div>
+<object data=../imgs/butterfly.svg> </object>
+</div>
+<br />
+
+<div>
+<object data=../imgs/butterfly.svg type="text/plain" onload=loaded(this)> </object>
+</div>
+<br />
+<div id=toto>
+</div>
+
+</body>
+
+</html>
+
+
