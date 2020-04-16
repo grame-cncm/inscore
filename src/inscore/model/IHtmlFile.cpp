@@ -26,7 +26,6 @@
 #include "IHtmlFile.h"
 #include "IMessage.h"
 #include "IScene.h"
-#include "TComposition.h"
 #include "Updater.h"
 #include "VObjectView.h"
 

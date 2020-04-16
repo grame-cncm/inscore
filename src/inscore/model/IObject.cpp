@@ -54,7 +54,6 @@
 #include "OSCAddress.h"
 #include "OSCRegexp.h"
 #include "OSCStream.h"
-#include "TComposition.h"
 #include "TMessageEvaluator.h"
 #include "TRefinedComposition.h"
 #include "Tools.h"

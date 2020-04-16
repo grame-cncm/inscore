@@ -23,9 +23,7 @@
 
 */
 
-#include "TComposition.h"
 #include "VEllipseView.h"
-
 #include "IEllipse.h"
 
 namespace inscore

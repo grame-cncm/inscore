@@ -28,11 +28,9 @@
 #include <QByteArray>
 
 #include "OSCStream.h"
-#include "TComposition.h"
 #include "VSVGView.h"
 #include "VApplView.h"
 #include "ITLError.h"
-
 #include "ISVGFile.h"
 #include "VIntPointObjectView.h"
 

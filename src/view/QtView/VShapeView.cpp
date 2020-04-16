@@ -23,14 +23,12 @@
 
 */
 
-#include "VShapeView.h"
-
-#include "IShape.h"
-#include "TComposition.h"
-
 #include <QBrush>
 #include <QPen>
 #include <QGraphicsScene>
+
+#include "IShape.h"
+#include "VShapeView.h"
 
 namespace inscore
 {

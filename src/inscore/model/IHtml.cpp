@@ -24,7 +24,6 @@
 */
 
 #include "IHtml.h"
-#include "TComposition.h"
 #include "Updater.h"
 
 using namespace std;

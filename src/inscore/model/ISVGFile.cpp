@@ -25,7 +25,6 @@
 
 #include "ISVGFile.h"
 #include "IMessage.h"
-#include "TComposition.h"
 #include "IScene.h"
 #include "Updater.h"
 #include "VObjectView.h"

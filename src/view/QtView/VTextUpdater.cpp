@@ -25,9 +25,8 @@
 
 #include <stdlib.h>
 
-#include "VTextUpdater.h"
 #include "IModel.h"
-#include "TComposition.h"
+#include "VTextUpdater.h"
 
 using namespace std;
 

@@ -28,7 +28,6 @@
 #include "IAppl.h"
 #include "IGraphicBasedObject.h"
 #include "IMessage.h"
-#include "TComposition.h"
 #include "Updater.h"
 
 using namespace std;

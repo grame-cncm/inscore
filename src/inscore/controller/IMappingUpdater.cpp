@@ -34,7 +34,6 @@
 #include "ITLError.h"
 #include "MapTools.h"
 #include "maptypes.h"
-#include "TComposition.h"
 #include "TRelation.h"
 #include "TRefinedComposition.h"
 #include "TSegment.h"

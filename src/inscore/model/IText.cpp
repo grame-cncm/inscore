@@ -30,7 +30,6 @@
 #include "IText.h"
 #include "IMessage.h"
 #include "Tools.h"
-#include "TComposition.h"
 #include "Updater.h"
 
 using namespace std;

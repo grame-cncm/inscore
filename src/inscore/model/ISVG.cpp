@@ -25,7 +25,6 @@
 
 #include "ISVG.h"
 #include "IMessage.h"
-#include "TComposition.h"
 #include "Updater.h"
 
 using namespace std;

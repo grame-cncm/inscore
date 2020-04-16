@@ -34,7 +34,6 @@
 #include "IObject.h"
 #include "maptypes.h"
 #include "MouseEventAble.h"
-#include "TComposition.h"
 #include "TRect.h"
 #include "TSegment.h"
 #include "VExport.h"
