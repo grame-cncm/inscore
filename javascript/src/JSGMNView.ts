@@ -128,15 +128,5 @@ class JSGMNView extends JSSvgBase {
 	getFirstGroup(root: SVGSVGElement): SVGSVGElement {
 		let g = root.getElementsByTagName('g');
 		return <SVGSVGElement>g[0];
-		// let g: Node;
-		// let childs = root.childNodes;
-		// for (let i = 0; i < childs.length && !g; i++) {
-		// 	if (childs[i].nodeName == 'g') {
-		// 		g = childs[i];
-		// 		break;
-		// 	}
-		// 	g = this.getFirstGroup(childs[i]);
-		// }
-		// return <SVGSVGElement>g;
 	}
 }
