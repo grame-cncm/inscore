@@ -62,14 +62,20 @@ MsgHandler::msgStatus IGuidoFile::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
+	newData (true);
+	
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
+#ifndef EMCC
 		if(!hasData())
         {
             if (!read(fGMN))
                 status = MsgHandler::kCreateFailure;
             else newData(true);
         }
+#else
+		newData(true);
+#endif
 	}
 	return status;
 }
