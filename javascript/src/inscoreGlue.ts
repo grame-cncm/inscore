@@ -15,6 +15,7 @@ class INScoreDiv {
 class INScoreGlue {
 	private fInscore : INScore;
 	private fTimeTask : number;
+	private fSorterTask : number;
 	private fDivs: Array<INScoreDiv>;
 	private fLibraries : libraries;
 	private fExtHandlers: { [id: string] : string; } = {};
@@ -81,6 +82,7 @@ class INScoreGlue {
 		this.getInscoreDivs();
 		// this.fInscore.start();
 		this.fTimeTask = window.setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
+		this.fSorterTask = window.setInterval( () => { this.fInscore.sorterTask(); }, 1);
 		for (let i=0; i< this.fDivs.length; i++)
 			this.initDiv (this.fDivs[i].fDiv, this.fDivs[i].fVersion==2);
 		this.watchResize();
