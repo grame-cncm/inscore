@@ -34,6 +34,7 @@ abstract class JSObjectView {
 	}
 
 	abstract clone (parent: JSObjectView) : JSObjectView;
+	static getObjectView(id: number) : JSObjectView		{ return JSObjectView.fObjects[id]; }
 
 	setSyncManager(sync: GraphicSyncManager) : void { this.fSyncManager = sync; }
 	setIObject(id: number) : void   { this.fIObject = id; }
@@ -91,8 +92,8 @@ abstract class JSObjectView {
 			this.updatePosition(infos.position, this.getElement());
 		if (infos.updateeffect)
 			this.updateEffects(infos.effect);
-		if (infos.updateevents)
-			this.updateEvents(infos.events, oid);
+		if (infos.updateevents || force)
+			this.updateEvents(infos.events, obj.getOSCAddress());
 	}
 
 
@@ -165,7 +166,7 @@ abstract class JSObjectView {
 		return (event.offsetX >= 0) && (event.offsetY >= 0) && (event.offsetX <= div.clientWidth) && (event.offsetY <= div.clientHeight);
 	}
 
-	notify(event: MouseEvent, id: number, oid: number): void {
+	notify(event: MouseEvent, id: number, dest: string): void {
 		if (!this.accept(event, id)) return;
 		if ((id == kMouseMoveID) && (event.buttons != 1)) return;	// ignore move event without mouse button
 		let mevent = null;
@@ -178,10 +179,6 @@ abstract class JSObjectView {
 			case kMouseDClickID: mevent = "doubleClick"; break;
 			default: return;  // unexpected event
 		}
-
-		let obj = INScore.objects().create(oid);
-		let dest = obj.getOSCAddress();
-		INScore.objects().del (obj);		
 
 		let inscore = gGlue.inscore();
 		let msg = inscore.newMessageM ("event");
@@ -196,19 +193,20 @@ abstract class JSObjectView {
 		inscore.postMessage (dest, msg);
 	}
 
-	updateEvents(events: OEvents, oid: number): void {
+	updateEvents(events: OEvents, dest: string): void {
+console.log (this + " updateEvents root");
 		let div = this.getElement();
-		if (events.watchMouseEnter) div.onmouseenter = (event : MouseEvent) : void => { this.notify(event, kMouseEnterID, oid); };
+		if (events.watchMouseEnter) div.onmouseenter = (event : MouseEvent) : void => { this.notify(event, kMouseEnterID, dest); };
 		else div.onmouseenter = null;
-		if (events.watchMouseLeave) div.onmouseleave = (event : MouseEvent) : void => { this.notify(event, kMouseLeaveID, oid); };
+		if (events.watchMouseLeave) div.onmouseleave = (event : MouseEvent) : void => { this.notify(event, kMouseLeaveID, dest); };
 		else div.onmouseleave = null;
-		if (events.watchMouseDown) 	div.onmousedown = (event : MouseEvent) : void => { this.notify(event, kMouseDownID, oid); };
+		if (events.watchMouseDown) 	div.onmousedown = (event : MouseEvent) : void => { this.notify(event, kMouseDownID, dest); };
 		else div.onmousedown = null;
-		if (events.watchMouseUp) 	div.onmouseup = (event : MouseEvent) : void => { this.notify(event, kMouseUpID, oid); };
+		if (events.watchMouseUp) 	div.onmouseup = (event : MouseEvent) : void => { this.notify(event, kMouseUpID, dest); };
 		else div.onmouseup = null;
-		if (events.watchMouseMove) 	div.onmousemove = (event : MouseEvent) : void => { this.notify(event, kMouseMoveID, oid); };
+		if (events.watchMouseMove) 	div.onmousemove = (event : MouseEvent) : void => { this.notify(event, kMouseMoveID, dest); };
 		else div.onmousemove = null;
-		if (events.watchMouseDClick) div.ondblclick = (event : MouseEvent) : void => { this.notify(event, kMouseDClickID, oid); };
+		if (events.watchMouseDClick) div.ondblclick = (event : MouseEvent) : void => { this.notify(event, kMouseDClickID, dest); };
 		else div.ondblclick = null;
 	}
 
