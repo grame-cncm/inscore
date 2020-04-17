@@ -68,12 +68,17 @@ MsgHandler::msgStatus ITextFile::set(const IMessage* msg )
 	status = TFile::set (msg) ;
     
 	if (status & MsgHandler::kProcessed) {
+#ifndef EMCC
 		if(!hasData())
         {
             if (!read(fText))
                 status = MsgHandler::kCreateFailure;
             else newData(true);
         }
+#else
+		setPending();
+		newData(true);
+#endif
 	}
 	return status;
 }

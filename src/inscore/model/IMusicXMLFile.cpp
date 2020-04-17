@@ -56,13 +56,16 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
+#ifndef EMCC
 	if (!XMLImporter::musicxmlSupported()) {
 		ITLErr << "MusicXML import is not available" << ITLEndl;
 		return MsgHandler::kCreateFailure;
 	}
+#endif
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
+#ifndef EMCC
 		if(!hasData())
         {
             if (!read(fXML))
@@ -81,6 +84,10 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
                 }
             }
 		}
+#else
+		setPending();
+		newData(true);
+#endif
 	}
 	return status;
 }
