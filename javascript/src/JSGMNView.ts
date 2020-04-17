@@ -13,7 +13,6 @@ class JSGMNView extends JSSvgBase {
 	private fAR: ARHandler;
 	private fGR: GRHandler;
 	private fPage = 0;
-	private fMaps: SArray = {};
 
 	private scanMap (name: string)	: { name: string, index: number } { 
 		let n = name.match(/([a-z]+)(\d+)/);
@@ -60,7 +59,6 @@ class JSGMNView extends JSSvgBase {
 				this.fGuido.freeGR(this.fGR);
 				this.fGuido.freeAR(this.fAR);
 			}
-			this.fMaps = {};
 			this.fGR = gr;
 			this.fAR = ar;
 			this.fPage = page;
@@ -76,8 +74,21 @@ class JSGMNView extends JSSvgBase {
 		else console.log ("Guido engine not available");
 		return false;
     }
+	
+	// this method is called bu the model to update the map synchronously
+	static getMapping (mapname: string, id: number, oid: number) : void {
+    	let view = <JSGMNView>JSObjectView.getObjectView(id);
+    	if (view) {
+			let obj = INScore.objects().create(oid);
+			let w = view.getSVGTarget().clientWidth;
+			let h = view.getSVGTarget().clientHeight;
+			let map = view.getMap (mapname, w, h);
+			obj.updateGraphic2TimeMap (mapname, map, w, h);
+			INScore.objects().del (obj);
+		}
+	}
 
-	private getMap (mapname: string, width: number, height: number) : string
+	getMap (mapname: string, width: number, height: number) : string
 	{
 		if (mapname == "page")
 			return this.fGuido.getPageMap(this.fGR, this.fPage, width, height );
@@ -89,27 +100,6 @@ class JSGMNView extends JSSvgBase {
 		else if (m.name == "voice") 
 			return this.fGuido.getVoiceMap (this.fGR, this.fPage, width, height, m.index);
 		return null;
-	}
-
-	updateSpecific (obj: INScoreObject)	: void { 
-		if (!this.fGR) return;
-
-		let guido = obj.getGuidoInfos();
-		let maps = guido.mappings;
-		for (let i=0; i< maps.size(); i++) {
-			let mapname = maps.get(i);
-			if (mapname.length) {
-				if (this.fMaps[mapname]) continue;		// already done;
-				
-				let w = this.fSVG.clientWidth;
-				let h = this.fSVG.clientHeight;
-				let map = this.getMap (mapname, w, h);
-				if (map && map.length) {
-					obj.updateGraphic2TimeMap (mapname, map, w, h);
-					this.fMaps[mapname] = map;
-				}
-			}
-		}		
 	}
 
 	updateColor(color: OColor) : void {
