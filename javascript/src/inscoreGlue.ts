@@ -35,6 +35,7 @@ class INScoreGlue {
         this.fExtHandlers["text"] 		= kTextType;
         this.fExtHandlers["mei"]		= kVerovioType;
         this.fExtHandlers["xml"]		= kMusicxmlType;
+        this.fExtHandlers["musicxml"]	= kMusicxmlType;
         this.fExtHandlers["svg"]		= kSvgType;
         this.fExtHandlers["html"] 		= kHtmlType;
 		this.fExtHandlers["htm"] 		= kHtmlType;
