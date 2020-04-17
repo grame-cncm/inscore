@@ -269,12 +269,12 @@ bool IGlue::start (bool offscreen, INScoreApplicationGlue* ag)
 void IGlue::setViewUpdater(SUpdater updater)
 {
 	fViewUpdater = updater;
-	if (fViewUpdater) {
-		fViewUpdater->update (fModel);	// force view update when updater changes
-									// otherwise the view won't be updated until the next incoming message
-									// see timerEvent method
-		fModel->cleanup();			// and clean the model
-	}
+//	if (fViewUpdater) {
+//		fViewUpdater->update (fModel);	// force view update when updater changes
+//									// otherwise the view won't be updated until the next incoming message
+//									// see timerEvent method
+//		fModel->cleanup();			// and clean the model
+//	}
 }
 
 //--------------------------------------------------------------------------
