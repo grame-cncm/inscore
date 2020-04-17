@@ -16,7 +16,9 @@ interface SVGStyle {
 interface SVGShape {
 	setAttribute (a: string, v: string) : void;
 	getBoundingClientRect() : DOMRect;
-    style: SVGStyle;
+	style: SVGStyle;
+	clientWidth: number;
+	clientHeight: number;
 }
 
 abstract class JSSvgBase extends JSObjectView {
@@ -49,24 +51,14 @@ abstract class JSSvgBase extends JSObjectView {
 		target.style.fillOpacity = color.alpha.toString();
 	}
 
-	updatePenControl(pen: OPen) : void {
-		let elt = this.getSVGTarget();
-		elt.style.strokeWidth = pen.penWidth.toString();
-		elt.style.stroke = pen.penColor;
-		elt.style.strokeDasharray = JSSvgBase.penStyle2Dash(pen.penStyle);
-		if (pen.brushStyle == TBrushStyle.kNoBrush)
-			elt.style.fill = "none";
-		else {
-	        elt.style.fill = pen.color;
-	        elt.style.fillOpacity = pen.alpha.toString();
-		}
+	getTranslate(pos: OPosition) : Point { 
+		let bb = this.fSVG.getBBox();
+		return { x: pos.pen.penWidth, y: pos.pen.penWidth }; 
 	}
 
-	getTranslate(pos: OPosition) : number { return pos.pen.penWidth; }
-
 	getPos(pos: OPosition) : Point {
-		let strokewidth = this.getTranslate(pos);
-		this.getSVGTarget().style.transform = strokewidth ? `translate(${strokewidth}px,${strokewidth}px)` : "";
+		let tr = this.getTranslate(pos);
+		this.getSVGTarget().style.transform = (tr.x || tr.y) ? `translate(${tr.x}px,${tr.y}px)` : "";
 		return super.getPos(pos);
 	}
 
