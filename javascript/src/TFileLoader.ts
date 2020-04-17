@@ -14,10 +14,23 @@ class TFileLoader {
 			return content;
 		}
 
-		
+		let html = doc.getElementsByTagName('html');
+		if (html && html.length) {
+			let content = html[0].innerHTML;
+			obj.parentElement.removeChild (obj);
+			return content;
+		}
+
 		let svg = doc.getElementsByTagName('svg');
 		if (svg && svg.length) {
 			let content = svg[0].innerHTML;
+			obj.parentElement.removeChild (obj);
+			return content;
+		}
+
+		let xml = doc.getElementsByTagName('score-partwise');
+		if (xml && xml.length) {
+			let content = xml[0].innerHTML;
 			obj.parentElement.removeChild (obj);
 			return content;
 		}
@@ -25,8 +38,11 @@ class TFileLoader {
 	}
 
 	static load(div: HTMLElement, file: string) : Promise<string>	{ 
+		let type = "text/plain";
+		let ext = file.substring(file.lastIndexOf('.')+1, file.length);
+		if (ext == "html") type = "text/html";
 		let obj = document.createElement('object');
-		obj.type = "text/plain";
+		obj.type = type;
 		obj.data = file;
 		obj.style.visibility = "hidden";
 		div.appendChild (obj);
