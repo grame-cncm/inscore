@@ -36,4 +36,18 @@ class JSLineView extends JSSvgBase {
 		this.fLine.setAttribute('y2', y2.toString());
 		return true;
 	}
+
+	updatePenControl(pen: OPen) : void {
+		let elt = this.getSVGTarget();
+		elt.style.strokeWidth = pen.penWidth.toString();
+		elt.style.stroke = pen.penColor;
+		elt.style.strokeDasharray = JSSvgBase.penStyle2Dash(pen.penStyle);
+		if (pen.brushStyle == TBrushStyle.kNoBrush)
+			elt.style.fill = "none";
+		else {
+	        elt.style.fill = pen.color;
+	        elt.style.fillOpacity = pen.alpha.toString();
+		}
+	}
+
 }
