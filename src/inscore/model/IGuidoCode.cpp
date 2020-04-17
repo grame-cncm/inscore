@@ -23,6 +23,11 @@
 
 */
 
+#ifdef EMCC
+#include <emscripten.h>
+#include "HTMLObjectView.h"
+#endif
+
 #include "Events.h"
 #include "GmnEvaluator.h"
 #include "GUIDOEngine.h"
@@ -231,7 +236,14 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 					return MsgHandler::kBadParameters;
 				else
 				{
+#ifdef EMCC
+					HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(getView());
+					if (view) {
+						EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapName.c_str(), view->getID(), int(this));
+					}
+#else
 					requestMapping(mapName);
+#endif
 					localMapModified(true);
 					return MsgHandler::kProcessed;
 				}
