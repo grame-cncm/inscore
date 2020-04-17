@@ -72,16 +72,12 @@ string IObjectAdapter::color2RGBAColor (const IColor& color) {
 
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateWidth (IPosition* pos, float w) {
-	bool modified= pos->modified();
-	pos->setWidth (w);
-	if (!modified) pos->cleanup();
+	pos->_setWidth (w);
 }
 	
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateHeight (IPosition* pos, float h) {
-	bool modified= pos->modified();
-	pos->setHeight (h);
-	if (!modified) pos->cleanup();
+	pos->_setHeight (h);
 }
 
 //--------------------------------------------------------------------------

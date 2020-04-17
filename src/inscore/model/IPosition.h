@@ -133,6 +133,10 @@ class IPosition
 		virtual void	setWidth(float width)		{ fWidth = width; fModified = true; }
 		/// \brief Sets the height
 		virtual void	setHeight(float height)		{ fHeight = height; fModified = true; }
+		/// \brief Sets the width without modifying the status
+		virtual void	_setWidth(float width)		{ fWidth = width; }
+		/// \brief Sets the height without modifying the status
+		virtual void	_setHeight(float height)	{ fHeight = height; }
 
 		/*!
 			\brief sets an object \c x position in its scene			
