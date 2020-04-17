@@ -110,7 +110,7 @@ void EventsAble::addMsg(EventsAble::eventype t, SIMessageList msgs)
 	size_t prevcount = fMsgMap.count(hash);
 	fMsgMap.add(hash, msgs);
 	if (isMouseEvent(t)) {
-		fModified = prevcount == 0;
+		fModified = true;
 		if(!fMouseSensible) {
 			fMouseSensible = true;
 			setMouseEventSensibility(true);
