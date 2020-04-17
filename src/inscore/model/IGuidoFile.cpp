@@ -74,6 +74,7 @@ MsgHandler::msgStatus IGuidoFile::set (const IMessage* msg )
             else newData(true);
         }
 #else
+		setPending();
 		newData(true);
 #endif
 	}

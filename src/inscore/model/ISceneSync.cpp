@@ -27,6 +27,7 @@
 
 
 #include "ISceneSync.h"
+#include "INScore.h"
 #include "IMessage.h"
 #include "Updater.h"
 
@@ -221,6 +222,15 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& sl
 	if (!fParent->find(slave, sobj) || !fParent->find(master, mobj))
 		return MsgHandler::kBadParameters;						// no target objects for slave or for master
 
+#ifdef EMCC
+	for (auto m: mobj) {
+		if (m->getPending()) {
+//cerr << "ISceneSync::syncMsg " << m->name() << " pending" << endl;
+			return MsgHandler::kProcessedNoChange;
+		}
+	}
+#endif
+
 	for (auto so: sobj) {	// for each slave
 
 		vector<SMaster> existing = fParent->getMasters (so);
@@ -326,8 +336,14 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	Master::VAlignType align = Master::kDefaultSyncAlign;
 	Master::StretchType stretch = Master::kDefaultStretch;
 	Master::SyncType syncType = Master::kDefaultSync;
-	if (index == n) 	// we've reached the end of the parameters: creates the sync using default values
-        return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+	if (index == n) {	// we've reached the end of the parameters: creates the sync using default values
+        MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+#ifdef EMCC
+		if (ret == MsgHandler::kProcessedNoChange)
+			INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
+#endif
+		return ret;
+	}
 
 	if (msg->param(index++, str)) {	// look for the next parameter
 		if(str == kdel_SetMethod) 	// and check for the delete form #2

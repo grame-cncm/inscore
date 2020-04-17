@@ -789,6 +789,13 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				size_t n = targets.size();
 				for (size_t i = 0; i< n; i++) {
 					IObject * target = targets[i];
+#if EMCC
+					if (target->getPending() && (msg->message() != krefresh_SetMethod)) {
+//cerr << "pending: " << msg << " " << msg->message() << " -> " << target->getOSCAddress() << endl;
+						INScore::delayMessage (target->getOSCAddress().c_str(), INScore::MessagePtr(msg));
+						return MsgHandler::kProcessedNoChange;
+					}
+#endif
 					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
 					if (result & MsgHandler::kProcessed) {
 						target->setModified();									// sets the modified state of the subnode
@@ -1708,9 +1715,9 @@ void IObject::refresh ()
 {
 	setState (kModified);
 	newData(true);
+	fPending = false;
 	if (elements().size()) setState (kSubModified);
 	for (auto elt: elements()) {
-//		elt->setState (kModified);
 		elt->refresh();
 	}
 	propagateSubModified();
