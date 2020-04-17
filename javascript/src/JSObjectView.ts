@@ -194,7 +194,6 @@ abstract class JSObjectView {
 	}
 
 	updateEvents(events: OEvents, dest: string): void {
-console.log (this + " updateEvents root");
 		let div = this.getElement();
 		if (events.watchMouseEnter) div.onmouseenter = (event : MouseEvent) : void => { this.notify(event, kMouseEnterID, dest); };
 		else div.onmouseenter = null;
