@@ -1,0 +1,23 @@
+
+///<reference path="JSTextView.ts"/>
+///<reference path="TFileBased.ts"/>
+
+class JSTextfView extends JSTextView {
+
+	fContent = new TFileBased;
+
+	toString() : string					{ return "JSTextfView"; }
+
+	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+        let address = obj.getOSCAddress();
+        let inscore = gGlue.inscore();
+        let pending = (): void => { inscore.postMessageStr (address, "refresh"); };
+		if (this.fContent.getData (obj.getFile(), this.getElement(), pending)) 
+			return super.updateSpecial (obj, oid);
+		return false;
+	}
+
+	getText (infos: OTextInfo) : string {
+		return this.fContent.get().replace(/\r?\n'/g, "<br />");
+	}
+}

@@ -2,6 +2,8 @@
 ///<reference path="inscoreGlue.ts"/>
 ///<reference path="JSObjectView.ts"/>
 ///<reference path="JSTextView.ts"/>
+///<reference path="JSTextfView.ts"/>
+///<reference path="JSHtmlfView.ts"/>
 ///<reference path="JSSceneView.ts"/>
 ///<reference path="JSRectView.ts"/>
 ///<reference path="JSEllipseView.ts"/>
@@ -13,6 +15,7 @@
 ///<reference path="JSGMNView.ts"/>
 ///<reference path="JSGMNfView.ts"/>
 ///<reference path="JSXMLView.ts"/>
+///<reference path="JSXMLfView.ts"/>
 ///<reference path="JSSVGView.ts"/>
 ///<reference path="JSPianorollView.ts"/>
 ///<reference path="JSLayerView.ts"/>
@@ -34,14 +37,10 @@ class JSViewFactory {
 		let view = null;
 
 		switch (type) {
-			case "txt":
-				view = new JSTextView(parent);
-				view.waitForSize (objid);
-				break; 			
-			case "html":
-				view = new JSHtmlView(parent);
-				view.waitForSize (objid);
-				break; 			
+			case "txt": 	  view = new JSTextView(parent); break; 			
+			case "html":	  view = new JSHtmlView(parent); break; 			
+			case "txtf":	  view = new JSTextfView(parent); break;
+			case "htmlf":	  view = new JSHtmlfView(parent); break;
 			
 			case "rect":	  view = new JSRectView(parent); break; 
 			case "ellipse":   view = new JSEllipseView(parent); break; 
@@ -54,6 +53,8 @@ class JSViewFactory {
 			case "gmnf":	  view = new JSGMNfView(parent, gGlue.guido()); break;
 			case "pianoroll": view = new JSPianoRollView(parent, gGlue.guido()); break;
 			case "musicxml":  view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
+			case "musicxmlf": view = new JSXMLfView(parent, gGlue.xmllib(), gGlue.guido()); break;
+
 			case "svg":       view = new JSSVGView(parent); break;
 			case "layer":	  view = new JSLayerView(parent); break;
 			case "svgf": 	  view = new JSSVGfView(parent); break;
@@ -75,9 +76,6 @@ console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 				break; 
 
 			case "pianorollf":
-			case "htmlf":
-			case "musicxmlf":
-			case "txtf":
 		console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
 				break; 
 		
