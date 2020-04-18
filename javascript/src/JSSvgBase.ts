@@ -51,6 +51,25 @@ abstract class JSSvgBase extends JSObjectView {
 		target.style.fill = color.rgb;
 		target.style.fillOpacity = color.alpha.toString();
 	}
+	
+	updateRegularPen(pen: OPen) : void {
+		super.updatePenControl (pen);
+	}
+		
+	updatePenControl(pen: OPen) : void {
+		let elt = this.getSVGTarget();
+		elt.style.strokeWidth = pen.penWidth.toString();
+		elt.style.stroke = pen.penColor;
+		elt.style.strokeDasharray = JSSvgBase.penStyle2Dash(pen.penStyle);
+
+		elt = this.getSVGTarget();
+		if (pen.brushStyle == TBrushStyle.kNoBrush)
+			elt.style.fill = "none";
+		else {
+	        elt.style.fill = pen.color;
+	        elt.style.fillOpacity = pen.alpha.toString();
+		}
+	}
 
 	getTranslate(pos: OPosition) : Point { 
 		let bb = this.fSVG.getBBox();
