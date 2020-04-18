@@ -1,0 +1,48 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/score set gmnf "gmn/mozart.gmn";
+/ITL/scene/score scale 0.4;
+
+w = 0.1;
+/ITL/scene/cursor set ellipse $w $w;
+/ITL/scene/cursor color blue;
+/ITL/scene/cursor alpha 0.1;
+
+/ITL/scene/score map system;
+
+/ITL/scene/sync cursor "score:system";
+
+play  = "imgs/play.png";
+pause = "imgs/pause.png";
+
+/ITL/scene/ctrl set img $play;
+/ITL/scene/ctrl scale 0.12;
+/ITL/scene/ctrl y 0.8;
+/ITL/scene/ctrl watch mouseDown (
+	/ITL/scene/ctrl push,
+	/ITL/scene/cursor tempo 60,
+	/ITL/scene/ctrl set img $pause,
+	/ITL/scene/ctrl watch mouseDown (
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/ctrl set img $play,
+		/ITL/scene/ctrl pop
+	)
+);
+
+g = 150;
+grey = $g $g $g;
+/ITL/scene/ctrl watch mouseEnter ( /ITL/scene/$self scale 0.13 );
+/ITL/scene/ctrl watch mouseLeave ( /ITL/scene/$self scale 0.12 );
+
+
+__END__
+
+/ITL/scene/ctrl get watch;
+
+/ITL/scene/cursor date 0;
+/ITL/scene/cursor date 1 4;
+/ITL/scene/cursor date 9 4;
+/ITL/scene/cursor date 10 4;
+
+/ITL/scene/sync cursor;
