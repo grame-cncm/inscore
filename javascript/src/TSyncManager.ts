@@ -17,7 +17,10 @@ class TMaster {
 	master() : JSObjectView	{ return this.fMaster; }
 	slave()  : JSObjectView 	{ return this.fClone; }
 
-	unsync () : void	{ this.master().getElement().removeChild(this.fClone.getElement()); }
+	unsync () : void	{ 
+		this.master().getElement().removeChild(this.fClone.getElement()); 
+		this.fClone.delete(); 
+	}
 }
 
 class TSyncManager implements GraphicSyncManager {

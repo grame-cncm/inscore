@@ -43,6 +43,7 @@ abstract class JSObjectView {
 	getId() : number	 			{ return this.fID; }
 	getElement() : HTMLElement		{ return this.fElement; }
 	getParent() : JSObjectView		{ return this.fParent; }
+	delete() : void					{ }
 
 	parentWidth() : number			{ 
 		let elt = this.getElement().parentElement;
@@ -68,6 +69,7 @@ abstract class JSObjectView {
 	updateView(obj: INScoreObject, oid: number, master: number, force: boolean, keepRatio = false) : void {
 		if (obj.deleted()  && this.getElement().parentNode) { // parent could be deleted
 			this.getElement().parentNode.removeChild (this.getElement());
+			this.delete();
 			return;
 		}
 
