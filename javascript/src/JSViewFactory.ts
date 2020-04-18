@@ -39,29 +39,27 @@ class JSViewFactory {
 		let view = null;
 
 		switch (type) {
-			case "txt": 	  view = new JSTextView(parent); break; 			
-			case "html":	  view = new JSHtmlView(parent); break; 			
-			case "txtf":	  view = new JSTextfView(parent); break;
-			case "htmlf":	  view = new JSHtmlfView(parent); break;
-			
-			case "rect":	  view = new JSRectView(parent); break; 
-			case "ellipse":   view = new JSEllipseView(parent); break; 
-			case "line": 	  view = new JSLineView(parent); break; 
-			case "img":  	  view = new JSImageView(parent); break;
 			case "arc": 	  view = new JSArcView(parent); break;
-			case "polygon":   view = new JSPolygonView(parent); break;
 			case "curve":     view = new JSCurveView(parent); break;
+			case "ellipse":   view = new JSEllipseView(parent); break; 
 			case "gmn":       view = new JSGMNView(parent, gGlue.guido()); break;
 			case "gmnf":	  view = new JSGMNfView(parent, gGlue.guido()); break;
 			case "gmnstream": view = new JSGMNStreamView(parent, gGlue.guido()); break;
-			case "pianoroll": view = new JSPianoRollView(parent, gGlue.guido()); break;
-			case "pianorollf": view = new JSPianoRollfView(parent, gGlue.guido()); break;
+			case "html":	  view = new JSHtmlView(parent); break; 			
+			case "htmlf":	  view = new JSHtmlfView(parent); break;
+			case "img":  	  view = new JSImageView(parent); break;
+			case "layer":	  view = new JSLayerView(parent); break;
+			case "line": 	  view = new JSLineView(parent); break; 
 			case "musicxml":  view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
 			case "musicxmlf": view = new JSXMLfView(parent, gGlue.xmllib(), gGlue.guido()); break;
-
+			case "pianoroll": view = new JSPianoRollView(parent, gGlue.guido()); break;
+			case "pianorollf": view = new JSPianoRollfView(parent, gGlue.guido()); break;
+			case "polygon":   view = new JSPolygonView(parent); break;
+			case "rect":	  view = new JSRectView(parent); break; 
 			case "svg":       view = new JSSVGView(parent); break;
-			case "layer":	  view = new JSLayerView(parent); break;
 			case "svgf": 	  view = new JSSVGfView(parent); break;
+			case "txt": 	  view = new JSTextView(parent); break; 			
+			case "txtf":	  view = new JSTextfView(parent); break;
 			case "video":	  view = new JSVideoView(parent); break;
 
 			case "audio":
@@ -72,7 +70,6 @@ class JSViewFactory {
 			case "grid":
 			case "pianorollstream":
 			case "memimg":
-			case "rshape":
 			case "sig":
 			case "signode":
 console.log ("JSViewFactory::create pending type " + type + " parent id: " + parent);
