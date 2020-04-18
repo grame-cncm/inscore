@@ -31,6 +31,16 @@
 
 using namespace std;
 
+#ifdef EMCC
+
+#define GuidoFreeStreamString(type)
+#define GuidoCloseStream(stream)
+#define GuidoResetStream(stream)
+#define GuidoOpenStream()	0
+
+#endif
+
+
 namespace inscore
 {
 //--------------------------------------------------------------------------
@@ -95,10 +105,14 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::clear()
 {
+#ifdef EMCC
+	fReset = true;
+#else
 	if(fGMN=="") return;
 
 	GuidoResetStream(fGuidoStream);
 	setGMN("");
+#endif
 	newData(true);
 }
 
@@ -120,11 +134,15 @@ MsgHandler::msgStatus IGuidoStream::write (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::writeStream (std::string t)
 {
+#ifdef EMCC
+	fStream << t;
+#else
 	const char * newchar = t.c_str();
     GuidoWriteStream(fGuidoStream, newchar);
     const char * str = GuidoGetStream(fGuidoStream);
     setGMN(str);
 	GuidoFreeStreamString (str);
+#endif
     newData(true);
 }
 

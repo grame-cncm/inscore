@@ -161,6 +161,11 @@ interface OPianorollInfos {
 	limits			: OPRollLimits;
 }
 
+interface OGMNStreamInfos {
+	stream		: string;
+	reset		: boolean;
+}
+
 interface INScoreObject {
     create(id: number):        INScoreObject;
     del(obj: INScoreObject):   void;
@@ -178,6 +183,7 @@ interface INScoreObject {
 	getPolygonInfos(): FloatVector;
 	getCurveInfos():   FloatVector;
 	getGuidoInfos():   OScore;
+	getGuidoStream():  OGMNStreamInfos;
 	getPianorollInfos():   OPianorollInfos;
 	getXMLInfos():     OScore;
 	getMediaInfos():   OMedia;

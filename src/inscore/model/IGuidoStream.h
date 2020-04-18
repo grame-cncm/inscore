@@ -28,6 +28,8 @@
 #define __IGuidoStream__
 
 #include <string>
+#include <strstream>
+
 #include "IGuidoCode.h"
 #include "GUIDOParse.h"
 
@@ -48,7 +50,12 @@ typedef class libmapping::SMARTP<IGuidoStream>	SIGuidoStream;
 */
 class IGuidoStream : public virtual IGuidoCode
 {
-	public:		
+#ifdef EMCC
+	std::stringstream 	fStream;
+	bool				fReset = false;
+#endif
+
+	public:
 		static const std::string kGuidoStreamType;
 		static SIGuidoStream create(const std::string& name, IObject * parent)	{ return new IGuidoStream(name, parent); }
 
@@ -57,7 +64,15 @@ class IGuidoStream : public virtual IGuidoCode
     
         GuidoStream * getGuidoStream() {return fGuidoStream;}
 		const std::string getCleanGMN() const;
-    
+
+	#ifdef EMCC
+		const std::string getStream() const		{ return fStream.str(); }
+		bool 			getReset() const		{ return fReset; }
+		virtual void	cleanup () 				{ fStream.str(""); fReset = false; IGuidoCode::cleanup(); }
+
+	#endif
+
+
 	protected:
 				 IGuidoStream( const std::string& name, IObject * parent);
 		virtual ~IGuidoStream() ;

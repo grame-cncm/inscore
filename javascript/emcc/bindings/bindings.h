@@ -160,4 +160,8 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("volume",  &JSMediaInfos::volume)
 		.field("rate", &JSMediaInfos::rate)
 		.field("mdate",  	&JSMediaInfos::mdate);
+	
+	value_object<JSGMNStreamInfos>("JSGMNStreamInfos")
+		.field("stream",  	&JSGMNStreamInfos::stream)
+		.field("reset",  	&JSGMNStreamInfos::reset);
 }

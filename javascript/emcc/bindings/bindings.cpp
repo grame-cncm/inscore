@@ -76,6 +76,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getPolygonInfos",&IObjectAdapter::getPolygonInfos)
 		.function("getCurveInfos",  &IObjectAdapter::getCurveInfos)
 		.function("getGuidoInfos",  &IObjectAdapter::getGuidoInfos)
+		.function("getGuidoStream",  &IObjectAdapter::getGuidoStream)
 		.function("getPianorollInfos", &IObjectAdapter::getPianorollInfos)
 		.function("getXMLInfos",    &IObjectAdapter::getXMLInfos)
 		.function("getMediaInfos",  &IObjectAdapter::getMediaInfos)

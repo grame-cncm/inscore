@@ -157,6 +157,11 @@ struct JSMediaInfos {
 	int		mdate; 		// the requested media date ( < 0 when no request)
 };
 
+struct JSGMNStreamInfos {
+	std::string	stream;
+	bool		reset = false;
+};
+
 class IText;
 class ILine;
 class ICurve;
@@ -218,6 +223,7 @@ class inscore_export IObjectAdapter
 		JSScoreInfos  getXMLInfos() const;
 		JSPianorollInfos getPianorollInfos() const;
 		JSMediaInfos getMediaInfos() const;
+		JSGMNStreamInfos  getGuidoStream() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

@@ -35,6 +35,7 @@
 #include "IEffect.h"
 #include "IGuidoCode.h"
 #include "IGuidoPianoRoll.h"
+#include "IGuidoStream.h"
 #include "IGraphicBasedObject.h"
 #include "IMedia.h"
 
@@ -323,6 +324,19 @@ std::vector<float> IObjectAdapter::getPolygonInfos() const
 		}
 	}
 	return data;
+}
+
+//--------------------------------------------------------------------------
+JSGMNStreamInfos IObjectAdapter::getGuidoStream() const
+{
+	JSGMNStreamInfos infos;
+	const IGuidoStream* obj = dynamic_cast<const IGuidoStream*>((IObject*)fObject);
+	if (obj) {
+		infos.stream = obj->getStream();
+		infos.reset = obj->getReset();
+	}
+	else cerr << "IObjectAdapter::getGuidoStream: unexpected null object!" << endl;
+	return infos;
 }
 
 //--------------------------------------------------------------------------
