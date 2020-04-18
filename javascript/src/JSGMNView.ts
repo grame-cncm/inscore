@@ -2,17 +2,14 @@
 ///<reference path="JSSVGBase.ts"/>
 ///<reference path="guidoengine.ts"/>
 
-interface SArray {
-	[index: string]: string;
-}
 
 class JSGMNView extends JSSvgBase {
 
 	private fGuido: GuidoEngine;
-	private fParser: GuidoParser;
 	private fAR: ARHandler;
 	private fGR: GRHandler;
 	private fPage = 0;
+	protected fParser: GuidoParser;
 
 	private scanMap (name: string)	: { name: string, index: number } { 
 		let n = name.match(/([a-z]+)(\d+)/);
@@ -40,13 +37,25 @@ class JSGMNView extends JSSvgBase {
 	toString() : string		    { return "JSGMNView"; }
 	updateSVGDimensions(w: number, h: number) : void { }
 	guido() : GuidoEngine		{ return this.fGuido; }
+	delete() : void	{ 
+		if (this.fGR) {
+			this.fGuido.freeGR(this.fGR);
+			this.fGuido.freeAR(this.fAR);
+			this.fGR = null;
+			this.fAR = null;
+		}
+		this.fGuido.closeParser (this.fParser);
+		this.fParser = null;
+		super.delete();
+	}
 
 	updatePenControl(pen: OPen) : void {	this.updateRegularPen (pen); }
 
 	parse(gmn: string)	: ARHandler { return this.fGuido.string2AR (this.fParser, gmn); }
+	string2Ar (obj: INScoreObject, gmn: string) : ARHandler { return this.parse (gmn); }
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
-		let ar = this.parse (gmn);
+		let ar = this.string2Ar (obj, gmn);
 		if (ar) {
 			let gr = this.fGuido.ar2gr (ar);
 			let svg = this.fGuido.gr2SVG (gr, page, false, 0);
