@@ -18,17 +18,20 @@ class TFileLoader {
 	private static getContent(obj: HTMLObjectElement) : string	{ 
 		let doc = obj.contentDocument;
 		if (! doc) return null;
-
+		
+		let content = "";
 		let element = doc.documentElement;
 		switch (doc.contentType) {
-			case "text/plain": 		return element.innerText; break;
-			case "text/html": 		return element.innerHTML; break;
-			case "image/svg+xml": 	return element.innerHTML; break;
-			case "text/xml": 		return TFileLoader.getMusicXML(element); break;
+			case "text/plain": 		content = element.innerText; break;
+			case "text/html": 		content = element.innerHTML; break;
+			case "image/svg+xml": 	content = element.innerHTML; break;
+			case "text/xml": 		content = TFileLoader.getMusicXML(element); break;
 			default:
 				console.error ("Unsupported content type " + doc.contentType);
+				content = null;
 		}
-		return null;
+		obj.parentElement.removeChild (obj);
+		return content;
 	}
 
 	static load(div: HTMLElement, file: string) : Promise<string>	{ 
