@@ -18,6 +18,7 @@ class JSTextfView extends JSTextView {
 	}
 
 	getText (infos: OTextInfo) : string {
-		return this.fContent.get().replace(/\r?\n'/g, "<br />");
+		let text = this.fContent.get();
+		return text ? text.replace(/\r?\n'/g, "<br />") : "";
 	}
 }

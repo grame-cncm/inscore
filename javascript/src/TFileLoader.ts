@@ -2,47 +2,38 @@
 
 class TFileLoader {
 
+	private static getMusicXML(element : any) : string	{ 
+		if (element.nodeName == "score-partwise") {
+			let content = '<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">\n';
+			let version = element.getAttributeNode('version');
+			content += version ? '<score-partwise version="' + version.textContent +'">' : '<score-partwise>';
+			content += element.innerHTML;
+			content += '</score-partwise>';
+			return content;
+		}
+		console.error ("unsupported MusicXML type " + element.nodeName);
+		return null;
+	}
+
 	private static getContent(obj: HTMLObjectElement) : string	{ 
-
 		let doc = obj.contentDocument;
-		if (! doc) return "";
+		if (! doc) return null;
 
-		let pre = doc.getElementsByTagName('pre');
-		if (pre && pre.length) {
-			let content = pre[0].innerText;
-			obj.parentElement.removeChild (obj);
-			return content;
+		let element = doc.documentElement;
+		switch (doc.contentType) {
+			case "text/plain": 		return element.innerText; break;
+			case "text/html": 		return element.innerHTML; break;
+			case "image/svg+xml": 	return element.innerHTML; break;
+			case "text/xml": 		return TFileLoader.getMusicXML(element); break;
+			default:
+				console.error ("Unsupported content type " + doc.contentType);
 		}
-
-		let html = doc.getElementsByTagName('html');
-		if (html && html.length) {
-			let content = html[0].innerHTML;
-			obj.parentElement.removeChild (obj);
-			return content;
-		}
-
-		let svg = doc.getElementsByTagName('svg');
-		if (svg && svg.length) {
-			let content = svg[0].innerHTML;
-			obj.parentElement.removeChild (obj);
-			return content;
-		}
-
-		let xml = doc.getElementsByTagName('score-partwise');
-		if (xml && xml.length) {
-			let content = xml[0].innerHTML;
-			obj.parentElement.removeChild (obj);
-			return content;
-		}
-		return "";
+		return null;
 	}
 
 	static load(div: HTMLElement, file: string) : Promise<string>	{ 
-		let type = "text/plain";
-		let ext = file.substring(file.lastIndexOf('.')+1, file.length);
-		if (ext == "html") type = "text/html";
 		let obj = document.createElement('object');
-		obj.type = type;
+		obj.type = "text/plain";
 		obj.data = file;
 		obj.style.visibility = "hidden";
 		div.appendChild (obj);

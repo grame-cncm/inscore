@@ -19,7 +19,6 @@ class JSXMLfView extends JSXMLView {
 
 	getXml (unused: OScore) : string {
 		let xml = this.fContent.get(); 
-		console.log (this + " getXml: \n" + xml);
-		return xml; 
+		return xml ? xml : ""; 
 	}
 }

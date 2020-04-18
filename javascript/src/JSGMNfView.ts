@@ -16,8 +16,9 @@ class JSGMNfView extends JSGMNView {
 		return false;
 	}
 
-	gmn2svg (obj: INScoreObject, gmn: string, page: number)	: boolean {
-		return super.gmn2svg (obj, this.fContent.get(), page);
+	gmn2svg (obj: INScoreObject, unused: string, page: number)	: boolean {
+		let gmn = this.fContent.get();
+		if (gmn) return super.gmn2svg (obj, gmn, page);
+		return false;
 	}
-
 }
