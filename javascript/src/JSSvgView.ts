@@ -9,9 +9,11 @@ class JSSVGView extends JSSvgBase {
 	}
 	clone (parent: JSObjectView) : JSObjectView { return new JSSVGView(parent); }
 
-	getSVGTarget() : SVGShape   { return this.fSVG; }
 	toString() : string		    { return "JSSVGView"; }
+
+	getSVGTarget() : SVGShape   { return this.fSVG; }
 	updateSVGDimensions(w: number, h: number) : void { }
+	updatePenControl(pen: OPen) : void {	this.updateRegularPen (pen); }
 
 	getSvg (obj: INScoreObject) : string { return obj.getSVGInfos(); }
 

@@ -40,7 +40,9 @@ class JSGMNView extends JSSvgBase {
 	toString() : string		    { return "JSGMNView"; }
 	updateSVGDimensions(w: number, h: number) : void { }
 	guido() : GuidoEngine		{ return this.fGuido; }
- 
+
+	updatePenControl(pen: OPen) : void {	this.updateRegularPen (pen); }
+
 	parse(gmn: string)	: ARHandler { return this.fGuido.string2AR (this.fParser, gmn); }
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
