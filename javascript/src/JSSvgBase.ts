@@ -43,6 +43,7 @@ abstract class JSSvgBase extends JSObjectView {
 		let strokewidth = pos.pen.penWidth * 2;
 		this.fSVG.style.width  = (w + strokewidth) + "px";
 		this.fSVG.style.height = (h + strokewidth) + "px";
+		super.updateDimensions (pos);
 	}
 
     updateColor(color: OColor) : void {
