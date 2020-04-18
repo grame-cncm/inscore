@@ -11,9 +11,11 @@ class JSPianoRollView extends JSGMNView {
 
 	toString() : string		    { return "JSPianoRollView"; }
 
-	date2string (date: ODate) : string { return date.num + "/" + date.denum; }
+	date2string (date: ODate) : string 			{ return date.num + "/" + date.denum; }
+	getGmn (proll: OPianorollInfos) : string 	{ return proll.code; }
+
 	proll2svg(obj: INScoreObject, proll: OPianorollInfos)	: boolean {
-		let ar = this.parse (proll.code);
+		let ar = this.parse (this.getGmn(proll));
 		if (ar) {
 			let guido = this.guido();
 			let pr = guido.ar2PianoRoll (PianoRollType.kSimplePianoRoll, ar);

@@ -65,6 +65,7 @@ MsgHandler::msgStatus IGuidoPianoRollFile::set (const IMessage* msg )
 
 		status = TFile::set( msg );
 		if (status & MsgHandler::kProcessed) {
+#ifndef EMCC
 			if(!hasData())
 			{
 				string file = getFile();
@@ -86,6 +87,10 @@ MsgHandler::msgStatus IGuidoPianoRollFile::set (const IMessage* msg )
 				newData(true);
 
 			}
+#else
+			setPending();
+			newData(true);
+#endif
 		}
 		return status;
 }

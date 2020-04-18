@@ -18,6 +18,7 @@
 ///<reference path="JSXMLfView.ts"/>
 ///<reference path="JSSVGView.ts"/>
 ///<reference path="JSPianorollView.ts"/>
+///<reference path="JSPianorollfView.ts"/>
 ///<reference path="JSLayerView.ts"/>
 ///<reference path="JSSVGfView.ts"/>
 ///<reference path="JSVideoView.ts"/>
@@ -52,6 +53,7 @@ class JSViewFactory {
 			case "gmn":       view = new JSGMNView(parent, gGlue.guido()); break;
 			case "gmnf":	  view = new JSGMNfView(parent, gGlue.guido()); break;
 			case "pianoroll": view = new JSPianoRollView(parent, gGlue.guido()); break;
+			case "pianorollf": view = new JSPianoRollfView(parent, gGlue.guido()); break;
 			case "musicxml":  view = new JSXMLView(parent, gGlue.xmllib(), gGlue.guido()); break;
 			case "musicxmlf": view = new JSXMLfView(parent, gGlue.xmllib(), gGlue.guido()); break;
 
@@ -72,15 +74,11 @@ class JSViewFactory {
 			case "rshape":
 			case "sig":
 			case "signode":
-console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
+console.log ("JSViewFactory::create pending type " + type + " parent id: " + parent);
 				break; 
 
-			case "pianorollf":
-		console.log ("JSViewFactory::create type " + type + " parent id: " + parent);
-				break; 
-		
 			default:
-console.log ("JSViewFactory::create unknown type " + type + " parent id: " + parent);
+				console.error ("JSViewFactory::create unknown type " + type + " parent id: " + parent);
 		}
 		if (view) {
 			view.setSyncManager (new TSyncManager(view));
