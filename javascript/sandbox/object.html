@@ -21,21 +21,34 @@ function loaded (obj) {
 	let toto = document.getElementById('toto');
 	console.log ("loaded: " + obj);
 	console.log ("data: " + obj.data);
-	console.log ("type: " + obj.type);
 	let doc = obj.contentDocument;
 	console.log ("doc: " + doc);
 	if (doc) {
 		let content = "";
-		let div = doc.getElementsByTagName('pre');
-console.log ("first div: " + div + " " + div.length);
-		if (div && div.length) content = div[0].innerText;
-		else {
-			div = div = doc.getElementsByTagName('svg');;
-			if (div && div.length) content = div[0].innerText;
-			console.log ("div: " + div + " " + div.length);
-		}
+		let type = "-";
+		let element = doc.documentElement;
+		if (doc.doctype) type = doc.doctype.name;
+// 		if (otype) {
+// 			type = otype.name;
+// 			if (type == "score-partwise") {
+// 				let div = doc.getElementsByTagName('score-partwise');
+// 				if (div && div.length) content = element.innerHTML;
+// 			}
+// 			else if (type == "svg")
+// 				content = element.innerHTML;
+// 			else
+// 				content = type;
+// 		}
+// 		else {
+			switch (doc.contentType) {
+				case "text/plain": content = element.innerText; break;
+				case "text/html": content = element.innerHTML; break;
+				case "image/svg+xml": content = element.innerHTML; break;
+				case "text/xml": content = element.nodeName + " " + element.getAttributeNode('version').textContent + "\n" + element.innerHTML; break;
+				default: content = "unknown content type " + doc.contentType;
+			}
 		console.log ("content: " + content);
-		toto.innerText = content.innerText;
+		toto.innerText = "type: " + type + " content type " + doc.contentType + " element: " + element + "\n" + content;
 	}
 }
 </script>
@@ -52,6 +65,10 @@ console.log ("first div: " + div + " " + div.length);
 
 <div>
 <object data=../gmn/Binchois.musicxml type="text/plain" onload=loaded(this)> </object>
+<!-- <object data=../gmn/4voices.gmn type="text/plain" onload=loaded(this)> </object> -->
+<!-- <object data=../imgs/butterfly.svg type="text/plain" onload=loaded(this)> </object> -->
+<!-- <object data=../text/lorem.txt type="text/plain" onload=loaded(this)> </object> -->
+<!-- <object data=../text/lorem.html type="text/plain" onload=loaded(this)> </object> -->
 </div>
 <br />
 <div id=toto>
