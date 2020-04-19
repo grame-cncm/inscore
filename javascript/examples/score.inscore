@@ -3,15 +3,32 @@
 
 /ITL/scene/score set gmnf "gmn/mozart.gmn";
 /ITL/scene/score scale 0.4;
+/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date');
 
 w = 0.1;
-/ITL/scene/cursor set ellipse $w $w;
-/ITL/scene/cursor color blue;
-/ITL/scene/cursor alpha 0.1;
+/ITL/scene/cursor1 set ellipse $w $w;
+/ITL/scene/cursor2 set ellipse $w $w;
+/ITL/scene/cursor3 set ellipse $w $w;
+/ITL/scene/cursor4 set ellipse $w $w;
+/ITL/scene/cursor5 set ellipse $w $w;
+/ITL/scene/cursor1 color blue;
+/ITL/scene/cursor2 color red;
+/ITL/scene/cursor3 color green;
+/ITL/scene/cursor4 color orange;
+/ITL/scene/cursor5 color black;
+/ITL/scene/cursor* alpha 0.1;
 
-/ITL/scene/score map system;
+/ITL/scene/score map staff1;
+/ITL/scene/score map staff2;
+/ITL/scene/score map staff3;
+/ITL/scene/score map staff4;
+/ITL/scene/score map staff5;
 
-/ITL/scene/sync cursor "score:system";
+/ITL/scene/sync cursor1 "score:staff1";
+/ITL/scene/sync cursor2 "score:staff2";
+/ITL/scene/sync cursor3 "score:staff3";
+/ITL/scene/sync cursor4 "score:staff4";
+/ITL/scene/sync cursor5 "score:staff5";
 
 play  = "imgs/play.png";
 pause = "imgs/pause.png";
@@ -21,10 +38,10 @@ pause = "imgs/pause.png";
 /ITL/scene/ctrl y 0.8;
 /ITL/scene/ctrl watch mouseDown (
 	/ITL/scene/ctrl push,
-	/ITL/scene/cursor tempo 60,
+	/ITL/scene/cursor* tempo 60,
 	/ITL/scene/ctrl set img $pause,
 	/ITL/scene/ctrl watch mouseDown (
-		/ITL/scene/cursor tempo 0,
+		/ITL/scene/cursor* tempo 0,
 		/ITL/scene/ctrl set img $play,
 		/ITL/scene/ctrl pop
 	)
