@@ -155,7 +155,7 @@ abstract class JSObjectView {
 		let x = (event.offsetX / div.clientWidth * 2) -1 ;
 		let y = (event.offsetY / div.clientHeight * 2) -1 ;
 
-		let pdiv = this.getElement().parentElement;
+		let pdiv = div.parentElement;
 		let r = pdiv.getBoundingClientRect();
 		let sx = ((event.clientX - r.left) / pdiv.clientWidth * 2) -1 ;
 		let sy = ((event.clientY - r.top) / pdiv.clientHeight * 2) -1 ;
@@ -169,6 +169,8 @@ abstract class JSObjectView {
 	}
 
 	notify(event: MouseEvent, id: number, dest: string): void {
+		event.stopImmediatePropagation();
+		event.preventDefault();
 		if (!this.accept(event, id)) return;
 		if ((id == kMouseMoveID) && (event.buttons != 1)) return;	// ignore move event without mouse button
 		let mevent = null;
