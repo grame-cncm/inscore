@@ -39,6 +39,7 @@
 #include "TLocalMapping.h"
 #include "TRefinedComposition.h"
 #include "Updater.h"
+#include "TMapMsgHandler.h"
 
 using namespace std;
 using namespace libmapping;
@@ -118,6 +119,12 @@ void IGuidoCode::accept (Updater* u)
 {
 	u->updateTo (SIGuidoCode(this));
 }
+
+//--------------------------------------------------------------------------
+//SIMessageList IGuidoCode::__getMaps () const
+//{
+//	return TMapMsgHandler<float,2>::getMapMsgs( namedMappings() , this );
+//}
 
 //--------------------------------------------------------------------------
 void IGuidoCode::setdPage( int dpage )

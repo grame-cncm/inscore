@@ -60,6 +60,8 @@ class IGuidoCode : public IObject
 {
 	protected:
 		typedef libmapping::SMARTP<TLocalMapping<libmapping::rational,1> >	SLocalMapping;
+		typedef libmapping::SMARTP<TLocalMapping<float,2> >	SGuidoMapping;
+
 		SLocalMapping	fLocalMappings;
 		SRelativeTime2RelativeTimeMapping fTime2TimeMap;
 		CGRHandler		fGRHandler;
@@ -118,6 +120,9 @@ class IGuidoCode : public IObject
 
 		void	setPageCount(int count);
 		void 	updateScoreMapping ();
+
+		/// \brief get an object maps
+//		virtual SIMessageList __getMaps () const;
 
 
 	protected:
