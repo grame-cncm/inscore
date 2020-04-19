@@ -13,6 +13,7 @@
 /ITL/scene/m3 color maroon ;
 /ITL/scene/m3 radius 30 30;
 /ITL/scene/m3 alpha 0.7;
+/ITL/scene/m3 watch mouseDown (/ITL/scene/circ date '$date');
 
 /ITL/scene/circ set ellipse 0.1 0.1;
 /ITL/scene/circ color orange ;
