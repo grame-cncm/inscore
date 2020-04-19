@@ -403,6 +403,12 @@ std::vector<SMaster> IObject::getMasters() const {
 }
 
 //--------------------------------------------------------------------------
+std::vector<SIObject> IObject::getSlaves() const {
+	SIObject so (const_cast<IObject*>(this));
+	return getParent()? getParent()->getSlaves(so) : getScene()->getSlaves(so);
+}
+
+//--------------------------------------------------------------------------
 // the next getMaster(s) methods take an object argument due to the fact that
 // the query looks for the master in the child node and thus,
 // an object that requests it's masters has to query it's parent
@@ -1622,6 +1628,47 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 }
 
 //--------------------------------------------------------------------------
+rational IObject::point2date (float x, float y, const std::string& mapname, int n) const
+{
+	rational nodate(0,0);
+	const SRelativeTime2GraphicMapping&	mapping = getMapping (mapname);	// get the mapping first
+	if (!mapping) return nodate;										// failed to get the mapping
+
+	for (auto i: mapping->reverse()) {
+		if (i.first.include (x, y)) {								// check if graphic segment includes the location
+			int repeat = n;											// initializes the repeat count
+			double a = (x - i.first.xinterval().first()) / i.first.xinterval().size(); // this is the relative point position
+			for (auto si: i.second) {
+				if (!repeat--) {									// expected repeat reached
+					// the date is computed as a float value to avoid overflow of rational values
+					float date = float(si.start()) + float(si.size()) * a;
+					return rational(date);							// and return the float value as a rational
+				}
+			}
+		}
+	}
+	return nodate;							// no such segment or repeat
+}
+
+//--------------------------------------------------------------------------
+rational IObject::point2date (float x, float y) const
+{
+	bool hasNamed = false;
+	// try all the available named mappings
+	for (auto m: namedMappings()) {
+		if (m.first.size()) {
+			rational date = point2date (x, y, m.first, 0);
+			if (date.getDenominator()) {
+				return date;
+			}
+			hasNamed = true;
+		}
+	}
+	// don't try default mapping when there are named mappings
+	return hasNamed ? rational(0,0) : point2date (x, y, "",  0);
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 {
 	int n = msg->size();
@@ -1644,7 +1691,8 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 					if (!msgs || msgs->list().empty()) return MsgHandler::kProcessed;		// nothing to do, no associated message
 
 					MouseLocation mouse (x, y, ox, oy, sx, sy);
-					EventContext env(mouse, rational(0,1), this);
+					rational date = point2date(x, y);
+					EventContext env(mouse, date, this);
 					TMessageEvaluator me;
 					SIMessageList outmsgs = me.eval (msgs, env);
 					if (outmsgs && outmsgs->list().size()) outmsgs->send();		// when not empty, sends the evaluated messages

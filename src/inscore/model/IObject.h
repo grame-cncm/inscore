@@ -514,9 +514,14 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/*! \brief gives the slaves of an object
 			\param o the object to look for in the synchronization set
 			\return a vector of all the slaves or an empty vector when not found
-		*/    
+		*/
         virtual std::vector<SIObject> getSlaves(const SIObject o) const;
 	
+		/*! \brief gives the slaves of an object
+			\return a vector of all the slaves or an empty vector when not found
+		*/
+        virtual std::vector<SIObject> getSlaves() const;
+
 		/*! \brief gives a date location on the object frame
 			\param date a date
 			\param p	on output: the corresponding point
@@ -525,7 +530,23 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			This method is intended to support the frame synchronization mode: 
 		*/
         virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
-	
+
+		/*	\brief convert a location into a date using a named mapping
+			\param x		the point x coordinate
+			\param y		the point y coordinate
+			\param mapname	the map to be used for conversion
+			\param n		the repeat number to be retrieved (indexed from 0)
+			\return a date
+		*/
+		virtual libmapping::rational point2date (float x, float y, const std::string& mapname, int n) const;
+
+		/*	\brief convert a location into a date
+			\param x		the point x coordinate
+			\param y		the point y coordinate
+			\return a date
+		*/
+		virtual libmapping::rational point2date (float x, float y) const;
+		
         /// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
     
