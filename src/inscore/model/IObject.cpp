@@ -349,14 +349,21 @@ IObject::~IObject()
 	delete fView;
 }
 
-void IObject::del()		{ _del(true); }
+void IObject::del() {
+	int subdel = 0;
+	for (auto o: fSubNodes) {
+		o->del();
+		subdel++;
+	}
+	_del(true);
+}
 void IObject::_del(bool delsigcnx)
 {
 	if(fLock){
-		ITLErr<<"Impossible to delete "<<getOSCAddress()<<", the object is locked."<<ITLEndl;
+		ITLErr<<"Impossible to delete " << getOSCAddress()<< ", the object is locked." << ITLEndl;
 		return;
 	}
-    // we set the delte flag to 1
+    // we set the delete flag to 1
     fDelete = true;
 	IAppl::delAliases (getOSCAddress());
 
