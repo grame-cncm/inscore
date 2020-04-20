@@ -39,7 +39,7 @@ c/4 _
 [ % first voice, clarient in A, musical representation ....
 \pageFormat<w=25cm,h=38cm,tm=4cm,lm=2cm,bm=2cm,rm=2cm>
 \title<"Clarinet Quintet"> \composer<"Mozart, K. 581",dy=1cm> 
-\systemFormat<dx=2cm>
+\systemFormat<dx=2cm> \barFormat<style="system">
 
  \instr<"clarinet in A",transp="A",dx=-2cm,dy=-0.6cm> 
 \clef<"g">   \key<"A"> % you do not need specify the key, but you can; 
