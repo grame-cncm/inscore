@@ -154,6 +154,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
     else
         newmsg = IMessage::create(*msg);
     
+	if (parent->getDeleted())return MsgHandler::kProcessedNoChange;
 	SIObject obj = IObjectFactory::create(objName, objType, parent);
 	if (obj) {
 		if(previousObj) previousObj->transferAttributes(obj);
