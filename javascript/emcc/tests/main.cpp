@@ -27,15 +27,13 @@ class TestGlue : public INScoreApplicationGlue
 };
 
 
-static void create_obj (const char* type)
+static void create_obj (const char* type, const char* address)
 {
 	INScore::MessagePtr msg = INScore::newMessage("set");
 	INScore::add(msg, type);
 	INScore::add(msg, 0.5f);
 	INScore::add(msg, 0.5f);
-	string address = "/ITL/scene/";
-	address += type;
-	INScore::postMessage(address.c_str(), msg);
+	INScore::postMessage(address, msg);
 }
 
 static void test_messages ()
@@ -109,8 +107,8 @@ static void test_sync (INScoreGlue * glue)
 	INScore::MessagePtr msg = INScore::newMessage("new");
 	INScore::postMessage("/ITL/scene", msg);
 
-	create_obj("rect");
-	create_obj("ellipse");
+	create_obj("rect", "/ITL/scene/rect");
+	create_obj("ellipse", "/ITL/scene/circ");
 
 	msg = INScore::newMessage();
 	INScore::add(msg, "ellipse");
@@ -125,6 +123,16 @@ static void test_sync (INScoreGlue * glue)
 	glue->timeTask();
 }
 
+static void test_hierarchy_bug (INScoreGlue * glue)
+{
+	create_obj ("rect" , "/ITL/scene/rect");
+	INScore::MessagePtr msg = INScore::newMessage("del");
+	INScore::postMessage("/ITL/scene/*", msg);
+	create_obj ("rect" , "/ITL/scene/rect");
+	create_obj ("ellipse" , "/ITL/scene/rect/e");
+	glue->timeTask();
+}
+
 int main (int argc, char*argv[])
 {
 	cout << "INScore lib tests" << endl;
@@ -133,7 +141,8 @@ int main (int argc, char*argv[])
 //	test_messages ();
 //	test_load ();
 //	test_glue (glue);
-	test_sync (glue);
+//	test_sync (glue);
+	test_hierarchy_bug (glue);
 	test_stop (glue);
 	return 0;
 }
