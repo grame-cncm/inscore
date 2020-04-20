@@ -35,7 +35,7 @@ using namespace std;
 
 #define GuidoFreeStreamString(type)
 #define GuidoCloseStream(stream)
-#define GuidoResetStream(stream)
+#define GuidoResetStream(stream) 	fReset=true
 #define GuidoOpenStream()	0
 
 #endif
@@ -54,7 +54,7 @@ IGuidoStream::IGuidoStream( const std::string& name, IObject * parent )
     fGuidoStream = GuidoOpenStream();
     
 	fMsgHandlerMap[kclear_SetMethod] = TMethodMsgHandler<IGuidoStream, void (IGuidoStream::*)()>::create(this, &IGuidoStream::clear);
-    fMsgHandlerMap[kwrite_SetMethod]		= TMethodMsgHandler<IGuidoStream>::create(this, &IGuidoStream::write);
+    fMsgHandlerMap[kwrite_SetMethod] = TMethodMsgHandler<IGuidoStream>::create(this, &IGuidoStream::write);
 }
 
 IGuidoStream::~IGuidoStream()
@@ -105,14 +105,12 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::clear()
 {
-#ifdef EMCC
-	fReset = true;
-#else
+#ifndef EMCC
 	if(fGMN=="") return;
+#endif
 
 	GuidoResetStream(fGuidoStream);
 	setGMN("");
-#endif
 	newData(true);
 }
 
