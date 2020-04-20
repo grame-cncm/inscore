@@ -75,6 +75,7 @@ class JSGMNView extends JSSvgBase {
 			this.fPage = page;
 			return true;
 		}
+		else console.error (obj.getOSCAddress() + " failed to parse gmn code.")
 		return false;
 	}
 
