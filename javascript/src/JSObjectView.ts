@@ -169,8 +169,8 @@ abstract class JSObjectView {
 	}
 
 	notify(event: MouseEvent, id: number, dest: string): void {
-		event.stopImmediatePropagation();
-		event.preventDefault();
+		// event.stopImmediatePropagation();
+		// event.preventDefault();
 		if (!this.accept(event, id)) return;
 		if ((id == kMouseMoveID) && (event.buttons != 1)) return;	// ignore move event without mouse button
 		let mevent = null;
