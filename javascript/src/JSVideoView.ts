@@ -18,16 +18,6 @@ class JSVideoView extends JSAutoSize {
         this.fVideo.src  = obj.getFile();
 		return super.updateSpecial (obj, objid );
 	}
-
-	// updateView	( obj: IObject) : void {
-	// 	let video = <IVideo>obj;
-    //     if (this.fFile != video.getFile() || this.fFile == "") {
-	// 		this.fVideo.src = video.getFile();
-	// 		this.fFile = video.getFile();
-	// 	}
-    //     super.updateView(obj);
-	// 	this.updateVideoControl(video);
-	// }
  
 	setShadow(elt: HTMLElement, val: OShadow): void {
 		this.fVideo.style.filter = `drop-shadow(${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px)`;
