@@ -177,11 +177,11 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 	if (!msg->param(1, library)) return MsgHandler::kBadParameters;
 	fLibrary = library;
 	if (load(fLibrary.c_str())) {
-		fBuildUI	= resolve<buildUserInterface>(kbuildUserInterface);	
-		fCompute	= resolve<compute>(kcompute);
-		fInputs		= resolve<getNumInputs>(kgetNumInputs);
-		fOutputs	= resolve<getNumOutputs>(kgetNumOutputs);
-		fInit		= resolve<fpinit>(kfpinit);
+		fBuildUI	= TPlugin::resolve<buildUserInterface>(kbuildUserInterface);
+		fCompute	= TPlugin::resolve<compute>(kcompute);
+		fInputs		= TPlugin::resolve<getNumInputs>(kgetNumInputs);
+		fOutputs	= TPlugin::resolve<getNumOutputs>(kgetNumOutputs);
+		fInit		= TPlugin::resolve<fpinit>(kfpinit);
 		if (!fBuildUI || !fCompute || !fInputs || !fOutputs || !fInit) {
 			unload();
 			ITLErr << cantload <<  "unresolved functions." << ITLEndl;

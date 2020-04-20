@@ -41,10 +41,10 @@ bool QGuidoImporter::initialize()
 {
 	mMusicXMLFileConverter = mMusicXMLStringConverter = 0;
 	if (glibmxml.load(musicxmllib)) {
-		mMusicXMLFileConverter	 = glibmxml.resolve<musicxml2guido>("musicxmlfile2guido");
-		mMusicXMLStringConverter = glibmxml.resolve<musicxml2guido>("musicxmlstring2guido");
-		mMusicXMLVersion		 = glibmxml.resolve<musicxmlversion>("musicxmllibVersionStr");
-		mMusicXML2GuidoVersion	 = glibmxml.resolve<musicxmlversion>("musicxml2guidoVersionStr");
+		mMusicXMLFileConverter	 = glibmxml.TPlugin::resolve<musicxml2guido>("musicxmlfile2guido");
+		mMusicXMLStringConverter = glibmxml.TPlugin::resolve<musicxml2guido>("musicxmlstring2guido");
+		mMusicXMLVersion		 = glibmxml.TPlugin::resolve<musicxmlversion>("musicxmllibVersionStr");
+		mMusicXML2GuidoVersion	 = glibmxml.TPlugin::resolve<musicxmlversion>("musicxml2guidoVersionStr");
 		glibmxml.setLoadHints(QLibrary::PreventUnloadHint);
 	}
 	return mMusicXMLSupported = (mMusicXMLFileConverter && mMusicXMLStringConverter);
