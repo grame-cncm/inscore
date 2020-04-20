@@ -1,0 +1,36 @@
+
+/ITL/scene/* del;
+
+gmn = '[ \clef<"g"> \meter<"4/4">';
+frag1 = 'g/4 b f';
+frag2 = 'e/8 d f/4';
+frag3 = 'g/16 f e/8 d/4';
+
+/ITL/scene/score set gmnstream $gmn;
+/ITL/scene/score y -0.2;
+/ITL/scene/score watch mouseDown (/ITL/scene/cursor date '$date');
+
+header = "[ \pageFormat<lm=0, tm=0, rm=0, bm=0>";
+/ITL/scene/frag1 set gmn $header + $frag1 + "]";
+/ITL/scene/frag2 set gmn $header + $frag2 + "]";
+/ITL/scene/frag3 set gmn $header + $frag3 + "]";
+/ITL/scene/frag1 x -0.6;
+/ITL/scene/frag3 x 0.6;
+/ITL/scene/frag* y 0.55;
+/ITL/scene/frag* color grey;
+
+/ITL/scene/frag* watch mouseEnter (/ITL/scene/$self color black );
+/ITL/scene/frag* watch mouseLeave (/ITL/scene/$self color grey );
+/ITL/scene/frag1 watch mouseDown (/ITL/scene/score write $frag1 );
+/ITL/scene/frag2 watch mouseDown (/ITL/scene/score write $frag2 );
+/ITL/scene/frag3 watch mouseDown (/ITL/scene/score write $frag3 );
+
+/ITL/scene/ctrl set txt Reset;
+/ITL/scene/ctrl fontSize 20;
+/ITL/scene/ctrl fontFamily Arial;
+/ITL/scene/ctrl y 0.7;
+/ITL/scene/ctrl color grey;
+/ITL/scene/ctrl watch mouseEnter (/ITL/scene/$self color black );
+/ITL/scene/ctrl watch mouseLeave (/ITL/scene/$self color grey );
+/ITL/scene/ctrl watch mouseDown (/ITL/scene/score set gmnstream $gmn );
+
