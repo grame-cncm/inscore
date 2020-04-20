@@ -67,7 +67,7 @@ abstract class JSObjectView {
 	// update methods
 	//---------------------------------------------------------------------
 	updateView(obj: INScoreObject, oid: number, master: number, force: boolean, keepRatio = false) : void {
-		if (obj.deleted()  && this.getElement().parentNode) { // parent could be deleted
+		if (obj.deleted() && this.getElement().parentNode) { // parent could be deleted
 			this.getElement().parentNode.removeChild (this.getElement());
 			this.delete();
 			return;
@@ -299,9 +299,14 @@ abstract class JSObjectView {
     	let view = JSObjectView.fObjects[id];
     	if (view) {
 			view.setIObject (oid);
-	    	let obj = INScore.objects().create(oid);
-			view.updateView (obj, oid, 0, forcepos); 
-    		INScore.objects().del (obj);
+			try {
+				let obj = INScore.objects().create(oid);
+				view.updateView (obj, oid, 0, forcepos); 
+				INScore.objects().del (obj);
+			}
+			catch (error) {
+				console.error (error);
+			}
     	}
     }
 
