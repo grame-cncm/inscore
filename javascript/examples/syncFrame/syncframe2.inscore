@@ -4,7 +4,6 @@
 /ITL/scene/title  set  txt "Synchronisation modes: using 'syncFrame'";
 /ITL/scene/title color darkBlue;
 /ITL/scene/title fontSize 24;
-#/ITL/scene/title fontWeight bold;
 grey = 180;
 /ITL/scene/title effect shadow 3 3 $grey $grey $grey 75 2;
 /ITL/scene/title y -0.85;

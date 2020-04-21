@@ -1,10 +1,23 @@
 /ITL/scene/* del;
 
+
+/ITL/scene/title  set  txt "A single object with several masters";
+/ITL/scene/title color darkBlue;
+/ITL/scene/title fontSize 24;
+grey = 180;
+/ITL/scene/title effect shadow 3 3 $grey $grey $grey 75 2;
+/ITL/scene/title y -0.85;
+
 /ITL/scene/m1 set rect 1 1 ;
 /ITL/scene/m1 color darkblue ;
 /ITL/scene/m1 radius 30 30;
 /ITL/scene/m1 x -0.2 ;
 /ITL/scene/m1 y -0.2 ;
+/ITL/scene/m1 watch mouseEnter (/ITL/scene/$self penWidth 1);
+/ITL/scene/m1 watch mouseLeave (/ITL/scene/$self penWidth 0);
+/ITL/scene/m1 watch mouseDown  (/ITL/scene/circ date '$date');
+/ITL/scene/m1 watch mouseMove  (/ITL/scene/circ date '$date');
+
 
 /ITL/scene/m2 set ellipse 1.1 0.7 ;
 /ITL/scene/m2 color lightgrey ;
@@ -29,7 +42,7 @@
 /ITL/scene/sync circ m* syncFrame;
 
 /ITL/scene/control set txt "Play";
-/ITL/scene/control fontSize 24;
+/ITL/scene/control fontSize 20;
 /ITL/scene/control watch mouseEnter (/ITL/scene/$self red 240);
 /ITL/scene/control watch mouseLeave (/ITL/scene/$self red 0);
 /ITL/scene/control y 0.80;

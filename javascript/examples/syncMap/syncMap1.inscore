@@ -8,6 +8,7 @@
 
 /ITL/scene/m[12] color mediumblue;
 /ITL/scene/m[12] radius 15 15;
+/ITL/scene/m[12] alpha 180;
 
 /ITL/scene/m3 set rect 0.5 1.4 ;
 /ITL/scene/m3 color maroon ;
@@ -69,8 +70,8 @@ w = 0.25;
 /ITL/scene/ctrlrect watch mouseEnter (/ITL/scene/$self penColor 240 0 0 );
 /ITL/scene/ctrlrect watch mouseLeave (/ITL/scene/$self penColor 0 0 0 );
 
-rotate = ( 	/ITL/scene/m* rotatez '$x[0,360]',
-			/ITL/scene/m* rotatey '$y[0,360]' );
+rotate = ( 	/ITL/scene/m* rotatez '$x[0,180]',
+			/ITL/scene/m* rotatey '$y[0,180]' );
 /ITL/scene/ctrlrect watch mouseDown ( $rotate );
 /ITL/scene/ctrlrect watch mouseMove ( $rotate );
 
