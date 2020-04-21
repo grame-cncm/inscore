@@ -537,6 +537,31 @@ std::vector<float> IObjectAdapter::getCurveInfos() const
 }
 
 //--------------------------------------------------------------------------
+std::vector<JSRect> IObjectAdapter::getMaps () const
+{
+	std::vector<JSRect> out;
+	const TMapable::namedMapping& named = fObject->namedMappings();
+	bool acceptnoname = named.size() == 1;
+	for (auto m: named) {
+
+		SRelativeTime2GraphicMapping g2t = m.second;
+		const Graphic2RelativeTimeRelation& rel = g2t->reverse();
+		if (m.first.size() || acceptnoname) {
+			for (auto seg: m.second->reverse()) {
+				const GraphicSegment& gs = seg.first;
+				JSRect rect;
+				rect.x = gs.xinterval().first();
+				rect.y = gs.yinterval().first();
+				rect.width  = gs.xinterval().size();
+				rect.height = gs.yinterval().size();
+				out.push_back (rect);
+			}
+		}
+	}
+	return out;
+}
+
+//--------------------------------------------------------------------------
 JSUpdateInfos IObjectAdapter::getUpdateInfos (int masterId) const
 {
 	JSUpdateInfos infos;
@@ -553,6 +578,7 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos (int masterId) const
 		infos.updatecolor 	= _getColor (fObject, infos.color);
 		infos.updateeffect	= _getEffect (fObject->getEffect(), infos.effect);
 		infos.updateevents	= _getEvents (fObject, infos.events);
+		infos.showmap		= fObject->mapDebug();
 	}
 	return infos;
 }

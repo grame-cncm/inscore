@@ -95,6 +95,7 @@ struct JSUpdateInfos {
 	bool updatecolor = false;
 	bool updateeffect= false;
 	bool updateevents= false;
+	bool showmap = false;
 	bool deleted = false;
 	bool newdata = false;
 };
@@ -128,6 +129,7 @@ struct JSArcInfos {
 
 struct JSRadius { float x = 0; float y = 0; };
 struct JSDate { int	num = 0; int denum = 0; };
+struct JSRect { float x; float y; float width; float height; };
 
 struct JSScoreInfos {
 	std::string code;
@@ -217,13 +219,14 @@ class inscore_export IObjectAdapter
 		std::string   getSVGInfos () const;
 		JSRadius      getRadius () const;		// for IRect
 		JSArcInfos    getArcInfos() const;
-	    std::vector<float> getPolygonInfos() const;
-		std::vector<float> getCurveInfos() const;
-		JSScoreInfos  getGuidoInfos() const;
-		JSScoreInfos  getXMLInfos() const;
-		JSPianorollInfos getPianorollInfos() const;
-		JSMediaInfos getMediaInfos() const;
-		JSGMNStreamInfos  getGuidoStream() const;
+	    std::vector<float> 	getPolygonInfos() const;
+		std::vector<float> 	getCurveInfos() const;
+		JSScoreInfos  		getGuidoInfos() const;
+		JSScoreInfos  		getXMLInfos() const;
+		JSPianorollInfos 	getPianorollInfos() const;
+		JSMediaInfos 		getMediaInfos() const;
+		JSGMNStreamInfos  	getGuidoStream() const;
+		std::vector<JSRect> getMaps() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

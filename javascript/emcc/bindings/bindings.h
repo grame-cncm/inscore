@@ -102,6 +102,7 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("updatecolor", &JSUpdateInfos::updatecolor)
 		.field("updateeffect", &JSUpdateInfos::updateeffect)
 		.field("updateevents", &JSUpdateInfos::updateevents)
+		.field("showmap", 	&JSUpdateInfos::showmap)
 		.field("deleted", 	&JSUpdateInfos::deleted)
 		.field("newdata", 	&JSUpdateInfos::newdata);
 	
@@ -141,6 +142,12 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	value_object<JSDate>("JSDate")
 		.field("num",  	&JSDate::num)
 		.field("denum", &JSDate::denum);
+
+	value_object<JSRect>("JSRect")
+		.field("x",  	&JSRect::x)
+		.field("y", 	&JSRect::y)
+		.field("width", &JSRect::width)
+		.field("height",&JSRect::height);
 	
 	value_object<JSPRollLimits>("JSPRollLimits")
 		.field("start",  	&JSPRollLimits::start)

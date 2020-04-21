@@ -80,11 +80,13 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getPianorollInfos", &IObjectAdapter::getPianorollInfos)
 		.function("getXMLInfos",    &IObjectAdapter::getXMLInfos)
 		.function("getMediaInfos",  &IObjectAdapter::getMediaInfos)
-		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos);
+		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos)
+		.function("getMaps",    	&IObjectAdapter::getMaps);
 
 	register_vector<float>	("vector<float>");
 	register_vector<int>	("vector<int>");
 	register_vector<string> ("vector<string>");
+	register_vector<JSRect> ("vector<JSRect>");
 
 
 	// Binding C++ class adapter for INScore

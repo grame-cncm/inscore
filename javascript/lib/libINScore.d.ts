@@ -58,6 +58,7 @@ interface INScoreJSGlue {
 //------------------------------------------------------------------------
 // INScore objects interface 
 
+interface RectVector	{ size(): number; get(i: number) : number; }
 interface FloatVector	{ size(): number; get(i: number) : number; }
 interface StringVector	{ size(): number; get(i: number) : string; }
 interface IntVector 	{ size(): number; get(i: number) : number; }
@@ -129,6 +130,7 @@ interface OUpdateInfos {
 	updatecolor:  boolean;
 	updateeffect: boolean;
 	updateevents: boolean;
+	showmap:      boolean;
 	deleted:      boolean;
 	newdata:      boolean;
 }
@@ -188,6 +190,7 @@ interface INScoreObject {
 	getXMLInfos():     OScore;
 	getMediaInfos():   OMedia;
 	getSVGInfos():     string;
+	getMaps():     	   RectVector;
 
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
