@@ -205,6 +205,14 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 	return status;
 }
 
+#ifdef EMCC
+static void getJSMap (HTMLObjectView* view, string mapname, int objid)
+{
+	if (view) {
+		EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapname.c_str(), view->getID(), objid);
+	}
+}
+#endif
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
@@ -239,13 +247,13 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 				else
 				{
 #ifdef EMCC
-					HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(getView());
-					if (view) {
-						EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapName.c_str(), view->getID(), int(this));
-					}
-#else
-					requestMapping(mapName);
+					getJSMap (dynamic_cast<HTMLObjectView*>(getView()), mapName, int(this));
+//					HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(getView());
+//					if (view) {
+//						EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapName.c_str(), view->getID(), int(this));
+//					}
 #endif
+					requestMapping(mapName);
 					localMapModified(true);
 					return MsgHandler::kProcessed;
 				}
@@ -361,6 +369,15 @@ void IGuidoCode::setTime2GraphicMap (const std::string& name, SRelativeTime2Grap
 //-------------------------------------------------------------------------
 void IGuidoCode::updateScoreMapping ()
 {
+#ifdef EMCC
+cerr << "IGuidoCode::updateScoreMapping" << endl;
+	for (auto m: namedMappings()) {
+		if (m.first.size()) {
+cerr << "  => " << m.first << endl;
+			getJSMap (dynamic_cast<HTMLObjectView*>(getView()), m.first, int(this));
+		}
+	}
+#endif
 	TDefaultLocalMapping::buildDefaultMapping (this);
 }
 

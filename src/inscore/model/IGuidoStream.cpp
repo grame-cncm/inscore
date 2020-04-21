@@ -141,6 +141,7 @@ void IGuidoStream::writeStream (std::string t)
     setGMN(str);
 	GuidoFreeStreamString (str);
 #endif
+	localMapModified(true);
     newData(true);
 }
 
