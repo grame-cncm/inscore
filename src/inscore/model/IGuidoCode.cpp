@@ -78,6 +78,7 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[""]						= TGetParamMsgHandler<std::string>::create(fGMN);
 
 	requestMapping("");
+	setPending();
 }
 
 
@@ -119,12 +120,6 @@ void IGuidoCode::accept (Updater* u)
 {
 	u->updateTo (SIGuidoCode(this));
 }
-
-//--------------------------------------------------------------------------
-//SIMessageList IGuidoCode::__getMaps () const
-//{
-//	return TMapMsgHandler<float,2>::getMapMsgs( namedMappings() , this );
-//}
 
 //--------------------------------------------------------------------------
 void IGuidoCode::setdPage( int dpage )
@@ -268,18 +263,23 @@ SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 	{
 		string param = "-";
 		msg->param(i, param);
-		if ( param == kmap_GetSetMethod )
-		{
-			for ( std::vector<string>::const_iterator i = fRequestedMappings.begin() ; i != fRequestedMappings.end() ; i++ )
-			{
-				SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
-				*msg << (*i);
-				outMsgs->list().push_back (msg);
+		if ( param == kmap_GetSetMethod ) {
+			for (auto m: namedMappings()) {
+				if (m.first.size()) {
+					SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
+					msg->add (m.first);
+					outMsgs->list().push_back (msg);
+				}
 			}
+//			for ( std::vector<string>::const_iterator i = fRequestedMappings.begin() ; i != fRequestedMappings.end() ; i++ )
+//			{
+//				SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
+//				*msg << (*i);
+//				outMsgs->list().push_back (msg);
+//			}
 			break;
 		}
-		else if ( param == "pageDate" )
-		{
+		else if ( param == "pageDate" ) {
 			i++;
 			int pcount = getPageCount();
 			int pagenumber;

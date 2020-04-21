@@ -121,10 +121,6 @@ class IGuidoCode : public IObject
 		void	setPageCount(int count);
 		void 	updateScoreMapping ();
 
-		/// \brief get an object maps
-//		virtual SIMessageList __getMaps () const;
-
-
 	protected:
 				 IGuidoCode( const std::string& name, IObject * parent );
 		virtual ~IGuidoCode() {}
