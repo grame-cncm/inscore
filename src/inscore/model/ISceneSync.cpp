@@ -358,7 +358,12 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 		} else break;
 	} while (true);
 	// eventually sets the synchonization with the optional parameters
-    return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+    MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+#ifdef EMCC
+	if (ret == MsgHandler::kProcessedNoChange)
+		INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
+#endif
+    return ret;
 }
 
 //--------------------------------------------------------------------------
