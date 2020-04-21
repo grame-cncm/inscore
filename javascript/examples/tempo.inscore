@@ -1,0 +1,65 @@
+
+/ITL/scene/* del;
+
+titlecolor  = 20 0 150;
+gray 		= 180 180 180;
+shadow 		= shadow 4 4 $gray 75 3;
+titlesize 	= 40;
+textsize  	= 20;
+tempo	= 120;
+
+###########################################
+# start to install the title
+###########################################
+/ITL/scene/title set txt "Moving cursor";
+/ITL/scene/title color $titlecolor;
+/ITL/scene/title fontSize $titlesize;
+/ITL/scene/title fontWeight bold;
+/ITL/scene/title effect $shadow;
+/ITL/scene/title y -0.65;
+/ITL/scene/subtitle set txt "Using the 'tempo' message with positive and negative values.";
+/ITL/scene/subtitle fontSize $textsize;
+/ITL/scene/subtitle color grey;
+/ITL/scene/subtitle y -0.42;
+/ITL/scene/tempo set txt Tempo $tempo;
+/ITL/scene/tempo color $gray;
+/ITL/scene/tempo fontSize 22;
+/ITL/scene/tempo y 0.42;
+
+###########################################
+# setup a simple score
+###########################################
+/ITL/scene/score set gmn '[\meter<"4/4"> g g g g g g g g g g g g \repeatEnd]';
+/ITL/scene/score map staff1;
+/ITL/scene/score watch mouseDown ( /ITL/scene/cursor date '$date' );
+
+###########################################
+# and a cursor synchronized to the score
+###########################################
+w = 0.08;
+/ITL/scene/cursor set ellipse $w $w;
+/ITL/scene/cursor color orange;
+/ITL/scene/sync cursor 'score:staff1' syncTop;
+/ITL/scene/cursor dy -0.05;
+
+###########################################
+# watch different time zones to change the tempo
+###########################################
+tempo	= 120;
+/ITL/scene/cursor watch timeEnter 3 4 (
+	/ITL/scene/cursor tempo -$tempo,
+	/ITL/scene/tempo set txt Tempo -$tempo
+	);
+/ITL/scene/cursor watch timeEnter -1 0 (
+	/ITL/scene/cursor tempo $tempo,
+	/ITL/scene/tempo set txt Tempo $tempo
+);
+
+###########################################
+# and finally start 
+/ITL/scene/cursor tempo $tempo;
+
+__END__
+/ITL/scene/cursor tempo 0;
+/ITL/scene/cursor date 0;
+/ITL/scene/sync cursor;

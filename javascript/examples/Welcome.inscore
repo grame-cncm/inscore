@@ -1,0 +1,37 @@
+
+/ITL/scene/* del;
+
+grey = 180 180 180;
+shadow = shadow 5 5 $grey 75 3;
+color = 20 0 150;
+
+/ITL/scene/welcome set txt "Welcome to INScore-JS";
+/ITL/scene/welcome color $color;
+/ITL/scene/welcome fontSize 32;
+/ITL/scene/welcome fontWeight bold;
+/ITL/scene/welcome effect $shadow;
+/ITL/scene/welcome y -0.7;
+
+/ITL/scene/version set txt "Version" $(/ITL get version);
+/ITL/scene/version fontSize 14;
+/ITL/scene/version y -0.55;
+
+/ITL/scene/what set html '<div style="text-align: center">An environment for the design of
+<br />interactive, augmented music scores.</div>';
+/ITL/scene/what y -0.34;
+/ITL/scene/what fontSize 18;
+
+/ITL/scene/score set gmn "[ a f# g ]";
+/ITL/scene/score effect $shadow;
+/ITL/scene/score scale 1.2;
+/ITL/scene/score y -0.05;
+
+/ITL/scene/comment set html '<div style="text-align: center">
+INScore is an open source project developed by GRAME.<br />
+More information on <br />
+<a href=https://inscore.grame.fr style="font-size: 110%" target=_blank>inscore.grame.fr</a></span>';
+/ITL/scene/comment y 0.28;
+
+/ITL/scene/logo set img "imgs/grame.png";
+/ITL/scene/logo scale 0.55;
+/ITL/scene/logo y 0.6;
