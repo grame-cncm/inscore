@@ -7,12 +7,12 @@ class TFileBased {
 
 	fContent = "";
 
-	getData (file: string, div: HTMLElement, pending: FileDataPending)	: boolean {
+	getData (file: string, div: HTMLElement, pending: FileDataPending = null)	: boolean {
 		if (this.fContent == null) return true;	// error while loading file, don't try again
 		if (this.fContent.length)  return true;	// done - content is available
 		TFileLoader.load (div, file).then ((text: string) => { 
             this.fContent = text;
-			pending();
+			if (pending) pending();
 		});
 		return false;
 	}
