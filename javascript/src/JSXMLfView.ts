@@ -9,7 +9,9 @@ class JSXMLfView extends JSXMLView {
 	toString() : string		    { return "JSXMLfView"; }
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-		if (this.fContent.getData (obj.getFile(), this.getElement())) 
+        let address = obj.getOSCAddress();
+        let pending = (): void => { this.refresh (address); };
+		if (this.fContent.getData (obj.getFile(), this.getElement(), pending)) 
 			return super.updateSpecial (obj, oid);
 		return false;
 	}
