@@ -435,6 +435,7 @@ void IGlue::timeTask ()
 	if (fDelayStack->size()) {
 		SIMessage* msgptr = fDelayStack->pop();
 		while (msgptr) {
+//cerr << "delayed popped : " << *msgptr << endl;
 			fMsgStack->push (msgptr);
 			msgptr = fDelayStack->pop();
 		}
