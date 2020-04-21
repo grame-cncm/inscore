@@ -213,8 +213,9 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	if (!fMsgStack || !fController || !fModel) // || !fNetThread)
 		throw("Memory allocation failed!");
 #if HASOSCStream
-	cout << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 	oscerr.setLogWindow (fModel->getLogWindow());
+	oscerr << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << OSCEnd();
+	cout << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 #elif defined(EMCC)
 	cout << "INScore JS v. " << INScore::versionStr() << endl;
 #else
