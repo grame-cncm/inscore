@@ -108,7 +108,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
 		bool	fLock;					///< if true the object can't be deleted
-		bool	fPending = false;		///< true when the object data are pending  (like width, height, mapping...) intended for javascript version
+		int		fPending = 0;		///< true when the object data are pending  (like width, height, mapping...) intended for javascript version
 		int		fState;					///< the object modification state
 		///< the object export flag and the object childexport option flag (if the children should be exported as well)
 		std::deque<std::pair<std::string, bool> >	fExportFlag;
@@ -659,7 +659,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief the \c 'effect' message handler
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
 		virtual bool           getLocked () const 	{ return fLock;}
-		virtual void           setPending () 		{ fPending = true; }
+		virtual void           setPending () 		{ fPending++; }
 		virtual SIMessageList  getWatch () const;
 		virtual SIMessageList  getStack () const;
 		virtual SIMessageList  getAliases () const;

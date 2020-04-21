@@ -804,8 +804,8 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 					IObject * target = targets[i];
 #if EMCC
 					if (target->getPending() && (msg->message() != krefresh_SetMethod)) {
-//cerr << "pending: " << msg << " " << msg->message() << " -> " << target->getOSCAddress() << endl;
-						INScore::delayMessage (target->getOSCAddress().c_str(), INScore::MessagePtr(msg));
+//cerr << "=> delayed: " << msg << endl;
+						INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
 						return MsgHandler::kProcessedNoChange;
 					}
 #endif
@@ -1770,7 +1770,7 @@ void IObject::refresh ()
 {
 	setState (kModified);
 	newData(true);
-	fPending = false;
+	if (fPending) fPending--;
 	if (elements().size()) setState (kSubModified);
 	for (auto elt: elements()) {
 		elt->refresh();
