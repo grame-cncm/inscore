@@ -2,12 +2,11 @@
 ///<reference path="JSSVGBase.ts"/>
 ///<reference path="guidoengine.ts"/>
 
-
 class JSGMNView extends JSSvgBase {
 
 	private fGuido: GuidoEngine;
-	private fAR: ARHandler;
-	private fGR: GRHandler;
+	private fAR: ARHandler = null;
+	private fGR: GRHandler = null;
 	private fPage = 0;
 	protected fParser: GuidoParser;
 
@@ -37,6 +36,7 @@ class JSGMNView extends JSSvgBase {
 	toString() : string		    { return "JSGMNView"; }
 	updateSVGDimensions(w: number, h: number) : void { }
 	guido() : GuidoEngine		{ return this.fGuido; }
+	ready() : boolean			{ return this.fGR != null; }
 	delete() : void	{ 
 		if (this.fGR) {
 			this.fGuido.freeGR(this.fGR);
@@ -70,6 +70,10 @@ class JSGMNView extends JSSvgBase {
 				this.fGuido.freeGR(this.fGR);
 				this.fGuido.freeAR(this.fAR);
 			}
+			else {
+				let address = obj.getOSCAddress();
+				this.refresh (address);
+			}
 			this.fGR = gr;
 			this.fAR = ar;
 			this.fPage = page;
@@ -87,7 +91,7 @@ class JSGMNView extends JSSvgBase {
 		return false;
     }
 	
-	// this method is called bu the model to update the map synchronously
+	// this method is called by the model to update the map synchronously
 	static getMapping (mapname: string, id: number, oid: number) : void {
     	let view = <JSGMNView>JSObjectView.getObjectView(id);
     	if (view) {
@@ -107,7 +111,7 @@ class JSGMNView extends JSSvgBase {
 		if (mapname == "system")
 			return this.fGuido.getSystemMap(this.fGR, this.fPage, width, height );
 		let m = this.scanMap (mapname);
-		if (m.name == "staff") 
+		if (m.name == "staff")
 			return this.fGuido.getStaffMap (this.fGR, this.fPage, width, height, m.index);
 		else if (m.name == "voice") 
 			return this.fGuido.getVoiceMap (this.fGR, this.fPage, width, height, m.index);

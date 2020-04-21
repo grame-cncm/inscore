@@ -63,6 +63,11 @@ abstract class JSObjectView {
 		return 1;
 	}
 
+	refresh (address: string)	: void { 
+		let inscore = gGlue.inscore();
+		inscore.delayMessage (address, inscore.newMessageM ("refresh"));
+	}
+
 	//---------------------------------------------------------------------
 	// update methods
 	//---------------------------------------------------------------------
@@ -96,6 +101,8 @@ abstract class JSObjectView {
 			this.updateEffects(infos.effect);
 		if (infos.updateevents || force)
 			this.updateEvents(infos.events, obj.getOSCAddress());
+		if (infos.showmap) 
+console.log (this + " show map -> " + obj.getMaps().size());
 	}
 
 
