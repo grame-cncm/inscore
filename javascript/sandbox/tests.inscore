@@ -118,6 +118,7 @@ o = 1;
 /ITL/scene/rect del;
 
 /ITL/scene/rect get x y xorigin yorigin radius;
+/ITL/scene/rect get map;
 
 /ITL/scene/img set img P1090915.JPG;
 /ITL/scene/img scale 0.06;
