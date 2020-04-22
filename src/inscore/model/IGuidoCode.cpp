@@ -370,10 +370,10 @@ void IGuidoCode::setTime2GraphicMap (const std::string& name, SRelativeTime2Grap
 void IGuidoCode::updateScoreMapping ()
 {
 #ifdef EMCC
-cerr << "IGuidoCode::updateScoreMapping" << endl;
+//cerr << "IGuidoCode::updateScoreMapping" << endl;
 	for (auto m: namedMappings()) {
 		if (m.first.size()) {
-cerr << "  => " << m.first << endl;
+//cerr << "  => " << m.first << endl;
 			getJSMap (dynamic_cast<HTMLObjectView*>(getView()), m.first, int(this));
 		}
 	}
