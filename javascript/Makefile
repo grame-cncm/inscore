@@ -8,8 +8,10 @@ MAKE ?= make
 
 CHECKDIR := TSCheck
 TSDIR := src
+TESTDIR := testSrc
 TSLIB := $(TSDIR)/lib
-TSSRC := $(wildcard $(TSDIR)/*.ts)
+TESTSRC := $(wildcard $(TESTDIR)/*.ts)
+LIBSRC := $(wildcard $(TSDIR)/*.ts)
 OUT	  := $(patsubst $(TSDIR)/%.ts, $(CHECKDIR)/%.js, $(TSSRC))
 
 MODULES     := node_modules/@grame
@@ -20,7 +22,8 @@ GUIDOMODULE := $(GUIDOLIB:lib/%=$(GUIDO)/%)
 MXML        := $(MODULES)/libmusicxml
 XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm $(TSLIB)/libmusicxml.d.ts $(TSLIB)/libmusicxml.ts
 XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
-VIEW := inscoreview.js
+LIB  := inscoreview.js
+VIEW := inscoretest.js
 
 all :
 	$(MAKE) ts
@@ -46,9 +49,12 @@ test:
 #===============================================================
 # building inscore ts view
 #===============================================================
-ts: $(VIEW)
+ts: $(LIB) $(VIEW)
 
-$(VIEW) : $(TSSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
+$(VIEW) : $(TESTSRC) $(TESTDIR)/tsconfig.json
+	cd $(TESTDIR) && tsc
+
+$(LIB) : $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 	cd $(TSDIR) && tsc
 
 #===============================================================
