@@ -8,8 +8,8 @@
         "outDir": "build",
         "out": "../inscoreview.js",
         "sourceMap": false,
-        "allowUnreachableCode": true,
-        "allowUnusedLabels": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
         "allowJs": false
     }
 }
