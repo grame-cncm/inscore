@@ -26,85 +26,34 @@ w = 0.2;
 /ITL/scene/circ alpha 150;
 /ITL/scene/circ watch mouseDown (/ITL/log write "clicked");
 
-<!-- /ITL/scene/gmn set gmn "[ a b d e g]"; -->
-<!-- 
+/ITL/scene/gmn set gmn "[ a b d e g a f]";
 /ITL/scene/gmn map staff1;
 
 /ITL/scene/sync circ "gmn:staff1";
+
+<!-- 
+/ITL/scene/circ date 0;
+/ITL/scene/circ date 1 4;
+/ITL/scene/circ date 3 4;
+/ITL/scene/circ tempo 60;
 /ITL/scene/sync circ;
+/ITL/scene/gmn get map;
+/ITL/scene/gmn/debug map 1;
+/ITL/scene/score/debug map 1;
+/ITL/scene/gmn x 0.1;
+/ITL/log level 2;
  -->
 
 
 <!-- 
-/ITL/scene/stream set gmnstream "[";
-/ITL/scene/stream write  " a b d";
-/ITL/scene/stream write " g/4 f/8 e";
-/ITL/scene/stream clear;
+/ITL/scene/gmn set gmnstream "[";
+/ITL/scene/gmn write  " a b d";
+/ITL/scene/gmn write " g/4 f/8 e";
+/ITL/scene/gmn clear;
  -->
-
-<!-- 
-/ITL/scene/text set musicxmlf 'gmn/Binchois.musicxml';
-/ITL/scene/text set svgf 'imgs/butterfly.svg';
-/ITL/scene/text set txtf 'text/lorem.txt';
-/ITL/scene/text set gmnf 'gmn/4voices.gmn';
-/ITL/scene/text set pianorollf 'gmn/4voices.gmn';
-/ITL/scene/text set pianorollf 'gmn/mozart.gmn';
-/ITL/scene/text set htmlf 'text/lorem.html';
-/ITL/scene/text set txtf 'http://localhost:8000/todo.txt';
-/ITL/scene/text y -0.2;
-/ITL/scene/text color darkBlue;
-/ITL/scene/text x 0.5;
-/ITL/scene/text get width height;
-/ITL/scene/text penWidth 1;
- -->
-
 
 
 __END__
-
-/ITL/scene/circ  tempo 120;
-/ITL/scene/circ  tempo 0;
-/ITL/scene/circ  date 0;
-
-/ITL/scene/score* scale 0.4;
-
-/ITL/scene/circ  date 0;
-/ITL/scene/circ  date 1 4;
-/ITL/scene/circ  date 8 4;
-/ITL/scene/circ  date 10 4;
-/ITL/scene/circ  date 20 4;
-/ITL/scene/circ  date 12 4;
-/ITL/scene/circ  date 24 4;
-/ITL/scene/circ  date 32 4;
-
-/ITL/scene/score* penWidth 1;
-/ITL/scene/score* color red;
-
-/ITL/scene/score* map staff1;
-/ITL/scene/score* map staff2;
-/ITL/scene/score* map staff3;
-/ITL/scene/score* map staff4;
-/ITL/scene/score* map system;
-/ITL/scene/sync circ "score*:staff1";
-/ITL/scene/sync circ "score*:staff2";
-/ITL/scene/sync circ "score*:staff3";
-/ITL/scene/sync circ "score*:staff4";
-/ITL/scene/sync circ "score*:staff1" syncTop;
-/ITL/scene/sync circ "score*:system";
-/ITL/scene/sync circ;
-
-w = 0.5;
-/ITL/scene/img/circ set ellipse $w $w;
-/ITL/scene/img/circ color orange ;
-/ITL/scene/img/circ x -1;
-/ITL/scene/img/circ get width height;
-
-/ITL/scene/img play 1;
-/ITL/scene/img play 0;
-/ITL/scene/img volume 0.5;
-/ITL/scene/img volume 1;
-/ITL/scene/img vdate 0;
-/ITL/scene/img get width height play;
 
 
 </div>
@@ -114,4 +63,9 @@ w = 0.5;
 </div>
 
 </body>
+
+<script>
+var gGlue = new TestGlue();
+</script>
+
 </html>
