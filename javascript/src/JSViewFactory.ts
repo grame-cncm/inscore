@@ -23,7 +23,7 @@
 ///<reference path="JSSVGfView.ts"/>
 ///<reference path="JSVideoView.ts"/>
 ///<reference path="TSyncManager.ts"/>
-///<reference path="lib/libraries.ts"/>
+///<reference path="libraries.ts"/>
 
 
 //----------------------------------------------------------------------------

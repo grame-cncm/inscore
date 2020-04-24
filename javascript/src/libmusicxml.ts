@@ -1,5 +1,5 @@
 
-///<reference path="../lib/libmusicxml.d.ts"/>
+///<reference path="lib/libmusicxml.d.ts"/>
 
 //----------------------------------------------------------------------------
 // the libMusicXML interface

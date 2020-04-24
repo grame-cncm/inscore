@@ -1,5 +1,5 @@
 
-///<reference path="libINScore.d.ts"/>
+///<reference path="lib/inscore.d.ts"/>
 
 //----------------------------------------------------------------------------
 // INScore interface
@@ -20,7 +20,7 @@ class INScore {
                 }
         });
     }
-            
+
     //------------------------------------------------------------------------
     // async initialization
     moduleInit ( module : any ) : void {

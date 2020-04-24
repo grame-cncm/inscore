@@ -1,7 +1,6 @@
 
 ///<reference path="lib/libINScore.d.ts"/>
-///<reference path="lib/inscore.ts"/>
-///<reference path="lib/constants.ts"/>
+///<reference path="inscore.ts"/>
 ///<reference path="interfaces.ts"/>
 
 
@@ -9,6 +8,14 @@ interface Point {
 	x: number;
 	y: number;
 }
+
+// events types
+const kMouseEnterID 	= 1;
+const kMouseLeaveID 	= 2;
+const kMouseDownID  	= 3;
+const kMouseUpID    	= 4;
+const kMouseMoveID  	= 5;
+const kMouseDClickID	= 6;
 
 //----------------------------------------------------------------------------
 abstract class JSObjectView {
