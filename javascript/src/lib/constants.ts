@@ -24,6 +24,9 @@ const kVerovioType        	: string	= "verovio";
 const kVeroviofType        	: string	= "veroviof";
 const kWebSocketType        : string	= "websocket";
 
+const kInscore        : string	= "inscore";
+const kInscore2       : string	= "inscore2";
+
 // events types
 const kMouseEnterID 	= 1;
 const kMouseLeaveID 	= 2;

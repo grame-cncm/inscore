@@ -1,5 +1,5 @@
-///<reference path="../lib/libINScore.d.ts"/>
 
+///<reference path="libINScore.d.ts"/>
 
 //----------------------------------------------------------------------------
 // INScore interface

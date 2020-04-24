@@ -39,3 +39,5 @@ class libraries {
 	guido()  : GuidoEngine { return this.fGuido; }
 	xmllib() : libmusicxml { return this.fXMLLib; }
 }
+
+var inscorelibs = new libraries();

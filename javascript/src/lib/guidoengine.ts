@@ -1,4 +1,4 @@
-///<reference path="../lib/libGUIDOEngine.d.ts"/>
+///<reference path="libGUIDOEngine.d.ts"/>
 
 
 //----------------------------------------------------------------------------
