@@ -23,15 +23,11 @@
 ///<reference path="JSSVGfView.ts"/>
 ///<reference path="JSVideoView.ts"/>
 ///<reference path="TSyncManager.ts"/>
+///<reference path="lib/libraries.ts"/>
 
 
 //----------------------------------------------------------------------------
 class JSViewFactory {
-	static fGuidoengine : GuidoEngine = null;
-	static fMusicXML : libmusicxml = null;
-
-	static setGuido (guido: GuidoEngine): void { this.fGuidoengine = guido; }
-	static setLMxml (lxml: libmusicxml) : void { this.fMusicXML = lxml; }
 
 	static createScene (id: string, objid: number) : number { 
 		const scene = new JSSceneView(id, objid);
@@ -47,18 +43,18 @@ class JSViewFactory {
 			case "arc": 	  view = new JSArcView(parent); break;
 			case "curve":     view = new JSCurveView(parent); break;
 			case "ellipse":   view = new JSEllipseView(parent); break; 
-			case "gmn":       view = new JSGMNView(parent, this.fGuidoengine); break;
-			case "gmnf":	  view = new JSGMNfView(parent, this.fGuidoengine); break;
-			case "gmnstream": view = new JSGMNStreamView(parent, this.fGuidoengine); break;
+			case "gmn":       view = new JSGMNView(parent, inscorelibs.guido()); break;
+			case "gmnf":	  view = new JSGMNfView(parent, inscorelibs.guido()); break;
+			case "gmnstream": view = new JSGMNStreamView(parent, inscorelibs.guido()); break;
 			case "html":	  view = new JSHtmlView(parent); break; 			
 			case "htmlf":	  view = new JSHtmlfView(parent); break;
 			case "img":  	  view = new JSImageView(parent); break;
 			case "layer":	  view = new JSLayerView(parent); break;
 			case "line": 	  view = new JSLineView(parent); break; 
-			case "musicxml":  view = new JSXMLView(parent, this.fMusicXML, this.fGuidoengine); break;
-			case "musicxmlf": view = new JSXMLfView(parent, this.fMusicXML, this.fGuidoengine); break;
-			case "pianoroll": view = new JSPianoRollView(parent, this.fGuidoengine); break;
-			case "pianorollf": view = new JSPianoRollfView(parent, this.fGuidoengine); break;
+			case "musicxml":  view = new JSXMLView(parent, inscorelibs.xmllib(), inscorelibs.guido()); break;
+			case "musicxmlf": view = new JSXMLfView(parent, inscorelibs.xmllib(), inscorelibs.guido()); break;
+			case "pianoroll": view = new JSPianoRollView(parent, inscorelibs.guido()); break;
+			case "pianorollf": view = new JSPianoRollfView(parent, inscorelibs.guido()); break;
 			case "polygon":   view = new JSPolygonView(parent); break;
 			case "rect":	  view = new JSRectView(parent); break; 
 			case "svg":       view = new JSSVGView(parent); break;
@@ -91,4 +87,4 @@ console.log ("JSViewFactory::create pending type " + type + " parent id: " + par
 	}
 }
 
-
+var inscorefactory = new JSViewFactory();

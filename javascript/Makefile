@@ -8,16 +8,17 @@ MAKE ?= make
 
 CHECKDIR := TSCheck
 TSDIR := src
+TSLIB := $(TSDIR)/lib
 TSSRC := $(wildcard $(TSDIR)/*.ts)
 OUT	  := $(patsubst $(TSDIR)/%.ts, $(CHECKDIR)/%.js, $(TSSRC))
 
 MODULES     := node_modules/@grame
 GUIDO       := $(MODULES)/guidolib
-GUIDOLIB    := lib/libGUIDOEngine.d.ts lib/libGUIDOEngine.js lib/libGUIDOEngine.wasm src/guidoengine.ts
+GUIDOLIB    := $(TSLIB)/libGUIDOEngine.d.ts lib/libGUIDOEngine.js lib/libGUIDOEngine.wasm $(TSLIB)/guidoengine.ts
 GUIDOMODULE := $(GUIDOLIB:lib/%=$(GUIDO)/%)
 
 MXML        := $(MODULES)/libmusicxml
-XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm lib/libmusicxml.d.ts src/libmusicxml.ts
+XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm $(TSLIB)/libmusicxml.d.ts $(TSLIB)/libmusicxml.ts
 XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
 VIEW := inscoreview.js
 
@@ -47,7 +48,7 @@ test:
 #===============================================================
 ts: $(VIEW)
 
-$(VIEW) : $(TSSRC) lib/libINScore.d.ts $(TSDIR)/tsconfig.json
+$(VIEW) : $(TSSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 	cd $(TSDIR) && tsc
 
 #===============================================================
@@ -59,23 +60,23 @@ install:
 
 modules: $(GUIDOLIB) $(XMLLIB)
 
-lib/libGUIDOEngine.d.ts : $(GUIDO)/libGUIDOEngine.d.ts
+$(TSLIB)/libGUIDOEngine.d.ts : $(GUIDO)/libGUIDOEngine.d.ts
 	cp $< $@
+$(TSLIB)/guidoengine.ts:  $(GUIDO)/guidoengine.ts
+	cp $< $@
+$(TSLIB)/libmusicxml.ts : $(MXML)/libmusicxml.ts
+	cp $< $@
+$(TSLIB)/libmusicxml.d.ts : $(MXML)/libmusicxml.d.ts
+	cp $< $@
+
 lib/libGUIDOEngine.js  : $(GUIDO)/libGUIDOEngine.js
 	cp $< $@
 lib/libGUIDOEngine.wasm : $(GUIDO)/libGUIDOEngine.wasm
 	cp $< $@
-src/guidoengine.ts:  $(GUIDO)/guidoengine.ts
-	sed -e 's/libGUIDOEngine.d.ts/..\/lib\/libGUIDOEngine.d.ts/'  $<  > $@
-
 lib/libmusicxml.js : $(MXML)/libmusicxml.js
 	cp $< $@
 lib/libmusicxml.wasm : $(MXML)/libmusicxml.wasm
 	cp $< $@
-lib/libmusicxml.d.ts : $(MXML)/libmusicxml.d.ts
-	cp $< $@
-src/libmusicxml.ts : $(MXML)/libmusicxml.ts
-	sed -e 's/libmusicxml.d.ts/..\/lib\/libmusicxml.d.ts/'  $<  > $@
 
 clean : 
 	rm -f $(VIEW)

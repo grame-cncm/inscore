@@ -1,6 +1,6 @@
 
 ///<reference path="JSSVGBase.ts"/>
-///<reference path="guidoengine.ts"/>
+///<reference path="lib/guidoengine.ts"/>
 
 class JSGMNView extends JSSvgBase {
 

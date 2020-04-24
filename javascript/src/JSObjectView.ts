@@ -1,7 +1,7 @@
 
-///<reference path="../lib/libINScore.d.ts"/>
-///<reference path="inscore.ts"/>
-///<reference path="constants.ts"/>
+///<reference path="lib/libINScore.d.ts"/>
+///<reference path="lib/inscore.ts"/>
+///<reference path="lib/constants.ts"/>
 ///<reference path="interfaces.ts"/>
 
 
