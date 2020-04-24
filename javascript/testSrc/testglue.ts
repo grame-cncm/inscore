@@ -1,8 +1,13 @@
 
-///<reference path="lib/inscoreglue.ts"/>
+///<reference path="inscoreBase.ts"/>
+
+
+// // import { INScoreGlue } from "inscoreview"
+
+// import Glue = require('inscoreview');
 
 //----------------------------------------------------------------------------
-class TestGlue extends INScoreGlue {
+class TestGlue extends INScoreBase {
 
 	accept (event : DragEvent) : boolean {
 		let items = event.dataTransfer.items;
@@ -32,3 +37,6 @@ class TestGlue extends INScoreGlue {
 	}
 
 }
+
+var testGlue = new TestGlue();
+testGlue.start();

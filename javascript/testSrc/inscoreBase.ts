@@ -1,5 +1,5 @@
-///<reference path="inscore.ts"/>
-///<reference path="libraries.ts"/>
+
+///<reference path="../src/lib/inscore.d.ts"/>
 ///<reference path="constants.ts"/>
 
 class INScoreDiv {
@@ -11,19 +11,18 @@ class INScoreDiv {
 	}
 }
 
+interface IGlue {
+	start():Promise<any>;
+}
+declare var gGlue: IGlue;
+
 //----------------------------------------------------------------------------
-abstract class INScoreGlue {
-	private fInscore : INScore;
-	private fTimeTask : number;
-	private fSorterTask : number;
+class INScoreBase {
 	private fDivs: Array<INScoreDiv>;
 	private fExtHandlers: { [id: string] : string; } = {};
 
     constructor() {
-		this.fInscore = new INScore;
-		this.fTimeTask = 0;
 		this.makeExtTable();
-		this.fInscore.initialise ().then (() => { this.start(); });
     }
 	
     //------------------------------------------------------------------------
@@ -76,14 +75,11 @@ abstract class INScoreGlue {
     //------------------------------------------------------------------------
 	// initialization
     start () : void {
-		this.fInscore.start();
-		inscorelibs.initialise().then (() => { this.initialise(); });
+		gGlue.start().then (() => { this.initialise(); });
 	}
 
 	initialise () : void {
 		this.getInscoreDivs();
-		this.fTimeTask = window.setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
-		this.fSorterTask = window.setInterval( () => { this.fInscore.sorterTask(); }, 1);
 		for (let i=0; i< this.fDivs.length; i++) {
 			this.initDiv (this.fDivs[i].fDiv, this.fDivs[i].fVersion==2);
 			this.allowdrop (this.fDivs[i].fDiv);
@@ -93,22 +89,22 @@ abstract class INScoreGlue {
     
     //------------------------------------------------------------------------
     // inscore div initialization
-	initDiv (div: HTMLElement, v2: boolean) : void {
+	private initDiv (div: HTMLElement, v2: boolean) : void {
 		// do not post the message otherwise content will be loaded before the scene is created
-		this.fInscore.loadInscore (this.getSceneAddress(div) + " new;");	
+		inscore.loadInscore (this.getSceneAddress(div) + " new;", false);	
 		let content = div.innerText;
 		div.innerText = "";
 		if (content.length) {
 			if (v2)
-				this.fInscore.loadInscore2 (content);
+				inscore.loadInscore2 (content);
 			else
-				this.fInscore.loadInscore (content);
+				inscore.loadInscore (content, false);
 		}
 	}
 
     //------------------------------------------------------------------------
     // utilities
-    getFileProperties(file: string) {
+    getFileProperties(file: string) : { name: string, ext: string } {
 		let ext 	= file.substring(file.lastIndexOf('.')+1, file.length).toLocaleLowerCase();
 		let name 	= file.substring(0, file.lastIndexOf('.'));
 		return { name: name, ext: ext }	
@@ -120,9 +116,9 @@ abstract class INScoreGlue {
 		let reader = new FileReader();				
 		reader.readAsText (file);
 		if (v2)
-			reader.onloadend = (event) => { this.fInscore.loadInscore2 (reader.result.toString())};
+			reader.onloadend = (event) => { inscore.loadInscore2 (reader.result.toString())};
 		else
-			reader.onloadend = (event) => { this.fInscore.loadInscore (reader.result.toString())};
+			reader.onloadend = (event) => { inscore.loadInscore (reader.result.toString(), false)};
 	}
 
 
@@ -152,16 +148,16 @@ abstract class INScoreGlue {
 		let reader = new FileReader();				
 		reader.readAsText (file);
 		reader.onloadend = (event) => {
-			let msg = this.fInscore.newMessageM ("set");
-			this.fInscore.msgAddStr (msg, type);
-			this.fInscore.msgAddStr (msg, reader.result.toString());
-			this.fInscore.postMessage (dest, msg);
+			let msg = inscore.newMessageM ("set");
+			inscore.msgAddStr (msg, type);
+			inscore.msgAddStr (msg, reader.result.toString());
+			inscore.postMessage (dest, msg);
 		};
 	}
 
 	//------------------------------------------------------------------------
     // load an arbitrary file
-	loadFile (file: File, fileName: string, type:string, div: HTMLElement) : void {
+	private loadFile (file: File, fileName: string, type:string, div: HTMLElement) : void {
 		let dst = this.getSceneAddress(div) + "/" + this.fileName2InscoreName (fileName);
 		switch (type) {
 			case kGuidoCodeType: 
@@ -178,22 +174,6 @@ abstract class INScoreGlue {
 			case kVideoType:
 				break;
 		}
-	}
-
-    //------------------------------------------------------------------------
-    // files drop support
-	fileTypes( e: DragEvent) : Array<string> {
-		let filelist = e.dataTransfer.files;
-		if (!filelist) return null;
-
-		let out = new Array<string>();
-		let filecount = filelist.length;
-console.log ("fileTypes : " +filecount);
-		for (let i = 0; i < filecount; i++ ) {
-			const properties = this.getFileProperties(filelist[i].name);
-			out.push (this.fExtHandlers[properties.ext]);
-		}
-		return out;
 	}
 	
 	//------------------------------------------------------------------------
@@ -216,18 +196,12 @@ console.log ("fileTypes : " +filecount);
 				default:		this.loadFile (file, fileName, type, <HTMLElement>e.target);
 					break;
 			}
-			// if (properties.ext == "inscore") 	   this.loadInscore (file, false);
-			// else if (properties.ext == "inscore2") this.loadInscore (file, true);
-			// else {
-			// 	let type = this.fExtHandlers[properties.ext];
-			// 	this.loadFile (file, fileName, type, <HTMLElement>e.target);
-			// }
 		}
 	}
 
 	drop( e : DragEvent) : void {
 		let data = e.dataTransfer.getData("Text");
-		if (data)	this.fInscore.loadInscore(data, false);
+		if (data)	inscore.loadInscore(data, false);
 		else 		this.filedropped (e);
 		let div = <HTMLElement>e.target;
 		div.style.border = div.getAttribute('savedborder');
@@ -235,11 +209,11 @@ console.log ("fileTypes : " +filecount);
 		
     //------------------------------------------------------------------------
     // activate drag & drop on inscore divs
-	abstract accept (event : DragEvent) : boolean;
-	abstract dragEnter (event : DragEvent) : void;
-	abstract dragLeave (event : DragEvent) : void;
+	accept (event : DragEvent) : boolean	{ return false; }
+	dragEnter (event : DragEvent) : void	{}
+	dragLeave (event : DragEvent) : void	{}
 	
-	allowdrop (div : HTMLElement) : void {
+	private allowdrop (div : HTMLElement) : void {
 		div.addEventListener ("dragenter", (event : DragEvent) : void => { if (this.accept(event)) this.dragEnter(event); }, true);
 		div.addEventListener ("dragleave", (event : DragEvent) : void => { this.dragLeave(event); }, true);
 		div.addEventListener ("dragover",  (event : DragEvent) : void => { event.preventDefault(); }, true);
@@ -248,12 +222,11 @@ console.log ("fileTypes : " +filecount);
 		
     //------------------------------------------------------------------------
     // activate drag & drop on inscore divs
-	watchResize () : void {
+	private watchResize () : void {
 		window.addEventListener ("resize", (e: UIEvent) : void => { 
 			for (let i=0; i< this.fDivs.length; i++) {
-				this.fInscore.postMessageStr (this.getSceneAddress(this.fDivs[i].fDiv), "refresh");
+				inscore.postMessageStr (this.getSceneAddress(this.fDivs[i].fDiv), "refresh");
 			}
 		});
-    }    
-
+    }
 }
