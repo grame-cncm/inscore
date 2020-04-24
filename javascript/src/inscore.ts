@@ -27,6 +27,7 @@ class INScore {
         this.fInscore 		= new module.INScoreAdapter();
         this.fJSGlue 		= new module.INScoreJSGlue();
         INScore.fObjects	= new module.IObjectAdapter();
+        inscore = this;
     }
     
     static objects() : INScoreObject	{ return INScore.fObjects; }
@@ -72,4 +73,5 @@ enum TBrushStyle 	{ kDense1, kDense2, kDense3, kDense4, kDense5, kDense6, kDense
 enum ArrowHead      { NONE, TRIANGLE, DIAMOND, DISK }
 enum Effect 	{ kNone, kBlur, kColorize, kShadow };
 enum Blurhint	{ kPerformance, kQuality, kAnimation };
-           
+
+var inscore : INScore = null;
