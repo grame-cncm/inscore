@@ -10,7 +10,6 @@ class INScoreGlue {
 
     constructor() {
 		this.fInscore = new INScore;
-		this.fInscore.initialise ().then (() => { this.start(); });
     }
 		
     //------------------------------------------------------------------------
