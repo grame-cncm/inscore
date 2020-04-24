@@ -1,6 +1,7 @@
 ///<reference path="inscore.ts"/>
 ///<reference path="libraries.ts"/>
 ///<reference path="constants.ts"/>
+///<reference path="JSViewFactory.ts"/>
 
 class INScoreDiv {
 	fDiv: 		HTMLElement;
@@ -75,6 +76,8 @@ class INScoreGlue {
     //------------------------------------------------------------------------
 	// initialization
     start () : void {
+		JSViewFactory.setGuido (this.fLibraries.guido());
+		JSViewFactory.setLMxml (this.fLibraries.xmllib());
 		this.fInscore.start();
 		this.fLibraries.initialise().then (() => { this.initialise(); });
 	}
@@ -91,14 +94,14 @@ class INScoreGlue {
     
     //------------------------------------------------------------------------
 	// inscore access
-    inscore() : INScore			{ return this.fInscore; }
+    // inscore() : INScore			{ return this.fInscore; }
 
 	//------------------------------------------------------------------------
 	// librairies access
-	guido()  : GuidoEngine 		{ return this.fLibraries.guido(); }
-	guidoversion() : number 	{ return this.guido() ? this.guido().getFloatVersion() : 0; }
-	xmllib() : libmusicxml 		{ return this.fLibraries.xmllib(); }
-	xmllibversion() : number 	{ return this.xmllib() ? this.xmllib().libVersion() : 0; }
+	// guido()  : GuidoEngine 		{ return this.fLibraries.guido(); }
+	// guidoversion() : number 	{ return this.guido() ? this.guido().getFloatVersion() : 0; }
+	// xmllib() : libmusicxml 		{ return this.fLibraries.xmllib(); }
+	// xmllibversion() : number 	{ return this.xmllib() ? this.xmllib().libVersion() : 0; }
     
     //------------------------------------------------------------------------
     // inscore div initialization
@@ -244,5 +247,3 @@ class INScoreGlue {
     }    
 
 }
-
-var gGlue = new INScoreGlue;

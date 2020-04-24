@@ -1,7 +1,6 @@
 
 ///<reference path="../lib/libINScore.d.ts"/>
 ///<reference path="inscore.ts"/>
-///<reference path="inscoreGlue.ts"/>
 ///<reference path="constants.ts"/>
 ///<reference path="interfaces.ts"/>
 
@@ -64,7 +63,6 @@ abstract class JSObjectView {
 	}
 
 	refresh (address: string)	: void { 
-		let inscore = gGlue.inscore();
 		inscore.delayMessage (address, inscore.newMessageM ("refresh"));
 	}
 
@@ -191,7 +189,6 @@ console.log (this + " show map -> " + obj.getMaps().size());
 			default: return;  // unexpected event
 		}
 
-		let inscore = gGlue.inscore();
 		let msg = inscore.newMessageM ("event");
 		inscore.msgAddStr (msg, mevent);
 		let p = this.getPoints (event);
