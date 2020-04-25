@@ -144,7 +144,7 @@ void INScore::stopNetwork()
 bool INScore::loadInscore(const char *script, bool autoparse)
 {
 	IAppl* appl = gGlue->getAppl();
-	if (autoparse || (appl->parseVersion() == "v2"))
+	if (autoparse && (appl->parseVersion() == "v2"))
 		return loadInscore2(script);
 
 	stringstream stream(script);
