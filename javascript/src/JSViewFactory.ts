@@ -23,6 +23,7 @@
 ///<reference path="JSSVGfView.ts"/>
 ///<reference path="JSVideoView.ts"/>
 ///<reference path="TSyncManager.ts"/>
+///<reference path="TLog.ts"/>
 ///<reference path="libraries.ts"/>
 
 
@@ -73,11 +74,11 @@ class JSViewFactory {
 			case "memimg":
 			case "sig":
 			case "signode":
-console.log ("JSViewFactory::create pending type " + type + " parent id: " + parent);
+				gLog.log ("Type " + type + " is not yet supported");
 				break; 
 
 			default:
-				console.error ("JSViewFactory::create unknown type " + type + " parent id: " + parent);
+				gLog.error ("JSViewFactory::create unknown type " + type);
 		}
 		if (view) {
 			view.setSyncManager (new TSyncManager(view));

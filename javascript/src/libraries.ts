@@ -1,5 +1,6 @@
 ///<reference path="guidoengine.ts"/>
 ///<reference path="libmusicxml.ts"/>
+///<reference path="TLog.ts"/>
 
 //----------------------------------------------------------------------------
 class libraries {
@@ -21,7 +22,7 @@ class libraries {
 	async guidoinit():Promise<any> { 
 		return new Promise( (success: any, failure: any) => {
 			this.fGuido.initialise().then (
-				() => { console.log("GuidoEngine version " + this.fGuido.getFloatVersion()); 
+				() => { gLog.log("GuidoEngine version " + this.fGuido.getFloatVersion()); 
 						success(this); },
 				() => { this.fGuido = null; success(this); });
 		});
@@ -30,7 +31,7 @@ class libraries {
 	async xmlinit():Promise<any> { 
 		return new Promise( (success: any, failure: any) => {
 			this.fXMLLib.initialise().then (
-				() => { console.log("libMusicXML version " + this.fXMLLib.libVersionStr()); 
+				() => { gLog.log("libMusicXML version " + this.fXMLLib.libVersionStr()); 
 						success(this); },
 				() => { this.fXMLLib = null; success(this); });
 		});

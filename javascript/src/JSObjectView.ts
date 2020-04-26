@@ -107,7 +107,7 @@ abstract class JSObjectView {
 		if (infos.updateevents || force)
 			this.updateEvents(infos.events, obj.getOSCAddress());
 		if (infos.showmap) 
-console.log (this + " show map -> " + obj.getMaps().size());
+			gLog.log (this + " show map -> " + obj.getMaps().size());
 	}
 
 

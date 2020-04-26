@@ -1,6 +1,7 @@
 
 ///<reference path="JSSVGBase.ts"/>
 ///<reference path="guidoengine.ts"/>
+///<reference path="TLog.ts"/>
 
 class JSGMNView extends JSSvgBase {
 
@@ -79,7 +80,7 @@ class JSGMNView extends JSSvgBase {
 			this.fPage = page;
 			return true;
 		}
-		else console.error (obj.getOSCAddress() + " failed to parse gmn code.")
+		else gLog.error (obj.getOSCAddress() + " failed to parse gmn code.")
 		return false;
 	}
 
@@ -87,7 +88,7 @@ class JSGMNView extends JSSvgBase {
 		let guido = obj.getGuidoInfos();
 		if (this.fGuido)
 			return this.gmn2svg (obj, guido.code, guido.page);
-		else console.log ("Guido engine not available");
+		else gLog.log ("Guido engine is not available");
 		return false;
     }
 	
