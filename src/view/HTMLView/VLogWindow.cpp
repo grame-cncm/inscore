@@ -23,32 +23,16 @@
 
 */
 
-#pragma once
+#include <emscripten.h>
+#include <emscripten/bind.h>
 
-#include <iostream>
+#include "VLogWindow.h"
 
 namespace inscore
 {
 
-class IApplLog;
-class VLogWindow
-{
-public:
-			 VLogWindow(const char* name, IApplLog * logwindow) {}
-	virtual ~VLogWindow() {}
-
-	void			append (const char* text);
-	const char*		getText () const			{ return ""; }
-	virtual void	setVisible	(bool visible)		{}
-	virtual void	imove		(float x, float y)	{}
-	virtual void	istretch	(float w, float h)	{}
-	virtual void	close		()	{}
-	virtual void	raise		() 	{}
-	virtual void	activateWindow() {}
-
-    void clear()			{}
-    void wrap()				{}
-    void wrap(bool state)	{}
-};
+void VLogWindow::append (const char* text)	{
+	EM_ASM( { gLog.log(Module.UTF8ToString($0));}, text);
+}
 
 } // end namespace
