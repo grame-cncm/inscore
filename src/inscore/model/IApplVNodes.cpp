@@ -197,6 +197,12 @@ MsgHandler::msgStatus IApplLog::saveMsg (const IMessage* msg) const
 }
 
 //--------------------------------------------------------------------------
+void IApplLog::write(const string& msg)
+{
+	fWindow->append (msg.c_str());
+}
+
+//--------------------------------------------------------------------------
 void IApplLog::write(const SIMessageList& msgs)
 {
 	for (size_t i=0; i< msgs->list().size(); i++) {

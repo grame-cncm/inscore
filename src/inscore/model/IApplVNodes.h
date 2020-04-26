@@ -132,6 +132,9 @@ class IApplLog : public IVNode
 		/// \brief displays a message list
 		virtual void	write(const SIMessageList& msgs);
 
+		/// \brief displays a message list
+		virtual void	write(const std::string& msg);
+
 		/// \brief accept an Update visitor
 		virtual void	accept (Updater*);
 
