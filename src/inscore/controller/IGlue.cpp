@@ -30,6 +30,7 @@
 #include "EventsAble.h"
 #include "GUIDOEngine.h"
 #include "IAppl.h"
+#include "IApplVNodes.h"
 #include "IGlue.h"
 #include "IMappingUpdater.h"
 #include "IMessage.h"
@@ -217,7 +218,8 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	oscerr << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << OSCEnd();
 	cout << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 #elif defined(EMCC)
-	cout << "INScore JS v. " << INScore::versionStr() << endl;
+	string version ("INScore JS v. ");
+	fModel->getLogWindow()->write (version + INScore::versionStr() + " alpha");
 #else
 	cout << "INScore v. " << INScore::versionStr() << " compiled without OSC support" << endl;
 #endif
