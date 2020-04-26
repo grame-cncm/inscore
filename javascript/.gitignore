@@ -2,6 +2,9 @@
 node_modules/
 
 inscoreview.js
+inscoretests.js
+test.js
+validation/old
 emcc/emccdir
 emcc/libdir
 emcc/lib
