@@ -10,15 +10,34 @@
 	<script src="inscoreview.js"></script>
 	<script src="inscoretests.js"></script>
 	<style>
-	body { margin: 50; background: gainsboro }
+	body { margin: 50; background: gainsboro; height: 100%; }
 	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
+  grid-template-areas:
+    'left right';
+  align-content: start;
+  grid-gap: 10px;
+  padding: 5px;
+  height: 80%;
+}
+
+.left 	    { grid-area: left; background: white;}
+.right 		{ grid-area: right; }
+
+
 	</style>
 </head>
 
 <body>
 
 <h1>INScore JS Tests</h1>
-<div class="inscore box" id="scene">
+<div class="grid-container">
+<div class="inscore right" id="scene">
 /ITL/scene/* del;
 
 w = 0.2;
@@ -45,23 +64,24 @@ w = 0.2;
 /ITL/log level 2;
  -->
 
+</div>
+<div class="inscore left" id=left>
+/ITL/left/* del;
 
-<!-- 
-/ITL/scene/gmn set gmnstream "[";
-/ITL/scene/gmn write  " a b d";
-/ITL/scene/gmn write " g/4 f/8 e";
-/ITL/scene/gmn clear;
- -->
+w = 0.15;
+/ITL/left/circ set ellipse $w $w;
+/ITL/left/circ color red ;
+/ITL/left/circ alpha 150;
+/ITL/left/circ watch mouseDown (/ITL/log write "clicked");
 
+/ITL/left/gmn set gmn "[ e g a f a b d ]";
+/ITL/left/gmn map staff1;
 
-__END__
-
+/ITL/left/sync circ "gmn:staff1";
+</div>
 
 </div>
 
-<div id=debug>
-
-</div>
 </body>
 
 </html>
