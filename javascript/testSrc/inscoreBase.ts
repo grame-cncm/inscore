@@ -57,7 +57,7 @@ class INScoreBase {
 		this.fExtHandlers["inscore2"] 		= kInscore2;
 	}
 
-	private getSceneAddress (div: HTMLElement) : string {
+	getSceneAddress (div: HTMLElement) : string {
 		let scene = div.id;
 		return "/ITL/" + (scene ? scene : "scene");
 	}
@@ -74,8 +74,20 @@ class INScoreBase {
 	
     //------------------------------------------------------------------------
 	// initialization
-    start () : void {
-		gGlue.start().then (() => { this.initialise(); });
+    // async initialise():Promise<any> { 
+    //     var module = INScoreModule();
+    //     return new Promise( (success: any, failure: any) => {
+    //         module['onRuntimeInitialized'] = () => {
+    //             this.moduleInit (module);
+    //             success ( this ); 
+    //             }
+    //     });
+	// }
+	
+	async start () : Promise<any> {
+		return new Promise( (success: any, failure: any) => {
+			gGlue.start().then (() => { this.initialise(); success(this) });
+		});
 	}
 
 	initialise () : void {
@@ -89,7 +101,7 @@ class INScoreBase {
     
     //------------------------------------------------------------------------
     // inscore div initialization
-	private initDiv (div: HTMLElement, v2: boolean) : void {
+	initDiv (div: HTMLElement, v2: boolean) : void {
 		// do not post the message otherwise content will be loaded before the scene is created
 		inscore.loadInscore (this.getSceneAddress(div) + " new;", false);	
 		let content = div.innerText;
@@ -110,15 +122,27 @@ class INScoreBase {
 		return { name: name, ext: ext }	
 	}
 
+
+    //------------------------------------------------------------------------
+    // load an inscore file - called when an inscore file is dropped
+	loadFromFile (content: string, v2: boolean, name: string) : void {
+		if (v2)
+			inscore.loadInscore2 (content);
+		else
+			inscore.loadInscore (content, true);
+	}
+    //------------------------------------------------------------------------
+    // load an inscore script - called when text is dropped
+	loadFromText (content: string, v2: boolean) : void {
+		inscore.loadInscore (content, true);
+	}
+
     //------------------------------------------------------------------------
     // load an inscore file
 	loadInscore(file: File, v2: boolean) : void {
 		let reader = new FileReader();				
 		reader.readAsText (file);
-		if (v2)
-			reader.onloadend = (event) => { inscore.loadInscore2 (reader.result.toString())};
-		else
-			reader.onloadend = (event) => { inscore.loadInscore (reader.result.toString(), false)};
+		reader.onloadend = (event) => { this.loadFromFile (reader.result.toString(), v2, file.name)};
 	}
 
 
@@ -144,7 +168,7 @@ class INScoreBase {
 
 	//------------------------------------------------------------------------
     // load an arbitrary file
-	private loadText (file: File, type:string, dest: string) : void {
+	private loadTextFile (file: File, type:string, dest: string) : void {
 		let reader = new FileReader();				
 		reader.readAsText (file);
 		reader.onloadend = (event) => {
@@ -165,7 +189,7 @@ class INScoreBase {
 			case kSvgType:
 			case kHtmlType:
 			case kTextType:
-				this.loadText (file, type, dst);
+				this.loadTextFile (file, type, dst);
 				break;
 
 			case kFaustType:
@@ -201,7 +225,8 @@ class INScoreBase {
 
 	drop( e : DragEvent) : void {
 		let data = e.dataTransfer.getData("Text");
-		if (data)	inscore.loadInscore(data, false);
+		if (data)	this.loadFromText (data, true);
+		// if (data)	inscore.loadInscore(data, false);
 		else 		this.filedropped (e);
 		let div = <HTMLElement>e.target;
 		div.style.border = div.getAttribute('savedborder');
@@ -209,15 +234,15 @@ class INScoreBase {
 		
     //------------------------------------------------------------------------
     // activate drag & drop on inscore divs
-	accept (event : DragEvent) : boolean	{ return false; }
+	accept (event : DragEvent) : boolean	{ return true; }
 	dragEnter (event : DragEvent) : void	{}
 	dragLeave (event : DragEvent) : void	{}
 	
-	private allowdrop (div : HTMLElement) : void {
+	allowdrop (div : HTMLElement) : void {
 		div.addEventListener ("dragenter", (event : DragEvent) : void => { if (this.accept(event)) this.dragEnter(event); }, true);
 		div.addEventListener ("dragleave", (event : DragEvent) : void => { this.dragLeave(event); }, true);
 		div.addEventListener ("dragover",  (event : DragEvent) : void => { event.preventDefault(); }, true);
-		div.addEventListener ("drop",      (event : DragEvent) : void=> { event.preventDefault(); this.drop ( event );} , true);
+		div.addEventListener ("drop",      (event : DragEvent) : void => { this.dragLeave(event); this.drop ( event );} , true);
     }
 		
     //------------------------------------------------------------------------
