@@ -14,30 +14,13 @@
 	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
 	.test { margin: 10px; padding: 10px; background: black; }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 100%;
-  grid-template-areas:
-    'left right';
-  align-content: start;
-  grid-gap: 10px;
-  padding: 5px;
-  height: 80%;
-}
-
-.left 	    { grid-area: left; background: white;}
-.right 		{ grid-area: right; }
-
-
 	</style>
 </head>
 
 <body>
 
 <h1>INScore JS Tests</h1>
-<div class="grid-container">
-<div class="inscore right" id="scene">
+<div class="inscore box" id="scene">
 /ITL/scene/* del;
 
 w = 0.2;
@@ -68,7 +51,9 @@ w = 0.2;
  -->
 
 </div>
+<!-- 
 <div class="inscore left" id=left>
+/ITL/left new;
 /ITL/left/* del;
 
 w = 0.15;
@@ -87,8 +72,9 @@ w = 0.15;
 /ITL/*/gmn watch mouseDown ( /ITL/*/circ date '$date' );
 
 </div>
+ -->
 
-</div>
+<!-- </div> -->
 
 </body>
 
