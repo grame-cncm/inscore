@@ -1,0 +1,96 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="css/inscore.css" rel="stylesheet">
+	<script src="lib/libINScore.js"></script>
+	<script src="lib/libGUIDOEngine.js"></script>
+	<script src="lib/libmusicxml.js"></script>
+	<script src="inscoreview.js"></script>
+	<script src="inscoretests.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
+  grid-template-areas:
+    'left right';
+  align-content: start;
+  grid-gap: 10px;
+  padding: 5px;
+  height: 80%;
+}
+
+.left 	    { grid-area: left; background: white;}
+.right 		{ grid-area: right; background: white; }
+
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="grid-container">
+<div class="inscore right" id="scene">
+/ITL/scene/* del;
+
+w = 0.2;
+/ITL/scene/circ set ellipse $w $w;
+/ITL/scene/circ color orange ;
+/ITL/scene/circ alpha 150;
+/ITL/scene/circ watch timeEnter 2 3 (/ITL/scene/circ date 0 );
+
+/ITL/scene/gmn set gmn "[ a b d e g a f c2 ]";
+/ITL/scene/gmn map staff1;
+
+/ITL/scene/sync circ "gmn:staff1";
+
+<!-- 
+/ITL/scene/circ date 0;
+/ITL/scene/circ date 1 4;
+/ITL/scene/circ date 3 4;
+/ITL/scene/circ tempo 60;
+/ITL/*/circ tempo 60;
+/ITL/*/circ get watch;
+/ITL/scene/sync circ;
+/ITL/scene/gmn get map;
+/ITL/scene/gmn/debug map 1;
+/ITL/scene/score/debug map 1;
+/ITL/scene/gmn x 0.1;
+/ITL/left new;
+/ITL/log level 2;
+ -->
+
+</div>
+<div class="inscore left" id=left>
+/ITL/left new;
+/ITL/left/* del;
+
+w = 0.15;
+/ITL/left/circ set ellipse $w $w;
+/ITL/left/circ color red ;
+/ITL/left/circ alpha 150;
+/ITL/left/circ watch mouseDown (/ITL/*/circ date '$date' );
+/ITL/left/circ watch timeEnter 9 4 10 4 ( /ITL/left/circ date 0 );
+
+/ITL/left/gmn set gmn "[ e g a f a b d c/2 ]";
+/ITL/left/gmn map staff1;
+
+/ITL/left/sync circ "gmn:staff1";
+
+/ITL/*/circ tempo 120;
+/ITL/*/gmn watch mouseDown ( /ITL/*/circ date '$date' );
+
+</div>
+
+</div>
+
+</body>
+
+</html>
