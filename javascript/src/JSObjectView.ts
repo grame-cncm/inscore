@@ -49,7 +49,7 @@ abstract class JSObjectView {
 	getId() : number	 			{ return this.fID; }
 	getElement() : HTMLElement		{ return this.fElement; }
 	getParent() : JSObjectView		{ return this.fParent; }
-	delete() : void					{ }
+	delete() : void					{ JSObjectView.fObjects[this.fID] = null; }
 
 	parentWidth() : number			{ 
 		let elt = this.getElement().parentElement;
