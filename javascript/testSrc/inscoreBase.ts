@@ -65,11 +65,15 @@ class INScoreBase {
 	private getInscoreDivs() : void {
 		this.fDivs = new Array<INScoreDiv>();
 		let divs = document.getElementsByClassName("inscore") as HTMLCollectionOf<HTMLElement>;
-		for (let i=0; i<divs.length; i++)
-			this.fDivs.push (new INScoreDiv(divs[i], 1));
+		for (let i=0; i<divs.length; i++) 
+			this.addInscoreDiv (divs[i], 1);
 		divs = document.getElementsByClassName("inscore2") as HTMLCollectionOf<HTMLElement>;
 		for (let i=0; i<divs.length; i++)
-			this.fDivs.push (new INScoreDiv(divs[i], 2));
+			this.addInscoreDiv (divs[i], 2);
+	}
+
+	addInscoreDiv(div: HTMLElement, version: number) : void {
+		this.fDivs.push (new INScoreDiv(div, version)); 
 	}
 	
     //------------------------------------------------------------------------
