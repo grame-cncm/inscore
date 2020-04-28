@@ -23,12 +23,11 @@ MXML        := $(MODULES)/libmusicxml
 XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm $(TSLIB)/libmusicxml.d.ts $(TSLIB)/libmusicxml.ts
 XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
 LIB  := inscoreview.js
-VIEW := inscoretest.js
+VIEW := inscoretests.js
 
 all :
 	$(MAKE) ts
 	$(MAKE) -C emcc
-
 
 help :
 	@echo "This makefile is intended to build the INScore Javascript library."
@@ -43,19 +42,19 @@ help :
 	@echo
 
 test:
-	@echo $(GUIDOMODULE)
-	@echo $(XMLMODULE)
+	@echo $(VIEW)
 	
 #===============================================================
 # building inscore ts view
 #===============================================================
 ts: $(LIB) $(VIEW)
 
-$(VIEW) : $(TESTSRC) $(TESTDIR)/tsconfig.json
+$(VIEW): $(TESTSRC) $(TESTDIR)/tsconfig.json
 	cd $(TESTDIR) && tsc
 
-$(LIB) : $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
+$(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 	cd $(TSDIR) && tsc
+	cp $(LIB) ../../inscoreweb/docs/lib
 
 #===============================================================
 # project management
