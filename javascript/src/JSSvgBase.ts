@@ -71,8 +71,7 @@ abstract class JSSvgBase extends JSObjectView {
 		}
 	}
 
-	getTranslate(pos: OPosition) : Point { 
-		let bb = this.fSVG.getBBox();
+	private getTranslate(pos: OPosition) : Point { 
 		return { x: pos.pen.penWidth, y: pos.pen.penWidth }; 
 	}
 
