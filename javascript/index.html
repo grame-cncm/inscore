@@ -44,9 +44,9 @@ w = 0.2;
 /ITL/scene/circ set ellipse $w $w;
 /ITL/scene/circ color orange ;
 /ITL/scene/circ alpha 150;
-/ITL/scene/circ watch mouseDown (/ITL/log write "clicked");
+/ITL/scene/circ watch timeEnter 2 3 (/ITL/scene/circ date 0 );
 
-/ITL/scene/gmn set gmn "[ a b d e g a f]";
+/ITL/scene/gmn set gmn "[ a b d e g a f c2 ]";
 /ITL/scene/gmn map staff1;
 
 /ITL/scene/sync circ "gmn:staff1";
@@ -56,11 +56,14 @@ w = 0.2;
 /ITL/scene/circ date 1 4;
 /ITL/scene/circ date 3 4;
 /ITL/scene/circ tempo 60;
+/ITL/*/circ tempo 60;
+/ITL/*/circ get watch;
 /ITL/scene/sync circ;
 /ITL/scene/gmn get map;
 /ITL/scene/gmn/debug map 1;
 /ITL/scene/score/debug map 1;
 /ITL/scene/gmn x 0.1;
+/ITL/left new;
 /ITL/log level 2;
  -->
 
@@ -72,12 +75,17 @@ w = 0.15;
 /ITL/left/circ set ellipse $w $w;
 /ITL/left/circ color red ;
 /ITL/left/circ alpha 150;
-/ITL/left/circ watch mouseDown (/ITL/log write "clicked");
+/ITL/left/circ watch mouseDown (/ITL/*/circ date '$date' );
+/ITL/left/circ watch timeEnter 9 4 10 4 ( /ITL/left/circ date 0 );
 
-/ITL/left/gmn set gmn "[ e g a f a b d ]";
+/ITL/left/gmn set gmn "[ e g a f a b d c/2 ]";
 /ITL/left/gmn map staff1;
 
 /ITL/left/sync circ "gmn:staff1";
+
+/ITL/*/circ tempo 120;
+/ITL/*/gmn watch mouseDown ( /ITL/*/circ date '$date' );
+
 </div>
 
 </div>
