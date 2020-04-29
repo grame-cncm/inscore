@@ -65,7 +65,7 @@ class INScoreBase {
 	private getInscoreDivs() : void {
 		this.fDivs = new Array<INScoreDiv>();
 		let divs = document.getElementsByClassName("inscore") as HTMLCollectionOf<HTMLElement>;
-		for (let i=0; i<divs.length; i++) 
+		for (let i=0; i<divs.length; i++)
 			this.addInscoreDiv (divs[i], 1);
 		divs = document.getElementsByClassName("inscore2") as HTMLCollectionOf<HTMLElement>;
 		for (let i=0; i<divs.length; i++)
@@ -73,7 +73,7 @@ class INScoreBase {
 	}
 
 	addInscoreDiv(div: HTMLElement, version: number) : void {
-		this.fDivs.push (new INScoreDiv(div, version)); 
+		this.fDivs.push (new INScoreDiv(div, version));
 	}
 	
     //------------------------------------------------------------------------
@@ -238,17 +238,26 @@ class INScoreBase {
 		
     //------------------------------------------------------------------------
     // activate drag & drop on inscore divs
-	accept (event : DragEvent) : boolean	{ return true; }
-	dragEnter (event : DragEvent) : void	{}
-	dragLeave (event : DragEvent) : void	{}
+	accept (event : DragEvent) : boolean	{ return event.target == event.currentTarget; }
 	
 	allowdrop (div : HTMLElement) : void {
 		div.addEventListener ("dragenter", (event : DragEvent) : void => { if (this.accept(event)) this.dragEnter(event); }, true);
-		div.addEventListener ("dragleave", (event : DragEvent) : void => { this.dragLeave(event); }, true);
+		div.addEventListener ("dragleave", (event : DragEvent) : void => { if (this.accept(event)) this.dragLeave(event); }, true);
 		div.addEventListener ("dragover",  (event : DragEvent) : void => { event.preventDefault(); }, true);
-		div.addEventListener ("drop",      (event : DragEvent) : void => { this.dragLeave(event); this.drop ( event );} , true);
+		div.addEventListener ("drop",      (event : DragEvent) : void => { this.dragLeave(event); this.drop ( event );}, true);
     }
-		
+
+	dragEnter (event : DragEvent) : void { 
+		event.stopImmediatePropagation();
+		event.preventDefault();
+	}
+
+	dragLeave (event : DragEvent) : void {
+		event.stopImmediatePropagation();
+		event.preventDefault();
+	}
+
+
     //------------------------------------------------------------------------
     // activate drag & drop on inscore divs
 	private watchResize () : void {
