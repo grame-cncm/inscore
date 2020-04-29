@@ -32,12 +32,13 @@ grey = 180;
 /ITL/scene/m4 set ellipse 0.5 0.5 ;
 /ITL/scene/m4 color green ;
 /ITL/scene/m4 x 0.1 ;
-/ITL/scene/m4 y 0.45 ;
+/ITL/scene/m4 y 0.46 ;
 
 /ITL/scene/m* alpha 0.2;
 
 /ITL/scene/circ set ellipse 0.1 0.1;
 /ITL/scene/circ color orange ;
+/ITL/scene/circ alpha 200;
 /ITL/scene/circ watch timeEnter 1 2 (/ITL/scene/circ date 0);
 /ITL/scene/sync circ m* syncFrame;
 

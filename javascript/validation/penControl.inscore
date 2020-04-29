@@ -22,12 +22,10 @@ w = 0.5;
 /ITL/scene/rect1 set rect $w $w;
 /ITL/scene/rect2 set rect $w $w;
 /ITL/scene/rect2 x 0.65;
-/ITL/scene/rect1 penWidth 6;
 /ITL/scene/rect1 penColor 250 130 40;
-/ITL/scene/rect2 penWidth 6;
 /ITL/scene/rect2 penStyle dot;
 /ITL/scene/rect2 penAlpha 0.5;
-/ITL/scene/rect penWidth 4;
+/ITL/scene/rect* penWidth 2;
 /ITL/scene/rect penStyle dash;
 
 /ITL/scene/rect* color 220 220 220;
