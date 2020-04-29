@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-	<title>INScore Scene Test</title>
+	<title>INScore Grid Test</title>
 
 	<link href="css/inscore.css" rel="stylesheet">
 	<script src="lib/libINScore.js"></script>
@@ -26,8 +26,8 @@
   height: 80%;
 }
 
-.left 	    { grid-area: left; background: white;}
-.right 		{ grid-area: right; background: white; }
+.left 	    { grid-area: left; background: white; font-size: 1px }
+.right 		{ grid-area: right; background: white; font-size: 1px;}
 
 
 	</style>
@@ -44,7 +44,7 @@ w = 0.2;
 /ITL/scene/circ set ellipse $w $w;
 /ITL/scene/circ color orange ;
 /ITL/scene/circ alpha 150;
-/ITL/scene/circ watch timeEnter 2 3 (/ITL/scene/circ date 0 );
+/ITL/scene/circ watch timeEnter 2 50 (/ITL/scene/circ date 0 );
 
 /ITL/scene/gmn set gmn "[ a b d e g a f c2 ]";
 /ITL/scene/gmn map staff1;
@@ -58,6 +58,7 @@ w = 0.2;
 /ITL/scene/circ tempo 60;
 /ITL/*/circ tempo 60;
 /ITL/*/circ get watch;
+/ITL/*/circ get date;
 /ITL/scene/sync circ;
 /ITL/scene/gmn get map;
 /ITL/scene/gmn/debug map 1;
@@ -77,7 +78,7 @@ w = 0.15;
 /ITL/left/circ color red ;
 /ITL/left/circ alpha 150;
 /ITL/left/circ watch mouseDown (/ITL/*/circ date '$date' );
-/ITL/left/circ watch timeEnter 9 4 10 4 ( /ITL/left/circ date 0 );
+/ITL/left/circ watch timeEnter 9 4 500 4 ( /ITL/left/circ date 0 );
 
 /ITL/left/gmn set gmn "[ e g a f a b d c/2 ]";
 /ITL/left/gmn map staff1;
