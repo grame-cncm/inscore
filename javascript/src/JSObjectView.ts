@@ -65,7 +65,7 @@ abstract class JSObjectView {
 	getRatio()	: number { 
 		let div = this.getElement();
 		if (div && div.parentElement)
-			return Math.min(div.clientWidth, div.clientHeight) / Math.min(div.parentElement.clientWidth, div.parentElement.clientHeight);
+			return Math.min(div.clientWidth, div.offsetHeight) / Math.min(div.parentElement.offsetWidth, div.parentElement.offsetHeight);
 		return 1;
 	}
 
@@ -118,20 +118,18 @@ abstract class JSObjectView {
 
 	updatePenControl(brush: OPen) : void {
 		let elt = this.getElement();
-		elt.style.borderWidth = brush.penWidth + 'px';
-		elt.style.borderColor = brush.penColor;
-		elt.style.borderStyle = JSObjectView.penStyle2Css (brush.penStyle);
+		elt.style.border = `${brush.penWidth}px ${JSObjectView.penStyle2Css(brush.penStyle)} ${brush.penColor}`;
 	}
 
 	getOrigin() : Point { 
 		let div = this.getElement();
-		return { x: div.clientWidth/2, y: div.clientHeight/2 };
+		return { x: div.offsetWidth/2, y: div.offsetHeight/2 };
 	}
 
 	getPos(pos: OPosition) : Point {
 		let ppos = this.getParent().getOrigin();
-		let x = ppos.x + this.relative2SceneWidth (pos.x) - (this.getElement().clientWidth * (1 + pos.xorigin * pos.scale) / 2 );
-		let y = ppos.y + this.relative2SceneHeight(pos.y) - (this.getElement().clientHeight * (1 + pos.yorigin * pos.scale) / 2 );
+		let x = ppos.x + this.relative2SceneWidth (pos.x) - (this.getElement().offsetWidth * (1 + pos.xorigin * pos.scale) / 2 );
+		let y = ppos.y + this.relative2SceneHeight(pos.y) - (this.getElement().offsetHeight * (1 + pos.yorigin * pos.scale) / 2 );
 		return { x: x, y: y};
 	}
 
