@@ -31,6 +31,8 @@ abstract class JSSvgBase extends JSObjectView {
 		this.fSVG.setAttribute('xmlns:xlink', "http://www.w3.org/1999/xlink");
 		this.fSVG.setAttribute('version', "1.1");
 		this.getElement().appendChild(this.fSVG);
+		// setting line-height avoids offsets in positionning
+		this.getElement().style.lineHeight = "0";
 	}
 
 	abstract getSVGTarget() : SVGShape;
@@ -62,7 +64,6 @@ abstract class JSSvgBase extends JSObjectView {
 		elt.style.stroke = pen.penColor;
 		elt.style.strokeDasharray = JSSvgBase.penStyle2Dash(pen.penStyle);
 
-		elt = this.getSVGTarget();
 		if (pen.brushStyle == TBrushStyle.kNoBrush)
 			elt.style.fill = "none";
 		else {
