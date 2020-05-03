@@ -25,8 +25,6 @@
 
 #pragma once
 
-#include <iostream>
-
 namespace inscore
 {
 
@@ -39,7 +37,7 @@ public:
 
 	void			append (const char* text);
 	const char*		getText () const			{ return ""; }
-	virtual void	setVisible	(bool visible)		{}
+	virtual void	setVisible	(bool visible);
 	virtual void	imove		(float x, float y)	{}
 	virtual void	istretch	(float w, float h)	{}
 	virtual void	close		()	{}

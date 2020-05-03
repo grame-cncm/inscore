@@ -163,6 +163,9 @@ IApplLog::~IApplLog()
 //--------------------------------------------------------------------------
 void IApplLog::foreground ()
 {
+#if EMCC
+	fWindow->setVisible(getVisible());
+#else
 	if (getVisible()) {
 #ifdef __MOBILE__
 		if(VMobileQtInit::getMainPanel()->switchToPanel(fWindow->windowTitle()))
@@ -172,6 +175,7 @@ void IApplLog::foreground ()
 		fWindow->activateWindow();
 #endif
 	}
+#endif
 }
 
 //--------------------------------------------------------------------------

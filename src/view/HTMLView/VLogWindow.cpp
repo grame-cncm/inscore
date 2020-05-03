@@ -23,16 +23,24 @@
 
 */
 
+#include <iostream>
+
 #include <emscripten.h>
 #include <emscripten/bind.h>
 
 #include "VLogWindow.h"
 
+using namespace std;
+
 namespace inscore
 {
 
 void VLogWindow::append (const char* text)	{
-	EM_ASM( { gLog.log(Module.UTF8ToString($0));}, text);
+	cout << text << endl;
+}
+
+void VLogWindow::setVisible	(bool visible)	{
+	EM_ASM( { showlog($0);}, visible);
 }
 
 } // end namespace
