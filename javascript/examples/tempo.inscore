@@ -30,6 +30,7 @@ tempo	= 120;
 # setup a simple score
 ###########################################
 /ITL/scene/score set gmn '[\meter<"4/4"> g g g g g g g g g g g g \repeatEnd]';
+/ITL/scene/score scale 0.5;
 /ITL/scene/score map staff1;
 /ITL/scene/score watch mouseDown ( /ITL/scene/cursor date '$date' );
 

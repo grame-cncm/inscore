@@ -6,6 +6,7 @@ y =-0.2;
 
 /ITL/scene/title  set  txt "Variables in interaction messages.";
 /ITL/scene/title  fontSize 26;
+/ITL/scene/title  fontWeight bold;
 /ITL/scene/title  color darkBlue;
 /ITL/scene/title  y -0.80;
 
