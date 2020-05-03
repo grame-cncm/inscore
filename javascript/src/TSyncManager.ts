@@ -67,6 +67,8 @@ class TSyncManager implements GraphicSyncManager {
 		return false;
 	}
 
+	clean() : void 		{ this.fSync.forEach ( (m: TMaster, index: number) : void => { this.remove (index); }); }
+
 	//-----------------------------------------------------------------------
 	// table utilities
 	//-----------------------------------------------------------------------

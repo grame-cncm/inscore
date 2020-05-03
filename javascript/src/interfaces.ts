@@ -3,4 +3,5 @@
 
 interface GraphicSyncManager {
 	updateSync(obj: INScoreObject, oid: number): boolean;
+	clean() : void;
 }
