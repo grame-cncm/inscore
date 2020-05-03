@@ -33,3 +33,6 @@ class INScoreGlue {
 
 var gGlue = new INScoreGlue();
 
+// default function to show the log window (if any)
+// should be overriden by client applications
+function showlog (status: boolean) {}
