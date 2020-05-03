@@ -3,6 +3,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 	<title>INScore Scene Test</title>
 
+	<link href="fonts/fonts.css" rel="stylesheet">
 	<link href="css/inscore.css" rel="stylesheet">
 	<script src="lib/libINScore.js"></script>
 	<script src="lib/libGUIDOEngine.js"></script>
@@ -23,14 +24,15 @@
 <div class="inscore box" id="scene">
 /ITL/scene/* del;
 
-w = 0.2;
+w = 0.1;
 /ITL/scene/circ set ellipse $w $w;
 /ITL/scene/circ color orange ;
 /ITL/scene/circ alpha 150;
-/ITL/scene/circ watch timeEnter 2 3 (/ITL/scene/circ date 0 );
+/ITL/scene/circ watch timeEnter 3 4 (/ITL/scene/circ date 0 );
 
 /ITL/scene/gmn set gmn "[ a b d e g a f c2 ]";
 /ITL/scene/gmn map staff1;
+/ITL/scene/gmn scale 0.8;
 
 /ITL/scene/sync circ "gmn:staff1";
 
@@ -47,6 +49,7 @@ w = 0.2;
 /ITL/scene/score/debug map 1;
 /ITL/scene/gmn x 0.1;
 /ITL/left new;
+/ITL/scene/circ tempo 180;
 /ITL/log level 2;
  -->
 
