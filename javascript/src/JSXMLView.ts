@@ -1,7 +1,6 @@
 
 ///<reference path="JSGMNView.ts"/>
 ///<reference path="libmusicxml.ts"/>
-///<reference path="TLog.ts"/>
 
 class JSXMLView extends JSGMNView {
 
@@ -24,7 +23,7 @@ class JSXMLView extends JSGMNView {
 			let content = this.fXMLLib.string2guido (this.getXml(xml), true);
 			return content.length ? this.gmn2svg (obj, content, xml.page) : false;
 		}
-		else gLog.log ("libMusicXML is not available");
+		else console.log ("libMusicXML is not available");
 		return false;
     }
 }

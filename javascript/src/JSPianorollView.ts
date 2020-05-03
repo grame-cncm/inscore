@@ -45,7 +45,7 @@ class JSPianoRollView extends JSGMNView {
 				return true;
 			}
 		}
-		else gLog.log ("Guido engine is not available");
+		else console.log ("Guido engine is not available");
 		return false;
     }
 }

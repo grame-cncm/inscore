@@ -1,7 +1,6 @@
 
 ///<reference path="inscore.ts"/>
 ///<reference path="libraries.ts"/>
-///<reference path="TLog.ts"/>
 
 //----------------------------------------------------------------------------
 class INScoreGlue {
@@ -33,5 +32,4 @@ class INScoreGlue {
 }
 
 var gGlue = new INScoreGlue();
-var gLog  = new TLog();
 
