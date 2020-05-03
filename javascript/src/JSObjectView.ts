@@ -62,7 +62,17 @@ abstract class JSObjectView {
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
 	updateSpecific(obj: INScoreObject)	: void { }
-	getRatio()	: number { 
+
+	// the scale applied to preserve proportional rendering regarding scene size
+	parentScale() : number { 
+		let parent = this.getParent();
+		let pscale = parent ? parent.parentScale() : 1;
+		return pscale;
+	}
+	getScale(pos: OPosition) : number {  return pos.scale * this.parentScale(); }
+	
+	// the ratio applied in synchronisation mode to preserve the slave proportions
+	getSyncRatio()	: number { 
 		let div = this.getElement();
 		if (div && div.parentElement)
 			return Math.min(div.clientWidth, div.offsetHeight) / Math.min(div.parentElement.offsetWidth, div.parentElement.offsetHeight);
@@ -91,7 +101,7 @@ abstract class JSObjectView {
 
 		let infos = obj.getUpdateInfos(master);
 		if (keepRatio) {
-			let r = this.getParent().getRatio();
+			let r = this.getParent().getSyncRatio();
 			infos.position.scale /= r;
 		}
 		
@@ -107,7 +117,7 @@ abstract class JSObjectView {
 		if (infos.updateevents || force)
 			this.updateEvents(infos.events, obj.getOSCAddress());
 		if (infos.showmap) 
-			gLog.log (this + " show map -> " + obj.getMaps().size());
+			console.log (this + " show map -> " + obj.getMaps().size());
 	}
 
 
@@ -137,15 +147,21 @@ abstract class JSObjectView {
 		elt.style.visibility = (pos.hidden) ? "hidden" : "inherit";
 		elt.style.transform = this.getTransform (pos);
 		this.updateDimensions (pos);
-		let p = this.getPos (pos);
-		elt.style.left 	= p.x + "px";
-		elt.style.top  	= p.y + "px";
+		if (pos.x > 90000) { // synchronized object is out of master time
+			elt.style.visibility = "hidden";
+		}
+		else {
+			let p = this.getPos (pos);
+			elt.style.left 	= p.x + "px";
+			elt.style.top  	= p.y + "px";
+		}
 		elt.style.zIndex = pos.zorder.toString();
 	}
 
 	getTransform(pos: OPosition) : string {
 		let transform = "";
-		if (pos.scale != 1)  transform += `scale(${pos.scale},${pos.scale}) `;
+		let scale = this.getScale(pos);
+		if (scale != 1)  transform += `scale(${scale},${scale}) `;
 		if (pos.xangle) transform += `rotateX(${pos.xangle}deg) `;
 		if (pos.yangle) transform += `rotateY(${pos.yangle}deg) `;
 		if (pos.zangle) transform += `rotateZ(${pos.zangle}deg) `;
