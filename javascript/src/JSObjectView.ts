@@ -49,7 +49,12 @@ abstract class JSObjectView {
 	getId() : number	 			{ return this.fID; }
 	getElement() : HTMLElement		{ return this.fElement; }
 	getParent() : JSObjectView		{ return this.fParent; }
-	delete() : void					{ JSObjectView.fObjects[this.fID] = null; }
+	delete() : void { 
+		if (this.fSyncManager) this.fSyncManager.clean();
+		let parent = this.getElement().parentNode; // parent could be deleted
+		if (parent) parent.removeChild (this.getElement());
+		JSObjectView.fObjects[this.fID] = null; 
+	}
 
 	parentWidth() : number			{ 
 		let elt = this.getElement().parentElement;
@@ -87,11 +92,7 @@ abstract class JSObjectView {
 	// update methods
 	//---------------------------------------------------------------------
 	updateView(obj: INScoreObject, oid: number, master: number, force: boolean, keepRatio = false) : void {
-		if (obj.deleted() && this.getElement().parentNode) { // parent could be deleted
-			this.getElement().parentNode.removeChild (this.getElement());
-			this.delete();
-			return;
-		}
+		if (obj.deleted()) { this.delete(); return; }
 
 		if (this.fSyncManager && this.fSyncManager.updateSync (obj, oid))  
 			return;			// object is synchronized, update is done
