@@ -32,7 +32,7 @@ using namespace std;
 namespace inscore
 {
 
-static const float kNoWhere = -9999999.f;
+static const float kNoWhere = 99999.f;
 
 
 //--------------------------------------------------------------------------
@@ -74,7 +74,7 @@ static TFloatPoint date2MasterPosition (const SMaster& master, const IObject* sl
 	const IObject* mobj = master->getMaster();
 	std::string mapName = mobj->name() + ":" + master->getMasterMapName();
 	pos = slave->getSyncPos(mapName);
-	return scalePos(mobj, pos);
+	return (pos.x() <= kNoWhere) ? scalePos(mobj, pos) : pos;
 }
 
 //--------------------------------------------------------------------------
