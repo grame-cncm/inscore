@@ -54,6 +54,9 @@ class JSGMNView extends JSSvgBase {
 	parse(gmn: string)	: ARHandler { return this.fGuido.string2AR (this.fParser, gmn); }
 	string2Ar (obj: INScoreObject, gmn: string) : ARHandler { return this.parse (gmn); }
 
+	// scaled to get a size similar to native app
+	parentScale() : number { return this.getParent().parentScale() * 2.5; }
+
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
 		let ar = this.string2Ar (obj, gmn);
 		if (ar) {

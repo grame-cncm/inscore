@@ -20,6 +20,13 @@ class JSSceneView extends JSObjectView {
 	clone (parent: JSObjectView) : JSObjectView { return null; }
 	toString() : string					{ return "JSSceneView"; }
 
+	parentScale() : number { 
+		let div = this.getElement();
+		let scale = Math.min(div.clientWidth, div.clientHeight) / Math.min(screen.width, screen.height) * 2; 
+		return scale; 
+	}
+	getScale(pos: OPosition) : number {  return pos.scale; }
+
 	parentWidth() : number			{ return this.getElement().parentElement.offsetWidth; }
 	parentHeight() : number			{ return this.getElement().parentElement.offsetHeight; }
 
