@@ -5,6 +5,8 @@ grey = 180 180 180;
 shadow = shadow 5 5 $grey 75 3;
 color = 20 0 150;
 
+url = "https://inscoreweb.grame.fr/";
+
 /ITL/scene/welcome set txt "Welcome to INScore-JS";
 /ITL/scene/welcome color $color;
 /ITL/scene/welcome fontSize 32;
@@ -32,6 +34,6 @@ More information on <br />
 <a href=https://inscore.grame.fr style="font-size: 110%" target=_blank>inscore.grame.fr</a></span>';
 /ITL/scene/comment y 0.28;
 
-/ITL/scene/logo set img "imgs/grame.png";
+/ITL/scene/logo set img $url + "imgs/grame.png";
 /ITL/scene/logo scale 0.55;
 /ITL/scene/logo y 0.6;

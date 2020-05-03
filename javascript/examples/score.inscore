@@ -1,7 +1,8 @@
 
 /ITL/scene/* del;
 
-/ITL/scene/score set gmnf "gmn/mozart.gmn";
+url = "https://inscoreweb.grame.fr/";
+/ITL/scene/score set gmnf $url + "gmn/mozart.gmn.txt";
 /ITL/scene/score scale 0.25;
 /ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date');
 

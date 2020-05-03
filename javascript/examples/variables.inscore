@@ -4,6 +4,8 @@ y =-0.2;
 
 /ITL/scene/*  del;
 
+url = "https://inscoreweb.grame.fr/";
+
 /ITL/scene/title  set  txt "Variables in interaction messages.";
 /ITL/scene/title  fontSize 26;
 /ITL/scene/title  fontWeight bold;
@@ -17,8 +19,8 @@ y =-0.2;
 /ITL/scene/rect  y  $y;
 /ITL/scene/rect  z  1.0;
 
-/ITL/scene/rep1  set  img "imgs/repere.png";
-/ITL/scene/rep2  set  img "imgs/repere.png";
+/ITL/scene/rep1  set  img $url + "imgs/repere.png";
+/ITL/scene/rep2  set  img $url + "imgs/repere.png";
 /ITL/scene/rep2  x  $x;
 /ITL/scene/rep2  y  $y;
 
