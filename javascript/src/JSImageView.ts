@@ -15,12 +15,14 @@ class JSImageView extends JSAutoSize
         this.fImage = img;
         this.getElement().className = "inscore-img";
     }    
-    clone (parent: JSObjectView) : JSObjectView { return new JSImageView(parent); }
-	toString() : string			{ return "JSImageView"; }
-
-    getAutoSize() : Point {
-        return { x: this.fImage.clientWidth, y: this.fImage.clientHeight };
+    clone (parent: JSObjectView) : JSObjectView { 
+        let img = new JSImageView(parent);
+        img.fImage.src = this.fImage.src;
+        return img; 
     }
+	toString() : string			{ return "JSImageView"; }
+	getSyncRatio()	: number    { return 1; }   // no scaling for images, appearance is already preserved 
+    getAutoSize() : Point       { return { x: this.fImage.clientWidth, y: this.fImage.clientHeight }; }
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
         this.fImage.src  = obj.getFile();

@@ -77,12 +77,14 @@ abstract class JSObjectView {
 	getScale(pos: OPosition) : number {  return pos.scale * this.parentScale(); }
 	
 	// the ratio applied in synchronisation mode to preserve the slave proportions
-	getSyncRatio()	: number { 
+	parentSyncRatio()	: number { 
 		let div = this.getElement();
 		if (div && div.parentElement)
 			return Math.min(div.clientWidth, div.offsetHeight) / Math.min(div.parentElement.offsetWidth, div.parentElement.offsetHeight);
 		return 1;
 	}
+
+	getSyncRatio()	: number {  return this.getParent().parentSyncRatio(); }
 
 	refresh (address: string)	: void { 
 		inscore.delayMessage (address, inscore.newMessageM ("refresh"));
@@ -102,7 +104,7 @@ abstract class JSObjectView {
 
 		let infos = obj.getUpdateInfos(master);
 		if (keepRatio) {
-			let r = this.getParent().getSyncRatio();
+			let r = this.getSyncRatio();
 			infos.position.scale /= r;
 		}
 		
