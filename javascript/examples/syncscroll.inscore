@@ -1,0 +1,76 @@
+
+/ITL/scene/* del;
+
+url = "imgs/";
+
+/ITL/scene/score set img $url + "Applebaum.jpg";
+/ITL/scene/score scale 0.4;
+/ITL/scene/score duration 8;
+#/ITL/scene/score angle -45;
+
+/ITL/scene/cursor set rect 0.009 0.1;
+/ITL/scene/c set rect 0.01 0.6;
+/ITL/scene/c color grey;
+
+play  = $url + "play.png";
+pause = $url + "pause.png";
+
+/ITL/scene/ctrlplay set img $play;
+/ITL/scene/ctrlrev set img $play;
+/ITL/scene/ctrlrev angle 180;
+/ITL/scene/ctrlpause set img $pause;
+/ITL/scene/ctrl* show 0;
+/ITL/scene/ctrl* scale 0.12;
+/ITL/scene/ctrl* y 0.85;
+/ITL/scene/ctrlplay x 0.1;
+/ITL/scene/ctrlrev x -0.1;
+/ITL/scene/ctrl* show 1;
+
+/ITL/scene/score watch mouseDown  ( /ITL/scene/cursor date '$date' );
+
+/ITL/scene/ctrlplay watch mouseDown  ( /ITL/scene/cursor tempo 60 );
+/ITL/scene/ctrlrev watch mouseDown   ( /ITL/scene/cursor tempo -60 );
+/ITL/scene/ctrlpause watch mouseDown ( /ITL/scene/cursor tempo 0 );
+
+g = 150;
+grey = $g $g $g;
+/ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self scale 0.13 );
+/ITL/scene/ctrl* watch mouseLeave ( /ITL/scene/$self scale 0.12 );
+
+__END__
+
+/ITL/scene/trace set line wa 2 0;
+/ITL/scene/rect set rect 0.05 0.05;
+/ITL/scene/score scale 1;
+
+/ITL/scene/sync score cursor;
+/ITL/scene/sync score;
+
+/ITL/scene/sync cursor score ;
+/ITL/scene/cursor tempo 60;
+/ITL/scene/cursor tempo 0;
+
+/ITL/scene/cursor date -0.25;
+/ITL/scene/cursor date 0.0;
+/ITL/scene/cursor date 0.1;
+/ITL/scene/cursor date 0.25;
+/ITL/scene/cursor date 1;
+/ITL/scene/cursor date 4;
+/ITL/scene/cursor date 7;
+
+/ITL/scene/cursor get width height;
+
+
+/ITL/scene/score get width height scale;
+/ITL/scene/score xorigin -1;
+/ITL/scene/score xorigin 1;
+/ITL/scene/score xorigin 0;
+
+/ITL/scene/score yorigin -1;
+/ITL/scene/score yorigin 1;
+/ITL/scene/score yorigin 0;
+
+
+
+
+
