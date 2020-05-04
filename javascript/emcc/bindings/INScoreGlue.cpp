@@ -22,44 +22,25 @@
 
 */
 
-#pragma once
+#include <emscripten.h>
 
-#include <string>
-#include <iostream>
-
-# ifdef INScore_EXPORTS
-#  define inscore_export		 __attribute__ ((visibility("default")))
-# else
-#  define inscore_export		
-# endif
-
-#include "INScore.h"
+#include "INScoreGlue.h"
 
 
 namespace inscore
 {
 
-//--------------------------------------------------------------------------
-class JSGraphicUpdate : public GraphicUpdateListener
-{
-	public :
-		virtual void update() 	{ std::cerr << "JSGraphicUpdate::update" << std::endl; }
-};
 
 //--------------------------------------------------------------------------
-class INScoreJSGlue: public INScoreApplicationGlue
+void 	INScoreJSGlue::showMouse (bool state)
 {
-	public :
-				 INScoreJSGlue() {}
-		virtual ~INScoreJSGlue() {}
+	EM_ASM( { showMouse($0) }, state);
+}
 
-		virtual void 	showMouse (bool state);
-		virtual bool 	openUrl (const std::string& url);
-		virtual void	startView () 					{}
-		virtual void	stopView  () 					{}
-
-		virtual std::string viewVersion() const 	{ return "JSView version 0.1a"; }
-		virtual std::string getIP() const			{ return "localhost"; }
-};
+bool 	INScoreJSGlue::openUrl (const std::string& url)
+{
+	EM_ASM( { openUrl (Module.UTF8ToString($0)) }, url.c_str());
+	return true;
+}
 
 }
