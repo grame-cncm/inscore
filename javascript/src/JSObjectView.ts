@@ -141,8 +141,9 @@ abstract class JSObjectView {
 
 	getPos(pos: OPosition) : Point {
 		let ppos = this.getParent().getOrigin();
-		let x = ppos.x + this.relative2SceneWidth (pos.x) - (this.getElement().offsetWidth * (1 + pos.xorigin * pos.scale) / 2 );
-		let y = ppos.y + this.relative2SceneHeight(pos.y) - (this.getElement().offsetHeight * (1 + pos.yorigin * pos.scale) / 2 );
+		let scale = this.getScale(pos);
+		let x = ppos.x + this.relative2SceneWidth (pos.x) - (this.getElement().offsetWidth * (1 + pos.xorigin * scale) / 2 );
+		let y = ppos.y + this.relative2SceneHeight(pos.y) - (this.getElement().offsetHeight * (1 + pos.yorigin * scale) / 2 );
 		return { x: x, y: y};
 	}
 
