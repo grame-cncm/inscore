@@ -3,10 +3,6 @@ body {
 	font-family: carlito;
 }
 
-.inscore-rect {
-    border-radius: 10px;
-}
-
 .inscore-scene {
 	border: 1px black solid;
     box-shadow: 2px 2px 4px gray;
@@ -24,6 +20,13 @@ body {
     min-height: 100px;
 }
 
+/* 
+.inscore-rect {
+    border-radius: 10px;
+}
+
+
+
 .inscore-arc {
 	border: 0px blue solid;
 	fill:none;
@@ -38,7 +41,7 @@ body {
 .inscore-ellipse 	{ }
 .inscore-curve 		{ }
 .inscore-txt 	{ 
-	font-family: 'CarlitoRegular'; 
+	font-family: 'Carlito'; 
 	font-weight: normal; 
 	font-style: normal; 
 	font-size: 12px; 
@@ -46,7 +49,7 @@ body {
 }
 
 .inscore-html 	{ 
-	font-family: 'CarlitoRegular'; 
+	font-family: 'Carlito'; 
 	font-weight: normal; 
 	font-style: normal; 
 	font-size: 14px;
@@ -55,3 +58,4 @@ body {
 .inscore-gmn 		{ border: 0px blue solid; cursor: default; }
 .inscore-pianoroll 	{ }
 .inscore-svg 		{ }
+ */
