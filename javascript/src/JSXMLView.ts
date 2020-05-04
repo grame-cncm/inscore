@@ -1,6 +1,6 @@
 
 ///<reference path="JSGMNView.ts"/>
-///<reference path="libmusicxml.ts"/>
+///<reference path="lib/libmusicxml.ts"/>
 
 class JSXMLView extends JSGMNView {
 

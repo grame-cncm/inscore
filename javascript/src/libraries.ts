@@ -1,5 +1,5 @@
-///<reference path="guidoengine.ts"/>
-///<reference path="libmusicxml.ts"/>
+///<reference path="lib/guidoengine.ts"/>
+///<reference path="lib/libmusicxml.ts"/>
 
 //----------------------------------------------------------------------------
 class libraries {
