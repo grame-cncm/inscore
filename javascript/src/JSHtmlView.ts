@@ -5,7 +5,7 @@ class JSHtmlView extends JSAutoSize {
 
     constructor(parent: JSObjectView) {
 		super( document.createElement('div'), parent); 
-        this.getElement().className = "inscore-html";
+		this.getElement().className = "inscore-html";
     }
 	clone (parent: JSObjectView) : JSObjectView { return new JSHtmlView(parent); }
 
@@ -52,6 +52,15 @@ class JSHtmlView extends JSAutoSize {
 	}
 
 	getText (infos: OTextInfo) : string { return infos.text; }
+
+	updateEvents(events: OEvents, dest: string): void {
+		super.updateEvents (events, dest);
+		let div = this.getElement();
+		if (events.watchMouseEnter || events.watchMouseDown || events.watchMouseDClick) 
+			this.getElement().style.cursor = "pointer";
+		else 
+			this.getElement().style.cursor = "default";
+	}
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
 		let infos = obj.getTextInfos();
