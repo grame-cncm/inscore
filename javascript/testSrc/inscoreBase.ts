@@ -115,7 +115,7 @@ class INScoreBase {
 		if (v2)
 			inscore.loadInscore2 (content);
 		else
-			inscore.loadInscore (content, v2);
+			inscore.loadInscore (content, true);
 	}
 
 
@@ -127,7 +127,7 @@ class INScoreBase {
     //------------------------------------------------------------------------
     // load an inscore script - called when text is dropped
 	loadFromText (content: string, v2: boolean) : void {
-		this.loadInscore (content, true);
+		this.loadInscore (content, v2);
 	}
 
     //------------------------------------------------------------------------
@@ -218,7 +218,7 @@ class INScoreBase {
 
 	drop( e : DragEvent) : void {
 		let data = e.dataTransfer.getData("Text");
-		if (data)	this.loadFromText (data, true);
+		if (data)	this.loadFromText (data, false);
 		else 		this.filedropped (e);
 		let div = <HTMLElement>e.target;
 		div.style.border = div.getAttribute('savedborder');
