@@ -1,5 +1,6 @@
-///<reference path="JSObjectView.ts"/>
 
+///<reference path="JSObjectView.ts"/>
+///<reference path="navigator.ts"/>
 
 //----------------------------------------------------------------------------
 class JSSceneView extends JSObjectView {
@@ -16,9 +17,21 @@ class JSSceneView extends JSObjectView {
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)
 		div.style.filter = `blur(0px)`;
+		scanNavigator();
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
 	toString() : string					{ return "JSSceneView"; }
+
+	getOrigin() : Point { 
+		let p = super.getOrigin();
+		// the browsers below don't compute children absolute position like Chrome or Firefox
+		if (Safari || Explorer || Edge) {
+			let div = this.getElement();
+			p.x += div.offsetLeft;
+			p.y += div.offsetTop;
+		}
+		return p;
+	}
 
 	parentScale() : number { 
 		let div = this.getElement();
