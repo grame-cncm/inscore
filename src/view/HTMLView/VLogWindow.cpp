@@ -25,8 +25,10 @@
 
 #include <iostream>
 
+#ifdef EMCC
 #include <emscripten.h>
 #include <emscripten/bind.h>
+#endif
 
 #include "VLogWindow.h"
 
@@ -40,7 +42,9 @@ void VLogWindow::append (const char* text)	{
 }
 
 void VLogWindow::setVisible	(bool visible)	{
+#ifdef EMCC
 	EM_ASM( { showlog($0);}, visible);
+#endif
 }
 
 } // end namespace
