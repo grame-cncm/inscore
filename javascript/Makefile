@@ -26,6 +26,7 @@ LIB  := inscoreview.js
 VIEW := inscoretests.js
 
 all :
+	git submodule update --init
 	$(MAKE) ts
 	$(MAKE) -C emcc
 
