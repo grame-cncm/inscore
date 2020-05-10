@@ -77,6 +77,9 @@ else()
 	set (OSCIP ${OSCPACK}/ip/posix )
 endif()
 
+set (GUIDOAR      ${ROOT}/guidoar/src)
+
+
 
 #######################################
 # set sources and headers files
@@ -106,6 +109,24 @@ set (HEADERS ${COREHEADERS} ${CORE2HEADERS} ${MAPHEADERS} ${OSCHEADERS} ${MISCHE
 set (DEFS ${DEFS} -DHTMLVIEW)
 set (DEFS ${DEFS} -DNO_OSCSTREAM)
 
+#######################################
+# guidoar part
+set (GUIDOARFOLDERS  interface guido guido/abstract lib operations visitors parser)
+
+foreach(folder ${GUIDOARFOLDERS})
+	set(ARCPP ${ARCPP} "${GUIDOAR}/${folder}/*.cpp")			# add source files
+endforeach(folder)
+file (GLOB ARSRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ARCPP})
+set (SRC ${SRC}	${ARSRC} )
+
+foreach(folder ${GUIDOARFOLDERS})
+	set(ARH ${ARH} "${GUIDOAR}/${folder}/*.h")		# add header files
+endforeach(folder)
+file (GLOB ARHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ARH})
+set (HEADERS ${HEADERS}	${ARHEADERS} )
+
+set (DEFS ${DEFS} -DHAS_LIBMAPPING_SMARTP)
+
 ####################################
 # include directories
 set (INCDIRS  ${INCDIRS}
@@ -119,6 +140,10 @@ set (INCDIRS  ${INCDIRS}
 set (INCDIRS ${INCDIRS} ${MAPPINGDIR}/misc ${MAPPINGDIR}/parser ${MAPPINGDIR}/relations ${MAPPINGDIR}/segments)
 set (INCDIRS ${INCDIRS} ${JSON})
 set (INCDIRS ${INCDIRS} ${LOCALLIB}/GuidoEngine/include ${LOCALLIB}/GuidoAR/include)
+
+foreach(folder ${GUIDOARFOLDERS})
+	set(INCDIRS ${INCDIRS} "${GUIDOAR}/${folder}")
+endforeach(folder)
 
 #######################################
 # set libraries and definitions
