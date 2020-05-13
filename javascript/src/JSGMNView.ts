@@ -1,6 +1,7 @@
 
 ///<reference path="JSSVGBase.ts"/>
 ///<reference path="lib/guidoengine.ts"/>
+///<reference path="navigator.ts"/>
 
 class JSGMNView extends JSSvgBase {
 
@@ -8,6 +9,7 @@ class JSGMNView extends JSSvgBase {
 	private fAR: ARHandler = null;
 	private fGR: GRHandler = null;
 	private fPage = 0;
+	private fScalingFactor = 2.5;
 	protected fParser: GuidoParser;
 
 	private scanMap (name: string)	: { name: string, index: number } { 
@@ -29,6 +31,8 @@ class JSGMNView extends JSSvgBase {
 		this.fGR = null;
 		this.fAR = null;
 		if (guido) this.fParser = guido.openParser();
+		if (WindowsOS) 	 this.fScalingFactor = 1.7;
+		else if (UnixOS) this.fScalingFactor = 1.7;
 	}
 	clone (parent: JSObjectView) : JSObjectView { return new JSGMNView(parent, this.fGuido); }
 
@@ -55,7 +59,7 @@ class JSGMNView extends JSSvgBase {
 	string2Ar (obj: INScoreObject, gmn: string) : ARHandler { return this.parse (gmn); }
 
 	// scaled to get a size similar to native app
-	parentScale() : number { return this.getParent().parentScale() * 2.5; }
+	parentScale() : number { return this.getParent().parentScale() * this.fScalingFactor; }
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
 		let ar = this.string2Ar (obj, gmn);
