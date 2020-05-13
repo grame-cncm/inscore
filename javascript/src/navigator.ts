@@ -21,7 +21,6 @@ function scanNavigator() : void {
 
 function scanPlatform() : void {
 	var os = window.navigator.appVersion;
-console.log ("scanPlatform: " + os);
 	WindowsOS = (os.indexOf('Win') >= 0);
 	MacOS = (os.indexOf('Mac') >= 0) && ! Chrome;
 	UnixOS = (os.indexOf('X11') >= 0) || (os.indexOf('Linux') >= 0);
