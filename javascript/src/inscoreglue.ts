@@ -1,6 +1,7 @@
 
 ///<reference path="inscore.ts"/>
 ///<reference path="libraries.ts"/>
+///<reference path="navigator.ts"/>
 
 //----------------------------------------------------------------------------
 class INScoreGlue {
@@ -28,6 +29,8 @@ class INScoreGlue {
 	initialise() : void {
 		this.fTimeTask = window.setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
 		this.fSorterTask = window.setInterval( () => { this.fInscore.sorterTask(); }, 10);
+		scanPlatform();
+		scanNavigator();
 	}
 }
 

@@ -17,7 +17,6 @@ class JSSceneView extends JSObjectView {
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)
 		div.style.filter = `blur(0px)`;
-		scanNavigator();
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
 	toString() : string					{ return "JSSceneView"; }
@@ -36,6 +35,7 @@ class JSSceneView extends JSObjectView {
 	parentScale() : number { 
 		let div = this.getElement();
 		let scale = Math.min(div.clientWidth, div.clientHeight) / Math.min(screen.width, screen.height) * 2; 
+// console.log (this + ".parentScale: " + scale);
 		return scale; 
 	}
 	getScale(pos: OPosition) : number {  return pos.scale; }
