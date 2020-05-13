@@ -55,7 +55,11 @@ extern SIMessageStack gDelayStack;
 extern SIMessageStack gWebMsgStack;
 extern std::condition_variable gModelUpdateWaitCondition;
 
+#ifdef EMCC
+#define kDefaultRate	30
+#else
 #define kDefaultRate	10
+#endif
 
 //--------------------------------------------------------------------------
 static void run (SINetListener listener)
