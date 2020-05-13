@@ -159,7 +159,11 @@ float	IAppl::fCompatibilityVersionNum = 0.;	// the supported version number as f
 unsigned long IAppl::kUPDPort = 7000;			//Default listening port
 udpinfo IAppl::fUDP(IAppl::kUPDPort);
 string	IAppl::fDefaultFontName("Carlito");		// the default font name
+#ifdef EMCC
+int		IAppl::fRate = 20;
+#else
 int		IAppl::fRate = 10;
+#endif
 double	IAppl::fRealRate = fRate;
 std::string	IAppl::fParseVersion = "v1";
 
