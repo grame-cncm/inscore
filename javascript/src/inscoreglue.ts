@@ -27,7 +27,7 @@ class INScoreGlue {
 
 	initialise() : void {
 		this.fTimeTask = window.setInterval( () => { this.fInscore.timeTask(); }, this.fInscore.getRate());
-		this.fSorterTask = window.setInterval( () => { this.fInscore.sorterTask(); }, 1);
+		this.fSorterTask = window.setInterval( () => { this.fInscore.sorterTask(); }, 10);
 	}
 }
 
