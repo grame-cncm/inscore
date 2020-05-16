@@ -9,6 +9,7 @@ var Chrome: boolean = false;
 var WindowsOS: boolean = false;
 var MacOS: boolean = false;
 var UnixOS: boolean = false;
+var AndroidOS: boolean = false;
 
 function scanNavigator() : void {
 	var ua = window.navigator.userAgent;
@@ -24,4 +25,5 @@ function scanPlatform() : void {
 	WindowsOS = (os.indexOf('Win') >= 0);
 	MacOS = (os.indexOf('Mac') >= 0) && ! Chrome;
 	UnixOS = (os.indexOf('X11') >= 0) || (os.indexOf('Linux') >= 0);
+	AndroidOS = (os.indexOf('Android') >= 0);
 }
