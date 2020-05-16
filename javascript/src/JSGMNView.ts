@@ -9,7 +9,7 @@ class JSGMNView extends JSSvgBase {
 	private fAR: ARHandler = null;
 	private fGR: GRHandler = null;
 	private fPage = 0;
-	private fScalingFactor = 2.5;
+	private fScalingFactor = 2.3;
 	protected fParser: GuidoParser;
 
 	private scanMap (name: string)	: { name: string, index: number } { 
@@ -33,6 +33,7 @@ class JSGMNView extends JSSvgBase {
 		if (guido) this.fParser = guido.openParser();
 		if (WindowsOS) 	 this.fScalingFactor = 1.7;
 		else if (UnixOS) this.fScalingFactor = 1.7;
+		else if (AndroidOS) this.fScalingFactor = 1.7;
 	}
 	clone (parent: JSObjectView) : JSObjectView { return new JSGMNView(parent, this.fGuido); }
 

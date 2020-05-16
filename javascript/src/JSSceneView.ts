@@ -34,9 +34,9 @@ class JSSceneView extends JSObjectView {
 
 	parentScale() : number { 
 		let div = this.getElement();
-		let scale = Math.min(div.clientWidth, div.clientHeight) / Math.min(screen.width, screen.height) * 2; 
-// console.log (this + ".parentScale: " + scale);
-		return scale; 
+		let screenref = AndroidOS ? Math.max(screen.width, screen.height) :  Math.min(screen.width, screen.height);
+		let scale = Math.min(div.clientWidth, div.clientHeight) / screenref * 2; 
+ 		return scale; 
 	}
 	getScale(pos: OPosition) : number {  return pos.scale; }
 
