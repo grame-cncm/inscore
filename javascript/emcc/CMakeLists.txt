@@ -2,6 +2,8 @@
 # CMAKE INScore core library
 #######################################
 cmake_minimum_required(VERSION 3.4.0)
+
+set(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
 project(INScoreJS)
 
 set (CMAKE_BUILD_TYPE Release)
@@ -40,6 +42,7 @@ option ( EMCCDEBUG		"Activate emcc debug information"	off )
 set ( CMAKE_OSX_DEPLOYMENT_TARGET	"")
 set ( CMAKE_OSX_SYSROOT 		"")
 set ( CMAKE_CXX_COMPILER 	"emcc")
+set ( CMAKE_CXX_LINK_FLAGS "")
 set (WASM_LINK_FLAGS "--bind -O3 --memory-init-file 0 -s LINKABLE=1 -s WASM=1 -s EXPORT_NAME=\"'INScoreModule'\" -s MODULARIZE=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1 -s DISABLE_EXCEPTION_CATCHING=1  -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\"]'")
 
 file (GLOB EMCCSRC 	bindings/*.cpp)
