@@ -87,7 +87,7 @@ macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C ../lib/GuidoAR/macosx
 	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
 	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
-#	$(MAKE) ibundle
+	$(MAKE) ibundle
 
 linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(LIBPROJ)
