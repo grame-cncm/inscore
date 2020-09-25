@@ -119,6 +119,7 @@ class IApplLog : public IVNode
 {
 	VLogWindow*	fWindow;
 	int			fLogLevel;		// log level: 0: no log, 1: log errors, 2: + log get messages
+	float		fZoom = 1;
 	
 	public:	
 		enum { kNolog, kLogError, kLogMsg };
@@ -147,6 +148,8 @@ class IApplLog : public IVNode
 		void	setW		(float x)	{ fWidth = x; }
 		void	setH		(float y)	{ fHeight = y; }
 		void	setWrap		(bool state);
+		void	setZoom		(float zoom);
+		float	getZoom		() const 	{ return fZoom; }
 
 	protected:	
 				 IApplLog(IObject * parent);
