@@ -141,7 +141,7 @@ ANDROID_API ?= 22
 ANDROID_ARCH ?= armeabi-v7a
 
 android : QMAKE=qmake-android
-android : INSCOREDIR=androiddir
+android : INSCOREDIR?=androiddir
 android : $(INSCOREDIR)/Makefile
 	cp -rf ../rsrc/ tmp-rsc
 	$(MAKE) -C $(MOBILESCRIPTS)
@@ -165,10 +165,16 @@ devandroid:
 
 # To install INScore on your android device add DEVICE variable with device serial number. It can be retreived with 'adb get-serialno'
 installAndroid :
-	adb -s $(shell adb get-serialno) install -r $(shell find androiddir -name android-build-release-signed.apk) 
+	adb -s $(shell adb get-serialno) install -r $(shell find $(INSCOREDIR) -name android-build-release-signed.apk) 
 
 uninstallAndroid :
 	adb uninstall fr.grame.inscore
+	
+BT350:
+	make android INSCOREDIR=androidx86-BT350 
+
+installBT350:
+	make installAndroid INSCOREDIR=androidx86-BT350
 
 #===============================================================
 # install target
