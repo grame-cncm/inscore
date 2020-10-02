@@ -362,11 +362,11 @@ int main( int argc, char **argv )
     gAbout = new INScoreAbout(pixmap);
     gAbout->show();
 
-cerr << "============> main : INScore::start" << endl;
+//cerr << "============> main : INScore::start" << endl;
     IGlue * glue = INScore::start (kTimeInterval, udpPort, kUPDPort+1, kUPDPort+2, &appl);
-cerr << "============> main : appl.started" << endl;
+//cerr << "============> main : appl.started" << endl;
     appl.started();
-cerr << "============> main : appl.readArgs" << endl;
+//cerr << "============> main : appl.readArgs" << endl;
     appl.readArgs(argc, argv);
 
 //#if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
@@ -374,7 +374,7 @@ cerr << "============> main : appl.readArgs" << endl;
     gAbout->hide();
     disableAppNap();
 //#endif
-cerr << "============> main : appl.showMobileMenu" << endl;
+//cerr << "============> main : appl.showMobileMenu" << endl;
     appl.showMobileMenu();
     int ret = appl.exec();
 	INScore::stop (glue);
