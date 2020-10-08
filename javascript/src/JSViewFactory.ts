@@ -21,6 +21,7 @@
 ///<reference path="JSPianorollfView.ts"/>
 ///<reference path="JSLayerView.ts"/>
 ///<reference path="JSSVGfView.ts"/>
+///<reference path="JSAudioView.ts"/>
 ///<reference path="JSVideoView.ts"/>
 ///<reference path="TSyncManager.ts"/>
 ///<reference path="libraries.ts"/>
@@ -62,8 +63,8 @@ class JSViewFactory {
 			case "txt": 	  view = new JSTextView(parent); break; 			
 			case "txtf":	  view = new JSTextfView(parent); break;
 			case "video":	  view = new JSVideoView(parent); break;
+			case "audio":	  view = new JSAudioView(parent); break;
 
-			case "audio":
 			case "fileWatcher":
 			case "graph":
 			case "fastgraph":
@@ -73,7 +74,7 @@ class JSViewFactory {
 			case "memimg":
 			case "sig":
 			case "signode":
-				console.log ("Type " + type + " is not yet supported");
+				console.log (type + "type is not yet supported");
 				break; 
 
 			default:
