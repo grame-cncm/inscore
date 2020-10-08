@@ -51,7 +51,7 @@ VMediaPlayer::VMediaPlayer () :
 //----------------------------------------------------------------------
 void VMediaPlayer::connectVideo(QGraphicsVideoItem* v)
 {
-qDebug() << "VMediaPlayer::connectVideo";
+//qDebug() << "INScore VMediaPlayer::connectVideo";
     connect(v, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
 }
 
@@ -59,12 +59,13 @@ qDebug() << "VMediaPlayer::connectVideo";
 void VMediaPlayer::error(QMediaPlayer::Error err )
 {
 	error (fMediaPlayer.errorString());
-	qDebug() << "VMediaPlayer::error" << err << endl;
+//	qDebug() << "VMediaPlayer::error" << err << endl;
 }
 
 //----------------------------------------------------------------------
 void VMediaPlayer::nativeSizeChanged(const QSizeF & size)
 {
+//qDebug() << "INScore : VMediaPlayer::nativeSizeChanged" << size << endl;
 	if (size.isEmpty()) return;
 	sizeChanged (size);
 	int target = fMediaPlayer.isAudioAvailable() ?  1 : 0;
@@ -75,21 +76,25 @@ void VMediaPlayer::nativeSizeChanged(const QSizeF & size)
 }
 
 //----------------------------------------------------------------------
-void VMediaPlayer::seekableChanged(bool /*seekable*/)		{ /* qDebug() << "VMediaPlayer::seekableChanged :" <<  seekable;*/ }
+void VMediaPlayer::seekableChanged(bool seekable)		{ /*qDebug() << "INScore : VMediaPlayer::seekableChanged :" <<  seekable;*/ }
 void VMediaPlayer::positionChanged(qint64 pos)			{ posChanged(pos); }
 void VMediaPlayer::durationChanged(qint64 duration)		{
+//qDebug() << "INScore : VMediaPlayer::durationChanged" << duration;
 	int target = fMediaPlayer.isAudioAvailable() ?  1 : 0;
 	target += fMediaPlayer.isVideoAvailable() ?  1 : 0;
+//qDebug() << "INScore : VMediaPlayer::durationChanged target" << fMediaPlayer.isAudioAvailable() << fMediaPlayer.isVideoAvailable();
+//	if (fMediaPlayer.isAudioAvailable() && fMediaPlayer.isVideoAvailable() )
+//		mediaReady();
 	if (++fReady == target) {
 		mediaReady();
 	}
 }
-void VMediaPlayer::stateChanged (QMediaPlayer::State /*state*/)	{ /*qDebug() << "VMediaPlayer::stateChanged :" <<  state;*/ }
+void VMediaPlayer::stateChanged (QMediaPlayer::State state)	{ /*qDebug() << "INScore : VMediaPlayer::stateChanged :" <<  state;*/ }
 
 //----------------------------------------------------------------------
 void VMediaPlayer::mediaStatusChanged (QMediaPlayer::MediaStatus status)
 {
-//qDebug() << "VMediaPlayer::mediaStatusChanged" << status;
+//qDebug() << "INScore : VMediaPlayer::mediaStatusChanged" << status;
 	switch (status) {
 		case QMediaPlayer::LoadedMedia:			// this is necessary to trigger the nativeSizeChanged slot
 			fMediaPlayer.play();
@@ -116,6 +121,7 @@ void VMediaPlayer::mediaStatusChanged (QMediaPlayer::MediaStatus status)
 //----------------------------------------------------------------------
 void VMediaPlayer::updatePlayer( const IMedia * media  )
 {
+//qDebug() << "INScore : VMediaPlayer::updatePlayer size" << ;
 	qint64 pos = media->vDate();
 	if (pos < 0 ) pos = 0;
 	if (pos > player()->duration()) pos = player()->duration()-1;
