@@ -59,7 +59,7 @@ help :
 # building inscore library
 #===============================================================
 emcc: $(EMCCDIR)
-	$(MAKE) -C $(EMCCDIR) emcc -j $(JOBS)
+	$(MAKE) -C $(EMCCDIR) emcc 
 
 lib : $(LIBDIR)
 	$(CMAKE) --build $(LIBDIR) --config Release -- $(J)
