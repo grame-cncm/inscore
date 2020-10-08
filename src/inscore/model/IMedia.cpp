@@ -109,7 +109,7 @@ rational IMedia::getMediaDuration () const	{ return rational((fVDuration * fRate
 void IMedia::setFile(const std::string& path)
 {
 	TFile::setFile(path);
-
+#ifndef HTMLVIEW
 	ifstream file;
 	file.open (path.c_str(), ifstream::in);
 	if (file.is_open())
@@ -122,6 +122,7 @@ void IMedia::setFile(const std::string& path)
 		oscerr << OSCErr() << msg << path << OSCEnd();
 #endif
 	}
+#endif
 }
 
 //--------------------------------------------------------------------------
