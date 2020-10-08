@@ -9,7 +9,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>INScore Framework</string>
 	<key>CFBundleIdentifier</key>
-	<string>fr.grame.INScore</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
