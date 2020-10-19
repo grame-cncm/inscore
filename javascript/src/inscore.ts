@@ -12,12 +12,11 @@ class INScore {
     private	fJSGlue        :   INScoreJSGlue;
 
     async initialise():Promise<any> { 
-        var module = INScoreModule();
         return new Promise( (success: any, failure: any) => {
-            module['onRuntimeInitialized'] = () => {
+            INScoreModule().then ((module: any) => {
                 this.moduleInit (module);
                 success ( this ); 
-                }
+                });
         });
     }
 
