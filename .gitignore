@@ -39,7 +39,6 @@ scripts/mobile/*.ibundle
 *.graffle
 moc_*.cpp
 
-android
 ios
 macos
 tmp-rsc
@@ -48,7 +47,7 @@ Debug
 Release
 .DS_Store
 
-build/androiddir
+build/android*
 build/archive
 build/iosdir
 build/bin
