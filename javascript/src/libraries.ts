@@ -5,6 +5,7 @@
 class libraries {
 	private fGuido  : GuidoEngine;
 	private fXMLLib : libmusicxml;
+	private fFaust : any;
 
 	constructor() {
     	this.fGuido  = new GuidoEngine;
@@ -35,6 +36,15 @@ class libraries {
 				() => { this.fXMLLib = null; success(this); });
 		});
 	}
+
+	// async faustinit():Promise<any> { 
+	// 	return new Promise( (success: any, failure: any) => {
+	// 		fFaust = new Faust2WebAudio.Faust({ debug: true, wasmLocation: "lib/faust/libfaust-wasm.wasm", dataLocation: "lib/faust/libfaust-wasm.data" });
+	// 		this.fFaust.ready.then ( 
+	// 			() => { console.log ("Faust version: " + fFaust.getLibFaustVersion()); success (this); },
+	// 		() => { this.fFaust = null; success(this); });
+	// 	}); 
+	// }
 
 	guido()  : GuidoEngine { return this.fGuido; }
 	xmllib() : libmusicxml { return this.fXMLLib; }
