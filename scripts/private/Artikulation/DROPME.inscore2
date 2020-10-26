@@ -63,7 +63,7 @@ move = ((/ITL/scene/cursor* date "$date"),
 /ITL/scene/navbar	(watch mouseDown ( $move)),
 					(watch mouseMove ( $move));
 
-/ITL/scene/artikulation (set audio "artikulation.m4a"),
+/ITL/scene/artikulation (set audio "artikulation.wav"),
 						(show 0);
 
 
