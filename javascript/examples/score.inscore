@@ -1,7 +1,8 @@
 
 /ITL/scene/* del;
 
-url = "https://inscoreweb.grame.fr/";
+#url = "https://inscoreweb.grame.fr/";
+url = "../";
 /ITL/scene/score set gmnf $url + "gmn/mozart.gmn.txt";
 /ITL/scene/score scale 0.25;
 /ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date');
@@ -31,8 +32,8 @@ w = 0.1;
 /ITL/scene/sync cursor4 "score:staff4";
 /ITL/scene/sync cursor5 "score:staff5";
 
-play  = "imgs/play.png";
-pause = "imgs/pause.png";
+play  = $url + "imgs/play.png";
+pause = $url + "imgs/pause.png";
 
 /ITL/scene/ctrl set img $play;
 /ITL/scene/ctrl show 0;
