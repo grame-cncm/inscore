@@ -25,15 +25,25 @@
 
 #pragma once
 
-#include <chrono>
+
 
 //--------------------------------------------------------------------------
 /**
 *	\brief a high resolution clock based on std::chrono.
 */
+#define HAS_HIGH_RESOLUTION_CLOCK true
+
+#if HAS_HIGH_RESOLUTION_CLOCK
+#include <chrono>
+#else
+#include <sys/time.h>
+#endif
+
 class TWallClock
 {
+#if HAS_HIGH_RESOLUTION_CLOCK
 	static std::chrono::high_resolution_clock::time_point fInitTime;
+#endif
 	public:
 				 TWallClock() {}
 		virtual ~TWallClock() {}

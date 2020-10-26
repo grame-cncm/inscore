@@ -25,6 +25,8 @@
 
 #include "TWallClock.h"
 
+#if HAS_HIGH_RESOLUTION_CLOCK
+
 using namespace std::chrono;
 
 high_resolution_clock::time_point TWallClock::fInitTime = high_resolution_clock::now();
@@ -35,3 +37,14 @@ double TWallClock::time()
 	duration<double> time_span = duration_cast<duration<double>>(tp - fInitTime);
 	return time_span.count() * 1000;
 }
+
+#else
+
+double TWallClock::time()
+{
+	struct timeval tv;
+	int ret = gettimeofday (&tv, 0);
+	return ret ? 0 : (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+
+#endif
