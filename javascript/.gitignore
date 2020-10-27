@@ -11,6 +11,7 @@ emcc/lib
 package-lock.json
 TSCheck
 
+lib/
 lib/libGUIDOEngine.*
 lib/libmusicxml.*
 lib/libINScore.js
