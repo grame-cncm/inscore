@@ -26,8 +26,11 @@
 #include <string>
 
 #include "Modules.h"
+
+#if HASWSSupport
 #include <QUrl>
 #include <QWebSocket>
+#endif
 
 #include "Forwarder.h"
 #include "IFilterForward.h"
@@ -57,6 +60,7 @@ class OSCForwarder : public ForwardEndPoint
 		}
 };
 
+#if HASWSSupport
 //--------------------------------------------------------------------------
 class WSForwarder : public ForwardEndPoint
 {
@@ -88,6 +92,7 @@ class WSForwarder : public ForwardEndPoint
 			qint64 n = fWSocket.sendTextMessage (IMessage2String(imsg));
 		}
 };
+#endif
 
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
@@ -124,11 +129,19 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 			if (!url.fPort) url.fPort = IAppl::kUPDPort;
 			// Add in host list.
 			switch (url.fProtocol) {
+#if HASWSSupport
 				case IMessage::TUrl::kWSProtocol:
 					fForwardList.push_back(new WSForwarder(url));
 					break;
 				case IMessage::TUrl::kWSSProtocol:
+					ITLErr << "wss protocol not yet supported" << ITLEndl;
 					break;
+#else
+				case IMessage::TUrl::kWSProtocol:
+				case IMessage::TUrl::kWSSProtocol:
+					ITLErr << "ws and wss protocol not supported" << ITLEndl;
+					break;
+#endif
 				default:
 					fForwardList.push_back(new OSCForwarder(url));
 			}
