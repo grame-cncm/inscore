@@ -22,15 +22,70 @@
   research@grame.fr
 
 */
+
+#include <string>
+#include <QUrl>
+#include <QWebSocket>
+
 #include "Forwarder.h"
 #include "IFilterForward.h"
 #include "Tools.h"
 #include "IAppl.h"
 
-#include <string>
+#include "json_object.h"
+#include "json_element.h"
+#include "json_parser.h"
+#include "json_stream.h"
+
+using namespace std;
+using namespace json;
 
 namespace inscore
 {
+
+//--------------------------------------------------------------------------
+class OSCForwarder : public ForwardEndPoint
+{
+	public:
+				 OSCForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url) {}
+		virtual ~OSCForwarder () {}
+		
+		void send (const IMessage * imsg) {
+			OSCStream::sendEvent (imsg, dest().fHostname, dest().fPort);
+		}
+};
+
+//--------------------------------------------------------------------------
+class WSForwarder : public ForwardEndPoint
+{
+	int			fID = 1;
+	QWebSocket	fWSocket;
+	QString IMessage2String (const IMessage * imsg) {
+		string msgstr = imsg->toString();
+		json_object *json = new json_object;
+		json->add (new json_element("id", new json_int_value(fID++)));
+		json->add (new json_element("method", new json_string_value("post")));
+		json->add (new json_element("data", new json_string_value(msgstr.c_str())));
+		std::ostringstream jstream;
+		json->print(jstream);
+		QString out (jstream.str().c_str());
+		return out;
+	}
+
+	public:
+				 WSForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url), fWSocket("INScore") {
+					QString tmp ("ws://");
+					tmp += url.fHostname.c_str();
+					QUrl dest (tmp);
+					dest.setPort(url.fPort);
+					fWSocket.open (dest);
+				 }
+		virtual ~WSForwarder () { fWSocket.close(); }
+		
+		void send (const IMessage * imsg) {
+			qint64 n = fWSocket.sendTextMessage (IMessage2String(imsg));
+		}
+};
 
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
@@ -38,10 +93,11 @@ void Forwarder::forward(const IMessage * imsg)
 	// Forward if have host in foward list and if no filter or filter is not bloking the message.
 	if (fForwardList.size() && (!fFilter || !fFilter->applyFilter(imsg))) {
         for (unsigned int i = 0; i < fForwardList.size(); i++) {
-            IMessage::TUrl url = fForwardList[i];
+            ForwardEndPoint* endpoint = fForwardList[i];
+            const IMessage::TUrl& url = endpoint->dest();
             // Forward message only if the destination is not the source of the message.
             if(Tools::ip2string(imsg->src()) != url.fHostname)
-                OSCStream::sendEvent (imsg, url.fHostname, url.fPort);
+                endpoint->send (imsg);
         }
     }
 }
@@ -49,7 +105,7 @@ void Forwarder::forward(const IMessage * imsg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 {
-	fForwardList.clear();					// clear the forward list first
+	clear();								// clear the forward list first
 	if (msg->size() == 0)					// no other param
 		return MsgHandler::kProcessed;		// that's done
 
@@ -62,11 +118,33 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
             url.fHostname = Tools::ip2string(Tools::getIP(url.fHostname));
 			if (!url.fPort) url.fPort = IAppl::kUPDPort;
 			// Add in host list.
-            fForwardList.push_back(url);
+			switch (url.fProtocol) {
+				case IMessage::TUrl::kWSProtocol:
+					fForwardList.push_back(new WSForwarder(url));
+					break;
+				case IMessage::TUrl::kWSSProtocol:
+					break;
+				default:
+					fForwardList.push_back(new OSCForwarder(url));
+			}
         }
         else return MsgHandler::kBadParameters;
     }
     return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+const vector<IMessage::TUrl> Forwarder::getForwardList() const {
+	vector<IMessage::TUrl> list;
+	for (auto e: fForwardList) list.push_back(e->dest());
+	return list;
+}
+
+//--------------------------------------------------------------------------
+void Forwarder::clear()
+{
+	for (auto a: fForwardList) delete a;
+	fForwardList.clear();
 }
 
 }
