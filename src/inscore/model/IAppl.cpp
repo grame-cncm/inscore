@@ -218,6 +218,11 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
+#ifdef EMCC
+	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::connect);
+	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getCnxList);
+#endif
+
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 	fMsgHandlerMap[kstartBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
 	fMsgHandlerMap[kstopBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::stopBench);
@@ -406,7 +411,7 @@ int IAppl::processAlias (const TAlias& alias, const IMessage* imsg)
 			}
 			i++;			// i maintains the correspondence between args and params
 			if (!psize) {	// check if there are more args than params
-				for (i; i<n; i++) m->add (imsg->param(i));	// add the remaining args
+				for (; i<n; i++) m->add (imsg->param(i));	// add the remaining args
 			}
 			status = processMsg (head, tail, m);	// and finally process the resolved message
 			if (status != MsgHandler::kProcessed) {
@@ -536,6 +541,12 @@ MsgHandler::msgStatus IAppl::requireMsg(const IMessage* msg)
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
+{
+	return fForwarder.processForwardMsg(msg);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::connect(const IMessage* msg)
 {
 	return fForwarder.processForwardMsg(msg);
 }

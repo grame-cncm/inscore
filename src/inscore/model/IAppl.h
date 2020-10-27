@@ -156,6 +156,7 @@ class IAppl : public IObject, public TILoader
 		 * \return
 		 */
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
+		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fForwarder.getForwardList(); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 		virtual void		cleanup ();
@@ -274,6 +275,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'forward' message handler.
 		virtual MsgHandler::msgStatus forward (const IMessage* msg);
+
+		/// \brief application \c 'connect' message handler.
+		virtual MsgHandler::msgStatus connect (const IMessage* msg);
 
 		/// \brief application \c 'time' message handler.
 		virtual MsgHandler::msgStatus setTime (const IMessage* msg);
