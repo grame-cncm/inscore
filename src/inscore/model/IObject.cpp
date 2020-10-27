@@ -1323,8 +1323,39 @@ static void showframe (const vector<float>& p)
 vector<float> IObject::getFrame ()	const
 { 
 	vector<float> frame;
+#ifndef WIN32
+#warning implement standalone getFrame
+#endif
+#ifndef EMCC
 	getView()->getFrame(this, frame);
 //	showframe (frame);
+
+#else
+	float scale = getScale();
+	float w = getWidth() * scale;
+	float h = getHeight() * scale;
+	float x = getXPos() - (w * (1 + getXOrigin()) / 2);
+	float y = getYPos() - (h * (1 + getXOrigin()) / 2);
+	
+	frame.push_back(x);
+	frame.push_back(y);
+	frame.push_back(x+w);
+	frame.push_back(y);
+	frame.push_back(x+w);
+	frame.push_back(y+h);
+	frame.push_back(x);
+	frame.push_back(y+h);
+
+//	QTransform m = item()->transform();
+//	m.scale(o->getScale(), o->getScale());
+//	QPolygon po = m.mapToPolygon(r.toRect());
+//	for (int i=0; i < po.size(); i++) {
+//		QPoint p = po[i];
+//		out.push_back(scene2RelativeX(p.x()) + o->getXPos());
+//		out.push_back(scene2RelativeY(p.y()) + o->getYPos());
+//	}
+#endif
+
 	return frame;
 }
 
