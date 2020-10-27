@@ -42,6 +42,7 @@ namespace inscore
 {
 
 #define kMargin	4
+#define kBaseFontSize	11
 
 VLogWindow::VLogWindow(const char* name, IApplLog * logwindow)
 	: fLogModel(logwindow)
@@ -51,7 +52,7 @@ VLogWindow::VLogWindow(const char* name, IApplLog * logwindow)
 	fLogArea->setLineWrapMode(QPlainTextEdit::NoWrap);
 	
 	QTextCharFormat format;
-	QFont font("Courier", 11);
+	QFont font("Courier", kBaseFontSize);
 	format.setFont(font);
 	fLogArea->setCurrentCharFormat(format);
 
@@ -75,6 +76,16 @@ VLogWindow::VLogWindow(const char* name, IApplLog * logwindow)
 	fScreenDim = qMin( r.width(), r.height() );
 	fScreenCenter = r.center();
 }
+
+void VLogWindow::izoom	(float zoom)
+{
+	QTextCharFormat format;
+	QFont font("Courier", kBaseFontSize*zoom);
+	format.setFont(font);
+	fLogArea->setCurrentCharFormat(format);
+	fLogArea->setPlainText(fLogArea->toPlainText());
+}
+
 
 #define kButtonSize	24
 

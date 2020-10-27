@@ -44,6 +44,7 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);
     connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
+//    connectVideo (fVideoItem);
 	player()->setVideoOutput (fVideoItem);
 }
 
@@ -53,6 +54,7 @@ void VVideoView::mediaReady()
 {
 	fVideo->setMediaDuration(player()->duration());
 	fVideo->mediaReady();
+//qDebug() << "VVideoView : mediaReady size" << fVideoItem->nativeSize();
 }
 
 //----------------------------------------------------------------------
@@ -68,6 +70,7 @@ void VVideoView::error(QString msg)
 //----------------------------------------------------------------------
 void VVideoView::sizeChanged(const QSizeF & size)
 {
+//qDebug() << "VVideoView : VMediaPlayer::sizeChanged" << size;
 	fVideoItem->setSize (size);
 	fVideo->setWidth ( scene2RelativeWidth(size.width()) );
 	fVideo->setHeight( scene2RelativeHeight(size.height()) );

@@ -34,12 +34,26 @@ namespace inscore
 {
     class IFilterForward;
 
+class ForwardEndPoint
+{
+	IMessage::TUrl fDest;
+
+	public:
+				 ForwardEndPoint (const IMessage::TUrl& url) : fDest(url) {}
+		virtual ~ForwardEndPoint () {}
+
+		virtual void send (const IMessage * imsg) = 0;
+		const IMessage::TUrl& dest() const		{ return fDest; }
+};
+
 /*!
  * \brief The Forwarder class. Helper class to manage message forwarding.
  * A filter can be added to the Forwarder class.
  */
 class Forwarder
 {
+	void clear();
+
     public:
         /*!
          * \brief Forwarder Construct a forwarder without filter.
@@ -71,11 +85,11 @@ class Forwarder
          * \brief getForwardList Get the list of the forwarded host.
          * \return
          */
-        const std::vector<IMessage::TUrl> getForwardList() const { return fForwardList; }
+        const std::vector<IMessage::TUrl> getForwardList() const; // { return fForwardList; }
 
 
     private:
-        std::vector<IMessage::TUrl>	fForwardList;	// list of hosts to forward incoming messages
+        std::vector<ForwardEndPoint*>	fForwardList;	// list of hosts to forward incoming messages
         IFilterForward * fFilter;
 };
 

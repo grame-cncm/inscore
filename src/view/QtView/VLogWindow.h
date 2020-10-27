@@ -51,6 +51,7 @@ public:
 	const char*		getText () const;
 	virtual void	setVisible	(bool visible);
 	virtual void	imove		(float x, float y);
+	virtual void	izoom		(float zoom);
 	virtual void	istretch	(float w, float h);
 	virtual bool	event(QEvent * e);
 	

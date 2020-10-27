@@ -183,10 +183,26 @@ bool IMessage::param(int i, SIExpression& val) const
 //----------------------------------------------------------------------
 bool IMessage::TUrl::parse (const std::string& address)
 {
-	size_t startPort = address.find_first_of(':');
+	string ws = "ws://";
+	string wss = "wss://";
+	string osc = "osc://";
+	string tail = address;
+	if (address.compare (0, ws.length(), ws) == 0) {
+		fProtocol = kWSProtocol;
+		tail = address.substr(ws.length());
+	}
+	else if (address.compare (0, wss.length(), wss) == 0) {
+		fProtocol = kWSSProtocol;
+		tail = address.substr(wss.length());
+	}
+	else if (address.compare (0, osc.length(), osc) == 0) {
+		fProtocol = kOSCProtocol;
+		tail = address.substr(osc.length());
+	}
+	size_t startPort = tail.find_first_of(':');
 	if (startPort != string::npos) {
-		fHostname = address.substr (0, startPort);
-		string portStr = address.substr (startPort+1);
+		fHostname = tail.substr (0, startPort);
+		string portStr = tail.substr (startPort+1);
 		fPort = atoi(portStr.c_str());
 	}
 	else {
@@ -432,6 +448,10 @@ void IMessage::print(std::ostream& out, int nested, const char* sep) const
 IMessage::TUrl::operator string() const
 {
 	stringstream str;
+	switch (fProtocol) {
+		case kWSProtocol:	str << "ws://"; break;
+		case kWSSProtocol:	str << "wss://"; break;
+	}
 	str << fHostname;
 	if (fPort) str << ':' << fPort;
 	return str.str();

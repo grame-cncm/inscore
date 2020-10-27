@@ -38,6 +38,9 @@ greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_L
 ##############################
 SOURCES  =	$$files($$SRC/*.cpp, true)
 SOURCES +=	$$ITLROOT/src/inscore/expression/ExprInfo.cpp
+SOURCES +=	$$ITLROOT/src/inscore/lib/TWallClock.cpp
+SOURCES +=	$$ITLROOT/src/inscore2/sorter/TSorter.cpp
+SOURCES +=	$$ITLROOT/src/inscore2/sorter/TScheduler.cpp
 
 HEADERS  = $$files($$SRC/*.h, true)
 INCLUDEPATH +=	$$SRC/ $$SRC/Parsing/ 
