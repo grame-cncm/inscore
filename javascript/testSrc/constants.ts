@@ -28,9 +28,9 @@ const kInscore        : string	= "inscore";
 const kInscore2       : string	= "inscore2";
 
 // events types
-const kMouseEnterID 	= 1;
-const kMouseLeaveID 	= 2;
-const kMouseDownID  	= 3;
-const kMouseUpID    	= 4;
-const kMouseMoveID  	= 5;
-const kMouseDClickID	= 6;
+// const kMouseEnterID 	= 1;
+// const kMouseLeaveID 	= 2;
+// const kMouseDownID  	= 3;
+// const kMouseUpID    	= 4;
+// const kMouseMoveID  	= 5;
+// const kMouseDClickID	= 6;
