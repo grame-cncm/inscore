@@ -63,7 +63,7 @@ endif()
 # set directories, src and headers.
 set (SRCDIR      ${ROOT}/src)
 set (INSCOREDIR  ${SRCDIR}/inscore)
-set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view)
+set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view signal)
 set (INSCORE2DIR ${SRCDIR}/inscore2)
 if (USEOSC)
 set (INSCOREDIRS ${INSCOREDIRS} osc)
