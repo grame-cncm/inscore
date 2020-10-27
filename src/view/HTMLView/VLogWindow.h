@@ -40,6 +40,7 @@ public:
 	virtual void	setVisible	(bool visible);
 	virtual void	imove		(float x, float y)	{}
 	virtual void	istretch	(float w, float h)	{}
+	virtual void	izoom		(float zoom) {}
 	virtual void	close		()	{}
 	virtual void	raise		() 	{}
 	virtual void	activateWindow() {}
