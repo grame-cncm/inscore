@@ -184,20 +184,24 @@ bool IMessage::param(int i, SIExpression& val) const
 bool IMessage::TUrl::parse (const std::string& address)
 {
 	string ws = "ws://";
-	string wss = "wss://";
 	string osc = "osc://";
+	string http = "http://";
 	string tail = address;
 	if (address.compare (0, ws.length(), ws) == 0) {
 		fProtocol = kWSProtocol;
 		tail = address.substr(ws.length());
 	}
-	else if (address.compare (0, wss.length(), wss) == 0) {
-		fProtocol = kWSSProtocol;
-		tail = address.substr(wss.length());
-	}
 	else if (address.compare (0, osc.length(), osc) == 0) {
 		fProtocol = kOSCProtocol;
 		tail = address.substr(osc.length());
+	}
+	else if (address.compare (0, http.length(), http) == 0) {
+		fProtocol = kHTTPProtocol;
+		tail = address.substr(http.length());
+	}
+	else if (address.find_first_of('/') != string::npos) {
+		ITLErr << address << ": incorrect url or unsupported protocol in " << ITLEndl;
+		return false;
 	}
 	size_t startPort = tail.find_first_of(':');
 	if (startPort != string::npos) {
@@ -450,7 +454,7 @@ IMessage::TUrl::operator string() const
 	stringstream str;
 	switch (fProtocol) {
 		case kWSProtocol:	str << "ws://"; break;
-		case kWSSProtocol:	str << "wss://"; break;
+		case kHTTPProtocol:	str << "http://"; break;
 	}
 	str << fHostname;
 	if (fPort) str << ':' << fPort;

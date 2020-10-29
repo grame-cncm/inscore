@@ -22,8 +22,8 @@
   research@grame.fr
 
 */
-#ifndef FORWARDER_H
-#define FORWARDER_H
+
+#pragma once
 
 #include "IMessage.h"
 #include "IMessageHandlers.h"
@@ -32,7 +32,7 @@
 
 namespace inscore
 {
-    class IFilterForward;
+class IFilterForward;
 
 class ForwardEndPoint
 {
@@ -94,5 +94,3 @@ class Forwarder
 };
 
 } //
-
-#endif // FORWARDER_H

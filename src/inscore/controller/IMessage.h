@@ -159,7 +159,7 @@ class IMessage : public Message, public libmapping::smartable
 		typedef extvector<argPtr>				argslist;	///< type for arguments list
 		class TUrl {
 			public:
-				enum { kOSCProtocol, kWSProtocol, kWSSProtocol };
+				enum { kOSCProtocol, kWSProtocol, kHTTPProtocol };
 				std::string	fHostname;
 				int			fPort;
 				int			fProtocol = kOSCProtocol;
