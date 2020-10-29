@@ -51,16 +51,17 @@ MsgHandler::msgStatus Connect::processConnectMsg(const IMessage* msg)
         std::string address;
         if (msg->param(i, address)) {
             IMessage::TUrl url;
-            url.parse (address);
+            if (!url.parse (address)) return MsgHandler::kBadParameters;
 			if (!url.fPort) url.fPort = IAppl::kUPDPort;
 			// Add in host list.
 			switch (url.fProtocol) {
 				case IMessage::TUrl::kWSProtocol:
+				case IMessage::TUrl::kHTTPProtocol:
 					connect (string(url).c_str(), i==0);
 					fCnxList.push_back(url);
 					break;
 				default:
-					ITLErr << "only ws and wss protocol are supported" << ITLEndl;
+					ITLErr << "only ws and http protocols are supported" << ITLEndl;
 					return MsgHandler::kBadParameters;
 			}
         }
