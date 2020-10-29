@@ -109,7 +109,7 @@ HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url)
 
 HTTPForwarder::~HTTPForwarder ()
 {
-	for (auto s: fClients) { delete s; }
+//	for (auto s: fClients) { delete s; }
 	close();
 }
 
@@ -123,10 +123,10 @@ cerr << "HTTPForwarder::accept" << endl;
 
 void HTTPForwarder::disconnect () {
 	QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
+qDebug() << "HTTPForwarder::disconnect " << socket ;
 	if (socket) {
 		// Remove the client in the list
 		fClients.erase(std::remove(fClients.begin(), fClients.end(), socket), fClients.end());
-		delete socket;
 	}
 }
 
@@ -135,7 +135,7 @@ void HTTPForwarder::send (const IMessage * imsg) {
 cerr << "HTTPForwarder::send" << msgStr << endl;
 	for (auto s: fClients) {
 		s->write("Content-Type: text/event-stream\r\n");
-//		s->write("Access-Control-Allow-Origin: *\r\n");
+		s->write("Access-Control-Allow-Origin: *\r\n");
 		s->write("Cache-Control: no-cache\r\n");
 		s->write("\r\n");
 		s->write (msgStr.c_str());
@@ -152,7 +152,7 @@ void Forwarder::forward(const IMessage * imsg)
             ForwardEndPoint* endpoint = fForwardList[i];
             const IMessage::TUrl& url = endpoint->dest();
             // Forward message only if the destination is not the source of the message.
-            if(Tools::ip2string(imsg->src()) != url.fHostname)
+            if ((url.fProtocol!=IMessage::TUrl::kOSCProtocol) || (Tools::ip2string(imsg->src()) != url.fHostname))
                 endpoint->send (imsg);
         }
     }
