@@ -26,8 +26,10 @@
 #include <string>
 #include <QUrl>
 #include <QWebSocket>
+#include <QTcpServer>
 
 #include "Forwarder.h"
+#include "HttpForwarder.h"
 #include "IFilterForward.h"
 #include "Tools.h"
 #include "IAppl.h"
@@ -81,11 +83,65 @@ class WSForwarder : public ForwardEndPoint
 					fWSocket.open (dest);
 				 }
 		virtual ~WSForwarder () { fWSocket.close(); }
-		
+
 		void send (const IMessage * imsg) {
 			qint64 n = fWSocket.sendTextMessage (IMessage2String(imsg));
 		}
 };
+
+//--------------------------------------------------------------------------
+string HTTPForwarder::IMessage2String (const IMessage * imsg) {
+		string msgstr = imsg->toString();
+		json_object *json = new json_object;
+		json->add (new json_element("id", new json_int_value(fID++)));
+		json->add (new json_element("method", new json_string_value("post")));
+		json->add (new json_element("data", new json_string_value(msgstr.c_str())));
+		std::ostringstream jstream;
+		json->print(jstream);
+		return jstream.str();
+}
+
+HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url)
+{
+	connect(this, &QTcpServer::newConnection, this, &HTTPForwarder::accept);
+	listen(QHostAddress::Any, url.fPort);
+}
+
+HTTPForwarder::~HTTPForwarder ()
+{
+	for (auto s: fClients) { delete s; }
+	close();
+}
+
+void HTTPForwarder::accept () {
+cerr << "HTTPForwarder::accept" << endl;
+	QTcpSocket* socket = nextPendingConnection();
+	// Connect client to action.
+	connect(socket, &QTcpSocket::disconnected, this, &HTTPForwarder::disconnect);
+	fClients.push_back(socket);		// add the client to the clients list
+}
+
+void HTTPForwarder::disconnect () {
+	QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
+	if (socket) {
+		// Remove the client in the list
+		fClients.erase(std::remove(fClients.begin(), fClients.end(), socket), fClients.end());
+		delete socket;
+	}
+}
+
+void HTTPForwarder::send (const IMessage * imsg) {
+	string msgStr = IMessage2String (imsg);
+cerr << "HTTPForwarder::send" << msgStr << endl;
+	for (auto s: fClients) {
+		s->write("Content-Type: text/event-stream\r\n");
+//		s->write("Access-Control-Allow-Origin: *\r\n");
+		s->write("Cache-Control: no-cache\r\n");
+		s->write("\r\n");
+		s->write (msgStr.c_str());
+		s->flush();
+	}
+}
 
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
@@ -113,7 +169,7 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
         std::string address;
         if (msg->param(i, address)) {
             IMessage::TUrl url;
-            url.parse (address);
+            if (!url.parse (address)) return MsgHandler::kBadParameters;
             // Transform hostname in Ip in string format
             url.fHostname = Tools::ip2string(Tools::getIP(url.fHostname));
 			if (!url.fPort) url.fPort = IAppl::kUPDPort;
@@ -122,7 +178,8 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 				case IMessage::TUrl::kWSProtocol:
 					fForwardList.push_back(new WSForwarder(url));
 					break;
-				case IMessage::TUrl::kWSSProtocol:
+				case IMessage::TUrl::kHTTPProtocol:
+					fForwardList.push_back(new HTTPForwarder(url));
 					break;
 				default:
 					fForwardList.push_back(new OSCForwarder(url));
