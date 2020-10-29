@@ -30,11 +30,13 @@
 #if HASWSSupport
 #include <QUrl>
 #include <QWebSocket>
+#endif
+#if HASHTTPSupport
 #include <QTcpServer>
+#include "HttpForwarder.h"
 #endif
 
 #include "Forwarder.h"
-#include "HttpForwarder.h"
 #include "IFilterForward.h"
 #include "Tools.h"
 #include "IAppl.h"
@@ -96,6 +98,7 @@ class WSForwarder : public ForwardEndPoint
 };
 #endif
 
+#if HASHTTPSupport
 //--------------------------------------------------------------------------
 string HTTPForwarder::IMessage2String (const IMessage * imsg) {
 		string msgstr = imsg->toString();
@@ -149,6 +152,7 @@ cerr << "HTTPForwarder::send" << msgStr << endl;
 		s->flush();
 	}
 }
+#endif
 
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
@@ -189,18 +193,13 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 				case IMessage::TUrl::kWSProtocol:
 					fForwardList.push_back(new WSForwarder(url));
 					break;
+#endif
+#if HASHTTPSupport
 				case IMessage::TUrl::kHTTPProtocol:
 					fForwardList.push_back(new HTTPForwarder(url));
-				case IMessage::TUrl::kWSSProtocol:
-					ITLErr << "wss protocol not yet supported" << ITLEndl;
-					break;
-#else
-				case IMessage::TUrl::kWSProtocol:
-				case IMessage::TUrl::kWSSProtocol:
-					ITLErr << "ws and wss protocol not supported" << ITLEndl;
 					break;
 #endif
-				default:
+				case IMessage::TUrl::kOSCProtocol:
 					fForwardList.push_back(new OSCForwarder(url));
 			}
         }

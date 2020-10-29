@@ -59,6 +59,7 @@
 # define HASFileDownloader		true
 # define HASOSCStream			true
 # define HASWSSupport			true
+# define HASHTTPSupport			true
 
 class QGraphicsScene;
 typedef QGraphicsScene*		ViewContext;
@@ -69,6 +70,7 @@ typedef QGraphicsItem*		VObjectContext;
 # define HASQGuidoImporter	false
 # define HASFileDownloader	false
 # define HASWSSupport		false
+# define HASHTTPSupport		false
 class SVGObjectView;
 typedef SVGObjectView*		ViewContext;
 typedef SVGObjectView*		VObjectContext;
