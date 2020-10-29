@@ -33,6 +33,7 @@
 #include "TILoader.h"
 #include "TScripting.h"
 #include "Forwarder.h"
+#include "Connect.h"
 
 #include <vector>
 
@@ -82,6 +83,7 @@ class IScene : public IRectShape, public TILoader
 	TJSEngine*		fJavascript;
 	SIFilterForward	fFilterForward;
 	Forwarder		fForwarder;
+	Connect			fConnecter;
 	std::string		fParseVersion;
 
 	public:		
@@ -154,6 +156,7 @@ class IScene : public IRectShape, public TILoader
 		int	execute (const IMessage* msg);
 
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
+		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fConnecter.getCnxList(); }
 
 	protected:
 				 IScene(const std::string& name, IObject * parent);
@@ -173,12 +176,11 @@ class IScene : public IRectShape, public TILoader
 		void		del ();
 		virtual		SIMessageList getAll () const;
 
-		/*!
-		 * \brief forward The scene accept forward message.
-		 * \param msg a message
-		 * \return
-		 */
+		/// \brief scene \c 'forward' message handler.
 		MsgHandler::msgStatus forward(const IMessage* msg);
+		/// \brief scene \c 'connect' message handler.
+		MsgHandler::msgStatus connect (const IMessage* msg);
+
 		MsgHandler::msgStatus setParseVersion(const IMessage* msg);
 };
 

@@ -96,6 +96,13 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getForwardList);
 	fGetMsgHandlerMap[kparse_GetSetMethod]		= TGetParamMethodHandler<IScene, const std::string& (IScene::*)() const>::create(this, &IScene::parseVersion);
+
+
+#ifdef EMCC
+	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::connect);
+	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getCnxList);
+#endif
+
 }
 
 //--------------------------------------------------------------------------
@@ -319,6 +326,12 @@ MsgHandler::msgStatus IScene::setRootPath(const IMessage* msg)
 MsgHandler::msgStatus IScene::forward(const IMessage* msg)
 {
 	return fForwarder.processForwardMsg(msg);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::connect(const IMessage* msg)
+{
+	return fConnecter.processConnectMsg(msg);
 }
 
 //--------------------------------------------------------------------------

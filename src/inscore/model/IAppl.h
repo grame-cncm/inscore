@@ -30,6 +30,7 @@
 #include <mutex>
 
 #include "benchtools.h"
+#include "Connect.h"
 #include "Forwarder.h"
 #include "IMessageHandlers.h"
 #include "IObject.h"
@@ -103,6 +104,7 @@ class IAppl : public IObject, public TILoader
 		SIApplLog	fApplLog;					// log window
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
+		Connect		fConnecter;					// A connect class to manage host connections
 		bool		fOffscreen;
 		INScoreApplicationGlue* fAppl;				// the Qt application
 		std::mutex	fTimeMutex;
@@ -156,7 +158,7 @@ class IAppl : public IObject, public TILoader
 		 * \return
 		 */
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
-		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fForwarder.getForwardList(); }
+		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fConnecter.getCnxList(); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 		virtual void		cleanup ();

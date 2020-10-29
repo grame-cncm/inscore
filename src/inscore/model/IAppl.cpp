@@ -548,7 +548,7 @@ MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::connect(const IMessage* msg)
 {
-	return fForwarder.processForwardMsg(msg);
+	return fConnecter.processConnectMsg(msg);
 }
 
 //--------------------------------------------------------------------------
