@@ -44,6 +44,7 @@ namespace inscore
 MsgHandler::msgStatus Connect::processConnectMsg(const IMessage* msg)
 {
 	clear();								// clear the forward list first
+	connect ("", true);
 	if (msg->size() == 0)					// no other param
 		return MsgHandler::kProcessed;		// that's done
 
