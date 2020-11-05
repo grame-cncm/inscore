@@ -30,6 +30,7 @@
 
 #include "Forwarder.h"
 #include "HttpForwarder.h"
+#include "IApplVNodes.h"
 #include "IFilterForward.h"
 #include "Tools.h"
 #include "IAppl.h"
@@ -57,6 +58,8 @@ class OSCForwarder : public ForwardEndPoint
 		}
 };
 
+//--------------------------------------------------------------------------
+// Web Socket Forwarder
 //--------------------------------------------------------------------------
 class WSForwarder : public ForwardEndPoint
 {
@@ -90,8 +93,16 @@ class WSForwarder : public ForwardEndPoint
 };
 
 //--------------------------------------------------------------------------
+// Http Forwarder
+//--------------------------------------------------------------------------
 string HTTPForwarder::IMessage2String (const IMessage * imsg) {
-		string msgstr = imsg->toString();
+		string str = imsg->toString();
+		string msgstr;
+		for (const char* ptr = str.c_str(); *ptr; ptr++) {
+			if (*ptr == '\n') msgstr += ' ';		// remove CR
+			else if (*ptr == '\t') msgstr += ' ';	// remove tabs
+			else msgstr	+= *ptr;
+		}
 		json_object *json = new json_object;
 		json->add (new json_element("id", new json_int_value(fID++)));
 		json->add (new json_element("method", new json_string_value("post")));
@@ -101,45 +112,63 @@ string HTTPForwarder::IMessage2String (const IMessage * imsg) {
 		return jstream.str();
 }
 
-HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url)
+HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url, IApplLog* log) : fLog(log), ForwardEndPoint(url)
 {
 	connect(this, &QTcpServer::newConnection, this, &HTTPForwarder::accept);
 	listen(QHostAddress::Any, url.fPort);
 }
 
-HTTPForwarder::~HTTPForwarder ()
-{
-//	for (auto s: fClients) { delete s; }
-	close();
+
+
+HTTPForwarder::~HTTPForwarder ()		{ close(); }
+
+void HTTPForwarder::log  (const char * msg) {
+	if (fLog) fLog->print (msg);
 }
 
 void HTTPForwarder::accept () {
-cerr << "HTTPForwarder::accept" << endl;
 	QTcpSocket* socket = nextPendingConnection();
-	// Connect client to action.
+	if (!socket) return;
+
+	stringstream sstr;
+	sstr << "New HTTP connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort;
+	log (sstr.str().c_str());
 	connect(socket, &QTcpSocket::disconnected, this, &HTTPForwarder::disconnect);
 	fClients.push_back(socket);		// add the client to the clients list
+	socket->flush();
+	send (socket, "INScore");
 }
 
 void HTTPForwarder::disconnect () {
 	QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-qDebug() << "HTTPForwarder::disconnect " << socket ;
 	if (socket) {
-		// Remove the client in the list
+		stringstream sstr;
+		sstr  << "HTTP client " << socket->peerAddress().toString().toStdString() << ":" << dest().fPort << " disconnected.";
+		log (sstr.str().c_str());
+		// Remove the client from the list
 		fClients.erase(std::remove(fClients.begin(), fClients.end(), socket), fClients.end());
 	}
 }
 
+void HTTPForwarder::send (QTcpSocket *socket, const char * msg) {
+	const char* nl = "\n";
+	stringstream netmsg;
+	netmsg << "HTTP/1.1 200 OK" << nl
+		<< "Content-Type: text/event-stream" << nl
+		<< "Access-Control-Allow-Origin: *" << nl
+		<< "Connection: keep-alive" << nl
+		<< "Cache-Control: no-cache" << nl << nl
+		<< "data: " << msg << nl << nl;
+	qint64 n = socket->write(netmsg.str().c_str());
+	socket->flush();
+}
+
 void HTTPForwarder::send (const IMessage * imsg) {
 	string msgStr = IMessage2String (imsg);
-cerr << "HTTPForwarder::send" << msgStr << endl;
-	for (auto s: fClients) {
-		s->write("Content-Type: text/event-stream\r\n");
-		s->write("Access-Control-Allow-Origin: *\r\n");
-		s->write("Cache-Control: no-cache\r\n");
-		s->write("\r\n");
-		s->write (msgStr.c_str());
-		s->flush();
+	QString qstr (msgStr.c_str());
+	QString b64 = qstr.toUtf8().toBase64();
+	for (auto socket: fClients) {
+		send (socket, b64.toStdString().c_str());
 	}
 }
 
@@ -179,7 +208,7 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 					fForwardList.push_back(new WSForwarder(url));
 					break;
 				case IMessage::TUrl::kHTTPProtocol:
-					fForwardList.push_back(new HTTPForwarder(url));
+					fForwardList.push_back(new HTTPForwarder(url, fLog));
 					break;
 				default:
 					fForwardList.push_back(new OSCForwarder(url));
