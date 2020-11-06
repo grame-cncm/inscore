@@ -33,9 +33,9 @@ class TConnection {
 
 	error() { 
 		let delay = 5;
-		console.log ("Connection to " + this.fUrl + "failed");
+		console.log ("Connection to " + this.fUrl + " failed");
 		console.log ("Retry to connect in " + delay + " seconds");
-		setTimeout ( () => { this.connect(this.fUrl); }, delay*1000 );
+		setTimeout ( () => { if (this.fEventSrc) this.connect(this.fUrl); }, delay*1000 );
 	}
 
 	state() : number { 
@@ -51,7 +51,7 @@ class TConnection {
 		try {
 			let json = JSON.parse(data);
 			if (json['data'] && (json['method'] == "post")) {
-				console.log ("inscore: " + json['data']);
+				console.log ("inscore http: " + json['data']);
 				inscore.loadInscore (json['data']);
 			}
 			else console.log ("Incorrect JSON message received from " + this.fUrl + ": " + json);
