@@ -23,6 +23,7 @@
 ///<reference path="JSSVGfView.ts"/>
 ///<reference path="JSAudioView.ts"/>
 ///<reference path="JSVideoView.ts"/>
+///<reference path="JSFaustView.ts"/>
 ///<reference path="TSyncManager.ts"/>
 ///<reference path="libraries.ts"/>
 
@@ -64,6 +65,7 @@ class JSViewFactory {
 			case "txtf":	  view = new JSTextfView(parent); break;
 			case "video":	  view = new JSVideoView(parent); break;
 			case "audio":	  view = new JSAudioView(parent); break;
+			case "faust":	  view = new JSFaustView(parent, inscorelibs.faust()); break;
 
 			case "fileWatcher":
 			case "graph":

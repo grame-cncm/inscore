@@ -62,6 +62,10 @@ interface RectVector	{ size(): number; get(i: number) : number; }
 interface FloatVector	{ size(): number; get(i: number) : number; }
 interface StringVector	{ size(): number; get(i: number) : string; }
 interface IntVector 	{ size(): number; get(i: number) : number; }
+interface FaustParamValue 	{ address: string; value : number; }
+interface FaustParamValuesVector 	{ size(): number; get(i: number) : FaustParamValue; }
+interface FaustKeyValue 	{ type : number; chan: number; pitch: number; vel: number; }
+interface FaustKeyValuesVector 	{ size(): number; get(i: number) : FaustKeyValue; }
 
 interface OLineInfo {
 	x1: number;
@@ -168,6 +172,14 @@ interface OGMNStreamInfos {
 	reset		: boolean;
 }
 
+interface OFaustInfos {
+	playing		: boolean;
+	voices		: number;
+	code		: string;
+	values		: FaustParamValuesVector;
+	keys		: FaustKeyValuesVector;
+}
+
 interface INScoreObject {
     create(id: number):        INScoreObject;
     del(obj: INScoreObject):   void;
@@ -190,6 +202,7 @@ interface INScoreObject {
 	getXMLInfos():     OScore;
 	getMediaInfos():   OMedia;
 	getSVGInfos():     string;
+	getFaustInfos(getvalues: boolean, getcode: boolean):   OFaustInfos;
 	getMaps():     	   RectVector;
 
 	updateWidth (w: number):  void;
@@ -198,4 +211,7 @@ interface INScoreObject {
 	// next methods should only be called by guido score, otherwise ignored
 	updateGraphic2TimeMap(name: string, map: string, width: number, height: number): void;
 	updateTime2TimeMap(map: string): void;
+
+	setFaustInOut (inputs: number, output: number): void;
+	setFaustUI (type: string, label: string, address: string, init: number, min: number, max: number, step: number): void;
 }
