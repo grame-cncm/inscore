@@ -118,6 +118,8 @@ extern const char* khsb_SetMethod;
 extern const char* khue_GetSetMethod;
 extern const char* kin_GetMethod;
 extern const char* kkeyboard_GetSetMethod;
+extern const char* kkeyon_SetMethod;
+extern const char* kkeyoff_SetMethod;
 extern const char* klevel_GetSetMethod;
 extern const char* kload_SetMethod;
 extern const char* klock_GetSetMethod;

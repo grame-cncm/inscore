@@ -177,6 +177,11 @@ class IHttpd;
 typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
 #endif
 
+#if INCLUDEFaustWeb
+class IFaustProcessor;
+typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
+#endif
+
 #if INCLUDEWebSocket
 class IWebSocket;
 typedef class libmapping::SMARTP<IWebSocket>		SIWebSocket;

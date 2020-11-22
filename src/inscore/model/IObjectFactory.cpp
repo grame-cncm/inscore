@@ -48,6 +48,10 @@
 #include "VSceneView.h"
 #endif
 
+#if INCLUDEFaustWeb
+#include "IFaustProcessor.h"
+#endif
+
 using namespace std;
 using namespace libmapping;
 
@@ -161,6 +165,9 @@ void IObjectFactory::init()
 	fCreateMap[IFaustDSP::kFaustDSPType]					= _createNoView<IFaustDSP>;
 	fCreateMap[IFaustDSPFile::kFaustDSPFileType]			= _createNoView<IFaustDSPFile>;
 	fCreateMap[IFaustProcessor::kFaustProcessorType]		= _createNoView<IFaustProcessor>;
+#endif
+#if INCLUDEFaustWeb
+	fCreateMap[IFaustProcessor::kFaustProcessorType]		= _create<IFaustProcessor>;
 #endif
 #if INCLUDEGestureFollower
 	fCreateMap[IGestureFollower::kGestureFollowerType]		= _create<IGestureFollower>;

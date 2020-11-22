@@ -350,6 +350,7 @@ template <typename T> class TGetParamMsgHandler : public GetParamMsgHandler {
 ///! \brief a get object parameter method handler 
 //--------------------------------------------------------------------------
 template <typename C, typename T> class TGetParamMethodHandler : public GetParamMsgHandler {
+	protected:
 		C* fObject;
 		T fMethod;
 		TGetParamMethodHandler(C* obj, T method) : fObject(obj), fMethod(method) {}

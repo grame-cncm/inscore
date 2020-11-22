@@ -72,6 +72,7 @@ class inscore_export HTMLLocalMapUpdater : public LocalMapUpdater {
 	void updateTo (IAudio* o);
 	void updateTo (ICurve* o);
 	void updateTo (IEllipse* o);
+	void updateTo (IFaustProcessor* o);
 	void updateTo (IGraphicSignal* graph);
 	void updateTo (IGuidoCode* guidoCode);
 	void updateTo (IGuidoPianoRoll* guidoCode);

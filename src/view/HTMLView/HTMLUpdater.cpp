@@ -29,6 +29,7 @@
 #include "IAudio.h"
 #include "ICurve.h"
 #include "IEllipse.h"
+#include "IFaustProcessor.h"
 #include "IGraphicSignal.h"
 #include "IGrid.h"
 #include "IGuidoCode.h"
@@ -98,6 +99,7 @@ void HTMLLocalMapUpdater::updateTo (IImage* o) 			{ o->updateLocalMapping(); }
 void HTMLLocalMapUpdater::updateTo (ILine* o)			{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IPolygon* o)		{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IRect* o)			{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (IFaustProcessor* o)	{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (ISVG* o) 			{ o->updateLocalMapping(); }
 void HTMLLocalMapUpdater::updateTo (ISVGFile* o) 		{ o->updateLocalMapping(); }
 void HTMLLocalMapUpdater::updateTo (IText* text) {}

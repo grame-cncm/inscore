@@ -55,6 +55,7 @@
 #endif
 
 #if QTView
+# define INCLUDEFaustWeb		false
 # define HASQGuidoImporter		true
 # define HASFileDownloader		true
 # define HASOSCStream			true
@@ -67,6 +68,7 @@ class QGraphicsItem;
 typedef QGraphicsItem*		VObjectContext;
 
 #elif HTMLVIEW
+# define INCLUDEFaustWeb	true
 # define HASQGuidoImporter	false
 # define HASFileDownloader	false
 # define HASWSSupport		false
@@ -76,6 +78,7 @@ typedef SVGObjectView*		ViewContext;
 typedef SVGObjectView*		VObjectContext;
 
 #else
+# define INCLUDEFaustWeb	false
 # define HASQGuidoImporter	false
 # define HASFileDownloader	false
 # define HASWSSupport		false
