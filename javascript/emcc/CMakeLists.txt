@@ -63,7 +63,7 @@ endif()
 # set directories, src and headers.
 set (SRCDIR      ${ROOT}/src)
 set (INSCOREDIR  ${SRCDIR}/inscore)
-set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view signal)
+set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view signal signal/faustweb)
 set (INSCORE2DIR ${SRCDIR}/inscore2)
 if (USEOSC)
 set (INSCOREDIRS ${INSCOREDIRS} osc)
@@ -91,7 +91,7 @@ file (GLOB DIRSRC 	${INSCOREDIR}/${DIR}/*.cpp)
 	set (CORESRC ${CORESRC} ${DIRSRC})
 endforeach()
 
-file (GLOB COREHEADERS 		"${INSCOREDIR}/*/*.h" "${INSCOREDIR}/signal/faust/*.h" "${INSCOREDIR}/expression/parser/*.h")
+file (GLOB COREHEADERS 		"${INSCOREDIR}/*/*.h"  "${INSCOREDIR}/expression/parser/*.h")
 file (GLOB CORE2SRC 		"${INSCORE2DIR}/*.cpp" "${INSCORE2DIR}/*/*.cpp" )
 file (GLOB CORE2HEADERS 	"${INSCORE2DIR}/*.h" "${INSCORE2DIR}/*/*.h")
 file (GLOB PUBLICHEADERS 	"${PUBLICDIR}/*.h")
@@ -136,7 +136,7 @@ set (INCDIRS  ${INCDIRS}
 	${INSCOREDIR}/controller ${INSCOREDIR}/events ${INSCOREDIR}/expression ${INSCOREDIR}/expression/parser ${INSCOREDIR}/parser
 	${INSCOREDIR}/httpserver ${INSCOREDIR}/interface ${INSCOREDIR}/ITLParser
 	${INSCOREDIR}/lib ${INSCOREDIR}/mapping ${INSCOREDIR}/model
-	${INSCOREDIR}/scripting ${INSCOREDIR}/sensors ${INSCOREDIR}/signal ${INSCOREDIR}/signal/faust
+	${INSCOREDIR}/scripting ${INSCOREDIR}/sensors ${INSCOREDIR}/signal ${INSCOREDIR}/signal/faustweb
 	${INSCOREDIR}/view ${INSCOREDIR}/web ${INSCOREDIR}/osc
 	${INSCORE2DIR} ${INSCORE2DIR}/eval ${INSCORE2DIR}/parser ${INSCORE2DIR}/sorter)
 
@@ -169,6 +169,7 @@ endif()
 
 #######################################
 # describe targets
+# message ("INCDIRS ${INCDIRS}")
 if (EMCC)
 set (target emcc)
 message (STATUS "Generates project for emcc")
