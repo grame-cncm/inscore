@@ -33,6 +33,7 @@
 #include "ICurve.h"
 #include "IPolygon.h"
 #include "IEffect.h"
+#include "IFaustProcessor.h"
 #include "IGuidoCode.h"
 #include "IGuidoPianoRoll.h"
 #include "IGuidoStream.h"
@@ -516,6 +517,58 @@ std::string IObjectAdapter::getSVGInfos () const
 	else return obj->getText();
 	return "";
 
+}
+
+//--------------------------------------------------------------------------
+JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
+{
+	JSFaustInfos infos;
+	IFaustProcessor* obj = dynamic_cast<IFaustProcessor*>((IObject*)fObject);
+	if (obj) {
+		infos.playing = obj->playing();
+		infos.voices = obj->getVoices();
+		if (getcode) infos.code = obj->getCode();
+		if (getvalues) {
+			for (auto elt: obj->getChangedValues ()) {
+				JSFaustParamValue pv;
+				pv.address = elt.address;
+				pv.value = elt.value;
+				infos.values.push_back (pv);
+			}
+			for (auto elt: obj->getKeyValues ()) {
+				JSFaustKeyValue k;
+				k.type = elt.type;
+				k.chan = elt.chan;
+				k.pitch = elt.pitch;
+				k.vel   = elt.velocity;
+				infos.keys.push_back (k);
+			}
+			obj->clearChangedValues();
+		}
+	}
+	else
+		cerr << "IObjectAdapter::getFaustInfos: unexpected null object!" << endl;
+	return infos;
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::setFaustInOut (int inputs, int outputs)
+{
+	IFaustProcessor* obj = dynamic_cast<IFaustProcessor*>((IObject*)fObject);
+	if (obj)
+		obj->setIONums (inputs, outputs);
+	else
+		cerr << "IObjectAdapter::setFaustInOut: unexpected null object!" << endl;
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step)
+{
+	IFaustProcessor* obj = dynamic_cast<IFaustProcessor*>((IObject*)fObject);
+	if (obj)
+		obj->setFaustUI (type, label, address, init, min, max, step);
+	else
+		cerr << "IObjectAdapter::setFaustUI: unexpected null object!" << endl;
 }
 
 //--------------------------------------------------------------------------

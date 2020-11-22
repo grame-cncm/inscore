@@ -65,6 +65,9 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("updateTime2TimeMap", 	&IObjectAdapter::updateTime2TimeMap)
 		.function("updateGraphic2TimeMap",	&IObjectAdapter::updateGraphic2TimeMap)
 
+		.function("setFaustInOut",	&IObjectAdapter::setFaustInOut)
+		.function("setFaustUI",		&IObjectAdapter::setFaustUI, allow_raw_pointers())
+
 		.function("getMasters",  	&IObjectAdapter::getMasters, allow_raw_pointers())
 		.function("getOSCAddress",  &IObjectAdapter::getOSCAddress, allow_raw_pointers())
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
@@ -81,12 +84,15 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getXMLInfos",    &IObjectAdapter::getXMLInfos)
 		.function("getMediaInfos",  &IObjectAdapter::getMediaInfos)
 		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos)
+		.function("getFaustInfos",  &IObjectAdapter::getFaustInfos)
 		.function("getMaps",    	&IObjectAdapter::getMaps);
 
 	register_vector<float>	("vector<float>");
 	register_vector<int>	("vector<int>");
 	register_vector<string> ("vector<string>");
 	register_vector<JSRect> ("vector<JSRect>");
+	register_vector<JSFaustParamValue> ("vector<JSFaustParamValue>");
+	register_vector<JSFaustKeyValue>   ("vector<JSFaustKeyValue>");
 
 
 	// Binding C++ class adapter for INScore

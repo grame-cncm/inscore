@@ -33,6 +33,7 @@
 #include "IObject.h"
 #include "ILine.h"
 #include "IRect.h"
+#include "IFaustProcessor.h"
 
 
 namespace inscore
@@ -159,6 +160,17 @@ struct JSMediaInfos {
 	int		mdate; 		// the requested media date ( < 0 when no request)
 };
 
+struct JSFaustParamValue { std::string address; float value; };
+struct JSFaustKeyValue { int type; int chan; int pitch; int vel; };
+
+struct JSFaustInfos {
+	bool	playing = false;
+	int		voices = 0;
+	std::string code;
+	std::vector<JSFaustParamValue> values;
+	std::vector<JSFaustKeyValue> keys;
+};
+
 struct JSGMNStreamInfos {
 	std::string	stream;
 	bool		reset = false;
@@ -216,6 +228,7 @@ class inscore_export IObjectAdapter
 		JSTextInfos   getTextInfos () const;
 		JSLineInfos   getLineInfos () const;
 		std::string   getFile () const;			// for file based object (e.g. image)
+		JSFaustInfos  getFaustInfos (bool getValues, bool getCode) const;
 		std::string   getSVGInfos () const;
 		JSRadius      getRadius () const;		// for IRect
 		JSArcInfos    getArcInfos() const;
@@ -237,6 +250,9 @@ class inscore_export IObjectAdapter
 		void	updateViewBoundingRect(float x, float y, float w, float h);
 		void	updateTime2TimeMap (std::string jsonmap);
 		void	updateGraphic2TimeMap (std::string name, std::string jsonmap, float width, float height);
+		
+		void	setFaustInOut (int inputs, int outputs);
+		void	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
 
 	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
 	void 			del(IObjectAdapter* obj) 	{ delete obj; }

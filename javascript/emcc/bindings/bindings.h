@@ -171,4 +171,21 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	value_object<JSGMNStreamInfos>("JSGMNStreamInfos")
 		.field("stream",  	&JSGMNStreamInfos::stream)
 		.field("reset",  	&JSGMNStreamInfos::reset);
+	
+	value_object<JSFaustParamValue>("JSFaustParamValue")
+		.field("address",  	&JSFaustParamValue::address)
+		.field("value",  	&JSFaustParamValue::value);
+	
+	value_object<JSFaustKeyValue>("JSFaustKeyValue")
+		.field("type",  	&JSFaustKeyValue::type)
+		.field("chan",  	&JSFaustKeyValue::chan)
+		.field("pitch",  	&JSFaustKeyValue::pitch)
+		.field("vel",  		&JSFaustKeyValue::vel);
+	
+	value_object<JSFaustInfos>("JSFaustInfos")
+		.field("playing",  	&JSFaustInfos::playing)
+		.field("voices",  	&JSFaustInfos::voices)
+		.field("code",  	&JSFaustInfos::code)
+		.field("values",  	&JSFaustInfos::values)
+		.field("keys",  	&JSFaustInfos::keys);
 }
