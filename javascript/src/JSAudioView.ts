@@ -23,13 +23,12 @@ class JSAudioView extends JSAutoSize {
 		this.fAudio.style.filter = `drop-shadow(${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px)`;
 	}
 
-	updateSpecific(obj: INScoreObject)	: boolean {
+	updateSpecific(obj: INScoreObject)	: void {
 		let media = obj.getMediaInfos();
 		if (media.playing) this.fAudio.play();
 		else this.fAudio.pause();
 		this.fAudio.volume = media.volume;
 		if (media.rate >= 0) 	this.fAudio.playbackRate = media.rate;
 		if (media.mdate >= 0)	this.fAudio.currentTime = media.mdate;
-		return true;
     }
 }

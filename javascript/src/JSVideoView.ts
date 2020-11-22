@@ -28,7 +28,7 @@ class JSVideoView extends JSAutoSize {
 	// 	this.getHtml().style.filter = "drop-shadow(" + color.getCSSRGBAString() + " "+ params[0] +"px " + params[1] +"px " + params[6] +"px)";
 	// }
 
-	updateSpecific(obj: INScoreObject)	: boolean {
+	updateSpecific(obj: INScoreObject)	: void {
 		let media = obj.getMediaInfos();
 		if (media.playing) this.fVideo.play();
 		else this.fVideo.pause();
@@ -37,7 +37,6 @@ class JSVideoView extends JSAutoSize {
 		if (media.mdate >= 0)	this.fVideo.currentTime = media.mdate;
 		// video.fMLS       = this.fVideo.duration * 1000;
 		// video.fVDuration = this.fVideo.duration / this.fVideo.playbackRate;
-		return true;
     }
 
 	// updateVideoControl(video: IVideo): void {
