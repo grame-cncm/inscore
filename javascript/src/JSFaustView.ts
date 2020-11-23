@@ -8,13 +8,18 @@ interface FaustSVG extends SVGSVGElement {
 
 class JSFaustView extends JSSvgBase {
     private fFaust : faust;
-    private fAudioContext : AudioContext;
-    private fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode;
+    static fAudioContext : AudioContext = null;
+    private fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode = null;
     private fVoices = 0;
+    static fUnlockEvents = ["touchstart", "touchend", "mousedown", "keydown"];
     
     constructor(parent: JSObjectView, compiler: faust) {
         super(parent);
         this.fFaust = compiler;
+        if (!JSFaustView.fAudioContext) {
+            JSFaustView.fAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            this.unlockAudioContext(JSFaustView.fAudioContext);
+        }
         this.getElement().className = "inscore-svg";
     }
 
@@ -26,44 +31,59 @@ class JSFaustView extends JSSvgBase {
 	updateSVGDimensions(w: number, h: number) : void { }
 	updatePenControl(pen: OPen) : void {	this.updateRegularPen (pen); }
 
+    delete() : void { 
+        if (this.fAudioNode) {
+            this.fAudioNode.disconnect();
+            this.fAudioNode = null;
+        }
+        super.delete();
+	}
+
+    error(address: string, msg : string)	: void {
+        let imsg = inscore.newMessageM ('set');
+        inscore.msgAddStr (imsg, 'txt');
+        inscore.msgAddStr (imsg, msg);
+        inscore.postMessage (address, imsg);
+    }
+
     // Creates the javascript callback to handle user navigation with the generated svg diagram
     makeLinkHandler (name: string, svg: Faust.SVGDiagrams) {
         let FSVG = this.fSVG as FaustSVG;
         this.fSVG.id = name;
         FSVG.diagram = svg;
-        let code = name + "svg =  function (path) { let elt= document.getElementById ('" + name + "'); elt.innerHTML = elt.diagram.getSVG(path); }";
+        let code = name + "svg =  function (path) { \
+            let elt= document.getElementById ('" + name + "'); \
+            elt.innerHTML = elt.diagram.getSVG(path); \
+            let p = elt.parentElement; \
+            let bb = elt.getBBox(); \
+            console.log('link handler called : ' + elt + ' ' + bb.x + ' ' + bb.y); \
+            p.style.width = elt.style.width = bb.width; \
+            p.style.height = elt.style.height = bb.height; \
+        }";
         eval (code);
     }
 
-    display (msg: string) { 
-        let svg = "<svg> <text>" + msg + "</text></svg>"
-        this.getElement().innerHTML = svg;
-    }
-
-    dsp2Svg (code: string, name: string) : string { 
+    dsp2Svg (code: string, name: string) : { svg: string, error: string|null} { 
         let svg = Faust.createSVGDiagrams (this.fFaust.lib(), name, code, "");
-        if (!svg.success()) console.log(svg.error());
-        else {
+        if (svg.success()) {
             this.makeLinkHandler (name, svg);
-            return svg.getSVG();
+            return { svg: svg.getSVG(), error: null };
         }
-        return "";
+        return {svg: "", error: svg.error() + " (svg diagram generation)"};
     }
 
+    unlockclean ()  { JSFaustView.fUnlockEvents.forEach(e => document.body.removeEventListener(e, this.unlock)); } 
+    unlock ()       { JSFaustView.fAudioContext.resume().then(this.unlockclean) } 
     unlockAudioContext(audioCtx: AudioContext) {
         if (audioCtx.state !== "suspended") return;
-        const b = document.body;
-        const events = ["touchstart", "touchend", "mousedown", "keydown"];
-        const unlock : any = () => audioCtx.resume().then(clean);
-        const clean = () => events.forEach(e => b.removeEventListener(e, unlock));
-        events.forEach(e => b.addEventListener(e, unlock, false));
+        JSFaustView.fUnlockEvents.forEach(e => document.body.addEventListener(e, this.unlock, false));
     }
 
     updateSpecific(obj: INScoreObject)	: void {
         if (this.fAudioNode) {
             let data = obj.getFaustInfos(true, false);
             if (data.playing)
-                this.fAudioNode.connect (this.fAudioContext.destination);
+                this.fAudioNode.connect (JSFaustView.fAudioContext.destination);
             else
                 this.fAudioNode.disconnect();
             
@@ -89,14 +109,19 @@ class JSFaustView extends JSSvgBase {
 		// else console.log ("Faust audio node is not available");
     }
 
-    makeNode (oid: number, code: string, voices: number) {
-        try {
-        Faust.compileAudioNode(this.fAudioContext, this.fFaust.module(), code, null, voices).then ( node => {
+    makeNode (oid: number, code: string, voices: number) : boolean {
+        if (this.fAudioNode) this.fAudioNode.disconnect(); 
+        Faust.compileAudioNode(JSFaustView.fAudioContext, this.fFaust.module(), code, null, voices).then ( node => {
             this.fAudioNode = node;
             this.fVoices = voices;
             let obj = INScore.objects().create(oid);
-            obj.setFaustInOut (node.getNumInputs(), node.getNumOutputs());
+            if (!node) {``
+                let address = obj.getOSCAddress();
+                this.error (address, "Cannot compile " + address + ".");
+                return false;
+            }
 
+            obj.setFaustInOut (node.getNumInputs(), node.getNumOutputs());
             let ui = node.getDescriptors();
             ui.forEach ( (elt) => { 
                 if (elt.type == "button")
@@ -107,10 +132,7 @@ class JSFaustView extends JSSvgBase {
             this.updateSpecific(obj);
             INScore.objects().del (obj);
         });
-        }
-        catch (error) {
-            console.log ("Faust compilation error: " + error);
-        }
+        return false;
     }
     
     updateSpecial(obj: INScoreObject, oid: number)	: boolean {
@@ -119,13 +141,15 @@ class JSFaustView extends JSSvgBase {
             return false;
         }
         let data = obj.getFaustInfos (false, true);
-		this.fSVG.innerHTML = this.dsp2Svg(data.code, this.osc2svgname(obj.getOSCAddress()));
-		let bb = this.fSVG.getBBox();
-        this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
-        
-        this.fAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-        this.makeNode (oid, data.code, data.voices);
-        this.unlockAudioContext(this.fAudioContext);
+        let diagram = this.dsp2Svg(data.code, this.osc2svgname(obj.getOSCAddress()));
+        if (diagram.error)
+            this.error (obj.getOSCAddress(), diagram.error);
+        else {
+            this.fSVG.innerHTML = diagram.svg;
+            this.makeNode (oid, data.code, data.voices);
+            let bb = this.fSVG.getBBox();
+            this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+        }
         return super.updateSpecial (obj, oid);
     }
 }
