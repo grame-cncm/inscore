@@ -212,9 +212,12 @@ MsgHandler::msgStatus IFaustProcessor::keyoff (const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 {
+	MsgHandler::msgStatus status = IObject::set(msg);
+	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
+
 	int n = msg->size();
 	string code; int voices;
-	MsgHandler::msgStatus status = MsgHandler::kBadParameters;
+	status = MsgHandler::kBadParameters;
 	switch (n) {
 		case 2:
 			if (msg->param(1, code)) fDspCode = code;
