@@ -3,15 +3,15 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 	<title>INScore Scene Test</title>
 
-	<link href="fonts/fonts.css" rel="stylesheet">
-	<link href="css/inscore.css" rel="stylesheet">
-	<script src="lib/libINScore.js"></script>
-	<script src="lib/libGUIDOEngine.js"></script>
-	<script src="lib/libmusicxml.js"></script>
-	<script src="lib/libfaust-wasm.js"></script> 
-	<script src="lib/FaustLibrary.js"></script>
-	<script src="inscoreview.js"></script>
-	<script src="inscoretests.js"></script>
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<!-- <script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libmusicxml.js"></script> -->
+	<script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
 	<style>
 	body { margin: 50; background: gainsboro; height: 100%; }
 	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
@@ -25,7 +25,7 @@
 <h1>INScore JS Tests</h1>
 <div class="inscore box" id="scene">
 
-	/ITL/scene/text set html "Faust objects test";
+	/ITL/scene/text set html "Faust objects";
 	/ITL/scene/text y -0.7;
 	/ITL/scene/text fontSize 32;
 
@@ -33,6 +33,8 @@
 		process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: dm.freeverb_demo;';
 	/ITL/scene/faust scale 0.7;
 	/ITL/scene/faust y -0.3;
+
+
 	/ITL/scene/faust2 set faust  8 'import("stdfaust.lib");
 	process = ba.pulsen(1, ba.hz2midikey(freq) * 1000) : pm.marimba(freq, 0, 7000, 0.5, 0.8) * gate * gain with {
 	  freq = hslider("freq", 440, 40, 8000, 1);
@@ -43,9 +45,10 @@
 	/ITL/scene/faust2 scale 0.6;
 	/ITL/scene/faust2 y 0.4;
 	
-	/ITL/scene/play1 set txt "Play";
-	/ITL/scene/play2 set txt "Play";
-	/ITL/scene/play* x 1;
+	/ITL/scene/play1 set txt "Start";
+	/ITL/scene/play2 set txt "Start";
+	/ITL/scene/play* x 0.98;
+	/ITL/scene/play* xorigin 1;
 	/ITL/scene/play* fontSize 24;
 	/ITL/scene/play1 y -0.3;
 	/ITL/scene/play2 y 0.4;
