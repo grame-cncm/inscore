@@ -56,7 +56,6 @@ class JSFaustView extends JSSvgBase {
             elt.innerHTML = elt.diagram.getSVG(path); \
             let p = elt.parentElement; \
             let bb = elt.getBBox(); \
-            console.log('link handler called : ' + elt + ' ' + bb.x + ' ' + bb.y); \
             p.style.width = elt.style.width = bb.width; \
             p.style.height = elt.style.height = bb.height; \
         }";
@@ -103,6 +102,8 @@ class JSFaustView extends JSSvgBase {
                         node.keyOn (v.chan, v.pitch, v.vel);
                     else if (v.type == 1)
                         node.keyOff (v.chan, v.pitch, v.vel);
+                    else if (v.type == -1)
+                        node.allNotesOff (true);
                 }
             }
         }
@@ -124,6 +125,7 @@ class JSFaustView extends JSSvgBase {
             obj.setFaustInOut (node.getNumInputs(), node.getNumOutputs());
             let ui = node.getDescriptors();
             ui.forEach ( (elt) => { 
+// console.log ("JSFaustView.makeNode " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
                 if (elt.type == "button")
                     obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
                 else

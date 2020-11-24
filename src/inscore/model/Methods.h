@@ -32,6 +32,7 @@ namespace inscore
 extern const char* kabsolutexy_GetSetMethod;
 extern const char* kaccept_GetSetMethod;
 extern const char* kalias_GetSetMethod;
+extern const char* kallnotesoff_SetMethod;
 extern const char* kalpha_GetSetMethod;
 extern const char* kangle_GetSetMethod;
 extern const char* kanimate_GetSetMethod;

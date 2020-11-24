@@ -36,40 +36,6 @@ using namespace std;
 namespace inscore
 {
 
-//--------------------------------------------------------------------------
-//class INScoreUI
-//{
-//	IFaustProcessor* fFaustProcessor;
-//
-// public:
-//			 INScoreUI(IFaustProcessor* faust) : fFaustProcessor(faust) {}
-//	virtual ~INScoreUI() {}
-//
-//    // -- widget's layouts
-//    virtual void openFrameBox(const char* )			{}
-//    virtual void openTabBox(const char* )			{}
-//    virtual void openHorizontalBox(const char* )	{}
-//    virtual void openVerticalBox(const char* )		{}
-//    virtual void closeBox() {}
-//
-//    // -- active widgets
-//    virtual void addButton(const char* label, float* zone)			{ fFaustProcessor->addMsgHandler(label, zone); }
-//    virtual void addToggleButton(const char* label, float* zone)	{ fFaustProcessor->addMsgHandler(label, zone); }
-//    virtual void addCheckButton(const char* label, float* zone)		{ fFaustProcessor->addMsgHandler(label, zone); }
-//    virtual void addVerticalSlider(const char* label, float* zone, float init, float min, float max, float )
-//																	{ *zone=init; fFaustProcessor->addMsgHandler(label, zone, min, max); }
-//    virtual void addHorizontalSlider(const char* label, float* zone, float init, float min, float max, float )
-//																	{ *zone=init; fFaustProcessor->addMsgHandler(label, zone, min, max); }
-//    virtual void addNumEntry(const char* label, float* zone, float init, float min, float max, float )
-//																	{ *zone=init; fFaustProcessor->addMsgHandler(label, zone, min, max); }
-//
-//    // -- passive widgets
-//    virtual void addNumDisplay(const char* , float* , int ) {}
-//    virtual void addTextDisplay(const char* , float* , const char* [], float , float ) {}
-//    virtual void addHorizontalBargraph(const char* , float* , float , float ) {}
-//    virtual void addVerticalBargraph(const char* , float* , float , float ) {}
-//};
-
 
 //--------------------------------------------------------------------------
 const string IFaustProcessor::kFaustProcessorType("faust");
@@ -83,6 +49,7 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 	fMsgHandlerMap[kplay_GetSetMethod]		= TSetMethodMsgHandler<IFaustProcessor,bool>::create(this, &IFaustProcessor::setPlay);
 	fMsgHandlerMap[kkeyon_SetMethod]		= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::keyon);
 	fMsgHandlerMap[kkeyoff_SetMethod]		= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::keyoff);
+	fMsgHandlerMap[kallnotesoff_SetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::allNotesOff);
 
 	fGetMsgHandlerMap[""]					= TGetParamMsgHandler<string>::create(fDspCode);
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
@@ -181,6 +148,12 @@ std::string IFaustProcessor::address2msg (const char* address) const
 		}
 	}
 	return out;
+}
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IFaustProcessor::allNotesOff(const IMessage*)
+{
+	fKeyValues.push_back (TFaustKeysUpdate( TFaustKeysUpdate::kAllNotesOff, 0, 0, 0));
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------

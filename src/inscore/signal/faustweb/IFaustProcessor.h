@@ -67,7 +67,7 @@ class TFaustParamUpdate {
 };
 class TFaustKeysUpdate {
 	public:
-	enum { kKeyOn, kKeyOff };
+	enum { kKeyOn, kKeyOff, kAllNotesOff=-1 };
 	int type, chan, pitch, velocity;
 	TFaustKeysUpdate (int type, int chan, int pitch, int vel) : type(type), chan(chan), pitch(pitch), velocity(vel) {}
 };
@@ -126,6 +126,7 @@ class IFaustProcessor : public IRectShape
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyon (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyoff (const IMessage* msg);
+		virtual MsgHandler::msgStatus	allNotesOff (const IMessage* msg);
 
 		// ------------------------
 		// messages handling
