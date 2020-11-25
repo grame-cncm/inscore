@@ -12,6 +12,10 @@ class JSFaustView extends JSSvgBase {
     private fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode = null;
     private fVoices = 0;
     static fUnlockEvents = ["touchstart", "touchend", "mousedown", "keydown"];
+    static fCompilerLock = false;
+    static readonly kFailed  = 0;
+    static readonly kSuccess = 1;
+    static readonly kPending = 2;
     
     constructor(parent: JSObjectView, compiler: faust) {
         super(parent);
@@ -68,7 +72,7 @@ class JSFaustView extends JSSvgBase {
             this.makeLinkHandler (name, svg);
             return { svg: svg.getSVG(), error: null };
         }
-        return {svg: "", error: svg.error() + " (svg diagram generation)"};
+        return {svg: "", error: "While generating Faust svg diagram :" + svg.error()};
     }
 
     unlockclean ()  { JSFaustView.fUnlockEvents.forEach(e => document.body.removeEventListener(e, this.unlock)); } 
@@ -110,31 +114,40 @@ class JSFaustView extends JSSvgBase {
 		// else console.log ("Faust audio node is not available");
     }
 
-    makeNode (oid: number, code: string, voices: number) : boolean {
-        if (this.fAudioNode) this.fAudioNode.disconnect(); 
+    makeNode (oid: number, code: string, voices: number) : number {
+        if (JSFaustView.fCompilerLock) {
+            setTimeout ( () => { this.makeNode (oid, code, voices)}, 50);
+            return JSFaustView.kPending;
+        }
+        JSFaustView.fCompilerLock = true;
         Faust.compileAudioNode(JSFaustView.fAudioContext, this.fFaust.module(), code, null, voices).then ( node => {
+            JSFaustView.fCompilerLock = false;
+            if (this.fAudioNode) this.fAudioNode.disconnect(); 
             this.fAudioNode = node;
             this.fVoices = voices;
             let obj = INScore.objects().create(oid);
             if (!node) {``
                 let address = obj.getOSCAddress();
                 this.error (address, "Cannot compile " + address + ".");
-                return false;
+                return JSFaustView.kFailed;
             }
 
             obj.setFaustInOut (node.getNumInputs(), node.getNumOutputs());
             let ui = node.getDescriptors();
             ui.forEach ( (elt) => { 
-// console.log ("JSFaustView.makeNode " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+// console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
                 if (elt.type == "button")
                     obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
                 else
                     obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
             });
             this.updateSpecific(obj);
+            let bb = this.fSVG.getBBox();
+            this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+            obj.ready();
             INScore.objects().del (obj);
         });
-        return false;
+        return JSFaustView.kSuccess;
     }
     
     updateSpecial(obj: INScoreObject, oid: number)	: boolean {
@@ -149,8 +162,6 @@ class JSFaustView extends JSSvgBase {
         else {
             this.fSVG.innerHTML = diagram.svg;
             this.makeNode (oid, data.code, data.voices);
-            let bb = this.fSVG.getBBox();
-            this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
         }
         return super.updateSpecial (obj, oid);
     }
