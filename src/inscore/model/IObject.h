@@ -203,6 +203,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief returns the current content of the object editor
 		virtual void	setEditString(const std::string& str) { fEditString = str; }
 
+		/// \briefclear the pending state of an object
+		virtual void	ready() 					{ fPending = 0; }
+
 		/*!
 		 * \brief returns the next object export-flag with file path and draw children flag to draw or not object children.
 		 * \return a pair of file path and drawChildren flag. If file path is empty not export are needed.

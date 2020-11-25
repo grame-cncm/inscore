@@ -1800,7 +1800,7 @@ MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
 void IObject::refresh ()
 {
 	setState (kModified);
-	newData(true);
+//	newData(true);
 	if (fPending) fPending--;
 	if (elements().size()) setState (kSubModified);
 	for (auto elt: elements()) {

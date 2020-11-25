@@ -185,7 +185,8 @@ interface INScoreObject {
     del(obj: INScoreObject):   void;
 
     newData():   	   boolean;
-    deleted():   	   boolean;
+	deleted():   	   boolean;
+	ready():	       void;
     getMasters():      IntVector;
     getOSCAddress():   string;
     getUpdateInfos(masterId: number):  OUpdateInfos;

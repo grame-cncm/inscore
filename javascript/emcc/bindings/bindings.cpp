@@ -58,6 +58,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("newData",  		&IObjectAdapter::newData)
 		.function("deleted",  		&IObjectAdapter::deleted)
+		.function("ready",  		&IObjectAdapter::ready)
 
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
 		.function("updateHeight", 	&IObjectAdapter::updateHeight)

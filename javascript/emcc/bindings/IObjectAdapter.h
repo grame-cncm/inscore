@@ -223,6 +223,8 @@ class inscore_export IObjectAdapter
 		
 		bool 		  newData () const		{ return fObject->newData(); }
 		bool 		  deleted () const		{ return fObject->getDeleted(); }
+		void 		  ready ()				{ if (fObject) fObject->ready(); }		// should be called from js when a pending object is ready
+
 		std::vector<int> getMasters () const;
 		JSUpdateInfos getUpdateInfos (int masterId) const;
 		JSTextInfos   getTextInfos () const;
