@@ -145,6 +145,7 @@ const char* kpenColor_GetSetMethod	= "penColor";		// Get Set
 const char* kpenStyle_GetSetMethod	= "penStyle";		// Get Set
 const char* kpenWidth_GetSetMethod	= "penWidth";		// Get Set
 const char* kbrushStyle_GetSetMethod= "brushStyle";		// Get Set
+const char* kpaths_GetMethod		= "paths";			// Get
 const char* kparse_GetSetMethod		= "parse";			// Get Set
 const char* kpendAlpha_GetSetMethod	= "pendAlpha";		// Set
 const char* kpendAlpha_SetMethod	= "pendAlpha";		// Set

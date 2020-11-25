@@ -43,19 +43,15 @@ class IFaustProcessor;
 typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
 
 class FaustProcessorUIElement {
-	std::string	fAddress;
-	std::string fType;
-	std::string fLabel;
-	float	fValue, fMin, fMax, fStep;
-	int fNode;
-	
 	public:
-				 FaustProcessorUIElement(int node, std::string type, std::string label, std::string address, float init, float min, float max, float step) :
-				  fNode(node), fType(type), fLabel(label), fAddress(address), fValue(init), fMin(min), fMax(max), fStep(step) {}
+		std::string	fAddress;
+		std::string fType;
+		std::string fLabel;
+		float	fValue, fMin, fMax, fStep;
+	
+				 FaustProcessorUIElement(std::string type, std::string label, std::string address, float init, float min, float max, float step) :
+				  fType(type), fLabel(label), fAddress(address), fValue(init), fMin(min), fMax(max), fStep(step) {}
 		virtual ~FaustProcessorUIElement() {}
-
-		
-
 };
 
 
@@ -111,13 +107,15 @@ class IFaustProcessor : public IRectShape
 		void 				clearChangedValues() 		{ fNewValues.clear(); fKeyValues.clear(); }
 
 	protected:
-		std::vector<TFaustParamUpdate> 	fNewValues;
-		std::vector<TFaustKeysUpdate> 	fKeyValues;
+		std::vector<TFaustParamUpdate> 			fNewValues;
+		std::vector<TFaustKeysUpdate> 			fKeyValues;
+		std::vector<FaustProcessorUIElement> 	fPaths;
 
 				 IFaustProcessor( const std::string& name, IObject * parent);
 		virtual ~IFaustProcessor();
 
 		void setPlay (bool status) 		{ fPlaying = status; }
+		SIMessageList getPaths() const;
 		
 		/// \brief print the set message
 		virtual void	print (IMessage& out) const;

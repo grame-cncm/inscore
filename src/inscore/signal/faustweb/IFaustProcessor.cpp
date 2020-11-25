@@ -55,6 +55,26 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kplay_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fPlaying);
+	fGetMultiMsgHandlerMap[kpaths_GetMethod]= TGetParamMultiMethodHandler<IFaustProcessor, SIMessageList (IFaustProcessor::*)() const>::create(this, &IFaustProcessor::getPaths);
+	setPending ();
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IFaustProcessor::getPaths() const
+{
+	SIMessageList list = IMessageList::create();
+	for (auto elt: fPaths) {
+		SIMessage msg = IMessage::create (elt.fAddress, elt.fType);
+		msg->add (elt.fLabel);
+		if (elt.fType != "button") {
+			msg->add (elt.fValue);
+			msg->add (elt.fMin);
+			msg->add (elt.fMax);
+			msg->add (elt.fStep);
+		}
+		list->list().push_back (msg);
+	}
+	return list;
 }
 
 //--------------------------------------------------------------------------
@@ -83,6 +103,7 @@ void IFaustProcessor::setParamValue (const std::string& address, float val)
 //--------------------------------------------------------------------------
 void IFaustProcessor::setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step)
 {
+	fPaths.push_back ( FaustProcessorUIElement(type, label, address, init, min, max, step));
 	string msg = address2msg(address.c_str());
 	fParamValues[address] = init;
 	addMsgHandler (address, msg, min, max);
