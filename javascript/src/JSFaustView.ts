@@ -95,6 +95,8 @@ class JSFaustView extends JSSvgBase {
             for (let i=0; i < n; i++) {
                 let v = val.get(i);
                 this.fAudioNode.setParamValue (v.address, v.value);
+                if ((v.type == 0) && v.value)   // schedule the button off value
+                    setTimeout (() => { this.fAudioNode.setParamValue (v.address, 0); }, 100);
             }
             if (this.fVoices && data.playing) {
                 let node = this.fAudioNode as Faust.FaustPolyNode;
