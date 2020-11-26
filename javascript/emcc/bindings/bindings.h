@@ -174,7 +174,8 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	
 	value_object<JSFaustParamValue>("JSFaustParamValue")
 		.field("address",  	&JSFaustParamValue::address)
-		.field("value",  	&JSFaustParamValue::value);
+		.field("value",  	&JSFaustParamValue::value)
+		.field("type",  	&JSFaustParamValue::type);
 	
 	value_object<JSFaustKeyValue>("JSFaustKeyValue")
 		.field("type",  	&JSFaustKeyValue::type)

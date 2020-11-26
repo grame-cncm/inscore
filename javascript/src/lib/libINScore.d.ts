@@ -62,7 +62,7 @@ interface RectVector	{ size(): number; get(i: number) : number; }
 interface FloatVector	{ size(): number; get(i: number) : number; }
 interface StringVector	{ size(): number; get(i: number) : string; }
 interface IntVector 	{ size(): number; get(i: number) : number; }
-interface FaustParamValue 	{ address: string; value : number; }
+interface FaustParamValue 	{ address: string; value : number; type: number }
 interface FaustParamValuesVector 	{ size(): number; get(i: number) : FaustParamValue; }
 interface FaustKeyValue 	{ type : number; chan: number; pitch: number; vel: number; }
 interface FaustKeyValuesVector 	{ size(): number; get(i: number) : FaustKeyValue; }

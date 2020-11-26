@@ -533,6 +533,7 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 				JSFaustParamValue pv;
 				pv.address = elt.address;
 				pv.value = elt.value;
+				pv.type = elt.type;
 				infos.values.push_back (pv);
 			}
 			for (auto elt: obj->getKeyValues ()) {

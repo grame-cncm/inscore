@@ -85,12 +85,26 @@ void IFaustProcessor::addMsgHandler (const std::string& address, const std::stri
 }
 
 //--------------------------------------------------------------------------
+void IFaustProcessor::addMsgHandler (const std::string& address, const std::string& name)
+{
+	fMsgHandlerMap[name] 	= SetFaustParamMsgHandler::create(this, &IFaustProcessor::setButtonValue, address, 0, 1);
+	fGetMsgHandlerMap[name]	= GetFaustParamMethodHandler::create(this, &IFaustProcessor::getParamValue, address);
+}
+
+//--------------------------------------------------------------------------
 float IFaustProcessor::getParamValue (const std::string& address) const 
 {
 	TParamsValues::const_iterator i = fParamValues.find (address);
 	if (i != fParamValues.end()) return i->second;
 	ITLErr << getOSCAddress() << " " << address << ": no such parameter." << ITLEndl;
 	return 0;
+}
+
+//--------------------------------------------------------------------------
+void IFaustProcessor::setButtonValue(const std::string& address, float val)
+{
+	fNewValues.push_back (TFaustParamUpdate(address, val, TFaustParamUpdate::kButton));
+	fParamValues[address] = val;
 }
 
 //--------------------------------------------------------------------------
@@ -106,7 +120,10 @@ void IFaustProcessor::setFaustUI (std::string type, std::string label, std::stri
 	fPaths.push_back ( FaustProcessorUIElement(type, label, address, init, min, max, step));
 	string msg = address2msg(address.c_str());
 	fParamValues[address] = init;
-	addMsgHandler (address, msg, min, max);
+	if (type == "button")
+		addMsgHandler (address, msg);
+	else
+		addMsgHandler (address, msg, min, max);
 }
 
 //--------------------------------------------------------------------------
@@ -170,6 +187,7 @@ std::string IFaustProcessor::address2msg (const char* address) const
 	}
 	return out;
 }
+
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IFaustProcessor::allNotesOff(const IMessage*)
 {

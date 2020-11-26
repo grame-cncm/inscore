@@ -160,7 +160,7 @@ struct JSMediaInfos {
 	int		mdate; 		// the requested media date ( < 0 when no request)
 };
 
-struct JSFaustParamValue { std::string address; float value; };
+struct JSFaustParamValue { std::string address; float value; int type; };
 struct JSFaustKeyValue { int type; int chan; int pitch; int vel; };
 
 struct JSFaustInfos {

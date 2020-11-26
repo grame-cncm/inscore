@@ -57,13 +57,16 @@ class FaustProcessorUIElement {
 
 class TFaustParamUpdate {
 	public:
+	enum { kButton, kOther };
 	std::string	address;
 	float value;
+	int type = kOther;
 	TFaustParamUpdate (const std::string& a, float v) : address(a), value(v) {}
+	TFaustParamUpdate (const std::string& a, float v, int type) : address(a), value(v), type(type) {}
 };
 class TFaustKeysUpdate {
 	public:
-	enum { kKeyOn, kKeyOff, kAllNotesOff=-1 };
+	enum { kKeyOn, kKeyOff, kAllNotesOff=-1 , kButton = -2 };
 	int type, chan, pitch, velocity;
 	TFaustKeysUpdate (int type, int chan, int pitch, int vel) : type(type), chan(chan), pitch(pitch), velocity(vel) {}
 };
@@ -85,6 +88,7 @@ class IFaustProcessor : public IRectShape
 		
 	std::string address2msg 	(const char * address) const;
 	void 		addMsgHandler 	(const std::string& address, const std::string& name, float min, float max);
+	void 		addMsgHandler 	(const std::string& address, const std::string& name);
 	float 		getParamValue 	(const std::string& address) const;
 
     public:
@@ -101,6 +105,7 @@ class IFaustProcessor : public IRectShape
 		void		setIONums (int inputs, int outputs)  { fNumInputs = inputs; fNumOutputs = outputs; }
 		void	 	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
 		void	 	setParamValue (const std::string& address, float val);
+		void	 	setButtonValue (const std::string& address, float val);
 
 		const TNewValues& 	getChangedValues() const	{ return fNewValues; }
 		const TKeyValues& 	getKeyValues() const		{ return fKeyValues; }
