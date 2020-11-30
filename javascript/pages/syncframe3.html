@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-	<title>INScore Scene Test</title>
+	<title>INScore / Faust</title>
 
 	<link href="../fonts/fonts.css" rel="stylesheet">
 	<link href="../css/inscore.css" rel="stylesheet">
@@ -12,25 +12,71 @@
 	<script src="../inscoretests.js"></script>
 	<style>
 	body { margin: 50; background: gainsboro; height: 100%; }
-	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
-	.test { margin: 10px; padding: 10px; background: black; }
-
+	.box { width: 80%; height: 80%; border-radius: 15px; font-size: 1px; }
+	pre  { width: 80%; border-style: solid; border-width: 1px; border-radius: 15px; visibility: hidden; background-color: white;}
+	#triangle:hover { cursor: pointer; }
 	</style>
+	<script>
+		function loadinscore() {
+			let div = document.getElementById ("code");
+			let scene = document.getElementById ("scene");
+			scene.textContent = div.textContent;
+		}
+		function showcode() {
+			var div = document.getElementById ("code");
+			let t = document.getElementById ("triangle");
+		 	if (div.style.visibility == "visible") {
+				div.style.visibility = "hidden";
+				t.innerHTML = "&#9655;";
+			 }
+			else {
+				div.style.visibility = "visible";
+				t.innerHTML = "&#9661;";
+			}
+		}
+	</script>	
 </head>
 
 <body>
 
-<h1>INScore JS Tests</h1>
+<h1>INScore JS & Faust</h1>
 <div class="inscore box" id="scene">
+
+</div>
+<p>
+	<span onclick=showcode() id=triangle>&#9655;</span> INScore code
+</p>
+<pre id=code>
 
 	/ITL/scene/* del;
 
-	/ITL/scene/title  set  txt "Synchronisation modes: using 'syncFrame'";
+	/ITL/scene/title  set  txt "Dynamic control of Faust objects";
 	/ITL/scene/title color darkBlue;
 	/ITL/scene/title fontSize 24;
 	grey = 180;
 	/ITL/scene/title effect shadow 3 3 $grey $grey $grey 75 2;
 	/ITL/scene/title y -0.85;
+
+	dsp = 'import("stdfaust.lib"); process = pm.ks_ui_MIDI &lt;: dm.freeverb_demo;';
+	/ITL/scene/faust1 set faust $dsp;
+	/ITL/scene/faust2 set faust $dsp;
+	/ITL/scene/faust3 set faust $dsp;
+	/ITL/scene/faust4 set faust $dsp;
+	/ITL/scene/faust* show 0;
+	/ITL/scene/faust* play 1;
+
+	/ITL/scene/faust1 FaustDSP_karplus_params_freq 440;
+	/ITL/scene/faust2 FaustDSP_karplus_params_freq 840;
+	/ITL/scene/faust3 FaustDSP_karplus_params_freq 312;
+	/ITL/scene/faust4 FaustDSP_karplus_params_freq 546;
+	<!-- /ITL/scene/faust3 FaustDSP_karplus_params_freq 312;
+	/ITL/scene/faust4 FaustDSP_karplus_params_freq 546; -->
+	/ITL/scene/faust* FaustDSP_karplus_params_damping 0.01;
+	/ITL/scene/faust2 FaustDSP_karplus_params_damping 0.001;
+	/ITL/scene/faust2 FaustDSP_Freeverb_Wet 0.1;
+	/ITL/scene/faust3 FaustDSP_Freeverb_Wet 0.01;
+	/ITL/scene/faust3 FaustDSP_Freeverb_0x00_RoomSize 0.9;
+	/ITL/scene/faust[23] FaustDSP_karplus_params_gain 0.5;
 	
 	w = 0.17;
 	/ITL/scene/sun set ellipse $w $w;
@@ -101,73 +147,32 @@
 		)
 	);
 
-	dsp = 'import("stdfaust.lib"); process = pm.ks_ui_MIDI &lt;: dm.freeverb_demo;';
-	/ITL/scene/faust1 set faust $dsp;
-	/ITL/scene/faust2 set faust $dsp;
-	/ITL/scene/faust3 set faust $dsp;
-	/ITL/scene/faust4 set faust $dsp;
-	/ITL/scene/faust* show 0;
-	/ITL/scene/faust* play 1;
-
-	/ITL/scene/faust1 FaustDSP_karplus_params_freq 440;
-	/ITL/scene/faust2 FaustDSP_karplus_params_freq 840;
-	/ITL/scene/faust3 FaustDSP_karplus_params_freq 312;
-	/ITL/scene/faust4 FaustDSP_karplus_params_freq 546;
-	/ITL/scene/faust* FaustDSP_karplus_params_damping 0.01;
-	/ITL/scene/faust2 FaustDSP_karplus_params_damping 0.001;
-	/ITL/scene/faust2 FaustDSP_Freeverb_Wet 0.1;
-	/ITL/scene/faust3 FaustDSP_Freeverb_Wet 0.01;
-	/ITL/scene/faust3 FaustDSP_Freeverb_0x00_RoomSize 0.9;
-	/ITL/scene/faust[23] FaustDSP_karplus_params_gain 0.5;
-
 	gate = 'FaustDSP_karplus_gate';
-
 	/ITL/scene/p1 watch timeEnter 0.185 0.40 ( /ITL/scene/faust1 $gate 1 );
-	/ITL/scene/p1 watch timeLeave 0.185 0.19 ( /ITL/scene/faust1 $gate 0 );
 	/ITL/scene/p1 watch timeEnter 0.41 0.70 ( /ITL/scene/faust1 $gate 1 );
-	/ITL/scene/p1 watch timeLeave 0.41 0.50 ( /ITL/scene/faust1 $gate 0 );
 	/ITL/scene/p1 watch timeEnter 0.71 0.80 ( /ITL/scene/faust1 $gate 1 );
-	/ITL/scene/p1 watch timeLeave 0.71 0.80 ( /ITL/scene/faust1 $gate 0 );
 	/ITL/scene/p1 watch timeEnter 0.90 1. 	( /ITL/scene/faust1 $gate 1 );
-	/ITL/scene/p1 watch timeLeave 0.90 0.95 ( /ITL/scene/faust1 $gate 0 );
 	
 	/ITL/scene/p2 watch timeEnter 0.139 0.17 ( /ITL/scene/faust2 $gate 1 );
-	/ITL/scene/p2 watch timeLeave 0.182 0.2  ( /ITL/scene/faust2 $gate 0 );
 	/ITL/scene/p2 watch timeEnter 0.27 0.3 	 ( /ITL/scene/faust2 $gate 1 );
-	/ITL/scene/p2 watch timeLeave 0.27 0.3 	 ( /ITL/scene/faust2 $gate 0 );
 	/ITL/scene/p2 watch timeEnter 0.685 0.75 ( /ITL/scene/faust2 $gate 1 );
-	/ITL/scene/p2 watch timeLeave 0.685 0.75 ( /ITL/scene/faust2 $gate 0 );
 	/ITL/scene/p2 watch timeEnter 0.822 0.88 ( /ITL/scene/faust2 $gate 1 );
-	/ITL/scene/p2 watch timeLeave 0.822 0.88 ( /ITL/scene/faust2 $gate 0 );
 	
 	/ITL/scene/p3 watch timeEnter 0.185 0.2 ( /ITL/scene/faust3 $gate 1 );
-	/ITL/scene/p3 watch timeLeave 0.185 0.2 ( /ITL/scene/faust3 $gate 0 );
 	/ITL/scene/p3 watch timeEnter 0.32 0.38 ( /ITL/scene/faust3 $gate 1 );
-	/ITL/scene/p3 watch timeLeave 0.32 0.38 ( /ITL/scene/faust3 $gate 0 );
 	/ITL/scene/p3 watch timeEnter 0.69 0.7  ( /ITL/scene/faust3 $gate 1 );
-	/ITL/scene/p3 watch timeLeave 0.69 0.7  ( /ITL/scene/faust3 $gate 0 );
 	/ITL/scene/p3 watch timeEnter 0.82 0.88 ( /ITL/scene/faust3 $gate 1 );
-	/ITL/scene/p3 watch timeLeave 0.82 0.88 ( /ITL/scene/faust3 $gate 0 );
 	
 	/ITL/scene/p4 watch timeEnter 0.16 0.2 ( /ITL/scene/faust4 $gate 1 );
-	/ITL/scene/p4 watch timeLeave 0.16 0.2 ( /ITL/scene/faust4 $gate 0 );
 	/ITL/scene/p4 watch timeEnter 0.26 0.3 ( /ITL/scene/faust4 $gate 1 );
-	/ITL/scene/p4 watch timeLeave 0.26 0.3 ( /ITL/scene/faust4 $gate 0 );
 	/ITL/scene/p4 watch timeEnter 0.653 0.7  ( /ITL/scene/faust4 $gate 1 );
-	/ITL/scene/p4 watch timeLeave 0.653 0.7  ( /ITL/scene/faust4 $gate 0 );
 	/ITL/scene/p4 watch timeEnter 0.762 0.81 ( /ITL/scene/faust4 $gate 1 );
-	/ITL/scene/p4 watch timeLeave 0.762 0.81 ( /ITL/scene/faust4 $gate 0 );
-	
-<!-- 
-/ITL/scene/faust karplus_gate 0.0;
-/ITL/scene/faust karplus_params_bend 0.0;
-/ITL/scene/faust karplus_params_damping 0.01;
-/ITL/scene/faust karplus_params_freq 440.0;
-/ITL/scene/faust karplus_params_gain 0.8;
-/ITL/scene/faust karplus_params_sustain 0.0;
- -->
-</div>
+
+</pre>
+<hr/>
 
 </body>
+
+<script>loadinscore();</script>
 
 </html>
