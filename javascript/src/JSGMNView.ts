@@ -10,6 +10,7 @@ class JSGMNView extends JSSvgBase {
 	private fGR: GRHandler = null;
 	private fPage = 0;
 	private fScalingFactor = 2.3;
+	private fViewBox : { width: number, height: number };
 	protected fParser: GuidoParser;
 
 	private scanMap (name: string)	: { name: string, index: number } { 
@@ -23,6 +24,7 @@ class JSGMNView extends JSSvgBase {
 		if (!n) return { width: 0, height: 0 };
 		return {width: parseInt(n[3]), height: parseInt(n[4]) };
 	}
+	private viewBox ()	: { width: number, height: number } { return this.fViewBox; }
 
 	constructor(parent: JSObjectView, guido: GuidoEngine) {
 		super(parent);
@@ -70,8 +72,8 @@ class JSGMNView extends JSSvgBase {
 			this.fSVG.innerHTML = svg;
 			
 			let innerSvg = this.fSVG.getElementsByTagName('svg');
-			let viewbox = this.scanViewBox (innerSvg[0].getAttribute('viewBox'));	
-			this.updateObjectSizeSync (obj, viewbox.width, viewbox.height);
+			this.fViewBox = this.scanViewBox (innerSvg[0].getAttribute('viewBox'));	
+			this.updateObjectSizeSync (obj, this.fViewBox.width, this.fViewBox.height);
 			obj.updateTime2TimeMap (this.fGuido.getTimeMap (ar));
 
 			if (this.fGR) {
@@ -93,19 +95,23 @@ class JSGMNView extends JSSvgBase {
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
 		let guido = obj.getGuidoInfos();
-		if (this.fGuido)
-			return this.gmn2svg (obj, guido.code, guido.page);
-		else console.log ("Guido engine is not available");
+		if (!this.fGuido) {
+			console.log ("Guido engine is not available");
+			return false;
+		}
+		if (this.gmn2svg (obj, guido.code, guido.page) ) 
+			return super.updateSpecial(obj, oid);
 		return false;
     }
 	
 	// this method is called by the model to update the map synchronously
 	static getMapping (mapname: string, id: number, oid: number) : void {
-    	let view = <JSGMNView>JSObjectView.getObjectView(id);
+		let view = <JSGMNView>JSObjectView.getObjectView(id);
     	if (view) {
 			let obj = INScore.objects().create(oid);
-			let w = view.getSVGTarget().clientWidth;
-			let h = view.getSVGTarget().clientHeight;
+			let vb = view.viewBox();
+			let w = vb.width; 
+			let h = vb.height;
 			let map = view.getMap (mapname, w, h);
 			obj.updateGraphic2TimeMap (mapname, map, w, h);
 			INScore.objects().del (obj);
