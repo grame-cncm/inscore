@@ -27,25 +27,38 @@ class TFileLoader {
 			case "image/svg+xml": 	content = element.innerHTML; break;
 			case "text/xml": 		content = TFileLoader.getMusicXML(element); break;
 			default:
-				console.error ("Unsupported content type " + doc.contentType);
+				console.log ("Unsupported content type " + doc.contentType);
 				content = null;
 		}
 		obj.parentElement.removeChild (obj);
 		return content;
 	}
 
-	static load(div: HTMLElement, file: string) : Promise<string>	{ 
+	static load (div: HTMLElement, file: string) : Promise <string | null>	{ 
 		let obj = document.createElement('object');
 		obj.type = "text/plain";
 		obj.data = file;
 		obj.style.visibility = "hidden";
 		div.appendChild (obj);
-		return new Promise(function (resolve, failure) {
-			obj.addEventListener("error", () => { console.error ("can't open file " + file); });
-			obj.addEventListener("load", () => {
-				let content = TFileLoader.getContent (obj);
-				resolve(content);
-			});
+		return new Promise( function (resolve, failure) {
+			obj.addEventListener("error", () => { console.log ("can't open file " + file); failure(null); });
+			obj.addEventListener("load",  () => { let content = TFileLoader.getContent (obj); 
+				resolve(content); });
 		});
 	}
+
+	// static oldload(div: HTMLElement, file: string) : Promise<string>	{ 
+	// 	let obj = document.createElement('object');
+	// 	obj.type = "text/plain";
+	// 	obj.data = file;
+	// 	obj.style.visibility = "hidden";
+	// 	div.appendChild (obj);
+	// 	return new Promise(function (resolve, failure) {
+	// 		obj.addEventListener("error", () => { console.error ("can't open file " + file); });
+	// 		obj.addEventListener("load", () => {
+	// 			let content = TFileLoader.getContent (obj);
+	// 			resolve(content);
+	// 		});
+	// 	});
+	// }
 }

@@ -5,7 +5,7 @@ interface FileDataPending { () : void }
 
 class TFileBased {
 
-	fContent = "";
+	fContent : string = null;
 
 	getData (file: string, div: HTMLElement, pending: FileDataPending = null)	: boolean {
 		if (this.fContent == null) return true;	// error while loading file, don't try again
@@ -15,6 +15,11 @@ class TFileBased {
 			if (pending) pending();
 		});
 		return false;
+	}
+
+	async getDataASync (file: string, div: HTMLElement) : Promise<string | null> {
+		this.fContent = await TFileLoader.load (div, file);
+		return this.fContent;
 	}
 
 	get() : string {
