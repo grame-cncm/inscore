@@ -83,6 +83,14 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 
 
 //--------------------------------------------------------------------------
+void IGuidoCode::ready()
+{
+	IObject::ready();
+//	newData(true);
+	setModified();
+}
+
+//--------------------------------------------------------------------------
 bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	if (t == kPageCountEvent) return true;

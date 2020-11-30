@@ -120,6 +120,7 @@ class IGuidoCode : public IObject
 
 		void	setPageCount(int count);
 		void 	updateScoreMapping ();
+		virtual void	ready();
 
 	protected:
 				 IGuidoCode( const std::string& name, IObject * parent );
