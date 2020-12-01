@@ -63,14 +63,14 @@ endif()
 # set directories, src and headers.
 set (SRCDIR      ${ROOT}/src)
 set (INSCOREDIR  ${SRCDIR}/inscore)
-set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view signal signal/faustweb)
+set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view signal ../emcc/faustweb)
 set (INSCORE2DIR ${SRCDIR}/inscore2)
 if (USEOSC)
 set (INSCOREDIRS ${INSCOREDIRS} osc)
 endif()
 set (MAPPINGDIR  ${SRCDIR}/libmapping/src)
 set (VIEWSDIR    ${SRCDIR}/view)
-set (PUBLICDIR   ${INSCOREDIR}/inerface)
+set (PUBLICDIR   ${INSCOREDIR}/interface)
 set (LOCALLIB 	 ${ROOT}/lib)
 set (OSCPACK     ${LOCALLIB}/oscpack)
 set (JSON        ${SRCDIR}/json)
@@ -136,7 +136,7 @@ set (INCDIRS  ${INCDIRS}
 	${INSCOREDIR}/controller ${INSCOREDIR}/events ${INSCOREDIR}/expression ${INSCOREDIR}/expression/parser ${INSCOREDIR}/parser
 	${INSCOREDIR}/httpserver ${INSCOREDIR}/interface ${INSCOREDIR}/ITLParser
 	${INSCOREDIR}/lib ${INSCOREDIR}/mapping ${INSCOREDIR}/model
-	${INSCOREDIR}/scripting ${INSCOREDIR}/sensors ${INSCOREDIR}/signal ${INSCOREDIR}/signal/faustweb
+	${INSCOREDIR}/scripting ${INSCOREDIR}/sensors ${INSCOREDIR}/signal ${SRCDIR}/emcc/faustweb
 	${INSCOREDIR}/view ${INSCOREDIR}/web ${INSCOREDIR}/osc
 	${INSCORE2DIR} ${INSCORE2DIR}/eval ${INSCORE2DIR}/parser ${INSCORE2DIR}/sorter)
 
