@@ -182,9 +182,8 @@ abstract class JSObjectView {
 	// mouse events handlers and update
 	getPoints(event: MouseEvent): { relative: Point, obj: Point, scene: Point} {
 		let div = this.getElement();
-		let x = (event.offsetX / div.clientWidth * 2) -1 ;
-		let y = (event.offsetY / div.clientHeight * 2) -1 ;
-
+		let x = Math.min(Math.max((event.offsetX / div.clientWidth), 0), div.clientWidth);
+		let y = Math.min(Math.max((event.offsetY / div.clientHeight), 0), div.clientHeight);
 		let pdiv = div.parentElement;
 		let r = pdiv.getBoundingClientRect();
 		let sx = ((event.clientX - r.left) / pdiv.clientWidth * 2) -1 ;
@@ -199,8 +198,10 @@ abstract class JSObjectView {
 	}
 
 	notify(event: MouseEvent, id: number, dest: string): void {
-		// event.stopImmediatePropagation();
-		// event.preventDefault();
+		event.stopImmediatePropagation();
+		event.stopPropagation();
+		event.preventDefault();
+
 		if (!this.accept(event, id)) return;
 		if ((id == kMouseMoveID) && (event.buttons != 1)) return;	// ignore move event without mouse button
 		let mevent = null;
@@ -230,16 +231,21 @@ abstract class JSObjectView {
 		let div = this.getElement();
 		if (events.watchMouseEnter) div.onmouseenter = (event : MouseEvent) : void => { this.notify(event, kMouseEnterID, dest); };
 		else div.onmouseenter = null;
+
 		if (events.watchMouseLeave) div.onmouseleave = (event : MouseEvent) : void => { this.notify(event, kMouseLeaveID, dest); };
 		else div.onmouseleave = null;
+
 		if (events.watchMouseDown) 	div.onmousedown = (event : MouseEvent) : void => { this.notify(event, kMouseDownID, dest); };
-		else div.onmousedown = null;
+		else div.onmousedown = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
+
 		if (events.watchMouseUp) 	div.onmouseup = (event : MouseEvent) : void => { this.notify(event, kMouseUpID, dest); };
-		else div.onmouseup = null;
+		else div.onmouseup  = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
+
 		if (events.watchMouseMove) 	div.onmousemove = (event : MouseEvent) : void => { this.notify(event, kMouseMoveID, dest); };
-		else div.onmousemove = null;
+		else div.onmousemove  = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
+
 		if (events.watchMouseDClick) div.ondblclick = (event : MouseEvent) : void => { this.notify(event, kMouseDClickID, dest); };
-		else div.ondblclick = null;
+		else div.ondblclick = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
 	}
 
 	//------------------------------------------------------------------------------------
