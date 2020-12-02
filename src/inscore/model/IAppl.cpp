@@ -336,6 +336,7 @@ void IAppl::createVirtualNodes()
 	add ( IApplPlugin::create(this) );
 	add (fFilterForward);
 	fForwarder.setFilter(fFilterForward);
+	fForwarder.setLog(fApplLog);
 }
 
 //--------------------------------------------------------------------------

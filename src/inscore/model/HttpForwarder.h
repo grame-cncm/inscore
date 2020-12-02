@@ -35,6 +35,7 @@
 namespace inscore
 {
 
+class IApplLog;
 //--------------------------------------------------------------------------
 class HTTPForwarder : public QTcpServer, public ForwardEndPoint
 {
@@ -42,12 +43,15 @@ class HTTPForwarder : public QTcpServer, public ForwardEndPoint
 
 	int			fID = 1;
 	std::vector<QTcpSocket*>	fClients;
+	IApplLog*	fLog;
 
 	std::string 	IMessage2String (const IMessage * imsg);
-	void 	clear ();
+	void clear ();
+	void send (QTcpSocket *s, const char * msg);
+	void log  (const char * msg);
 
 	public:
-				 HTTPForwarder (const IMessage::TUrl& url);
+				 HTTPForwarder (const IMessage::TUrl& url, IApplLog* log);
 		virtual ~HTTPForwarder ();
 
 		void send (const IMessage * imsg);

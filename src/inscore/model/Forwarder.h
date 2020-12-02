@@ -33,10 +33,11 @@
 namespace inscore
 {
 class IFilterForward;
+class IApplLog;
 
 class ForwardEndPoint
 {
-	IMessage::TUrl fDest;
+	IMessage::TUrl 	fDest;
 
 	public:
 				 ForwardEndPoint (const IMessage::TUrl& url) : fDest(url) {}
@@ -55,6 +56,8 @@ class Forwarder
 	void clear();
 
     public:
+		IApplLog * 	fLog = 0;
+
         /*!
          * \brief Forwarder Construct a forwarder without filter.
          */
@@ -80,6 +83,12 @@ class Forwarder
          * \param filter
          */
         inline void setFilter(IFilterForward * filter) { fFilter = filter; }
+
+        /*!
+         * \brief setLog Set the log facility
+         * \param log the application log
+         */
+        inline void setLog(IApplLog * log) { fLog = log; }
 
         /*!
          * \brief getForwardList Get the list of the forwarded host.

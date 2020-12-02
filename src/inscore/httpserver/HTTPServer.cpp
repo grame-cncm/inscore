@@ -168,8 +168,8 @@ bool HTTPDServer::start(int port)
 {
 	// MHD_USE_THREAD_PER_CONNECTION created one thread per connection
 	fServer = MHD_start_daemon (MHD_USE_THREAD_PER_CONNECTION, port,
-								_on_client_connect,
-								NULL, _answer_to_connection, this,
+								(MHD_AcceptPolicyCallback)_on_client_connect,
+								NULL, (MHD_AccessHandlerCallback)_answer_to_connection, this,
 								MHD_OPTION_NOTIFY_COMPLETED,
 								_request_completed,
 								NULL, MHD_OPTION_END);
@@ -290,7 +290,7 @@ int HTTPDServer::sendGetRequest (struct MHD_Connection *connection, const char* 
 
 		// Get If_Modified-Since header
 		TArgs headerArgs;
-		MHD_get_connection_values (connection, MHD_HEADER_KIND, _get_params, &headerArgs);
+		MHD_get_connection_values (connection, MHD_HEADER_KIND, (MHD_KeyValueIterator)_get_params, &headerArgs);
 		if (headerArgs.size()) {
 			TArgs::const_iterator it = headerArgs.find(MHD_HTTP_HEADER_IF_MODIFIED_SINCE);
 			if(it != headerArgs.end()) {
@@ -375,7 +375,7 @@ int HTTPDServer::answer (struct MHD_Connection *connection, const char *url, con
 		if (0 == strcmp (method, "POST")) {
 			con_info->postprocessor =
 				MHD_create_post_processor (connection, 1024, // arbitrary, recommeneded by libmicrohttpd
-										   _post_params, (void *) con_info);
+										   (MHD_PostDataIterator)_post_params, (void *) con_info);
 
 			if (NULL == con_info->postprocessor) {
 				delete con_info;
@@ -397,7 +397,7 @@ int HTTPDServer::answer (struct MHD_Connection *connection, const char *url, con
 	}
 
 	TArgs myArgs;
-	MHD_get_connection_values (connection, MHD_COOKIE_KIND, _get_params, &myArgs);
+	MHD_get_connection_values (connection, MHD_COOKIE_KIND, (MHD_KeyValueIterator)_get_params, &myArgs);
 
 	// first, parse the URL
 	std::stringstream ss(url);
@@ -424,17 +424,17 @@ int HTTPDServer::answer (struct MHD_Connection *connection, const char *url, con
 	}
 	else if (0 == strcmp (method, "DELETE")) {
 		TArgs args;
-		MHD_get_connection_values (connection, MHD_GET_ARGUMENT_KIND, _get_params, &args);
+		MHD_get_connection_values (connection, MHD_GET_ARGUMENT_KIND, (MHD_KeyValueIterator)_get_params, &args);
 		return sendDeleteRequest(connection, args);
 	}
 	else if (0 == strcmp (method, "GET")) {
 		TArgs args;
-		MHD_get_connection_values (connection, MHD_GET_ARGUMENT_KIND, _get_params, &args);
+		MHD_get_connection_values (connection, MHD_GET_ARGUMENT_KIND, (MHD_KeyValueIterator)_get_params, &args);
 		return sendGetRequest (connection, url, args, elems);
 	}
 	else if (0 == strcmp (method, "HEAD")) {
 		TArgs args;
-		MHD_get_connection_values (connection, MHD_GET_ARGUMENT_KIND, _get_params, &args);
+		MHD_get_connection_values (connection, MHD_GET_ARGUMENT_KIND, (MHD_KeyValueIterator)_get_params, &args);
 		return sendHeadRequest (connection, url, args, elems);
 	}
 	else {
