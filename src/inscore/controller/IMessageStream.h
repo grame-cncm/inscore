@@ -56,7 +56,8 @@ IMessage& operator <<(IMessage& msg, const libmapping::TRelation<T,D,libmapping:
 {
 	std::ostringstream map;
 	val.print (map);
-	msg << map.str();
+//	msg << map.str();   // looks like the << operator dont work with string
+	msg.add(map.str());
 	return msg;
 }
 
