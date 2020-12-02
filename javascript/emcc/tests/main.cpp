@@ -133,6 +133,29 @@ static void test_hierarchy_bug (INScoreGlue * glue)
 	glue->timeTask();
 }
 
+static void test_img_map_bug (INScoreGlue * glue)
+{
+	INScore::MessagePtr msg = INScore::newMessage("new");
+	INScore::postMessage("/ITL/scene", msg);
+	glue->timeTask();
+	msg = INScore::newMessage("set");
+	INScore::add(msg, "img");
+	INScore::add(msg, "/Users/fober/src/INScore/git/javascript/imgs/stevictoire/sc0.png");
+	INScore::postMessage("/ITL/scene/img", msg);
+	glue->timeTask();
+	msg = INScore::newMessage("get");
+	INScore::postMessage("/ITL/scene", msg);
+	glue->timeTask();
+	msg = INScore::newMessage("map");
+	INScore::add(msg, "( [140, 3949[ [0, 619[ ) ( [0:0:0, 0:4:30[ )");
+	INScore::postMessage("/ITL/scene/img", msg);
+	glue->timeTask();
+	msg = INScore::newMessage("get");
+	INScore::add(msg, "map");
+	INScore::postMessage("/ITL/scene/img", msg);
+	glue->timeTask();
+}
+
 int main (int argc, char*argv[])
 {
 	cout << "INScore lib tests" << endl;
@@ -142,7 +165,8 @@ int main (int argc, char*argv[])
 //	test_load ();
 //	test_glue (glue);
 //	test_sync (glue);
-	test_hierarchy_bug (glue);
+//	test_hierarchy_bug (glue);
+	test_img_map_bug (glue);
 	test_stop (glue);
 	return 0;
 }
