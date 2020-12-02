@@ -37,6 +37,7 @@
 #endif
 
 #include "Forwarder.h"
+#include "IApplVNodes.h"
 #include "IFilterForward.h"
 #include "Tools.h"
 #include "IAppl.h"
