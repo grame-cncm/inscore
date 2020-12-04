@@ -59,7 +59,7 @@ class MsgHandler : public libmapping::smartable {
 		virtual ~MsgHandler() {}
 	public:
 		/// \brief the possible message processing states
-		enum msgStatus	{ kBadAddress, kProcessed=1, kProcessedNoChange=2, kBadParameters=4, kCreateFailure=8 };
+		enum msgStatus	{ kBadAddress, kProcessed=1, kProcessedNoChange=2, kBadParameters=4, kCreateFailure=8, kDelayed=16 };
 		virtual msgStatus operator ()(const IMessage* msg)  = 0;
 };
 typedef libmapping::SMARTP<MsgHandler> SMsgHandler;
