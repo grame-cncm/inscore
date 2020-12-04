@@ -27,6 +27,7 @@ abstract class JSObjectView {
 	private fParent  : JSObjectView;
 	private fSyncManager : GraphicSyncManager;
 	private fIObject : number;			// a pointer to an IObject stored as a number
+	private fOrigin : Point;
 
     constructor(elt: HTMLElement, parent: JSObjectView, absolute=true) { 
 		this.fID = ++JSObjectView.fGlobalID; 		// create a unique identifier
@@ -35,6 +36,7 @@ abstract class JSObjectView {
 		this.fElement = elt; 
 		this.fSyncManager = null;
 		this.fIObject = 0;
+		this.fOrigin = { x: 0, y: 0};
 		if (parent) parent.getElement().appendChild (elt);
 		if (absolute) elt.style.position = "absolute";
 	}
@@ -144,6 +146,8 @@ abstract class JSObjectView {
 		let scale = this.getScale(pos);
 		let x = ppos.x + this.relative2SceneWidth (pos.x) - (this.getElement().offsetWidth * (1 + pos.xorigin * scale) / 2 );
 		let y = ppos.y + this.relative2SceneHeight(pos.y) - (this.getElement().offsetHeight * (1 + pos.yorigin * scale) / 2 );
+		this.fOrigin.x = pos.xorigin;
+		this.fOrigin.y = pos.yorigin;
 		return { x: x, y: y};
 	}
 
@@ -182,13 +186,17 @@ abstract class JSObjectView {
 	// mouse events handlers and update
 	getPoints(event: MouseEvent): { relative: Point, obj: Point, scene: Point} {
 		let div = this.getElement();
-		let x = Math.min(Math.max((event.offsetX / div.clientWidth), 0), div.clientWidth);
-		let y = Math.min(Math.max((event.offsetY / div.clientHeight), 0), div.clientHeight);
+		let relx = event.offsetX / div.clientWidth;
+		let rely = event.offsetY / div.clientHeight;
+		let x = 0.5 + (0.5 * this.fOrigin.x) - relx;
+		if (x < 0) x = -x;		// make sure the position is the relative distance to the origin
+		let y = 0.5 + (0.5 * this.fOrigin.y) - rely;
+		if (y < 0) y = -y;		// make sure the position is the relative distance to the origin
 		let pdiv = div.parentElement;
 		let r = pdiv.getBoundingClientRect();
 		let sx = ((event.clientX - r.left) / pdiv.clientWidth * 2) -1 ;
 		let sy = ((event.clientY - r.top) / pdiv.clientHeight * 2) -1 ;
-		return { relative: {x: x, y: y}, obj: {x: event.offsetX, y: event.offsetY}, scene: {x: sx, y: sy}} ;
+		return { relative: {x: x, y: y}, obj: {x: relx, y: rely}, scene: {x: sx, y: sy}} ;
 	}
 
 	accept(event: MouseEvent, id: number): boolean {
