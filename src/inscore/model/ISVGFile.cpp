@@ -47,6 +47,15 @@ ISVGFile::ISVGFile( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kanimate_GetSetMethod]		= TSetMethodMsgHandler<ISVGFile,bool>::create(this, &ISVGFile::setAnimate);
 	fGetMsgHandlerMap[kanimate_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fAnimate);
 	fGetMsgHandlerMap[kanimated_GetMethod]		= TGetParamMsgHandler<bool>::create(fAnimated);
+	setPending();
+}
+
+//--------------------------------------------------------------------------
+void ISVGFile::ready()
+{
+	IPosition::modified();
+	setModified();
+	IObject::ready();
 }
 
 //--------------------------------------------------------------------------
