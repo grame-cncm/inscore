@@ -41,6 +41,7 @@ IImage::IImage( const std::string& name, IObject * parent )
 {	
 	fTypeString = kImageType;
 	fGetMsgHandlerMap[""] = TGetParamMsgHandler<string>::create(getFile());
+	setPending();
 }
 
 //--------------------------------------------------------------------------

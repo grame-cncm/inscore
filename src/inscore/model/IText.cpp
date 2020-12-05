@@ -82,6 +82,7 @@ IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(
 	fMsgHandlerMap[kfontWeight_GetSetMethod]	= TMethodMsgHandler<IText>::create(this, &IText::setFontWeight);
 
 	fMsgHandlerMap[kwrite_SetMethod]			= TMethodMsgHandler<IText, MsgHandler::msgStatus (IText::*)(const IMessage*)>::create(this, &IText::writeMsg);
+	setPending();
 }
 
 //--------------------------------------------------------------------------
