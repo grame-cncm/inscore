@@ -204,7 +204,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void	setEditString(const std::string& str) { fEditString = str; }
 
 		/// \briefclear the pending state of an object
-		virtual void	ready() 					{ fPending = 0; }
+		virtual void	ready();
 
 		/*!
 		 * \brief returns the next object export-flag with file path and draw children flag to draw or not object children.

@@ -379,6 +379,15 @@ void IObject::newData (bool state) {
 }
 
 //--------------------------------------------------------------------------
+void IObject::ready()
+{
+	std::cout << "IObject::ready " << getOSCAddress() << " ready." << std::endl;
+	IPosition::modified();
+	setModified();
+	fPending = 0;
+}
+
+//--------------------------------------------------------------------------
 void IObject::createVirtualNodes()
 {
     fDebug = IObjectDebug::create(this);
@@ -803,9 +812,10 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				for (size_t i = 0; i< n; i++) {
 					IObject * target = targets[i];
 #if EMCC
-					if (target->getPending() && (msg->message() != krefresh_SetMethod)) {
+					if (target->getPending()) { // && (msg->message() != krefresh_SetMethod)) {
 //cerr << "=> delayed: " << msg << endl;
-						INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
+//						INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
+						msg->send(true);
 						return MsgHandler::kProcessedNoChange;
 					}
 #endif
@@ -1729,10 +1739,13 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 					if (!msgs || msgs->list().empty()) return MsgHandler::kProcessed;		// nothing to do, no associated message
 
 					MouseLocation mouse (x, y, ox, oy, sx, sy);
-					rational date = point2date(x, y);
-					EventContext env(mouse, date, this);
+					rational date = point2date(ox, oy);
+//cout << "IObject::eventMsg " << ox << " -> date: " << float(date) << endl;
+//					EventContext env(mouse, date, this);
+					EventContext env(mouse, rational(0,1), this);
 					TMessageEvaluator me;
-					SIMessageList outmsgs = me.eval (msgs, env);
+//					SIMessageList outmsgs = me.eval (msgs, env);
+					SIMessageList outmsgs = me.eval (msgs, ox, oy, env);
 					if (outmsgs && outmsgs->list().size()) outmsgs->send();		// when not empty, sends the evaluated messages
 #else
 					VObjectView	* view = getView();
