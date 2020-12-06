@@ -51,14 +51,6 @@ ISVGFile::ISVGFile( const std::string& name, IObject * parent )
 }
 
 //--------------------------------------------------------------------------
-void ISVGFile::ready()
-{
-	IPosition::modified();
-	setModified();
-	IObject::ready();
-}
-
-//--------------------------------------------------------------------------
 void ISVGFile::accept (Updater* u)
 {
 	u->updateTo (SISVGFile(this));

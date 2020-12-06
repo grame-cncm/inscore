@@ -55,7 +55,6 @@ class ISVGFile :  public IGraphicBasedObject, public TFile, public IAnimated
 
 		virtual void		print(std::ostream& out) const;
 		virtual void		accept (Updater*);
-		virtual void		ready();
 
 	protected:
 				 ISVGFile( const std::string& name, IObject * parent );
