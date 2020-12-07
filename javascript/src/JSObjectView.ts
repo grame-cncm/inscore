@@ -88,9 +88,15 @@ abstract class JSObjectView {
 
 	getSyncRatio()	: number {  return this.getParent().parentSyncRatio(); }
 
-	refresh (address: string)	: void { 
-		inscore.delayMessage (address, inscore.newMessageM ("refresh"));
-	}
+	// refresh (address: string)	: void { 
+	// 	inscore.delayMessage (address, inscore.newMessageM ("refresh"));
+	// }
+
+	// ready (oid: number)	: void { 
+	// 	let obj = INScore.objects().create(oid);
+	// 	obj.ready();
+	// 	INScore.objects().del (obj);
+	// }
 
 	//---------------------------------------------------------------------
 	// update methods
@@ -144,8 +150,9 @@ abstract class JSObjectView {
 	getPos(pos: OPosition) : Point {
 		let ppos = this.getParent().getOrigin();
 		let scale = this.getScale(pos);
-		let x = ppos.x + this.relative2SceneWidth (pos.x) - (this.getElement().offsetWidth * (1 + pos.xorigin * scale) / 2 );
-		let y = ppos.y + this.relative2SceneHeight(pos.y) - (this.getElement().offsetHeight * (1 + pos.yorigin * scale) / 2 );
+		let div = this.getElement();
+		let x = ppos.x + this.relative2SceneWidth (pos.x) - (div.offsetWidth * (1 + pos.xorigin * scale) / 2 );
+		let y = ppos.y + this.relative2SceneHeight(pos.y) - (div.offsetHeight * (1 + pos.yorigin * scale) / 2 );
 		this.fOrigin.x = pos.xorigin;
 		this.fOrigin.y = pos.yorigin;
 		return { x: x, y: y};
