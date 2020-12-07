@@ -30,7 +30,7 @@ class JSImageView extends JSAutoSize
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
         this.fImage.src  = obj.getFile();
-		return super.updateSpecial (obj, objid );
+        return this.updateSizeASync (objid);
 	}
     
 	setShadow(elt: HTMLElement, val: OShadow): void {

@@ -16,7 +16,7 @@ class JSVideoView extends JSAutoSize {
 
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
         this.fVideo.src  = obj.getFile();
-		return super.updateSpecial (obj, objid );
+		return this.updateSizeASync (objid );
 	}
  
 	setShadow(elt: HTMLElement, val: OShadow): void {

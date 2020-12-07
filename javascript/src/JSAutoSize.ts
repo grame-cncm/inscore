@@ -1,19 +1,14 @@
 
 ///<reference path="JSObjectView.ts"/>
+///<reference path="TASyncUpdate.ts"/>
 
 
 abstract class JSAutoSize extends JSObjectView 
 {
-    private fSizeSynced = false;
-
     constructor(elt: HTMLElement, parent: JSObjectView) 	{ 
         super (elt, parent); 
-        elt.style.height = "auto";
-        elt.style.width  = "auto";
-    }
-
-    updateSpecial (obj: INScoreObject, objid: number)	: boolean {
-        return this.waitForSize (objid);
+        // elt.style.height = "auto";
+        // elt.style.width  = "auto";
     }
 
     getAutoSize() : Point {
@@ -21,16 +16,19 @@ abstract class JSAutoSize extends JSObjectView
         return { x: elt.clientWidth, y: elt.clientHeight };
     }
 
-    waitForSize (objid: number) : boolean {
-        if (!this.fSizeSynced) {
-            let size = this.getAutoSize();
-            if (!size.x || !size.y)  setTimeout (() => this.waitForSize (objid), 50) ;
-            else {
-                this.updateObjectSize (objid, size.x, size.y);
-                this.fSizeSynced = true;
-                JSObjectView.updateObjectView (this.getId(), objid, true);
-            }    
+    updateSizeSync (obj: INScoreObject) {
+        let p = this.getAutoSize();
+        this.updateObjectSizeSync (obj, p.x, p.y);
+        obj.ready();
+        return true;
+    }
+
+    updateSizeASync (objid: number) : boolean {
+        let size = this.getAutoSize();
+        if (!size.x || !size.y)  setTimeout (() => this.updateSizeASync (objid), 20) ;
+        else {
+            return TASyncUpdate.update (objid, (obj) => this.updateSizeSync(obj) );
         }
-        return this.fSizeSynced;
+        return false;
 	}
 }
