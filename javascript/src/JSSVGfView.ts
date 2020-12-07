@@ -5,8 +5,6 @@
 
 class JSSVGfView extends JSSVGView 
 {
-	private fFile = new TFileBased;
-   
     toString() : string			            { return "JSSVGfView"; }
 	
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {

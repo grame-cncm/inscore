@@ -15,13 +15,15 @@ class JSSVGView extends JSSvgBase {
 	updateSVGDimensions(w: number, h: number) : void { }
 	updatePenControl(pen: OPen) : void {	this.updateRegularPen (pen); }
 
-	getSvg (obj: INScoreObject) : string { return obj.getSVGInfos(); }
-
-	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-		let svg = this.getSvg (obj);
-		this.fSVG.innerHTML = svg;
+	setSvg (obj: INScoreObject, content: string) : boolean {
+		this.fSVG.innerHTML = content;
 		let bb = this.fSVG.getBBox();
 		this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+		obj.ready();
 		return true;
+	}
+
+	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+		return this.setSvg(obj, obj.getSVGInfos());
     }
 }
