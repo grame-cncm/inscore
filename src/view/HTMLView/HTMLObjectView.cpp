@@ -52,7 +52,7 @@ HTMLObjectView::HTMLObjectView(int id, HTMLObjectView* parent) :
 void HTMLObjectView::updateView(IObject * object)
 {
 #ifdef EMCC
-	EM_ASM( { JSObjectView.updateObjectView($0, $1);}, getID(), int(object));
+	EM_ASM( { JSObjectView.updateObjectView($0, $1, $3);}, getID(), int(object), false);
 #endif
 }
 
