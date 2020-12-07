@@ -1,22 +1,21 @@
 
 ///<reference path="JSSVGView.ts"/>
-///<reference path="TFileBased.ts"/>
+///<reference path="TFileLoader.ts"/>
+///<reference path="TASyncUpdate.ts"/>
 
 class JSSVGfView extends JSSVGView 
 {
-	fContent = new TFileBased;
-    
+	private fFile = new TFileBased;
+   
     toString() : string			            { return "JSSVGfView"; }
-	getSvg (obj: INScoreObject) : string    { 
-        let svg = this.fContent.get();
-        return svg ? svg : ""; 
-    }
-
-    updateSpecial ( obj: INScoreObject, oid: number)	: boolean {		
-        let address = obj.getOSCAddress();
-        let pending = (): void => { this.refresh (address); };
-		if (this.fContent.getData (obj.getFile(), this.getElement(), pending)) 
-			return super.updateSpecial (obj, oid);
+	
+	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+		TFileLoader.load (this.getElement(), obj.getFile()).then ( (text) => {
+			if (text) {
+				return TASyncUpdate.update (oid, (obj) => this.setSvg(obj, text));
+			}
+		});
 		return false;
-    }
+	}
+
 }

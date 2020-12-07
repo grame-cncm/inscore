@@ -11,7 +11,7 @@ class JSHtmlView extends JSAutoSize {
 
 	toString() : string					{ return "JSHtmlView"; }
 
-	// CSS weight are used as numbers
+	// CSS weight are numbers
 	static fontWeight2Num	( weight: string) : string {
 		switch (weight) {
             case "normal": 		return "400";
@@ -23,12 +23,16 @@ class JSHtmlView extends JSAutoSize {
 		}
 	}
 
-	setFont	(font : OTextInfo) : void {
-    	let elt = this.getElement();
+	updateDimensions(pos: OPosition) {}
+
+	setFont	(font : OTextInfo) : boolean {
+		let elt = this.getElement();
+		let prev = elt.style.fontSize;
         elt.style.fontSize 		= font.size+"px";
         elt.style.fontFamily 	= font.family;
         elt.style.fontStyle 	= font.style;
 		elt.style.fontWeight 	= JSHtmlView.fontWeight2Num(font.weight);
+		return elt.style.fontSize != prev;
     }
 
 	removeEffect(elt: HTMLElement): void { 
@@ -44,14 +48,10 @@ class JSHtmlView extends JSAutoSize {
 		elt.style.textShadow = `${val.color} ${val.xOffset}px ${val.yOffset}px ${val.blur}px`;
 	}
 
-	// don't update text dimensions
-	updateDimensions(pos: OPosition) : void {}
-
 	updateSpecific(obj: INScoreObject)	: void { 
-		this.setFont (obj.getTextInfos());
+		if (this.setFont (obj.getTextInfos()))
+			this.updateSizeSync (obj);
 	}
-
-	getText (infos: OTextInfo) : string { return infos.text; }
 
 	updateEvents(events: OEvents, dest: string): void {
 		super.updateEvents (events, dest);
@@ -62,11 +62,16 @@ class JSHtmlView extends JSAutoSize {
 			this.getElement().style.cursor = "default";
 	}
 
+	setHtml (obj: INScoreObject, content: string) : boolean {
+		this.getElement().innerHTML = content;
+		return this.updateSizeSync(obj);
+	}
+
+	getText (text: string) : string { return text }
+
 	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
 		let infos = obj.getTextInfos();
-		this.getElement().innerHTML  = this.getText(infos);
-		this.setFont (infos);
-		super.updateSpecial (obj, objid );
+		this.setHtml (obj, this.getText(infos.text));
 		return true;
 	}
 }

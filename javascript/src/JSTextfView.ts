@@ -1,23 +1,18 @@
 
 ///<reference path="JSTextView.ts"/>
-///<reference path="TFileBased.ts"/>
+///<reference path="TFileLoader.ts"/>
+///<reference path="TASyncUpdate.ts"/>
 
 class JSTextfView extends JSTextView {
-
-	fContent = new TFileBased;
 
 	toString() : string					{ return "JSTextfView"; }
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-        let address = obj.getOSCAddress();
-        let pending = (): void => { this.refresh (address); };
-		if (this.fContent.getData (obj.getFile(), this.getElement(), pending)) 
-			return super.updateSpecial (obj, oid);
+			TFileLoader.load (this.getElement(), obj.getFile()).then ( (text) => {
+			if (text) {
+				return TASyncUpdate.update (oid, (obj) => { this.setHtml(obj, this.getText(text)); return true;} );
+			}	
+		});
 		return false;
-	}
-
-	getText (infos: OTextInfo) : string {
-		let text = this.fContent.get();
-		return text ? text.replace(/\r?\n'/g, "<br />") : "";
 	}
 }

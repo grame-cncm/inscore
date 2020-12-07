@@ -1,23 +1,18 @@
 
 ///<reference path="JSHtmlView.ts"/>
-///<reference path="TFileBased.ts"/>
+///<reference path="TFileLoader.ts"/>
+///<reference path="TASyncUpdate.ts"/>
 
 class JSHtmlfView extends JSHtmlView {
-
-	fContent = new TFileBased;
 
 	toString() : string					{ return "JSHtmlfView"; }
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-        let address = obj.getOSCAddress();
-        let pending = (): void => { inscore.postMessageStr (address, "refresh"); };
-		if (this.fContent.getData (obj.getFile(), this.getElement(), pending)) 
-			return super.updateSpecial (obj, oid);
+		TFileLoader.load (this.getElement(), obj.getFile()).then ( (text) => {
+			if (text) {
+				return TASyncUpdate.update (oid, (obj) => { this.setHtml(obj, text); return true;} );
+			}
+		});
 		return false;
 	}
-
-	getText (infos: OTextInfo) : string {
-		return this.fContent.get();
-	}
-
 }

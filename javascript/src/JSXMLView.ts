@@ -15,15 +15,23 @@ class JSXMLView extends JSGMNView {
 
 	toString() : string		    	{ return "JSXMLView"; }
 
-	getXml (xml: OScore) : string 	{ return xml.code; }
+	checkxml() { 
+		if (this.fXMLLib) return true;
+		console.log ("libMusicXML is not available");
+		return false;
+	}
+	
+	xml2gmn (obj: INScoreObject, content: string, page: number) : boolean
+	{
+		let gmn = this.fXMLLib.string2guido (content, true);
+		return gmn.length ? this.gmn2svg (obj, gmn, page) : false;
+	}
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-		if (this.fXMLLib) {
+		if (this.checkxml()) {
 			let xml = obj.getXMLInfos();
-			let content = this.fXMLLib.string2guido (this.getXml(xml), true);
-			return content.length ? this.gmn2svg (obj, content, xml.page) : false;
+			return this.xml2gmn (obj, xml.code, xml.page);
 		}
-		else console.log ("libMusicXML is not available");
 		return false;
     }
 }

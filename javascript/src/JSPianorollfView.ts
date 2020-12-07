@@ -1,23 +1,20 @@
 
 ///<reference path="JSPianoRollView.ts"/>
-///<reference path="TFileBased.ts"/>
+///<reference path="TFileLoader.ts"/>
+///<reference path="TASyncUpdate.ts"/>
 
 class JSPianoRollfView extends JSPianoRollView {
-
-	fContent = new TFileBased;
 
 	toString() : string		    { return "JSPianoRollfView"; }
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-        let address = obj.getOSCAddress();
-        let pending = (): void => { this.refresh (address); };
-		if (this.fContent.getData (obj.getFile(), this.getElement(), pending)) 
-			return super.updateSpecial (obj, oid);
+		if (!this.checkGuido()) return false;
+		let proll = obj.getPianorollInfos();
+		TFileLoader.load (this.getElement(), obj.getFile()).then ( (text) => {
+			if (text) {
+				return TASyncUpdate.update (oid, (obj) => this.proll2svg(obj, proll, text));
+			}
+		});
 		return false;
-	}
-
-	getGmn (proll: OPianorollInfos) : string {
-		let gmn = this.fContent.get();
-		return (gmn) ? gmn : "";
 	}
 }

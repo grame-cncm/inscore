@@ -11,11 +11,8 @@ class JSPianoRollView extends JSGMNView {
 
 	toString() : string		    { return "JSPianoRollView"; }
 
-	date2string (date: ODate) : string 			{ return date.num + "/" + date.denum; }
-	getGmn (proll: OPianorollInfos) : string 	{ return proll.code; }
-
-	proll2svg(obj: INScoreObject, proll: OPianorollInfos)	: boolean {
-		let ar = this.parse (this.getGmn(proll));
+	proll2svg(obj: INScoreObject, proll: OPianorollInfos, gmn: string)	: boolean {
+		let ar = this.parse (gmn); //(this.getGmn(proll));
 		if (ar) {
 			let guido = this.guido();
 			let pr = guido.ar2PianoRoll (PianoRollType.kSimplePianoRoll, ar);
@@ -31,21 +28,15 @@ class JSPianoRollView extends JSGMNView {
 			this.fSVG.innerHTML = svg;
 			this.guido().destroyPianoRoll(pr);
 			this.guido().freeAR(ar);
+			obj.ready();
 			return true;
 		}
 		return false;
 	}
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+		if (!this.checkGuido()) return false;
 		let proll = obj.getPianorollInfos();
-		if (this.guido())  {
-			if (this.proll2svg (obj, proll)) {
-				let bb = this.fSVG.getBBox();
-				this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
-				return true;
-			}
-		}
-		else console.log ("Guido engine is not available");
-		return false;
+		return this.proll2svg (obj, proll, proll.code);
     }
 }

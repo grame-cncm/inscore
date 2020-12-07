@@ -1,23 +1,20 @@
 
 ///<reference path="JSXMLView.ts"/>
-///<reference path="TFileBased.ts"/>
+///<reference path="TFileLoader.ts"/>
+///<reference path="TASyncUpdate.ts"/>
 
 class JSXMLfView extends JSXMLView {
-
-	fContent = new TFileBased;
 
 	toString() : string		    { return "JSXMLfView"; }
 
 	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-        let address = obj.getOSCAddress();
-        let pending = (): void => { this.refresh (address); };
-		if (this.fContent.getData (obj.getFile(), this.getElement(), pending)) 
-			return super.updateSpecial (obj, oid);
+		if (!this.checkxml()) return false;
+		let xml = obj.getXMLInfos();
+		TFileLoader.load (this.getElement(), obj.getFile()).then ( (text) => {
+			if (text) {
+				return TASyncUpdate.update (oid, (obj) => this.xml2gmn(obj, text, xml.page));
+			}
+		});
 		return false;
-	}
-
-	getXml (unused: OScore) : string {
-		let xml = this.fContent.get(); 
-		return xml ? xml : ""; 
 	}
 }

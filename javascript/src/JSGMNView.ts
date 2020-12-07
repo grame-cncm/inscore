@@ -43,7 +43,6 @@ class JSGMNView extends JSSvgBase {
 	toString() : string		    { return "JSGMNView"; }
 	updateSVGDimensions(w: number, h: number) : void { }
 	guido() : GuidoEngine		{ return this.fGuido; }
-	ready() : boolean			{ return this.fGR != null; }
 	delete() : void	{ 
 		if (this.fGR) {
 			this.fGuido.freeGR(this.fGR);
@@ -65,6 +64,7 @@ class JSGMNView extends JSSvgBase {
 	parentScale() : number { return this.getParent().parentScale() * this.fScalingFactor; }
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
+		let ret = false;
 		let ar = this.string2Ar (obj, gmn);
 		if (ar) {
 			let gr = this.fGuido.ar2gr (ar);
@@ -80,28 +80,28 @@ class JSGMNView extends JSSvgBase {
 				this.fGuido.freeGR(this.fGR);
 				this.fGuido.freeAR(this.fAR);
 			}
-			else {
-				let address = obj.getOSCAddress();
-				this.refresh (address);
-			}
 			this.fGR = gr;
 			this.fAR = ar;
 			this.fPage = page;
-			return true;
+			ret = true;
 		}
 		else console.error (obj.getOSCAddress() + " failed to parse gmn code.")
-		return false;
+		obj.ready();
+		return ret;
 	}
 
-	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
-		let guido = obj.getGuidoInfos();
+	checkGuido() : boolean {
 		if (!this.fGuido) {
 			console.log ("Guido engine is not available");
 			return false;
 		}
-		if (this.gmn2svg (obj, guido.code, guido.page) ) 
-			return super.updateSpecial(obj, oid);
-		return false;
+		return true;
+	}
+	
+	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+		if (!this.checkGuido()) return false;
+		let guido = obj.getGuidoInfos();
+		return this.gmn2svg (obj, guido.code, guido.page);
     }
 	
 	// this method is called by the model to update the map synchronously

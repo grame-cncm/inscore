@@ -5,13 +5,14 @@ class JSTextView extends JSHtmlView {
 
     constructor(parent: JSObjectView) {
 		super(parent); 
-        this.getElement().className = "inscore-txt";
+		this.getElement().className = "inscore-txt";
+		this.getElement().style.whiteSpace = "nowrap";
     }
 	clone (parent: JSObjectView) : JSObjectView { return new JSTextView(parent); }
 
 	toString() : string					{ return "JSTextView"; }
 
-	getText (infos: OTextInfo) : string {
-		return infos.text.replace(/\r?\n'/g, "<br />");
+	getText (text: string) : string {
+		return text.replace(/\r?\n/g, "<br />");   // transforms new lines in <br />
 	}
 }
