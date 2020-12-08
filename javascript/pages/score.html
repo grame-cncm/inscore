@@ -26,7 +26,7 @@
 
 	/ITL/scene/score set gmnf  "/gmn/mozart.gmn.txt";
 	/ITL/scene/score scale 0.25;
-	/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date');
+	/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date:system');
 	
 	w = 0.1;
 	/ITL/scene/cursor1 set ellipse $w $w;
@@ -46,6 +46,7 @@
 	/ITL/scene/score map staff3;
 	/ITL/scene/score map staff4;
 	/ITL/scene/score map staff5;
+	/ITL/scene/score map system;
 	
 	/ITL/scene/sync cursor1 "score:staff1";
 	/ITL/scene/sync cursor2 "score:staff2";
