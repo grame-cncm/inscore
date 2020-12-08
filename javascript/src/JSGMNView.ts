@@ -124,10 +124,13 @@ class JSGMNView extends JSSvgBase {
 			return this.fGuido.getPageMap(this.fGR, this.fPage, width, height );
 		if (mapname == "system")
 			return this.fGuido.getSystemMap(this.fGR, this.fPage, width, height );
-		let m = this.scanMap (mapname);
+		if (mapname == "") 
+			return this.fGuido.getStaffMap (this.fGR, this.fPage, width, height, 1);
+
+			let m = this.scanMap (mapname);
 		if (m.name == "staff")
 			return this.fGuido.getStaffMap (this.fGR, this.fPage, width, height, m.index);
-		else if (m.name == "voice") 
+		if (m.name == "voice") 
 			return this.fGuido.getVoiceMap (this.fGR, this.fPage, width, height, m.index);
 		return null;
 	}
