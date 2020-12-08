@@ -232,25 +232,37 @@ abstract class JSObjectView {
 		inscore.postMessage (dest, msg);
 	}
 
+	private defaultEvent (event : MouseEvent) { event.preventDefault(); event.stopImmediatePropagation(); };
+	private initEvents (dest: string) { 
+		this.updateEvents ( {
+			watchMouseEnter : false,
+			watchMouseLeave : false,
+			watchMouseMove   : false,
+			watchMouseDown   : false,
+			watchMouseUp     : false,
+			watchMouseDClick : false
+		}, dest);
+	};
+
 	updateEvents(events: OEvents, dest: string): void {
 		let div = this.getElement();
 		if (events.watchMouseEnter) div.onmouseenter = (event : MouseEvent) : void => { this.notify(event, kMouseEnterID, dest); };
-		else div.onmouseenter = null;
+		else div.onmouseenter = (event : MouseEvent) : void => this.defaultEvent(event);
 
 		if (events.watchMouseLeave) div.onmouseleave = (event : MouseEvent) : void => { this.notify(event, kMouseLeaveID, dest); };
-		else div.onmouseleave = null;
+		else div.onmouseleave = (event : MouseEvent) : void => this.defaultEvent(event);
 
 		if (events.watchMouseDown) 	div.onmousedown = (event : MouseEvent) : void => { this.notify(event, kMouseDownID, dest); };
-		else div.onmousedown = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
+		else div.onmousedown = (event : MouseEvent) : void => this.defaultEvent(event);
 
 		if (events.watchMouseUp) 	div.onmouseup = (event : MouseEvent) : void => { this.notify(event, kMouseUpID, dest); };
-		else div.onmouseup  = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
+		else div.onmouseup  = (event : MouseEvent) : void => this.defaultEvent(event);
 
 		if (events.watchMouseMove) 	div.onmousemove = (event : MouseEvent) : void => { this.notify(event, kMouseMoveID, dest); };
-		else div.onmousemove  = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
+		else div.onmousemove  = (event : MouseEvent) : void => this.defaultEvent(event);
 
 		if (events.watchMouseDClick) div.ondblclick = (event : MouseEvent) : void => { this.notify(event, kMouseDClickID, dest); };
-		else div.ondblclick = (event : MouseEvent) : void => { event.preventDefault(); event.stopImmediatePropagation(); };
+		else div.ondblclick = (event : MouseEvent) : void => this.defaultEvent(event);
 	}
 
 	//------------------------------------------------------------------------------------
