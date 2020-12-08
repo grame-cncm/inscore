@@ -1,0 +1,56 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libmusicxml.js"></script>
+	<script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="inscore box" id="scene">
+
+/ITL/scene/* del;
+
+/ITL/scene/html set htmlf "/text/lorem.html";
+/ITL/scene/html x 0.2;
+/ITL/scene/html y 0.2;
+
+<!-- 
+	/ITL/scene/title set txt "La montagne Sainte-Victoire";
+	/ITL/scene/title y -0.8;
+/ITL/scene/title fontSize 48;
+/ITL/scene/title x 0.2;
+
+/ITL/scene/html set htmlf "/text/lorem.html";
+/ITL/scene/html set txt "Hello world";
+/ITL/scene/html set txtf "/text/lorem.txt";
+/ITL/scene/html x 0;
+/ITL/scene/html set html "<h1>Hello world</h1><p>bla bla bla</p>";
+/ITL/scene/html scale 0.7;
+/ITL/scene/html x 0.2;
+/ITL/scene/html y 0.2;
+/ITL/scene/title  get width height;
+
+ -->
+
+</div>
+
+</body>
+
+</html>

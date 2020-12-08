@@ -1,0 +1,57 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 100%; height: 80%; border-radius: 15px; font-size: 1px; }
+	</style>
+</head>
+
+<body>
+
+<h1>Clicks debug</h1>
+<div class="inscore box" id="scene">
+
+	/ITL/scene/* del;
+	
+	/ITL/scene/rect set rect 0.8 0.8;
+	/ITL/scene/rect color grey;
+	msg = (
+		/ITL/log write x "$x" "$absx" date "$date%f",
+		/ITL/scene/b date "$date"
+	);
+	/ITL/scene/rect watch mouseDown $msg;
+	/ITL/scene/rect watch mouseMove $msg;
+
+	/ITL/scene/b set ellipse 0.05 0.05;
+	/ITL/scene/b color red;
+	/ITL/scene/b watch mouseDown;
+	/ITL/scene/b watch mouseMove;
+	/ITL/scene/sync b rect;
+
+
+__END__
+	/ITL/scene/rect xorigin -1;
+	/ITL/scene/rect x -0.2;
+	/ITL/scene/rect yorigin -1;
+	/ITL/scene/rect xorigin -1.5;
+	/ITL/scene/rect xorigin 0;
+	/ITL/scene/rect xorigin 1;
+	/ITL/scene/rect yorigin 1;
+	/ITL/scene/rect get width height;
+	/ITL/scene/rect get map;
+	
+	/ITL/log level 2;
+				
+</div>
+
+</body>
+
+</html>
