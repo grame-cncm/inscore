@@ -35,9 +35,12 @@ namespace inscore
 static const char * kOSNameVar	= "OSName";
 static const char * kOSIDVar	= "OSId";
 
-enum { kAndroid=1, kiOS, kLinux, kMacOS, kWindows };
+enum { kAndroid=1, kiOS, kLinux, kMacOS, kWindows, kWeb };
 
-#ifdef MACOS
+#ifdef EMCC
+const char *	kOSName	= "Web";
+const int		kOSID	= kWeb;
+#elif MACOS
 const char *	kOSName	= "MacOS";
 const int		kOSID	= kMacOS;
 #elif defined WINDOWS
