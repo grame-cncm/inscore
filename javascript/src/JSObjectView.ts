@@ -85,18 +85,8 @@ abstract class JSObjectView {
 			return Math.min(div.clientWidth, div.offsetHeight) / Math.min(div.parentElement.offsetWidth, div.parentElement.offsetHeight);
 		return 1;
 	}
-
 	getSyncRatio()	: number {  return this.getParent().parentSyncRatio(); }
 
-	// refresh (address: string)	: void { 
-	// 	inscore.delayMessage (address, inscore.newMessageM ("refresh"));
-	// }
-
-	// ready (oid: number)	: void { 
-	// 	let obj = INScore.objects().create(oid);
-	// 	obj.ready();
-	// 	INScore.objects().del (obj);
-	// }
 
 	//---------------------------------------------------------------------
 	// update methods
@@ -303,16 +293,15 @@ abstract class JSObjectView {
 	// called to update object size on model side
 	updateObjectSize (objid : number, w: number, h: number) : void {
 		let obj = INScore.objects().create(objid);
-		let div = this.getElement();
-		obj.updateWidth  (this.scene2RelativeWidth  (w)); 
-		obj.updateHeight (this.scene2RelativeHeight (h)); 
-		obj.updateViewBoundingRect (div.clientLeft, div.clientTop, w, h),
+		this.updateObjectSizeSync (obj, w, h);
 		INScore.objects().del (obj);		
 	}
 
 	updateObjectSizeSync (obj: INScoreObject, w: number, h: number) : void {
 		obj.updateWidth  (this.scene2RelativeWidth  (w)); 
 		obj.updateHeight (this.scene2RelativeHeight (h)); 
+		let div = this.getElement();
+		obj.updateViewBoundingRect (div.clientLeft, div.clientTop, w, h);
 	}
 
 	//---------------------------------------------------------------------
