@@ -42,7 +42,11 @@ class TFileLoader {
 		div.appendChild (obj);
 		return new Promise( function (resolve, failure) {
 			obj.addEventListener("error", () => { console.log ("can't open file " + file); failure(null); });
-			obj.addEventListener("load",  () => { let content = TFileLoader.getContent (obj); resolve(content); });
+			obj.addEventListener("load",  () => { 
+				let content = TFileLoader.getContent (obj); 
+				if (content) resolve(content); 
+				else failure (null);
+			});
 		});
 	}
 }
