@@ -23,6 +23,13 @@ class JSImageView extends JSAutoSize
     }
 
 	updateDimensions(pos: OPosition) : void {}  // don't update image dimensions (use scale)
+    // image scale is relative to the parent, by default fill the parent element (scale 1) 
+    getScale(pos: OPosition) : number {  
+		let elt = this.getElement().parentElement;
+        let rw = this.fImage.clientWidth / elt.clientWidth;
+        let rh = this.fImage.clientHeight / elt.clientHeight;
+        return pos.scale / Math.max(rw, rh);
+    }
 
 	toString() : string			{ return "JSImageView"; }
 	getSyncRatio()	: number    { return 1; }   // no scaling for images, appearance is already preserved 
