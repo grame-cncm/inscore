@@ -76,7 +76,7 @@ abstract class JSObjectView {
 		let pscale = parent ? parent.parentScale() : 1;
 		return pscale;
 	}
-	getScale(pos: OPosition) : number {  return pos.scale * this.parentScale(); }
+	getScale(scale: number) : number {  return scale * this.parentScale(); }
 	
 	// the ratio applied in synchronisation mode to preserve the slave proportions
 	parentSyncRatio()	: number { 
@@ -139,7 +139,7 @@ abstract class JSObjectView {
 
 	getPos(pos: OPosition) : Point {
 		let ppos = this.getParent().getOrigin();
-		let scale = this.getScale(pos);
+		let scale = this.getScale(pos.scale);
 		let div = this.getElement();
 		let x = ppos.x + this.relative2SceneWidth (pos.x) - (div.offsetWidth * (1 + pos.xorigin * scale) / 2 );
 		let y = ppos.y + this.relative2SceneHeight(pos.y) - (div.offsetHeight * (1 + pos.yorigin * scale) / 2 );
@@ -165,7 +165,7 @@ abstract class JSObjectView {
 
 	getTransform(pos: OPosition) : string {
 		let transform = "";
-		let scale = this.getScale(pos);
+		let scale = this.getScale(pos.scale);
 		if (scale != 1)  transform += `scale(${scale},${scale}) `;
 		if (pos.xangle) transform += `rotateX(${pos.xangle}deg) `;
 		if (pos.yangle) transform += `rotateY(${pos.yangle}deg) `;
