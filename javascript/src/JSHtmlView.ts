@@ -7,7 +7,11 @@ class JSHtmlView extends JSAutoSize {
 		super( document.createElement('div'), parent); 
 		this.getElement().className = "inscore-html";
     }
-	clone (parent: JSObjectView) : JSObjectView { return new JSHtmlView(parent); }
+	clone (parent: JSObjectView) : JSObjectView { 
+		let obj = new JSHtmlView(parent); 
+		obj.getElement().innerHTML = this.getElement().innerHTML;
+		return obj;
+	}
 
 	toString() : string					{ return "JSHtmlView"; }
 
@@ -49,8 +53,9 @@ class JSHtmlView extends JSAutoSize {
 	}
 
 	updateSpecific(obj: INScoreObject)	: void { 
-		if (this.setFont (obj.getTextInfos()))
+		if (this.setFont (obj.getTextInfos())) {
 			this.updateSizeSync (obj);
+		}
 	}
 
 	updateEvents(events: OEvents, dest: string): void {

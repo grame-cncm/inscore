@@ -8,7 +8,11 @@ class JSTextView extends JSHtmlView {
 		this.getElement().className = "inscore-txt";
 		this.getElement().style.whiteSpace = "nowrap";
     }
-	clone (parent: JSObjectView) : JSObjectView { return new JSTextView(parent); }
+	clone (parent: JSObjectView) : JSObjectView { 
+		let obj = new JSTextView(parent);
+		obj.getElement().innerHTML = this.getElement().innerHTML;
+		return obj;
+	}
 
 	toString() : string					{ return "JSTextView"; }
 
