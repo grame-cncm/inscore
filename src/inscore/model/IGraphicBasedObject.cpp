@@ -78,6 +78,7 @@ void IGraphicBasedObject::setBoundingRect(long x, long y, long w, long h)
 	fBoundingRect.setY(y);
 	fBoundingRect.setWidth(w);
 	fBoundingRect.setHeight(h);
+	updateLocalMapping();
 }
 
 //------------------------------------------------------------------------------------------------------------
