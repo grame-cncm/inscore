@@ -139,9 +139,11 @@ bool IObjectAdapter::_getSyncPosition (IObject* obj, const IObject* master, JSPo
 	for (auto sync: obj->getMasters()) {
 		const SIObject m = sync->getMaster();
 		if (m == master) {
-			TFloatPoint p = getSyncPosition (obj, sync);
+			float vstretch;
+			TFloatPoint p = getSyncPosition (obj, sync, vstretch);
 			pos.x 		= p.fX;
 			pos.y 		= p.fY;
+			if (vstretch) pos.height = vstretch;
 			return sync->modified() || ((IDate*)(obj))->modified();
 		}
 	}

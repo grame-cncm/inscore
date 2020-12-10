@@ -30,6 +30,6 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master);
+TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master, float& vstretch);
 
 }

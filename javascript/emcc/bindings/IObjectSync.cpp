@@ -78,22 +78,26 @@ static TFloatPoint date2MasterPosition (const SMaster& master, const IObject* sl
 }
 
 //--------------------------------------------------------------------------
-TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master)
+TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master, float& vstretch)
 {
 	TFloatPoint location;
 
 	libmapping::rational date = obj->getDate ();
 	const SIObject& masterobj = master->getMaster();
 	Master::VAlignType align = master->getAlignment();
-//	Master::StretchType	stretch = master->getStretch(); // ignored
 	Master::SyncType mode = master->getMode();
 	float dy = master->getDy();
 
+	vstretch = 0;
 	if (mode == Master::kSyncAbsolute) date += masterobj->getDate();
 	if (align == Master::kSyncFrame) {
 		location = date2FramePosition (masterobj, date);
 	}
 	else {
+		if (master->getStretch() == Master::kStretchV) {
+			vstretch = 2; //masterobj->getHeight();
+//			cout << "getSyncPosition vstretch: " << vstretch << endl;
+		}
 		location = date2MasterPosition (master, obj, date);
 	}
 
