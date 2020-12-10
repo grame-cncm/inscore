@@ -12,7 +12,13 @@ class JSSVGView extends JSSvgBase {
 	toString() : string		    { return "JSSVGView"; }
 
 	getSVGTarget() : SVGShape   { return this.fSVG; }
-	updateSVGDimensions(w: number, h: number) : void { }
+	updateSVGDimensions(w: number, h: number) : void { 
+		if (!this.fSVG.viewBox.baseVal.width) {
+			// set viewBox here dimensions are incorrect at content setting 
+			this.fSVG.setAttribute ("viewBox", 0 + " " + 0 + " " + w + " " + h);
+		}
+	}
+
 	updatePenControl(pen: OPen) : void {	this.updateRegularPen (pen); }
 
 	setSvg (obj: INScoreObject, content: string) : boolean {
