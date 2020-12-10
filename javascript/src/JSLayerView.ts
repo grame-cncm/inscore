@@ -9,5 +9,6 @@ class JSLayerView extends JSObjectView {
     }
     clone (parent: JSObjectView) : JSObjectView { return new JSLayerView(parent); }
 
-	toString() : string					{ return "JSLayerView"; }
+    toString() : string			{ return "JSLayerView"; }
+    parentScale() : number      { return 1; }
 }
