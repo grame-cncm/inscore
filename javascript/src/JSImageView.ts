@@ -4,6 +4,7 @@
 class JSImageView extends JSAutoSize 
 {
     fImage: HTMLImageElement;
+    fScale: number;
 
     constructor(parent: JSObjectView) {
 		let div = document.createElement('div');
@@ -13,6 +14,7 @@ class JSImageView extends JSAutoSize
         div.appendChild (img);
         super(div, parent); 
         this.fImage = img;
+        this.fScale = 1;
         this.getElement().className = "inscore-img";
     }
 
@@ -24,11 +26,12 @@ class JSImageView extends JSAutoSize
 
 	updateDimensions(pos: OPosition) : void {}  // don't update image dimensions (use scale)
     // image scale is relative to the parent, by default fill the parent element (scale 1) 
-    getScale(pos: OPosition) : number {  
+    getScale(scale: number) : number {  
 		let elt = this.getElement().parentElement;
         let rw = this.fImage.clientWidth / elt.clientWidth;
         let rh = this.fImage.clientHeight / elt.clientHeight;
-        return pos.scale / Math.max(rw, rh);
+        this.fScale = scale / Math.max(rw, rh);
+        return this.fScale;
     }
 
 	toString() : string			{ return "JSImageView"; }
