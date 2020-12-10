@@ -381,7 +381,7 @@ void IObject::newData (bool state) {
 //--------------------------------------------------------------------------
 void IObject::ready()
 {
-	std::cout << "IObject::ready " << getOSCAddress() << " ready." << std::endl;
+//	std::cout << "IObject::ready " << getOSCAddress() << " ready." << std::endl;
 	IPosition::modified();
 	setModified();
 	fPending = 0;
