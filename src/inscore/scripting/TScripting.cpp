@@ -42,6 +42,10 @@
 using namespace std;
 extern inscore::TScripting* gScripter;
 
+#ifdef EMCC
+#include <emscripten.h>
+#endif
+
 
 namespace inscore
 {
@@ -170,6 +174,15 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 		}
 	}
 	else ITLErr << "javascript is not available!" << ITLEndl;
+	return 0;
+}
+
+#elif defined(EMCC)
+bool TScripting::checkJavascript () const						{ return true; }
+SIMessageList TScripting::jsEval (const char* script, int lineno)
+{
+	int ret = EM_ASM_INT( { TJavascript.run(Module.UTF8ToString($0)); }, script);
+	if (ret == 0) ITLErr << "failed to run '" << script << "'" << ITLEndl;
 	return 0;
 }
 #else
