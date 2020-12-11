@@ -36,8 +36,8 @@ rversion = 0.96;
 /ITL/scene/title y $b12;
 /ITL/scene/title scale 3.;
 
-<?javascript list ("/ITL/scene/"+r, 15, shorthue); ?>
-<?javascript list ("/ITL/scene/rect"+r, 15, longhue); ?>
+<?javascript list ("/ITL/scene/r_", 15, shorthue); ?>
+<?javascript list ("/ITL/scene/rect_", 15, longhue); ?>
 
 /ITL/scene/rect* y 0.15 ;
 /ITL/scene color 240 240 240;
