@@ -4,13 +4,18 @@
 class TJavascript {
 
 	static run (script: string ) : number {
-		let out = eval (script);
+		let out = window.eval (script);
 		if (out) {
 			if (typeof out === 'string') {
 				inscore.loadInscore (out);
 			}
+			else if (Array.isArray(out)) {
+				let outsum = "";
+				out.forEach ( (value) => outsum += value);
+				inscore.loadInscore (outsum);
+			}
 			else {
-				console.log ("Unexpected value returned by " + script);
+				console.log ("Unexpected value returned by " + script + ": " + out);
 				return 0;
 			}
 		}
