@@ -1,0 +1,43 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 100%; height: 80%; border-radius: 15px; font-size: 1px; }
+	</style>
+</head>
+
+<body>
+
+<h1>La montagne Sainte-Victoire (2020)</h1>
+<h2>Jonathan Bell</h2>
+<div class="inscore box" id="scene">
+
+	/ITL/scene/* del;
+
+	/ITL/scene/rect set rect 1 1;
+	/ITL/scene/cursor set rect 0.05 0.5;
+	/ITL/scene/cursor xorigin -0.5;
+	/ITL/scene/cursor color red;
+	/ITL/scene/sync cursor rect ;
+	/ITL/scene/sync cursor rect v ;
+	
+	/ITL/scene/text set txt "Hello World!";
+	/ITL/scene/text color blue;
+	/ITL/scene/text xorigin -0.5;
+	/ITL/scene/sync text rect;
+	
+	/ITL/scene/cursor date 0.25;
+		
+</div>
+
+</body>
+
+</html>
