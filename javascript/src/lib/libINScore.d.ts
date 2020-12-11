@@ -67,6 +67,8 @@ interface FaustParamValuesVector 	{ size(): number; get(i: number) : FaustParamV
 interface FaustKeyValue 	{ type : number; chan: number; pitch: number; vel: number; }
 interface FaustKeyValuesVector 	{ size(): number; get(i: number) : FaustKeyValue; }
 
+interface OSceneInfo { fullscreen: boolean; }
+
 interface OLineInfo {
 	x1: number;
 	y1: number;
@@ -202,6 +204,7 @@ interface INScoreObject {
 	getPianorollInfos():   OPianorollInfos;
 	getXMLInfos():     OScore;
 	getMediaInfos():   OMedia;
+	getSceneInfos():   OSceneInfo;
 	getSVGInfos():     string;
 	getFaustInfos(getvalues: boolean, getcode: boolean):   OFaustInfos;
 	getMaps():     	   RectVector;

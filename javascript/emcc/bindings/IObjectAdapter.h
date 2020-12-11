@@ -176,6 +176,10 @@ struct JSGMNStreamInfos {
 	bool		reset = false;
 };
 
+struct JSSceneInfos {
+	bool fullscreen = false;
+};
+
 class IText;
 class ILine;
 class ICurve;
@@ -227,6 +231,7 @@ class inscore_export IObjectAdapter
 
 		std::vector<int> getMasters () const;
 		JSUpdateInfos getUpdateInfos (int masterId) const;
+		JSSceneInfos  getSceneInfos () const;
 		JSTextInfos   getTextInfos () const;
 		JSLineInfos   getLineInfos () const;
 		std::string   getFile () const;			// for file based object (e.g. image)

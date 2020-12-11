@@ -84,6 +84,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getPianorollInfos", &IObjectAdapter::getPianorollInfos)
 		.function("getXMLInfos",    &IObjectAdapter::getXMLInfos)
 		.function("getMediaInfos",  &IObjectAdapter::getMediaInfos)
+		.function("getSceneInfos",  &IObjectAdapter::getSceneInfos)
 		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos)
 		.function("getFaustInfos",  &IObjectAdapter::getFaustInfos)
 		.function("getMaps",    	&IObjectAdapter::getMaps);

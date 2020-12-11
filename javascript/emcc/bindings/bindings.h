@@ -168,6 +168,9 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("rate", &JSMediaInfos::rate)
 		.field("mdate",  	&JSMediaInfos::mdate);
 	
+	value_object<JSSceneInfos>("JSSceneInfos")
+		.field("fullscreen",  	&JSSceneInfos::fullscreen);
+	
 	value_object<JSGMNStreamInfos>("JSGMNStreamInfos")
 		.field("stream",  	&JSGMNStreamInfos::stream)
 		.field("reset",  	&JSGMNStreamInfos::reset);

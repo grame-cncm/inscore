@@ -2,10 +2,20 @@
 ///<reference path="JSObjectView.ts"/>
 ///<reference path="navigator.ts"/>
 
+interface fsElement extends HTMLElement {
+	webkitRequestFullscreen() : void;
+	msRequestFullscreen() : void;
+}
+interface fsDocument extends Document {
+	webkitExitFullscreen() : void;
+	msExitFullscreen() : void;
+}
+
 //----------------------------------------------------------------------------
 class JSSceneView extends JSObjectView {
 	
 	fAbsolutePos: boolean;
+	fFullScreen: boolean;
 
     constructor(id: string, objid: number) {
 		let div = document.getElementById(id);
@@ -17,6 +27,7 @@ class JSSceneView extends JSObjectView {
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)
 		div.style.filter = `blur(0px)`;
+		this.fFullScreen = false;
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
 	toString() : string					{ return "JSSceneView"; }
@@ -42,6 +53,41 @@ class JSSceneView extends JSObjectView {
 
 	parentWidth() : number			{ return this.getElement().parentElement.offsetWidth; }
 	parentHeight() : number			{ return this.getElement().parentElement.offsetHeight; }
+
+	static closeFullscreen() {
+		let elt = document as fsDocument;
+		if (elt.exitFullscreen) {
+			elt.exitFullscreen();
+		} else if (elt.webkitExitFullscreen) { /* Safari */
+			elt.webkitExitFullscreen();
+		} else if (elt.msExitFullscreen) { /* IE11 */
+			elt.msExitFullscreen();
+		}
+	}
+
+	static enterFullscreen(elt: fsElement) {
+		if (elt.requestFullscreen) {
+			elt.requestFullscreen();
+		} else if (elt.webkitRequestFullscreen) { /* Safari */
+			elt.webkitRequestFullscreen();
+		} else if (elt.msRequestFullscreen) { /* IE11 */
+			elt.msRequestFullscreen();
+		}
+	  }
+
+	updateSpecific(obj: INScoreObject)	: void { 
+		let fullscreen = obj.getSceneInfos().fullscreen;
+		// there is an issue with the fullscreen mode
+		// with standard use, the model is not informed of the fullscreen mode exit
+		// if (fullscreen && !this.fFullScreen) {
+		// 	this.enterFullscreen(this.getElement() as fsElement);
+		// 	this.fFullScreen = true;
+		// }
+		// else if (!fullscreen && this.fFullScreen) {
+		// 	this.closeFullscreen();
+		// 	this.fFullScreen = false;
+		// }
+	}
 
 	updatePosition(pos: OPosition, elt: HTMLElement) : void {
 		if (this.fAbsolutePos) {

@@ -25,27 +25,26 @@
 #include <algorithm>
 #include <sstream>
 
-#include "IObjectAdapter.h"
-#include "IObjectSync.h"
-#include "IText.h"
-#include "TFile.h"
+#include "HTMLObjectView.h"
 #include "IArc.h"
 #include "ICurve.h"
-#include "IPolygon.h"
 #include "IEffect.h"
 #include "IFaustProcessor.h"
+#include "IGraphicBasedObject.h"
 #include "IGuidoCode.h"
 #include "IGuidoPianoRoll.h"
 #include "IGuidoStream.h"
-#include "IGraphicBasedObject.h"
 #include "IMedia.h"
-
-
 #include "IMusicXMLCode.h"
+#include "IObjectAdapter.h"
+#include "IObjectSync.h"
+#include "IPolygon.h"
 #include "ISVG.h"
+#include "IScene.h"
 #include "ISync.h"
-#include "HTMLObjectView.h"
+#include "IText.h"
 #include "MapBuilder.h"
+#include "TFile.h"
 
 
 using namespace std;
@@ -615,6 +614,18 @@ std::vector<JSRect> IObjectAdapter::getMaps () const
 		}
 	}
 	return out;
+}
+
+//--------------------------------------------------------------------------
+JSSceneInfos  IObjectAdapter::getSceneInfos () const
+{
+	JSSceneInfos infos;
+	const IScene* scene = dynamic_cast<const IScene*>((IObject*)fObject);
+	if (scene)
+		infos.fullscreen = scene->getFullScreen();
+	else
+		cerr << "IObjectAdapter::getCurveInfos: unexpected null object!" << endl;
+	return infos;
 }
 
 //--------------------------------------------------------------------------
