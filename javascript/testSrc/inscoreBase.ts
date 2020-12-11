@@ -182,10 +182,10 @@ class INScoreBase {
 			case kSvgType:
 			case kHtmlType:
 			case kTextType:
-				this.loadTextFile (file, type, dst);
+			case kFaustType:
+					this.loadTextFile (file, type, dst);
 				break;
 
-			case kFaustType:
 			case kVerovioType:
 			case kImgType:
 			case kVideoType:
