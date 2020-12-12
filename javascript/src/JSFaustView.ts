@@ -128,7 +128,7 @@ class JSFaustView extends JSSvgBase {
             this.fAudioNode = node;
             this.fVoices = voices;
             let obj = INScore.objects().create(oid);
-            if (!node) {``
+            if (!node) {
                 let address = obj.getOSCAddress();
                 this.error (address, "Cannot compile " + address + ".");
                 return JSFaustView.kFailed;
