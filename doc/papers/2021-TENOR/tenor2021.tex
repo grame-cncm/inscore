@@ -1,0 +1,203 @@
+% -----------------------------------------------
+% Template for SMAC SMC 2013
+% adapted and corrected from the template for SMC 2012, which was adapted from that of SMC 2011
+% further updated for TENOR 2015, 2016, 2017 and 2020
+% -----------------------------------------------
+
+\documentclass{article}
+\usepackage{tenor2021}
+\usepackage{ifpdf}
+\usepackage[english]{babel}
+\usepackage{balance}
+
+%%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{amsmath} % popular packages from Am. Math. Soc. Please use the 
+%\usepackage{amssymb} % related math environments (split, subequation, cases,
+%\usepackage{amsfonts}% multline, etc.)
+%\usepackage{bm}      % Bold Math package, defines the command \bf{}
+%\usepackage{paralist}% extended list environments
+%%subfig.sty is the modern replacement for subfigure.sty. However, subfig.sty 
+%%requires and automatically loads caption.sty which overrides class handling 
+%%of captions. To prevent this problem, preload caption.sty with caption=false 
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+
+
+%user defined variables
+\def\papertitle{A Web Based Environment Embedding Signal Processing in Music Scores}
+\def\allauthors{Dominique Fober \hskip .2in Yann Orlarey \hskip .2in Stéphane Letz \hskip .2in Romain Michon}
+\def\firstauthor{Dominique Fober}
+\def\secondauthor{Yann Orlarey}
+\def\thirdauthor{Stéphane Letz}
+\def\fourthauthor{Romain Michon}
+
+% adds the automatic
+% Saves a lot of ouptut space in PDF... after conversion with the distiller
+% Delete if you cannot get PS fonts working on your system.
+
+% pdf-tex settings: detect automatically if run by latex or pdflatex
+\newif\ifpdf
+\ifx\pdfoutput\relax
+\else
+   \ifcase\pdfoutput
+      \pdffalse	
+   \else
+      \pdftrue
+\fi
+
+\ifpdf % compiling with pdflatex
+  \usepackage[pdftex,
+    pdftitle={\papertitle},
+    pdfauthor={\firstauthor, \secondauthor, \thirdauthor},
+    bookmarksnumbered, % use section numbers with bookmarks
+    pdfstartview=XYZ % start with zoom=100% instead of full screen; 
+                     % especially useful if working with a big screen :-)
+   ]{hyperref}
+  %\pdfcompresslevel=9
+
+  \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are and their extensions so 
+  %you won't have to specify these with every instance of \includegraphics
+  \graphicspath{{./figures/}}
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+
+  \usepackage[figure,table]{hypcap}
+
+\else % compiling with latex
+  \usepackage[dvips,
+    bookmarksnumbered, % use section numbers with bookmarks
+    pdfstartview=XYZ % start with zoom=100% instead of full screen
+  ]{hyperref}  % hyperrefs are active in the pdf file after conversion
+
+  \usepackage[dvips]{epsfig,graphicx}
+  % declare the path(s) where your graphic files are and their extensions so 
+  %you won't have to specify these with every instance of \includegraphics
+  \graphicspath{{./figures/}}
+  \DeclareGraphicsExtensions{.eps}
+
+  \usepackage[figure,table]{hypcap}
+\fi
+
+%setup the hyperref package - make the links black without a surrounding frame
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black
+}
+
+
+% Title.
+% ------
+\title{\papertitle}
+
+% Authors
+% Please note that submissions are NOT anonymous, therefore 
+% authors' names have to be VISIBLE in your manuscript. 
+%
+% Single address
+% To use with only one author or several with the same address
+% ---------------
+\oneauthor
+   {\allauthors} {Grame-CNCM \\ %
+     {\tt \href{mailto:fober@grame}{fober@grame.fr}}}
+
+%Two addresses
+%--------------
+% \twoauthors
+%   {\firstauthor} {Affiliation1 \\ %
+%     {\tt \href{mailto:author1@adomain.org}{author1@adomain.org}}}
+%   {\secondauthor} {Affiliation2 \\ %
+%     {\tt \href{mailto:author2@adomain.org}{author2@adomain.org}}}
+
+% Three addresses
+% --------------
+% \fourauthors
+%   {\firstauthor} {Grame-CNCM \\ %
+%     {\tt \href{mailto:fober@grame.fr}{fober@grame.fr}}}
+%   {\secondauthor} {Grame-CNCM \\ %
+%     {\tt \href{mailto:orlarey@grame.fr}{orlarey@grame.fr}}}
+%   {\thirdauthor} {Grame-CNCM \\ %
+%     {\tt \href{mailto:letz@grame.fr}{letz@grame.fr}}}
+%   {\fourthauthor} { Grame-CNCM \\ %
+%     {\tt \href{mailto:michon@grame.fr}{michon@grame.fr}}}
+
+% user commands
+%\newcommand{\osc}[1]		{\texttt{#1}}
+
+
+% ***************************************** the document starts here ***************
+\begin{document}
+%
+\capstartfalse
+\maketitle
+\capstarttrue
+%
+\begin{abstract}
+We present an online environment for the design of musical scores, which also allows the embedding of signal processors and thus the publication of electronic works. This environment is part of the INScore project, which latest version has been transcribed into WebAssembly/Javascript, to provide in a web browser both the diversity of music representations supported by INScore, the interaction capabilities and all the dynamic aspects of the score as offered by the native version.
+
+After some historical elements about distributed music scores, we will make some reminders about the INScore project and its associated description language. We will then describe the architecture of the system and the choices made for its portability to the Web. Then we will present the extensions specific to the Javascript version and in particular the support of signal processing objects. 
+Finally, we will show how INScore's communication system has been extended to allow online partition control from a native version of INScore, paving the way for real-time performance on the web.
+
+\end{abstract}
+%
+
+\section{Introduction}\label{sec:introduction}
+
+Music notation tools have been investigating their deployment on the Internet since the late 1990s. The Guido Note Server \cite{renz98}, designed as a client-server architecture and based on the Guido Music Description Language \cite{hoos98} GMN] is an example of such a system. It will be followed by a large number of applications offering online music editing services, in a design modeled on traditional score editors (e.g. such as MuseScore\footnote{MuseScore \url{https://musescore.com/}}), enhanced by sharing services. 
+In this area, we can mention Noteflight\footnote{Noteflight \url{https://www.noteflight.com/}}, Scorio\footnote{Scorio \url{https://www.scorio. com/}} or also, in the line of description languages associated to compilers, LilyBin\footnote{LilyBin \url{http://lilybin.com/}} or the GuidoEditor\footnote{GuidoEditor \url{https://guidoeditor.grame.fr/}}, the latter having the particularity to embed the compiler in a web page.
+All these systems are turned to a traditional approach of musical notation and do not deal with problems related to network performances.
+
+It is more recently and often thanks to the impulse of composers, that distributed score systems have emerged.
+Quintet.net \cite{doi:10.1162/leon.2005.38.1.23}, an interactive Internet performance environment enabling up to five performers to play music in real-time over the Internet under the control of a \emph{conductor}, is among the first performance-oriented notation systems. 
+The Decibel Score Player \cite{Hope_tenor2015} is another approach to distributed music score, based on a purely graphic notation of the music (as opposed to symbolic notation). It allows to synchronize the scores of a performing ensemble.
+However, these systems are implemented as native applications (Quintet.net is based on Max/MSP and the Decibel Score Player is a standalone application for iPad) and therefore may be difficult to distributed on the web.
+
+Facing similar problems, SmartVox \cite{bell:hal-01660184} uses a standard browser to distribute and synchronize music scores, which are also accompanied by audio signals. In the same line but with a focus on improvised music, John, the semi-conductor\cite{goudard:hal-01923258} is another web-based approach of music notation.
+It is more recently that Drawsocket \cite{Gottfried_tenor2019} appears, a platform for generating synchronized, browser-based scores across an array of networked devices. Firmly rooted in web technologies (SVG, CSS, HTML and Javascript), it provides an API to develop networked scores.
+
+Naturally turned to network uses \cite{Zagorac_tenor2018}, INScore \cite{Fober:12a} is also open to web uses \cite{Fober:15b}, in particular due to web server objects (\texttt{http} or \texttt{websocket}) that can be embedded in a score, and by providing a basic Web API allowing to interact with the score from a browser. 
+%Cette approche repose toutefois sur l'application native et contraint son utilisation à une architecture client/serveur, qui limite à la fois les capacités d'interaction avec la partition ainsi que ses aspects dynamiques.
+However, this approach is based on the native application and constrains its use to a client/server architecture, which limits both the ability to interact with the score as well as its dynamic aspects. 
+%Nous avons donc développé une version Javascript de l'environnement INScore, pouvant être embarquée dans une page Web sans recours à ce type d'architecture.
+We have therefore developed a Javascript version of the INScore environment, that can be embedded in a web page with no need for this type of architecture. 
+
+
+%connectivité 2017 \cite{James_tenor2017}
+%babelbox 2018 \cite{bell:hal-02280060}
+
+
+\section{INScore Environment}\label{sec:inscore}
+
+\section{Javascript architecture}\label{sec:arch}
+
+\section{Signal Processing extension}\label{sec:faust}
+
+\section{Web communication}
+
+%\begin{figure}[t]
+%\centering
+%\includegraphics[width=0.9\columnwidth]{figure}
+%\caption{Figure captions should be placed below the figure, 
+%exactly like this.
+%\label{fig:example}}
+%\end{figure}
+
+%\begin{figure}[t]
+%\figbox{
+%\subfloat[][]{\includegraphics[width=60mm]{figure}\label{fig:subfigex_a}}\\
+%\subfloat[][]{\includegraphics[width=80mm]{figure}\label{fig:subfigex_b}}
+%}
+%\caption{Here's an example using the subfig package.\label{fig:subfigex} }
+%\end{figure}
+
+\section{Conclusions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%bibliography here
+\balance
+\bibliography{../interlude}
+
+\end{document}
