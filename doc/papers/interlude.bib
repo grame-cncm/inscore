@@ -1,12 +1,80 @@
 %% This BibTeX bibliography file was created using BibDesk.
 %% https://bibdesk.sourceforge.io/
 
-%% Created for Dominique Fober at 2021-01-05 16:57:54 +0100 
+%% Created for Dominique Fober at 2021-01-06 14:53:05 +0100 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
+
+@inproceedings{10.1145/2048147.2048224,
+	abstract = {We present Emscripten, a compiler from LLVM (Low Level Virtual Machine) assembly to JavaScript. This opens up two avenues for running code written in languages other than JavaScript on the web: (1) Compile code directly into LLVM assembly, and then compile that into JavaScript using Emscripten, or (2) Compile a language's entire runtime into LLVM and then JavaScript, as in the previous approach, and then use the compiled runtime to run code written in that language. For example, the former approach can work for C and C++, while the latter can work for Python; all three examples open up new opportunities for running code on the web.Emscripten itself is written in JavaScript and is available under the MIT license (a permissive open source license), at http://www.emscripten.org. As a compiler from LLVM to JavaScript, the challenges in designing Emscripten are somewhat the reverse of the norm - one must go from a low-level assembly into a high-level language, and recreate parts of the original high-level structure of the code that were lost in the compilation to low-level LLVM. We detail the methods used in Emscripten to deal with those challenges, and in particular present and prove the validity of Emscripten's Relooper algorithm, which recreates high-level loop structures from low-level branching data.},
+	address = {New York, NY, USA},
+	author = {Zakai, Alon},
+	booktitle = {Proceedings of the ACM International Conference Companion on Object Oriented Programming Systems Languages and Applications Companion},
+	date-added = {2021-01-06 14:48:33 +0100},
+	date-modified = {2021-01-06 14:48:33 +0100},
+	doi = {10.1145/2048147.2048224},
+	isbn = {9781450309424},
+	keywords = {javascript, llvm, decompiler},
+	location = {Portland, Oregon, USA},
+	numpages = {12},
+	pages = {301--312},
+	publisher = {Association for Computing Machinery},
+	series = {OOPSLA '11},
+	title = {Emscripten: An LLVM-to-JavaScript Compiler},
+	url = {https://doi.org/10.1145/2048147.2048224},
+	year = {2011},
+	Bdsk-Url-1 = {https://doi.org/10.1145/2048147.2048224}}
+
+@inproceedings{fober:hal-02368958,
+	address = {Marseille, France},
+	author = {Fober, Dominique and Orlarey, Y and Letz, S and Michon, R.},
+	booktitle = {{International Symposium on Computer Music Multidisciplinary Research}},
+	date-added = {2021-01-06 10:55:54 +0100},
+	date-modified = {2021-01-06 10:55:54 +0100},
+	hal_id = {hal-02368958},
+	hal_version = {v1},
+	month = Oct,
+	pdf = {https://hal.archives-ouvertes.fr/hal-02368958/file/inscore-lang-cmmr.pdf},
+	title = {{A Tree Based Language for Music Score Description.}},
+	url = {https://hal.archives-ouvertes.fr/hal-02368958},
+	year = {2019},
+	Bdsk-Url-1 = {https://hal.archives-ouvertes.fr/hal-02368958}}
+
+@incollection{orlarey:hal-02159014,
+	author = {Orlarey, Yann and Fober, Dominique and Letz, St{\'e}phane},
+	booktitle = {{NEW COMPUTATIONAL PARADIGMS FOR COMPUTER MUSIC}},
+	date-added = {2021-01-06 10:24:22 +0100},
+	date-modified = {2021-01-06 10:24:22 +0100},
+	editor = {Editions DELATOUR FRANCE},
+	hal_id = {hal-02159014},
+	hal_version = {v1},
+	keywords = {compiler ; dataflow ; functional ; processing ; programming ; real-time ; signal},
+	pages = {65-96},
+	pdf = {https://hal.archives-ouvertes.fr/hal-02159014/file/faust-chapter.pdf},
+	title = {{FAUST : an Efficient Functional Approach to DSP Programming}},
+	url = {https://hal.archives-ouvertes.fr/hal-02159014},
+	year = {2009},
+	Bdsk-Url-1 = {https://hal.archives-ouvertes.fr/hal-02159014}}
+
+@article{ren:hal-03087763,
+	author = {Ren, Shihong and Letz, Stephane and Orlarey, Yann and Michon, Romain and Fober, Dominique and Buffa, Michel and Lebrun, Jerome},
+	date-added = {2021-01-06 10:15:19 +0100},
+	date-modified = {2021-01-06 10:15:19 +0100},
+	hal_id = {hal-03087763},
+	hal_version = {v1},
+	journal = {{Journal of the Audio Engineering Society}},
+	month = Nov,
+	number = {10},
+	pdf = {https://hal.inria.fr/hal-03087763/file/JAES%202020%20FAUST%20online%20IDE%20final_authorVersion.pdf},
+	publisher = {{Audio Engineering Society}},
+	title = {{Using Faust DSL to Develop Custom, Sample Accurate DSP Code and Audio Plugins for the Web Browser}},
+	url = {https://hal.inria.fr/hal-03087763},
+	volume = {68},
+	year = {2020},
+	Bdsk-Url-1 = {https://hal.inria.fr/hal-03087763}}
 
 @inproceedings{goudard:hal-01923258,
 	address = {Montr{\'e}al, Canada},

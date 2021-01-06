@@ -9,6 +9,8 @@
 \usepackage{ifpdf}
 \usepackage[english]{babel}
 \usepackage{balance}
+\usepackage{color}
+\usepackage{float}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -125,7 +127,11 @@
 %     {\tt \href{mailto:michon@grame.fr}{michon@grame.fr}}}
 
 % user commands
-%\newcommand{\osc}[1]		{\texttt{#1}}
+
+\definecolor{mygrey}{gray}{0.95}
+
+\newcommand{\icode}[1]	{\texttt{#1}}
+\newcommand{\code}[1]	{\vspace{-0.2em}\begin{center}\colorbox{mygrey}{\begin{minipage}[t]{0.98\columnwidth} {\scriptsize \texttt{#1}}\end{minipage}}\end{center}}
 
 
 % ***************************************** the document starts here ***************
@@ -135,6 +141,7 @@
 \maketitle
 \capstarttrue
 %
+%=========================================================
 \begin{abstract}
 We present an online environment for the design of musical scores, which also allows the embedding of signal processors and thus the publication of electronic works. This environment is part of the INScore project, which latest version has been transcribed into WebAssembly/Javascript, to provide in a web browser both the diversity of music representations supported by INScore, the interaction capabilities and all the dynamic aspects of the score as offered by the native version.
 
@@ -142,8 +149,9 @@ After some historical elements about distributed music scores, we will make some
 Finally, we will show how INScore's communication system has been extended to allow online partition control from a native version of INScore, paving the way for real-time performance on the web.
 
 \end{abstract}
-%
 
+
+%=========================================================
 \section{Introduction}\label{sec:introduction}
 
 Music notation tools have been investigating their deployment on the Internet since the late 1990s. The Guido Note Server \cite{renz98}, designed as a client-server architecture and based on the Guido Music Description Language \cite{hoos98} GMN] is an example of such a system. It will be followed by a large number of applications offering online music editing services, in a design modeled on traditional score editors (e.g. such as MuseScore\footnote{MuseScore \url{https://musescore.com/}}), enhanced by sharing services. 
@@ -158,24 +166,97 @@ However, these systems are implemented as native applications (Quintet.net is ba
 Facing similar problems, SmartVox \cite{bell:hal-01660184} uses a standard browser to distribute and synchronize music scores, which are also accompanied by audio signals. In the same line but with a focus on improvised music, John, the semi-conductor\cite{goudard:hal-01923258} is another web-based approach of music notation.
 It is more recently that Drawsocket \cite{Gottfried_tenor2019} appears, a platform for generating synchronized, browser-based scores across an array of networked devices. Firmly rooted in web technologies (SVG, CSS, HTML and Javascript), it provides an API to develop networked scores.
 
-Naturally turned to network uses \cite{Zagorac_tenor2018}, INScore \cite{Fober:12a} is also open to web uses \cite{Fober:15b}, in particular due to web server objects (\texttt{http} or \texttt{websocket}) that can be embedded in a score, and by providing a basic Web API allowing to interact with the score from a browser. 
-%Cette approche repose toutefois sur l'application native et contraint son utilisation à une architecture client/serveur, qui limite à la fois les capacités d'interaction avec la partition ainsi que ses aspects dynamiques.
+Naturally turned to network communication, INScore \cite{Fober:12a} (presented in section \ref{sec:inscore}) is also open to web uses \cite{Fober:15b}, in particular due to web server objects (\icode{http} or \icode{websocket}) that can be embedded in a score, and by providing a basic Web API allowing to interact with the score from a browser. 
 However, this approach is based on the native application and constrains its use to a client/server architecture, which limits both the ability to interact with the score as well as its dynamic aspects. 
-%Nous avons donc développé une version Javascript de l'environnement INScore, pouvant être embarquée dans une page Web sans recours à ce type d'architecture.
-We have therefore developed a Javascript version of the INScore environment, that can be embedded in a web page with no need for this type of architecture. 
+We have therefore developed a Javascript version of the INScore environment, in the form of a library to be integrated into a web page as a stand-alone engine. 
+Taking advantage of the modular architecture of the Web, in particular thanks to the Node Package Manager (NPM), this implementation makes it possible to embed the Faust compiler \cite{orlarey:hal-02159014} \cite{ren:hal-03087763} and thus to provide signal processing objects within the score. A simple extension of the communication scheme 
+A simple extension of the existing communication scheme can also be used to control a web score from the native version of INScore.
+
+The next section is a quick reminder of INScore's approach to music representation. The following sections will detail the more technical aspects of the implementation for the web, the integration of Faust objects and the extension of the communication scheme, before concluding with the new perspectives offered by this environment and future work.
 
 
-%connectivité 2017 \cite{James_tenor2017}
-%babelbox 2018 \cite{bell:hal-02280060}
-
-
+%=========================================================
 \section{INScore Environment}\label{sec:inscore}
 
-\section{Javascript architecture}\label{sec:arch}
+INScore is an environment for the design of augmented, dynamic and interactive music scores \cite{Fober:12a}, result of numerous research works that deal in particular with the extension of music notation to arbitrary graphic objects, time synchronisation in the graphic space \cite{fober:10b}, dynamic and interactive scores \cite{Fober:13b}, performance representation \cite{fober12tr} and the extension of the score to network dimensions \cite{Fober:15b}.
+The design of a score is based on a specific scripting language and therefore also addresses the field of programming languages for the description of music \cite{fober:hal-02368958}. 
 
+\subsection{Extended scores}
+INScore allows you to extend the symbolic notation, or even replace it, with arbitrary graphic objects: images, text, vectorial drawing, video. All these objects, including symbolic notation, have the same status as musical objects and have an identical temporal dimension (i.e. date, duration and tempo). This lack of hierarchy allows these objects to be synchronised in arbitrary combinations.
+
+\subsection{Representing the time of heterogeneous objects}
+INScore takes advantage of the homogenous temporal dimension of the score objects to provide what we call \emph{time synchronisation in the graphic space}, which makes it possible to represent the temporal relationships between objects using a synchronisation mechanism. If we imagine that each pixel of an object carries a date (computed from the date and duration of the object) the synchronisation system potentially makes it possible to graphically align all the pixels of two or more objects, carrying the same date. The design of a cursor positioned at the current date of a score is achieved with a simple synchronisation command. But above all, it becomes possible to reason in temporal space and therefore in a metaphor close to musical thought, the rendering engine automatically \emph{translate} the temporal dimensions in the graphic space.
+
+\subsection{Dynamic and interactive scores}
+
+The notion of \emph{tempo} is an integral part of the temporal dimension of objects. By default, this tempo is set to zero: the object is motionless in time. When the tempo value is not zero, the object then moves in time at the speed specified by its tempo. Associated with the synchronisation system, the use of the tempo allows you to create dynamic scores, whose form and content can evolve autonomously in time.
+
+An interaction system complements these dynamic aspects. The time of a score, conceived as musical time, relative to a tempo, can also be \emph{event based}, i.e. relative to asynchronuous events, which can be programmed in an arbitrary way. Among these events are the classic user interfaces events (such as mouse clicks, for example) but also \emph{temporal} events, whose occurrence depends on the flow of time. Each object in the partition is therefore capable of monitoring arbitrary events, including in the time domain: each event is associated with a set of messages that will be triggered at each occurrence of the event. These messages, expressed in INScore's scripting language, potentially allow the re-programming of all or part of the partition.
+
+\subsection{The network dimensions of the music score}
+
+INScore was originally designed to be driven by Open Sound Control [OSC] messages. It is therefore particularly suited to networks and the exchange of messages between INScore scores are native features. A simple \emph{message forwarding} system, allows a score to control a set of other scores distributed over a local area network, or to build a distributed music system on a client/server model \cite{Zagorac_tenor2018}.
+
+As mentioned before, a score can also embed a web server, making it available from the Internet and providing control from a browser. On the other hand, the objects of a score can refer to resources distributed over the Internet, similarly to a browser that can aggregate content from different websites.
+
+\subsection{INScore scripting language}
+A score is described in a specific scripting language, which consists of a textual form of OSC messages, extended with variables, control primitives, as well as symbolic partition composition primitives. The following script is used to describe the score in figure \ref{fig:score} in a very concise way:
+\code{/ITL/scene/title set txt "This is my first score !"; \\
+/ITL/scene/title scale 3;\\
+/ITL/scene/title y -0.6;\\
+/ITL/scene/title fontFamily Zapfino;\\
+/ITL/scene/frame set rect 1.5 0.5;\\
+/ITL/scene/frame color 230 230 230;\\
+/ITL/scene/score set gmn 
+   '[ \textbackslash meter<"4/4"> \textbackslash key<-1> a f g c c g a f ]';\\
+/ITL/scene/score scale 0.6;}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\columnwidth]{rsrc/inscore-exemple.png}
+\caption{A simple score.}
+\label{fig:score}
+\end{figure}
+In fact, the script above mixes two languages: the INScore language whose general form is `/address parameters...`, and the Guido language \cite{hoos98} which is used to specify the content of the \icode{score} element.
+
+\section{INScore Web Architecture}\label{sec:arch}
+
+INScore is based on a Model View Controller [MVC] architecture: the Model is an abstract description of the music score, it includes all the properties of the elements which are organised in a tree, in a strictly similar way to their OSC address. The View is a graphical representation of the Model.
+The controller takes input messages, decodes them to modify the Model and when necessary, activates the refresh of the View at regular time intervals (every 10ms by default).
+This architecture was used to differentiate the method of handling the Model and the View in the implementation for the Web.
+
+\subsection{INScore Model as a WebAssembly library}
+
+Mozilla developers have started in 2011 the Emscripten compiler project \cite{10.1145/2048147.2048224}, based on LLVM technology. From C/C++ sources, it allows to generate a statically compilable and garbage-collection free typed subset of JavaScript named asm.js. This first approach has successfully demonstrating that near native code performance could be achie-ved on the Web. It has been followed by WebAssembly\footnote{WebAssembly \url{https://webassembly.org/}} [WASM], a new efficient low-level programming language for in-browser client-side scripting, faster than the asm.js approach.
+
+The existing INScore Model, developed in C++, was compiled with Emscripten to produce a WASM library. 
+As a result, the native and the Web versions share the main of the code, which greatly minimises the maintenance of both platforms.
+
+\subsection{INScore View as DOM based library}
+
+INScore View has been developed using Typescript\footnote{Typescript \url{https://www.typescriptlang.org/}}, a language which builds on JavaScript, by adding static type definitions, allowing the TypeScript compiler to validate that your code is working correctly.
+
+The View implementation is entirely based on the Document Object Model [DOM] as defined by the W3C\footnote{DOM \href{https://www.w3.org/TR/2000/WD-DOM-Level-1-20000929/DOM.pdf}{Specification}}. It creates HTML elements on the fly and makes an extensive use of SVG. Most of the score objects properties are translated into style attributes (as defined by CSS).
+
+The View is compiled as a Javascript library.
+
+\subsection{INScore Controller}
+
+The controller lies in both the WASM and Javascript libraries as shown in figure \ref{fig:ctrl}. Actually, the only input of the INScore engine are text messages (unlike the native version which also accepts OSC messages). These messages can result from user actions or come from the network (see section \ref{sec:comm}). They are first parsed and then passed on to the objects of the Model.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\columnwidth]{rsrc/controller.pdf}
+\caption{INScore Controller design}
+\label{fig:ctrl}
+\end{figure}
+
+
+%=========================================================
 \section{Signal Processing extension}\label{sec:faust}
 
-\section{Web communication}
+
+
+\section{Web communication}\label{sec:comm}
 
 %\begin{figure}[t]
 %\centering
