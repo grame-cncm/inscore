@@ -11,6 +11,7 @@
 \usepackage{balance}
 \usepackage{color}
 \usepackage{float}
+%\usepackage{rail}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,10 +84,10 @@
 
 %setup the hyperref package - make the links black without a surrounding frame
 \hypersetup{
-    colorlinks,%
+    colorlinks=true,%
     citecolor=black,%
     filecolor=black,%
-    linkcolor=black,%
+    linkcolor=mylink,%
     urlcolor=black
 }
 
@@ -129,10 +130,23 @@
 % user commands
 
 \definecolor{mygrey}{gray}{0.95}
+\definecolor{mylink}{rgb}{0.384,0.0,0.145}
 
-\newcommand{\icode}[1]	{\texttt{#1}}
-\newcommand{\code}[1]	{\vspace{-0.2em}\begin{center}\colorbox{mygrey}{\begin{minipage}[t]{0.98\columnwidth} {\scriptsize \texttt{#1}}\end{minipage}}\end{center}}
+\newcommand{\ispace}	{\setlength\itemsep{0mm}}
+\newcommand{\icode}[1]	{{\small \texttt{#1}}}
+\newcommand{\code}[1]	{\vspace{-1em}\begin{center}\colorbox{mygrey}{\begin{minipage}[t]{0.98\columnwidth} {\scriptsize \texttt{#1}}\end{minipage}}\end{center}}
 
+\newcommand{\osctype}[1]	{\textbf{\texttt{{\small #1}}}}
+\newcommand{\oscint}		{\osctype{int32}}
+\newcommand{\oscfloat}		{\osctype{float32}}
+\newcommand{\oscstring}		{\osctype{string}}
+
+%\railparam{\addtolength{\itemsep}{-3ex}}
+%\setlength\railnamesep{-1mm}
+%\railterm{int32, float32, string}
+%\railalias{int32}{\oscint}
+%\railalias{float32}{\oscfloat}
+%\railalias{string}{\oscstring}
 
 % ***************************************** the document starts here ***************
 \begin{document}
@@ -169,7 +183,7 @@ It is more recently that Drawsocket \cite{Gottfried_tenor2019} appears, a platfo
 Naturally turned to network communication, INScore \cite{Fober:12a} (presented in section \ref{sec:inscore}) is also open to web uses \cite{Fober:15b}, in particular due to web server objects (\icode{http} or \icode{websocket}) that can be embedded in a score, and by providing a basic Web API allowing to interact with the score from a browser. 
 However, this approach is based on the native application and constrains its use to a client/server architecture, which limits both the ability to interact with the score as well as its dynamic aspects. 
 We have therefore developed a Javascript version of the INScore environment, in the form of a library to be integrated into a web page as a stand-alone engine. 
-Taking advantage of the modular architecture of the Web, in particular thanks to the Node Package Manager (NPM), this implementation makes it possible to embed the Faust compiler \cite{orlarey:hal-02159014} \cite{ren:hal-03087763} and thus to provide signal processing objects within the score. A simple extension of the communication scheme 
+Taking advantage of the modular architecture of the Web, in particular thanks to the Node Package Manager (NPM), this implementation makes it possible to embed the Faust compiler \cite{orlarey:hal-02159014} \cite{ren:hal-03087763} and thus to provide signal processing objects within the score.
 A simple extension of the existing communication scheme can also be used to control a web score from the native version of INScore.
 
 The next section is a quick reminder of INScore's approach to music representation. The following sections will detail the more technical aspects of the implementation for the web, the integration of Faust objects and the extension of the communication scheme, before concluding with the new perspectives offered by this environment and future work.
@@ -232,13 +246,13 @@ Mozilla developers have started in 2011 the Emscripten compiler project \cite{10
 The existing INScore Model, developed in C++, was compiled with Emscripten to produce a WASM library. 
 As a result, the native and the Web versions share the main of the code, which greatly minimises the maintenance of both platforms.
 
-\subsection{INScore View as DOM based library}
+\subsection{INScore View as DOM based Javascript library}
 
-INScore View has been developed using Typescript\footnote{Typescript \url{https://www.typescriptlang.org/}}, a language which builds on JavaScript, by adding static type definitions, allowing the TypeScript compiler to validate that your code is working correctly.
+INScore View has been developed using Typescript\footnote{Typescript \url{https://www.typescriptlang.org/}}, a language which builds on JavaScript, by adding static type definitions, allowing the TypeScript compiler to validate that your code is working correctly. It is compiled as a Javascript library.
 
 The View implementation is entirely based on the Document Object Model [DOM] as defined by the W3C\footnote{DOM \href{https://www.w3.org/TR/2000/WD-DOM-Level-1-20000929/DOM.pdf}{Specification}}. It creates HTML elements on the fly and makes an extensive use of SVG. Most of the score objects properties are translated into style attributes (as defined by CSS).
 
-The View is compiled as a Javascript library.
+
 
 \subsection{INScore Controller}
 
@@ -254,9 +268,121 @@ The controller lies in both the WASM and Javascript libraries as shown in figure
 %=========================================================
 \section{Signal Processing extension}\label{sec:faust}
 
+INScore Web can optionally embed the Faust compiler to provide signal processing objects within the score. 
+Faust \cite{orlarey:hal-02159014} is a functional, synchronous, domain specific programming language working at the sample level, designed for real time audio signal processing and synthesis. Faust programs can be efficiently compiled to a variety of target programming languages, from C++ to WebAssembly. 
+
+The Faust compiler is available as a WASM library \cite{letz:hal-02158925}. It is available as a NPM package\footnote{\href{https://www.npmjs.com/package/@grame/libfaust}{Faust NPM package}}, which includes also a Javascript library providing a high level API to transform DSP code into a Web AudioNode\footnote{\href{https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API}{The Web Audio API}}.
+
+The type of a Faust object is \icode{faust} and its \icode{set} method (figure \ref{fig:fset}) takes DSP code as argument. It is graphically represented by a browsable block diagram. Faust audio nodes can be instantiated as monophonic or polyphonic nodes, thus the \icode{set} method takes an optional number of voices as illustrated below. When present (and even if equal to 1), a polyphonic Faust audio node is created. 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\columnwidth]{rsrc/faust1.pdf}
+\caption{\icode{set} method of Faust objects.}
+\label{fig:fset}
+\end{figure}
+
+The following code creates a monophonic object named \icode{karplus} using the Faust physical modeling library, that is a ready-to-use, MIDI-enabled Karplus-Strong string with built-in UI.
+\code{/ITL/scene/karplus set faust \\
+\hspace*{10mm} 'import("stdfaust.lib"); \\
+\hspace*{11mm} process = pm.ks\_ui\_MIDI';}
+
+
+\subsection{Faust objects methods}
+
+Faust objects carry all the properties common to INScore objects, including their temporal dimension. 
+Their specific methods are the following:
+\begin{itemize}
+\item[-] \icode{play}: start or stop the sound processing. Takes a boolean value ([01]) as argument.
+\end{itemize}
+
+The next methods are only supported by polyphonic objects:
+\begin{itemize}
+\ispace
+\item[-] \icode{keyOn}, \icode{keyOff}: similar to MIDI key on/off messages. Take a MIDI channel, a pitch and a velocity as arguments.
+\item[-] \icode{allNotesOff}: similar to MIDI all notes off message. 
+\end{itemize}
+
+Faust objects support also specific query (\icode{get}) methods, corresponding to read-only properties:
+\begin{itemize}
+\ispace
+\item[-] \icode{in}, \icode{out}: gives the number of input and output signals of the Faust object.
+\item[-] \icode{paths}: gives the interface to the Faust object UI (as defined by the DSP code).
+\end{itemize}
+
+Paths returned by the \icode{path} query are used internally to dynamically generate the address space of the Faust object (see section \ref{faustadrspace}), providing control over the Faust node parameters.
+
+\subsection{Faust objects address space}\label{faustadrspace}
+
+Faust provides user interface primitives that allow for an abstract description of a user interface within the Faust code. This description is independent from any GUI toolkits/frameworks and it's the responsibility of \emph{architecture files} \cite{Fober:11b} to instantiate this abstract description. In INScore, this abstract description is instantiated in the address space of the Faust object.
+Let's consider the following query addressed to the \icode{karplus} object as defined by the example in section \ref{sec:faust}.
+
+\code{/ITL/scene/karplus get paths;}
+
+The INScore engine returns a list of UI elements as follows:
+\code{/karplus/params/freq hslider freq 440.0 50.0 1000.0 0.01;\\
+/karplus/params/bend hslider bend 0.0 -2.0 2.0 0.01;\\
+/karplus/params/damping hslider damping 0.01 0.0 1.0 0.01;\\
+etc.}
+where the general form of an element is a sequence of
+\begin{description}
+\ispace
+\item[] \icode{address}: the address of a Faust audio node parameter.
+\item[] \icode{type}: the type of the UI element (ignored by INScore).
+\item[] \icode{name}: the name of the UI element (ignored by INScore).
+\item[] \icode{default}: the default value of the parameter.
+\item[] \icode{min}: the minimum value of the parameter.
+\item[] \icode{max}: the maximum value of the parameter.
+\item[] \icode{step}: the step of values (ignored by INScore).
+\end{description}
+
+The \icode{address} field is used to expand the address space of the Faust object so that for the object \\
+\icode{/ITL/scene/karplus}\\
+ the addresses\\
+\icode{/ITL/scene/karplus/karplus/params/freq} \\
+\icode{/ITL/scene/karplus/karplus/params/bend} \\
+etc. \\
+become valid addresses taking a float value as argument, that is passed to the Faust audio node to set the corresponding parameter value. 
 
 
 \section{Web communication}\label{sec:comm}
+
+\subsection{Server Side}\label{sec:server}
+INScore provides a \emph{fowarding} mechanism \cite{Fober:15b} that can be used to distribute scores over a local network.
+The general form of the \icode{forward} message is illustrated in figure \ref{fig:forward}. It can be addressed to the application or to the scene level. The destination host is specified similarly to an url, by IP number or by host name, followed by a port number.
+A filtering mechanism is also provided to select the messages to be forwarded.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\columnwidth]{rsrc/faust3.pdf}
+\caption{The \icode{forward} message.}
+\label{fig:forward}
+\end{figure}
+This mechanism was basically design to transmit OSC message on UPD sockets.
+It has been extended for the native INScore application, to support different protocols, namely Websockets and HTTP. The new form of the \icode{forward} message is illustrated in figure \ref{fig:newforward}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\columnwidth]{rsrc/faust4.pdf}
+\caption{The new \icode{forward} message.}
+\label{fig:newforward}
+\end{figure}\\
+\icode{osc://} \icode{ws://} and \icode{http://} refer respectively to the OSC protocol, to Websockets and to HTTP.
+For compatibility reasons, the original form is preserved and implies the OSC protocol.
+
+The OSC protocol runs over UDP and thus is connectionless, this is not the case for Websockets and HTTP that run over TCP.
+Currently and whether for Websockets or HTTP, the INScore server ignores the host name and accepts all incoming connections. This approach may be revised in the future to select authorized hosts.
+
+\subsection{Client Side}\label{sec:client}
+The OSC protocol is transparent on client side: INScore has been natively designed to communicate via OSC.
+For Websockets and HTTP, an explicit connection must be initiated by the client. 
+For this we have introduced the \icode{connect} message whose form is similar to the \icode{forward} message. (figure \ref{fig:connect})
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\columnwidth]{rsrc/faust5.pdf}
+\caption{The \icode{connect} message.}
+\label{fig:connect}
+\end{figure}\\
+
+
+
 
 %\begin{figure}[t]
 %\centering

@@ -1,12 +1,48 @@
 %% This BibTeX bibliography file was created using BibDesk.
 %% https://bibdesk.sourceforge.io/
 
-%% Created for Dominique Fober at 2021-01-06 14:53:05 +0100 
+%% Created for Dominique Fober at 2021-01-07 16:03:43 +0100 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
+
+@inproceedings{Fober:11b,
+	abstract = {FAUST [Functional Audio Stream] is a functional programming language specifically designed for real-time signal processing and synthesis. It consists in a compiler that translates a FAUST program into an equivalent C++ program, taking care of generating the most efficient code. The FAUST environment also includes various architecture files, providing the glue between the FAUST C++ output and the host audio and GUI environments. The combination of architecture files and FAUST output gives ready to run applications or plugins for various systems, which makes a single FAUST specification available on different platforms and environments without additional cost. This article presents the overall design of the architecture files and gives more details on the recent OSC architecture.},
+	author = {Dominique Fober and Yann Orlarey and Stephane Letz},
+	booktitle = {Proc. of the 14th Int. Conference on Digital Audio Effects (DAFx-11)},
+	date = {2011-01-01},
+	date-added = {2021-01-07 13:29:45 +0100},
+	date-modified = {2021-01-07 13:29:45 +0100},
+	editor = {IRCAM},
+	keywords = {architecture, FAUST},
+	pages = {231--216},
+	pubstate = {published},
+	title = {FAUST Architectures Design and OSC Support.},
+	tppubtype = {inproceedings},
+	url = {faustarch-dafx11-final.pdf},
+	year = {2011},
+	Bdsk-Url-1 = {faustarch-dafx11-final.pdf}}
+
+@inproceedings{letz:hal-02158925,
+	address = {Lyon, France},
+	author = {Letz, St{\'e}phane and Orlarey, Yann and Fober, Dominique},
+	booktitle = {{The Web Conference}},
+	date-added = {2021-01-06 16:52:35 +0100},
+	date-modified = {2021-01-06 16:52:35 +0100},
+	doi = {10.1145/3184558.3185970},
+	hal_id = {hal-02158925},
+	hal_version = {v1},
+	keywords = {audio ; compilation ; Domain Specific Language ; DSP ; FAUST ; signal processing ; webassembly ; webaudio},
+	pages = {701-709},
+	pdf = {https://hal.archives-ouvertes.fr/hal-02158925/file/faust-thewebconf2018.pdf},
+	publisher = {{International World Wide Web Conferences Steering Committee}},
+	title = {{FAUST Domain Specific Audio DSP Language Compiled to WebAssembly}},
+	url = {https://hal.archives-ouvertes.fr/hal-02158925},
+	year = {2018},
+	Bdsk-Url-1 = {https://hal.archives-ouvertes.fr/hal-02158925},
+	Bdsk-Url-2 = {https://doi.org/10.1145/3184558.3185970}}
 
 @inproceedings{10.1145/2048147.2048224,
 	abstract = {We present Emscripten, a compiler from LLVM (Low Level Virtual Machine) assembly to JavaScript. This opens up two avenues for running code written in languages other than JavaScript on the web: (1) Compile code directly into LLVM assembly, and then compile that into JavaScript using Emscripten, or (2) Compile a language's entire runtime into LLVM and then JavaScript, as in the previous approach, and then use the compiled runtime to run code written in that language. For example, the former approach can work for C and C++, while the latter can work for Python; all three examples open up new opportunities for running code on the web.Emscripten itself is written in JavaScript and is available under the MIT license (a permissive open source license), at http://www.emscripten.org. As a compiler from LLVM to JavaScript, the challenges in designing Emscripten are somewhat the reverse of the norm - one must go from a low-level assembly into a high-level language, and recreate parts of the original high-level structure of the code that were lost in the compilation to low-level LLVM. We detail the methods used in Emscripten to deal with those challenges, and in particular present and prove the validity of Emscripten's Relooper algorithm, which recreates high-level loop structures from low-level branching data.},
