@@ -160,7 +160,7 @@
 We present an online environment for the design of musical scores, which also allows the embedding of signal processors and thus the publication of electronic works. This environment is part of the INScore project, which latest version has been transcribed into WebAssembly/Javascript, to provide in a web browser both the diversity of music representations supported by INScore, the interaction capabilities and all the dynamic aspects of the score as offered by the native version.
 
 After some historical elements about distributed music scores, we will make some reminders about the INScore project and its associated description language. We will then describe the architecture of the system and the choices made for its portability to the Web. Then we will present the extensions specific to the Javascript version and in particular the support of signal processing objects. 
-Finally, we will show how INScore's communication system has been extended to allow online partition control from a native version of INScore, paving the way for real-time performance on the web.
+Finally, we will show how INScore's communication system has been extended to allow online music score control from a native version of INScore, paving the way for real-time performance on the web.
 
 \end{abstract}
 
@@ -205,7 +205,7 @@ INScore takes advantage of the homogenous temporal dimension of the score object
 
 The notion of \emph{tempo} is an integral part of the temporal dimension of objects. By default, this tempo is set to zero: the object is motionless in time. When the tempo value is not zero, the object then moves in time at the speed specified by its tempo. Associated with the synchronisation system, the use of the tempo allows you to create dynamic scores, whose form and content can evolve autonomously in time.
 
-An interaction system complements these dynamic aspects. The time of a score, conceived as musical time, relative to a tempo, can also be \emph{event based}, i.e. relative to asynchronuous events, which can be programmed in an arbitrary way. Among these events are the classic user interfaces events (such as mouse clicks, for example) but also \emph{temporal} events, whose occurrence depends on the flow of time. Each object in the partition is therefore capable of monitoring arbitrary events, including in the time domain: each event is associated with a set of messages that will be triggered at each occurrence of the event. These messages, expressed in INScore's scripting language, potentially allow the re-programming of all or part of the partition.
+An interaction system complements these dynamic aspects. The time of a score, conceived as musical time, relative to a tempo, can also be \emph{event based}, i.e. relative to asynchronuous events, which can be programmed in an arbitrary way. Among these events are the classic user interfaces events (such as mouse clicks, for example) but also \emph{temporal} events, whose occurrence depends on the flow of time. Each object of the score is therefore capable of monitoring arbitrary events, including in the time domain: each event is associated with a set of messages that will be triggered at each occurrence of the event. These messages, expressed in INScore's scripting language, potentially allow the re-programming of all or part of the music score.
 
 \subsection{The network dimensions of the music score}
 
@@ -214,7 +214,7 @@ INScore was originally designed to be driven by Open Sound Control [OSC] message
 As mentioned before, a score can also embed a web server, making it available from the Internet and providing control from a browser. On the other hand, the objects of a score can refer to resources distributed over the Internet, similarly to a browser that can aggregate content from different websites.
 
 \subsection{INScore scripting language}
-A score is described in a specific scripting language, which consists of a textual form of OSC messages, extended with variables, control primitives, as well as symbolic partition composition primitives. The following script is used to describe the score in figure \ref{fig:score} in a very concise way:
+A score is described in a specific scripting language, which consists of a textual form of OSC messages, extended with variables, control primitives, as well as symbolic score composition primitives. The following script is used to describe the score in figure \ref{fig:score} in a very concise way:
 \code{/ITL/scene/title set txt "This is my first score !"; \\
 /ITL/scene/title scale 3;\\
 /ITL/scene/title y -0.6;\\
@@ -287,6 +287,7 @@ The following code creates a monophonic object named \icode{karplus} using the F
 \hspace*{11mm} process = pm.ks\_ui\_MIDI';}
 
 
+%-------------------------------------------------------------
 \subsection{Faust objects methods}
 
 Faust objects carry all the properties common to INScore objects, including their temporal dimension. 
@@ -311,6 +312,7 @@ Faust objects support also specific query (\icode{get}) methods, corresponding t
 
 Paths returned by the \icode{path} query are used internally to dynamically generate the address space of the Faust object (see section \ref{faustadrspace}), providing control over the Faust node parameters.
 
+%-------------------------------------------------------------
 \subsection{Faust objects address space}\label{faustadrspace}
 
 Faust provides user interface primitives that allow for an abstract description of a user interface within the Faust code. This description is independent from any GUI toolkits/frameworks and it's the responsibility of \emph{architecture files} \cite{Fober:11b} to instantiate this abstract description. In INScore, this abstract description is instantiated in the address space of the Faust object.
@@ -344,15 +346,17 @@ etc. \\
 become valid addresses taking a float value as argument, that is passed to the Faust audio node to set the corresponding parameter value. 
 
 
+%=========================================================
 \section{Web communication}\label{sec:comm}
 
+%-------------------------------------------------------------
 \subsection{Server Side}\label{sec:server}
 INScore provides a \emph{fowarding} mechanism \cite{Fober:15b} that can be used to distribute scores over a local network.
-The general form of the \icode{forward} message is illustrated in figure \ref{fig:forward}. It can be addressed to the application or to the scene level. The destination host is specified similarly to an url, by IP number or by host name, followed by a port number.
+The general form of the \icode{forward} message is illustrated in figure \ref{fig:forward}. It can be addressed to the application or to the scene level. It takes a list of destinations as argument or can be used with no argument to stop forwarding. A destination host is specified similarly to an url, by IP number or by host name, followed by a port number.
 A filtering mechanism is also provided to select the messages to be forwarded.
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\columnwidth]{rsrc/faust3.pdf}
+\includegraphics[width=0.75\columnwidth]{rsrc/faust3.pdf}
 \caption{The \icode{forward} message.}
 \label{fig:forward}
 \end{figure}
@@ -361,7 +365,7 @@ It has been extended for the native INScore application, to support different pr
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.98\columnwidth]{rsrc/faust4.pdf}
-\caption{The new \icode{forward} message.}
+\caption{The extended \icode{forward} message.}
 \label{fig:newforward}
 \end{figure}\\
 \icode{osc://} \icode{ws://} and \icode{http://} refer respectively to the OSC protocol, to Websockets and to HTTP.
@@ -370,10 +374,10 @@ For compatibility reasons, the original form is preserved and implies the OSC pr
 The OSC protocol runs over UDP and thus is connectionless, this is not the case for Websockets and HTTP that run over TCP.
 Currently and whether for Websockets or HTTP, the INScore server ignores the host name and accepts all incoming connections. This approach may be revised in the future to select authorized hosts.
 
+%-------------------------------------------------------------
 \subsection{Client Side}\label{sec:client}
 The OSC protocol is transparent on client side: INScore has been natively designed to communicate via OSC.
-For Websockets and HTTP, an explicit connection must be initiated by the client. 
-For this we have introduced the \icode{connect} message whose form is similar to the \icode{forward} message. (figure \ref{fig:connect})
+For Websockets and HTTP, an explicit connection must be initiated by the client and to this end, we have introduced the \icode{connect} message whose form is similar to the \icode{forward} message (figure \ref{fig:connect}). Used without argument, \icode{connect} removes all the existing connections.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.98\columnwidth]{rsrc/faust5.pdf}
@@ -381,26 +385,38 @@ For this we have introduced the \icode{connect} message whose form is similar to
 \label{fig:connect}
 \end{figure}\\
 
+On client side, HTTP support is implemented over HTML Server-Sent-Events [SSE] API, a one way messaging system designed to allow a web page to get updates from a server. Websockets connections are bidirectional, but only communication from the server to the client is used for the time being.
+
+Messages transmitted by the server are textual OSC messages that will be parsed by the client on receipt, in the same way as any input script.  
+
+%-------------------------------------------------------------
+\subsection{Communication scheme overview}\label{sec:comm}
+
+Figure \ref{fig:comm} shows the overall communication scheme of INScore. Its extension to new protocols allows, starting from a native version of INScore which then acts as a server, to control in parallel music scores distributed over a local network and/or over the Internet.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.90\columnwidth]{rsrc/communication.pdf}
+\caption{INScore communication scheme.}
+\label{fig:comm}
+\end{figure}
+
+As input, the server receives messages either from user actions (drag \& drop of scripts, interaction with the score) or generated by design according to the time flow of the score objects. Provided they are not filtered, these messages are automatically transmitted to all connected clients, which makes it possible to replicate and/or control a music score on a whole set of targets.
 
 
-
-%\begin{figure}[t]
-%\centering
-%\includegraphics[width=0.9\columnwidth]{figure}
-%\caption{Figure captions should be placed below the figure, 
-%exactly like this.
-%\label{fig:example}}
-%\end{figure}
-
-%\begin{figure}[t]
-%\figbox{
-%\subfloat[][]{\includegraphics[width=60mm]{figure}\label{fig:subfigex_a}}\\
-%\subfloat[][]{\includegraphics[width=80mm]{figure}\label{fig:subfigex_b}}
-%}
-%\caption{Here's an example using the subfig package.\label{fig:subfigex} }
-%\end{figure}
-
+%=========================================================
 \section{Conclusions}
+
+The web deployment of the INScore engine is not a recent project but has so far encountered design issues. The evolution of languages and compilation technologies has allowed us to find a solution that seems to us quite optimal, as it allows all the supported platforms to evolve from the same source.
+
+The Web version of INScore opens new perspectives, particularly relevant in the context of the current health crisis: the publication and sharing of musical scores on the Web is an essential tool for the dissemination of contemporary creation. 
+The fact that the active and reactive sound part of a work can also be embedded within the score makes it possible to publish a music piece in its entirety. Remote control could also open up new prospects, both from an educational point of view and for the performance of the music.
+
+Future work will deal in particular with better deployment on all types of platforms and especially mobile platforms. Better integration of CSS should improve rendering on mobile phones.
+
+The work presented will be available as a library on NPM. An INScore editor is already online at\\
+\url{https://inscoreweb.grame.fr/}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %bibliography here
