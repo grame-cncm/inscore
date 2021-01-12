@@ -88,6 +88,21 @@ w = 0.15;
 /ITL/*/circ tempo 120;
 /ITL/*/gmn watch mouseDown ( /ITL/*/circ date '$date' );
 
+	/ITL/scene/ctrlfs set txt "FS";
+	/ITL/left/ctrlfs set txt "FS";
+	/ITL/*/ctrlfs x 0.9;
+	/ITL/*/ctrlfs y 0.9;
+	/ITL/*/ctrlfs watch mouseEnter ( /ITL/$scene/$self color red );
+	/ITL/*/ctrlfs watch mouseLeave ( /ITL/$scene/$self color black );
+	/ITL/*/ctrlfs watch mouseDown (
+		/ITL/$scene/ctrlfs push,
+		/ITL/$scene fullscreen 1,
+		/ITL/$scene/ctrlfs watch mouseDown (
+			/ITL/$scene fullscreen 0,
+			/ITL/$scene/ctrlfs pop
+		)
+	);
+
 </div>
 
 </div>

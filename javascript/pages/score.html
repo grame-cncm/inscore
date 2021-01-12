@@ -24,9 +24,14 @@
 
 	/ITL/scene/* del;
 
+
+	/ITL/scene/ssize set rect 2 2;
+	/ITL/scene/ssize color 230 230 230;
+
 	/ITL/scene/score set gmnf  "/gmn/mozart.gmn.txt";
 	/ITL/scene/score scale 0.25;
 	/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date:system');
+
 	
 	w = 0.1;
 	/ITL/scene/cursor1 set ellipse $w $w;
@@ -59,7 +64,7 @@
 	
 	/ITL/scene/ctrl set img $play;
 	/ITL/scene/ctrl show 0;
-	/ITL/scene/ctrl scale 0.12;
+	/ITL/scene/ctrl scale 0.05;
 	/ITL/scene/ctrl y 0.9;
 	/ITL/scene/ctrl show 1;
 	/ITL/scene/ctrl watch mouseDown (
@@ -75,8 +80,22 @@
 	
 	g = 150;
 	grey = $g $g $g;
-	/ITL/scene/ctrl watch mouseEnter ( /ITL/scene/$self scale 0.13 );
-	/ITL/scene/ctrl watch mouseLeave ( /ITL/scene/$self scale 0.12 );
+	/ITL/scene/ctrl watch mouseEnter ( /ITL/scene/$self scale 0.055 );
+	/ITL/scene/ctrl watch mouseLeave ( /ITL/scene/$self scale 0.05 );
+
+	/ITL/scene/ctrlfs set txt "FS";
+	/ITL/scene/ctrlfs x 1;
+	/ITL/scene/ctrlfs y 0.9;
+	/ITL/scene/ctrlfs watch mouseEnter ( /ITL/scene/$self color red );
+	/ITL/scene/ctrlfs watch mouseLeave ( /ITL/scene/$self color black );
+	/ITL/scene/ctrlfs watch mouseDown (
+		/ITL/scene/ctrlfs push,
+		/ITL/scene fullscreen 1,
+		/ITL/scene/ctrlfs watch mouseDown (
+			/ITL/scene fullscreen 0,
+			/ITL/scene/ctrlfs pop
+		)
+	);
 		
 </div>
 
