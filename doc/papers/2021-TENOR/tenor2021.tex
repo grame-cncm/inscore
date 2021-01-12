@@ -11,7 +11,8 @@
 \usepackage{balance}
 \usepackage{color}
 \usepackage{float}
-%\usepackage{rail}
+
+%\def\finalversion{}
 
 %%%%%%%%%%%%%%%%%%%%%%%% Some useful packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% See related documentation %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,8 +30,13 @@
 
 %user defined variables
 \def\papertitle{A Web Based Environment Embedding Signal Processing in Musical Scores}
+\ifdefined \finalversion
 \def\allauthors{Dominique Fober \hskip .2in Yann Orlarey \hskip .2in Stéphane Letz \hskip .2in Romain Michon}
 \def\firstauthor{Dominique Fober}
+\else
+\def\allauthors{Anonymous}
+\def\firstauthor{xxxx}
+\fi
 \def\secondauthor{Yann Orlarey}
 \def\thirdauthor{Stéphane Letz}
 \def\fourthauthor{Romain Michon}
@@ -103,9 +109,14 @@
 % Single address
 % To use with only one author or several with the same address
 % ---------------
+\ifdefined \finalversion
 \oneauthor
    {\allauthors} {Grame-CNCM \\ %
      {\tt \href{mailto:fober@grame}{fober@grame.fr}}}
+\else
+\oneauthor
+   {\allauthors} {----------}
+\fi
 
 %Two addresses
 %--------------
@@ -222,7 +233,7 @@ A score is described in a specific scripting language consisting of a textual fo
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\columnwidth]{rsrc/inscore-exemple.png}
-\caption{A simple score.}
+\caption{A simple score, described in a few lines.}
 \label{fig:score}
 \end{figure}
 In fact, the above script mixes two languages: the INScore language whose general form is `/address parameters...`, and the Guido language \cite{hoos98} which is used to specify the content of the \icode{score} element.
@@ -408,8 +419,8 @@ The fact that the active and reactive sound part of a work can also be embedded 
 
 Future work will deal in particular with better deployment on all types of platforms and especially mobile platforms. Better integration of CSS should improve rendering on mobile phones.
 
-The presented work will be available as a library on NPM. An INScore editor is already online at\\
-\url{https://inscoreweb.grame.fr/}.
+The presented work will be available as a library on NPM. An INScore editor is online at \\
+\hspace*{15mm} {\small \url{https://inscoreweb.grame.fr/}}
 
 
 
