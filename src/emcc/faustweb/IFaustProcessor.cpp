@@ -29,6 +29,7 @@
 #include "IFaustProcessor.h"
 #include "IScene.h"
 #include "ITLError.h"
+#include "OSCAddress.h"
 #include "Updater.h"
 
 using namespace std;
@@ -117,7 +118,9 @@ void IFaustProcessor::setParamValue (const std::string& address, float val)
 //--------------------------------------------------------------------------
 void IFaustProcessor::setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step)
 {
-	fPaths.push_back ( FaustProcessorUIElement(type, label, address, init, min, max, step));
+	FaustProcessorUIElement elt(type, label, init, min, max, step);
+	fAddressSpace[address] = elt;
+	fPaths.push_back ( oldFaustProcessorUIElement(type, label, address, init, min, max, step));
 	string msg = address2msg(address.c_str());
 	fParamValues[address] = init;
 	if (type == "button")
@@ -248,6 +251,98 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 	}
 	newData(true);
 	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+// messages processing
+//--------------------------------------------------------------------------
+int IFaustProcessor::processMsg (const string& address, const string& addressTail, const IMessage* msg)
+{
+	if (IObject::accept(address, msg)) {				// first make sure that the object is part of the address
+		auto i = fAddressSpace.find (addressTail);
+		if (i != fAddressSpace.end()) {
+			float val;
+			if ((msg->size() == 1) && msg->cast_param(0, val)) {
+				if (val < i->second.fMin) val = i->second.fMin;
+				if (val > i->second.fMax) val = i->second.fMax;
+				i->second.fValue = val;
+				setParamValue (i->first, val);
+				setModified();
+				return MsgHandler::kProcessed;
+			}
+			if (msg->message() == kget_SetMethod) {
+				return IRectShape::get (msg);
+			}
+			return MsgHandler::kBadParameters;
+		}
+	}
+	return IRectShape::processMsg (address, addressTail, msg);
+}
+
+static int getDepth (const char* addr) {
+	int count = 0;
+	while (*addr) {
+		if (*addr++ == '/') count++;
+	}
+	return count;
+}
+static string stripDepth (const string& address, int depth) {
+	size_t n=0;
+	const char* ptr = address.c_str();
+	while ((depth >=0) && *ptr) {
+		n++;
+		if (*ptr++ == '/') depth--;
+	}
+	return (n>0) ? &address[n-1] : "/";
+}
+
+//--------------------------------------------------------------------------
+SIMessage IFaustProcessor::getParamMsg (const std::string& target, float value ) const
+{
+	SIMessage msg = IMessage::create(target);
+	msg->add (value);
+	return msg;
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IFaustProcessor::getMsgs (const IMessage* msg) const
+{
+	string address = getOSCAddress();
+  	string tail = stripDepth(msg->address(), getDepth (address.c_str()));
+  	
+	string what;
+  	if ((msg->size() == 1) && tail.empty() && msg->param(0, what) && (what == "*")) {
+  	}
+  	
+	auto p = fAddressSpace.find (tail);
+	if (p != fAddressSpace.end()) {
+		SIMessageList outMsgs = IMessageList::create();
+		int n = msg->size();
+		string target = address + tail;
+		if (n == 0) {
+			outMsgs->list().push_back (getParamMsg(target, p->second.fValue));
+		}
+		else if ((msg->size() == 1) && msg->param(0, what) && (what == "*")) {
+			outMsgs->list().push_back (getParamMsg(target, "min", p->second.fMin));
+			outMsgs->list().push_back (getParamMsg(target, "max", p->second.fMax));
+			outMsgs->list().push_back (getParamMsg(target, "step", p->second.fStep));
+			outMsgs->list().push_back (getParamMsg(target, "type", p->second.fType));
+			outMsgs->list().push_back (getParamMsg(target, "label", p->second.fLabel));
+		}
+		else for (int i=0; i<n; i++) {
+			if (msg->param(i, what)) {
+				if (what == "min") 			outMsgs->list().push_back (getParamMsg(target, "min", p->second.fMin));
+				else if (what == "max") 	outMsgs->list().push_back (getParamMsg(target, "max", p->second.fMax));
+				else if (what == "step") 	outMsgs->list().push_back (getParamMsg(target, "step", p->second.fStep));
+				else if (what == "type") 	outMsgs->list().push_back (getParamMsg(target, "type", p->second.fType));
+				else if (what == "label") 	outMsgs->list().push_back (getParamMsg(target, "label", p->second.fLabel));
+				else ITLErr << address << "incorrect parameter attribute:" << what << ITLEndl;
+			}
+			else ITLErr << address << "incorrect parameter attribute:" << what << ITLEndl;
+		}
+		return outMsgs;
+	}
+	return IRectShape::getMsgs (msg);
 }
 
 }

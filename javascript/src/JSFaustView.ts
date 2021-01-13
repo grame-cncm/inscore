@@ -94,6 +94,7 @@ class JSFaustView extends JSSvgBase {
             let n = val.size();
             for (let i=0; i < n; i++) {
                 let v = val.get(i);
+// console.log ("JSFaustView.updateSpecific setParamValue " + v.address + " " +v.value);
                 this.fAudioNode.setParamValue (v.address, v.value);
                 if ((v.type == 0) && v.value)   // schedule the button off value
                     setTimeout (() => { this.fAudioNode.setParamValue (v.address, 0); }, 100);
@@ -137,7 +138,7 @@ class JSFaustView extends JSSvgBase {
             obj.setFaustInOut (node.getNumInputs(), node.getNumOutputs());
             let ui = node.getDescriptors();
             ui.forEach ( (elt) => { 
-// console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
                 if (elt.type == "button")
                     obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
                 else

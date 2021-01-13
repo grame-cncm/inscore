@@ -26,7 +26,6 @@
 
 #pragma once
 
-//#include "IFaustSignal.h"
 #include "IMessageHandlers.h"
 #include "IRectShape.h"
 
@@ -42,15 +41,26 @@ class Updater;
 class IFaustProcessor;
 typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
 
-class FaustProcessorUIElement {
+class oldFaustProcessorUIElement {
 	public:
 		std::string	fAddress;
 		std::string fType;
 		std::string fLabel;
 		float	fValue, fMin, fMax, fStep;
 	
-				 FaustProcessorUIElement(std::string type, std::string label, std::string address, float init, float min, float max, float step) :
+				 oldFaustProcessorUIElement(std::string type, std::string label, std::string address, float init, float min, float max, float step) :
 				  fType(type), fLabel(label), fAddress(address), fValue(init), fMin(min), fMax(max), fStep(step) {}
+		virtual ~oldFaustProcessorUIElement() {}
+};
+
+class FaustProcessorUIElement {
+	public:
+		std::string fType, fLabel;
+		float	fValue = 0, fMin = 0, fMax = 0, fStep = 0;
+	
+				 FaustProcessorUIElement(std::string type, std::string label, float init, float min, float max, float step) :
+				  fType(type), fLabel(label), fValue(init), fMin(min), fMax(max), fStep(step) {}
+				 FaustProcessorUIElement() {}
 		virtual ~FaustProcessorUIElement() {}
 };
 
@@ -90,6 +100,13 @@ class IFaustProcessor : public IRectShape
 	void 		addMsgHandler 	(const std::string& address, const std::string& name, float min, float max);
 	void 		addMsgHandler 	(const std::string& address, const std::string& name);
 	float 		getParamValue 	(const std::string& address) const;
+	SIMessage	getParamMsg		(const std::string& target, float value ) const;
+	template<typename T> SIMessage	getParamMsg	(const std::string& target, const std::string& type, T value ) const {
+		SIMessage msg = IMessage::create(target);
+		msg->add (type);
+		msg->add (value);
+		return msg;
+	}
 
     public:
 		typedef std::vector<TFaustParamUpdate> TNewValues;
@@ -111,10 +128,15 @@ class IFaustProcessor : public IRectShape
 		const TKeyValues& 	getKeyValues() const		{ return fKeyValues; }
 		void 				clearChangedValues() 		{ fNewValues.clear(); fKeyValues.clear(); }
 
+		// overrides message processing for handling faust address space
+		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
+		virtual SIMessageList getMsgs (const IMessage* msg) const;
+
 	protected:
 		std::vector<TFaustParamUpdate> 			fNewValues;
 		std::vector<TFaustKeysUpdate> 			fKeyValues;
-		std::vector<FaustProcessorUIElement> 	fPaths;
+		std::vector<oldFaustProcessorUIElement> 	fPaths;
+		std::map<std::string, FaustProcessorUIElement> 	fAddressSpace;
 
 				 IFaustProcessor( const std::string& name, IObject * parent);
 		virtual ~IFaustProcessor();
