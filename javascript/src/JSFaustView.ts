@@ -138,7 +138,7 @@ class JSFaustView extends JSSvgBase {
             obj.setFaustInOut (node.getNumInputs(), node.getNumOutputs());
             let ui = node.getDescriptors();
             ui.forEach ( (elt) => { 
-console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+// console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
                 if (elt.type == "button")
                     obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
                 else
