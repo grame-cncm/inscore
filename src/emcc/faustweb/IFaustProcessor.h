@@ -99,6 +99,7 @@ class IFaustProcessor : public IRectShape
 	std::string address2msg 	(const char * address) const;
 	void 		addMsgHandler 	(const std::string& address, const std::string& name, float min, float max);
 	void 		addMsgHandler 	(const std::string& address, const std::string& name);
+	std::string oscaddress2faustaddress (const std::string& oscaddress) const;
 	float 		getParamValue 	(const std::string& address) const;
 	SIMessage	getParamMsg		(const std::string& target, float value ) const;
 	template<typename T> SIMessage	getParamMsg	(const std::string& target, const std::string& type, T value ) const {

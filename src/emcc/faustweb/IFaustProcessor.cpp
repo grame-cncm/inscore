@@ -30,6 +30,7 @@
 #include "IScene.h"
 #include "ITLError.h"
 #include "OSCAddress.h"
+#include "OSCRegexp.h"
 #include "Updater.h"
 
 using namespace std;
@@ -259,14 +260,17 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 int IFaustProcessor::processMsg (const string& address, const string& addressTail, const IMessage* msg)
 {
 	if (IObject::accept(address, msg)) {				// first make sure that the object is part of the address
-		auto i = fAddressSpace.find (addressTail);
-		if (i != fAddressSpace.end()) {
+//		auto i = fAddressSpace.find (addressTail);
+//		if (i != fAddressSpace.end()) {
+		string faustaddress = oscaddress2faustaddress(addressTail);
+		if (!faustaddress.empty()) {
+			FaustProcessorUIElement& ui = fAddressSpace[faustaddress];
 			float val;
 			if ((msg->size() == 1) && msg->cast_param(0, val)) {
-				if (val < i->second.fMin) val = i->second.fMin;
-				if (val > i->second.fMax) val = i->second.fMax;
-				i->second.fValue = val;
-				setParamValue (i->first, val);
+				if (val < ui.fMin) val = ui.fMin;
+				if (val > ui.fMax) val = ui.fMax;
+				ui.fValue = val;
+				setParamValue (faustaddress, val);
 				setModified();
 				return MsgHandler::kProcessed;
 			}
@@ -297,6 +301,18 @@ static string stripDepth (const string& address, int depth) {
 }
 
 //--------------------------------------------------------------------------
+string IFaustProcessor::oscaddress2faustaddress (const string& oscaddress) const
+{
+	OSCRegexp re (oscaddress.c_str());
+	for (auto elt: fAddressSpace) {
+		if (re.match(elt.first.c_str())) {
+			return elt.first;
+		}
+	}
+	return "";
+}
+
+//--------------------------------------------------------------------------
 SIMessage IFaustProcessor::getParamMsg (const std::string& target, float value ) const
 {
 	SIMessage msg = IMessage::create(target);
@@ -314,11 +330,14 @@ SIMessageList IFaustProcessor::getMsgs (const IMessage* msg) const
   	if ((msg->size() == 1) && tail.empty() && msg->param(0, what) && (what == "*")) {
   	}
   	
-	auto p = fAddressSpace.find (tail);
-	if (p != fAddressSpace.end()) {
+//	auto p = fAddressSpace.find (tail);
+//	if (p != fAddressSpace.end()) {
+	string faustaddress = oscaddress2faustaddress(tail);
+	if (!faustaddress.empty()) {
+		auto p = fAddressSpace.find (faustaddress);
 		SIMessageList outMsgs = IMessageList::create();
 		int n = msg->size();
-		string target = address + tail;
+		string target = address + faustaddress;
 		if (n == 0) {
 			outMsgs->list().push_back (getParamMsg(target, p->second.fValue));
 		}
