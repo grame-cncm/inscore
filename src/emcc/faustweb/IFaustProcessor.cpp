@@ -260,8 +260,6 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 int IFaustProcessor::processMsg (const string& address, const string& addressTail, const IMessage* msg)
 {
 	if (IObject::accept(address, msg)) {				// first make sure that the object is part of the address
-//		auto i = fAddressSpace.find (addressTail);
-//		if (i != fAddressSpace.end()) {
 		string faustaddress = oscaddress2faustaddress(addressTail);
 		if (!faustaddress.empty()) {
 			FaustProcessorUIElement& ui = fAddressSpace[faustaddress];
@@ -321,19 +319,23 @@ SIMessage IFaustProcessor::getParamMsg (const std::string& target, float value )
 }
 
 //--------------------------------------------------------------------------
+SIMessageList IFaustProcessor::getAll() const
+{
+	string address = getOSCAddress();
+	SIMessageList out = IRectShape::getAll ();
+	for (auto elt: fAddressSpace)
+		out->list().push_back (getParamMsg(address + elt.first, elt.second.fValue));
+	return out;
+}
+
+//--------------------------------------------------------------------------
 SIMessageList IFaustProcessor::getMsgs (const IMessage* msg) const
 {
 	string address = getOSCAddress();
   	string tail = stripDepth(msg->address(), getDepth (address.c_str()));
-  	
-	string what;
-  	if ((msg->size() == 1) && tail.empty() && msg->param(0, what) && (what == "*")) {
-  	}
-  	
-//	auto p = fAddressSpace.find (tail);
-//	if (p != fAddressSpace.end()) {
 	string faustaddress = oscaddress2faustaddress(tail);
 	if (!faustaddress.empty()) {
+		string what;
 		auto p = fAddressSpace.find (faustaddress);
 		SIMessageList outMsgs = IMessageList::create();
 		int n = msg->size();

@@ -132,7 +132,8 @@ class IFaustProcessor : public IRectShape
 		// overrides message processing for handling faust address space
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
-
+		virtual SIMessageList getAll() const;
+		
 	protected:
 		std::vector<TFaustParamUpdate> 			fNewValues;
 		std::vector<TFaustKeysUpdate> 			fKeyValues;
