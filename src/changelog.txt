@@ -4,7 +4,7 @@
 GRAME - Centre national de creation musicale
 http://www.grame.fr
 ====================================================
-Copyright GRAME (c) 2009-2020
+Copyright GRAME (c) 2009-2021
 ----------------------------------------------------
 INScore originates from the Interlude project.
 It has been supported by the ANR 
@@ -12,10 +12,19 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
-Version 1.24
+Version 1.26
+- new 'faust' object (web version)
 - new 'connect' method (web version)
+- INScore Web version
 - forwarding mechanism extended with http and ws support
 - 'scale' message supported by log windows
+
+----------------------------------------------------
+Version 1.25
+- internal changes
+
+----------------------------------------------------
+Version 1.24
 - new inscore2 scripting language
 - log window supports the 'scale' message.
 - colors: supports html color names and hex values with 0x as prefix
