@@ -6,6 +6,7 @@
 
 QMAKE ?= qmake
 MAKE  ?= make
+RANGE ?= 
 TARGET := undefined
 
 system	:= $(shell uname -s)
@@ -72,12 +73,22 @@ help :
 	@echo "Project management: "
 	@echo "  qmake    : to regenerate the projects"
 	@echo "  voidview : to regenerate the projects with no view inside a 'noview' folder"
+	@echo "  log      : to generate the git log with optionnal revisions range"
+	@echo "             the range can be specified using the RANGE variable"
+	@echo "             e.g make RANGE=commitref1...commitref2"
 	@echo
 	@echo "Options:"
 	@echo "  ANDROID_API : define the android API to use (currently $(ANDROID_API))"
 	@echo "  ANDROID_ARCH: define the android architecture (currently $(ANDROID_ARCH))"
 	@echo "  GUIDOARDIR  : define the guidoar project location (currently $(GUIDOARDIR))"
 	@echo "  GUIDOLIBDIR : define the guidolib project location (currently $(GUIDOLIBDIR))"
+
+#===============================================================
+# utilities
+#===============================================================
+log:
+	git log --format="%h - %Cblue%s%Creset - %cn %cd"  $(RANGE)
+
 
 #===============================================================
 # building inscore
