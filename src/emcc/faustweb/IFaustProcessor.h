@@ -41,17 +41,6 @@ class Updater;
 class IFaustProcessor;
 typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
 
-class oldFaustProcessorUIElement {
-	public:
-		std::string	fAddress;
-		std::string fType;
-		std::string fLabel;
-		float	fValue, fMin, fMax, fStep;
-	
-				 oldFaustProcessorUIElement(std::string type, std::string label, std::string address, float init, float min, float max, float step) :
-				  fType(type), fLabel(label), fAddress(address), fValue(init), fMin(min), fMax(max), fStep(step) {}
-		virtual ~oldFaustProcessorUIElement() {}
-};
 
 class FaustProcessorUIElement {
 	public:
@@ -96,11 +85,7 @@ class IFaustProcessor : public IRectShape
 	typedef std::map<std::string,float> TParamsValues;
 	TParamsValues fParamValues;
 		
-	std::string address2msg 	(const char * address) const;
-	void 		addMsgHandler 	(const std::string& address, const std::string& name, float min, float max);
-	void 		addMsgHandler 	(const std::string& address, const std::string& name);
-	std::string oscaddress2faustaddress (const std::string& oscaddress) const;
-	float 		getParamValue 	(const std::string& address) const;
+	std::vector<std::string> oscaddress2faustaddress (const std::string& oscaddress) const;
 	SIMessage	getParamMsg		(const std::string& target, float value ) const;
 	template<typename T> SIMessage	getParamMsg	(const std::string& target, const std::string& type, T value ) const {
 		SIMessage msg = IMessage::create(target);
@@ -122,8 +107,7 @@ class IFaustProcessor : public IRectShape
 		bool		playing() const			{ return fPlaying; }
 		void		setIONums (int inputs, int outputs)  { fNumInputs = inputs; fNumOutputs = outputs; }
 		void	 	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
-		void	 	setParamValue (const std::string& address, float val);
-		void	 	setButtonValue (const std::string& address, float val);
+		void	 	setParamValue (const std::string& address, float val, int type);
 
 		const TNewValues& 	getChangedValues() const	{ return fNewValues; }
 		const TKeyValues& 	getKeyValues() const		{ return fKeyValues; }
@@ -137,7 +121,6 @@ class IFaustProcessor : public IRectShape
 	protected:
 		std::vector<TFaustParamUpdate> 			fNewValues;
 		std::vector<TFaustKeysUpdate> 			fKeyValues;
-		std::vector<oldFaustProcessorUIElement> 	fPaths;
 		std::map<std::string, FaustProcessorUIElement> 	fAddressSpace;
 
 				 IFaustProcessor( const std::string& name, IObject * parent);
@@ -154,45 +137,6 @@ class IFaustProcessor : public IRectShape
 		virtual MsgHandler::msgStatus	keyon (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyoff (const IMessage* msg);
 		virtual MsgHandler::msgStatus	allNotesOff (const IMessage* msg);
-
-		// ------------------------
-		// messages handling
-		// ------------------------
-		class SetFaustParamMsgHandler;
-		typedef libmapping::SMARTP<SetFaustParamMsgHandler> SSetFaustParamMsgHandler;
-		class SetFaustParamMsgHandler : public MsgHandler {
-			public:
-				typedef void (IFaustProcessor::*MsgHandlerMethod)(const std::string&, float);
-				virtual float check(float val)	{ return std::min ( std::max(val,fMin), fMax ); }
-				static SSetFaustParamMsgHandler create(IFaustProcessor* obj, MsgHandlerMethod method, const std::string& address, float min, float max)
-						{ return new SetFaustParamMsgHandler(obj, method, address, min, max); }
-				virtual msgStatus operator ()(const IMessage* msg) {
-					float val;
-					if ( msg->size() != 1 || !msg->cast_param(0, val)) return kBadParameters;
-					(fObject->*fMethod)( fAddress, val );
-					return kProcessed;
-				}
-			protected:
-				IFaustProcessor*	fObject;
-				MsgHandlerMethod	fMethod;
-				std::string fAddress;
-				float fMin, fMax;
-				SetFaustParamMsgHandler(IFaustProcessor* obj, MsgHandlerMethod method, const std::string& address, float min, float max) :
-					fObject(obj), fMethod(method), fAddress(address), fMin(min), fMax(max) {}
-		};
-
-		class GetFaustParamMethodHandler;
-		typedef libmapping::SMARTP<GetFaustParamMethodHandler> SGetFaustParamMethodHandler;
-		class GetFaustParamMethodHandler : public TGetParamMethodHandler<IFaustProcessor, float (IFaustProcessor::*)()> {
-			std::string fAddress;
-			typedef float (IFaustProcessor::* GetMethodHandler)(const std::string&) const;
-			GetMethodHandler fFaustGetMethod;
-			GetFaustParamMethodHandler(IFaustProcessor* o, GetMethodHandler m, std::string address) : TGetParamMethodHandler(o,0), fFaustGetMethod(m), fAddress(address) {}
-		public:
-			static SGetFaustParamMethodHandler create(IFaustProcessor* obj, GetMethodHandler method, std::string address) {
-				return new GetFaustParamMethodHandler(obj, method, address); }
-			virtual SIMessage&  print(SIMessage& out) const	{ *out << (fObject->*fFaustGetMethod)(fAddress); return out; }
-	};
 };
 
 /*! @} */

@@ -57,63 +57,13 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kplay_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fPlaying);
-	fGetMultiMsgHandlerMap[kpaths_GetMethod]= TGetParamMultiMethodHandler<IFaustProcessor, SIMessageList (IFaustProcessor::*)() const>::create(this, &IFaustProcessor::getPaths);
 	setPending ();
 }
 
 //--------------------------------------------------------------------------
-SIMessageList IFaustProcessor::getPaths() const
+void IFaustProcessor::setParamValue (const std::string& address, float val, int type)
 {
-	SIMessageList list = IMessageList::create();
-	for (auto elt: fPaths) {
-		SIMessage msg = IMessage::create (elt.fAddress, elt.fType);
-		msg->add (elt.fLabel);
-		if (elt.fType != "button") {
-			msg->add (elt.fValue);
-			msg->add (elt.fMin);
-			msg->add (elt.fMax);
-			msg->add (elt.fStep);
-		}
-		list->list().push_back (msg);
-	}
-	return list;
-}
-
-//--------------------------------------------------------------------------
-void IFaustProcessor::addMsgHandler (const std::string& address, const std::string& name, float min, float max)
-{
-	fMsgHandlerMap[name] 	= SetFaustParamMsgHandler::create(this, &IFaustProcessor::setParamValue, address, min, max);
-	fGetMsgHandlerMap[name]	= GetFaustParamMethodHandler::create(this, &IFaustProcessor::getParamValue, address);
-}
-
-//--------------------------------------------------------------------------
-void IFaustProcessor::addMsgHandler (const std::string& address, const std::string& name)
-{
-	fMsgHandlerMap[name] 	= SetFaustParamMsgHandler::create(this, &IFaustProcessor::setButtonValue, address, 0, 1);
-	fGetMsgHandlerMap[name]	= GetFaustParamMethodHandler::create(this, &IFaustProcessor::getParamValue, address);
-}
-
-//--------------------------------------------------------------------------
-float IFaustProcessor::getParamValue (const std::string& address) const 
-{
-	TParamsValues::const_iterator i = fParamValues.find (address);
-	if (i != fParamValues.end()) return i->second;
-	ITLErr << getOSCAddress() << " " << address << ": no such parameter." << ITLEndl;
-	return 0;
-}
-
-//--------------------------------------------------------------------------
-void IFaustProcessor::setButtonValue(const std::string& address, float val)
-{
-	fNewValues.push_back (TFaustParamUpdate(address, val, TFaustParamUpdate::kButton));
-	fParamValues[address] = val;
-}
-
-//--------------------------------------------------------------------------
-void IFaustProcessor::setParamValue (const std::string& address, float val)
-{
-	fNewValues.push_back (TFaustParamUpdate(address, val));
-	fParamValues[address] = val;
+	fNewValues.push_back (TFaustParamUpdate(address, val, type));
 }
 
 //--------------------------------------------------------------------------
@@ -121,13 +71,6 @@ void IFaustProcessor::setFaustUI (std::string type, std::string label, std::stri
 {
 	FaustProcessorUIElement elt(type, label, init, min, max, step);
 	fAddressSpace[address] = elt;
-	fPaths.push_back ( oldFaustProcessorUIElement(type, label, address, init, min, max, step));
-	string msg = address2msg(address.c_str());
-	fParamValues[address] = init;
-	if (type == "button")
-		addMsgHandler (address, msg);
-	else
-		addMsgHandler (address, msg, min, max);
 }
 
 //--------------------------------------------------------------------------
@@ -144,52 +87,6 @@ void IFaustProcessor::print (IMessage& out) const
 {
 	out.setMessage(kset_SetMethod);
 	out << kFaustProcessorType << fDspCode;
-}
-
-//--------------------------------------------------------------------------
-/*
-There are potential conflicts between the Faust UI objects naming scheme and
-the OSC address space. An OSC symbolic names is an ASCII string consisting of
-printable characters other than the following:
-	space
-#	number sign
-*	asterisk
-,	comma
-/	forward
-?	question mark
-[	open bracket
-]	close bracket
-{	open curly brace
-}	close curly brace
-
-a simple solution to address the problem consists in replacing
-space or tabulation with '_' (underscore)
-all the other osc excluded characters with '-' (hyphen)
-*/
-//--------------------------------------------------------------------------
-std::string IFaustProcessor::address2msg (const char* address) const
-{
-	string out;
-	const char* subst = "";
-	while (*address) {
-		char c = *address++;
-		switch (c) {
-			case ' ': case '	':
-				out += '_';
-				break;
-			case '#': case '*': case ',': case '?':
-			case '[': case ']': case '{': case '}':
-				out += '_';
-				break;
-			case '/':
-				out += subst;
-				subst = "_";
-				break;
-			default:
-				out += c;
-		}
-	}
-	return out;
 }
 
 //--------------------------------------------------------------------------
@@ -260,25 +157,32 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 int IFaustProcessor::processMsg (const string& address, const string& addressTail, const IMessage* msg)
 {
 	if (IObject::accept(address, msg)) {				// first make sure that the object is part of the address
-		string faustaddress = oscaddress2faustaddress(addressTail);
-		if (!faustaddress.empty()) {
+		if (getPending()) {
+			msg->send(true);
+			return MsgHandler::kProcessedNoChange;
+		}
+
+		vector<string> faustaddresses = oscaddress2faustaddress(addressTail);
+		if (faustaddresses.empty()) return IRectShape::processMsg (address, addressTail, msg);
+	
+		for (string faustaddress: faustaddresses) {
 			FaustProcessorUIElement& ui = fAddressSpace[faustaddress];
 			float val;
 			if ((msg->size() == 1) && msg->cast_param(0, val)) {
 				if (val < ui.fMin) val = ui.fMin;
 				if (val > ui.fMax) val = ui.fMax;
 				ui.fValue = val;
-				setParamValue (faustaddress, val);
+				setParamValue (faustaddress, val, (ui.fType=="button" ? TFaustParamUpdate::kButton : TFaustParamUpdate::kOther));
 				setModified();
-				return MsgHandler::kProcessed;
 			}
-			if (msg->message() == kget_SetMethod) {
-				return IRectShape::get (msg);
+			else if (msg->message() == kget_SetMethod) {
+				int ret = IRectShape::get (msg);
+				if ((ret != MsgHandler::kProcessed) || (ret != MsgHandler::kProcessedNoChange)) return ret;
 			}
-			return MsgHandler::kBadParameters;
+			else return MsgHandler::kBadParameters;
 		}
 	}
-	return IRectShape::processMsg (address, addressTail, msg);
+	return MsgHandler::kProcessed;
 }
 
 static int getDepth (const char* addr) {
@@ -295,19 +199,22 @@ static string stripDepth (const string& address, int depth) {
 		n++;
 		if (*ptr++ == '/') depth--;
 	}
-	return (n>0) ? &address[n-1] : "/";
+	if ((n>0) && address[n])
+		return &address[n-1];
+	return "";
 }
 
 //--------------------------------------------------------------------------
-string IFaustProcessor::oscaddress2faustaddress (const string& oscaddress) const
+vector<string> IFaustProcessor::oscaddress2faustaddress (const string& oscaddress) const
 {
+	vector<string> out;
 	OSCRegexp re (oscaddress.c_str());
 	for (auto elt: fAddressSpace) {
 		if (re.match(elt.first.c_str())) {
-			return elt.first;
+			out.push_back(elt.first);
 		}
 	}
-	return "";
+	return out;
 }
 
 //--------------------------------------------------------------------------
@@ -333,11 +240,14 @@ SIMessageList IFaustProcessor::getMsgs (const IMessage* msg) const
 {
 	string address = getOSCAddress();
   	string tail = stripDepth(msg->address(), getDepth (address.c_str()));
-	string faustaddress = oscaddress2faustaddress(tail);
-	if (!faustaddress.empty()) {
+	vector<string> faustparams = oscaddress2faustaddress(tail);
+
+	if (faustparams.empty()) return IRectShape::getMsgs (msg);
+	
+	SIMessageList outMsgs = IMessageList::create();
+	for (auto faustaddress: faustparams) {
 		string what;
 		auto p = fAddressSpace.find (faustaddress);
-		SIMessageList outMsgs = IMessageList::create();
 		int n = msg->size();
 		string target = address + faustaddress;
 		if (n == 0) {
@@ -357,13 +267,12 @@ SIMessageList IFaustProcessor::getMsgs (const IMessage* msg) const
 				else if (what == "step") 	outMsgs->list().push_back (getParamMsg(target, "step", p->second.fStep));
 				else if (what == "type") 	outMsgs->list().push_back (getParamMsg(target, "type", p->second.fType));
 				else if (what == "label") 	outMsgs->list().push_back (getParamMsg(target, "label", p->second.fLabel));
-				else ITLErr << address << "incorrect parameter attribute:" << what << ITLEndl;
+				else ITLErr << address << " incorrect parameter attribute: " << what << ITLEndl;
 			}
-			else ITLErr << address << "incorrect parameter attribute:" << what << ITLEndl;
+			else ITLErr << address << " incorrect parameter attribute: " << what << ITLEndl;
 		}
-		return outMsgs;
 	}
-	return IRectShape::getMsgs (msg);
+	return outMsgs;
 }
 
 }
