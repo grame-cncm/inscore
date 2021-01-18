@@ -29,6 +29,6 @@ class JSAudioView extends JSAutoSize {
 		else this.fAudio.pause();
 		this.fAudio.volume = media.volume;
 		if (media.rate >= 0) 	this.fAudio.playbackRate = media.rate;
-		if (media.mdate >= 0)	this.fAudio.currentTime = media.mdate;
-    }
+		if (media.mdate >= 0)	this.fAudio.currentTime = media.mdate / 1000;
+	}
 }

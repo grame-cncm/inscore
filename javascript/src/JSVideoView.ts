@@ -34,7 +34,7 @@ class JSVideoView extends JSAutoSize {
 		else this.fVideo.pause();
 		this.fVideo.volume = media.volume;
 		if (media.rate >= 0) 	this.fVideo.playbackRate = media.rate;
-		if (media.mdate >= 0)	this.fVideo.currentTime = media.mdate;
+		if (media.mdate >= 0)	this.fVideo.currentTime = media.mdate / 1000;
 		// video.fMLS       = this.fVideo.duration * 1000;
 		// video.fVDuration = this.fVideo.duration / this.fVideo.playbackRate;
     }
