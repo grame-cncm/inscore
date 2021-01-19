@@ -48,7 +48,7 @@
 # define QTView					true
 #endif
 
-#ifdef NO_OSCSTREAM
+#if defined(NO_OSCSTREAM) || defined(IBUNDLE)
 # define HASOSCStream			false
 # else
 # define HASOSCStream			true
@@ -58,7 +58,6 @@
 # define INCLUDEFaustWeb		false
 # define HASQGuidoImporter		true
 # define HASFileDownloader		true
-# define HASOSCStream			true
 # define HASWSSupport			true
 # define HASHTTPSupport			true
 
