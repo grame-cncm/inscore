@@ -14,16 +14,13 @@ system	:= $(shell uname -s)
 # normalizes MINGW versions
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
 
-JOBS ?= 6
 ifeq ($(TARGET), windows)
 	GENERATOR ?= "Visual Studio 15 2017 Win64"
-	J ?= /maxcpucount:$(JOBS)
 endif
 
 ifeq ($(system), Darwin)
 	PREFIX  ?= /usr/local
  	GENERATOR ?= "Xcode"
-	J ?= -jobs $(JOBS)   # parallele jobs for xcode
 endif
 
 ifeq ($(system), MINGW)
@@ -35,17 +32,16 @@ ifeq ($(system), Linux)
 endif
 
 GENERATOR ?= "Unix Makefiles"	# default generator
-J  ?= -j $(JOBS)
 
 
 all :
-	$(MAKE) emcc
+	$(MAKE) wasm
 
 help :
-	@echo "This makefile is intended to build the INScore wasm library."
+	@echo "This makefile is intended to build the INScore model libraries."
 	@echo "Available targets are : "
-	@echo "  emcc   : to build the wasm (default)"
-	@echo "  lib    : to build the inscore model as a library"
+	@echo "  wasm   : to build the wasm library (default)"
+	@echo "  lib    : to build the inscore model as a native library"
 	@echo
 	@echo "Project management: "
 	@echo "  cmake     : to (re)generate the projects"
@@ -58,11 +54,11 @@ help :
 #===============================================================
 # building inscore library
 #===============================================================
-emcc: $(EMCCDIR)
-	$(MAKE) -C $(EMCCDIR) emcc 
+wasm: $(EMCCDIR) $(EMCCDIR)/Makefile
+	$(MAKE) -C $(EMCCDIR) wasm 
 
-lib : $(LIBDIR)
-	$(CMAKE) --build $(LIBDIR) --config Release -- $(J)
+lib : $(LIBDIR) $(LIBDIR)/INScoreModel.xcodeproj
+	$(CMAKE) --build $(LIBDIR) --config Release 
 
 #===============================================================
 # project management
@@ -71,15 +67,19 @@ cmake : $(LIBDIR)  $(EMCCDIR)
 	cd  $(LIBDIR) && $(CMAKE) .. -DEMCC=off $(CMAKEOPT) -G $(GENERATOR)
 	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
 
+$(EMCCDIR)/Makefile: CMakeLists.txt
+	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
+
+$(LIBDIR)/INScoreModel.xcodeproj: CMakeLists.txt
+	cd  $(LIBDIR) && $(CMAKE) .. -DEMCC=off $(CMAKEOPT) -G $(GENERATOR)
+
 $(LIBDIR):
 	mkdir $(LIBDIR)
-	cd  $(LIBDIR) && $(CMAKE) .. -DEMCC=off $(CMAKEOPT) -G $(GENERATOR)
 
 $(EMCCDIR):
 	mkdir $(EMCCDIR)
-	cd  $(EMCCDIR) && $(CMAKE) .. $(CMAKEOPT) -DEMCC=on
 
 clean:
 	rm -rf $(LIBDIR)  $(EMCCDIR) 
-	rm -f ../libINScore.wasm ../libINScore.js
+	rm -f ../lib/libINScore.wasm ../lib/libINScore.js
 	

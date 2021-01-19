@@ -1,10 +1,10 @@
 #######################################
-# CMAKE INScore core library
+# CMAKE INScore model library
 #######################################
 cmake_minimum_required(VERSION 3.4.0)
 
 set(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
-project(INScoreJS)
+project(INScoreModel)
 
 set (CMAKE_BUILD_TYPE Release)
 
@@ -29,7 +29,10 @@ message (STATUS "Configuring version ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION
 #######################################
 # Output folders 
 set (BINDIR ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set (LIBDIR ${ROOT}/build/lib)
+set (SRCDIR      ${ROOT}/src)
+set (EMCCSRCDIR  ${SRCDIR}/emcc)
+set (INSCOREDIR  ${SRCDIR}/inscore)
 
 set (CMAKE_CXX_STANDARD 11)
 
@@ -45,10 +48,10 @@ set ( CMAKE_CXX_COMPILER 	"emcc")
 set ( CMAKE_CXX_LINK_FLAGS "")
 set (WASM_LINK_FLAGS "--bind -O3 --memory-init-file 0 -s LINKABLE=1 -s WASM=1 -s EXPORT_NAME=\"'INScoreModule'\" -s MODULARIZE=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1 -s DISABLE_EXCEPTION_CATCHING=1  -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\"]'")
 
-file (GLOB EMCCSRC 	bindings/*.cpp)
-set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
+file (GLOB EMCCSRC 	${EMCCSRCDIR}/bindings/*.cpp)
+#set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 set (SRC  ${SRC} ${EMCCSRC})
-set (INCDIRS  ${INCDIRS} bindings)
+set (INCDIRS  ${INCDIRS} ${EMCCSRCDIR}/bindings)
 set (DEFS ${DEFS} "-DOSC_HOST_LITTLE_ENDIAN" "-DEMCC" ${EMCCDEBUGOPTION})
 
 if (EMCCDEBUG)
@@ -61,26 +64,17 @@ endif()
 
 #######################################
 # set directories, src and headers.
-set (SRCDIR      ${ROOT}/src)
-set (INSCOREDIR  ${SRCDIR}/inscore)
-set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view signal ../emcc/faustweb)
+set (INSCOREDIRS ITLParser events lib model scripting signal controller expression expression/parser interface mapping view signal)
 set (INSCORE2DIR ${SRCDIR}/inscore2)
-if (USEOSC)
-set (INSCOREDIRS ${INSCOREDIRS} osc)
-endif()
 set (MAPPINGDIR  ${SRCDIR}/libmapping/src)
 set (VIEWSDIR    ${SRCDIR}/view)
 set (PUBLICDIR   ${INSCOREDIR}/interface)
 set (LOCALLIB 	 ${ROOT}/lib)
 set (OSCPACK     ${LOCALLIB}/oscpack)
 set (JSON        ${SRCDIR}/json)
-if (win32) 
-	set (OSCIP ${OSCPACK}/ip/win32 )
-else()     
-	set (OSCIP ${OSCPACK}/ip/posix )
-endif()
 
 set (GUIDOAR      ${ROOT}/guidoar/src)
+
 
 
 
@@ -101,13 +95,16 @@ file (GLOB MAPHEADERS 	"${MAPPINGDIR}/*/*.h" )
 file (GLOB MISCSRC 		"${JSON}/*.cpp" )
 file (GLOB MISCHEADERS 	"${JSON}/*.h" )
 
+file (GLOB FAUSTSRC 	"${EMCCSRCDIR}/faustweb/*.cpp" )
+file (GLOB FAUSTHEADERS "${EMCCSRCDIR}/faustweb/*.h" )
+
 message (STATUS "Generates INScore library with HTML view")
 file (GLOB VIEWSRC 		"${VIEWSDIR}/HTMLVIEW/*.cpp")
 file (GLOB VIEWHEADERS  "${VIEWSDIR}/HTMLVIEW/*.h")
 set  (INCDIRS ${INCDIRS} ${VIEWSDIR}/HTMLVIEW)
 
-set (SRC ${SRC}	${CORESRC} ${CORE2SRC} ${MAPSRC} ${OSCSRC} ${MISCSRC} ${VIEWSRC} )
-set (HEADERS ${COREHEADERS} ${CORE2HEADERS} ${MAPHEADERS} ${OSCHEADERS} ${MISCHEADERS} ${VIEWHEADERS} )
+set (SRC ${SRC}	${CORESRC} ${CORE2SRC} ${MAPSRC} ${OSCSRC} ${MISCSRC} ${VIEWSRC} ${FAUSTSRC})
+set (HEADERS ${COREHEADERS} ${CORE2HEADERS} ${MAPHEADERS} ${OSCHEADERS} ${MISCHEADERS} ${VIEWHEADERS} ${FAUSTHEADERS})
 
 set (DEFS ${DEFS} -DHTMLVIEW)
 set (DEFS ${DEFS} -DNO_OSCSTREAM)
@@ -133,14 +130,16 @@ set (DEFS ${DEFS} -DHAS_LIBMAPPING_SMARTP)
 ####################################
 # include directories
 set (INCDIRS  ${INCDIRS}
-	${INSCOREDIR}/controller ${INSCOREDIR}/events ${INSCOREDIR}/expression ${INSCOREDIR}/expression/parser ${INSCOREDIR}/parser
+	${INSCOREDIR}/controller ${INSCOREDIR}/events ${INSCOREDIR}/expression 	
+	${INSCOREDIR}/expression/parser ${INSCOREDIR}/parser
 	${INSCOREDIR}/httpserver ${INSCOREDIR}/interface ${INSCOREDIR}/ITLParser
 	${INSCOREDIR}/lib ${INSCOREDIR}/mapping ${INSCOREDIR}/model
-	${INSCOREDIR}/scripting ${INSCOREDIR}/sensors ${INSCOREDIR}/signal ${SRCDIR}/emcc/faustweb
+	${INSCOREDIR}/scripting ${INSCOREDIR}/sensors ${INSCOREDIR}/signal ${EMCCSRCDIR}/faustweb
 	${INSCOREDIR}/view ${INSCOREDIR}/web ${INSCOREDIR}/osc
 	${INSCORE2DIR} ${INSCORE2DIR}/eval ${INSCORE2DIR}/parser ${INSCORE2DIR}/sorter)
 
-set (INCDIRS ${INCDIRS} ${MAPPINGDIR}/misc ${MAPPINGDIR}/parser ${MAPPINGDIR}/relations ${MAPPINGDIR}/segments)
+set (INCDIRS ${INCDIRS} 
+	${MAPPINGDIR}/misc ${MAPPINGDIR}/parser ${MAPPINGDIR}/relations ${MAPPINGDIR}/segments)
 set (INCDIRS ${INCDIRS} ${JSON})
 set (INCDIRS ${INCDIRS} ${LOCALLIB}/GuidoEngine/include ${LOCALLIB}/GuidoAR/include)
 
@@ -154,15 +153,15 @@ set (DEFS ${DEFS} -DHAVE_CONFIG_H=1 -DJSON_ONLY -DINScore_EXPORTS)
 if(APPLE)
 	set (LIBS ${LIBS} "-L/usr/local/lib -lmicrohttpd")
 	set (LIBS ${LIBS} "-F${LOCALLIB}/GuidoEngine/macosx/ -F${LOCALLIB}/GuidoAR/macosx/")
-	set (LIBS ${LIBS} "-framework GUIDOEngine -framework GuidoAR -framework CoreFoundation")
+	set (LIBS ${LIBS} "-framework GUIDOEngine -framework CoreFoundation")
 	set (DEFS ${DEFS} -DMACOS)
 elseif (UNIX)
-	set (LIBS ${LIBS} "-lGUIDOEngine -lguidoar")
+	set (LIBS ${LIBS} "-lGUIDOEngine")
 	set (DEFS ${DEFS} "-DOSC_HOST_LITTLE_ENDIAN -D__LINUX__")
 elseif (WIN32)
 	enable_language(RC)
 	set (SRC ${SRC} ${ROOT}/win32/INScore.rc)
-	set (LIBS ${LIBS} "winmm.lib" "ws2_32.lib" "${LOCALLIB}/GuidoEngine/win64/GUIDOEngine64.lib" "${LOCALLIB}/GuidoAR/win64/guidoar.lib")
+	set (LIBS ${LIBS} "winmm.lib" "ws2_32.lib" "${LOCALLIB}/GuidoEngine/win64/GUIDOEngine64.lib")
 	set (INCDIRS ${INCDIRS} ${ROOT}/win32/dirent)
 	set (DEFS ${DEFS} "-DMSVC -D_USE_MATH_DEFINES -DNOMINMAX -D_CRT_SECURE_NO_WARNINGS -DWINDOWS")
 endif()
@@ -171,7 +170,7 @@ endif()
 # describe targets
 # message ("INCDIRS ${INCDIRS}")
 if (EMCC)
-set (target emcc)
+set (target wasm)
 message (STATUS "Generates project for emcc")
 add_executable(${target} EXCLUDE_FROM_ALL ${SRC} ${HEADERS})
 target_include_directories (${target} PRIVATE ${INCDIRS})

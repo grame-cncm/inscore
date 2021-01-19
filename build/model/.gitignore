@@ -1,0 +1,4 @@
+bin/
+emccdir/
+libdir/
+tests/libINScore.*
