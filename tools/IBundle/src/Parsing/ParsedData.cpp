@@ -20,11 +20,12 @@
   Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
   research@grame.fr
 */
-#include "ParsedData.h"
 
+#include <sstream>
 #include <deelx.h>
 
 #include "ExprInfo.h"
+#include "ParsedData.h"
 
 
 

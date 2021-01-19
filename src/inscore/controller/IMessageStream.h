@@ -35,6 +35,7 @@
 #include "IMessage.h"
 #include "maptypes.h"
 #include "smartpointer.h"
+#include "TRect.h"
 
 namespace inscore
 {

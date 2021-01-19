@@ -41,6 +41,7 @@
 #include "IFilterForward.h"
 #include "Tools.h"
 #include "IAppl.h"
+#include "OSCStream.h"
 
 #include "json_object.h"
 #include "json_element.h"

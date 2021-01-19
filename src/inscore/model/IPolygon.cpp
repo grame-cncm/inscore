@@ -25,6 +25,7 @@
 
 #include "IPolygon.h"
 #include "IMessage.h"
+#include "OSCStream.h"
 #include "Updater.h"
 
 using namespace std;

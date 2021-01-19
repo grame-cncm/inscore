@@ -42,6 +42,7 @@
 #endif
 
 #if defined(__MOBILE__)
+#include "INScoreScene.h"
 #include "VMobileSceneView.h"
 #elif QTView
 #include "INScoreScene.h"

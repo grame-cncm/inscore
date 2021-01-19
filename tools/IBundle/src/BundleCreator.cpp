@@ -23,6 +23,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sstream>
+
 #include "ScriptsParser.h"
 #include "ParsedData.h"
 #include "INScore.h"

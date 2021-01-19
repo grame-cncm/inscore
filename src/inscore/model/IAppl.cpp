@@ -51,6 +51,7 @@
 #include "ITLError.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
+#include "OSCStream.h"
 #include "TMessageEvaluator.h"
 #include "Tools.h"
 #include "TSorter.h"
