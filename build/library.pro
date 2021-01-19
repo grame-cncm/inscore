@@ -69,6 +69,7 @@ include($$SRC/QArchive/qarchive.pri)
 # include directories
 ############################## 
 INCLUDEPATH  =  $$files($$SRC/inscore/[^.]*)
+INCLUDEPATH +=  $$files($$SRC/inscore/model/servers)
 INCLUDEPATH +=  $$files($$SRC/inscore2)
 INCLUDEPATH +=  $$files($$SRC/inscore2/eval)
 INCLUDEPATH +=  $$files($$SRC/inscore2/parser)
@@ -166,12 +167,12 @@ macx {
 # ios x support
 ############################## 
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 11.0
+#    QMAKE_IOS_DEPLOYMENT_TARGET = 11.0
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += INSCORE_IOS __MOBILE__
-    CONFIG += arm64 armv7 armv7s # x86_64
+    CONFIG += arm64 armv7 armv7s 
     CONFIG += staticlib
     LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
     LIBS += $$ROOT/lib/GuidoAR/ios/libguidoar.a
