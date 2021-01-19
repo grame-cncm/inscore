@@ -2,17 +2,8 @@
 node_modules/
 
 inscoreview.js
-inscoretests.js
+inscoreglue.js
 test.js
-validation/old
-emcc/emccdir
-emcc/libdir
-emcc/lib
-package-lock.json
 TSCheck
 
-lib/
-lib/libGUIDOEngine.*
-lib/libmusicxml.*
-lib/libINScore.js
-lib/libINScore.wasm
+lib/*
