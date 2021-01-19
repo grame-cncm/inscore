@@ -7,7 +7,7 @@
 	<link href="../css/inscore.css" rel="stylesheet">
 	<script src="../lib/libINScore.js"></script>
 	<script src="../inscoreview.js"></script>
-	<script src="../inscoretests.js"></script>
+	<script src="../inscoreglue.js"></script>
 	<style>
 	body { margin: 50; background: gainsboro; height: 100%; }
 	.box { width: 100%; height: 80%; border-radius: 15px; font-size: 1px; }
@@ -16,8 +16,6 @@
 
 <body>
 
-<h1>La montagne Sainte-Victoire (2020)</h1>
-<h2>Jonathan Bell</h2>
 <div class="inscore box" id="scene">
 
 	/ITL/scene/* del;
@@ -31,13 +29,12 @@
 
 	
 	imgs = "/imgs/";
-	imglocation = $imgs + "stevictoire/";
-	/ITL/scene/container/sc0 set img $imglocation + "sc0.png";
+	/ITL/scene/container/sc0 set img $imgs + "parm-oeil.jpg";
 	
-	/ITL/scene/container/sc0 map '( [140, 3949[ [0, 619[ ) ( [0:0:0, 0:4:30[ )';
+	/ITL/scene/container/sc0 map '( [0, 555[ [0, 179[ ) ( [0:0:0, 0:4:30[ )';
 	/ITL/scene/container/sc0 scale 1;
 
-	/ITL/scene/container/cursor set rect 0.05 0.5;
+	/ITL/scene/container/cursor set rect 0.02 0.5;
 	/ITL/scene/container/cursor xorigin -0.5;
 	/ITL/scene/container/cursor color red;
 	/ITL/scene/container/sync cursor sc0 v ;
@@ -45,25 +42,13 @@
 	/ITL/scene/text set txt Violon;
 	/ITL/scene/text color red;
 	/ITL/scene/text scale 2;
-	/ITL/scene/text xorigin 1;
+	/ITL/scene/text xorigin 1.2;
 	/ITL/scene/text x -1;
 	
-	
-<!-- 	
-	/ITL/scene/container/cursor date 0.5;
-	/ITL/scene/container/cursor date 0;
-	/ITL/scene/container/cursor tempo 10;
-	/ITL/scene/container/cursor tempo 0;
+__END__
+	/ITL/scene/container/cursor date 0.25;
 
-	/ITL/scene/sync cursor sc0 relative;
-	msg = (
-		/ITL/log write x "$x" "$absx" date "$date%f",
-		/ITL/scene/cursor date "$date"
-	);
-	/ITL/scene/sc0 watch mouseDown $msg;
-	/ITL/scene/sc0 watch mouseMove $msg;
- -->
-				
+
 </div>
 
 </body>
