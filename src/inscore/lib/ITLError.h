@@ -25,7 +25,7 @@
 
 #include "Modules.h"
 
-#if !HASOSCStream
+#if !HASOSCStream || defined(IBUNDLE)
 #define ITLErr	std::cerr
 #define ITLEndl	std::endl
 #define ITLError std::ostream;			// static ITL error output stream
