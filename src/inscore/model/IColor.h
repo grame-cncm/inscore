@@ -29,7 +29,6 @@
 #include <iostream>
 #include <vector>
 
-#include "OSCStream.h"
 #include "IMessageStream.h"
 #include "IMessageHandlers.h"
 #include "ISignalHandlers.h"
