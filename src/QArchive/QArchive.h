@@ -61,7 +61,7 @@ public:
 	 * \param data the archive data
 	 * \param error Contains the error that happened during reading of the archive (contain ARCH_OK=0 if no error)1
 	 */
-	static QArchive* readArchiveFromData(const QByteArray& data, QArchiveError& error);
+	static QArchive* readArchiveFromData(const char* data, int size, QArchiveError& error);
 	//! \brief	Overide readArchiveFromData(const QByteArray& data, QArchiveError& error) with a pointer to a byte array
 	static QArchive* readArchiveFromData(QByteArray* data, QArchiveError& error)	{ return readArchive(new QBuffer(data),error);}
 

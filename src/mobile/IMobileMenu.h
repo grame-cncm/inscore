@@ -27,6 +27,9 @@
 
 #include "IMenu.h"
 
+
+class INScoreApplicationGlue;
+
 namespace inscore {
 
 /*!
@@ -46,7 +49,7 @@ class IMobileMenu : public IMenu
 
 	public:
 		/// \brief creates a new IApplLog
-		static SIMenu create(IObject * parent);
+		static SIMenu create(const INScoreApplicationGlue* glue, IObject * parent);
 
 		/*!
 		 * \brief window get the view of the class

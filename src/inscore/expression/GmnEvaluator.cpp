@@ -27,7 +27,7 @@
 #include "IGuidoCode.h"
 #include "IGuidoPianoRollFile.h"
 #include "libguidoar.h"
-#include "QGuidoImporter.h"
+#include "XMLImporter.h"
 
 using namespace std;
 
@@ -116,22 +116,20 @@ const string GmnEvaluator::eval(const string &arg, const IExprArgBase *)
 {
 	std::string gmn = arg;
 	if(isXml(arg)){
-		if(!QGuidoImporter::musicxmlSupported()){
+		if(!XMLImporter::musicxmlSupported()){
 			ITLErr<< evaluatorName() << ": MusicXML import is not available"<<ITLEndl;
 			return fEvalStatus.fail();
 		}
 
 		//Converting MusicXML to GMN
 		std::stringstream sstr;
-		if(!QGuidoImporter::musicxmlString2Guido ( arg.c_str(), true, sstr)){
+		if(!XMLImporter::musicxmlString2Guido ( arg.c_str(), true, sstr)){
 			ITLErr<< evaluatorName() << ": Cannot convert MusicXML to GMN."<<ITLEndl;
 			return fEvalStatus.fail();
 		}
 
 		gmn = sstr.str();
 	}
-
-
 	return gmn;
 }
 

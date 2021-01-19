@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -27,6 +27,7 @@
 
 
 #include "ISceneSync.h"
+#include "INScore.h"
 #include "IMessage.h"
 #include "Updater.h"
 
@@ -184,6 +185,34 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& ma
 }
 
 //--------------------------------------------------------------------------
+// return the elements of list that are not in list2
+vector<SMaster> ISceneSync::diff (const vector<SMaster>& list, const vector<SMaster>& list2) const
+{
+	vector<SMaster> out;
+	for (auto m: list) {
+		auto i = std::find (list2.begin(), list2.end(), m);
+		if (i == list2.end()) out.push_back(m);
+	}
+	return out;
+}
+
+//--------------------------------------------------------------------------
+// return the elements of list objects that require a new master
+IObject::subnodes ISceneSync::newSync (const std::vector<SMaster>& masters, const subnodes& objs, const string& slaveMap) const
+{
+	subnodes out;
+	for (auto o: objs) {
+		bool found = false;
+		for (auto m: masters) {
+			if ((m->getMaster() == o) && (m->getSlaveMapName() == slaveMap)) { found = true; break; };
+		}
+		if (!found) out.push_back(o);
+	}
+	return out;
+
+}
+
+//--------------------------------------------------------------------------
 // creates a synchronization between objects
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& slaveMap, const string& master, const string& masterMap,
@@ -193,24 +222,30 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& sl
 	if (!fParent->find(slave, sobj) || !fParent->find(master, mobj))
 		return MsgHandler::kBadParameters;						// no target objects for slave or for master
 
-	for (subnodes::iterator i = sobj.begin(); i != sobj.end(); i++) {	// for each slave
-		SIObject so = *i;
-		bool exist = false;
+#ifdef EMCC
+	for (auto m: mobj) {
+		if (m->getPending()) return MsgHandler::kDelayed;
+	}
+	for (auto so: sobj) {	// for each slave
+		if (so->getPending()) return MsgHandler::kDelayed;
+	}
+#endif
 
-																		// look for existing sync
-		vector<SMaster> mlist = fParent->getMasters (so, master, masterMap);
-		size_t n = mlist.size();
-		for (size_t i = 0; i < n; i++) {
-			Master* m = mlist[i];
-			if ( m->getSlaveMapName() == slaveMap )  {			// there is already a sync between both that are using the same maps
-				m->setSyncOptions (align, stretch, syncmode);	// update the sync options
-				exist = true;
-			}
+	for (auto so: sobj) {	// for each slave
+
+		vector<SMaster> existing = fParent->getMasters (so);
+		vector<SMaster> inlist = fParent->getMasters (so, master, masterMap);
+		vector<SMaster> notinlist  = diff (existing, inlist);
+		vector<SMaster> update  = diff (existing, notinlist);
+		subnodes newsync = newSync (inlist, sobj, slaveMap);
+
+		for (auto m: update) {
+			if (m->getSlaveMapName() == slaveMap )
+				m->setSyncOptions (align, stretch, syncmode);
 		}
-		if (!exist) {											// no existing sync
-			for (size_t i = 0; i < mobj.size(); i++) {			// create the sync for each master
-				sync(so, Master::create(mobj[i], align, stretch, syncmode, masterMap , slaveMap ));
-			}
+		for (auto o: newsync) {
+			for (auto m: mobj)									// create the sync for each master
+				sync(o, Master::create(m, align, stretch, syncmode, masterMap , slaveMap ));
 		}
 		so->setState (kMasterModified);
 	}
@@ -301,8 +336,15 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	Master::VAlignType align = Master::kDefaultSyncAlign;
 	Master::StretchType stretch = Master::kDefaultStretch;
 	Master::SyncType syncType = Master::kDefaultSync;
-	if (index == n) 	// we've reached the end of the parameters: creates the sync using default values
-        return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+	if (index == n) {	// we've reached the end of the parameters: creates the sync using default values
+        MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+#ifdef EMCC
+		if (ret == MsgHandler::kDelayed)
+			msg->send(true);
+//			INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
+#endif
+		return ret;
+	}
 
 	if (msg->param(index++, str)) {	// look for the next parameter
 		if(str == kdel_SetMethod) 	// and check for the delete form #2
@@ -317,7 +359,13 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 		} else break;
 	} while (true);
 	// eventually sets the synchonization with the optional parameters
-    return syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+    MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
+#ifdef EMCC
+	if (ret == MsgHandler::kDelayed)
+		msg->send(true);
+//		INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
+#endif
+    return ret;
 }
 
 //--------------------------------------------------------------------------

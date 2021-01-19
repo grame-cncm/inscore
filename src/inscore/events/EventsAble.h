@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -43,12 +43,17 @@ namespace inscore
 //----------------------------------------------------------------------
 class EventsAble
 {
+	bool	fModified = false;   // a flag for EMCC, active for mouse events  only
+
 	public:
 		typedef const char* eventype;
 	
 				 EventsAble();
 		virtual ~EventsAble();
-		
+
+		bool modified() const 		{ return fModified; }
+		void cleanup () 			{ fModified = false; }
+
 		/// \brief replaces the message list associated to the event t
 		void			setMsg (eventype t, SIMessageList msgs);
 		/// \brief adds a message list to the messages associated to the event t
@@ -67,6 +72,7 @@ class EventsAble
 		const IMessageList*	getMessages (eventype t) const					{ return fMsgMap.get(fHash(t)); }
 		const IMessageList*	getMouseMsgs (eventype t) const					{ return fMsgMap.get(fHash(t)); }
 		const IMessageList*	getTimeMsgs (eventype t, const RationalInterval& time) const;
+		const size_t		countMouseMsgs (eventype t) const				{ return fMsgMap.count(fHash(t)); }
 
 		void triggerEvent(eventype t, const bool& delay=false) const		{fMsgMap.trigger(fHash(t), delay);}
 

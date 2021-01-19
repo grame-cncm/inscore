@@ -1,0 +1,83 @@
+# variables declaration 
+pi    = 3.141592653589793;
+
+# the 'step' variable makes use of 'count'
+# a variable that is instantiated locally
+step  = / ( * 2, $pi), $count;
+
+# the variable 'i' is defined by the 
+# expansion of the address 'n_[i:1...9]'
+x = math.sin ( * $step, $i );
+y = math.cos ( * $step, $i );
+
+# the following variables select part of
+# guido music notation code to build a short score
+dyn = (?  (% $i, 3), 
+	'\i<"p">', 
+	'\i<"ff">');
+note = (+ $dyn, (?  (% $i, 2), 
+	" e2", 
+	" g1/8"));
+
+# this is a classical OSC message
+# that simply clears the scene
+/ITL/scene/* del;
+
+# this is the main variable. It will be
+# expanded to create a series of small scores.
+# The variables are computed using locally 
+# defined variales.  
+notes = (/ITL/scene/box/$addr  
+	(set gmn (+ "[ ", $note, "]")),
+	(scale 1.5),
+	(x * $x, $radius),
+	(y * $y, $radius)); 
+
+/ITL/scene/box set layer;
+
+# finally the 'notes' variable is used 
+# addr, count and radius are local
+$notes{ addr=n_[i:1...9], count=9, radius=0.75 };
+
+/ITL/scene/line set line wa ( 1.8, 90);
+
+/ITL/scene/box watch ddate (
+	(/ITL/scene/box dangle -0.1),
+	(/ITL/scene/box/* dangle 0.1)
+	);
+
+/ITL/scene/line watch ddate (/ITL/scene/line dangle 0.15);
+	
+
+# adds a simple button to control play/pause
+control = /ITL/scene/$addr  (set img "imgs/play.png"),
+					(scale 0.09),
+					(x $x),
+					(y $y),
+					(watch mouseDown 	(
+						(/ITL/scene/$self push),
+						($msgon),
+						(/ITL/scene/$self set img "imgs/pause.png"),
+						(/ITL/scene/$self watch mouseDown 	(
+							($msgoff),
+							(/ITL/scene/$self set img "imgs/play.png"),
+							(/ITL/scene/$self pop)
+						)))); 
+
+$control{addr=controlbox, x=0, y=0, msgon=(/ITL/scene/box tempo 60), msgoff=(/ITL/scene/box tempo 0)};
+$control{addr=controlline, x=0, y=0.95, msgon=(/ITL/scene/line tempo 60), msgoff=(/ITL/scene/line tempo 0)};
+
+__END__
+
+/ITL/scene opengl 1;
+
+grey = (150, 150, 150, 120);
+/ITL/scene/c* effect shadow (6, 6, $grey, 6);
+/ITL/scene export;
+
+
+/ITL/log level 2;
+/ITL parse v2;
+/ITL get parse;
+
+/ITL preprocess "circlenotes.inscore2";

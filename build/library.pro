@@ -20,6 +20,7 @@ GUIDOAR_PATH= $$LOCALLIB/GuidoAR
 OSC         = $$LOCALLIB/oscpack
 QRENCODE    = $$LOCALLIB/qrencode
 JSON        = $$SRC/json
+QTIMPL      = $$SRC/Qt
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
@@ -30,6 +31,7 @@ QT += qml # quick quickwidgets
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
+DEFINES += QTVIEW		# use the Qt Javascript engine
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_LESS_55}
 
@@ -45,6 +47,8 @@ SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
+SOURCES +=  $$files($$QTIMPL/*.cpp)
+SOURCES +=  $$files($$QTIMPL/sensors/*.cpp)
 
 HEADERS  =  $$files($$SRC/inscore/*.h, true)
 HEADERS +=  $$files($$SRC/inscore2/*.h, true)
@@ -54,6 +58,8 @@ HEADERS +=  $$files($$SRC/libmapping/src/*.h, true)
 HEADERS +=  $$files($$OSC/ip/*.h)
 HEADERS +=  $$files($$OSC/OSC/*.h)
 HEADERS +=  $$files($$JSON/*.h)
+HEADERS +=  $$files($$QTIMPL/*.h)
+HEADERS +=  $$files($$QTIMPL/sensors/*.h)
 win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
 #QArchive
@@ -76,6 +82,8 @@ INCLUDEPATH +=  $$files($$QRENCODE)
 INCLUDEPATH +=  $$files($$JSON)
 INCLUDEPATH +=  $$GUIDO_PATH/include
 INCLUDEPATH +=  $$GUIDOAR_PATH/include
+INCLUDEPATH +=  $$QTIMPL
+INCLUDEPATH +=  $$QTIMPL/sensors
 
 
 ############################## 
@@ -85,10 +93,15 @@ INCLUDEPATH +=  $$GUIDOAR_PATH/include
 NOVIEW {
 	message ("Compiled with no view - remove CONFIG+=NOVIEW to change.")
 	DEFINES += NOVIEW
-	SOURCES  +=  $$files($$SRC/VoidView/*.cpp)
-	HEADERS  +=  $$files($$SRC/VoidView/*.h)
-	INCLUDEPATH +=  $$files($$SRC/VoidView)
+	SOURCES  +=  $$files($$SRC/view/VoidView/*.cpp)
+	HEADERS  +=  $$files($$SRC/view/VoidView/*.h)
+	INCLUDEPATH +=  $$SRC/view/VoidView
 } else {
+	SOURCES  +=  $$files($$SRC/view/QtView/*.cpp)
+	SOURCES  +=  $$files($$SRC/view/guidoqt/*.cpp)
+	HEADERS  +=  $$files($$SRC/view/QtView/*.h)
+	HEADERS  +=  $$files($$SRC/view/guidoqt/*.h)
+	INCLUDEPATH +=  $$SRC/view/QtView $$SRC/view/guidoqt
     message ("Compiled with Qt view - add CONFIG+=NOVIEW to change to no view.")
 }
 
@@ -126,10 +139,10 @@ win32 {
 # macos x support
 ############################## 
 macx {
-	DESTDIR = $$PWD/bin
+	!NOVIEW { DESTDIR = $$PWD/bin }
 	QT += opengl
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.7
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7 
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.11
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.11 
 	CONFIG += lib_bundle explicitlib
 	QMAKE_INFO_PLIST = $$PWD/libInfo.plist
 	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/

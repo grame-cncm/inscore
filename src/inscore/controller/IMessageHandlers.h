@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -59,7 +59,7 @@ class MsgHandler : public libmapping::smartable {
 		virtual ~MsgHandler() {}
 	public:
 		/// \brief the possible message processing states
-		enum msgStatus	{ kBadAddress, kProcessed=1, kProcessedNoChange=2, kBadParameters=4, kCreateFailure=8 };
+		enum msgStatus	{ kBadAddress, kProcessed=1, kProcessedNoChange=2, kBadParameters=4, kCreateFailure=8, kDelayed=16 };
 		virtual msgStatus operator ()(const IMessage* msg)  = 0;
 };
 typedef libmapping::SMARTP<MsgHandler> SMsgHandler;
@@ -350,6 +350,7 @@ template <typename T> class TGetParamMsgHandler : public GetParamMsgHandler {
 ///! \brief a get object parameter method handler 
 //--------------------------------------------------------------------------
 template <typename C, typename T> class TGetParamMethodHandler : public GetParamMsgHandler {
+	protected:
 		C* fObject;
 		T fMethod;
 		TGetParamMethodHandler(C* obj, T method) : fObject(obj), fMethod(method) {}

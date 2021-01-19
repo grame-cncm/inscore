@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -29,6 +29,7 @@
 
 #include "export.h"
 #include "IModelTypes.h"
+#include "Modules.h"
 #include "smartpointer.h"
 
 namespace inscore
@@ -64,14 +65,12 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (IAudio*) {}
 		virtual void updateTo (ICurve*) {}
 		virtual void updateTo (IEllipse *) {}
-		virtual void updateTo (IGestureFollower*) {}
 		virtual void updateTo (IGraphicSignal*) {}
 		virtual void updateTo (IGrid *) {}
 		virtual void updateTo (IGuidoCode*) {}
 		virtual void updateTo (IGuidoPianoRoll*) {}
 		virtual void updateTo (IGuidoPianoRollStream *) {};
 		virtual void updateTo (IHtml*) {}
-		virtual void updateTo (IHttpd*) {}
 		virtual void updateTo (IImage*) {}
 		virtual void updateTo (ILayer *) {}
 		virtual void updateTo (ILine*) {}
@@ -89,6 +88,12 @@ class inscore_export Updater : public libmapping::smartable
 		virtual void updateTo (IText*) {}
 		virtual void updateTo (IUrlIntermediateObject*) {}
 		virtual void updateTo (IVideo*) {}
+#if INCLUDEGestureFollower
+		virtual void updateTo (IGestureFollower*) {}
+#endif
+#if INCLUDEHttp
+		virtual void updateTo (IHttpd*) {}
+#endif
 };
 typedef class libmapping::SMARTP<Updater>	SUpdater;
 

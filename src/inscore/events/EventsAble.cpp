@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -87,16 +87,18 @@ EventsAble::~EventsAble ()	{}
 void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 {
 	fMsgMap.set(fHash(t), msgs);
-
-	if(msgs && isMouseEvent(t)){
-		if(fMouseSensible){
-			if(!msgs->list().size() && !checkMouseSensibility()){
-				fMouseSensible = false;
-				setMouseEventSensibility(false);
+	if (isMouseEvent(t)) {
+		fModified = true;
+		if(msgs) {
+			if(fMouseSensible){
+				if(!msgs->list().size() && !checkMouseSensibility()){
+					fMouseSensible = false;
+					setMouseEventSensibility(false);
+				}
+			}else if(!msgs->list().empty()){
+				fMouseSensible = true;
+				setMouseEventSensibility(true);
 			}
-		}else if(!msgs->list().empty()){
-			fMouseSensible = true;
-			setMouseEventSensibility(true);
 		}
 	}
 }
@@ -104,11 +106,15 @@ void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
 //----------------------------------------------------------------------
 void EventsAble::addMsg(EventsAble::eventype t, SIMessageList msgs)
 {
-	fMsgMap.add(fHash(t), msgs);
-
-	if(!fMouseSensible && isMouseEvent(t)) {
-		fMouseSensible = true;
-		setMouseEventSensibility(true);
+	size_t hash = fHash(t);
+	size_t prevcount = fMsgMap.count(hash);
+	fMsgMap.add(hash, msgs);
+	if (isMouseEvent(t)) {
+		fModified = true;
+		if(!fMouseSensible) {
+			fMouseSensible = true;
+			setMouseEventSensibility(true);
+		}
 	}
 }
 
@@ -116,6 +122,7 @@ void EventsAble::addMsg(EventsAble::eventype t, SIMessageList msgs)
 //----------------------------------------------------------------------
 void EventsAble::reset ()
 { 
+	fModified = true;
 	fMsgMap.clear();
 	fTimeEnterMsgMap.clear();
 	fTimeLeaveMsgMap.clear();

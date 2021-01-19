@@ -1,0 +1,67 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libmusicxml.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
+	<style>
+	body { margin: 30; background: gainsboro; height: 100%; }
+	.box { width: 100%; height: 70%; border-radius: 15px; font-size: 1px; }
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="inscore box" id="scene">
+/ITL/scene/* del;
+
+url = "../imgs/";
+
+/ITL/scene/score set img $url + "Applebaum.jpg";
+/ITL/scene/score scale 0.9;
+/ITL/scene/score duration 8;
+
+<!-- 
+/ITL/scene/cursor set rect 0.009 0.1;
+/ITL/scene/c set rect 0.01 0.6;
+/ITL/scene/c color grey;
+
+play  = $url + "play.png";
+pause = $url + "pause.png";
+
+/ITL/scene/ctrlplay set img $play;
+/ITL/scene/ctrlrev set img $play;
+/ITL/scene/ctrlrev angle 180;
+/ITL/scene/ctrlpause set img $pause;
+/ITL/scene/ctrl* show 0;
+/ITL/scene/ctrl* scale 0.12;
+/ITL/scene/ctrl* y 0.85;
+/ITL/scene/ctrlplay x 0.1;
+/ITL/scene/ctrlrev x -0.1;
+/ITL/scene/ctrl* show 1;
+
+/ITL/scene/ctrlplay watch mouseDown  ( /ITL/scene/cursor tempo 60 );
+/ITL/scene/ctrlrev watch mouseDown   ( /ITL/scene/cursor tempo -60 );
+/ITL/scene/ctrlpause watch mouseDown ( /ITL/scene/cursor tempo 0 );
+
+g = 150;
+grey = $g $g $g;
+/ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self scale 0.13 );
+/ITL/scene/ctrl* watch mouseLeave ( /ITL/scene/$self scale 0.12 );
+ -->
+
+
+</div>
+
+</body>
+
+</html>

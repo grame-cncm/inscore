@@ -20,6 +20,9 @@
   Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
   research@grame.fr
 */
+
+#include <string>
+
 #include "ExprManipulator.h"
 
 #include "ITLError.h"
@@ -28,9 +31,7 @@
 #include "ExprReader.h"
 
 #include "IGuidoCode.h"
-//#include "IObject.h"
 
-#include <string>
 
 using namespace std;
 

@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -32,13 +32,13 @@
 #include <regex>
 #include <sstream>
 
-#include <QDir>
-#include <QApplication>
-#include <QFontDatabase>
-#include <QStandardPaths>
-#include <QNetworkInterface>
-#include <QDesktopServices>
 
+#if ANDROID || INSCORE_IOS
+#include <QDir>
+#include <QStandardPaths>
+#endif
+
+#include "Modules.h"
 #include "Events.h"
 #include "Forwarder.h"
 #include "IAppl.h"
@@ -51,8 +51,6 @@
 #include "ITLError.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
-#include "QFileDownloader.h"
-#include "QGuidoImporter.h"
 #include "TMessageEvaluator.h"
 #include "Tools.h"
 #include "TSorter.h"
@@ -66,6 +64,8 @@
 #else
 #include "IMenu.h"
 #endif
+
+#include "XMLImporter.h"
 
 using namespace std;
 
@@ -113,11 +113,11 @@ string IAppl::fRootPath;
 void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
 
 
-inscore::SIMenu getMenuNode(inscore::IObject * parent) {
+inscore::SIMenu getMenuNode(inscore::IAppl * appl) {
 #ifdef __MOBILE__
-	return inscore::IMobileMenu::create(parent);
+	return inscore::IMobileMenu::create(appl->getApplicatonGlue(), appl);
 #else
-	return inscore::IMenu::create(parent);
+	return inscore::IMenu::create(appl);
 #endif
 }
 
@@ -159,13 +159,17 @@ float	IAppl::fCompatibilityVersionNum = 0.;	// the supported version number as f
 unsigned long IAppl::kUPDPort = 7000;			//Default listening port
 udpinfo IAppl::fUDP(IAppl::kUPDPort);
 string	IAppl::fDefaultFontName("Carlito");		// the default font name
+#ifdef EMCC
+int		IAppl::fRate = 20;
+#else
 int		IAppl::fRate = 10;
+#endif
 double	IAppl::fRealRate = fRate;
 std::string	IAppl::fParseVersion = "v1";
 
 
 //--------------------------------------------------------------------------
-IAppl::IAppl(QApplication* appl, bool offscreen)
+IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	: IObject(kName, 0), fCurrentTime(0), fCurrentTicks(0), 
 	fOffscreen(offscreen), fAppl(appl)
 {
@@ -175,7 +179,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fCompatibilityVersionNum = fVersionNum;
 	fStartTime = TWallClock::time();
 
-	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::helloMsg);
+	fMsgHandlerMap[khello_SetMethod]			= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::helloMsg);
 //	fMsgHandlerMap["activate"]					= TMethodMsgHandler<IAppl, void (IAppl::*)() const>::create(this, &IAppl::activate);
 	fMsgHandlerMap[kload_SetMethod]				= TMethodMsgHandler<IAppl>::create(this, &IAppl::loadMsg);
 	fMsgHandlerMap[kpreprocess_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::preProcessMsg);
@@ -188,7 +192,7 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[ktime_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
 	fMsgHandlerMap[kticks_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTicks);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
-	fMsgHandlerMap["urlCache"]					= TMethodMsgHandler<IAppl>::create(this, &IAppl::urlCache);
+//	fMsgHandlerMap["urlCache"]					= TMethodMsgHandler<IAppl>::create(this, &IAppl::urlCache);
 
 	fMsgHandlerMap[kcompatibility_GetSetMethod]		= TSetMethodMsgHandler<IAppl,float>::create(this, &IAppl::setCompatibilityVersion);
 	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPortHandler);
@@ -214,6 +218,11 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
+#ifdef EMCC
+	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::connect);
+	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getCnxList);
+#endif
+
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 	fMsgHandlerMap[kstartBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::startBench);
 	fMsgHandlerMap[kstopBench_SetMethod]		= TMethodMsgHandler<IAppl, void (IAppl::*)()>::create(this, &IAppl::stopBench);
@@ -221,32 +230,19 @@ IAppl::IAppl(QApplication* appl, bool offscreen)
 	fMsgHandlerMap[kwriteBench_SetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::writeBench);
 #endif
 
-	QGuidoImporter gi;
+	XMLImporter gi;
 	gi.initialize();
-
-
-	const string applfont = ":/fonts/Carlito-Regular.ttf";
-	int result = QFontDatabase::addApplicationFont (applfont.c_str());
-	if (result < 0) {
-		cerr << "Cannot load application font " << applfont << endl;
-	}
-	else {
-		QFontDatabase dbf;
-		QFont f = dbf.font(fDefaultFontName.c_str(), "Regular", 12);
-		fAppl->setFont (f);
-	}
-	timerStart();
 }
 
 //--------------------------------------------------------------------------
-IAppl::~IAppl() 					{ QTimer::stop(); }
+IAppl::~IAppl() 					{ }
 bool IAppl::oscDebug() const		{ return fApplDebug->getOSCDebug(); }
 
 //--------------------------------------------------------------------------
 string IAppl::checkRootPath(const std::string& s)
 {
-	if (!Tools::isurl(s) && !QDir( QString::fromUtf8(s.c_str()) ).exists() )
-		ITLErr << "rootPath is an invalid location:" << s << ITLEndl;
+//	if (!Tools::isurl(s) && !QDir( QString::fromUtf8(s.c_str()) ).exists() )
+//		ITLErr << "rootPath is an invalid location:" << s << ITLEndl;
 	string root = s;
 	char end = root[root.length()-1];
 	if (end == '\\')   root[root.length()-1] = '/';
@@ -266,10 +262,10 @@ int IAppl::getParseVersion ()
 }
 
 //--------------------------------------------------------------------------
-void IAppl::timerStart ()	{ QTimer::start(1); inscore2::TSorter::start (TWallClock::time()); }
+void IAppl::startTime ()	{ inscore2::TSorter::start (TWallClock::time()); }
 
 //--------------------------------------------------------------------------
-void IAppl::timerEvent ( QTimerEvent * )
+void IAppl::timeTask ()
 {
  	int curdate = int(TWallClock::time()) - inscore2::TSorter::offset();
 	do {
@@ -416,7 +412,7 @@ int IAppl::processAlias (const TAlias& alias, const IMessage* imsg)
 			}
 			i++;			// i maintains the correspondence between args and params
 			if (!psize) {	// check if there are more args than params
-				for (i; i<n; i++) m->add (imsg->param(i));	// add the remaining args
+				for (; i<n; i++) m->add (imsg->param(i));	// add the remaining args
 			}
 			status = processMsg (head, tail, m);	// and finally process the resolved message
 			if (status != MsgHandler::kProcessed) {
@@ -481,23 +477,28 @@ void IAppl::error () const
 SIMessage IAppl::hello()	const
 {
 	SIMessage msg = IMessage::create (getOSCAddress());
+#if HASOSCStream
 	*msg << getIP() << getUDPInPort() << getUDPOutPort() << getUDPErrPort();
+#else
+	*msg << "running" <<  "without" << "OSC" << "support";
+#endif
 	return msg;
 }
 
 //--------------------------------------------------------------------------
-void IAppl::helloMsg() const
+void IAppl::helloMsg()
 {
 	SIMessage msg = hello();
+#if HASOSCStream
 	msg->print(oscout);
+#endif
+	IApplLog* log = getLogWindow();
+	if (log && log->acceptMsgs()) {
+		stringstream sstr;
+		sstr <<  msg;			// and print it to the string stream
+		log->print (sstr.str().c_str());
+	}
 }
-
-//--------------------------------------------------------------------------
-//void IAppl::activate() const
-//{
-//	ITLErr << "activate "  << ITLEndl;
-//	fAppl->postEvent (fAppl, new QEvent(QEvent::ApplicationActivate));
-//}
 
 //--------------------------------------------------------------------------
 string IAppl::guidoversion() const
@@ -546,9 +547,16 @@ MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::connect(const IMessage* msg)
+{
+	return fConnecter.processConnectMsg(msg);
+}
+
+//--------------------------------------------------------------------------
 void IAppl::clock()
 {
-	QMutexLocker locker (&fTimeMutex);
+	std::unique_lock<std::mutex> lock(fTimeMutex);
+//	QMutexLocker locker (&fTimeMutex);
 	fCurrentTime = TWallClock::time() - fStartTime;
 	fCurrentTicks++;
 }
@@ -557,24 +565,16 @@ void IAppl::clock()
 void IAppl::quit()
 {
 	fRunning = false;
+#if ANDROID || INSCORE_IOS
 	QString bundleTempFolder = QDir::temp().absolutePath()+QDir::separator()+"INScore";
 	QDir(bundleTempFolder).removeRecursively();
+#endif
 }
 
 //--------------------------------------------------------------------------
-string IAppl::getIP()
+string IAppl::getIP() const
 {
-	QNetworkInterface ni;
-	QList<QHostAddress>	hl = ni.allAddresses();
-	for (int i=0; i < hl.size(); i++) {
-		unsigned long ip = hl[i].toIPv4Address();
-		if (ip) {
-			unsigned long classe = ip >> 24;
-			if ((classe >= 192) && (classe <= 223))		// look for a classe C network
-				return hl[i].toString().toStdString();
-		}
-	}
-	return "";
+	return fAppl->getIP();
 }
 
 //--------------------------------------------------------------------------
@@ -583,7 +583,8 @@ MsgHandler::msgStatus IAppl::setTime(const IMessage* msg)
 	if (msg->size() == 1) {
 		int time;
 		if (msg->param(0, time)) {
-			QMutexLocker locker (&fTimeMutex);
+			std::unique_lock<std::mutex> lock(fTimeMutex);
+//			QMutexLocker locker (&fTimeMutex);
 			fStartTime = TWallClock::time() + time;
 			return MsgHandler::kProcessed;
 		}
@@ -597,7 +598,8 @@ MsgHandler::msgStatus IAppl::setTicks(const IMessage* msg)
 	if (msg->size() == 1) {
 		int ticks;
 		if (msg->param(0, ticks)) {
-			QMutexLocker locker (&fTimeMutex);
+			std::unique_lock<std::mutex> lock(fTimeMutex);
+//			QMutexLocker locker (&fTimeMutex);
 			fCurrentTicks = ticks;
 			return MsgHandler::kProcessed;
 		}
@@ -606,19 +608,19 @@ MsgHandler::msgStatus IAppl::setTicks(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IAppl::urlCache(const IMessage *msg)
-{
-	if (msg->size() == 1) {
-		std::string t;
-		if (msg->param(0, t)) {
-			if(t==kclear_SetMethod){
-				NetworkAccess::instance()->clearCache();
-				return MsgHandler::kProcessed;
-			}
-		}
-	}
-	return MsgHandler::kBadParameters;
-}
+//MsgHandler::msgStatus IAppl::urlCache(const IMessage *msg)
+//{
+//	if (msg->size() == 1) {
+//		std::string t;
+//		if (msg->param(0, t)) {
+//			if(t==kclear_SetMethod){
+//				NetworkAccess::instance()->clearCache();
+//				return MsgHandler::kProcessed;
+//			}
+//		}
+//	}
+//	return MsgHandler::kBadParameters;
+//}
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
@@ -628,9 +630,9 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 		string status;
 		if (msg->param(0, status)) {
 			if (status == "hide") 
-				fAppl->setOverrideCursor( QCursor( Qt::BlankCursor ) );
+				fAppl->showMouse( false );
 			else
-				fAppl->setOverrideCursor( QCursor( Qt::ArrowCursor ) );
+				fAppl->showMouse( true );
 			return MsgHandler::kProcessed;
 		}
 	}
@@ -682,8 +684,9 @@ MsgHandler::msgStatus IAppl::browseMsg(const IMessage* msg)
 		url ="file:/";
 		url += absolutePath(file);
 	}
-	QUrl qurl(url.c_str());
-	bool ret = QDesktopServices::openUrl(qurl);
+//	QUrl qurl(url.c_str());
+//	bool ret = QDesktopServices::openUrl(qurl);
+	bool ret = fAppl->openUrl(url.c_str());
 	if (!ret) return MsgHandler::kCreateFailure;
 	return MsgHandler::kProcessedNoChange;
 }

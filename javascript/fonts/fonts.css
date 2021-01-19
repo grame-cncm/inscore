@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'Guido2';
+    src: url('guido2-webfont.woff') format('woff'),
+	     url('guido2-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'carlitobold';
+    src: url('carlito-bold-webfont.woff2') format('woff2'),
+         url('carlito-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'carlitobold_italic';
+    src: url('carlito-bolditalic-webfont.woff2') format('woff2'),
+         url('carlito-bolditalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'carlitoitalic';
+    src: url('carlito-italic-webfont.woff2') format('woff2'),
+         url('carlito-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'carlito';
+    src: url('carlito-regular-webfont.woff2') format('woff2'),
+         url('carlito-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

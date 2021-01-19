@@ -18,14 +18,15 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 
-#ifndef __IModel__
-#define __IModel__
+#pragma once
+
+#include "Modules.h"
 
 #include "IAppl.h"
 #include "IApplVNodes.h"
@@ -35,10 +36,14 @@
 #include "ICurve.h"
 #include "IEllipse.h"
 #include "IFileWatcher.h"
+#if INCLUDEFaust
 #include "IFaustProcessor.h"
 #include "IFaustDSP.h"
 #include "IFaustDSPFile.h"
+#endif
+#if INCLUDEGestureFollower
 #include "IGestureFollower.h"
+#endif
 #include "IGraphicSignal.h"
 #include "IGrid.h"
 #include "IGuidoCode.h"
@@ -49,7 +54,6 @@
 #include "IGuidoStream.h"
 #include "IHtml.h"
 #include "IHtmlFile.h"
-#include "IHttpd.h"
 #include "IImage.h"
 #include "ILayer.h"
 #include "ILine.h"
@@ -71,5 +75,11 @@
 #include "ITextFile.h"
 #include "IVideo.h"
 #include "IUrlIntermediateObject.h"
+
+#if INCLUDEHttp
+#include "IHttpd.h"
+#endif
+#if INCLUDEWebSocket
 #include "IWebSocket.h"
 #endif
+

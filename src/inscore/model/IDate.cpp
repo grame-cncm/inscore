@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -68,12 +68,13 @@ libmapping::rational IDate::getDate () const
 //--------------------------------------------------------------------------
 void IDate::setDate (const rational& date)
 { 
-if (date.getNumerator() < 0)
-	cerr << "IDate::setDate " << date << endl;
+//	if (date.getNumerator() < 0)
+//		cerr << "IDate::setDate " << date << endl;
 	if (date.getDenominator() == 0) return;
+
 	if (fDate != date) {
 		handleTimeChange(fDate, date);
-		fDate = date;
+		fDate = (date.getNumerator() < 0) ? fDate : date; // don't change the date if num is < 0
 		fDateChanged = true;
 	}
 }

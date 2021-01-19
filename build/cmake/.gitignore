@@ -1,0 +1,11 @@
+bin/
+emccdir/
+js/libINScore.js
+js/libINScore.wasm
+lib/
+libdir/
+js/check/
+js/inscoreview.js
+js/src/js/
+node_modules
+package-lock.json

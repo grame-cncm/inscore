@@ -1,5 +1,5 @@
 /*
-  Copyright (c) Grame 2009
+  Copyright (c) Grame 2009-2020
 
   This library is free software; you can redistribute it and modify it under
   the terms of the GNU Library General Public License as published by the
@@ -14,7 +14,7 @@
   along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.
 
-  Grame Research Laboratory, 9, rue du Garet 69001 Lyon - France
+  Grame Research Laboratory, 11, cours de Verdun-Gensoul 69002 Lyon - France
   research@grame.fr
   
 */
@@ -24,37 +24,39 @@
 
 #include <string>
 #include <vector>
-#include <QLibrary>
 
 namespace inscore
 {
 
-class TPlugin : public QLibrary {
+class TPlugin {
 
 	public:
 	static std::string	fLocation;
 
 				 TPlugin()		{};
-		virtual ~TPlugin()		{ if (isLoaded()) unload(); };
+		virtual ~TPlugin()		{};
 
 		// Gives the possible locations of a plugin in precedence order:
-		// in the current folder first, a PlugIns folder in application bundle on macos, 
+		// in the current folder first,
+		// a PlugIns folder in application bundle on macos,
 		// a PlugIns folder in application folder
-		void	locations (const char* library, std::vector<std::string>& list);
+		virtual void					locations (const char* library, std::vector<std::string>& list) = 0;
 
-		// load the libray
+		// load a libray
 		// when the library name is an absolute path and if loading fails, try to use the file name only
-		bool	load (const char* library);
-		template <typename T> T	resolve (const char* f)	{ return T(QLibrary::resolve(f)); }
+		virtual bool 			load 	(const char* library)	= 0;
+		template <typename T> T	resolve (const char* f)		{ return T(_resolve(f)); }
 
-		std::string	errorString () const	{ return QLibrary::errorString().toStdString(); }
+		virtual std::string	errorString () const	= 0;
 
 		// add a path to the plugins locations and starts looking at this location
 		// next the standard strategy is applied
 		static void	location (std::string path)		{ fLocation = path; }
 		static void	resetlocation ()				{ fLocation.clear(); }
-};
 
+	protected:
+		virtual void* _resolve (const char* f)	= 0;
+};
 
 } // end namespace
 

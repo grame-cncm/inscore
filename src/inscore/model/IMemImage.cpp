@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -28,7 +28,8 @@
 #include "ITLError.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VImageView.h"
+#include "VObjectView.h"
+//#include "VImageView.h"
 
 using namespace std;
 
@@ -65,10 +66,10 @@ MsgHandler::msgStatus IMemImage::set (const IMessage* msg )
 		if (obj) {
 			VObjectView* view = getView();
 			VObjectView* srcview = obj->getView();
-			if (view && srcview) view->setImage(srcview);
-
-			VImageView * imgView = view ? dynamic_cast<VImageView*>(view) : 0;
-			imgView->updateLocalMapping(this);
+			if (view && srcview) {
+				view->setImage(srcview);
+				view->updateLocalMapping(this);
+			}
 			return MsgHandler::kProcessed;
 		}
 	}

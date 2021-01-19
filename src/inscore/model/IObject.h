@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -34,23 +34,22 @@
 
 #include "browsable.h"
 #include "EventsAble.h"
-#include "GraphicEffect.h"
+#include "IColor.h"
 #include "IDate.h"
+#include "IEffect.h"
 #include "IMessageHandlers.h"
+#include "IPosition.h"
 #include "IShape.h"
 #include "ISignalHandlers.h"
-#include "IColor.h"
-#include "IPosition.h"
 #include "maptypes.h"
 #include "Methods.h"
-#include "rational.h"
-#include "TSegmentation.h"
-#include "TRelation.h"
-#include "TMapable.h"
 #include "PeriodicTask.h"
-#include "smartpointer.h"
-
-
+#include "TComposition.h"
+#include "TLocalMapping.h"
+#include "TMapable.h"
+#include "TRefinedComposition.h"
+#include "TRelation.h"
+#include "TSegmentation.h"
 
 namespace inscore
 {
@@ -93,7 +92,7 @@ class TQtJs;
 	synchronization, objects carry a flag to denote pending deletion. Real deletion is in charge
 	of the \c cleanup method.
 */
-class IObject : public IPosition, public IShape, public IDate, public IColor, public EventsAble,
+class IObject : public IPosition, public IShape, public IDate, public IColor, public IEffect, public EventsAble,
 				public browsable, public TMapable, virtual public libmapping::smartable , public PeriodicTask
 {
 	public:
@@ -109,6 +108,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
 		bool	fLock;					///< if true the object can't be deleted
+		int		fPending = 0;		///< true when the object data are pending  (like width, height, mapping...) intended for javascript version
 		int		fState;					///< the object modification state
 		///< the object export flag and the object childexport option flag (if the children should be exported as well)
 		std::deque<std::pair<std::string, bool> >	fExportFlag;
@@ -203,6 +203,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief returns the current content of the object editor
 		virtual void	setEditString(const std::string& str) { fEditString = str; }
 
+		/// \briefclear the pending state of an object
+		virtual void	ready();
+
 		/*!
 		 * \brief returns the next object export-flag with file path and draw children flag to draw or not object children.
 		 * \return a pair of file path and drawChildren flag. If file path is empty not export are needed.
@@ -249,10 +252,13 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief returns true when the object has no subnode
 		virtual bool	empty () const				{ return size() == 0; }
-				
+						
 		/// \brief returns the object globalmodification state
 				int		getState () const			{ return fState; }
-				
+			
+		/// \brief returns the object globalmodification state
+				void	clearState () 				{ fState = kClean; }
+
 		/// \brief sets the object global modification state \see getState
 		virtual	void	setState (state s);
 		/// \brief sets the object modification state and propagate \c kSubModified up
@@ -483,6 +489,11 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual subnodes	invertedSort ();
     
     
+		/*! \brief retrieve the masters of an object
+			\return a list of master, empty when not found
+		*/
+		virtual std::vector<SMaster> getMasters() const;
+
 		/*! \brief gives (one of) the masters of an object
 			\param o the object to look for in the synchronization set
 			\return the object master or 0 when not found
@@ -506,9 +517,14 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/*! \brief gives the slaves of an object
 			\param o the object to look for in the synchronization set
 			\return a vector of all the slaves or an empty vector when not found
-		*/    
+		*/
         virtual std::vector<SIObject> getSlaves(const SIObject o) const;
 	
+		/*! \brief gives the slaves of an object
+			\return a vector of all the slaves or an empty vector when not found
+		*/
+        virtual std::vector<SIObject> getSlaves() const;
+
 		/*! \brief gives a date location on the object frame
 			\param date a date
 			\param p	on output: the corresponding point
@@ -517,7 +533,23 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			This method is intended to support the frame synchronization mode: 
 		*/
         virtual bool date2FramePoint(const libmapping::rational& date, TFloatPoint& p) const;
-	
+
+		/*	\brief convert a location into a date using a named mapping
+			\param x		the point x coordinate
+			\param y		the point y coordinate
+			\param mapname	the map to be used for conversion
+			\param n		the repeat number to be retrieved (indexed from 0)
+			\return a date
+		*/
+		virtual libmapping::rational point2date (float x, float y, const std::string& mapname, int n) const;
+
+		/*	\brief convert a location into a date
+			\param x		the point x coordinate
+			\param y		the point y coordinate
+			\return a date
+		*/
+		virtual libmapping::rational point2date (float x, float y) const;
+		
         /// \brief a periodic task to propagate modification state from masters to slaves
 		virtual void ptask ();
     
@@ -528,7 +560,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\return the corresponding handler if any
 		*/
 		virtual SSigHandler			signalHandler(const std::string& method, bool match=false) const;
-	
+
+	void originshift (float& relx, float& rely) const;
+	bool getPending () const 								{ return fPending; }
+
 	protected:	
 		VObjectView* fView;		///< the object view
 		IObject*	fParent;	///< the parent node
@@ -540,6 +575,25 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void positionAble ();			///< \brief set the position message handlers
 		virtual void shapeAble ();				///< \brief set the shape message handlers
 		virtual void timeAble ();				///< \brief set the time message handlers
+
+		template <typename T, unsigned int D>
+		void updateMappings ( //const std::string& mapName, SGraphic2LocalMap<T,D> g2l, SLocal2TimeMap<T,D> local2time, bool refine=false)
+			const std::string& mapName , libmapping::SMARTP<libmapping::TMapping<float,2,T,D> > g2l,
+			libmapping::SMARTP<libmapping::TMapping<T,D, libmapping::rational,1> > local2time,
+			bool refine=false)
+		{
+			// if refined, create the graphic to time composition using a refined composition
+			if (refine) {
+				typedef libmapping::TRefinedComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time->direct(), g2l->reverse() );
+				setMapping( mapName , t2gr );
+			}
+			else {
+				typedef libmapping::TComposition <libmapping::rational,1,T,D, float,2> T2GComposition;
+				SRelativeTime2GraphicMapping t2gr = T2GComposition::create( local2time->reverse(), g2l->reverse() );
+				setMapping( mapName , t2gr );
+			}
+		}
 
 		virtual void setMouseEventSensibility(bool mouseSensible);
 
@@ -607,8 +661,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 	//--------------------------------------------------------------------------
 		/// \brief the \c 'effect' message handler
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
-		virtual bool           getLocked () const {return fLock;}
-		virtual GraphicEffect  getEffect () const;
+		virtual bool           getLocked () const 	{ return fLock;}
+		virtual void           setPending () 		{ fPending++; }
 		virtual SIMessageList  getWatch () const;
 		virtual SIMessageList  getStack () const;
 		virtual SIMessageList  getAliases () const;
@@ -676,6 +730,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief object \c 'edit' message handler.
 		virtual MsgHandler::msgStatus editMsg (const IMessage* msg);
+
+		/// \brief set the object hierarchy modified
+		virtual void refresh ();
 
 };
 

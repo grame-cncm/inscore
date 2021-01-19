@@ -1,0 +1,286 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore / Faust</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 80%; height: 80%; border-radius: 15px; font-size: 1px; }
+	pre  { width: 80%; border-style: solid; border-width: 1px; border-radius: 15px; visibility: hidden; background-color: white;}
+	#triangle:hover { cursor: pointer; }
+	</style>
+	<script>
+		function loadinscore() {
+			let div = document.getElementById ("code");
+			let scene = document.getElementById ("scene");
+			scene.textContent = div.textContent;
+		}
+		function showcode() {
+			var div = document.getElementById ("code");
+			let t = document.getElementById ("triangle");
+		 	if (div.style.visibility == "visible") {
+				div.style.visibility = "hidden";
+				t.innerHTML = "&#9655;";
+			 }
+			else {
+				div.style.visibility = "visible";
+				t.innerHTML = "&#9661;";
+			}
+		}
+	</script>	
+</head>
+
+<body>
+
+<h1>INScore JS & Faust</h1>
+<div class="inscore box" id="scene">
+
+</div>
+<p>
+	<span onclick=showcode() id=triangle>&#9655;</span> INScore code
+</p>
+<pre id=code>
+
+
+	/ITL/scene/* del;
+
+	/ITL/scene/title  set  txt "Using <a href=http://faust.grame.fr>Faust</a> Dsp Objects";
+	/ITL/scene/title color darkBlue;
+	/ITL/scene/title fontSize 24;
+	grey = 180;
+	/ITL/scene/title effect shadow 3 3 $grey $grey $grey 75 2;
+	/ITL/scene/title y -0.85;	
+	
+	/ITL/scene/o1 set ellipse 1.2 0.8;
+	/ITL/scene/o1 rotatex 60;
+	/ITL/scene/o1 rotatez 60;
+	
+	/ITL/scene/o2 set ellipse 1.7 0.75;
+	/ITL/scene/o2 rotatex 60;
+	/ITL/scene/o2 x 0.1;
+	
+	/ITL/scene/o3 set ellipse 1.2 0.5;
+	/ITL/scene/o3 rotatex 40;
+	/ITL/scene/o3 rotatez 85;
+	
+	/ITL/scene/o4 set ellipse 1.3 0.5;
+	/ITL/scene/o4 rotatey 40;
+	/ITL/scene/o4 rotatez -55;
+	
+	/ITL/scene/o* brushStyle none;
+	/ITL/scene/o* penWidth 1;
+	
+	
+	w = 0.10;
+	/ITL/scene/p1 set ellipse $w $w;
+	/ITL/scene/p1 color blue;
+	
+	w = 0.08;
+	/ITL/scene/p2 set ellipse $w $w;
+	/ITL/scene/p2 color red;
+	
+	w = 0.09;
+	/ITL/scene/p3 set ellipse $w $w;
+	/ITL/scene/p3 color sienna;
+	
+	w = 0.09;
+	/ITL/scene/p4 set ellipse $w $w;
+	/ITL/scene/p4 color darkViolet;
+	
+	w = 0.17;
+	alpha = 0.2;
+	/ITL/scene/sun set ellipse $w $w;
+	/ITL/scene/sun color orange;
+	/ITL/scene/sun alpha $alpha;
+	/ITL/scene/sun watch mouseEnter (/ITL/scene/sun alpha 1.);
+	/ITL/scene/sun watch mouseLeave (/ITL/scene/sun alpha $alpha);
+	/ITL/scene/sun watch mouseDown (
+		/ITL/scene/sun push,
+		/ITL/scene/cp* show 1,
+		/ITL/scene/sun watch mouseDown (
+			/ITL/scene/cp* show 0,
+			/ITL/scene/sun pop
+		)
+	);
+	/ITL/scene/sun z 2;
+	
+	w = 0.3;
+	h = 0.3;
+	alpha = 0.2;
+	/ITL/scene/cp1m set rect $w $h;
+	/ITL/scene/cp2m set rect $w $h;
+	/ITL/scene/cp3m set rect $w $h;
+	/ITL/scene/cp4m set rect $w $h;
+	/ITL/scene/cp?m color lightgray;
+	/ITL/scene/cp* y 0.65;
+	/ITL/scene/cpreset set txt "Reset";
+	/ITL/scene/cpreset y 0.92;
+	/ITL/scene/cpreset fontSize 18;
+	/ITL/scene/cpreset alpha $alpha;
+	/ITL/scene/cp?m yorigin -1;
+	/ITL/scene/cp?m xorigin -1;
+	cpw = 0.25;
+	/ITL/scene/cp1m/cp set ellipse $cpw $cpw;
+	/ITL/scene/cp1m/cp color blue;
+	/ITL/scene/cp2m/cp set ellipse $cpw $cpw;
+	/ITL/scene/cp2m/cp color red;
+	/ITL/scene/cp3m/cp set ellipse $cpw $cpw;
+	/ITL/scene/cp3m/cp color sienna;
+	/ITL/scene/cp4m/cp set ellipse $cpw $cpw;
+	/ITL/scene/cp4m/cp color darkViolet;
+	/ITL/scene/cp* show 0;
+	/ITL/scene/cp* penColor grey;
+	
+	/ITL/scene/cp?m watch mouseEnter ( /ITL/scene/$self penWidth 1 );
+	/ITL/scene/cp?m watch mouseLeave ( /ITL/scene/$self penWidth 0 );
+	/ITL/scene/cpreset watch mouseEnter ( /ITL/scene/$self alpha 1. );
+	/ITL/scene/cpreset watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+
+	tempo1 = 20;
+	tempo2 = 33;
+	tempo3 = 11;
+	tempo4 = 27;
+	freq1 = 440;
+	freq2 = 840;
+	freq3 = 312;
+	freq4 = 546;
+
+	/ITL/scene/cpreset watch mouseDown ( 
+		/ITL/scene/faust1 FaustDSP_karplus_params_freq $freq1,
+		/ITL/scene/faust2 FaustDSP_karplus_params_freq $freq2,
+		/ITL/scene/faust3 FaustDSP_karplus_params_freq $freq3,
+		/ITL/scene/faust4 FaustDSP_karplus_params_freq $freq4,
+		/ITL/scene/p1 tempo $tempo1,
+		/ITL/scene/p2 tempo $tempo2,
+		/ITL/scene/p3 tempo $tempo3,
+		/ITL/scene/p4 tempo $tempo4
+	 );
+
+	ctrl1 =	( 
+		/ITL/scene/$self/cp x "$x[-1.,1.]",
+		/ITL/scene/$self/cp y "$y[-1.,1.]",
+		/ITL/scene/faust1 FaustDSP_karplus_params_freq "$y[1320,110]",
+		/ITL/scene/p1 tempo "$x[5,240]"
+	);
+	ctrl2 =	( 
+		/ITL/scene/$self/cp x "$x[-1.,1.]",
+		/ITL/scene/$self/cp y "$y[-1.,1.]",
+		/ITL/scene/faust2 FaustDSP_karplus_params_freq "$y[1320,110]",
+		/ITL/scene/p2 tempo "$x[5,240]"
+	);
+	ctrl3 =	( 
+		/ITL/scene/$self/cp x "$x[-1.,1.]",
+		/ITL/scene/$self/cp y "$y[-1.,1.]",
+		/ITL/scene/faust3 FaustDSP_karplus_params_freq "$y[1320,110]",
+		/ITL/scene/p3 tempo "$x[5,240]"
+	);
+	ctrl4 =	( 
+		/ITL/scene/$self/cp x "$x[-1.,1.]",
+		/ITL/scene/$self/cp y "$y[-1.,1.]",
+		/ITL/scene/faust4 FaustDSP_karplus_params_freq "$y[1320,110]",
+		/ITL/scene/p4 tempo "$x[5,240]"
+	);
+
+	/ITL/scene/cp1m watch mouseDown $ctrl1;
+	/ITL/scene/cp1m watch mouseMove $ctrl1;
+	/ITL/scene/cp2m watch mouseDown $ctrl2;
+	/ITL/scene/cp2m watch mouseMove $ctrl2;
+	/ITL/scene/cp3m watch mouseDown $ctrl3;
+	/ITL/scene/cp3m watch mouseMove $ctrl3;
+	/ITL/scene/cp4m watch mouseDown $ctrl4;
+	/ITL/scene/cp4m watch mouseMove $ctrl1;
+	/ITL/scene/cp?m/cp watch mouseDown;
+	/ITL/scene/cp?m/cp watch mouseMove;
+		
+	w = 0.3;
+	shift = $w * 1.1;
+	/ITL/scene/cp1m x -0.95 ;
+	/ITL/scene/cp2m x -0.95 + $shift;
+	/ITL/scene/cp3m x 0.65;
+	/ITL/scene/cp4m x 0.65 - $shift;
+
+	
+	/ITL/scene/p* watch timeEnter 1 2 (/ITL/scene/$self date 0);
+	
+	/ITL/scene/sync p1 o1 syncFrame;
+	/ITL/scene/sync p2 o2 syncFrame;
+	/ITL/scene/sync p3 o3 syncFrame;
+	/ITL/scene/sync p4 o4 syncFrame;
+	
+	/ITL/scene/control set txt "Play";
+	/ITL/scene/control fontSize 20;
+	/ITL/scene/control watch mouseEnter (/ITL/scene/$self red 240);
+	/ITL/scene/control watch mouseLeave (/ITL/scene/$self red 0);
+	/ITL/scene/control y 0.80;
+
+	
+	/ITL/scene/control watch mouseDown (
+		/ITL/scene/$self push,
+		/ITL/scene/p1 tempo $tempo1,
+		/ITL/scene/p2 tempo $tempo2,
+		/ITL/scene/p3 tempo $tempo3,
+		/ITL/scene/p4 tempo $tempo4,
+		/ITL/scene/$self set txt "Stop",
+		/ITL/scene/$self watch mouseDown (
+			/ITL/scene/p* tempo 0,
+			/ITL/scene/$self set txt "Play",
+			/ITL/scene/$self pop
+		)
+	);
+
+	dsp = 'import("stdfaust.lib"); process = pm.ks_ui_MIDI <: dm.freeverb_demo;';
+	/ITL/scene/faust1 set faust $dsp;
+	/ITL/scene/faust2 set faust $dsp;
+	/ITL/scene/faust3 set faust $dsp;
+	/ITL/scene/faust4 set faust $dsp;
+	/ITL/scene/faust* show 0;
+	/ITL/scene/faust* play 1;
+
+	/ITL/scene/faust1 FaustDSP_karplus_params_freq $freq1;
+	/ITL/scene/faust2 FaustDSP_karplus_params_freq $freq2;
+	/ITL/scene/faust3 FaustDSP_karplus_params_freq $freq3;
+	/ITL/scene/faust4 FaustDSP_karplus_params_freq $freq4;
+	/ITL/scene/faust* FaustDSP_karplus_params_damping 0.01;
+	/ITL/scene/faust2 FaustDSP_karplus_params_damping 0.001;
+	/ITL/scene/faust2 FaustDSP_Freeverb_Wet 0.1;
+	/ITL/scene/faust3 FaustDSP_Freeverb_Wet 0.01;
+	/ITL/scene/faust3 FaustDSP_Freeverb_0x00_RoomSize 0.9;
+	/ITL/scene/faust[23] FaustDSP_karplus_params_gain 0.5;
+
+	gate = 'FaustDSP_karplus_gate';
+	/ITL/scene/p1 watch timeEnter 0.185 0.40 ( /ITL/scene/faust1 $gate 1 );
+	/ITL/scene/p1 watch timeEnter 0.41 0.70 ( /ITL/scene/faust1 $gate 1 );
+	/ITL/scene/p1 watch timeEnter 0.71 0.80 ( /ITL/scene/faust1 $gate 1 );
+	/ITL/scene/p1 watch timeEnter 0.90 1. 	( /ITL/scene/faust1 $gate 1 );
+	
+	/ITL/scene/p2 watch timeEnter 0.139 0.17 ( /ITL/scene/faust2 $gate 1 );
+	/ITL/scene/p2 watch timeEnter 0.27 0.3 	 ( /ITL/scene/faust2 $gate 1 );
+	/ITL/scene/p2 watch timeEnter 0.685 0.75 ( /ITL/scene/faust2 $gate 1 );
+	/ITL/scene/p2 watch timeEnter 0.822 0.88 ( /ITL/scene/faust2 $gate 1 );
+	
+	/ITL/scene/p3 watch timeEnter 0.185 0.2 ( /ITL/scene/faust3 $gate 1 );
+	/ITL/scene/p3 watch timeEnter 0.32 0.38 ( /ITL/scene/faust3 $gate 1 );
+	/ITL/scene/p3 watch timeEnter 0.69 0.7  ( /ITL/scene/faust3 $gate 1 );
+	/ITL/scene/p3 watch timeEnter 0.82 0.88 ( /ITL/scene/faust3 $gate 1 );
+	
+	/ITL/scene/p4 watch timeEnter 0.16 0.2 ( /ITL/scene/faust4 $gate 1 );
+	/ITL/scene/p4 watch timeEnter 0.26 0.3 ( /ITL/scene/faust4 $gate 1 );
+	/ITL/scene/p4 watch timeEnter 0.653 0.7  ( /ITL/scene/faust4 $gate 1 );
+	/ITL/scene/p4 watch timeEnter 0.762 0.81 ( /ITL/scene/faust4 $gate 1 );
+
+
+</pre>
+<hr/>
+
+</body>
+
+<script>loadinscore();</script>
+
+</html>

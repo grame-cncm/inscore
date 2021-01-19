@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -28,18 +28,19 @@
 #include <math.h>
 
 #include "ifloat.h"
-#include "ITLError.h"
+#include "IMappingUpdater.h"
 #include "IModel.h"
 #include "IShapeMap.h"
-#include "TComposition.h"
-#include "TRelation.h"
-#include "TSegment.h"
-#include "TSegmentation.h"
-#include "IMappingUpdater.h"
+#include "ITLError.h"
 #include "MapTools.h"
 #include "maptypes.h"
+#include "TRelation.h"
+#include "TRefinedComposition.h"
+#include "TSegment.h"
+#include "TSegmentation.h"
+#include "TVariety.h"
+#include "VObjectView.h"
 
-#include "VGraphicsItemView.h"
 
 using namespace std;
 using namespace libmapping;
@@ -197,7 +198,7 @@ GraphicSegment IMappingUpdater::computeSegmentWithChildren (IObject* o, const Gr
     for(unsigned int i = 0; i<slaves.size(); i++)				// computes recursively the slaves segments and makes the union
     {
         SIObject slave = slaves[i];
-        std::vector<SMaster> masters = slave->getParent()->getMasters(slave);
+        std::vector<SMaster> masters = slave->getMasters();
         for(unsigned int j = 0; j<masters.size(); j++)
         {
             if(masters[j]->getMaster() == o)
@@ -334,9 +335,7 @@ bool IMappingUpdater::updateNOHStretch (IObject* o, SMaster m)
 //--------------------------------------------------------------------------
 void IMappingUpdater::updateIObject (IObject* object)	
 {
-    const SIObject parent = object->getParent();
-	const std::vector<SMaster> masters = parent ? parent->getMasters(object) : object->getScene()->getMasters(object);
-    
+	const std::vector<SMaster> masters = object->getMasters();
 	if (masters.empty()) return;
 	
     for(unsigned int i = 0; i<masters.size(); i++)

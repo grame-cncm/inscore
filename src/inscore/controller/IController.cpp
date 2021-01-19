@@ -18,13 +18,14 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 #include <iostream>
 
+#include "Modules.h"
 #include "IController.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
@@ -50,8 +51,10 @@ void IController::processOn(SIMessageStack& msgs, SIObject& obj)
 	SIMessage* msgptr = msgs->pop();
 	while (msgptr) {
 		SIMessage msg = *msgptr;
+#if HASOSCStream
 		oscout.setAddress(msg->src());
 		oscerr.setAddress(msg->src());
+#endif
 		int status = processMsg (msg, obj);
 		if (fListener) fListener->msgReceived (msg, status);
 		delete msgptr;

@@ -26,7 +26,13 @@
 #include <iostream>
 #include <sstream>
 
+#include "Modules.h"
+
+#if HASOSCStream
 #include "ip/NetworkingUtils.h"
+#else
+#define NOHOSTNAME
+#endif
 #include "Tools.h"
 #include "IMessage.h"
 #include "rational.h"

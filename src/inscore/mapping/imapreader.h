@@ -16,7 +16,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -53,7 +53,7 @@ class imapreader : public libmapping::mapparser, libmapping::mapreader
 		bool map(const libmapping::TSegment<float,1>& f, const libmapping::TSegment<libmapping::rational,1>& r)		{ return fReader->map(f, r); }
 
 		/// error management
-		void error(const char * msg, int lineno)				{ ITLErr << "parse error line" << lineno << ":" << msg << ITLEndl; }
+		void error(const char * msg, int lineno)				{ ITLErr << "mapping parse error line" << lineno << ":" << msg << ITLEndl; }
 };
 
 } // namespace

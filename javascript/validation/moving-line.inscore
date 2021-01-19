@@ -1,19 +1,5 @@
 
-angle=0;			# initial angle
-angle2=0;
-step=0.5;			# initial step
 
-<? javascript
-
-	function turnLine () {
-		if (Math.abs(Math.round(angle)) == 360) { angle = 0; angle2 = 0}
-		angle += step;
-		angle2 -= step;
-		INScore.postMessage("/ITL/scene/line",  ["set", "line", "wa", 1, angle]);
-		INScore.postMessage("/ITL/scene/line2", ["set", "line", "wa", 1, angle2]);
-		var timer = setTimeout (turnLine, 20);
-	}
-?>
 /ITL/scene/* del;
 
 /ITL/scene/welcome set txt "Spin INScore Line";
@@ -40,8 +26,14 @@ step=0.5;			# initial step
 /ITL/scene/line2 set line wa 1 0;
 /ITL/scene/line2 x 0.5;
 
-/ITL/scene/line penWidth 2;
+/ITL/scene/line* penWidth 2;
 
-<?javascript turnLine(); ?>
+/ITL/scene/time set rect 1 1;
+/ITL/scene/time show 0;
+/ITL/scene/time watch ddate (
+	/ITL/scene/line* dangle 0.5
+);
+/ITL/scene/time tempo 60;
+
 
 	    			

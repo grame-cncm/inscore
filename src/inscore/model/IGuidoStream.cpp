@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -26,10 +26,20 @@
 #include "IGuidoStream.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VGuidoItemView.h"
 #include "GUIDOParse.h"
+#include "VObjectView.h"
 
 using namespace std;
+
+#ifdef EMCC
+
+#define GuidoFreeStreamString(type)
+#define GuidoCloseStream(stream)
+#define GuidoResetStream(stream) 	fReset=true
+#define GuidoOpenStream()	0
+
+#endif
+
 
 namespace inscore
 {
@@ -44,7 +54,7 @@ IGuidoStream::IGuidoStream( const std::string& name, IObject * parent )
     fGuidoStream = GuidoOpenStream();
     
 	fMsgHandlerMap[kclear_SetMethod] = TMethodMsgHandler<IGuidoStream, void (IGuidoStream::*)()>::create(this, &IGuidoStream::clear);
-    fMsgHandlerMap[kwrite_SetMethod]		= TMethodMsgHandler<IGuidoStream>::create(this, &IGuidoStream::write);
+    fMsgHandlerMap[kwrite_SetMethod] = TMethodMsgHandler<IGuidoStream>::create(this, &IGuidoStream::write);
 }
 
 IGuidoStream::~IGuidoStream()
@@ -95,7 +105,9 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::clear()
 {
+#ifndef EMCC
 	if(fGMN=="") return;
+#endif
 
 	GuidoResetStream(fGuidoStream);
 	setGMN("");
@@ -120,11 +132,16 @@ MsgHandler::msgStatus IGuidoStream::write (const IMessage* msg )
 //--------------------------------------------------------------------------
 void IGuidoStream::writeStream (std::string t)
 {
+#ifdef EMCC
+	fStream << t;
+#else
 	const char * newchar = t.c_str();
     GuidoWriteStream(fGuidoStream, newchar);
     const char * str = GuidoGetStream(fGuidoStream);
     setGMN(str);
 	GuidoFreeStreamString (str);
+#endif
+	localMapModified(true);
     newData(true);
 }
 

@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -51,6 +51,8 @@ class IGraphicBasedObject : public IObject
 {
 		typedef libmapping::SMARTP<TLocalMapping<long,2> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
+		
+		TLongRect fBoundingRect;
 
 		/// \brief get an object maps
 		virtual SIMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }
@@ -59,12 +61,19 @@ class IGraphicBasedObject : public IObject
 
 		const	SLocalMapping& localMappings() const	{ return fLocalMappings; }
 				SLocalMapping& localMappings()			{ return fLocalMappings; }
+		
+		void 	updateLocalMapping ();
+		void 	setBoundingRect(long x, long y, long w, long h);
+		const TLongRect getBoundingRect() const { return fBoundingRect; }
 
 		virtual void		accept (Updater*);
 
 	protected:
 				 IGraphicBasedObject( const std::string& name, IObject * parent );
 		virtual ~IGraphicBasedObject() {}
+
+		bool 		getGraphicSegment( const IntPointSegment& segment, GraphicSegment& outSegment ) const;
+		TFloatPoint view2ItemPoint(const TLongPoint& point) const;
 
 		/// \brief the \c 'mapf' message handler
 		MsgHandler::msgStatus mapFileMsg (const IMessage* msg );

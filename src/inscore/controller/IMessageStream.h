@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -32,13 +32,14 @@
 #include <ostream>
 #include <sstream>
 
-#include "GraphicEffect.h"
 #include "IMessage.h"
 #include "maptypes.h"
 #include "smartpointer.h"
 
 namespace inscore
 {
+
+class IEffect;
 
 /*!
 \addtogroup ITLCtrl
@@ -55,7 +56,8 @@ IMessage& operator <<(IMessage& msg, const libmapping::TRelation<T,D,libmapping:
 {
 	std::ostringstream map;
 	val.print (map);
-	msg << map.str();
+//	msg << map.str();   // looks like the << operator dont work with string
+	msg.add(map.str());
 	return msg;
 }
 
@@ -108,7 +110,7 @@ template <typename T>	IMessage& operator <<(IMessage& msg, const std::pair<T,T>&
 IMessage& operator << (IMessage& out, const IMessage* m);
 std::ostream& operator << (std::ostream& out, const IMessage* m);
 
-IMessage& operator <<(IMessage& msg, const GraphicEffect& effect);
+IMessage& operator <<(IMessage& msg, const IEffect* effect);
 
 /*!
 @}

@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -30,6 +30,7 @@
 #include "ITLError.h"
 #include "Updater.h"
 #include "IMessage.h"
+#include "Modules.h"
 #include "IScene.h"
 #include "ISignalNode.h"
 
@@ -176,8 +177,10 @@ bool ISignal::putAt (const IMessage* msg, int index, int step)
 	if (available() > ParallelSignal::size()) {				// check for over-run
 		fix();
 		SISignalNode sn = getSignalNode();
+#if HASOSCStream
 		if (sn && sn->debug())
 			oscerr << OSCWarn() << "over run for signal" << name() << OSCEnd();
+#endif
 	}
 	return true;
 }

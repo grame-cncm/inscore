@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -26,8 +26,8 @@
 #include "IMusicXMLFile.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "QGuidoImporter.h"
-#include "VGuidoItemView.h"
+#include "VObjectView.h"
+#include "XMLImporter.h"
 
 using namespace std;
 
@@ -56,13 +56,16 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
-	if (!QGuidoImporter::musicxmlSupported()) {
+#ifndef EMCC
+	if (!XMLImporter::musicxmlSupported()) {
 		ITLErr << "MusicXML import is not available" << ITLEndl;
 		return MsgHandler::kCreateFailure;
 	}
+#endif
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
+#ifndef EMCC
 		if(!hasData())
         {
             if (!read(fXML))
@@ -81,6 +84,10 @@ MsgHandler::msgStatus IMusicXMLFile::set (const IMessage* msg )
                 }
             }
 		}
+#else
+		setPending();
+		newData(true);
+#endif
 	}
 	return status;
 }

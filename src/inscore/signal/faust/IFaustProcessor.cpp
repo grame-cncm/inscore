@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -177,11 +177,11 @@ MsgHandler::msgStatus IFaustProcessor::set (const IMessage* msg)
 	if (!msg->param(1, library)) return MsgHandler::kBadParameters;
 	fLibrary = library;
 	if (load(fLibrary.c_str())) {
-		fBuildUI	= resolve<buildUserInterface>(kbuildUserInterface);	
-		fCompute	= resolve<compute>(kcompute);
-		fInputs		= resolve<getNumInputs>(kgetNumInputs);
-		fOutputs	= resolve<getNumOutputs>(kgetNumOutputs);
-		fInit		= resolve<fpinit>(kfpinit);
+		fBuildUI	= TPlugin::resolve<buildUserInterface>(kbuildUserInterface);
+		fCompute	= TPlugin::resolve<compute>(kcompute);
+		fInputs		= TPlugin::resolve<getNumInputs>(kgetNumInputs);
+		fOutputs	= TPlugin::resolve<getNumOutputs>(kgetNumOutputs);
+		fInit		= TPlugin::resolve<fpinit>(kfpinit);
 		if (!fBuildUI || !fCompute || !fInputs || !fOutputs || !fInit) {
 			unload();
 			ITLErr << cantload <<  "unresolved functions." << ITLEndl;

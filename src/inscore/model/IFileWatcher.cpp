@@ -18,17 +18,17 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
+#include "IAppl.h"
 #include "IFileWatcher.h"
 #include "IMessage.h"
 #include "IMessageStack.h"
 #include "OSCStream.h"
 #include "Updater.h"
-#include "IAppl.h"
 
 using namespace std;
 

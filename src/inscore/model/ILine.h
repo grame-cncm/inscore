@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -60,6 +60,8 @@ class ILine : public IShapeMap
 
 	private:
 		TFloatPoint fPoint;			// a point that describe the line, assuming that the first point is (0, 0)
+		float 		fAngle = 0;
+		float 		fLineWidth = 0;
 		bool		fWAMode;
 
 		// Arrow head for each side of the line
@@ -82,6 +84,7 @@ class ILine : public IShapeMap
 		static SILine create(const std::string& name, IObject* parent)	{ return new ILine(name, parent); }
 
 		const TFloatPoint&	getPoint() const			{ return fPoint; }
+		const TFloatPoint	getWA() const				{ return TFloatPoint (fAngle, fLineWidth); }
 
 
 		virtual void	print(std::ostream& out) const;
@@ -102,7 +105,7 @@ class ILine : public IShapeMap
 		/// \brief the 'get' form without parameter
 		virtual SIMessageList getSetMsg() const;
 
-		void	setPoint(const TFloatPoint& p)		{ fPoint = p; }
+		void	setPoint(const TFloatPoint& p);
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 

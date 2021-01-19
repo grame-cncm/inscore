@@ -18,18 +18,25 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 #include <string>
+
+#include "Modules.h"
+
+#if HASWSSupport
 #include <QUrl>
 #include <QWebSocket>
+#endif
+#if HASHTTPSupport
 #include <QTcpServer>
+#include "HttpForwarder.h"
+#endif
 
 #include "Forwarder.h"
-#include "HttpForwarder.h"
 #include "IApplVNodes.h"
 #include "IFilterForward.h"
 #include "Tools.h"
@@ -58,6 +65,7 @@ class OSCForwarder : public ForwardEndPoint
 		}
 };
 
+#if HASWSSupport
 //--------------------------------------------------------------------------
 // Web Socket Forwarder
 //--------------------------------------------------------------------------
@@ -91,7 +99,9 @@ class WSForwarder : public ForwardEndPoint
 			qint64 n = fWSocket.sendTextMessage (IMessage2String(imsg));
 		}
 };
+#endif
 
+#if HASHTTPSupport
 //--------------------------------------------------------------------------
 // Http Forwarder
 //--------------------------------------------------------------------------
@@ -171,10 +181,12 @@ void HTTPForwarder::send (const IMessage * imsg) {
 		send (socket, b64.toStdString().c_str());
 	}
 }
+#endif
 
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
 {
+#if HASOSCStream
 	// Forward if have host in foward list and if no filter or filter is not bloking the message.
 	if (fForwardList.size() && (!fFilter || !fFilter->applyFilter(imsg))) {
         for (unsigned int i = 0; i < fForwardList.size(); i++) {
@@ -185,12 +197,14 @@ void Forwarder::forward(const IMessage * imsg)
                 endpoint->send (imsg);
         }
     }
+#endif
 }
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 {
-	clear();								// clear the forward list first
+	fForwardList.clear();					// clear the forward list first
+#if HASOSCStream
 	if (msg->size() == 0)					// no other param
 		return MsgHandler::kProcessed;		// that's done
 
@@ -204,18 +218,23 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 			if (!url.fPort) url.fPort = IAppl::kUPDPort;
 			// Add in host list.
 			switch (url.fProtocol) {
+#if HASWSSupport
 				case IMessage::TUrl::kWSProtocol:
 					fForwardList.push_back(new WSForwarder(url));
 					break;
+#endif
+#if HASHTTPSupport
 				case IMessage::TUrl::kHTTPProtocol:
 					fForwardList.push_back(new HTTPForwarder(url, fLog));
 					break;
-				default:
+#endif
+				case IMessage::TUrl::kOSCProtocol:
 					fForwardList.push_back(new OSCForwarder(url));
 			}
         }
         else return MsgHandler::kBadParameters;
     }
+#endif
     return MsgHandler::kProcessed;
 }
 

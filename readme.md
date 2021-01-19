@@ -10,11 +10,10 @@ It provides *time synchronization in the graphic space*, *signals graphic repres
 
 INScore runs on the main operating systems: Linux, MacOS, iOS, Windows, Android.
 
-See [INScore page](http://inscore.sourceforge.net/) for more information.
+See [INScore page](http://inscore.grame.fr/) for more information.
 
 See [INScore wiki](https://github.com/grame-cncm/inscore/wiki) for building instructions. 
 
-Binary distributions are available from https://sourceforge.net/projects/inscore/files/
 
 ----------------------------------------------------------------------
 

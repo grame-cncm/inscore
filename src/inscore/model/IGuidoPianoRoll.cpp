@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -27,10 +27,30 @@
 #include "IGuidoStream.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VGuidoItemView.h"
 #include "rational.h"
+#include "VObjectView.h"
 
 #include <sstream>
+
+#ifdef EMCC
+#define GuidoAR2PianoRoll(type, arh) 0
+#define GuidoMidi2PianoRoll(type,midiFileName) 0
+#define GuidoDestroyPianoRoll(pr)  0
+#define GuidoPianoRollSetLimits(pr, limitParams) 0
+#define GuidoPianoRollEnableKeyboard(pr, enabled) 0
+#define GuidoPianoRollGetKeyboardWidth(pr, height, keyboardWidth) 0
+#define GuidoPianoRollEnableAutoVoicesColoration(pr, enabled) 0
+#define GuidoPianoRollSetRGBColorToVoice(pr, voiceNum, r, g, b, a) 0
+#define GuidoPianoRollSetHtmlColorToVoice(pr, voiceNum, color) 0
+#define GuidoPianoRollRemoveColorToVoice(pr, voiceNum) 0
+#define GuidoPianoRollEnableMeasureBars(pr, enabled) 0
+#define GuidoPianoRollSetPitchLinesDisplayMode(pr, mode) 0
+#define GuidoPianoRollGetMap(pr, width, height, outmap) 0
+#define GuidoPianoRollOnDraw(pr, width, height, dev) 0
+#define GuidoFreeAR(ar)
+#else
+#define newData(a)
+#endif
 
 using namespace std;
 
@@ -126,6 +146,7 @@ MsgHandler::msgStatus IGuidoPianoRoll::setClipTime(const IMessage *msg)
 		fLimits.startDate = init;
 		fLimits.endDate = init;
 		GuidoPianoRollSetLimits(fPianoRoll, fLimits);
+		newData(true);
 		return MsgHandler::kProcessed;
 	} else if(size == 2) {
 		interval = Tools::readRationalInterval(msg, false);
@@ -147,6 +168,7 @@ MsgHandler::msgStatus IGuidoPianoRoll::setClipTime(const IMessage *msg)
 	fLimits.endDate = guidoDate;
 
 	GuidoPianoRollSetLimits(fPianoRoll, fLimits);
+	newData(true);
 	return MsgHandler::kProcessed;
 }
 
@@ -178,6 +200,7 @@ MsgHandler::msgStatus IGuidoPianoRoll::setClipPitch(const IMessage *msg)
 		fLimits.highPitch = high;
 		GuidoPianoRollSetLimits(fPianoRoll, fLimits);
 	} else return MsgHandler::kBadParameters;
+	newData(true);
 	return MsgHandler::kProcessed;
 }
 
@@ -188,6 +211,7 @@ void IGuidoPianoRoll::enableKeyboard(bool enable)
 	fKeyboard = enable;
 	GuidoPianoRollEnableKeyboard(fPianoRoll, fKeyboard);
 	localMapModified (true);
+	newData(true);
 }
 
 //--------------------------------------------------------------------------
@@ -195,6 +219,7 @@ void IGuidoPianoRoll::enableAutoVoicesColoration(bool enable)
 {
 	fAutoVoiceColor = enable;
 	GuidoPianoRollEnableAutoVoicesColoration(fPianoRoll, fAutoVoiceColor);
+	newData(true);
 }
 
 //--------------------------------------------------------------------------
@@ -255,6 +280,7 @@ void IGuidoPianoRoll::enableMeasureBars(bool enable)
 {
 	fMeasureBars = enable;
 	GuidoPianoRollEnableMeasureBars(fPianoRoll, fMeasureBars);
+	newData(true);
 }
 
 //--------------------------------------------------------------------------
@@ -349,6 +375,11 @@ vector<string> IGuidoPianoRoll::getPitchLinesDisplayMode() const
 	return pitchs;
 }
 
+#ifdef EMCC
+void IGuidoPianoRoll::updatePianoRoll() {}
+void IGuidoPianoRoll::updatePianoRoll(string &midiFile) {}
+
+#else
 //--------------------------------------------------------------------------
 void IGuidoPianoRoll::updatePianoRoll()
 {
@@ -387,6 +418,7 @@ void IGuidoPianoRoll::updatePianoRoll(string &midiFile)
 	fPianoRoll = GuidoMidi2PianoRoll(kSimplePianoRoll, midiFile.c_str());
 	applyAllSettings();
 }
+#endif
 
 //--------------------------------------------------------------------------
 void IGuidoPianoRoll::applyAllSettings()

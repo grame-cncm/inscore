@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -123,7 +123,7 @@ IApplStat::IApplStat(IObject * parent) : IVNode("stats", parent), fMsgCount(0)
 IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 {
 	fWindow = new VLogWindow ("/ITL/log", this);
-	fLogLevel = kLogError;
+	fLogLevel = kLogMsg;
 	
 	fMsgHandlerMap[kclear_SetMethod]	= TMethodMsgHandler<IApplLog, void (IApplLog::*)(void)>::create(this, &IApplLog::clear);
 	fMsgHandlerMap[kwrap_GetSetMethod]	= TSetMethodMsgHandler<IApplLog,bool>::create(this, &IApplLog::setWrap);
@@ -165,6 +165,9 @@ IApplLog::~IApplLog()
 //--------------------------------------------------------------------------
 void IApplLog::foreground ()
 {
+#if EMCC
+	fWindow->setVisible(getVisible());
+#else
 	if (getVisible()) {
 #ifdef __MOBILE__
 		if(VMobileQtInit::getMainPanel()->switchToPanel(fWindow->windowTitle()))
@@ -174,6 +177,7 @@ void IApplLog::foreground ()
 		fWindow->activateWindow();
 #endif
 	}
+#endif
 }
 
 //--------------------------------------------------------------------------
@@ -196,6 +200,12 @@ MsgHandler::msgStatus IApplLog::saveMsg (const IMessage* msg) const
 		}
 	}
 	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+void IApplLog::write(const string& msg)
+{
+	fWindow->append (msg.c_str());
 }
 
 //--------------------------------------------------------------------------

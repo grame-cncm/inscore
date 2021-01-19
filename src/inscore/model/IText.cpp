@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -30,7 +30,6 @@
 #include "IText.h"
 #include "IMessage.h"
 #include "Tools.h"
-#include "TComposition.h"
 #include "Updater.h"
 
 using namespace std;
@@ -83,6 +82,7 @@ IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(
 	fMsgHandlerMap[kfontWeight_GetSetMethod]	= TMethodMsgHandler<IText>::create(this, &IText::setFontWeight);
 
 	fMsgHandlerMap[kwrite_SetMethod]			= TMethodMsgHandler<IText, MsgHandler::msgStatus (IText::*)(const IMessage*)>::create(this, &IText::writeMsg);
+	setPending();
 }
 
 //--------------------------------------------------------------------------

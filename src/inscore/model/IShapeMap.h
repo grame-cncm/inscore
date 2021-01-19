@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -57,6 +57,8 @@ class IShapeMap: public IObject
 
 		const	SLocalMapping& localMappings() const	{ return fLocalMappings; }
 				SLocalMapping& localMappings()			{ return fLocalMappings; }
+
+		virtual void updateGraphic2GraphicMapping ();
 
 		/// \brief the \c 'mapf' message handler
 		MsgHandler::msgStatus mapFileMsg (const IMessage* msg );

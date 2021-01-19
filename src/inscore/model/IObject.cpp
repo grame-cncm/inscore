@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -33,31 +33,31 @@
 #include <iostream>
 #include <fstream>
 
+#include "Events.h"
+#include "Modules.h"
 #include "EventsAble.h"
 #include "IAppl.h"
 #include "IApplVNodes.h"
 #include "IGlue.h"
 #include "IMessage.h"
-#include "IMessageTranslator.h"
 #include "IMessageStream.h"
+#include "IMessageTranslator.h"
+#include "INScore.h"
 #include "IObject.h"
 #include "IObjectVNodes.h"
 #include "IProxy.h"
 #include "IScene.h"
+#include "ISceneSync.h"
+#include "ISignalNode.h"
+#include "ISync.h"
 #include "IVNode.h"
-#include "GraphicEffect.h"
 #include "OSCAddress.h"
 #include "OSCRegexp.h"
 #include "OSCStream.h"
-#include "Updater.h"
-#include "ISync.h"
-#include "Tools.h"
-#include "ISceneSync.h"
 #include "TMessageEvaluator.h"
-#include "ISignalNode.h"
-#include "INScore.h"
-#include "Events.h"
-
+#include "TRefinedComposition.h"
+#include "Tools.h"
+#include "Updater.h"
 #include "VObjectView.h"
 
 
@@ -112,6 +112,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fMsgHandlerMap[kpush_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
 	fMsgHandlerMap[kpop_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
 
+	fMsgHandlerMap[krefresh_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::refresh);
+
 	fGetMultiMsgHandlerMap[kwatch_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getWatch);
 	fGetMultiMsgHandlerMap[kmap_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getMaps);
 	fGetMultiMsgHandlerMap[kalias_GetSetMethod]	= TGetParamMultiMethodHandler<IObject, SIMessageList (IObject::*)() const>::create(this, &IObject::getAliases);
@@ -121,6 +123,8 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMsgHandlerMap[klock_GetSetMethod]	= TGetParamMethodHandler<IObject, bool(IObject::*)() const>::create(this, &IObject::getLocked);
 	fGetMsgHandlerMap[kcount_GetMethod]		= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getSize);
 	fGetMsgHandlerMap[krcount_GetMethod]	= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getRSize);
+	
+	setModified();
 }
 
 
@@ -201,7 +205,7 @@ void IObject::positionAble()
 	fGetMsgHandlerMap[krotatex_GetSetMethod]= TGetParamMsgHandler<float>::create(fXAngle);
 	fGetMsgHandlerMap[krotatey_GetSetMethod]= TGetParamMsgHandler<float>::create(fYAngle);
 	fGetMsgHandlerMap[krotatez_GetSetMethod]= TGetParamMsgHandler<float>::create(fZAngle);
-	fGetMsgHandlerMap[keffect_GetSetMethod]	= TGetParamMethodHandler<IObject, GraphicEffect (IObject::*)() const>::create(this, &IObject::getEffect);
+	fGetMsgHandlerMap[keffect_GetSetMethod]	= TGetParamMethodHandler<IObject, const IEffect* (IObject::*)() const>::create(this, &IObject::getEffect);
 	fGetMsgHandlerMap[kframe_GetMethod]		= TGetParamMethodHandler<IObject, vector<float> (IObject::*)() const>::create(this, &IObject::getFrame);
 
 	fMsgHandlerMap[kx_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
@@ -288,7 +292,8 @@ void IObject::setdyMsgHandler ()
 //--------------------------------------------------------------------------
 void IObject::setSyncDY (float dy)
 {
-	vector<SMaster> mlist = getParent()->getMasters(this);
+//	vector<SMaster> mlist = getParent()->getMasters(this);
+	vector<SMaster> mlist = getMasters();
 	for (size_t i = 0; i < mlist.size(); i++) {
 		mlist[i]->setDy(dy);
 	}
@@ -306,7 +311,6 @@ void IObject::timeAble()
 {
 	fGetMsgHandlerMap[kdate_GetSetMethod]		= TGetParamMsgHandler<rational>::create(fDate);
 	fGetMsgHandlerMap[kduration_GetSetMethod]	= TGetParamMsgHandler<rational>::create(fDuration);
-	fGetMsgHandlerMap[kdate_GetSetMethod]		= TGetParamMsgHandler<rational>::create(fDate);
 	fGetMsgHandlerMap[ktempo_GetSetMethod]		= TGetParamMsgHandler<float>::create(fTempo);
 
 	fMsgHandlerMap[kdate_GetSetMethod]		= TSetMethodMsgHandler<IObject,rational>::create(this, &IObject::setDate);
@@ -345,14 +349,21 @@ IObject::~IObject()
 	delete fView;
 }
 
-void IObject::del()		{ _del(true); }
+void IObject::del() {
+	int subdel = 0;
+	for (auto o: fSubNodes) {
+		o->del();
+		subdel++;
+	}
+	_del(true);
+}
 void IObject::_del(bool delsigcnx)
 {
 	if(fLock){
-		ITLErr<<"Impossible to delete "<<getOSCAddress()<<", the object is locked."<<ITLEndl;
+		ITLErr<<"Impossible to delete " << getOSCAddress()<< ", the object is locked." << ITLEndl;
 		return;
 	}
-    // we set the delte flag to 1
+    // we set the delete flag to 1
     fDelete = true;
 	IAppl::delAliases (getOSCAddress());
 
@@ -365,6 +376,15 @@ void IObject::_del(bool delsigcnx)
 void IObject::newData (bool state) {
 	fNewData = state;
 	if (state) checkEvent(kNewDataEvent, getDate(), this);
+}
+
+//--------------------------------------------------------------------------
+void IObject::ready()
+{
+//	std::cout << "IObject::ready " << getOSCAddress() << " ready." << std::endl;
+	IPosition::modified();
+	setModified();
+	fPending = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -393,6 +413,21 @@ void IObject::propagateSignalsState ()
 }
 
 //--------------------------------------------------------------------------
+std::vector<SMaster> IObject::getMasters() const {
+	SIObject so (const_cast<IObject*>(this));
+	return getParent()? getParent()->getMasters(so) : getScene()->getMasters(so);
+}
+
+//--------------------------------------------------------------------------
+std::vector<SIObject> IObject::getSlaves() const {
+	SIObject so (const_cast<IObject*>(this));
+	return getParent()? getParent()->getSlaves(so) : getScene()->getSlaves(so);
+}
+
+//--------------------------------------------------------------------------
+// the next getMaster(s) methods take an object argument due to the fact that
+// the query looks for the master in the child node and thus,
+// an object that requests it's masters has to query it's parent
 SMaster IObject::getMaster(SIObject o) const					{ return fSync ? fSync->getMaster(o) : 0; }
 vector<SMaster>  IObject::getMasters(SIObject o, const string& master, const string& map) const
 																{ return fSync->getMasters(o, master, map); }
@@ -438,6 +473,17 @@ void IObject::ptask ()
 }
 
 //--------------------------------------------------------------------------
+void IObject::originshift (float& relx, float& rely) const
+{
+	float xoriginscaled = (getXOrigin() + 1) / 2.;	// scaled coordinate is in the interval [0, 1]
+	float yoriginscaled = (getYOrigin() + 1) / 2.;	// when the object origin is inside the object
+	relx = xoriginscaled - relx;
+	rely = yoriginscaled - rely;
+	if (relx < 0) relx = -relx;
+	if (rely < 0) rely = -rely;
+}
+
+//--------------------------------------------------------------------------
 void IObject::accept (Updater* u)		{ u->updateTo(this); }
 
 //--------------------------------------------------------------------------
@@ -469,6 +515,7 @@ void IObject::cleanup ()
 	IPosition::cleanup();
 	IDate::cleanup();
 	IColor::cleanup();
+	EventsAble::cleanup();
 	fNewData = false;
 	localMapModified (false);
 	fExportFlag.clear();
@@ -764,6 +811,14 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				size_t n = targets.size();
 				for (size_t i = 0; i< n; i++) {
 					IObject * target = targets[i];
+#if EMCC
+					if (target->getPending()) { // && (msg->message() != krefresh_SetMethod)) {
+//cerr << "=> delayed: " << msg << endl;
+//						INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
+						msg->send(true);
+						return MsgHandler::kProcessedNoChange;
+					}
+#endif
 					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
 					if (result & MsgHandler::kProcessed) {
 						target->setModified();									// sets the modified state of the subnode
@@ -1035,7 +1090,9 @@ MsgHandler::msgStatus IObject::get(const IMessage* msg) const
 	SIMessageList msgs = getMsgs (msg);
 	if (msgs->list().size()) {
 		try {
+#if HASOSCStream
 			oscout << msgs;
+#endif
 			IAppl* appl = (IAppl*) getAppl();
 			if (appl) {
 				IApplLog* log = appl->getLogWindow();
@@ -1224,11 +1281,10 @@ MsgHandler::msgStatus IObject::set(const IMessage* msg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::effectMsg(const IMessage* msg)
 { 
-	GraphicEffect effect;
-	MsgHandler::msgStatus status = effect.set (msg);
+	MsgHandler::msgStatus status = setEffect(msg);
 	if (status == MsgHandler::kProcessed) {
 		VObjectView* view = getView();
-		if (view) view->setEffect (effect);
+		if (view) view->setEffect(getEffect());
 	}
 	return status;
 }
@@ -1277,15 +1333,40 @@ static void showframe (const vector<float>& p)
 vector<float> IObject::getFrame ()	const
 { 
 	vector<float> frame;
+#ifndef WIN32
+#warning implement standalone getFrame
+#endif
+#ifndef EMCC
 	getView()->getFrame(this, frame);
 //	showframe (frame);
-	return frame;
-}
 
-//--------------------------------------------------------------------------
-GraphicEffect IObject::getEffect ()	const
-{ 
-	return getView() ? getView()->getEffect() : GraphicEffect(); 
+#else
+	float scale = getScale();
+	float w = getWidth() * scale;
+	float h = getHeight() * scale;
+	float x = getXPos() - (w * (1 + getXOrigin()) / 2);
+	float y = getYPos() - (h * (1 + getXOrigin()) / 2);
+	
+	frame.push_back(x);
+	frame.push_back(y);
+	frame.push_back(x+w);
+	frame.push_back(y);
+	frame.push_back(x+w);
+	frame.push_back(y+h);
+	frame.push_back(x);
+	frame.push_back(y+h);
+
+//	QTransform m = item()->transform();
+//	m.scale(o->getScale(), o->getScale());
+//	QPolygon po = m.mapToPolygon(r.toRect());
+//	for (int i=0; i < po.size(); i++) {
+//		QPoint p = po[i];
+//		out.push_back(scene2RelativeX(p.x()) + o->getXPos());
+//		out.push_back(scene2RelativeY(p.y()) + o->getYPos());
+//	}
+#endif
+
+	return frame;
 }
 
 //--------------------------------------------------------------------------
@@ -1595,20 +1676,82 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 }
 
 //--------------------------------------------------------------------------
+rational IObject::point2date (float x, float y, const std::string& mapname, int n) const
+{
+	rational nodate(0,0);
+	const SRelativeTime2GraphicMapping&	mapping = getMapping (mapname);	// get the mapping first
+	if (!mapping) return nodate;										// failed to get the mapping
+
+	for (auto i: mapping->reverse()) {
+		if (i.first.include (x, y)) {								// check if graphic segment includes the location
+			int repeat = n;											// initializes the repeat count
+			double a = (x - i.first.xinterval().first()) / i.first.xinterval().size(); // this is the relative point position
+			for (auto si: i.second) {
+				if (!repeat--) {									// expected repeat reached
+					// the date is computed as a float value to avoid overflow of rational values
+					float date = float(si.start()) + float(si.size()) * a;
+					return rational(date);							// and return the float value as a rational
+				}
+			}
+		}
+	}
+	return nodate;							// no such segment or repeat
+}
+
+//--------------------------------------------------------------------------
+rational IObject::point2date (float x, float y) const
+{
+	bool hasNamed = false;
+	// try all the available named mappings
+	for (auto m: namedMappings()) {
+		if (m.first.size()) {
+			rational date = point2date (x, y, m.first, 0);
+			if (date.getDenominator()) {
+				return date;
+			}
+			hasNamed = true;
+		}
+	}
+	// don't try default mapping when there are named mappings
+	return hasNamed ? rational(0,0) : point2date (x, y, "",  0);
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 {
 	int n = msg->size();
 	if (n >= 1) {
 		string event;
 		if (!msg->param(0, event)) return MsgHandler::kBadParameters;
-		
+
 		if (EventsAble::isMouseEvent(event.c_str())) {		// this is a mouse related event
-			if (n == 3) {									// x and  y parameters are expected
-				int x, y;
-				if (msg->param(1, x) && msg->param(2, y)) {
+			if (n >= 3) {									// x and  y parameters are expected
+				float x, y;
+				if (msg->cast_param(1, x) && msg->cast_param(2, y)) {
+					float ox, oy, sx, sy;
+					ox = oy = sx = sy = 0.f;
+					if (n == 7) {								// obj and scene x and  y parameters are expected
+						if (!msg->cast_param(3, ox) || !msg->cast_param(4, oy) || !msg->cast_param(5, sx) || !msg->cast_param(6, sy))
+							return MsgHandler::kBadParameters;
+					}
+#ifdef EMCC
+					const IMessageList* msgs = getMouseMsgs (event.c_str());
+					if (!msgs || msgs->list().empty()) return MsgHandler::kProcessed;		// nothing to do, no associated message
+
+					MouseLocation mouse (x, y, ox, oy, sx, sy);
+					rational date = point2date(ox, oy);
+//cout << "IObject::eventMsg " << ox << " -> date: " << float(date) << endl;
+//					EventContext env(mouse, date, this);
+					EventContext env(mouse, rational(0,1), this);
+					TMessageEvaluator me;
+//					SIMessageList outmsgs = me.eval (msgs, env);
+					SIMessageList outmsgs = me.eval (msgs, ox, oy, env);
+					if (outmsgs && outmsgs->list().size()) outmsgs->send();		// when not empty, sends the evaluated messages
+#else
 					VObjectView	* view = getView();
 					if (view)
 						view->handleEvent (this, x, y, event.c_str());
+#endif
 					return MsgHandler::kProcessed;
 				}
 			}
@@ -1663,6 +1806,20 @@ MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
 	}
 	fEdit = true;						// a flag to trigger the edit dialog from the view
 	return MsgHandler::kProcessed;
+}
+
+
+//--------------------------------------------------------------------------
+void IObject::refresh ()
+{
+	setState (kModified);
+//	newData(true);
+	if (fPending) fPending--;
+	if (elements().size()) setState (kSubModified);
+	for (auto elt: elements()) {
+		elt->refresh();
+	}
+	propagateSubModified();
 }
 
 //--------------------------------------------------------------------------

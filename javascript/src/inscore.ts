@@ -1,85 +1,76 @@
 
-///<reference path="inscore-interface.ts"/>
-///<reference path="controller/IMessage.ts"/>
-///<reference path="controller/IGlue.ts"/>
-///<reference path="lib/ITLError.ts"/>
-///<reference path="lib/ITLOut.ts"/>
-///<reference path="lib/OSCAddress.ts"/>
-///<reference path="lib/TEnums.ts"/>
-///<reference path="model/IObject.ts"/>
-///<reference path="model/TILoader.ts"/>
+///<reference path="lib/inscore.d.ts"/>
 
+//----------------------------------------------------------------------------
+// INScore interface
+//----------------------------------------------------------------------------
+class INScore {
 
-class INScoreImpl extends INScoreInterface 
-{
-	private fVersion: number = 0.6;
-	private fGlue: IGlue;
-	private fErrStrings = new Array<string>();
+    private static fObjects:   INScoreObject;
+    private	fInscore       :   INScoreAdapter;
+    private	fInscoreGlue   :   INScoreGlue;
+    private	fJSGlue        :   INScoreJSGlue;
 
-	protected status2string (err: eMsgStatus) : string {
-		let str = this.fErrStrings[err];
-		return (str ? str : "unknown error " + err);
-	}
+    async initialise():Promise<any> { 
+        return new Promise( (success: any, failure: any) => {
+            INScoreModule().then ((module: any) => {
+                this.moduleInit (module);
+                success ( this ); 
+                });
+        });
+    }
 
-	// ------------------------------------------------------------
-	constructor ()		{ 
-		super();
-		this.fErrStrings[eMsgStatus.kBadAddress] = "bad OSC address";
-		this.fErrStrings[eMsgStatus.kProcessed] = "processed";
-		this.fErrStrings[eMsgStatus.kProcessedNoChange] = "processed without change";
-		this.fErrStrings[eMsgStatus.kBadParameters] = "bad parameter";
-		this.fErrStrings[eMsgStatus.kCreateFailure] = "create failed";
-	}
+    //------------------------------------------------------------------------
+    // async initialization
+    moduleInit ( module : any ) : void {
+        this.fInscore 		= new module.INScoreAdapter();
+        this.fJSGlue 		= new module.INScoreJSGlue();
+        INScore.fObjects	= new module.IObjectAdapter();
+        inscore = this;
+    }
+    
+    static objects() : INScoreObject	{ return INScore.fObjects; }
+        
+    //------------------------------------------------------------------------
+    // INScore interface
+    start() : void	                { this.fInscoreGlue = this.fInscore.start (0, 0, 0); }
+	stop()  : void			        { this.fInscore.stop ( this.fInscoreGlue ); }
 
-	// ------------------------------------------------------------
-	// static methods
-	// ------------------------------------------------------------
-	version () : number { return this.fVersion; }
+	loadInscore	 (script: string, autoparse = false)	        { return this.fInscore.loadInscore (script, autoparse); }
+	loadInscore2 (script: string)				                { return this.fInscore.loadInscore2 (script); }
 
-	start (scene: string, position?: string) : void {
-		if (!this.fGlue) {
-			this.fGlue = new IGlue();
-			this.fGlue.initEventHandlers();
-		}
-		this.fGlue.start(scene, position ? position : "relative");
-		ITLOut.write ("INScoreJS version " + this.version());
-	}
+	postMessage	(adr: string, msg: TMessage)	: void          { this.fInscore.postMessage (adr, msg); }
+	postMessageStr (adr: string, meth: string)	: void          { this.fInscore.postMessageStr (adr, meth); }
+	postMessageStrI	(adr: string, meth: string, val: number) : void  { this.fInscore.postMessageStrI (adr, meth, val); }
+	postMessageStrF	(adr: string, meth: string, val: number) : void  { this.fInscore.postMessageStrF (adr, meth, val); }
+	postMessageStrStr(adr: string, meth: string, val: string): void  { this.fInscore.postMessageStrStr (adr, meth, val); }
 
-	checkStatus (status: eMsgStatus, msg: IMessage) : void {
-    	if (!(status & eMsgStatus.kProcessed + eMsgStatus.kProcessedNoChange))
-    		ITLError.write (msg.toString() + ": " + this.status2string(status));
-	}
+    delayMessage (adr: string, msg: TMessage)   : void      { this.fInscore.delayMessage (adr, msg); }
+	newMessage ()                               : TMessage  { return this.fInscore.newMessage(); }
+	newMessageM (meth: string)                  : TMessage  { return this.fInscore.newMessageM(meth); }
+	delMessage (msg: TMessage)                  : void      { return this.fInscore.delMessage(msg); }
 
-	getMessage (address: string, params: Array<any>) : IMessageList {
-    	let out: IMessageList = [];
-    	let msg = new IMessage (address, ["get"].concat(params));
-    	let targets = this.fGlue.getRoot().getTargetObjects (OSCAddress.shift (address));
-    	targets.forEach ( function (obj: IObject) { out = out.concat(obj.getCall(msg)); } );
-    	return out;
-	}
+    msgAddStr (msg: TMessage, str: string)      : void      { return this.fInscore.msgAddStr (msg, str); }
+	msgAddF   (msg: TMessage, val: number)      : void      { return this.fInscore.msgAddF (msg, val); }
+	msgAddI   (msg: TMessage, val: number)      : void      { return this.fInscore.msgAddI (msg, val); }
 
-	postMessage (address: string, params: Array<any>) : void {
-    	let msg = new IMessage (address, params);
-//    	this.checkStatus (this.fGlue.getRoot().process (msg), msg);
-    	this.fGlue.pushStack (msg);
-	}
-
-	load (data: any): void {
-		let loader = new TILoader;
-		if (typeof data == "string") 	{ loader.process (data, this.fGlue.getRoot()); }
-		else 							{ loader.load (data, this.fGlue.getRoot()); }		
-	}
-
-	register (tag : string): void {
-		var elts = document.getElementsByTagName (tag);
-		for (var i= 0 ; i < elts.length; i++) {
-			var icode = elts[i].textContent;
-			INScore.load (icode);
-			elts[i].textContent = "";
-		}
-		while (elts.length)
-			elts[0].parentElement.removeChild (elts[0]);
-	}
+    version ()				: number        { return this.fInscore.version(); }
+	versionStr ()			: string        { return this.fInscore.versionStr(); }
+	guidoversion ()			: string        { return this.fInscore.guidoversion(); }
+	musicxmlversion ()		: string        { return this.fInscore.musicxmlversion(); }
+        
+    //------------------------------------------------------------------------
+    // INScore glue interface
+    getRate() 		: number        { return this.fInscoreGlue.getRate(); } 
+	timeTask ()	    : void          { this.fInscoreGlue.timeTask(); }
+	sorterTask()	: void          { this.fInscoreGlue.sorterTask(); }
 }
 
-INScore = new INScoreImpl();
+enum TPenStyle 		{ kSolid, kDash, kDot, kDashDot, kDashDotDot }
+enum TBrushStyle 	{ kDense1, kDense2, kDense3, kDense4, kDense5, kDense6, kDense7,
+					  kNoBrush, kBrushHor, kBrushVer, kCross, kBDiag, kFDiag, kDiagCross }
+enum ArrowHead      { NONE, TRIANGLE, DIAMOND, DISK }
+enum Effect 	{ kNone, kBlur, kColorize, kShadow };
+enum Blurhint	{ kPerformance, kQuality, kAnimation };
+
+var inscore : INScore = null;

@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -27,25 +27,27 @@
 #include <fstream>
 #include "deelx.h"
 
+#include "Events.h"
 #include "IAppl.h"
+#include "IFilterForward.h"
 #include "IGlue.h"
 #include "IGraphicSignal.h"
+#include "IJavascript.h"
 #include "IMessage.h"
 #include "IObjectFactory.h"
-#include "ISignalNode.h"
 #include "IScene.h"
 #include "ISceneSync.h"
+#include "ISignalNode.h"
 #include "ITLError.h"
 #include "ITLparser.h"
 #include "OSCAddress.h"
-#include "QFileWatcher.h"
 #include "rational.h"
 #include "Updater.h"
-#include "IJavascript.h"
-#include "IFilterForward.h"
-#include "Events.h"
-
 #include "VSceneView.h"
+
+#if INCLUDEFileWatcher
+#include "QFileWatcher.h"
+#endif
 
 using namespace std;
 
@@ -68,8 +70,9 @@ IScene::IScene(const std::string& name, IObject * parent)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
-	setWidth(1.0f);
-	setHeight(1.0f);
+	fWidth = fHeight = 1.0f;
+//	setWidth(1.0f);
+//	setHeight(1.0f);
 	
 	fMsgHandlerMap[knew_SetMethod]				= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::newScene);
 	fMsgHandlerMap[kreset_SetMethod]			= TMethodMsgHandler<IScene, void (IScene::*)(void)>::create(this, &IScene::reset);
@@ -93,10 +96,19 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fGetMsgHandlerMap[krootPath_GetSetMethod]	= TGetParamMsgHandler<string>::create(fRootPath);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getForwardList);
 	fGetMsgHandlerMap[kparse_GetSetMethod]		= TGetParamMethodHandler<IScene, const std::string& (IScene::*)() const>::create(this, &IScene::parseVersion);
+
+
+#ifdef EMCC
+	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::connect);
+	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getCnxList);
+#endif
+
 }
 
 //--------------------------------------------------------------------------
+#if QTView
 QGraphicsScene * IScene::getGraphicScene () const			{ return fView ? static_cast<VSceneView*>(fView)->scene() : 0; }
+#endif
 
 //--------------------------------------------------------------------------
 void IScene::setHandlers ()
@@ -146,10 +158,12 @@ void IScene::reset ()
 	setHeight(1.0f);
 	signalsNode()->delsubnodes();
 	delsubnodes();
-	fFileWatcher->clear();
 	fRootPath.clear();
 	fFullScreen = false; 
 	fFrameless = false;
+#if INCLUDEFileWatcher
+	fFileWatcher->clear();
+#endif
 }
 
 //--------------------------------------------------------------------------
@@ -178,11 +192,13 @@ void IScene::createVirtualNodes()
 {
 	IRectShape::createVirtualNodes();
 
-	fFileWatcher = QFileWatcher::create(this);
 	fJSObject = IJavascript::create(this);
 	fFilterForward = IFilterForward::create(this);
 	fForwarder.setFilter(fFilterForward);
+#if INCLUDEFileWatcher
+	fFileWatcher = QFileWatcher::create(this);
 	add ( fFileWatcher );
+#endif
 	add ( fJSObject );
 	add ( fFilterForward );
 }
@@ -282,7 +298,9 @@ void IScene::print (ostream& out) const
 	out << "  mode : " << (getFullScreen() ? "normal" : "full") << "screen" << endl;
 	out << "  nodes synchronization :" << endl << fSync->getSync();
 	out << "  file watcher :" << endl;
+#if INCLUDEFileWatcher
 	fFileWatcher->print(out);
+#endif
 }
 
 //--------------------------------------------------------------------------
@@ -308,6 +326,12 @@ MsgHandler::msgStatus IScene::setRootPath(const IMessage* msg)
 MsgHandler::msgStatus IScene::forward(const IMessage* msg)
 {
 	return fForwarder.processForwardMsg(msg);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::connect(const IMessage* msg)
+{
+	return fConnecter.processConnectMsg(msg);
 }
 
 //--------------------------------------------------------------------------

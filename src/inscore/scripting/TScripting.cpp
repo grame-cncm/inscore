@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -41,6 +41,10 @@
 
 using namespace std;
 extern inscore::TScripting* gScripter;
+
+#ifdef EMCC
+#include <emscripten.h>
+#endif
 
 
 namespace inscore
@@ -85,9 +89,12 @@ void TScripting::variable (const char* ident, const SIMessageList* msgs)
 //--------------------------------------------------------------------------------------------
 void TScripting::process (SIMessage& msg)
 {
+#ifndef IBUNDLE
 	if (msg->delay())
 		inscore2::TSorter::schedule(msg, TWallClock::time());
-	else if (fExecute)
+	else
+#endif
+	if (fExecute)
 		fRoot->processMsg(msg);
 	else
 		fMessages->list().push_back (msg);
@@ -97,11 +104,13 @@ void TScripting::process (SIMessage& msg)
 void TScripting::process (SIMessageList& msgs)
 {
 	if (fExecute) {
-		double time = TWallClock::time();
 		for (size_t i=0; i<msgs->list().size(); i++) {
+#ifndef IBUNDLE
+			double time = TWallClock::time();
 			if (msgs->list()[i]->delay())
 				inscore2::TSorter::schedule(msgs->list()[i], time);
 			else
+#endif
 				fRoot->processMsg(msgs->list()[i]);
 		}
 	}
@@ -165,6 +174,15 @@ SIMessageList TScripting::jsEval (const char* script, int lineno)
 		}
 	}
 	else ITLErr << "javascript is not available!" << ITLEndl;
+	return 0;
+}
+
+#elif defined(EMCC)
+bool TScripting::checkJavascript () const						{ return true; }
+SIMessageList TScripting::jsEval (const char* script, int lineno)
+{
+	int ret = EM_ASM_INT( { TJavascript.run(Module.UTF8ToString($0)); }, script);
+//	if (ret == 0) ITLErr << "failed to run '" << script << "'" << ITLEndl;
 	return 0;
 }
 #else

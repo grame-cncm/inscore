@@ -1,24 +1,31 @@
 
 /ITL/scene/* del;
 
+/ITL/scene/comment set txt "Reloading this script was crashing
+due to incorrect hierarchy removal.
+Fixed on model side";
+/ITL/scene/comment y -0.7;
+/ITL/scene/comment fontSize 16;
+
 w = 1;
 /ITL/scene/rect set rect $w $w ;
 /ITL/scene/rect color 220 220 220;
 
-/ITL/scene/rect/sr set rect $w $w ;
+/ITL/scene/rect/sr set ellipse $w $w ;
 /ITL/scene/rect/sr color 220 100 100;
 
 /ITL/scene/rect/sr/ssr set rect $w $w ;
 /ITL/scene/rect/sr/ssr color 100 100 220;
 
+pos = 0.85;
 /ITL/scene/text 			set txt "Hello world!";
 /ITL/scene/rect/text 		set txt "Hello rect!";
 /ITL/scene/rect/sr/text 	set txt "Hello sr!";
 /ITL/scene/rect/sr/ssr/text set txt "Hello ssr!";
-/ITL/scene/text 			y 1;
-/ITL/scene/rect/text 		y 1;
-/ITL/scene/rect/sr/text 	y 1;
-/ITL/scene/rect/sr/ssr/text y 1;
+/ITL/scene/text 			y $pos;
+/ITL/scene/rect/text 		y $pos;
+/ITL/scene/rect/sr/text 	y $pos;
+/ITL/scene/rect/sr/ssr/text y $pos;
 
 /ITL/scene/text 			fontSize 14;
 /ITL/scene/rect/text 		fontSize 14;

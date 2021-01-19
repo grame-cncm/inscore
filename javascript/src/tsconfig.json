@@ -1,14 +1,15 @@
 {
     "__comment": "the 'allowxxx' compiler options are intended to the INScore parser (js)",
     "compilerOptions": {
-        "module": "system",
+       "lib": [ "es2015", "dom" ],
+       "module": "system",
         "target": "es3",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "outDir": "build",
-        "out": "../inscore.js",
+        "out": "../inscoreview.js",
         "sourceMap": false,
-        "allowUnreachableCode": true,
-        "allowUnusedLabels": true,
-        "allowJs": true
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "allowJs": false
     }
 }

@@ -18,14 +18,12 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 #include <fstream>
-
-#include <QDir>
 
 #include "TFile.h"
 #include "IAppl.h"
@@ -132,6 +130,7 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
         // the creation of a url file should not go through TFile::set.
         // this means that the current object is not a URLIntermediate, it is a file whose path has been change to an url
         // we then have to destroy it and re-create the URLIntermediate (we send the message in the form "/urlname set url type path"
+#ifndef EMCC
         if(Tools::isurl(path) || Tools::isurl(fScene->getRootPath()))
         {
             SIMessage newmsg = IMessage::create(msg->address(), msg->message());
@@ -142,7 +141,9 @@ MsgHandler::msgStatus TFile::set (const IMessage* msg )
 			return MsgHandler::kProcessed;
         }
         
-		else if ( path.size())
+		else
+#endif
+		if ( path.size())
 		{
             std::string completePath = fScene ? fScene->absolutePath(path) : IAppl::absolutePath(path);
 			setFile( completePath );

@@ -1,0 +1,104 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="inscore box" id="scene">
+
+	/ITL/scene/* del;
+
+
+	/ITL/scene/ssize set rect 2 2;
+	/ITL/scene/ssize color 230 230 230;
+
+	/ITL/scene/score set gmnf  "/gmn/mozart.gmn.txt";
+	/ITL/scene/score scale 0.25;
+	/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date:system');
+
+	
+	w = 0.1;
+	/ITL/scene/cursor1 set ellipse $w $w;
+	/ITL/scene/cursor2 set ellipse $w $w;
+	/ITL/scene/cursor3 set ellipse $w $w;
+	/ITL/scene/cursor4 set ellipse $w $w;
+	/ITL/scene/cursor5 set ellipse $w $w;
+	/ITL/scene/cursor1 color blue;
+	/ITL/scene/cursor2 color red;
+	/ITL/scene/cursor3 color green;
+	/ITL/scene/cursor4 color orange;
+	/ITL/scene/cursor5 color black;
+	/ITL/scene/cursor* alpha 0.1;
+	
+	/ITL/scene/score map staff1;
+	/ITL/scene/score map staff2;
+	/ITL/scene/score map staff3;
+	/ITL/scene/score map staff4;
+	/ITL/scene/score map staff5;
+	/ITL/scene/score map system;
+	
+	/ITL/scene/sync cursor1 "score:staff1";
+	/ITL/scene/sync cursor2 "score:staff2";
+	/ITL/scene/sync cursor3 "score:staff3";
+	/ITL/scene/sync cursor4 "score:staff4";
+	/ITL/scene/sync cursor5 "score:staff5";
+	
+	play  = "/imgs/play.png";
+	pause = "/imgs/pause.png";
+	
+	/ITL/scene/ctrl set img $play;
+	/ITL/scene/ctrl show 0;
+	/ITL/scene/ctrl scale 0.05;
+	/ITL/scene/ctrl y 0.9;
+	/ITL/scene/ctrl show 1;
+	/ITL/scene/ctrl watch mouseDown (
+		/ITL/scene/ctrl push,
+		/ITL/scene/cursor* tempo 60,
+		/ITL/scene/ctrl set img $pause,
+		/ITL/scene/ctrl watch mouseDown (
+			/ITL/scene/cursor* tempo 0,
+			/ITL/scene/ctrl set img $play,
+			/ITL/scene/ctrl pop
+		)
+	);
+	
+	g = 150;
+	grey = $g $g $g;
+	/ITL/scene/ctrl watch mouseEnter ( /ITL/scene/$self scale 0.055 );
+	/ITL/scene/ctrl watch mouseLeave ( /ITL/scene/$self scale 0.05 );
+
+	/ITL/scene/ctrlfs set txt "FS";
+	/ITL/scene/ctrlfs x 1;
+	/ITL/scene/ctrlfs y 0.9;
+	/ITL/scene/ctrlfs watch mouseEnter ( /ITL/scene/$self color red );
+	/ITL/scene/ctrlfs watch mouseLeave ( /ITL/scene/$self color black );
+	/ITL/scene/ctrlfs watch mouseDown (
+		/ITL/scene/ctrlfs push,
+		/ITL/scene fullscreen 1,
+		/ITL/scene/ctrlfs watch mouseDown (
+			/ITL/scene fullscreen 0,
+			/ITL/scene/ctrlfs pop
+		)
+	);
+		
+</div>
+
+</body>
+
+</html>

@@ -80,49 +80,49 @@ bool TFaustDSPPlugin::load ()
 {
 	if (isLoaded()){ return isResolved();}
 
-	if (TPlugin::load(fdlibName)) {
+	if (QPlugin::load(fdlibName)) {
         
-		fNewSFactory = resolve<TNewSFactory> (fdlibCreateFactoryS);
+		fNewSFactory = TPlugin::resolve<TNewSFactory> (fdlibCreateFactoryS);
 		if (fNewSFactory == 0)
             return error();
         
-		fNewFFactory = resolve<TNewFFactory> (fdlibCreateFactoryF);
+		fNewFFactory = TPlugin::resolve<TNewFFactory> (fdlibCreateFactoryF);
 		if (fNewFFactory == 0)
             return error();
 
-		fDelFactory = resolve<TDeleteFactory> (fdlibDeleteFactory);
+		fDelFactory = TPlugin::resolve<TDeleteFactory> (fdlibDeleteFactory);
 		if (fDelFactory == 0)
             return error();
         
-		fMetaDataFactory = resolve<TMetaFactory> (fdlibMetadata);
+		fMetaDataFactory = TPlugin::resolve<TMetaFactory> (fdlibMetadata);
 		if (fMetaDataFactory == 0)
             return error();
         
-		fCreateInst = resolve<TCreateInst> (fdlibCreateInstance);
+		fCreateInst = TPlugin::resolve<TCreateInst> (fdlibCreateInstance);
 		if (fCreateInst == 0)
             return error();
         
-		fDeleteInst = resolve<TDeleteInst> (fdlibDeleteInstance);
+		fDeleteInst = TPlugin::resolve<TDeleteInst> (fdlibDeleteInstance);
 		if (fDeleteInst == 0)
             return false;
         
-        fGetNumInputs = resolve<TGetNum> (fdlibGetNumInputs);
+        fGetNumInputs = TPlugin::resolve<TGetNum> (fdlibGetNumInputs);
 		if (fGetNumInputs == 0)
             return error();
         
-        fGetNumOutputs = resolve<TGetNum> (fdlibGetNumOutputs);
+        fGetNumOutputs = TPlugin::resolve<TGetNum> (fdlibGetNumOutputs);
 		if (fGetNumOutputs == 0)
             return error();
         
-        fInitInstance = resolve<TInitInst> (fdlibInitInstance);
+        fInitInstance = TPlugin::resolve<TInitInst> (fdlibInitInstance);
 		if (fInitInstance == 0)
             return error();
         
-        fBuildUserInterface = resolve<TBuildUI> (fdlibBuildInterface);
+        fBuildUserInterface = TPlugin::resolve<TBuildUI> (fdlibBuildInterface);
 		if (fBuildUserInterface == 0)
             return error();
         
-        fCompute = resolve<TComputeInst> (fdlibComputeInstance);
+        fCompute = TPlugin::resolve<TComputeInst> (fdlibComputeInstance);
 		if (fCompute == 0)
             return error();
 	}

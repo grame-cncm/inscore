@@ -19,14 +19,17 @@
   
 */
 
-#ifndef __ITLError__
-#define __ITLError__
+#pragma once
 
 #include <iostream>
 
-#ifdef NO_OSCSTREAM
-#define ITLErr	cerr
-#define ITLEndl	endl
+#include "Modules.h"
+
+#if !HASOSCStream
+#define ITLErr	std::cerr
+#define ITLEndl	std::endl
+#define ITLError std::ostream;			// static ITL error output stream
+#define ITLErrEnd ITLEndl;
 
 #else
 #include "OSCStream.h"
@@ -74,6 +77,4 @@ extern ITLError ITLErr;			// static ITL error output stream
 extern ITLErrEnd ITLEndl;		// static ITL error output stream end
 
 } // end namespace
-#endif
-
 #endif

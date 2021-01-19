@@ -1,3 +1,4 @@
+/ITL/scene/* del;
 /ITL/scene/test0 set line wa 0.5 30;
 /ITL/scene/test1 set line wa 1 45;
 /ITL/scene/test2 set line wa 0.5 60;

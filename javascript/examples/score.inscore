@@ -1,0 +1,71 @@
+
+/ITL/scene/* del;
+
+#url = "https://inscoreweb.grame.fr/";
+url = "../";
+/ITL/scene/score set gmnf $url + "gmn/mozart.gmn.txt";
+/ITL/scene/score scale 0.25;
+/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date');
+
+w = 0.1;
+/ITL/scene/cursor1 set ellipse $w $w;
+/ITL/scene/cursor2 set ellipse $w $w;
+/ITL/scene/cursor3 set ellipse $w $w;
+/ITL/scene/cursor4 set ellipse $w $w;
+/ITL/scene/cursor5 set ellipse $w $w;
+/ITL/scene/cursor1 color blue;
+/ITL/scene/cursor2 color red;
+/ITL/scene/cursor3 color green;
+/ITL/scene/cursor4 color orange;
+/ITL/scene/cursor5 color black;
+/ITL/scene/cursor* alpha 0.1;
+
+/ITL/scene/score map staff1;
+/ITL/scene/score map staff2;
+/ITL/scene/score map staff3;
+/ITL/scene/score map staff4;
+/ITL/scene/score map staff5;
+
+/ITL/scene/sync cursor1 "score:staff1";
+/ITL/scene/sync cursor2 "score:staff2";
+/ITL/scene/sync cursor3 "score:staff3";
+/ITL/scene/sync cursor4 "score:staff4";
+/ITL/scene/sync cursor5 "score:staff5";
+
+play  = $url + "imgs/play.png";
+pause = $url + "imgs/pause.png";
+
+/ITL/scene/ctrl set img $play;
+/ITL/scene/ctrl show 0;
+/ITL/scene/ctrl scale 0.12;
+/ITL/scene/ctrl y 0.9;
+/ITL/scene/ctrl show 1;
+/ITL/scene/ctrl watch mouseDown (
+	/ITL/scene/ctrl push,
+	/ITL/scene/cursor* tempo 60,
+	/ITL/scene/ctrl set img $pause,
+	/ITL/scene/ctrl watch mouseDown (
+		/ITL/scene/cursor* tempo 0,
+		/ITL/scene/ctrl set img $play,
+		/ITL/scene/ctrl pop
+	)
+);
+
+g = 150;
+grey = $g $g $g;
+/ITL/scene/ctrl watch mouseEnter ( /ITL/scene/$self scale 0.13 );
+/ITL/scene/ctrl watch mouseLeave ( /ITL/scene/$self scale 0.12 );
+
+
+__END__
+
+/ITL/scene/score get map;
+/ITL/scene/score/debug map 1;
+/ITL/scene/ctrl get watch;
+
+/ITL/scene/cursor date 0;
+/ITL/scene/cursor date 1 4;
+/ITL/scene/cursor date 9 4;
+/ITL/scene/cursor date 10 4;
+
+/ITL/scene/sync cursor;

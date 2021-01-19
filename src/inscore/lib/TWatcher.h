@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -64,6 +64,10 @@ template <typename T> class TWatcher
 
 		const IMessageList* get (const T& key) const			{	const_iterator i = fWatchList.find(key);
 																	return (i != end()) ? i->second : 0;
+																}
+
+		const size_t 	count (const T& key) const				{	const_iterator i = fWatchList.find(key);
+																	return (i != end()) ? 1 : 0;
 																}
 		/// \brief set a key associated messages
 		virtual void set (const T& key, SIMessageList msgs)		{	if (msgs) fWatchList[key] = msgs;

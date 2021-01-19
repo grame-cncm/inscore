@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -27,11 +27,13 @@
 #ifndef __IScene__
 #define __IScene__
 
+#include "Modules.h"
 #include "IRectShape.h"
 #include "PeriodicTask.h"
 #include "TILoader.h"
 #include "TScripting.h"
 #include "Forwarder.h"
+#include "Connect.h"
 
 #include <vector>
 
@@ -51,12 +53,15 @@ class Master;
 typedef class libmapping::SMARTP<Master>			SMaster;
 class IScene;
 typedef class libmapping::SMARTP<IScene>			SIScene;
-class IFileWatcher;
-typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
 class IJavascript;
 typedef class libmapping::SMARTP<IJavascript>		SIJavascript;
 class IFilterForward;
 typedef class libmapping::SMARTP<IFilterForward>		SIFilterForward;
+
+#if INCLUDEFileWatcher
+class IFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>		SIFileWatcher;
+#endif
 
 //--------------------------------------------------------------------------
 /*! \brief a scene model
@@ -69,13 +74,16 @@ class IScene : public IRectShape, public TILoader
 	bool			fAbsoluteCoordinates;
 	bool			fWindowOpacity;
 	bool			fUpdateVersion;
+#if INCLUDEFileWatcher
 	SIFileWatcher	fFileWatcher;
+#endif
 	SIJavascript	fJSObject;
 	std::string		fRootPath;
 
 	TJSEngine*		fJavascript;
 	SIFilterForward	fFilterForward;
 	Forwarder		fForwarder;
+	Connect			fConnecter;
 	std::string		fParseVersion;
 
 	public:		
@@ -123,8 +131,13 @@ class IScene : public IRectShape, public TILoader
 
 		std::string			getRootPath() const;
 		std::string			absolutePath( const std::string& path ) const;
+#ifndef NOVIEW
 		QGraphicsScene *	getGraphicScene () const;
-
+#endif
+#ifdef EMCC
+	virtual void	setWidth(float width)		{ IRectShape::setWidth(width); refresh(); }
+	virtual void	setHeight(float height)		{ IRectShape::setHeight(height); refresh(); }
+#endif
 		virtual VSceneView*	getSceneView() const;
 
 		/*!
@@ -143,6 +156,7 @@ class IScene : public IRectShape, public TILoader
 		int	execute (const IMessage* msg);
 
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
+		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fConnecter.getCnxList(); }
 
 	protected:
 				 IScene(const std::string& name, IObject * parent);
@@ -162,12 +176,11 @@ class IScene : public IRectShape, public TILoader
 		void		del ();
 		virtual		SIMessageList getAll () const;
 
-		/*!
-		 * \brief forward The scene accept forward message.
-		 * \param msg a message
-		 * \return
-		 */
+		/// \brief scene \c 'forward' message handler.
 		MsgHandler::msgStatus forward(const IMessage* msg);
+		/// \brief scene \c 'connect' message handler.
+		MsgHandler::msgStatus connect (const IMessage* msg);
+
 		MsgHandler::msgStatus setParseVersion(const IMessage* msg);
 };
 

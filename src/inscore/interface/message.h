@@ -17,7 +17,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -113,8 +113,10 @@ class inscore_export Message
 		\return false when type doesn't matches
 	*/
 	virtual bool	param(int i, std::string& val) const = 0;
-	
+
+#ifndef EMCC
 	protected:
+#endif
 		virtual ~Message() {}
 	
 };

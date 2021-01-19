@@ -1,0 +1,29 @@
+{
+  "name": "INScoreJS",
+  "version": "0.1.0",
+  "description": "INScore Javascript",
+  "main": "index.html",
+  "scripts": {
+    "make": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grame-cncm/inscore.git"
+  },
+  "keywords": [
+    "INScore",
+    "Music notation"
+  ],
+  "author": "Grame-CNCM",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/grame-cncm/inscore/issues"
+  },
+  "homepage": "https://inscore.grame.fr",
+  "dependencies": {
+    "@grame/guidolib": "^1.6.8-a",
+    "@grame/libmusicxml": "^3.19.1",
+    "@grame/libfaust": "^1.0.1-beta",
+    "@types/node": "^13.9.8"
+  }
+}

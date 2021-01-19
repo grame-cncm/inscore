@@ -23,7 +23,7 @@
 #define __TGestureFollowerPlugin__
 
 #include <string>
-#include "TPlugin.h"
+#include "QPlugin.h"
 
 class GestureFollower;
 class GFClient;
@@ -31,7 +31,7 @@ class GFClient;
 namespace inscore
 {
 
-class TGestureFollowerPlugin : public TPlugin {
+class TGestureFollowerPlugin : public QPlugin {
 
 		typedef GestureFollower *	(* TNewFunction) (int maxPhrases, int vecSize, long capacity, GFClient*);
 		typedef void				(* TVoidVoidFunction) (GestureFollower * gf);

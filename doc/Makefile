@@ -15,7 +15,6 @@ oldhtml:
 	latex2html $(HTMLOPT) OSCMsg.tex
 	cp css/OSCMsg.css OSCMsg
 
-
 htindex :
 	tex '\def\filename{{OSCMsg}{idx}{4dx}{ind}} \input idxmake.4ht'
 	makeindex -o OSCMsg.ind OSCMsg.4dx

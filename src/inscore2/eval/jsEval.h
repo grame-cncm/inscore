@@ -28,11 +28,13 @@
 
 #include <exception>
 
-#ifdef TESTV2
+#if defined(TESTV2)
 typedef void* JSEngine;
-#else
+#elif defined(QTJSENGINE)
 #include "TQtJs.h"
 typedef inscore::TQtJs* JSEngine;
+#else
+typedef void* JSEngine;
 #endif
 
 #include "INode.h"

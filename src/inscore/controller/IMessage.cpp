@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -26,6 +26,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "Modules.h"
 #include "IMessage.h"
 #include "IMessageStream.h"
 #include "IMessageStack.h"
@@ -35,10 +36,10 @@
 #include "rational.h"
 #include "TWallClock.h"
 #include "TSorter.h"
-
-#ifndef NO_OSCSTREAM
-#include "OSCStream.h"
 #include "ITLError.h"
+
+#if HASOSCStream
+#include "OSCStream.h"
 #endif
 
 using namespace std;
@@ -146,6 +147,21 @@ bool IMessage::cast_param(int i, float& val) const
 	}
 	return false;
 }
+
+//--------------------------------------------------------------------------
+bool IMessage::cast_param(int i, int& val) const
+{
+	if (param(i)->isType<int>()) {
+		val = param(i)->value<int>(0);
+		return true;
+	}
+	if (param(i)->isType<float>()) {
+		val = int(param(i)->value<float>(0));
+		return true;
+	}
+	return false;
+}
+
 //--------------------------------------------------------------------------
 bool IMessage::param(int i, rational& val) const
 { 
@@ -317,7 +333,7 @@ void IMessage::send(const bool& ) const
 #endif
 {
 	if (extendedAddress()) {
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		OSCStream::sendEvent (this, url().fHostname, url().fPort);
 #endif
 	}
@@ -337,11 +353,13 @@ void IMessage::send(const bool& ) const
 //--------------------------------------------------------------------------
 void IMessageList::send(const bool& delay) const
 {
+#ifndef IBUNDLE
 	double time = TWallClock::time();
 	for (auto msg: list()) {
 		if (msg->delay()) inscore2::TSorter::schedule (msg, time);
 		else msg->send(delay);
 	}
+#endif
 //	for (unsigned int i=0; i < list().size(); i++) {
 //		const IMessage * msg = list()[i];
 //		if (msg) msg->send(delay);
@@ -443,7 +461,7 @@ IMessage::TUrl::operator string() const
 	return str.str();
 }
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 //--------------------------------------------------------------------------
 void IMessage::linearize(OSCStream& osc) const
 {

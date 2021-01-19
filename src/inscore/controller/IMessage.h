@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -31,6 +31,7 @@
 #include <vector>
 #include <ostream>
 
+#include "Modules.h"
 #include "message.h"
 #include "ITLError.h"
 #include "OSCStream.h"
@@ -95,7 +96,7 @@ class baseparam : public libmapping::smartable
 			
 		virtual libmapping::SMARTP<baseparam> copy() const = 0;
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		virtual void print(ITLError ) const {}
 #endif
 		virtual void print(std::ostream& ) const {}
@@ -116,7 +117,7 @@ template <typename T> class IMsgParam : public baseparam
 		T	getValue() const { return fParam; }
 		
 		virtual libmapping::SMARTP<baseparam> copy() const	{ return new IMsgParam<T>(fParam); }
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 		virtual void print(ITLError out) const				{ out << fParam; }
 #endif
 		virtual void print(std::ostream& out) const			{
@@ -350,7 +351,7 @@ class IMessage : public Message, public libmapping::smartable
 	*/
 	std::string	toString() const;
 
-#ifndef NO_OSCSTREAM
+#if HASOSCStream
 	/*!
 		\brief send the message to OSC
 		\param out the OSC output stream
@@ -410,6 +411,13 @@ class IMessage : public Message, public libmapping::smartable
 		\return false when type is not a numreric type
 	*/
 	bool	cast_param(int i, float& val) const;
+	/*!
+		\brief gives a message value as int value and operates float to int cast if necessary
+		\param i the parameter index (0 <= i < size())
+		\param val on output: the parameter value when the parameter type matches
+		\return false when type is not a numreric type
+	*/
+	bool	cast_param(int i, int& val) const;
 
 	/*!
 		\brief gives a message float parameter
@@ -562,10 +570,18 @@ class IMessageList : public libmapping::smartable
 		/*!
 		 * \brief sendWebMsg Add messages to a specific stack for message from web
 		 */
-		void sendWebMsg() const;
+		void 	sendWebMsg() const;
+	
+		/*!
+			\brief print the message list
+			\param out the output stream
+		*/
+		void	print(std::ostream& out) const;
+
 };
 
 inline std::ostream& operator << (std::ostream& os, const SIMessage& m)			{ if (m) m->print(os); else os << "null msg"; return os; }
+inline std::ostream& operator << (std::ostream& os, const SIMessageList& l)		{ if (l) l->list().print(os); else os << "null msg list"; return os; }
 
 /*!
 @}

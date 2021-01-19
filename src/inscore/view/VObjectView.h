@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2011  Grame
+  Copyright (C) 2009,2020  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -18,23 +18,22 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 
-#ifndef __VObjectView__
-#define __VObjectView__
+#pragma once
 
 #include <iostream>
 #include <vector>
-#include <QGraphicsItem>
 
-#include "GraphicEffect.h"
-#include "EventsAble.h"
 #include "abstractdata.h"
+#include "EventsAble.h"
+#include "Modules.h"
 
+class QGraphicsItem;
 
 namespace inscore
 {
@@ -45,6 +44,7 @@ namespace inscore
 */
 
 class IObject;
+class IEffect;
 
 //--------------------------------------------------------------------------
 /**
@@ -52,34 +52,37 @@ class IObject;
 */
 class VObjectView
 {
+	VObjectView* fParent;
+
 	public :
-		virtual ~VObjectView()	{}
+		virtual ~VObjectView() {}
 
-		virtual void updateView(IObject * object)			= 0;
-		virtual void updateObjectSize( IObject * object )	= 0;
-		//virtual void setParentView (IObject * object)		= 0;
-		virtual void setParentItem( VObjectView* parent )	= 0;
+		virtual void updateView(IObject * object)			{}
+		virtual void updateObjectSize( IObject * object )	{}
+		virtual void setParentItem( VObjectView* parent )	{}
 
-		virtual void setEffect (GraphicEffect& effect)		= 0;
-		virtual GraphicEffect getEffect () const			= 0;
+		virtual void setEffect (const IEffect* effect)		{}
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
-		virtual float relative2SceneY(float y, QGraphicsItem * item = 0 ) const						= 0;
+		virtual float relative2SceneY(float y, VObjectContext item = 0 ) const;
 		/// \brief Maps the IObject [-1,1] x coordinate to the referenceRect().
-		virtual float relative2SceneX(float x, QGraphicsItem * item = 0 ) const						= 0;
+		virtual float relative2SceneX(float x, VObjectContext item = 0 ) const;
 		/// \brief Maps the IObject [0,2] width value to the corresponding referenceRect() value.
-		virtual float relative2SceneWidth(float width, QGraphicsItem * item = 0 ) const				= 0;
+		virtual float relative2SceneWidth(float width, VObjectContext item = 0 ) const;
 		/// \brief Maps the IObject [0,2] height value to the corresponding referenceRect() value.
-		virtual float relative2SceneHeight(float height, QGraphicsItem * item = 0 ) const				= 0;
+		virtual float relative2SceneHeight(float height, VObjectContext item = 0 ) const;
 
 		/// \brief Maps the referenceRect() width value to the corresponding [0,2] value.
-		virtual float scene2RelativeWidth(float width, QGraphicsItem * item = 0 ) const				= 0;
+		virtual float scene2RelativeWidth(float width, VObjectContext item = 0 ) const;
 		/// \brief Maps the referenceRect() height value to the corresponding [0,2] value.
-		virtual float scene2RelativeHeight(float height, QGraphicsItem * item = 0 ) const				= 0;
+		virtual float scene2RelativeHeight(float height, VObjectContext item = 0 ) const;
 		/// \brief Maps the referenceRect() x value to the corresponding [-1,1] value.
-		virtual float scene2RelativeX(float x, QGraphicsItem * item = 0 ) const						= 0;
+		virtual float scene2RelativeX(float x, VObjectContext item = 0 ) const;
 		/// \brief Maps the referenceRect() y value to the corresponding [-1,1] value.
-		virtual float scene2RelativeY(float y, QGraphicsItem * item = 0 ) const						= 0;
+		virtual float scene2RelativeY(float y, VObjectContext item = 0 ) const;
+
+		/// \brief Returns the reference rectangle for the object: the master rect or the scene rect (if there's no master).
+		virtual TFloatRect referenceRect(VObjectContext item) const	= 0;
 
 		/// \brief updates the local mapping (do nothing at IObject level) 
 		virtual void	updateLocalMapping (IObject* )					{}
@@ -127,5 +130,3 @@ class VObjectView
 /*!@} */
 
 } // end namespoace
-
-#endif

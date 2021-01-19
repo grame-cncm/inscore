@@ -17,7 +17,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -25,6 +25,7 @@
 #ifndef __INScore__
 #define __INScore__
 
+#include <string>
 
 #if defined(WIN32) && defined(MSVC)
 
@@ -46,8 +47,7 @@
 
 #endif
 
-class QApplication;
-namespace inscore 
+namespace inscore
 {
 
 /*!
@@ -62,7 +62,31 @@ class GraphicUpdateListener
 		virtual void update() = 0;
 };
 
-class IGlue;
+//--------------------------------------------------------------------------
+class INScoreApplicationGlue
+{
+	public :
+		virtual void 	showMouse (bool state) = 0;
+		virtual bool 	openUrl (const std::string& url) = 0;
+		virtual void	startView () = 0;
+		virtual void	stopView  () = 0;
+
+		virtual std::string viewVersion() const = 0;
+		virtual std::string getIP() const = 0;
+};
+
+//--------------------------------------------------------------------------
+class INScoreGlue
+{
+	public :
+		virtual ~INScoreGlue() {}
+
+		virtual int 	getRate() const = 0;
+		virtual void 	timeTask () = 0;
+		virtual void 	sorterTask() = 0;
+};
+
+//--------------------------------------------------------------------------
 /*! \brief the main library API
 */
 class inscore_export INScore
@@ -72,7 +96,6 @@ class inscore_export INScore
 
 	/*! \brief Qt environment initialization + INScore glue setup
 
-		\param timeInterval the time task tme interval (in mls). 0 means no time task
 		\param udpport the udp port number to listen for incoming OSC messages
 		\param outport the udp port number for outgoing OSC messages
 		\param errport the udp port number for error messages
@@ -83,13 +106,13 @@ class inscore_export INScore
 		\see GraphicUpdateListener
 			   
 	*/
-	static IGlue* start (int timeInterval, int udpport, int outport, int errport, QApplication* appl, bool offscreen=false);
+	static INScoreGlue* start (int udpport, int outport, int errport, INScoreApplicationGlue* ag, bool offscreen=false);
 
 	/*! \brief stops the INScore services
 
 		\param glue the value returned by the last start call
 	*/
-	static void stop (IGlue* glue);
+	static void stop (INScoreGlue* glue);
 
     /*!
      * \brief restartNetwork Restart network services after a stop.
@@ -100,28 +123,17 @@ class inscore_export INScore
      * \brief stopNetwork Stop network services of inscore.
      */
     static void stopNetwork();
+	
+	/*! \brief load an inscore script
+		\param script the text of the script
+		\param autoparse a boolean to activate the current parse version (set with the 'parse' message)
+	*/
+	static bool loadInscore	(const char* script, bool autoparse=false);
 
-//	/* \brief sets a listener for the graphic update
-//
-//		\param glue the system glue as returned by init()
-//		\param listener a listener that will be called after the scene graphic update
-//	*/
-//	static void setListener (IGlue* glue, GraphicUpdateListener* listener);
-//
-//	/* \brief copy the graphic score data into a bitmap
-//
-//		\param glue the system glue as returned by init()
-//		\param bitmap the destination bitmap
-//		\param w the bitmap width
-//		\param h the bitmap height
-//	*/
-//	static bool getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h);
-//
-//	/* \brief copy the scene data into a bitmap
-//
-//		\param glue the system glue as returned by init()
-//	*/
-//	static void timeTask (IGlue* glue);
+	/*! \brief load an inscore script version 2
+		\param script the text of the script
+	*/
+	static bool loadInscore2 (const char* script);
 
 	/*! \brief post a message
 
@@ -208,12 +220,11 @@ class inscore_export INScore
 	static void add (MessagePtr msg, int n);
 	
 	
-	static float version()				{ return 1.24f; }	///< gives the library version number
-	static const char* versionStr()		{ return "1.24"; }	///< gives the library version number as a string
+	static float version()					{ return 1.26f; }	///< gives the library version number
+	static std::string versionStr()	{ return "1.26"; }	///< gives the library version number as a string
 
-	static const char* guidoversion();						///< gives the guido library version number as a string
-	static const char* musicxmlversion();					///< gives the musicxml library version number as a string
-	static const char* qtversion();							///< gives the Qt library version number as a string
+	static std::string guidoversion();					///< gives the guido library version number as a string
+	static std::string musicxmlversion();					///< gives the musicxml library version number as a string
 };
 
 /*! @} */

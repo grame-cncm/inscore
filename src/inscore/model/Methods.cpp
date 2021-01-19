@@ -31,6 +31,7 @@ namespace inscore
 const char* kabsolutexy_GetSetMethod= "absolutexy";		// Get Set
 const char* kaccept_GetSetMethod	= "accept";			// Get Set
 const char* kalias_GetSetMethod		= "alias";			// Get Set
+const char* kallnotesoff_SetMethod	= "allNotesOff";	// Set
 const char* kalpha_GetSetMethod		= "alpha";			// Get Set
 const char* kanimate_GetSetMethod	= "animate";		// Get Set
 const char* kanimated_GetMethod		= "animated";		// Get
@@ -115,6 +116,8 @@ const char* khsb_SetMethod			= "hsb";			// Set
 const char* khue_GetSetMethod		= "hue";			// Get Set
 const char* kin_GetMethod			= "in";				// Get
 const char* kkeyboard_GetSetMethod	= "keyboard";		// Get Set
+const char* kkeyon_SetMethod		= "keyOn";			// Get Set
+const char* kkeyoff_SetMethod		= "keyOff";			// Set
 const char* klevel_GetSetMethod		= "level";			// Get Set
 const char* kload_SetMethod			= "load";			// Set
 const char* klock_GetSetMethod		= "lock";			// Get Set
@@ -142,6 +145,7 @@ const char* kpenColor_GetSetMethod	= "penColor";		// Get Set
 const char* kpenStyle_GetSetMethod	= "penStyle";		// Get Set
 const char* kpenWidth_GetSetMethod	= "penWidth";		// Get Set
 const char* kbrushStyle_GetSetMethod= "brushStyle";		// Get Set
+const char* kpaths_GetMethod		= "paths";			// Get
 const char* kparse_GetSetMethod		= "parse";			// Get Set
 const char* kpendAlpha_GetSetMethod	= "pendAlpha";		// Set
 const char* kpendAlpha_SetMethod	= "pendAlpha";		// Set
@@ -226,6 +230,10 @@ const char* khasZ_GetMethod				= "hasZ";					// Get
 const char* kmax_GetSetMethod			= "max";					// Get Set
 const char* kmode_GetSetMethod			= "mode";					// Get Set
 const char* ksmooth_GetSetMethod		= "smooth";					// Get Set
+
+// refresh method
+// introduced for the javascript implementation
+const char* krefresh_SetMethod		= "refresh";					// Set
 
 
 } //namespace

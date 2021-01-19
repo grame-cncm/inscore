@@ -1,7 +1,7 @@
 
 /ITL/scene/* del;
 
-/ITL/scene/inscore set img "http://marcopolo.grame.fr:8000";
+/ITL/scene/inscore set img "https://raw.githubusercontent.com/grame-cncm/inscore/gh-pages/img/INScore.png";
 /ITL/scene/inscore scale 0.6;
 
 /ITL/scene/s1 set ellipse 0.3 0.3;
@@ -44,7 +44,7 @@
 /ITL get  rate;
 /ITL/scene/* del;
 
-/ITL/scene/logo set img "http://inscore.sourceforge.net/img/INScore.png";
+/ITL/scene/logo set img "https://raw.githubusercontent.com/grame-cncm/inscore/gh-pages/img/INScore.png";
 /ITL/scene scale 0.8;
 /ITL/scene red 250 ;
 

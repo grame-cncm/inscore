@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -60,7 +60,10 @@ class IGuidoCode : public IObject
 {
 	protected:
 		typedef libmapping::SMARTP<TLocalMapping<libmapping::rational,1> >	SLocalMapping;
+		typedef libmapping::SMARTP<TLocalMapping<float,2> >	SGuidoMapping;
+
 		SLocalMapping	fLocalMappings;
+		SRelativeTime2RelativeTimeMapping fTime2TimeMap;
 		CGRHandler		fGRHandler;
 		int				fCurrentPagesCount;		// the current page count, used to fire the 'pageCount' event
 
@@ -75,7 +78,6 @@ class IGuidoCode : public IObject
 	
 	protected:
 		std::string	fGMN;								/// < Guido Music Notation code.
-//		int			fPageCount;							/// < Nb of pages of the score. (set by the view)
 		
 		std::vector<std::string> fRequestedMappings;	/// < Requested map-name list. 
 														/// The 'map' msg just expects a map-name, and then the Guido view
@@ -87,7 +89,7 @@ class IGuidoCode : public IObject
 	public:
 		static const std::string kGuidoCodeType;
 		static SIGuidoCode create(const std::string& name, IObject * parent)	{ return new IGuidoCode(name, parent); }
-		virtual void	accept (Updater*u);
+		virtual void	accept (Updater*);
 
 		void	print (std::ostream& out) const;
 
@@ -102,6 +104,9 @@ class IGuidoCode : public IObject
 		libmapping::rational	getPageDate(int pagenum) const;
 
 		const IExprHandlerbase*	getExprHandler() const	{return &fExprHandler;}
+		
+		void setTime2TimeMap (SRelativeTime2RelativeTimeMapping& map);
+		void setTime2GraphicMap (const std::string& name, SRelativeTime2GraphicMapping& map);
 
 		/// \brief requests that the IGuidoCode build a mapping named 'mapName'. The IGuidoCode stores the number of requests.
 		virtual void requestMapping(const std::string& mapName);
@@ -114,7 +119,8 @@ class IGuidoCode : public IObject
 		virtual std::vector<int> getSystemsCount() const;
 
 		void	setPageCount(int count);
-
+		void 	updateScoreMapping ();
+		virtual void	ready();
 
 	protected:
 				 IGuidoCode( const std::string& name, IObject * parent );

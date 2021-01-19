@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -28,6 +28,8 @@
 #define __IModelTypes__
 
 #include "smartpointer.h"
+#include "Modules.h"
+
 
 namespace inscore
 {
@@ -54,12 +56,6 @@ typedef class libmapping::SMARTP<ICurve>		SICurve;
 
 class IEllipse;
 typedef class libmapping::SMARTP<IEllipse>		SIEllipse;
-
-class IFileWatcher;
-typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
-
-class IGestureFollower;
-typedef class libmapping::SMARTP<IGestureFollower> SIGestureFollower;
 
 class IGraphicSignal;
 typedef class libmapping::SMARTP<IGraphicSignal> SIGraphicSignal;
@@ -105,9 +101,6 @@ typedef class libmapping::SMARTP<IHtml>			SIHtml;
 
 class IHtmlFile;
 typedef class libmapping::SMARTP<IHtmlFile>		SIHtmlFile;
-
-class IHttpd;
-typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
 
 class IImage;
 typedef class libmapping::SMARTP<IImage>		SIImage;
@@ -169,8 +162,30 @@ typedef class libmapping::SMARTP<IVideo>		SIVideo;
 class IUrlIntermediateObject;
 typedef class libmapping::SMARTP<IUrlIntermediateObject>		SIUrlIntermediateObject;
 
+#if INCLUDEFileWatcher
+class IFileWatcher;
+typedef class libmapping::SMARTP<IFileWatcher>	SIFileWatcher;
+#endif
+
+#if INCLUDEGestureFollower
+class IGestureFollower;
+typedef class libmapping::SMARTP<IGestureFollower> SIGestureFollower;
+#endif
+
+#if INCLUDEHttp
+class IHttpd;
+typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
+#endif
+
+#if INCLUDEFaustWeb
+class IFaustProcessor;
+typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
+#endif
+
+#if INCLUDEWebSocket
 class IWebSocket;
 typedef class libmapping::SMARTP<IWebSocket>		SIWebSocket;
+#endif
 
 class Master;
 class ISync;

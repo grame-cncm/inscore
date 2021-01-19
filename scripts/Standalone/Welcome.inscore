@@ -1,5 +1,6 @@
 
 /ITL/Welcome  new;
+/ITL/Welcome/* del;
 
 shadow = shadow 5 5 0 0 0 75 20;
 color = 20 0 150;
@@ -32,7 +33,7 @@ dy = 0.045;
 /ITL/Welcome/c1 set txt "INScore is an open source project";
 /ITL/Welcome/c2 set txt "developed by GRAME.";
 /ITL/Welcome/c3 set txt "More information on";
-/ITL/Welcome/c4 set txt "inscore.sf.net";
+/ITL/Welcome/c4 set txt "inscore.grame.fr";
 /ITL/Welcome/c* y 0.28;
 /ITL/Welcome/c[2-4] dy $dy;
 /ITL/Welcome/c[3-4] dy $dy;
@@ -42,6 +43,11 @@ dy = 0.045;
 /ITL/Welcome/c4 fontSize 18;
 /ITL/Welcome/c4 color $color;
 /ITL/Welcome/c4 effect $shadow;
+
+/ITL/Welcome/c4 watch mouseEnter (/ITL/Welcome/c4 color grey );
+/ITL/Welcome/c4 watch mouseLeave (/ITL/Welcome/c4 color $color );
+/ITL/Welcome/c4 watch mouseDown (/ITL browse "http://inscore.grame.fr" );
+
 
 /ITL/Welcome/logo set svg '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"

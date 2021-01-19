@@ -45,6 +45,7 @@ STRING_TYPE(iexpression)
 
 class IExprArgBase;
 class IExprOperator;
+class IObject;
 
 /*!
  * \brief Interface defining an evaluator: it can evaluate specific arguments or an entire expression.
@@ -83,6 +84,7 @@ public:
 	virtual const std::string eval(const filepath& arg, const IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const itladdress& arg, const IExprArgBase* exprArg=0)=0;
 	virtual const std::string eval(const iexpression& arg, const IExprArgBase* exprArg=0)=0;
+	virtual const std::string eval(const IObject *arg) { return ""; }
 
 	/*!
 	 * \brief eval evaluate an evaluable object, the default implementation use the equivalent const eval method.

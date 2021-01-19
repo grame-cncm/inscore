@@ -16,42 +16,46 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
-#include <QApplication>
-#include <QDir>
-#include <QThread>
-#include <QDebug>
-#include <QWaitCondition>
-
+#include <condition_variable>
 #include <iostream>
 #include <map>
-
-#ifdef NOVIEW
-#include "VoidUpdater.h"
-#elif defined(__MOBILE__)
-#include "VMobileQtInit.h"
-#include "VMobileQtUpdater.h"
-#include "VQtLocalMappingUpdater.h"
-#else
-#include "VQtInit.h"
-#include "VQtLocalMappingUpdater.h"
-#include "VQtUpdater.h"
-#endif
-
-#include "INScore.h"
-#include "IMessage.h"
-#include "IMessageStack.h"
-
+#include <sstream>
 
 #include "GUIDOEngine.h"
-
+#include "IAppl.h"
 #include "IGlue.h"
-#include "VSceneView.h"
-#include "QGuidoImporter.h"
+#include "IMessage.h"
+#include "IMessageStack.h"
+#include "INScore.h"
+#include "Modules.h"
+#include "TILoader.h"
+#include "TSorter.h"
+#include "TWallClock.h"
+#include "XMLImporter.h"
+
+#if defined(NOVIEW) || defined(MODELONLY)
+# include "VoidUpdater.h"
+
+#elif defined(HTMLVIEW)
+# include "HTMLUpdater.h"
+
+#elif defined(__MOBILE__)
+#  include "VMobileQtInit.h"
+#  include "VMobileQtUpdater.h"
+#  include "VQtLocalMappingUpdater.h"
+#else
+#  include "VQtLocalMappingUpdater.h"
+#  include "VQtUpdater.h"
+#endif
+
+#ifdef EMCC
+#include "JSCall.h"
+#endif
 
 using namespace std;
 namespace inscore 
@@ -62,22 +66,22 @@ IGlue* gGlue;
 /*!
 	\brief a specific thread for Java JNI
 */
-class JavaThread : public QThread
-{
-	public:
-		QApplication*	fAppl;
-	
-				 JavaThread(QApplication* appl) : fAppl(appl){}
-		virtual ~JavaThread() {}
-		void run()			 { fAppl->exec(); }
-};
+//class JavaThread : public QThread
+//{
+//	public:
+//		QApplication*	fAppl;
+//
+//				 JavaThread(QApplication* appl) : fAppl(appl){}
+//		virtual ~JavaThread() {}
+//		void run()			 { fAppl->exec(); }
+//};
 
 
 SIMessageStack				gMsgStack;			// the messages stack
 SIMessageStack				gDelayStack;		// the delayed messages stack
 SIMessageStack				gWebMsgStack;		// the messages stack for messages from the web
 map<INScore::MessagePtr, SIMessage>	gMsgMemory;		// allocated messages are stored in a map for refcounting
-QWaitCondition				gModelUpdateWaitCondition; // A wait condition on model update.
+std::condition_variable		gModelUpdateWaitCondition; // A wait condition on model update.
 //--------------------------------------------------------------------------
 static IMessage* Message2IMessage (INScore::MessagePtr p)
 {
@@ -87,20 +91,25 @@ static IMessage* Message2IMessage (INScore::MessagePtr p)
 //--------------------------------------------------------------------------
 // Qt environment initiaization + INScore glue setup
 //--------------------------------------------------------------------------
-IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, QApplication* appl, bool offscreen)
+INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplicationGlue* ag, bool offscreen)
 {
 	IGlue* glue = new IGlue (udpport, outport, errport);
-	if (glue && glue->start (timeInterval, offscreen, appl)) {
-#ifdef NOVIEW
-		glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
-		glue->setViewUpdater	(VoidViewUpdater::create() );
+	if (glue && glue->start (offscreen, ag)) {
+#if defined(NOVIEW)
+	glue->setLocalMapUpdater(VoidLocalMapUpdater::create() );
+	glue->setViewUpdater	(VoidViewUpdater::create() );
+#elif defined(HTMLVIEW)
+	glue->setLocalMapUpdater(HTMLLocalMapUpdater::create() );
+	glue->setViewUpdater	(HTMLViewUpdater::create() );
+#elif defined(MODELONLY)
+		glue->setLocalMapUpdater( 0 );
+		glue->setViewUpdater	( 0 );
 #elif defined(__MOBILE__)
 		VMobileQtInit::startQt();
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		// Initialize a view updater for mobile with a tab container
 		glue->setViewUpdater	(VMobileQtUpdater::create() );
 #else
-		VQtInit::startQt();
 		glue->setLocalMapUpdater(VQtLocalMappingUpdater::create() );
 		glue->setViewUpdater	(VQtUpdater::create() );
 #endif
@@ -113,11 +122,8 @@ IGlue* INScore::start(int timeInterval, int udpport, int outport, int errport, Q
 }
 
 //--------------------------------------------------------------------------
-void INScore::stop(IGlue* glue)
+void INScore::stop(INScoreGlue* glue)
 {
-#ifndef NOVIEW
-	VQtInit::stopQt();
-#endif
 	gGlue = 0;
 	delete glue;
 }
@@ -135,60 +141,46 @@ void INScore::stopNetwork()
 }
 
 //--------------------------------------------------------------------------
-//bool INScore::getGraphicScore (IGlue* glue, unsigned int* bitmap, int w, int h)
-//{
-//	if (!glue || !bitmap) return false;
-//	return glue->getSceneView(bitmap, w, h, false );
-//}
+bool INScore::loadInscore(const char *script, bool autoparse)
+{
+	IAppl* appl = gGlue->getAppl();
+	if (autoparse && (appl->parseVersion() == "v2"))
+		return loadInscore2(script);
+
+	stringstream stream(script);
+	return TILoader::parse(&stream, 0, appl, 1);
+}
 
 //--------------------------------------------------------------------------
-//void INScore::setListener (IGlue* glue, GraphicUpdateListener* listener)
-//{
-//	if (glue) glue->setGraphicListener (listener);
-//}
-
-//--------------------------------------------------------------------------
-//void INScore::timeTask (IGlue* glue)
-//{
-//	if (glue) glue->timerEvent (0);
-//}
+bool INScore::loadInscore2(const char *script)
+{
+	stringstream stream(script);
+	return TILoader::parse(&stream, 0, gGlue->getAppl(), 2);
+}
 
 //--------------------------------------------------------------------------
 // versions 
 //--------------------------------------------------------------------------
-const char* INScore::guidoversion()
+string INScore::guidoversion()
 {
-	int major, minor, sub;
-	GuidoGetVersionNums(&major, &minor, &sub);
-	stringstream s;
-	s << major << '.' << minor << '.' << sub;
-	
-	static string version = s.str();
-	return version.c_str();
+#ifdef EMCC
+	return jscall::getGuidoVersion();
+#else
+	return GuidoGetVersionStr();
+#endif
 }
 
 //--------------------------------------------------------------------------
-const char* INScore::musicxmlversion()
+string INScore::musicxmlversion()
 {
-	if (QGuidoImporter::musicxmlSupported())
+	if (XMLImporter::musicxmlSupported())
 	{
-		static string version;
-		if (!version.size()) {
-			version = QGuidoImporter::musicxmlVersion();
-			version += " using the guido converter version ";
-			version += QGuidoImporter::musicxml2guidoVersion();
-		}
-		return version.c_str();
+		string version = XMLImporter::musicxmlVersion();
+		version += " using the guido converter version ";
+		version += XMLImporter::musicxml2guidoVersion();
+		return version;
 	}
 	return "not available";
-}
-
-//--------------------------------------------------------------------------
-const char* INScore::qtversion()
-{
-	QString vers(qVersion());
-	static string version = vers.toStdString();
-	return version.c_str();
 }
 
 

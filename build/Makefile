@@ -2,10 +2,11 @@
 # 
 #
 
-.PHONY : macos ios win32 win64 linux android installAndroid help mobileUI
+.PHONY : macos ios win32 win64 linux android installAndroid mobileUI
 
 QMAKE ?= qmake
 MAKE  ?= make
+RANGE ?= 
 TARGET := undefined
 
 system	:= $(shell uname -s)
@@ -19,7 +20,6 @@ ifeq ($(TARGET), windows)
  SPEC ?= -spec win32-msvc2013
 endif
 
-JOBS ?= 8
 OUT  := INScore.framework
 MOBILESCRIPTS := ../scripts/mobile
 
@@ -27,10 +27,11 @@ INSCOREDIR  ?= inscoredir
 
 ifeq ($(system), Darwin)
 	LIBPROJ = INScore.xcodeproj
-	VIEWPROJ = INScoreViewer.xcodeproj
+	VIEWPROJ= INScoreViewer.xcodeproj
 	SPEC    = -spec macx-xcode
 	TARGET  = macos
 	PREFIX  ?= /usr/local
+	J       ?= 8   # parallele jobs for xcode
 endif
 
 ifeq ($(system), MINGW)
@@ -46,7 +47,6 @@ ifeq ($(system), Linux)
 	VIEWPROJ = Makefile.app
 	PREFIX  ?= /usr/local
 endif
-
 
 
 all :
@@ -70,13 +70,24 @@ help :
 	@echo "       with XXX the device serial number (can be retrieved using 'make devandroid')"
 	@echo "       DEVICE is optional when only one Android device is connected"
 	@echo "  devandroid : to get the serial number of the connected device"
-	@echo "  qmake : to regenerate the projects"
+	@echo "Project management: "
+	@echo "  qmake    : to regenerate the projects"
+	@echo "  voidview : to regenerate the projects with no view inside a 'noview' folder"
+	@echo "  log      : to generate the git log with optionnal revisions range"
+	@echo "             the range can be specified using the RANGE variable"
+	@echo "             e.g make RANGE=commitref1...commitref2"
 	@echo
 	@echo "Options:"
 	@echo "  ANDROID_API : define the android API to use (currently $(ANDROID_API))"
 	@echo "  ANDROID_ARCH: define the android architecture (currently $(ANDROID_ARCH))"
 	@echo "  GUIDOARDIR  : define the guidoar project location (currently $(GUIDOARDIR))"
 	@echo "  GUIDOLIBDIR : define the guidolib project location (currently $(GUIDOLIBDIR))"
+
+#===============================================================
+# utilities
+#===============================================================
+log:
+	git log --format="%h - %Cblue%s%Creset - %cn %cd"  $(RANGE)
 
 
 #===============================================================
@@ -85,9 +96,9 @@ help :
 macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C ../lib/GuidoEngine/macosx
 	$(MAKE) -C ../lib/GuidoAR/macosx
-	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
-	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
-	$(MAKE) ibundle
+	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
+#	$(MAKE) ibundle
 
 linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(LIBPROJ)
@@ -106,8 +117,8 @@ _ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	@which $(QMAKE) > /dev/null || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
 	cp -rf ../rsrc/ tmp-rsc
 	make -C $(MOBILESCRIPTS)
-	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
-	xcodebuild -jobs $(JOBS) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
+	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
 
 windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
@@ -127,10 +138,12 @@ $(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
 $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
 
+voidview :
+	$(MAKE) qmake CONFIG="CONFIG+=NOVIEW" INSCOREDIR=noview
 
-qmake :
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../viewer.pro  -o $(VIEWPROJ)
+qmake : $(INSCOREDIR)
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../library.pro -o $(LIBPROJ)
+	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../viewer.pro  -o $(VIEWPROJ)
 
 
 #===============================================================

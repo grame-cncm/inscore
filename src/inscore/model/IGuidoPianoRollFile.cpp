@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -27,7 +27,7 @@
 #include "IGuidoFile.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VGuidoItemView.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -65,6 +65,7 @@ MsgHandler::msgStatus IGuidoPianoRollFile::set (const IMessage* msg )
 
 		status = TFile::set( msg );
 		if (status & MsgHandler::kProcessed) {
+#ifndef EMCC
 			if(!hasData())
 			{
 				string file = getFile();
@@ -86,6 +87,10 @@ MsgHandler::msgStatus IGuidoPianoRollFile::set (const IMessage* msg )
 				newData(true);
 
 			}
+#else
+			setPending();
+			newData(true);
+#endif
 		}
 		return status;
 }

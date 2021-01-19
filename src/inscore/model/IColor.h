@@ -18,14 +18,13 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 
-#ifndef __IColor__
-#define __IColor__
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -86,7 +85,10 @@ class IColor
 		MsgHandler::msgStatus dhsvMsg (const IMessage* msg);
 
 		template <typename T> void print (T& out)	const { out << fR << fG << fB << fA; }
-		
+
+	
+		bool modified() const	{ return fModified; }
+
 		int getR() const { return fR; }
 		int getG() const { return fG; }
 		int getB() const { return fB; }
@@ -194,5 +196,3 @@ inline std::ostream& operator << (std::ostream& out, const IColor& color)	{ colo
 
 
 } // end namespoace
-
-#endif

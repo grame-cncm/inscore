@@ -17,14 +17,13 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 
-#ifndef __TLocalMapping__
-#define __TLocalMapping__
+#pragma once
 
 #include <map>
 #include <string>
@@ -34,6 +33,8 @@
 #include "smartpointer.h"
 
 namespace inscore {
+
+class IObject;
 
 /*!
 \addtogroup ITLMapping
@@ -82,8 +83,10 @@ template <typename T, unsigned int D> class TLocalMapping : public libmapping::s
 		void addMapping	(const std::string& name, const SLocal2TimeMapping& l2t)	{ fMappings[name] = l2t; }
 };
 
+class TDefaultLocalMapping {
+	public:
+	static void buildDefaultMapping (IObject* object);
+};
+
 /*! @} */
-
 }
-
-#endif

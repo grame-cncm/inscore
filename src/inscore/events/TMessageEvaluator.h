@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -159,6 +159,18 @@ class TMessageEvaluator
 		*/
 		IMessage::argslist evalVariableString (const std::string& str, const EventContext& env) const;
 
+		/**
+		*	\brief convert a location into a date
+			\param obj		the object context
+			\param x		the point x coordinate
+			\param y		the point y coordinate
+			\param mapname	the map to be used for conversion
+			\param n		the repeat number to be retrieved (indexed from 0)
+			\return a date
+			
+		*/
+		libmapping::rational point2date (const IObject * obj, float x, float y, const std::string& mapname, int n) const;
+
 	public:
 				 TMessageEvaluator() { init(); }
 		virtual ~TMessageEvaluator() {}
@@ -174,6 +186,17 @@ class TMessageEvaluator
 			taken from the \c args list. Variables are expected to be name $1, $2 etc...
 		*/
 		SIMessageList	eval (const IMessageList *msg, const EventContext& env, const IMessage::argslist& args) const;
+
+		/**
+		*	\brief evaluates a mouse event
+			\param msgs the messages to be evaluated
+			\param env the event context
+			\return a list of evaluated message i.e. without variable part
+		
+			Evaluation of a user defined event consists in replacing the variable parameters with the values
+			taken from the \c args list. Variables are expected to be name $1, $2 etc...
+		*/
+		SIMessageList 	eval (const IMessageList* msgs, float x, float y, EventContext& env);
 
 		/**
 		*	\brief evaluates a single user defined message

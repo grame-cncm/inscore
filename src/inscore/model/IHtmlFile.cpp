@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -26,9 +26,8 @@
 #include "IHtmlFile.h"
 #include "IMessage.h"
 #include "IScene.h"
-#include "TComposition.h"
 #include "Updater.h"
-#include "VTextView.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -67,12 +66,17 @@ MsgHandler::msgStatus IHtmlFile::set (const IMessage* msg )
 
 	status = TFile::set( msg );
 	if (status & MsgHandler::kProcessed) {
+#ifndef EMCC
 		if(!hasData())
         {
             if (!read(fText))
                 status = MsgHandler::kCreateFailure;
             else newData(true);
         }
+#else
+		setPending();
+		newData(true);
+#endif
 	}
 	return status;
 }

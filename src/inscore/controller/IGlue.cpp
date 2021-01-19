@@ -18,35 +18,30 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 #include <stdexcept>
 #include <iostream>
-
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QMessageBox>
-#include <QDir>
-#include <QMutexLocker>
-#include <QWaitCondition>
-
-#include "GUIDOEngine.h"
+#include <condition_variable>
 
 #include "EventsAble.h"
+#include "GUIDOEngine.h"
 #include "IAppl.h"
+#include "IApplVNodes.h"
 #include "IGlue.h"
 #include "IMappingUpdater.h"
 #include "IMessage.h"
 #include "INScore.h"
 #include "IScene.h"
 #include "ISync.h"
+#include "ITLError.h"
+#include "Modules.h"
 #include "OSCStream.h"
 #include "TWallClock.h"
 #include "ViewFactory.h"
-#include "VSceneView.h"
 
 #include "benchtools.h"
 
@@ -58,11 +53,40 @@ namespace inscore
 extern SIMessageStack gMsgStack;
 extern SIMessageStack gDelayStack;
 extern SIMessageStack gWebMsgStack;
-extern QWaitCondition gModelUpdateWaitCondition;
+extern std::condition_variable gModelUpdateWaitCondition;
+
+#ifdef EMCC
+#define kDefaultRate	20
+#else
+#define kDefaultRate	10
+#endif
+
+//--------------------------------------------------------------------------
+static void run (SINetListener listener)
+{
+	listener->run();
+}
+
+//--------------------------------------------------------------------------
+void NetworkThread::start()
+{
+	if (fThread) stop();
+	fThread = new std::thread (run, fListener);
+}
+
+//--------------------------------------------------------------------------
+void NetworkThread::stop()
+{
+	if (fThread) {
+		fListener->stop();
+		fThread->join(); delete fThread; fThread = 0;
+	}
+}
+
 
 //--------------------------------------------------------------------------
 IGlue::IGlue(int udpport, int outport, int errport) 
-	: fOscThread(0), fViewListener(0), fUDP(udpport, outport, errport)
+	: fNetThread(0), fViewListener(0), fUDP(udpport, outport, errport)
 {
 	fLastTimeTask = 0;
 }
@@ -75,43 +99,33 @@ const IObject* IGlue::root () const  { return dynamic_cast<const IObject*>((IApp
 //--------------------------------------------------------------------------
 void IGlue::clean()
 {
-	if (fOscThread) {
-        fOscThread->terminate();
-        fOscThread->wait(50);
-	}
-	QTimer::stop ();
-	delete fOscThread;
-    fOscThread = 0;
+	delete fNetThread;
+    fNetThread = 0;
+#if HASOSCStream
 	OSCStream::stop();
+#endif
+	fModel->getApplicatonGlue()->stopView();
 }
 
 //--------------------------------------------------------------------------
 void IGlue::restart()
 {
     try {
+#if HASOSCStream
         if (!OSCStream::start())
             throw("Cannot initialize output udp streams");
-        oscinit (fModel, fUDP);
-        if (!fMsgStack || !fController || !fModel || !fOscThread)
-            throw("Memory allocation failed!");
-#ifndef NOVIEW
-        fCurrentRate = fModel->getRate();
-        if (fCurrentRate) {
-            QTimer::start(fCurrentRate);
-        }
 #endif
+        oscinit (fModel, fUDP);
+        if (!fMsgStack || !fController || !fModel || !fNetThread)
+            throw("Memory allocation failed!");
     }
     catch (std::runtime_error e) {
         clean();
-        cerr << "Unexpected error: " << e.what() << endl;
-        QMessageBox alert (QMessageBox::Critical, "Fatal error", e.what(), QMessageBox::Ok, 0);
-        alert.exec();
+		ITLErr << "Unexpected error: " << e.what() << ITLEndl;
     }
     catch (const char* e) {
         clean();
-        cerr << "Unexpected error: " << e << endl;
-        QMessageBox alert (QMessageBox::Critical, "Fatal error", e, QMessageBox::Ok, 0);
-        alert.exec();
+		ITLErr << "Unexpected error: " << e << ITLEndl;
     }
 }
 
@@ -126,9 +140,11 @@ void IGlue::oscinit (SIAppl appl, udpinfo& udp)
 	bool done = false;
 	do {
 		try {
+#if HASOSCStream
 			oscinit (udp.fInPort);
 			oscinit (oscout, udp.fOutDstAddress, udp.fOutPort);
 			oscinit (oscerr, udp.fErrDstAddress, udp.fErrPort);
+#endif
 			appl->setUDPInPort (udp.fInPort);
 			done = true;
 		}
@@ -142,12 +158,9 @@ void IGlue::oscinit (SIAppl appl, udpinfo& udp)
 //--------------------------------------------------------------------------
 void IGlue::oscinit (int port)
 {
-	if (fOscThread) {
-		fOscThread->terminate();
-		delete fOscThread;
-	}
-	fOscThread = new OscThread(fMsgStack, fUDP.fInPort=port);
-	if (fOscThread) fOscThread->start();
+	if (fNetThread) delete fNetThread;
+	fNetThread = new NetworkThread(fMsgStack, fUDP.fInPort=port);
+	if (fNetThread) fNetThread->start();
 }
 
 //--------------------------------------------------------------------------
@@ -160,8 +173,6 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 //--------------------------------------------------------------------------
 bool IGlue::getSceneView(unsigned int* , int , int , bool )
 { 
-	QMutexLocker locker (&fTimeViewMutex);
-
 //	QRect r = QApplication::desktop()->screenGeometry();
 //	float lowestDimension = qMin( r.width(), r.height() );
 //	fScene->setWidth((2*w) / lowestDimension);
@@ -172,8 +183,9 @@ bool IGlue::getSceneView(unsigned int* , int , int , bool )
 }
 
 //--------------------------------------------------------------------------
-void IGlue::initialize (bool offscreen, QApplication* appl)
+void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 {
+	ag->startView();
 	Master::initMap();
 	EventsAble::init();
 
@@ -185,13 +197,15 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	gWebMsgStack = fWebMsgStack;
 	fController = IController::create();
 
-	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, appl, offscreen);
+	fModel = IAppl::create(fUDP.fInPort, fUDP.fOutPort, fUDP.fErrPort, ag, offscreen);
 	fModel->createVirtualNodes();
 	fModel->setView (ViewFactory::create(fModel));
 
+#if QTView
 	string address (fModel->getOSCAddress());
 	address += "/scene";
 	INScore::postMessage (address.c_str(), knew_SetMethod);
+#endif
 
 #ifdef __MOBILE__
 	INScore::postMessage(address.c_str(), klock_GetSetMethod, 1);
@@ -201,23 +215,35 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 	if (!OSCStream::start())
 		throw("Cannot initialize output udp streams");
 	oscinit (fModel, fUDP);
-	if (!fMsgStack || !fController || !fModel || !fOscThread)
+	if (!fMsgStack || !fController || !fModel) // || !fNetThread)
 		throw("Memory allocation failed!");
-	string listen(" listening OSC on port ");
+#if HASOSCStream
 	oscerr.setLogWindow (fModel->getLogWindow());
-	oscerr << OSCStart("INScore") << "v" << INScore::versionStr() << listen <<  fUDP.fInPort << OSCEnd();
-	cout << "INScore v " << INScore::versionStr() << listen <<  fUDP.fInPort << endl;
+	oscerr << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << OSCEnd();
+	cout << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
+#elif defined(EMCC)
+	string version ("INScore JS v. ");
+	fModel->getLogWindow()->write (version + INScore::versionStr() + " alpha");
+#else
+	cout << "INScore v. " << INScore::versionStr() << " compiled without OSC support" << endl;
+#endif
 	fModel->setRootPath ();
 
 	// check Guido version
+#ifndef EMCC
 	if (GuidoCheckVersionNums(1, 6, 0) != guidoNoErr) {
+#if HASOSCStream
 		oscerr << OSCStart("Warning:") << "GUIDOEngine version >= 1.60 is required." << OSCEnd();
+#endif
 		cerr << "Warning: GUIDOEngine version >= 1.60 is required." << endl;
 	}
-	
+#endif
+
 	// creates a mapping updater - note that it may send error messages and thus should not be
 	// set before the osc streams are ready
 	setSlaveMapUpdater(new IMappingUpdater);
+
+	fModel->startTime();
 
 #if defined(RUNBENCH) || defined(TIMEBENCH)
 	fModel->resetBench();
@@ -225,29 +251,22 @@ void IGlue::initialize (bool offscreen, QApplication* appl)
 }
 
 //--------------------------------------------------------------------------
-bool IGlue::start (int /*timeInterval*/, bool offscreen, QApplication* appl)
+int IGlue::getRate () const	{ return fModel->getRate(); }
+
+//--------------------------------------------------------------------------
+bool IGlue::start (bool offscreen, INScoreApplicationGlue* ag)
 {
 	try {
-		initialize(offscreen, appl);
-#ifndef NOVIEW
-		fCurrentRate = fModel->getRate();
-		if (fCurrentRate) {
-			QTimer::start(fCurrentRate);
-		}
-#endif
+		initialize(offscreen, ag);
 	}
 	catch (std::runtime_error e) {
 		clean();
-		cerr << "Unexpected error: " << e.what() << endl;
-		QMessageBox alert (QMessageBox::Critical, "Fatal error", e.what(), QMessageBox::Ok, 0);
-		alert.exec();
+		ITLErr << "Unexpected error: " << e.what() << ITLEndl;
 		return false;
 	}
 	catch (const char* e) {
 		clean();
-		cerr << "Unexpected error: " << e << endl;
-		QMessageBox alert (QMessageBox::Critical, "Fatal error", e, QMessageBox::Ok, 0);
-		alert.exec();
+		ITLErr << "Unexpected error: " << e << ITLEndl;
 		return false;
 	}
 	return true;
@@ -257,12 +276,12 @@ bool IGlue::start (int /*timeInterval*/, bool offscreen, QApplication* appl)
 void IGlue::setViewUpdater(SUpdater updater)
 {
 	fViewUpdater = updater;
-	if (fViewUpdater) {
-		fViewUpdater->update (fModel);	// force view update when updater changes
-									// otherwise the view won't be updated until the next incoming message
-									// see timerEvent method
-		fModel->cleanup();			// and clean the model
-	}
+//	if (fViewUpdater) {
+//		fViewUpdater->update (fModel);	// force view update when updater changes
+//									// otherwise the view won't be updated until the next incoming message
+//									// see timerEvent method
+//		fModel->cleanup();			// and clean the model
+//	}
 }
 
 //--------------------------------------------------------------------------
@@ -284,10 +303,17 @@ void IGlue::setLocalMapUpdater(SUpdater updater)
 }
 
 //--------------------------------------------------------------------------
+#if HASOSCStream
 void IGlue::setOSCOut (int port) {	oscout.setPort(port); fUDP.fOutPort = port; }
 void IGlue::setOSCOut (const std::string& a) { oscout.setAddress(a); fUDP.fOutDstAddress = a;  }
 void IGlue::setOSCErr (int port) {	oscerr.setPort(port); fUDP.fErrPort = port; }
 void IGlue::setOSCErr (const std::string& a) { oscerr.setAddress(a); fUDP.fErrDstAddress = a;  }
+#else
+void IGlue::setOSCOut (int port) 			 { }
+void IGlue::setOSCOut (const std::string& a) { }
+void IGlue::setOSCErr (int port) 			 { }
+void IGlue::setOSCErr (const std::string& a) { }
+#endif
 
 //--------------------------------------------------------------------------
 void IGlue::checkUDPChange()
@@ -307,12 +333,16 @@ void IGlue::modelUpdate()
 	fController->processOn(fMsgStack, model);
 
 	// Process web message stack
+#if HASOSCStream
 	oscerr.activeConcatError(true);
+#endif
 	fController->processOn(fWebMsgStack, model);
+#if HASOSCStream
 	oscerr.activeConcatError(false);
+#endif
 
-	// Wake up thread wating for a model update.
-	gModelUpdateWaitCondition.wakeAll();
+	// Wake up thread waiting for a model update.
+	gModelUpdateWaitCondition.notify_all();
 }
 
 //--------------------------------------------------------------------------
@@ -345,12 +375,18 @@ static void sendTimeSig ()
 #endif
 
 //--------------------------------------------------------------------------
-void IGlue::timerEvent ( QTimerEvent *)
+void IGlue::sorterTask ()
+{
+	fModel->timeTask();
+}
+
+//--------------------------------------------------------------------------
+void IGlue::timeTask ()
 {
 	double current = TWallClock::time();
 	if (fLastTimeTask)
 		fModel->setRealRate(current - fLastTimeTask);
-	else fModel->setRealRate(fCurrentRate);
+	else fModel->setRealRate(kDefaultRate);
 	fLastTimeTask = current;
 
 #ifdef TIMEBENCH
@@ -382,10 +418,6 @@ void IGlue::timerEvent ( QTimerEvent *)
 			checkUDPChange();
 			if (fModel->getUDPInPort() != fUDP.fInPort)					// check for udp port number changes
 				oscinit (fModel->getUDPInPort());
-			if (fModel->getRate() != fCurrentRate) {
-				fCurrentRate = fModel->getRate();
-				if (fCurrentRate) QTimer::setInterval(fCurrentRate);
-			}
 		}
 
 		if (fModel->getState() & IObject::kSubModified) {
@@ -409,6 +441,7 @@ void IGlue::timerEvent ( QTimerEvent *)
 	if (fDelayStack->size()) {
 		SIMessage* msgptr = fDelayStack->pop();
 		while (msgptr) {
+//cerr << "delayed popped : " << *msgptr << endl;
 			fMsgStack->push (msgptr);
 			msgptr = fDelayStack->pop();
 		}

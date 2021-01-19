@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -29,7 +29,6 @@
 #include "ISync.h"
 #include "ISceneSync.h"
 #include "ITLError.h"
-#include "VGraphicsItemView.h"
 #include "OSCRegexp.h"
 
 using namespace std;
@@ -318,7 +317,7 @@ void ISync::ptask ()
 {
     for(const_master_iterator it = fMasters2Slaves.begin(); it != fMasters2Slaves.end(); it++)
     {
-        if(it->first->getState() && IObject::kModified)
+        if(it->first->getState() & IObject::kModified)
             for(unsigned int i = 0; i<it->second.size(); i++)
                 it->second[i]->setState(IObject::kMasterModified);
     }

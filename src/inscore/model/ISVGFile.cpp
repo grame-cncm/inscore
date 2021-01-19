@@ -18,17 +18,16 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 #include "ISVGFile.h"
 #include "IMessage.h"
-#include "TComposition.h"
 #include "IScene.h"
 #include "Updater.h"
-#include "VSVGView.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -48,6 +47,7 @@ ISVGFile::ISVGFile( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kanimate_GetSetMethod]		= TSetMethodMsgHandler<ISVGFile,bool>::create(this, &ISVGFile::setAnimate);
 	fGetMsgHandlerMap[kanimate_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fAnimate);
 	fGetMsgHandlerMap[kanimated_GetMethod]		= TGetParamMsgHandler<bool>::create(fAnimated);
+	setPending();
 }
 
 //--------------------------------------------------------------------------
@@ -78,14 +78,8 @@ MsgHandler::msgStatus ISVGFile::set(const IMessage* msg )
 //--------------------------------------------------------------------------
 void ISVGFile::updateUrl()
 {
-//    fIsUrl = true;
-//    read(fData);
     changed(true);
     this->getView()->updateLocalMapping(this);
-
-//    VSVGView * svgView = fView ? dynamic_cast<VSVGView*>(fView) : 0;
-//    if(svgView)
-//        svgView->updateLocalMapping(this);
 }
 
 }

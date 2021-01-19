@@ -21,6 +21,7 @@
 
 #include <string>
 
+#include "Modules.h"
 #include "ITLError.h"
 #include "IMessage.h"
 
@@ -29,6 +30,7 @@ using namespace std;
 namespace inscore
 {
 
+#if HASOSCStream
 ITLError ITLErr;			// static ITL error output stream
 ITLErrEnd ITLEndl;			// static ITL error output stream end
 
@@ -56,6 +58,6 @@ ITLError& operator << (ITLError& err, const IMessage* msg )
 		msg->param(i)->print(err);
 	return err;
 }
-
+#endif
 
 } // end namespace

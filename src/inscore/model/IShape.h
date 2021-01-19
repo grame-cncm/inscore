@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -80,6 +80,8 @@ class IShape
 		
         std::string fPenStyle;		/// <Style of the pen used to draw the borders of the shape
         std::string fBrushStyle;	/// <Style of the brush used to fill the shape
+        
+        bool fModified = true;
 
 	public:
 
@@ -90,7 +92,10 @@ class IShape
 		/// \brief Returns the pen style
         const std::string&	getPenStyle() const		{ return fPenStyle; }
         /// \brief Returns the brush style
-        const std::string&	getBrushStyle() const		{ return fBrushStyle; }
+        const std::string&	getBrushStyle() const	{ return fBrushStyle; }
+
+		bool modified() const						{ return fModified; }
+		void cleanup()								{ fModified = false; }
 
 		virtual void	print(std::ostream& out) const;
 
@@ -99,13 +104,13 @@ class IShape
 		virtual ~IShape() {}
 
 		/// \brief Sets the pen width
-		void			setPenWidth(float penWidth)					{ fPenWidth = penWidth; }
+		void			setPenWidth(float penWidth)					{ fPenWidth = penWidth; fModified = true; }
 		/// \brief Sets the pen color
-		void			setPenColor(const IColor& penColor)			{ fPenColor = penColor; }
+		void			setPenColor(const IColor& penColor)			{ fPenColor = penColor; fModified = true; }
 		/// \brief Sets the pen style
-        void			setPenStyle(const std::string& penStyle)	{ fPenStyle = penStyle; }
+        void			setPenStyle(const std::string& penStyle)	{ fPenStyle = penStyle; fModified = true; }
         /// \brief Sets the brush style
-        void			setBrushStyle(const std::string& brushStyle)	{ fBrushStyle = brushStyle; }
+        void			setBrushStyle(const std::string& brushStyle)	{ fBrushStyle = brushStyle; fModified = true; }
 
 };
 

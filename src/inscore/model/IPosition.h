@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -130,9 +130,13 @@ class IPosition
 		virtual void	print(std::ostream& out) const;
 
 		/// \brief Sets the width
-		void			setWidth(float width)		{ fWidth = width; fModified = true; }
+		virtual void	setWidth(float width)		{ fWidth = width; fModified = true; }
 		/// \brief Sets the height
-		void			setHeight(float height)		{ fHeight = height; fModified = true; }
+		virtual void	setHeight(float height)		{ fHeight = height; fModified = true; }
+		/// \brief Sets the width without modifying the status
+		virtual void	_setWidth(float width)		{ fWidth = width; }
+		/// \brief Sets the height without modifying the status
+		virtual void	_setHeight(float height)	{ fHeight = height; }
 
 		/*!
 			\brief sets an object \c x position in its scene			
@@ -212,11 +216,11 @@ class IPosition
         virtual void setSyncPos(std::string m, TFloatPoint pos);
     
         /// \brief gets the object height corresponding to one master
-        virtual float getSyncHeight (std::string m) {return fHeights.find(m)->second;}
+        virtual float getSyncHeight (std::string m) const 	{ return fHeights.find(m)->second;}
         /// \brief gets the object width corresponding to one master
-        virtual float getSyncWidth (std::string m) {return fWidths.find(m)->second;}
+        virtual float getSyncWidth (std::string m) const 	{ return fWidths.find(m)->second;}
         /// \brief gets the object pos corresponding to one master
-        virtual TFloatPoint getSyncPos (std::string m) {return fPositions.find(m)->second;}
+        virtual TFloatPoint getSyncPos (std::string m) const { return fPositions.find(m)->second;}
 
 		/*! \brief Computes the bounding rect in Scene coordinates.
 		

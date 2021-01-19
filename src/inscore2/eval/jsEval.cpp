@@ -63,7 +63,11 @@ SINode jsEval::evalJavascript (const SINode& node)
 SINode jsEval::evalJavascript (const SINode& node)
 {
 	string jsOut;
+#if INCLUDEJavascript
 	bool done = fJavascript->eval(node->getLine(), node->getValue().c_str(), jsOut);
+#else
+	bool done = false;
+#endif
 	if (done) {
 		if (jsOut.size()) {
 			stringstream stream (jsOut);

@@ -18,19 +18,28 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
+#ifdef EMCC
+#include <emscripten.h>
+#include "HTMLObjectView.h"
+#endif
+
+#include "Events.h"
+#include "GmnEvaluator.h"
+#include "GUIDOEngine.h"
+#include "IExpressionHandler.h"
 #include "IGuidoCode.h"
-#include "Updater.h"
 #include "IMessage.h"
 #include "IMessageHandlers.h"
-#include "GUIDOEngine.h"
-#include "GmnEvaluator.h"
-#include "IExpressionHandler.h"
-#include "Events.h"
+#include "MapTools.h"
+#include "TLocalMapping.h"
+#include "TRefinedComposition.h"
+#include "Updater.h"
+#include "TMapMsgHandler.h"
 
 using namespace std;
 using namespace libmapping;
@@ -69,8 +78,17 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[""]						= TGetParamMsgHandler<std::string>::create(fGMN);
 
 	requestMapping("");
+	setPending();
 }
 
+
+//--------------------------------------------------------------------------
+void IGuidoCode::ready()
+{
+	IObject::ready();
+//	newData(true);
+	setModified();
+}
 
 //--------------------------------------------------------------------------
 bool IGuidoCode::acceptSimpleEvent(EventsAble::eventype t) const
@@ -195,6 +213,14 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 	return status;
 }
 
+#ifdef EMCC
+static void getJSMap (HTMLObjectView* view, string mapname, int objid)
+{
+	if (view) {
+		EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapname.c_str(), view->getID(), objid);
+	}
+}
+#endif
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
@@ -228,6 +254,13 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 					return MsgHandler::kBadParameters;
 				else
 				{
+#ifdef EMCC
+					getJSMap (dynamic_cast<HTMLObjectView*>(getView()), mapName, int(this));
+//					HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(getView());
+//					if (view) {
+//						EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapName.c_str(), view->getID(), int(this));
+//					}
+#endif
 					requestMapping(mapName);
 					localMapModified(true);
 					return MsgHandler::kProcessed;
@@ -246,18 +279,23 @@ SIMessageList IGuidoCode::getMsgs(const IMessage* msg) const
 	{
 		string param = "-";
 		msg->param(i, param);
-		if ( param == kmap_GetSetMethod )
-		{
-			for ( std::vector<string>::const_iterator i = fRequestedMappings.begin() ; i != fRequestedMappings.end() ; i++ )
-			{
-				SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
-				*msg << (*i);
-				outMsgs->list().push_back (msg);
+		if ( param == kmap_GetSetMethod ) {
+			for (auto m: namedMappings()) {
+				if (m.first.size()) {
+					SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
+					msg->add (m.first);
+					outMsgs->list().push_back (msg);
+				}
 			}
+//			for ( std::vector<string>::const_iterator i = fRequestedMappings.begin() ; i != fRequestedMappings.end() ; i++ )
+//			{
+//				SIMessage msg = IMessage::create(getOSCAddress(), kmap_GetSetMethod);
+//				*msg << (*i);
+//				outMsgs->list().push_back (msg);
+//			}
 			break;
 		}
-		else if ( param == "pageDate" )
-		{
+		else if ( param == "pageDate" ) {
 			i++;
 			int pcount = getPageCount();
 			int pagenumber;
@@ -312,14 +350,43 @@ MsgHandler::msgStatus IGuidoCode::exprMsg(const IMessage* msg)
 	else
 		return MsgHandler::kBadParameters;
 
-
-
 	if(!processed || r == getGMN())
 		return MsgHandler::kProcessedNoChange;
 
 	setGMN(r);
 	newData(true);
 	return MsgHandler::kProcessed;
+}
+
+//-------------------------------------------------------------------------
+void IGuidoCode::setTime2TimeMap (SRelativeTime2RelativeTimeMapping& map)
+{
+	// the steps below are required to make sure that the time to time and the time to graphic mappings
+	// share the same time segmentation, which is  not the case for system map for example
+	fTime2TimeMap = MapTools::reduce(map);			// reduce the time to time mapping
+}
+
+//-------------------------------------------------------------------------
+void IGuidoCode::setTime2GraphicMap (const std::string& name, SRelativeTime2GraphicMapping& map)
+{
+	if (fTime2TimeMap)
+		setMapping(name, TRefinedComposition<rational, 1, rational, 1, float, 2>::create(fTime2TimeMap->direct(), map->direct()));
+	else setMapping (name, map);
+}
+
+//-------------------------------------------------------------------------
+void IGuidoCode::updateScoreMapping ()
+{
+#ifdef EMCC
+//cerr << "IGuidoCode::updateScoreMapping" << endl;
+	for (auto m: namedMappings()) {
+		if (m.first.size()) {
+//cerr << "  => " << m.first << endl;
+			getJSMap (dynamic_cast<HTMLObjectView*>(getView()), m.first, int(this));
+		}
+	}
+#endif
+	TDefaultLocalMapping::buildDefaultMapping (this);
 }
 
 }

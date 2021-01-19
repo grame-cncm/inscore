@@ -1,0 +1,77 @@
+/ITL/scene/* del;
+
+/ITL/scene/title (set txt "Sync issue with images"),
+				 (fontSize 18),
+				 (y -0.7);
+
+/ITL/scene/img	(set img "imgs/parm-oeil.jpg");
+
+map = 	"([3, 85[ [80, 160[) ([0/4, 1/8[) 
+		([96, 173[  [13, 145[)  ([1/8, 2/4[) 
+		([174, 314[ [15, 143[)  ([2/4, 5/8[)
+		([318, 368[ [40, 110[)  ([5/8, 3/4[)
+		([390, 535[ [124, 157[) ([3/4, 4/4[)";
+
+w = 0.2;
+/ITL/scene/circ (set ellipse $w $w),
+				(color orange),
+				(alpha 180),
+				(watch timeEnter 1 2 (/ITL/scene/$self date 0));
+
+/ITL/scene/comment (set txt 
+"The sync message is not correctly handled when it follows 
+the object creation due to async size setting of the model.
+Similarly, setting the map is not correct for the same reason"),
+				 (fontSize 14),
+				 (y 0.55);
+
+/ITL/scene/sync circ img;
+
+w = 0.06;
+radius = 4;
+yloc = 0.8;
+
+onoff = (watch mouseDown (
+			(/ITL/scene/$name push),
+			(/ITL/scene/$name color (? $invert, SeaShell, SpringGreen)),
+			($msgOn),
+			(/ITL/scene/$name watch mouseDown (
+				(/ITL/scene/$name color (? $invert, SpringGreen, SeaShell)),
+				($msgOff),
+				(/ITL/scene/$name pop)
+			))));
+
+button = ((/ITL/scene/$name (set rect $w $w),
+					(radius $radius $radius),
+					(y $yloc),
+					(x $x),
+					(color (? $invert, SpringGreen, SeaShell)),
+					(penWidth 1),
+					(penColor SlateGrey),
+					($behavior)),
+			(/ITL/scene/$addr (set txt $caption),
+					(yorigin 2),
+					(y $yloc),
+					(x $x),
+					(fontSize 11)));
+
+
+$button{name=syncCtrl, addr=capt1, caption=Sync, x=-0.3, invert=1,
+		behavior=$onoff,
+		msgOff=(/ITL/scene/sync circ img),  
+		msgOn=(/ITL/scene/sync circ)};
+
+$button{name=playCtrl, addr=capt2, caption=Play, x=0., invert=0,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/circ tempo 60),
+		msgOff=(/ITL/scene/circ tempo 0)};
+
+$button{name=mapCtrl, addr=capt3, caption=Map, x=0.3, invert=0,
+		behavior=$onoff,
+		msgOn=(/ITL/scene/img map $map),
+		msgOff=(/ITL/scene/img map del)};
+
+
+__END__
+
+/ITL parse v2;

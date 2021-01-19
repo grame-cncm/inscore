@@ -39,11 +39,12 @@ filterinscorefile	= $(shell grep -v '^\#' validate/filtersinscorefile.txt)
 mobilefiles		= $(shell grep -v '^\#' validate/mobile.txt)
 
 pdfbundles  	:= $(patsubst ../%.ibundle, $(version)/%.pdf, $(bundles)) 
-pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files))
+pdfout  		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(files)) 
 pdfgraphicout 	:= $(patsubst ../%.inscore, $(version)/%.pdf, $(graphicfiles))
 pdfsyncout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(syncfiles))
 pdfjavaout 		:= $(patsubst ../%.inscore, $(version)/%.pdf, $(javafiles))
 pdfregressionout:= $(patsubst ../%.inscore, $(version)/%.pdf, $(regressionfiles))
+pngout  		:= $(patsubst ../%.inscore, $(version)/png/%.png, $(files) $(graphicfiles) $(syncfiles) $(regressionfiles))
 logout 			:= $(patsubst ../%.inscore, $(version)/%.log, $(logfiles))
 inscoreout 		:= $(patsubst ../%.inscore, $(version)/%.inscore, $(savefiles))
 filterout		:= $(patsubst ../%.flt, $(version)/%.out, $(filterfiles))
@@ -57,6 +58,7 @@ leaksfiles  := $(patsubst ../%.inscore, $(version)/%.leaks.out, $(files))
 
 allpdf 		:= $(shell [ -d $(version) ] && find $(version) -name "*.pdf" 2>/dev/null)
 validpdf 	:= $(patsubst %.pdf, %.outpdf, $(allpdf))
+validpng 	:= $(patsubst %.png, %.outpng, $(pngout))
 
 allLog 		:= $(shell [ -d $(version) ] && find $(version) -name "*.log" 2>/dev/null)
 validlog 	:= $(patsubst %.log, %.outlog, $(allLog))
@@ -94,6 +96,8 @@ pdf:
 	make basic
 	make pdfregression
 	make bundles
+
+png: $(pngout)
 
 log: 
 	@echo "----------- Generating log files"
@@ -151,6 +155,10 @@ help:
 	@echo "Makefile for testing the INScore engine output. Available targets are:"
 	@echo " 'all' 		: generates pdf output files, inscore output files, log files and filter file"
 	@echo " 'pdf' 		: generates pdf files for inscore files recursively enclosed in this folder"
+	@echo " 'png' 		: generates png files for inscore files"
+	@echo " 'validate VERSION=another_version': compares the pdf output with another one"
+	@echo " 'pngvalidate VERSION=another_version': compares the png output with another one"
+	@echo "" 
 	@echo " 'log' 		: generates log files in order to check inscore logs"
 	@echo " 'save' 		: generates inscore files in order to check the save method"
 	@echo " 'filter'	: generates filter files and reference files in order to check the forward filter method"
@@ -161,7 +169,6 @@ help:
 	@echo " 'mobile REMOTEIP=XXX LOCALIP=XXX DEVICE=XXX': create pdf file on mobile device with ip REMOTEIP. LOCALIP must be the IP of this computer, DEVICE must be 'android' or 'ios'. See readme.txt and follow the instruction before run this command."
 	@echo " 'validatemobile : validate mobile pdf file. See readme.txt and follow the instruction before run this command."
 	@echo "  output files are generated under the current INScore version number."
-	@echo " 'validate VERSION=another_version': compares the current version with another one"
 	@echo " 'checkleaks [TOOL=a_check_tool]': check memory leaks using a given tool (default INScoreNOView)"
 	@echo " 'tools'     : rebuild the required tools"
 
@@ -171,7 +178,11 @@ tools:
 INScoreVersion:
 	make -C tools
 
-validate: $(validpdf) $(validlog) $(validinscore) $(validfilter)
+validate: $(validpdf) $(validlog) $(validinscore) $(validfilter) $(validpng)
+	@echo Validating version $(VERSION) with $(version)
+
+
+pngvalidate: $(validpng)
 	@echo Validating version $(VERSION) with $(version)
 
 validatefilter: $(validfilter)
@@ -183,7 +194,7 @@ checkleaks: $(leakout)
 
 showleaks: $(leaksfiles)
 
-files: $(pdfout)
+files: $(pdfout) $(pngout)
 	@./forcepdfdate 20100101120000 $(pdfout)
 
 bundles: $(pdfbundles)
@@ -221,6 +232,10 @@ $(version)/$(TOOL)/%.leak.txt: %.inscore
 $(version)/%.pdf: ../%.inscore
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	@./inscore2pdf $< $@
+	
+$(version)/png/%.png: ../%.inscore
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	@./inscore2pdf $< $@
 
 $(version)/%.pdf: ../%.ibundle
 	@[ -d $(@D) ] || mkdir -p $(@D)
@@ -256,6 +271,12 @@ $(version)mobile/%.pdf: ../%.inscore
 	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)mobile/%, $(VERSION)/%, $<) # to check changes"; true))
 
 %.outpdf: %.pdf
+	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))
+	@[ -f  $(tmp) ] || echo $< : new file
+	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
+	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true))
+
+%.outpng: %.png
 	$(eval tmp := $(patsubst $(version)/%, $(VERSION)/%, $<))
 	@[ -f  $(tmp) ] || echo $< : new file
 	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))

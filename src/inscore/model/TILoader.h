@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -39,6 +39,7 @@ namespace inscore
 
 class IMessage;
 class IObject;
+class FileDownloader;
 
 //--------------------------------------------------------------------------
 /*!
@@ -48,15 +49,15 @@ class IObject;
 class TILoader
 {
 				int  inferVersion (const char* file) const;
-	SIMessageList 	 parsev2(std::istream* stream, int line, IAppl* root) const;
-				bool parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute=true) const;
+		static SIMessageList 	parsev2(std::istream* stream, int line, IAppl* root);
+		static SIMessageList	inscorev2_to_inscorev1 (const inscore2::SINode& node, TJSEngine* js);
 		virtual bool process(const SIMessageList& msgs, IObject* root, const std::string& baseaddress);
 
 	protected:
 
 		virtual MsgHandler::msgStatus	preprocess(const IMessage* msg, IAppl* client, const std::string& rootpath, int pversion);
 		virtual MsgHandler::msgStatus	load(const IMessage* msg, IObject* client, const std::string& rootpath, int pversion);
-		virtual MsgHandler::msgStatus	loadBundle(const std::string& file, const std::string& rootpath);
+		virtual MsgHandler::msgStatus	loadBundle(const std::string& file, const std::string& rootpath, FileDownloader* downloader);
 
 		bool	isBundle(const std::string& file);
 
@@ -67,7 +68,7 @@ class TILoader
 		bool	loadString(const std::string& str, IObject* o, int pversion=1);
 
 		static std::string		makeAbsolutePath( const std::string& path, const std::string& file );
-		static SIMessageList	inscorev2_to_inscorev1 (const inscore2::SINode& node, TJSEngine* js);
+		static bool 			parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute=true);
 };
 
 } // end namespoace

@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -104,6 +104,16 @@ bool ILine::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) co
 }
 
 //--------------------------------------------------------------------------
+void ILine::setPoint(const TFloatPoint& p)
+{
+	fPoint = p;
+	fAngle = atan(p.y() / p.x()) * 180 / M_PI;
+	float a = fAngle * M_PI / 180;
+	fLineWidth = a ? p.y() / sin(a) : p.x() / cos(a);
+//	cerr << "ILine::setPoint computed " << p << " aw: " << fAngle << " " << fLineWidth << endl;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus ILine::set (const IMessage* msg)	
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
@@ -118,17 +128,17 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 		ITLErr << "set line without mode is deprecated" << ITLEndl;
 	}
 	else if (msg->size() == 4) {
-		string mode; float a, b; int ai, bi;
+		string mode; float a, b; // int ai, bi;
 		if (!msg->param(1, mode))
 			return MsgHandler::kBadParameters;
-		if (!msg->param(2, a)) {
-			if (msg->param(2, ai)) a = float(ai);
-			else return MsgHandler::kBadParameters;
-		}
-		if (!msg->param(3, b)) {
-			if (msg->param(3, bi)) b = float(bi);
-			else return MsgHandler::kBadParameters;
-		}
+		if (!msg->cast_param(2, a)) return MsgHandler::kBadParameters;
+//			if (msg->param(2, ai)) a = float(ai);
+//			else return MsgHandler::kBadParameters;
+//		}
+		if (!msg->cast_param(3, b)) return MsgHandler::kBadParameters;
+//			if (msg->param(3, bi)) b = float(bi);
+//			else return MsgHandler::kBadParameters;
+//		}
 		if (mode == "xy") {
 			setPoint( TFloatPoint(a, b) );
 		}
@@ -136,6 +146,7 @@ MsgHandler::msgStatus ILine::set (const IMessage* msg)
 			fWAMode = true;
 			double x = a * cos(M_PI * b / 180);
 			double y = a * sin(M_PI * b / 180);
+//cerr << "ILine::set wa " << b << " " << a << " computed angle: " /*<< acos(x / a) * 180 / M_PI << " "*/ << asin(y / a) * 180 / M_PI << endl;
 			setPoint( TFloatPoint(x, y) );
 		}
 		else return MsgHandler::kBadParameters;

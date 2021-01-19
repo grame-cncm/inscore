@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -29,6 +29,7 @@
 #include "IMessage.h"
 #include "IScene.h"
 #include "Events.h"
+#include "Modules.h"
 #include "VObjectView.h"
 
 using namespace std;
@@ -108,7 +109,7 @@ rational IMedia::getMediaDuration () const	{ return rational((fVDuration * fRate
 void IMedia::setFile(const std::string& path)
 {
 	TFile::setFile(path);
-
+#ifndef HTMLVIEW
 	ifstream file;
 	file.open (path.c_str(), ifstream::in);
 	if (file.is_open())
@@ -117,8 +118,11 @@ void IMedia::setFile(const std::string& path)
 	{
 		const char* msg = "can't open media file :";
 		cerr << msg << path << endl;
+#if HASOSCStream
 		oscerr << OSCErr() << msg << path << OSCEnd();
+#endif
 	}
+#endif
 }
 
 //--------------------------------------------------------------------------

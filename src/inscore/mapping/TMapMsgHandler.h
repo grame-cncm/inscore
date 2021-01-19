@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -146,12 +146,12 @@ template<typename T, unsigned int D> class TMapMsgHandler
 		static SIMessageList getMapMsgs(const libmapping::SMARTP<TLocalMapping<T,D> >& localMapping , const IObject* object )
 		{ 
 			SIMessageList outMsgs = IMessageList::create();
-			for ( typename TLocalMapping<T,D>::const_iterator iter = localMapping->namedMappings().begin() ; iter != localMapping->namedMappings().end() ; iter++ )
+			for ( auto m: localMapping->namedMappings())
 			{
 				SIMessage msg = IMessage::create(object->getOSCAddress(), kmap_GetSetMethod);
-				if ( iter->first.size() )
-					*msg << iter->first;
-				*msg << iter->second->direct();
+				if ( m.first.size() )
+					*msg << m.first;
+				*msg << m.second->direct();
 				outMsgs->list().push_back(msg);
 			}
 			return outMsgs;

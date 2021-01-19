@@ -1,0 +1,42 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libmusicxml.js"></script>
+	<script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoretests.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="inscore box" id="scene">
+
+/ITL/scene/* del;
+
+/ITL/scene/score set svgf "/imgs/4voices.svg";
+/ITL/scene/score penWidth 1;
+/ITL/scene/svg set svgf "/imgs/butterfly.svg";
+/ITL/scene/svg scale 0.5;
+/ITL/scene/svg y 0.65;
+/ITL/scene/svg penWidth 1;
+
+
+</div>
+
+</body>
+
+</html>

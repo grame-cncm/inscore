@@ -1,0 +1,3 @@
+[submodule "guidoar"]
+	path = guidoar
+	url = git@github.com:grame-cncm/guidoar.git

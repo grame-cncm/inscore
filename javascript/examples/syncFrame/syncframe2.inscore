@@ -1,0 +1,89 @@
+
+/ITL/scene/* del;
+
+/ITL/scene/title  set  txt "Synchronisation modes: using 'syncFrame'";
+/ITL/scene/title color darkBlue;
+/ITL/scene/title fontSize 24;
+grey = 180;
+/ITL/scene/title effect shadow 3 3 $grey $grey $grey 75 2;
+/ITL/scene/title y -0.85;
+
+w = 0.17;
+/ITL/scene/sun set ellipse $w $w;
+/ITL/scene/sun color orange;
+
+
+/ITL/scene/o1 set ellipse 1.2 0.8;
+/ITL/scene/o1 rotatex 60;
+/ITL/scene/o1 rotatez 60;
+
+/ITL/scene/o2 set ellipse 1.7 0.75;
+/ITL/scene/o2 rotatex 60;
+/ITL/scene/o2 x 0.1;
+
+/ITL/scene/o3 set ellipse 1.2 0.5;
+/ITL/scene/o3 rotatex 40;
+/ITL/scene/o3 rotatez 85;
+
+/ITL/scene/o4 set ellipse 1.3 0.5;
+/ITL/scene/o4 rotatey 40;
+/ITL/scene/o4 rotatez -55;
+
+/ITL/scene/o* brushStyle none;
+/ITL/scene/o* penWidth 1;
+
+w = 0.10;
+/ITL/scene/p1 set ellipse $w $w;
+/ITL/scene/p1 color blue;
+/ITL/scene/p1 rotatey 0;
+
+w = 0.08;
+/ITL/scene/p2 set ellipse $w $w;
+/ITL/scene/p2 color red;
+
+w = 0.09;
+/ITL/scene/p3 set ellipse $w $w;
+/ITL/scene/p3 color sienna;
+
+w = 0.09;
+/ITL/scene/p4 set ellipse $w $w;
+/ITL/scene/p4 color darkViolet;
+
+
+/ITL/scene/p* watch timeEnter 1 2 (/ITL/scene/$self date 0);
+
+#/ITL/scene/g1 set gmn "[ a f ]";
+
+
+/ITL/scene/sync p1 o1 syncFrame;
+/ITL/scene/sync p2 o2 syncFrame;
+/ITL/scene/sync p3 o3 syncFrame;
+/ITL/scene/sync p4 o4 syncFrame;
+
+
+/ITL/scene/control set txt "Play";
+/ITL/scene/control fontSize 20;
+/ITL/scene/control watch mouseEnter (/ITL/scene/$self red 240);
+/ITL/scene/control watch mouseLeave (/ITL/scene/$self red 0);
+/ITL/scene/control y 0.80;
+
+/ITL/scene/control watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/p1 tempo 80,
+	/ITL/scene/p2 tempo 30,
+	/ITL/scene/p3 tempo 64,
+	/ITL/scene/p4 tempo 60,
+	/ITL/scene/$self set txt "Stop",
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/p* tempo 0,
+		/ITL/scene/$self set txt "Play",
+		/ITL/scene/$self pop
+	)
+);
+
+
+__END__
+
+/ITL/scene refresh;
+/ITL/log show 1;
+/ITL/log level 2;

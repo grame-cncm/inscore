@@ -18,12 +18,14 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 #include <iostream>
+
+#include "Modules.h"
 
 #include "IAppl.h"
 #include "IScene.h"
@@ -32,9 +34,6 @@
 #include "IProxy.h"
 #include "ISignalNode.h"
 #include "ISignal.h"
-#include "IFaustProcessor.h"
-#include "IFaustDSP.h"
-#include "IFaustDSPFile.h"
 #include "Tools.h"
 #include "IUrlIntermediateObject.h"
 #include "IMusicXMLFile.h"
@@ -43,7 +42,16 @@
 #include "ISVGFile.h"
 #include "IImage.h"
 #include "ITextFile.h"
+
+#if INCLUDEFaust
+#include "IFaustProcessor.h"
+#include "IFaustDSP.h"
+#include "IFaustDSPFile.h"
+#endif
+
+#if INCLUDESensors
 #include "SensorsModel.h"
+#endif
 
 using namespace std;
 
@@ -53,6 +61,7 @@ namespace inscore
 //--------------------------------------------------------------------------
 static string name2type (const std::string& name)
 {
+#if INCLUDESensors
 	if  ((name == IAccelerometer::kAccelerometerType)	||
 		(name == IGyroscope::kGyroscopeType)			||
 		(name == IRotation::kRotationType)				||
@@ -64,6 +73,7 @@ static string name2type (const std::string& name)
 		(name == ITilt::kTiltType)						||
 		(name == IMagnetometer::kMagnetometerType))
 		return name;
+#endif
 	return ISignal::kSignalType;
 }
 
@@ -75,13 +85,16 @@ int IProxy::signal (const IMessage* msg, const std::string& objName, SIObject pa
 
 	string objType = msg->param(0)->value<string>("");
 	SIObject obj;
+#if INCLUDEFaust
 	if (objType == IFaustProcessor::kFaustProcessorType || objType == IFaustDSP::kFaustDSPType || objType == IFaustDSPFile::kFaustDSPFileType)
 		obj = IObjectFactory::create(objName, objType, parent);
 	else {
 		string sigtype = name2type (objName);
         obj = IObjectFactory::create(objName, sigtype, parent);
 	}
-    
+#else
+	obj = IObjectFactory::create(objName, name2type (objName), parent);
+#endif
     if (obj) {
 		int status = obj->execute(msg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) parent->add(obj);
@@ -122,6 +135,7 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
     SIMessage newmsg;
     if(objType == ITextFile::kTextFileType || objType == IImage::kImageType || objType == IGuidoFile::kGuidoFileType || objType == IHtmlFile::kHtmlFileType || objType == IMusicXMLFile::kMusicXMLFileType || objType == ISVGFile::kSVGFileType)
     {
+#ifndef EMCC
         std::string path;
         if (!msg->param(1, path)) return MsgHandler::kBadParameters;
 
@@ -134,18 +148,19 @@ int IProxy::execute (const IMessage* msg, const std::string& objName, SIObject p
             objType = IUrlIntermediateObject::kUrlIntermediateType;
         }
         else
+#endif
             newmsg = IMessage::create(*msg);
     }
     else
         newmsg = IMessage::create(*msg);
     
+	if (parent->getDeleted())return MsgHandler::kProcessedNoChange;
 	SIObject obj = IObjectFactory::create(objName, objType, parent);
 	if (obj) {
 		if(previousObj) previousObj->transferAttributes(obj);
 		int status = obj->execute(newmsg);
 		if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) {
 			parent->add(obj);
-			obj->setModified();
 			if (newobj) *newobj = obj;
 			return MsgHandler::kProcessed;
 		}

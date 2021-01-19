@@ -1,4 +1,5 @@
 /ITL/scene/* del;
+
 /ITL/scene/line1 set line wa 1 0;
 /ITL/scene/line1 penColor 255 0 0;
 /ITL/scene/line2 set line wa 1 90;

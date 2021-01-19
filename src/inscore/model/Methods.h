@@ -32,6 +32,7 @@ namespace inscore
 extern const char* kabsolutexy_GetSetMethod;
 extern const char* kaccept_GetSetMethod;
 extern const char* kalias_GetSetMethod;
+extern const char* kallnotesoff_SetMethod;
 extern const char* kalpha_GetSetMethod;
 extern const char* kangle_GetSetMethod;
 extern const char* kanimate_GetSetMethod;
@@ -118,6 +119,8 @@ extern const char* khsb_SetMethod;
 extern const char* khue_GetSetMethod;
 extern const char* kin_GetMethod;
 extern const char* kkeyboard_GetSetMethod;
+extern const char* kkeyon_SetMethod;
+extern const char* kkeyoff_SetMethod;
 extern const char* klevel_GetSetMethod;
 extern const char* kload_SetMethod;
 extern const char* klock_GetSetMethod;
@@ -140,6 +143,7 @@ extern const char* kpage_GetSetMethod;
 extern const char* kpageCount_GetMethod;
 extern const char* kpageFormat_GetSetMethod;
 extern const char* kpath_GetSetMethod;
+extern const char* kpaths_GetMethod;
 extern const char* kpenAlpha_GetSetMethod;
 extern const char* kpenColor_GetSetMethod;
 extern const char* kpendAlpha_SetMethod;
@@ -225,6 +229,7 @@ extern const char* kmax_GetSetMethod;
 extern const char* kmode_GetSetMethod;
 extern const char* ksmooth_GetSetMethod;
 
+extern const char* krefresh_SetMethod;
 
 } //namespace
 

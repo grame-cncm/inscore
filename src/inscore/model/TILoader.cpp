@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -26,27 +26,33 @@
 
 #include <fstream>
 #include <sstream>
+#ifdef __MOBILE__
 #include <QStandardPaths>
+#endif
 
-#include "TILoader.h"
+#include "Modules.h"
+
+#include "evaluator2.h"
 #include "IAppl.h"
-#include "INScore.h"
-#include "ITLparser.h"
 #include "IGlue.h"
 #include "IMessage.h"
+#include "INScore.h"
+#include "inscorev1converter.h"
 #include "IObject.h"
+#include "IParser2.h"
+#include "ITLparser.h"
+#include "jsEval.h"
+#include "OSCAddress.h"
+#include "parseEval.h"
+#include "TILoader.h"
 #include "TSorter.h"
 
-#include "OSCAddress.h"
-#include "QFileDownloader.h"
+#include "FileDownloader.h"
+
+#ifdef QTVIEW
 #include "../QArchive/QArchive.h"
-
-#include "IParser2.h"
-#include "jsEval.h"
-#include "parseEval.h"
-#include "evaluator2.h"
-#include "inscorev1converter.h"
-
+#include "QFileDownloader.h"
+#endif
 
 using namespace std;
 
@@ -97,26 +103,28 @@ bool TILoader::isBundle(const std::string& file)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std::string& rootpath)
+MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std::string& rootpath, FileDownloader* downloader)
 {
+#if INCLUDEBundles
 	// ---- Load a bundle ----
 	qarchive::QArchive* a = 0;
-	QFileDownloader downloader;
 	qarchive::QArchiveError error;
 
 	if (Tools::isurl(srcfile)) {
-		if (downloader.get (srcfile.c_str()) && downloader.dataSize()) {
+		if (!downloader) return MsgHandler::kCreateFailure;
+//		QFileDownloader downloader;
+		if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
 #ifdef __MOBILE__
 			//On mobile devices bundle should be stored
 			QString path = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last();
 			path += QString("/bundles") + srcfile.substr(srcfile.find_last_of('/')).c_str();
 			QFile f(path);
 			if(f.open(QIODevice::WriteOnly)){
-				f.write(downloader.byteArray());
+				f.write(downloader->data(), downloader->dataSize());
 				f.close();
 			}
 #endif
-			a = qarchive::QArchive::readArchiveFromData(& (downloader.byteArray()), error);
+			a = qarchive::QArchive::readArchiveFromData(downloader->data(), downloader->dataSize(), error);
 		}
 		else return MsgHandler::kBadParameters;
 	}
@@ -165,6 +173,9 @@ MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std
 		default:
 			ITLErr << "Unknown error" << error << ITLEndl;
 	}
+#else
+	ITLErr << "INScore bundles not supported" << ITLEndl;
+#endif
 	return MsgHandler::kBadParameters;
 }
 
@@ -188,7 +199,7 @@ SIMessageList TILoader::inscorev2_to_inscorev1 (const inscore2::SINode& node, TJ
 }
 
 //--------------------------------------------------------------------------
-SIMessageList TILoader::parsev2(std::istream* stream, int line, IAppl* root) const
+SIMessageList TILoader::parsev2(std::istream* stream, int line, IAppl* root)
 {
 	inscore2::IParser p (stream);
 	if (p.parse()) {
@@ -198,7 +209,7 @@ SIMessageList TILoader::parsev2(std::istream* stream, int line, IAppl* root) con
 }
 
 //--------------------------------------------------------------------------
-bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute) const
+bool TILoader::parse(std::istream* stream, int line, IAppl* root, int pversion, bool execute)
 {
 	if (pversion == 2) {
 		SIMessageList msgs = parsev2 (stream, line, root);
@@ -288,18 +299,21 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 		string srcfile;
 		if (!msg->param(0, srcfile)) return MsgHandler::kBadParameters;
 		if (srcfile.size()) {
+			FileDownloader * downloader = 0;
+#ifdef QTVIEW
+			downloader = new QFileDownloader();
+#endif
 
 			if (Tools::isurl(rootpath) && !Tools::isurl(srcfile))
 				srcfile = makeAbsolutePath(rootpath, srcfile);
 
 			if(isBundle (srcfile))
-				return loadBundle(srcfile, rootpath);			// load a bundle
+				return loadBundle(srcfile, rootpath, downloader);			// load a bundle
 			
 			// not a bundle : load a script
 			stringstream buff;
 			ifstream file;
 			if (Tools::isurl(srcfile)) {
-				QFileDownloader * downloader = new QFileDownloader();
 				if (!downloader) return MsgHandler::kCreateFailure;
 				if (downloader->get (srcfile.c_str()) && downloader->dataSize()) {
 					buff.write (downloader->data(), downloader->dataSize());
@@ -320,10 +334,6 @@ MsgHandler::msgStatus TILoader::load(const IMessage* msg, IObject* client, const
 			if (!parse (stream, 0, client->getAppl(), pversion)) {
 				ITLErr << "while parsing file" << srcfile << ITLEndl;
 			}
-//			ITLparser p (stream, 0, client->getAppl());
-//			if (!p.parse()) {
-//				ITLErr << "while parsing file" << srcfile << ITLEndl;
-//			}
 			else return MsgHandler::kProcessed;
 		}
 	}

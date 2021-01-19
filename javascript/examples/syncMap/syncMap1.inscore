@@ -1,0 +1,90 @@
+/ITL/scene/* del;
+
+/ITL/scene/m1 set rect 1 0.4 ;
+/ITL/scene/m1 yorigin 1.1 ;
+
+/ITL/scene/m2 set rect 1.4 0.5 ;
+/ITL/scene/m2 yorigin -1.1 ;
+
+/ITL/scene/m[12] color mediumblue;
+/ITL/scene/m[12] radius 15 15;
+/ITL/scene/m[12] alpha 180;
+
+/ITL/scene/m3 set rect 0.5 1.4 ;
+/ITL/scene/m3 color maroon ;
+/ITL/scene/m3 radius 30 30;
+/ITL/scene/m3 alpha 0.7;
+/ITL/scene/m3 watch mouseDown (/ITL/scene/circ date '$date');
+
+/ITL/scene/circ set ellipse 0.1 0.1;
+/ITL/scene/circ color orange ;
+/ITL/scene/circ watch timeEnter 1 2  (/ITL/scene/circ tempo -60);
+/ITL/scene/circ watch timeEnter -1 0 (/ITL/scene/circ tempo 60);
+/ITL/scene/sync circ m*;
+
+/ITL/scene/ctrlplay set txt "Play";
+/ITL/scene/ctrlplay y 0.85;
+
+/ITL/scene/ctrlmap set txt "Map";
+/ITL/scene/ctrlmap y -0.85;
+
+/ITL/scene/ctrl* fontSize 22;
+/ITL/scene/ctrl* watch mouseEnter (/ITL/scene/$self red 240);
+/ITL/scene/ctrl* watch mouseLeave (/ITL/scene/$self red 0);
+
+/ITL/scene/ctrlplay watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/circ* tempo 60,
+	/ITL/scene/$self set txt "Stop",
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/circ* tempo 0,
+		/ITL/scene/$self set txt "Play",
+		/ITL/scene/$self pop
+	)
+);
+
+default = "([-1., 1.[ [-1., 1.[) ([0/1, 1/1[)";
+map		= "([-1., 1.[ [-1., -0.5[)	([0/1, 1/4[)
+		   ([-1., 1.[ [-0.5, 0.[) 	([1/4, 3/8[)
+		   ([-1., 1.[ [0., 0.5[) 	([3/8, 2/4[)
+		   ([-1., 1.[ [0.5, 1.0[) 	([2/4, 4/4[)
+		  ";
+
+/ITL/scene/ctrlmap watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/m3 map $map,
+	/ITL/scene/$self set txt "Default map",
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/m3 map $default,
+		/ITL/scene/$self set txt "Map",
+		/ITL/scene/$self pop
+	)
+);
+
+w = 0.25;
+/ITL/scene/ctrlrect set rect $w $w;
+/ITL/scene/ctrlrect color lightgrey;
+/ITL/scene/ctrlrect penWidth 1;
+/ITL/scene/ctrlrect x (0.97 - $w) * -1;
+/ITL/scene/ctrlrect y (0.97 - $w) * -1;
+/ITL/scene/ctrlrect watch mouseEnter (/ITL/scene/$self penColor 240 0 0 );
+/ITL/scene/ctrlrect watch mouseLeave (/ITL/scene/$self penColor 0 0 0 );
+
+rotate = ( 	/ITL/scene/m* rotatez '$x[0,180]',
+			/ITL/scene/m* rotatey '$y[0,180]' );
+/ITL/scene/ctrlrect watch mouseDown ( $rotate );
+/ITL/scene/ctrlrect watch mouseMove ( $rotate );
+
+
+/ITL/scene/ctrlplay watch mouseDown (
+	/ITL/scene/$self push,
+	/ITL/scene/circ* tempo 60,
+	/ITL/scene/$self set txt "Stop",
+	/ITL/scene/$self watch mouseDown (
+		/ITL/scene/circ* tempo 0,
+		/ITL/scene/m* rotatez 0,
+		/ITL/scene/m* rotatey 0,
+		/ITL/scene/$self set txt "Play",
+		/ITL/scene/$self pop
+	)
+);

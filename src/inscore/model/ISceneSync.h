@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -90,7 +90,12 @@ class ISceneSync : public IVNode
 	MsgHandler::msgStatus syncMsg ( const std::string& slave, const std::string& slaveMap,
 									const std::string& master, const std::string& masterMap,
 									Master::StretchType stretch, Master::SyncType sync, Master::VAlignType valign);
-	
+
+	// return the elements of list that are not in list2
+	std::vector<SMaster>	diff (const std::vector<SMaster>& list1, const std::vector<SMaster>& list2) const;
+	// return the elements of list objects that require a new master
+	subnodes				newSync (const std::vector<SMaster>& list1, const subnodes& list2, const std::string& slaveMap) const;
+
 	public:
 		using IObject::sort;
 		

@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -577,6 +577,39 @@ SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, const EventCont
 		const IMessage *msg = msgs->list()[i];
 		SIMessage emsg = eval (msg, env);
 		if (emsg) outmsgs->list().push_back(emsg);
+	}
+	return outmsgs;
+}
+
+//----------------------------------------------------------------------
+/** \brief converts a point to a date in the context of an object and a given map
+*
+*	\param obj		the object context
+*	\param x		the point x coordinate
+*	\param y		the point y coordinate
+*	\param mapname	the map to be used for conversion
+*	\param n		the repeat number to be retrieved (indexed from 0)
+*/
+rational TMessageEvaluator::point2date (const IObject * obj, float x, float y, const std::string& mapname, int n) const
+{
+	return obj->point2date (x, y, mapname, n);
+}
+
+//----------------------------------------------------------------------
+// evaluates a mouse event
+SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, float x, float y, EventContext& env)
+{
+	SIMessageList outmsgs = IMessageList::create();
+	for (unsigned int i=0; i < msgs->list().size(); i++) {
+		const IMessage* msg = msgs->list()[i];
+
+		std::string mapname;
+		if (hasDateVar (msg, mapname))
+			// resolves the date in a normalized x and y coordinate space [-1 1]
+			env.date = point2date (env.object, x * 2 - 1, y * 2 - 1, mapname, 0);
+
+		SIMessage evaluated = eval (msg, env);
+		if (evaluated) outmsgs->list().push_back(evaluated);
 	}
 	return outmsgs;
 }

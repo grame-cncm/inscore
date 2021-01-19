@@ -22,36 +22,34 @@
 /ITL/scene/o2 color 180 180 180 100;
 /ITL/scene/o2 watch mouseDown ( /ITL/scene/txt set txt "o* width" $(/ITL/scene/o* get width));
 /ITL/scene/o1 watch mouseDown ( /ITL/scene/txt set txt "o* params" $(/ITL/scene/o* get ));
-/ITL/scene/o1 watch mouseDown ( /ITL/log write "x scaled" '$x[100,200]' $x );
+/ITL/scene/o1 watch mouseDown ( /ITL/log write "x scaled" '$x[100,200]' '$x' );
 
-move = ( /ITL/scene/$self x $sx,
-		/ITL/scene/$self y $sy);
+move = ( /ITL/scene/$self x '$sx',
+		/ITL/scene/$self y '$sy');
 
 /ITL/scene/* watch mouseDown (
-	/ITL/scene/$self x $sx,
-	/ITL/scene/$self y $sy);
-
-/ITL/scene/debug get watch;
-
+	/ITL/scene/$self x '$sx',
+	/ITL/scene/$self y '$sy');
 
 /ITL/scene/* watch mouseMove $move;
 
-move = ( /ITL/scene x $sx,
-		/ITL/scene y $sy);
+move = ( /ITL/scene x '$sx',
+		/ITL/scene y '$sy');
 /ITL/scene watch mouseMove $move;
 
-submove = ( /ITL/scene/r1/$self x $sx,
-			/ITL/scene/r1/$self y $sy);
+submove = ( /ITL/scene/r1/$self x "$sx",
+			/ITL/scene/r1/$self y "$sy");
 /ITL/scene/r1/sr watch mouseDown $submove;
 /ITL/scene/r1/sr watch mouseMove $submove;
 #/ITL/scene/r1/sr watch ;
 
+__END__
 /ITL/scene watch mouseDown (
 	/ITL/scene/o1 color 0 0 250,
 	/ITL/scene/o1 dy -0.1
 );
 
-/ITL/scene watch TOTO ( /ITL/scene color 200 0 0 );
+/ITL/scene watch TOTO ( /ITL/scene color grey );
 /ITL/scene event TOTO 250 150 150;
 
 

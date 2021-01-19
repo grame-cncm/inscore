@@ -10,7 +10,7 @@ osize = 42;
 /ITL/scene/title fontSize 24;
 /ITL/scene/title effect $shadow;
 
-/ITL/scene/uinscore	set txt "inscore.sf.net";
+/ITL/scene/uinscore	set txt "inscore.grame.fr";
 /ITL/scene/uinscore fontSize $fsize;
 /ITL/scene/uinscore color 20 0 150;
 /ITL/scene/uinscore effect $shadow;
@@ -33,5 +33,5 @@ osize = 42;
 
 /ITL/scene/u* watch mouseEnter ( /ITL/scene/$self fontSize $osize );
 /ITL/scene/u* watch mouseLeave ( /ITL/scene/$self fontSize $fsize );
-/ITL/scene/uinscore watch mouseDown ( /ITL browse "http://inscore.sf.net" );
+/ITL/scene/uinscore watch mouseDown ( /ITL browse "http://inscore.grame.fr" );
 /ITL/scene/ubrowse watch mouseDown ( /ITL browse "browse.html" );

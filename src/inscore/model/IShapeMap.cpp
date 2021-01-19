@@ -18,13 +18,14 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
 
 #include "IShapeMap.h"
 #include "TMapMsgHandler.h"
+#include "TMapping.h"
 
 namespace inscore
 {
@@ -67,6 +68,22 @@ MsgHandler::msgStatus IShapeMap::mapAddMsg (const IMessage* msg )
 	MsgHandler::msgStatus status = TMapMsgHandler<float,2>::addMapMsg( msg , localMappings() , this ); 
 	if (status & MsgHandler::kProcessed) localMapModified(true);
 	return status;
+}
+
+//--------------------------------------------------------------------------
+void IShapeMap::updateGraphic2GraphicMapping ()
+{
+	for (auto map: localMappings()->namedMappings()) {
+		const SGraphic2RelativeTimeMapping & local2time = map.second;
+		SGraphic2GraphicMapping g2l = libmapping::TMapping<float,2, float,2>::create();	// Create the local -> graphic mapping.
+																					// (which is here a 'graphic -> graphic' identity mapping)
+		for (auto rel: local2time->direct()) {
+			g2l->add ( rel.first , rel.first);					// Identity mapping.
+		}
+		localMappings()->setMapping( map.first, local2time );	// Finally, affect the mapping to object.
+		updateMappings<float,2> (map.first, g2l, local2time );
+	}
+	TDefaultLocalMapping::buildDefaultMapping(this);
 }
 
 } // end namespoace

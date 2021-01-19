@@ -74,7 +74,7 @@ class VMobileMenu : public QQuickWidget
 {
 		Q_OBJECT
 	public:
-		VMobileMenu(const char *name, QWidget *parent = 0);
+		VMobileMenu(const char * name, const char* qtversion, const char* ipnum, QWidget *parent = 0);
 };
 /*! @} */
 

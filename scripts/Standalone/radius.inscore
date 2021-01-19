@@ -44,3 +44,8 @@ commentSize = ($OSId < 3 ? 26 : 18);
 /ITL/scene/comment y 0.8;
 
 /ITL/scene/rect	event $click 120 120;
+
+__END__
+
+/ITL/scene/rect	event mouseDown 0.2 0.2;
+/ITL/scene/rect	event mouseDown 120 120;
