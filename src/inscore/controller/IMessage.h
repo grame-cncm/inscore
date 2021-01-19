@@ -34,7 +34,9 @@
 #include "Modules.h"
 #include "message.h"
 #include "ITLError.h"
+#if HASOSCStream
 #include "OSCStream.h"
+#endif
 #include "rational.h"
 #include "extvector.h"
 #include "smartpointer.h"
