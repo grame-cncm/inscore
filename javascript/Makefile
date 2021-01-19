@@ -8,9 +8,9 @@ MAKE ?= make
 
 CHECKDIR := TSCheck
 TSDIR := src
-TESTDIR := testSrc
+GLUEDIR := glueSrc
 TSLIB := $(TSDIR)/lib
-TESTSRC := $(wildcard $(TESTDIR)/*.ts)
+GLUESRC := $(wildcard $(GLUEDIR)/*.ts)
 LIBSRC := $(wildcard $(TSDIR)/*.ts)
 OUT	  := $(patsubst $(TSDIR)/%.ts, $(CHECKDIR)/%.js, $(TSSRC))
 
@@ -26,17 +26,22 @@ XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
 FAUST        := $(MODULES)/libfaust
 FAUSTLIB     := lib/libfaust-wasm.js lib/libfaust-wasm.wasm lib/libfaust-wasm.data
 LIB  := inscoreview.js
-VIEW := inscoretests.js
+GLUE := inscoreglue.js
+
+WASMDIR      := ../build/lib
+INSCOREWASM  := lib/libINScore.js lib/libINScore.wasm
 
 all :
 	git submodule update --init
 	$(MAKE) ts
-	$(MAKE) -C emcc
+	$(MAKE) wasm
 
 help :
 	@echo "This makefile is intended to build the INScore Javascript library."
 	@echo "Available targets are : "
-	@echo "  ts      : to build the library (default)"
+	@echo "  all     : call the ts and wasm tagrgets (default)"
+	@echo "  ts      : to build the view and glue libraries"
+	@echo "  wasm    : to build the wasm library"
 	@echo
 	@echo "Project management: "
 	@echo "  clean     : remove all outputs"
@@ -46,19 +51,24 @@ help :
 	@echo
 
 test:
-	@echo $(VIEW)
+	@echo $(GLUE)
 	
 #===============================================================
 # building inscore ts view
 #===============================================================
-ts: $(LIB) $(VIEW)
+ts: $(LIB) $(GLUE)
 
-$(VIEW): $(TESTSRC) $(TESTDIR)/tsconfig.json
-	cd $(TESTDIR) && tsc
+$(GLUE): $(GLUESRC) $(GLUEDIR)/tsconfig.json
+	cd $(GLUEDIR) && tsc
 
 $(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 	cd $(TSDIR) && tsc
-	cp $(LIB) ../../inscoreweb/docs/lib
+	
+#===============================================================
+# building inscore wasm library
+#===============================================================
+wasm: 
+	$(MAKE) -C ../build/model wasm
 
 #===============================================================
 # project management
@@ -70,7 +80,7 @@ install: lib
 lib:
 	mkdir lib
 
-modules: $(GUIDOLIB) $(XMLLIB) $(FAUSTLIB)
+modules: $(GUIDOLIB) $(XMLLIB) $(FAUSTLIB) $(INSCOREWASM)
 
 $(TSLIB)/libGUIDOEngine.d.ts : $(GUIDO)/libGUIDOEngine.d.ts
 	cp $< $@
@@ -81,6 +91,10 @@ $(TSLIB)/libmusicxml.ts : $(MXML)/libmusicxml.ts
 $(TSLIB)/libmusicxml.d.ts : $(MXML)/libmusicxml.d.ts
 	cp $< $@
 
+lib/libINScore.js : $(WASMDIR)/libINScore.js
+	cp $< $@
+lib/libINScore.wasm : $(WASMDIR)/libINScore.wasm
+	cp $< $@
 lib/libfaust-wasm.js  : $(FAUST)/libfaust-wasm.js
 	cp $< $@
 lib/libfaust-wasm.wasm  : $(FAUST)/libfaust-wasm.wasm
