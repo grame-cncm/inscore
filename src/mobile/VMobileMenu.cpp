@@ -44,10 +44,10 @@ VMobileMenu::VMobileMenu(const char * name, const char* qtversion, const char* i
 
 	setWindowTitle( tr(name) );
 	QQuickItem *root = rootObject();
-	root->setProperty("version", QVariant(INScore::versionStr()));
+	root->setProperty("version", QVariant(INScore::versionStr().c_str()));
 	root->setProperty("qtversion", QVariant(qtversion));
-	root->setProperty("guidoversion", QVariant(INScore::guidoversion()));
-	root->setProperty("ip", QString(ipnum));
+	root->setProperty("guidoversion", QVariant(INScore::guidoversion().c_str()));
+	root->setProperty("ip", QVariant(ipnum));
 
 	QSettings settings("Grame", "INScore");
 	settings.beginGroup("Mobile");
