@@ -50,6 +50,7 @@ endif
 
 
 all :
+	git submodule update --init
 	$(MAKE) $(TARGET)
 
 undefined:
@@ -98,12 +99,12 @@ macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C ../lib/GuidoAR/macosx
 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
-#	$(MAKE) ibundle
+	$(MAKE) ibundle
 
 linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(LIBPROJ)
 	$(MAKE) -C $(INSCOREDIR) -f $(VIEWPROJ)
-#	$(MAKE) ibundle
+	$(MAKE) ibundle
 
 ibundle : 
 	$(MAKE) -C ../tools/IBundle/build
@@ -153,9 +154,10 @@ SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 ANDROID_API ?= 22
 ANDROID_ARCH ?= armeabi-v7a
 
-android : QMAKE=qmake-android
-android : INSCOREDIR?=androiddir
-android : $(INSCOREDIR)/Makefile
+android : 
+	make _android INSCOREDIR=androiddir QMAKE=qmake-android
+
+_android : $(INSCOREDIR) $(INSCOREDIR)/Makefile
 	cp -rf ../rsrc/ tmp-rsc
 	$(MAKE) -C $(MOBILESCRIPTS)
 	$(MAKE) -C $(INSCOREDIR)
