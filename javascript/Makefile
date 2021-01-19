@@ -22,6 +22,9 @@ GUIDOMODULE := $(GUIDOLIB:lib/%=$(GUIDO)/%)
 MXML        := $(MODULES)/libmusicxml
 XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm $(TSLIB)/libmusicxml.d.ts $(TSLIB)/libmusicxml.ts
 XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
+
+FAUST        := $(MODULES)/libfaust
+FAUSTLIB     := lib/libfaust-wasm.js lib/libfaust-wasm.wasm lib/libfaust-wasm.data
 LIB  := inscoreview.js
 VIEW := inscoretests.js
 
@@ -60,11 +63,14 @@ $(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 #===============================================================
 # project management
 #===============================================================
-install: 
+install: lib
 	npm install
 	$(MAKE) modules
 
-modules: $(GUIDOLIB) $(XMLLIB)
+lib:
+	mkdir lib
+
+modules: $(GUIDOLIB) $(XMLLIB) $(FAUSTLIB)
 
 $(TSLIB)/libGUIDOEngine.d.ts : $(GUIDO)/libGUIDOEngine.d.ts
 	cp $< $@
@@ -75,6 +81,12 @@ $(TSLIB)/libmusicxml.ts : $(MXML)/libmusicxml.ts
 $(TSLIB)/libmusicxml.d.ts : $(MXML)/libmusicxml.d.ts
 	cp $< $@
 
+lib/libfaust-wasm.js  : $(FAUST)/libfaust-wasm.js
+	cp $< $@
+lib/libfaust-wasm.wasm  : $(FAUST)/libfaust-wasm.wasm
+	cp $< $@
+lib/libfaust-wasm.data  : $(FAUST)/libfaust-wasm.data
+	cp $< $@
 lib/libGUIDOEngine.js  : $(GUIDO)/libGUIDOEngine.js
 	cp $< $@
 lib/libGUIDOEngine.wasm : $(GUIDO)/libGUIDOEngine.wasm
