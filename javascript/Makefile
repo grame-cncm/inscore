@@ -24,7 +24,7 @@ XMLLIB      := lib/libmusicxml.js lib/libmusicxml.wasm $(TSLIB)/libmusicxml.d.ts
 XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
 
 FAUST        := $(MODULES)/libfaust
-FAUSTLIB     := lib/libfaust-wasm.js lib/libfaust-wasm.wasm lib/libfaust-wasm.data
+FAUSTLIB     := lib/libfaust-wasm.js lib/libfaust-wasm.wasm lib/libfaust-wasm.data lib/FaustLibrary.js
 LIB  := inscoreview.js
 GLUE := inscoreglue.js
 
@@ -98,6 +98,8 @@ lib/libINScore.wasm : $(WASMDIR)/libINScore.wasm
 lib/libfaust-wasm.js  : $(FAUST)/libfaust-wasm.js
 	cp $< $@
 lib/libfaust-wasm.wasm  : $(FAUST)/libfaust-wasm.wasm
+	cp $< $@
+lib/FaustLibrary.js : $(FAUST)//FaustLibrary.js
 	cp $< $@
 lib/libfaust-wasm.data  : $(FAUST)/libfaust-wasm.data
 	cp $< $@
