@@ -47,9 +47,9 @@ QGraphicsEffect * GraphicEffect::buildBlurEffect (const IEffect* effect)
 	switch (effect->fBlur.fHint) {
 		case IEffect::kPerformance:	hint = QGraphicsBlurEffect::PerformanceHint;
 			break;
-		case IEffect::kAnimation:	QGraphicsBlurEffect::AnimationHint;
+		case IEffect::kAnimation:	hint = QGraphicsBlurEffect::AnimationHint;
 			break;
-		case IEffect::kQuality:		QGraphicsBlurEffect::AnimationHint;
+		case IEffect::kQuality:		hint = QGraphicsBlurEffect::QualityHint;
 			break;
 	}
 	QGraphicsBlurEffect * qeffect = new QGraphicsBlurEffect;
