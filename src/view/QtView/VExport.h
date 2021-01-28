@@ -27,8 +27,6 @@
 #ifndef __VExport__
 #define __VExport__
 
-//#include "export.h"
-
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QGraphicsView>
