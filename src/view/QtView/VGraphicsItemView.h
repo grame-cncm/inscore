@@ -37,7 +37,7 @@
 #include "IText.h"
 #include "maptypes.h"
 #include "QStretchTilerItem.h"
-#include "TRect.h"
+#include "TIRect.h"
 #include "TRefinedComposition.h"
 #include "VObjectView.h"
 

@@ -31,7 +31,7 @@
 
 #include "EventsAble.h"
 #include "Events.h"
-#include "TRect.h"
+#include "TIRect.h"
 
 
 namespace inscore

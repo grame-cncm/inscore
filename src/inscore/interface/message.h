@@ -27,7 +27,7 @@
 
 #include <ostream>
 #include <string>
-#include "export.h"
+#include "IExport.h"
 
 namespace inscore 
 {

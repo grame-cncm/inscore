@@ -25,7 +25,7 @@
 #ifndef __VQtInit__
 #define __VQtInit__
 
-#include "export.h"
+#include "IExport.h"
 
 namespace inscore
 {

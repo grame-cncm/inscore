@@ -32,7 +32,7 @@
 
 #include "GUIDOScoreMap.h"
 #include "maptypes.h"
-#include "TRect.h"
+#include "TIRect.h"
 
 
 namespace inscore

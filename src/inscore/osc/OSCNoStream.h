@@ -24,7 +24,7 @@
 #define oscout std::cout
 #define oscerr std::cerr
 
-#include "TRect.h"
+#include "TIRect.h"
 
 namespace inscore
 {

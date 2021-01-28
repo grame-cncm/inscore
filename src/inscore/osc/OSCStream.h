@@ -31,7 +31,7 @@
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 
-#include "TRect.h"
+#include "TIRect.h"
 
 namespace inscore
 {

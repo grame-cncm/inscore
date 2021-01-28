@@ -28,7 +28,7 @@
 #define __IRect__
 
 #include "IRectShape.h"
-#include "TRect.h"
+#include "TIRect.h"
 
 namespace inscore
 {

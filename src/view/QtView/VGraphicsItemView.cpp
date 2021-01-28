@@ -34,7 +34,7 @@
 #include "IObject.h"
 #include "maptypes.h"
 #include "MouseEventAble.h"
-#include "TRect.h"
+#include "TIRect.h"
 #include "TSegment.h"
 #include "VExport.h"
 #include "VGraphicsItemView.h"

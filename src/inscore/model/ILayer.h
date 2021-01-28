@@ -29,7 +29,7 @@
 
 #include <string>
 
-#include "TRect.h"
+#include "TIRect.h"
 #include "IRectShape.h"
 
 namespace inscore

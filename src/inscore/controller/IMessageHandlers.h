@@ -35,7 +35,7 @@
 
 #include "IMessage.h"
 #include "rational.h"
-#include "TRect.h"
+#include "TIRect.h"
 #include "Tools.h"
 #include "smartpointer.h"
 

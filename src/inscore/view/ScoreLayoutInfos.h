@@ -26,7 +26,7 @@
 
 #pragma once
 
-#include "TRect.h"
+#include "TIRect.h"
 
 struct NodeGR;
 typedef const struct NodeGR *  CGRHandler;

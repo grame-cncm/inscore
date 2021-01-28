@@ -32,7 +32,7 @@
 #include "abstractdata.h"
 #include "EventsAble.h"
 #include "Modules.h"
-#include "TRect.h"
+#include "TIRect.h"
 
 class QGraphicsItem;
 

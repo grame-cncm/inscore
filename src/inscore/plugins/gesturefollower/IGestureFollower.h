@@ -31,7 +31,7 @@
 #include <vector>
 
 #include "TGestureFollowerPlugin.h"
-#include "TRect.h"
+#include "TIRect.h"
 #include "IRectShape.h"
 
 

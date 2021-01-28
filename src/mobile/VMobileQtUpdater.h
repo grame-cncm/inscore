@@ -25,7 +25,7 @@
 #ifndef VMOBILEQTUPDATER_H
 #define VMOBILEQTUPDATER_H
 
-#include "export.h"
+#include "IExport.h"
 #include "VQtUpdater.h"
 
 namespace inscore

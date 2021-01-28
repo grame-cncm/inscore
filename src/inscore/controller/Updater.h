@@ -27,7 +27,7 @@
 #ifndef __Updater__
 #define __Updater__
 
-#include "export.h"
+#include "IExport.h"
 #include "IModelTypes.h"
 #include "Modules.h"
 #include "smartpointer.h"

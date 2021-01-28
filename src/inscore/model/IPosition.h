@@ -33,7 +33,7 @@
 
 #include "IColor.h"
 #include "IMessageHandlers.h"
-#include "TRect.h"
+#include "TIRect.h"
 
 namespace inscore
 {

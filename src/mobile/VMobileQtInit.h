@@ -25,7 +25,7 @@
 #ifndef VMOBILEQTINIT_H
 #define VMOBILEQTINIT_H
 
-#include "export.h"
+#include "IExport.h"
 #include "VQtInit.h"
 #include "SwipePanel.h"
 

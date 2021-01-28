@@ -26,7 +26,7 @@
 #include <QDebug>
 #include "VRectView.h"
 #include "IRect.h"
-#include "TRect.h"
+#include "TIRect.h"
 
 namespace inscore
 {
