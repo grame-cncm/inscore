@@ -35,7 +35,25 @@
 #include <string>
 
 #include "QGuidoGraphicsItem.h"
-//class QGuidoGraphicsItem;
+#include "QGuidoPainter.h"
+
+
+//--------------------------------------------------------------------------
+class IGuidoPainter : public QGuidoPainter
+{
+	public:
+				 IGuidoPainter() {}
+		virtual ~IGuidoPainter() {}
+		virtual float getRenderingFactor () const;
+};
+
+class IGuidoGraphicsItem : public QGuidoGraphicsItem
+{
+	public:
+				IGuidoGraphicsItem() : QGuidoGraphicsItem(new IGuidoPainter()) {}
+		virtual ~IGuidoGraphicsItem() {}
+};
+
 
 namespace inscore
 {
@@ -72,7 +90,7 @@ class VGuidoItemView: public VGraphicsItemView
 {
 	static float fCm2GuidoUnit;
 //	typedef MouseEventAble<QCachedGuidoGraphicsItem>	IQGuidoGraphicsItem;
-	typedef MouseEventAble<QGuidoGraphicsItem>	IQGuidoGraphicsItem;
+	typedef MouseEventAble<IGuidoGraphicsItem>	IQGuidoGraphicsItem;
 	IQGuidoGraphicsItem* fGuidoItem;
 
 	public :

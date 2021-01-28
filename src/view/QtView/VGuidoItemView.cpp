@@ -28,6 +28,7 @@
 
 #include "benchtools.h"
 #include "GuidoMapCollector.h"
+#include "IAppl.h"
 #include "IGuidoCode.h"
 #include "ITLError.h"
 #include "MapTools.h"
@@ -51,11 +52,17 @@ const QString kMeasureMap("measure");
 
 using namespace libmapping;
 
+const float kRenderingFactorChangeVers = 1.12f;
+
+float IGuidoPainter::getRenderingFactor () const {
+	return (inscore::IAppl::compatibilityVersion() >= kRenderingFactorChangeVers) ? 80.0 : 10.0;
+}
+
+
 namespace inscore
 {
 
 float VGuidoItemView::fCm2GuidoUnit = 0;
-
 
 //----------------------------------------------------------------------
 class QScoreLayoutInfos: public ScoreLayoutInfos
