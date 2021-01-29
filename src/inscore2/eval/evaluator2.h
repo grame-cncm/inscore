@@ -27,6 +27,7 @@
 #define __evaluator2__
 
 #include <exception>
+#include <functional>
 
 #include "INode.h"
 
