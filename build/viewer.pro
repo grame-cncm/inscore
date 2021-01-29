@@ -18,7 +18,8 @@ QT += qml sensors
 ROOT = $$PWD/..
 SRC  = $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
-GUIDO_PATH	= $$LOCALLIB/GuidoEngine
+GUIDO_PATH	= $$ROOT/modules/guidolib
+LXML_PATH	= $$ROOT/modules/libmusicxml
 
 APPL   = $$SRC/inscoreviewer
 NOVIEW 	{ SRCDIR = $$APPL/noview }
@@ -40,7 +41,7 @@ HEADERS = $$SRCDIR/*.h
 INCLUDEPATH += $$SRCDIR $$LIB/interface
 INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
 INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
-INCLUDEPATH += $$SRC/view/guidoqt $$GUIDO_PATH/include
+INCLUDEPATH += $$SRC/view/guidoqt $$GUIDO_PATH/src/engine/include
 INCLUDEPATH += $$files($$OSC)
 INCLUDEPATH += $$files($$SRC/libmapping/src/[^.]*)
 INCLUDEPATH += $$SRC/inscore2
@@ -57,10 +58,11 @@ macx {
 	!NOVIEW { DESTDIR = $$PWD/bin }
 	QMAKE_LFLAGS += -FRelease
 	LIBS += -F$$PWD/bin -framework INScore
+	LIBS += -F$$GUIDO_PATH/build/lib -framework GUIDOEngine
 	QMAKE_INFO_PLIST = $$PWD/Info.plist
 	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns
 	RSRC.path 	= Contents/Resources
-	PLUG.files 	= $$ROOT/lib/libMusicXML/macosx/libmusicxml2.dylib
+#	PLUG.files 	= $$LXML_PATH/build/lib/libmusicxml2.dylib
 	PLUG.files += $$ROOT/lib/GestureFollower/macosx/libGFLib.dylib
 	PLUG.files += $$ROOT/lib/faust/macosx/libfaust.dylib
 	PLUG.path 	= Contents/PlugIns
@@ -74,7 +76,7 @@ macx {
 ios {
     QMAKE_IOS_DEPLOYMENT_TARGET = 11.0
 	QMAKE_LFLAGS += -L Release-iphoneos
-	LIBS += -lINScore $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a $$ROOT/lib/GuidoAR/ios/libguidoar.a
+	LIBS += -lINScore $$GUIDO_PATH/build/lib/libGUIDOEngine.a 
 	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
 	ios_icon.files = $$files($$ROOT/rsrc/ios-icons/*.png)
 	QMAKE_BUNDLE_DATA += ios_icon
@@ -103,7 +105,7 @@ win32 {
 ############################## 
 unix:!android:!macx:!ios {
 	DESTDIR = $$PWD/bin
-	LIBS += -L. -L$$DESTDIR -lINScore -lGUIDOEngine -lguidoar -lmicrohttpd
+	LIBS += -L. -L$$DESTDIR -lINScore -lGUIDOEngine -lmicrohttpd
 }
 
 ############################## 
@@ -112,8 +114,8 @@ unix:!android:!macx:!ios {
 android {
 	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
 	LIBS += -L. -lINScore
-	ANDROID_EXTRA_LIBS = $$ROOT/lib/GuidoEngine/android/$${ARCH}/libGUIDOEngine.so
-	ANDROID_EXTRA_LIBS += $$ROOT/lib/GuidoAR/android/$${ARCH}/libguidoar.so
+    LIBS += -L$$GUIDO_PATH/build/lib/ -lGUIDOEngine.$${ARCH}
+#	ANDROID_EXTRA_LIBS = $$GUIDO_PATH/build/lib/libGUIDOEngine.$$ARCH.so
 	ANDROID_EXTRA_LIBS += libINScore.so
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android

@@ -15,8 +15,9 @@ CONFIG += warn_off
 ROOT 		= $$PWD/..
 SRC 		= $$ROOT/src
 LOCALLIB 	= $$ROOT/lib
-GUIDO_PATH	= $$LOCALLIB/GuidoEngine
-GUIDOAR_PATH= $$LOCALLIB/GuidoAR
+GUIDO_PATH	= $$ROOT/modules/guidolib
+GUIDOQT_PATH= $$GUIDO_PATH/environments/Qt/libs/GuidoQt
+GUIDOAR_PATH= $$ROOT/modules/guidoar
 OSC         = $$LOCALLIB/oscpack
 QRENCODE    = $$LOCALLIB/qrencode
 JSON        = $$SRC/json
@@ -49,6 +50,12 @@ SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
 SOURCES +=  $$files($$QTIMPL/*.cpp)
 SOURCES +=  $$files($$QTIMPL/sensors/*.cpp)
+SOURCES +=  $$files($$GUIDOAR_PATH/src/guido/*.cpp, true)
+SOURCES +=  $$files($$GUIDOAR_PATH/src/interface/*.cpp)
+SOURCES +=  $$files($$GUIDOAR_PATH/src/lib/*.cpp)
+SOURCES +=  $$files($$GUIDOAR_PATH/src/operations/*.cpp)
+SOURCES +=  $$files($$GUIDOAR_PATH/src/parser/*.cpp)
+SOURCES +=  $$files($$GUIDOAR_PATH/src/visitors/*.cpp)
 
 HEADERS  =  $$files($$SRC/inscore/*.h, true)
 HEADERS +=  $$files($$SRC/inscore2/*.h, true)
@@ -60,6 +67,7 @@ HEADERS +=  $$files($$OSC/OSC/*.h)
 HEADERS +=  $$files($$JSON/*.h)
 HEADERS +=  $$files($$QTIMPL/*.h)
 HEADERS +=  $$files($$QTIMPL/sensors/*.h)
+HEADERS +=  $$files($$GUIDOAR_PATH/src/*.h, true)
 win32:HEADERS +=  $$files($$ROOT/win32/dirent/*.h)
 
 #QArchive
@@ -81,8 +89,9 @@ INCLUDEPATH +=  $$files($$SRC/libmapping/src/[^.]*)
 INCLUDEPATH +=  $$files($$OSC)
 INCLUDEPATH +=  $$files($$QRENCODE)
 INCLUDEPATH +=  $$files($$JSON)
-INCLUDEPATH +=  $$GUIDO_PATH/include
-INCLUDEPATH +=  $$GUIDOAR_PATH/include
+INCLUDEPATH +=  $$GUIDO_PATH/src/engine/include
+INCLUDEPATH +=  $$files($$GUIDOAR_PATH/src/[^.]*)
+INCLUDEPATH +=  $$GUIDOAR_PATH/src/guido/abstract
 INCLUDEPATH +=  $$QTIMPL
 INCLUDEPATH +=  $$QTIMPL/sensors
 
@@ -99,10 +108,11 @@ NOVIEW {
 	INCLUDEPATH +=  $$SRC/view/VoidView
 } else {
 	SOURCES  +=  $$files($$SRC/view/QtView/*.cpp)
-	SOURCES  +=  $$files($$SRC/view/guidoqt/*.cpp)
+	SOURCES  +=  $$files($$GUIDOQT_PATH/*.cpp)
 	HEADERS  +=  $$files($$SRC/view/QtView/*.h)
-	HEADERS  +=  $$files($$SRC/view/guidoqt/*.h)
-	INCLUDEPATH +=  $$SRC/view/QtView $$SRC/view/guidoqt
+	HEADERS  +=  $$files($$GUIDOQT_PATH/include/*.h)
+	INCLUDEPATH +=  $$SRC/view/QtView
+	INCLUDEPATH +=  $$GUIDOQT_PATH/include
     message ("Compiled with Qt view - add CONFIG+=NOVIEW to change to no view.")
 }
 
@@ -125,11 +135,9 @@ win32 {
 	contains(QMAKE_HOST.arch, x86_64): {
         DEFINES += __x86_64__
 		LIBS += $$LOCALLIB/GuidoEngine/win64/GUIDOEngine64.lib
-		LIBS += $$LOCALLIB/GuidoAR/win64/guidoar.lib
    }
 	else {
 		LIBS += $$LOCALLIB/GuidoEngine/win32/GUIDOEngine.lib
-		LIBS += $$LOCALLIB/GuidoAR/win32/guidoar.lib
 	}
 }
 !win32 {
@@ -142,13 +150,12 @@ win32 {
 macx {
 	!NOVIEW { DESTDIR = $$PWD/bin }
 	QT += opengl
-    QMAKE_CXXFLAGS += -mmacosx-version-min=10.11
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.11 
+    QMAKE_CXXFLAGS += -mmacosx-version-min=10.13
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13 
 	CONFIG += lib_bundle explicitlib
 	QMAKE_INFO_PLIST = $$PWD/libInfo.plist
-	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoEngine/macosx/
-	QMAKE_LFLAGS += -F$$ROOT/lib/GuidoAR/macosx/
-	LIBS += -framework GUIDOEngine -framework GuidoAR -framework CoreFoundation
+	QMAKE_LFLAGS += -F$$GUIDO_PATH/build/lib
+	LIBS += -framework GUIDOEngine -framework CoreFoundation
 	INCLUDEPATH += /usr/local/include
 	LIBS += -L/usr/local/lib -lmicrohttpd
     QMAKE_FRAMEWORK_VERSION = $${VERSION}
@@ -172,10 +179,9 @@ ios {
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += INSCORE_IOS __MOBILE__
-    CONFIG += arm64 armv7 armv7s 
+    CONFIG += arm64 armv8
     CONFIG += staticlib
     LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
-    LIBS += $$ROOT/lib/GuidoAR/ios/libguidoar.a
 	QT += quick quickwidgets 
 }
 
@@ -186,7 +192,7 @@ unix:!macx:!ios:!android {
 	DESTDIR = $$PWD/bin
 	QT += opengl
     DEFINES += OSC_HOST_LITTLE_ENDIAN __LINUX__
-    LIBS += -lGUIDOEngine -lguidoar
+    LIBS += -lGUIDOEngine
 }
 
 ############################## 
@@ -200,8 +206,7 @@ android {
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
-    LIBS += -L$$ROOT/lib/GuidoEngine/android/$${ARCH} -lGUIDOEngine
-    LIBS += -L$$ROOT/lib/GuidoAR/android/$${ARCH} -lguidoar
+    LIBS += -L$$GUIDO_PATH/build/lib/ -lGUIDOEngine.$${ARCH}
     ANDROID_API_VERSION = 22
     QT += androidextras
 	QT += quick quickwidgets 

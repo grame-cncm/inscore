@@ -2,7 +2,7 @@
 # 
 #
 
-.PHONY : macos ios win32 win64 linux android installAndroid mobileUI
+.PHONY : macos ios win32 win64 linux android installAndroid mobileUI modules
 
 QMAKE ?= qmake
 MAKE  ?= make
@@ -50,7 +50,7 @@ endif
 
 
 all :
-	git submodule update --init
+#	git submodule update --init
 	$(MAKE) $(TARGET)
 
 undefined:
@@ -73,6 +73,7 @@ help :
 	@echo "  devandroid : to get the serial number of the connected device"
 	@echo "Project management: "
 	@echo "  qmake    : to regenerate the projects"
+	@echo "  modules  : update and regenerate submodules"
 	@echo "  voidview : to regenerate the projects with no view inside a 'noview' folder"
 	@echo "  log      : to generate the git log with optionnal revisions range"
 	@echo "             the range can be specified using the RANGE variable"
@@ -90,13 +91,30 @@ help :
 log:
 	git log --format="%h - %Cblue%s%Creset - %cn %cd"  $(RANGE)
 
+modules:
+	git submodule update --init --recursive
+	$(MAKE) -C ../modules/guidolib/build lib
+	$(MAKE) -C ../modules/libmusicxml/build CMAKEOPT="-DLILY=off -DFMWK=off"
+
+install_modules:
+	sudo $(MAKE) -C ../modules/guidolib/build install
+	sudo $(MAKE) -C ../modules/libmusicxml/build install
+
+modules_ios:
+	git submodule update --init
+	$(MAKE) -C ../modules/guidolib/build ios
+	$(MAKE) -C ../modules/libmusicxml/build ios
+
+modules_android:
+	git submodule update --init
+	$(MAKE) -C ../modules/guidolib/build android
+	$(MAKE) -C ../modules/libmusicxml/build android
 
 #===============================================================
 # building inscore
 #===============================================================
 macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-	$(MAKE) -C ../lib/GuidoEngine/macosx
-	$(MAKE) -C ../lib/GuidoAR/macosx
+#	$(MAKE) -C ../lib/GuidoEngine/macosx
 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
 	$(MAKE) ibundle
@@ -164,7 +182,7 @@ _android : $(INSCOREDIR) $(INSCOREDIR)/Makefile
 	[ -d $(INSCOREDIR)/android-build ] || mkdir $(INSCOREDIR)/android-build
 	$(MAKE) -C $(INSCOREDIR) INSTALL_ROOT=android-build install
 	cd $(INSCOREDIR) && androiddeployqt --android-platform android-$(ANDROID_API) --release --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
-	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(INSCOREDIR)/INScoreViewer.apk
+	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(INSCOREDIR)/../bin/INScoreViewer.apk
 
 $(INSCOREDIR)/Makefile: library.pro viewer.pro INScore.pro
 	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
