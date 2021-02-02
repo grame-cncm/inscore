@@ -38,7 +38,13 @@
 #include "TWallClock.h"
 #include "XMLImporter.h"
 
-#if defined(NOVIEW) || defined(MODELONLY)
+#if QTVIEW
+#  include <QFontDatabase>
+#  include "QGuidoPainter.h"
+#  include "VQtLocalMappingUpdater.h"
+#  include "VQtUpdater.h"
+
+#elif defined(NOVIEW) || defined(MODELONLY)
 # include "VoidUpdater.h"
 
 #elif defined(HTMLVIEW)
@@ -48,9 +54,6 @@
 #  include "VMobileQtInit.h"
 #  include "VMobileQtUpdater.h"
 #  include "VQtLocalMappingUpdater.h"
-#else
-#  include "VQtLocalMappingUpdater.h"
-#  include "VQtUpdater.h"
 #endif
 
 #ifdef EMCC
@@ -62,19 +65,6 @@ namespace inscore
 {
 
 IGlue* gGlue;
-//_______________________________________________________________________
-/*!
-	\brief a specific thread for Java JNI
-*/
-//class JavaThread : public QThread
-//{
-//	public:
-//		QApplication*	fAppl;
-//
-//				 JavaThread(QApplication* appl) : fAppl(appl){}
-//		virtual ~JavaThread() {}
-//		void run()			 { fAppl->exec(); }
-//};
 
 
 SIMessageStack				gMsgStack;			// the messages stack
@@ -82,17 +72,37 @@ SIMessageStack				gDelayStack;		// the delayed messages stack
 SIMessageStack				gWebMsgStack;		// the messages stack for messages from the web
 map<INScore::MessagePtr, SIMessage>	gMsgMemory;		// allocated messages are stored in a map for refcounting
 std::condition_variable		gModelUpdateWaitCondition; // A wait condition on model update.
+
 //--------------------------------------------------------------------------
 static IMessage* Message2IMessage (INScore::MessagePtr p)
 {
 	return (IMessage*)p;
 }
 
+#if QTVIEW
+#define GUIDO_FONT_FILE ":/guido2.ttf"
+//-----------------------------------------------------------------------
+static void startQtView ()
+{
+	QFontDatabase::addApplicationFont (GUIDO_FONT_FILE);
+	QGuidoPainter::startGuidoEngine();
+}
+
+//-----------------------------------------------------------------------
+void stopQtView  ()
+{
+	QGuidoPainter::stopGuidoEngine();
+}
+#endif
+
 //--------------------------------------------------------------------------
 // Qt environment initiaization + INScore glue setup
 //--------------------------------------------------------------------------
 INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplicationGlue* ag, bool offscreen)
 {
+#if QTVIEW
+	startQtView ();
+#endif
 	IGlue* glue = new IGlue (udpport, outport, errport);
 	if (glue && glue->start (offscreen, ag)) {
 #if defined(NOVIEW)
@@ -124,6 +134,9 @@ INScoreGlue* INScore::start(int udpport, int outport, int errport, INScoreApplic
 //--------------------------------------------------------------------------
 void INScore::stop(INScoreGlue* glue)
 {
+#if QTVIEW
+	stopQtView ();
+#endif
 	gGlue = 0;
 	delete glue;
 }

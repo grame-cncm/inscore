@@ -278,14 +278,14 @@ string INScoreAppl::getIP () const
 //-----------------------------------------------------------------------
 void INScoreAppl::startView ()
 {
-	QFontDatabase::addApplicationFont (GUIDO_FONT_FILE);
-	QGuidoPainter::startGuidoEngine();
+//	QFontDatabase::addApplicationFont (GUIDO_FONT_FILE);
+//	QGuidoPainter::startGuidoEngine();
 }
 
 //-----------------------------------------------------------------------
 void INScoreAppl::stopView  ()
 {
-	QGuidoPainter::stopGuidoEngine();
+//	QGuidoPainter::stopGuidoEngine();
 }
 
 
