@@ -25,7 +25,10 @@ QTIMPL      = $$SRC/Qt
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
-VERSION = $$system(cat $$ROOT/version.txt)
+
+#win32 { VERSION = $$system(type $$PWD\..\version.txt) }
+win32 { VERSION = 1.26 }
+else  { VERSION = $$system(cat $$ROOT/version.txt) }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets sensors
 QT += qml # quick quickwidgets 
@@ -34,6 +37,7 @@ DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
 DEFINES += QTVIEW		# use the Qt Javascript engine
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
+DEFINES += GUIDOAR_EXPORTS
 greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_LESS_55}
 
 
@@ -134,10 +138,10 @@ win32 {
     INCLUDEPATH += $$ROOT/win32/dirent
 	contains(QMAKE_HOST.arch, x86_64): {
         DEFINES += __x86_64__
-		LIBS += $$LOCALLIB/GuidoEngine/win64/GUIDOEngine64.lib
+		LIBS += $$GUIDO_PATH/build/lib/GUIDOEngine64.lib
    }
 	else {
-		LIBS += $$LOCALLIB/GuidoEngine/win32/GUIDOEngine.lib
+		LIBS += $$GUIDO_PATH/build/lib/GUIDOEngine.lib
 	}
 }
 !win32 {

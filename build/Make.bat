@@ -1,11 +1,19 @@
 
 @echo off
 
+goto DLLS
+
+echo Compiles submodules
+@REM cd ../modules/
+@REM ./Make.bat
+@REM cd ../build
+
 IF NOT EXIST inscoredir (
 	echo Create output folder
 	mkdir inscoredir
-	GOTO QMAKE
+	GOTO CMAKE
 )
+GOTO CMAKE
 
 IF [%1]==[] GOTO COMPILE
 
@@ -15,6 +23,12 @@ IF %1==-deploy GOTO DEPLOY
 
 GOTO USAGE
 
+:CMAKE
+cd inscoredir
+cmake .. -G "Visual Studio 15 2017 Win64"
+cmake --build . --config Release
+cd ..
+GOTO DEPLOY
 
 :QMAKE
 cd inscoredir
@@ -34,16 +48,17 @@ xcopy /Y "..\tools\IBundle\IBundle.exe" "bin\"
 GOTO DONE
 
 :DEPLOY
-windeployqt bin/INScoreViewer.exe
+set dest=cmbin
+windeployqt %dest%/INScoreViewer.exe
 
 :DLLS
 echo Copy libraries
-xcopy /Y "..\lib\GUIDOEngine\win64\GUIDOEngine64.dll" "bin\"
-IF NOT EXIST bin/Plugins (
-	mkdir bin/Plugins
+xcopy /y "cmlib\INScore.dll" "%dest%\"
+xcopy /y "..\modules\guidolib\build\lib\GUIDOEngine64.dll" "%dest%\"
+IF NOT EXIST %dest%/Plugins (
+	mkdir %dest%/Plugins
 )
-xcopy /Y "..\lib\libMusicXML\win64\libmusicxml2.dll" "bin\Plugins\"
-xcopy /Y "..\lib\GuidoAR\win64\guidoar.dll" "bin\"
+xcopy /y "..\modules\libmusicxml\build\lib\musicxml2.dll" "%dest%\Plugins\"
 GOTO DONE
 
 :USAGE

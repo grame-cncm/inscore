@@ -29,15 +29,17 @@ OSC    = $$LOCALLIB/oscpack
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
-VERSION = $$system(cat $$ROOT/version.txt)
+#win32 { VERSION = $$system(type $$PWD\..\version.txt) }
+win32 { VERSION = 1.26 }
+else  { VERSION = $$system(cat $$ROOT/version.txt) }
 
 CONFIG += c++11
 
 ############################## 
 # source and headers
 ############################## 
-SOURCES = $$SRCDIR/*.cpp
-HEADERS = $$SRCDIR/*.h
+SOURCES = $$files($$SRCDIR/*.cpp)
+HEADERS = $$files($$SRCDIR/*.h)
 INCLUDEPATH += $$SRCDIR $$LIB/interface
 INCLUDEPATH += $$LIB/model $$LIB/controller $$LIB/lib $$LIB/mapping $$LIB/events $$LIB/view
 INCLUDEPATH += $$LIB/signal $$LIB/scripting $$LIB/expression
