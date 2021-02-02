@@ -39,11 +39,12 @@
 #include <fstream>
 #include <string>
 
+#define YY_NO_UNISTD_H
+#define YY_NO_INPUT
+
 #include "IParser2.h"
 #include "inscoreparse.hpp"
 
-#define YY_NO_UNISTD_H
-#define YY_NO_INPUT
 #define YY_EXTRA_TYPE inscore2::IParser*
 #define YY_USER_ACTION  yyextra->fLine = yylloc->last_line = yylineno; yyextra->fColumn = yylloc->first_column += strlen(yytext);
 

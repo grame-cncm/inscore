@@ -192,7 +192,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 135 "inscorev2.y"
+#line 137 "inscorev2.y"
 {
 	inscore2::INode* 		treeptr;
 }

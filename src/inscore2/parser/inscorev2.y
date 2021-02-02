@@ -29,6 +29,8 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+
+#define YY_NO_UNISTD_H
  
 #include "IParser2.h"
 #include "inscoreparse.hpp"

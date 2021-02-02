@@ -875,11 +875,12 @@ static yyconst flex_int32_t yy_rule_can_match_eol[87] =
 #include <fstream>
 #include <string>
 
+#define YY_NO_UNISTD_H
+#define YY_NO_INPUT
+
 #include "IParser2.h"
 #include "inscoreparse.hpp"
 
-#define YY_NO_UNISTD_H
-#define YY_NO_INPUT
 #define YY_EXTRA_TYPE inscore2::IParser*
 #define YY_USER_ACTION  yyextra->fLine = yylloc->last_line = yylineno; yyextra->fColumn = yylloc->first_column += strlen(yytext);
 
@@ -949,7 +950,7 @@ see RFC952 and RFC1123
 /* allowed character for filename and path as defined for windows 7 with some specification for INScore compatibility: no = ; */
 /* regular expression characters
 as defined by the OSC specification */
-#line 953 "inscorelex.cpp"
+#line 954 "inscorelex.cpp"
 
 #define INITIAL 0
 #define JSECTION 1
@@ -1189,13 +1190,13 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 137 "inscorev2.l"
+#line 138 "inscorev2.l"
 
 
  /* ----------------------------------------- */
  /*	digits */
  /* ----------------------------------------- */
-#line 1199 "inscorelex.cpp"
+#line 1200 "inscorelex.cpp"
 
     yylval = yylval_param;
 
@@ -1292,47 +1293,47 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 142 "inscorev2.l"
+#line 143 "inscorev2.l"
 yyextra->fText = yytext; return INT;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 143 "inscorev2.l"
+#line 144 "inscorev2.l"
 yyextra->fText = yytext; return INT;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 144 "inscorev2.l"
+#line 145 "inscorev2.l"
 yyextra->fText = yytext; return INT;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 146 "inscorev2.l"
+#line 147 "inscorev2.l"
 yyextra->fText = yytext; return FLOAT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 147 "inscorev2.l"
+#line 148 "inscorev2.l"
 yyextra->fText = yytext; return FLOAT;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 148 "inscorev2.l"
+#line 149 "inscorev2.l"
 yyextra->fText = yytext; return FLOAT;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 149 "inscorev2.l"
+#line 150 "inscorev2.l"
 yyextra->fText = yytext; return FLOAT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 151 "inscorev2.l"
+#line 152 "inscorev2.l"
 return ENDSCRIPT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 152 "inscorev2.l"
+#line 153 "inscorev2.l"
 return WITH;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1340,12 +1341,12 @@ return WITH;
 /* ----------------------------------------- */
 case 10:
 YY_RULE_SETUP
-#line 157 "inscorev2.l"
+#line 158 "inscorev2.l"
 yyextra->fText = yytext; return STIME;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 158 "inscorev2.l"
+#line 159 "inscorev2.l"
 yyextra->fText = yytext; return MSTIME;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1353,82 +1354,82 @@ yyextra->fText = yytext; return MSTIME;
 /* ----------------------------------------- */
 case 12:
 YY_RULE_SETUP
-#line 164 "inscorev2.l"
+#line 165 "inscorev2.l"
 return ADD;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 165 "inscorev2.l"
+#line 166 "inscorev2.l"
 return SUB;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 166 "inscorev2.l"
+#line 167 "inscorev2.l"
 return DIV;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 167 "inscorev2.l"
+#line 168 "inscorev2.l"
 return MULT;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 168 "inscorev2.l"
+#line 169 "inscorev2.l"
 return MODULO;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 169 "inscorev2.l"
+#line 170 "inscorev2.l"
 return QUEST;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 170 "inscorev2.l"
+#line 171 "inscorev2.l"
 return NEG;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 171 "inscorev2.l"
+#line 172 "inscorev2.l"
 return EQ;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 172 "inscorev2.l"
+#line 173 "inscorev2.l"
 return GREATER;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 173 "inscorev2.l"
+#line 174 "inscorev2.l"
 return GREATEREQ;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 174 "inscorev2.l"
+#line 175 "inscorev2.l"
 return LESS;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 175 "inscorev2.l"
+#line 176 "inscorev2.l"
 return LESSEQ;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 176 "inscorev2.l"
+#line 177 "inscorev2.l"
 return MIN;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 177 "inscorev2.l"
+#line 178 "inscorev2.l"
 return MAX;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 178 "inscorev2.l"
+#line 179 "inscorev2.l"
 return HAS;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 180 "inscorev2.l"
+#line 181 "inscorev2.l"
 return EQUAL;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1436,117 +1437,117 @@ return EQUAL;
 /* ----------------------------------------- */
 case 28:
 YY_RULE_SETUP
-#line 185 "inscorev2.l"
+#line 186 "inscorev2.l"
 return COS;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 186 "inscorev2.l"
+#line 187 "inscorev2.l"
 return SIN;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 187 "inscorev2.l"
+#line 188 "inscorev2.l"
 return TAN;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 188 "inscorev2.l"
+#line 189 "inscorev2.l"
 return ACOS;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 189 "inscorev2.l"
+#line 190 "inscorev2.l"
 return ASIN;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 190 "inscorev2.l"
+#line 191 "inscorev2.l"
 return ATAN;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 191 "inscorev2.l"
+#line 192 "inscorev2.l"
 return COSH;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 192 "inscorev2.l"
+#line 193 "inscorev2.l"
 return SINH;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 193 "inscorev2.l"
+#line 194 "inscorev2.l"
 return TANH;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 194 "inscorev2.l"
+#line 195 "inscorev2.l"
 return ACOSH;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 195 "inscorev2.l"
+#line 196 "inscorev2.l"
 return ASINH;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 196 "inscorev2.l"
+#line 197 "inscorev2.l"
 return ATANH;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 198 "inscorev2.l"
+#line 199 "inscorev2.l"
 return EXP;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 199 "inscorev2.l"
+#line 200 "inscorev2.l"
 return LOG;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 200 "inscorev2.l"
+#line 201 "inscorev2.l"
 return LOG10;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 201 "inscorev2.l"
+#line 202 "inscorev2.l"
 return LOG2;
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 202 "inscorev2.l"
+#line 203 "inscorev2.l"
 return POW;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 203 "inscorev2.l"
+#line 204 "inscorev2.l"
 return SQRT;
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 204 "inscorev2.l"
+#line 205 "inscorev2.l"
 return CBRT;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 206 "inscorev2.l"
+#line 207 "inscorev2.l"
 return CEIL;
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 207 "inscorev2.l"
+#line 208 "inscorev2.l"
 return FLOOR;
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 208 "inscorev2.l"
+#line 209 "inscorev2.l"
 return ROUND;
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 210 "inscorev2.l"
+#line 211 "inscorev2.l"
 return RAND;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1554,62 +1555,62 @@ return RAND;
 /* ----------------------------------------- */
 case 51:
 YY_RULE_SETUP
-#line 216 "inscorev2.l"
+#line 217 "inscorev2.l"
 return APPLY;
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 217 "inscorev2.l"
+#line 218 "inscorev2.l"
 return SLASH;
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 218 "inscorev2.l"
+#line 219 "inscorev2.l"
 return LEFTPAR;
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 219 "inscorev2.l"
+#line 220 "inscorev2.l"
 return RIGHTPAR;
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 220 "inscorev2.l"
+#line 221 "inscorev2.l"
 return LEFTBRACE;
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 221 "inscorev2.l"
+#line 222 "inscorev2.l"
 return RIGHTBRACE;
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 222 "inscorev2.l"
+#line 223 "inscorev2.l"
 return LEFTBRACKET;
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 223 "inscorev2.l"
+#line 224 "inscorev2.l"
 return RIGHTBRACKET;
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 224 "inscorev2.l"
+#line 225 "inscorev2.l"
 return ENDSTATEMENT;
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 225 "inscorev2.l"
+#line 226 "inscorev2.l"
 return COLON;
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 226 "inscorev2.l"
+#line 227 "inscorev2.l"
 return COMMA;
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 227 "inscorev2.l"
+#line 228 "inscorev2.l"
 return LDOTS;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1617,13 +1618,13 @@ return LDOTS;
 /* ----------------------------------------- */
 case 63:
 YY_RULE_SETUP
-#line 233 "inscorev2.l"
+#line 234 "inscorev2.l"
 ;
 	YY_BREAK
 case 64:
 /* rule 64 can match eol */
 YY_RULE_SETUP
-#line 234 "inscorev2.l"
+#line 235 "inscorev2.l"
 ;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1631,24 +1632,24 @@ YY_RULE_SETUP
 /* ----------------------------------------- */
 case 65:
 YY_RULE_SETUP
-#line 240 "inscorev2.l"
+#line 241 "inscorev2.l"
 yyextra->fText = yytext; return LETTERS;
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 241 "inscorev2.l"
+#line 242 "inscorev2.l"
 yyextra->fText = yytext; return IDENTIFIER;
 	YY_BREAK
 case 67:
 /* rule 67 can match eol */
 YY_RULE_SETUP
-#line 242 "inscorev2.l"
+#line 243 "inscorev2.l"
 yyextra->fText = unescape(unquote(yytext)); return STRING;
 	YY_BREAK
 case 68:
 /* rule 68 can match eol */
 YY_RULE_SETUP
-#line 243 "inscorev2.l"
+#line 244 "inscorev2.l"
 yyextra->fText = unescape(unquote(yytext)); return STRING;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1656,7 +1657,7 @@ yyextra->fText = unescape(unquote(yytext)); return STRING;
 /* ----------------------------------------- */
 case 69:
 YY_RULE_SETUP
-#line 248 "inscorev2.l"
+#line 249 "inscorev2.l"
 yyextra->fText = &yytext[1]; return VARIABLE;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1664,22 +1665,22 @@ yyextra->fText = &yytext[1]; return VARIABLE;
 /* ----------------------------------------- */
 case 70:
 YY_RULE_SETUP
-#line 254 "inscorev2.l"
+#line 255 "inscorev2.l"
 yyextra->fText = yytext; return REGEXP;	
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 255 "inscorev2.l"
+#line 256 "inscorev2.l"
 yyextra->fText = yytext; return REGEXP;
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 256 "inscorev2.l"
+#line 257 "inscorev2.l"
 yyextra->fText = yytext; return REGEXP;
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 257 "inscorev2.l"
+#line 258 "inscorev2.l"
 yyextra->fText = yytext; return ANYADDR;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1687,17 +1688,17 @@ yyextra->fText = yytext; return ANYADDR;
 /* ----------------------------------------- */
 case 74:
 YY_RULE_SETUP
-#line 262 "inscorev2.l"
+#line 263 "inscorev2.l"
 yyextra->fText = yytext; return EXPANDID;
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 263 "inscorev2.l"
+#line 264 "inscorev2.l"
 yyextra->fText = yytext; return EXPANDID;
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 264 "inscorev2.l"
+#line 265 "inscorev2.l"
 yyextra->fText = yytext; return EXPANDID;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1705,18 +1706,18 @@ yyextra->fText = yytext; return EXPANDID;
 /* ----------------------------------------- */
 case 77:
 YY_RULE_SETUP
-#line 269 "inscorev2.l"
+#line 270 "inscorev2.l"
 BEGIN JSECTION;
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 270 "inscorev2.l"
+#line 271 "inscorev2.l"
 BEGIN INITIAL;
 	YY_BREAK
 case 79:
 /* rule 79 can match eol */
 YY_RULE_SETUP
-#line 271 "inscorev2.l"
+#line 272 "inscorev2.l"
 yyextra->fText = unescape(yytext); return JSCRIPT;
 	YY_BREAK
 /* ----------------------------------------- */
@@ -1724,46 +1725,46 @@ yyextra->fText = unescape(yytext); return JSCRIPT;
 /* ----------------------------------------- */
 case 80:
 YY_RULE_SETUP
-#line 276 "inscorev2.l"
+#line 277 "inscorev2.l"
 yyextra->fText = yytext; return URLPREFIX;
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 277 "inscorev2.l"
+#line 278 "inscorev2.l"
 yyextra->fText = yytext; return URLPREFIX;
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 278 "inscorev2.l"
+#line 279 "inscorev2.l"
 yyextra->fText = yytext; return URLPREFIX;
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 281 "inscorev2.l"
+#line 282 "inscorev2.l"
 ;   /* eat up space */
 	YY_BREAK
 case 84:
 /* rule 84 can match eol */
 YY_RULE_SETUP
-#line 282 "inscorev2.l"
+#line 283 "inscorev2.l"
 { yyextra->fColumn = yylloc->first_column = 1; } 	/* return EOL;  eat up end of line */
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(JSECTION):
-#line 284 "inscorev2.l"
+#line 285 "inscorev2.l"
 return ENDSCRIPT;
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 286 "inscorev2.l"
+#line 287 "inscorev2.l"
 yyextra->fText = yytext; ldebug("ERR", yyextra->fText); return ERR;
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 288 "inscorev2.l"
+#line 289 "inscorev2.l"
 ECHO;
 	YY_BREAK
-#line 1767 "inscorelex.cpp"
+#line 1768 "inscorelex.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2905,7 +2906,7 @@ void INSCOREV2free (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 288 "inscorev2.l"
+#line 289 "inscorev2.l"
 
 
 

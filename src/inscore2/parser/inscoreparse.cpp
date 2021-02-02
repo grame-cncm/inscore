@@ -257,6 +257,8 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+
+#define YY_NO_UNISTD_H
  
 #include "IParser2.h"
 #include "inscoreparse.hpp"
@@ -291,12 +293,12 @@ using namespace inscore2;
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 135 "inscorev2.y"
+#line 137 "inscorev2.y"
 {
 	inscore2::INode* 		treeptr;
 }
 /* Line 193 of yacc.c.  */
-#line 300 "inscoreparse.cpp"
+#line 302 "inscoreparse.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -318,7 +320,7 @@ typedef struct YYLTYPE
 
 
 /* Copy the second part of user declarations.  */
-#line 143 "inscorev2.y"
+#line 145 "inscorev2.y"
 
 
 int yyerror (const YYLTYPE* locp, IParser* context, const char*s);
@@ -340,7 +342,7 @@ nodebug ydebug;
 
 
 /* Line 216 of yacc.c.  */
-#line 344 "inscoreparse.cpp"
+#line 346 "inscoreparse.cpp"
 
 #ifdef short
 # undef short
@@ -659,15 +661,15 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   169,   169,   170,   174,   175,   176,   177,   178,   182,
-     183,   186,   187,   188,   192,   193,   194,   195,   196,   197,
-     198,   199,   200,   201,   202,   203,   204,   205,   206,   209,
-     210,   213,   216,   219,   222,   225,   228,   229,   235,   238,
-     241,   242,   245,   246,   249,   252,   253,   254,   255,   256,
-     257,   258,   259,   260,   261,   262,   263,   265,   266,   267,
-     268,   269,   270,   271,   273,   274,   275,   277,   278,   279,
-     280,   281,   282,   283,   284,   285,   286,   287,   288,   289,
-     290,   291,   292,   295,   296,   299,   300
+       0,   171,   171,   172,   176,   177,   178,   179,   180,   184,
+     185,   188,   189,   190,   194,   195,   196,   197,   198,   199,
+     200,   201,   202,   203,   204,   205,   206,   207,   208,   211,
+     212,   215,   218,   221,   224,   227,   230,   231,   237,   240,
+     243,   244,   247,   248,   251,   254,   255,   256,   257,   258,
+     259,   260,   261,   262,   263,   264,   265,   267,   268,   269,
+     270,   271,   272,   273,   275,   276,   277,   279,   280,   281,
+     282,   283,   284,   285,   286,   287,   288,   289,   290,   291,
+     292,   293,   294,   297,   298,   301,   302
 };
 #endif
 
@@ -1766,423 +1768,423 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 174 "inscorev2.y"
+#line 176 "inscorev2.y"
     { context->add ((yyvsp[(1) - (2)].treeptr)); ;}
     break;
 
   case 5:
-#line 175 "inscorev2.y"
+#line 177 "inscorev2.y"
     { ;}
     break;
 
   case 6:
-#line 176 "inscorev2.y"
+#line 178 "inscorev2.y"
     { ;}
     break;
 
   case 7:
-#line 177 "inscorev2.y"
+#line 179 "inscorev2.y"
     { context->add (context->javascript (context->fText)); ;}
     break;
 
   case 8:
-#line 178 "inscorev2.y"
+#line 180 "inscorev2.y"
     { YYACCEPT; ;}
     break;
 
   case 9:
-#line 182 "inscorev2.y"
+#line 184 "inscorev2.y"
     { cerr << "fundef " << (yyvsp[(1) - (5)].treeptr)->getValue() << "()" << endl; ;}
     break;
 
   case 10:
-#line 183 "inscorev2.y"
+#line 185 "inscorev2.y"
     { cerr << "fundef " << (yyvsp[(1) - (6)].treeptr)->getValue() << " args: " << (yyvsp[(3) - (6)].treeptr) << " -> " << (yyvsp[(6) - (6)].treeptr)  << endl; ;}
     break;
 
   case 11:
-#line 186 "inscorev2.y"
+#line 188 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
   case 12:
-#line 187 "inscorev2.y"
+#line 189 "inscorev2.y"
     { (yyval.treeptr) = context->seq((yyvsp[(1) - (3)].treeptr), (yyvsp[(3) - (3)].treeptr)); ;}
     break;
 
   case 13:
-#line 188 "inscorev2.y"
+#line 190 "inscorev2.y"
     { (yyval.treeptr) = context->par((yyvsp[(1) - (3)].treeptr), (yyvsp[(3) - (3)].treeptr)) ;}
     break;
 
   case 14:
-#line 192 "inscorev2.y"
-    { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
-    break;
-
-  case 15:
-#line 193 "inscorev2.y"
-    { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
-    break;
-
-  case 16:
 #line 194 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 17:
+  case 15:
 #line 195 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 18:
+  case 16:
 #line 196 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 19:
+  case 17:
 #line 197 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 20:
+  case 18:
 #line 198 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 21:
+  case 19:
 #line 199 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 22:
+  case 20:
 #line 200 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 23:
+  case 21:
 #line 201 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
-  case 24:
+  case 22:
 #line 202 "inscorev2.y"
+    { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
+    break;
+
+  case 23:
+#line 203 "inscorev2.y"
+    { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
+    break;
+
+  case 24:
+#line 204 "inscorev2.y"
     { (yyval.treeptr) = context->slash((yyvsp[(2) - (2)].treeptr)); ;}
     break;
 
   case 25:
-#line 203 "inscorev2.y"
+#line 205 "inscorev2.y"
     { (yyval.treeptr) = context->slash(context->create ("*")); ;}
     break;
 
   case 26:
-#line 204 "inscorev2.y"
+#line 206 "inscorev2.y"
     { (yyval.treeptr) = context->seq((yyvsp[(1) - (2)].treeptr), (yyvsp[(2) - (2)].treeptr)); ;}
     break;
 
   case 27:
-#line 205 "inscorev2.y"
+#line 207 "inscorev2.y"
     { (yyval.treeptr) = context->par((yyvsp[(1) - (3)].treeptr), (yyvsp[(3) - (3)].treeptr)); ;}
     break;
 
   case 28:
-#line 206 "inscorev2.y"
+#line 208 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(2) - (3)].treeptr); ;}
     break;
 
   case 29:
-#line 209 "inscorev2.y"
+#line 211 "inscorev2.y"
     { (yyval.treeptr) = context->create (context->fText); ;}
     break;
 
   case 30:
-#line 210 "inscorev2.y"
+#line 212 "inscorev2.y"
     { (yyval.treeptr) = context->create (context->fText); ;}
     break;
 
   case 31:
-#line 213 "inscorev2.y"
+#line 215 "inscorev2.y"
     { (yyval.treeptr) = context->expand (context->fText); ;}
     break;
 
   case 32:
-#line 216 "inscorev2.y"
+#line 218 "inscorev2.y"
     { (yyval.treeptr) = context->create (context->fText); ;}
     break;
 
   case 33:
-#line 219 "inscorev2.y"
+#line 221 "inscorev2.y"
     { (yyval.treeptr) = context->prefix (context->fText); ;}
     break;
 
   case 34:
-#line 222 "inscorev2.y"
+#line 224 "inscorev2.y"
     { (yyval.treeptr) = context->create (context->fText); ;}
     break;
 
   case 35:
-#line 225 "inscorev2.y"
+#line 227 "inscorev2.y"
     { (yyval.treeptr) = context->expandVal ((yyvsp[(2) - (5)].treeptr), (yyvsp[(4) - (5)].treeptr)); ;}
     break;
 
   case 36:
-#line 228 "inscorev2.y"
+#line 230 "inscorev2.y"
     { (yyval.treeptr) = (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
   case 37:
-#line 229 "inscorev2.y"
+#line 231 "inscorev2.y"
     { (yyval.treeptr) = context->setEnv((yyvsp[(1) - (4)].treeptr)); context->popEnv(); ;}
     break;
 
   case 38:
-#line 235 "inscorev2.y"
+#line 237 "inscorev2.y"
     {context->declare ((yyvsp[(1) - (3)].treeptr)->getValue(), (yyvsp[(3) - (3)].treeptr)); delete (yyvsp[(1) - (3)].treeptr); ;}
     break;
 
   case 39:
-#line 238 "inscorev2.y"
+#line 240 "inscorev2.y"
     { context->pushEnv(); context->declare ((yyvsp[(1) - (3)].treeptr)->getValue(), (yyvsp[(3) - (3)].treeptr)); delete (yyvsp[(1) - (3)].treeptr); ;}
     break;
 
   case 40:
-#line 241 "inscorev2.y"
+#line 243 "inscorev2.y"
     { (yyval.treeptr) = context->variable ((yyvsp[(1) - (1)].treeptr)->getValue()); delete (yyvsp[(1) - (1)].treeptr); ;}
     break;
 
   case 41:
-#line 242 "inscorev2.y"
+#line 244 "inscorev2.y"
     { (yyval.treeptr) = context->variable ((yyvsp[(1) - (4)].treeptr)->getValue()); context->popEnv(); delete  (yyvsp[(1) - (4)].treeptr); ;}
     break;
 
   case 42:
-#line 245 "inscorev2.y"
+#line 247 "inscorev2.y"
     { ;}
     break;
 
   case 43:
-#line 246 "inscorev2.y"
+#line 248 "inscorev2.y"
     { ;}
     break;
 
   case 44:
-#line 249 "inscorev2.y"
+#line 251 "inscorev2.y"
     { (yyval.treeptr) = context->create (context->fText); ;}
     break;
 
   case 45:
-#line 252 "inscorev2.y"
+#line 254 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kSin); ;}
     break;
 
   case 46:
-#line 253 "inscorev2.y"
+#line 255 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kCos); ;}
     break;
 
   case 47:
-#line 254 "inscorev2.y"
+#line 256 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kTan); ;}
     break;
 
   case 48:
-#line 255 "inscorev2.y"
+#line 257 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kASin); ;}
     break;
 
   case 49:
-#line 256 "inscorev2.y"
+#line 258 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kACos); ;}
     break;
 
   case 50:
-#line 257 "inscorev2.y"
+#line 259 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kATan); ;}
     break;
 
   case 51:
-#line 258 "inscorev2.y"
+#line 260 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kSinh); ;}
     break;
 
   case 52:
-#line 259 "inscorev2.y"
+#line 261 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kCosh); ;}
     break;
 
   case 53:
-#line 260 "inscorev2.y"
+#line 262 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kTanh); ;}
     break;
 
   case 54:
-#line 261 "inscorev2.y"
+#line 263 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kASinh); ;}
     break;
 
   case 55:
-#line 262 "inscorev2.y"
+#line 264 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kACosh); ;}
     break;
 
   case 56:
-#line 263 "inscorev2.y"
+#line 265 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kATanh); ;}
     break;
 
   case 57:
-#line 265 "inscorev2.y"
+#line 267 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kExp); ;}
     break;
 
   case 58:
-#line 266 "inscorev2.y"
+#line 268 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kLog); ;}
     break;
 
   case 59:
-#line 267 "inscorev2.y"
+#line 269 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kLog10); ;}
     break;
 
   case 60:
-#line 268 "inscorev2.y"
+#line 270 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kLog2); ;}
     break;
 
   case 61:
-#line 269 "inscorev2.y"
+#line 271 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kPow); ;}
     break;
 
   case 62:
-#line 270 "inscorev2.y"
+#line 272 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kSqrt); ;}
     break;
 
   case 63:
-#line 271 "inscorev2.y"
+#line 273 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kCbrt); ;}
     break;
 
   case 64:
-#line 273 "inscorev2.y"
+#line 275 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kCeil); ;}
     break;
 
   case 65:
-#line 274 "inscorev2.y"
+#line 276 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kFloor); ;}
     break;
 
   case 66:
-#line 275 "inscorev2.y"
+#line 277 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kRound); ;}
     break;
 
   case 67:
-#line 277 "inscorev2.y"
+#line 279 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kAdd); ;}
     break;
 
   case 68:
-#line 278 "inscorev2.y"
+#line 280 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kSub); ;}
     break;
 
   case 69:
-#line 279 "inscorev2.y"
+#line 281 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kDiv); ;}
     break;
 
   case 70:
-#line 280 "inscorev2.y"
+#line 282 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kMult); ;}
     break;
 
   case 71:
-#line 281 "inscorev2.y"
+#line 283 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kModulo); ;}
     break;
 
   case 72:
-#line 282 "inscorev2.y"
+#line 284 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kQuest); ;}
     break;
 
   case 73:
-#line 283 "inscorev2.y"
+#line 285 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kNeg); ;}
     break;
 
   case 74:
-#line 284 "inscorev2.y"
+#line 286 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kEq); ;}
     break;
 
   case 75:
-#line 285 "inscorev2.y"
+#line 287 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kGreater); ;}
     break;
 
   case 76:
-#line 286 "inscorev2.y"
+#line 288 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kGreatereq); ;}
     break;
 
   case 77:
-#line 287 "inscorev2.y"
+#line 289 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kLess); ;}
     break;
 
   case 78:
-#line 288 "inscorev2.y"
+#line 290 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kLesseq); ;}
     break;
 
   case 79:
-#line 289 "inscorev2.y"
+#line 291 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kMin); ;}
     break;
 
   case 80:
-#line 290 "inscorev2.y"
+#line 292 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kMax); ;}
     break;
 
   case 81:
-#line 291 "inscorev2.y"
+#line 293 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kHas); ;}
     break;
 
   case 82:
-#line 292 "inscorev2.y"
+#line 294 "inscorev2.y"
     { (yyval.treeptr) = context->operation (INode::kRand); ;}
     break;
 
   case 83:
-#line 295 "inscorev2.y"
+#line 297 "inscorev2.y"
     { (yyval.treeptr) = context->delay (context->fText); ;}
     break;
 
   case 84:
-#line 296 "inscorev2.y"
+#line 298 "inscorev2.y"
     { (yyval.treeptr) = context->delay (context->fText); ;}
     break;
 
   case 85:
-#line 299 "inscorev2.y"
+#line 301 "inscorev2.y"
     { (yyval.treeptr) = context->create (context->fText, INode::kInt); ;}
     break;
 
   case 86:
-#line 300 "inscorev2.y"
+#line 302 "inscorev2.y"
     { (yyval.treeptr) = context->create (context->fText, INode::kFloat); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2186 "inscoreparse.cpp"
+#line 2188 "inscoreparse.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2402,7 +2404,7 @@ yyreturn:
 }
 
 
-#line 303 "inscorev2.y"
+#line 305 "inscorev2.y"
 
 
 namespace inscore2
