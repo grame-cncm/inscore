@@ -101,12 +101,12 @@ install_modules:
 	sudo $(MAKE) -C ../modules/libmusicxml/build install
 
 modules_ios:
-	git submodule update --init
+	git submodule update --init --recursive
 	$(MAKE) -C ../modules/guidolib/build ios
 	$(MAKE) -C ../modules/libmusicxml/build ios
 
 modules_android:
-	git submodule update --init
+	git submodule update --init --recursive
 	$(MAKE) -C ../modules/guidolib/build android
 	$(MAKE) -C ../modules/libmusicxml/build android
 
