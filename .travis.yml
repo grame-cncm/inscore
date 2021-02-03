@@ -10,7 +10,10 @@ before_install:
   - sudo apt-get install -y libmicrohttpd-dev libpulse-dev freeglut3-dev
   - sudo apt-get install qt514-meta-full
   - source /opt/qt514/bin/qt514-env.sh
- 
+
+ env:
+  - CMAKE=$(which cmake)
+
 branches:
   only:
   - dev
@@ -18,5 +21,5 @@ branches:
 
 script:
   - make -C build modules 
-  - sudo make -C build install_modules 
+  - sudo make -C build  CMAKE=$CMAKE install_modules
   - make -C build 
