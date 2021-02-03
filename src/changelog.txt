@@ -12,6 +12,10 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
+Version 1.27
+- merge library branch to dev
+
+----------------------------------------------------
 Version 1.26
 - new 'faust' object (web version)
 - new 'connect' method (web version)
