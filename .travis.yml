@@ -17,9 +17,6 @@ branches:
   - master
 
 script:
-  - git submodule update --init --recursive
   - make -C build modules 
   - sudo make -C build install_modules 
   - make -C build 
-
-sudo apt-get install freeglut3-dev

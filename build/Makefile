@@ -50,7 +50,7 @@ endif
 
 
 all :
-#	git submodule update --init
+	$(MAKE) modules
 	$(MAKE) $(TARGET)
 
 undefined:
