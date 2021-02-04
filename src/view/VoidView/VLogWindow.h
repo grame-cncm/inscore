@@ -45,6 +45,7 @@ public:
 	virtual void	close		()	{}
 	virtual void	raise		() 	{}
 	virtual void	activateWindow() {}
+	virtual void	izoom		(float zoom) {}
 
 //	virtual bool	event(QEvent * e);
 
