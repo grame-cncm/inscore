@@ -26,7 +26,7 @@
 
 #pragma once
 
-#include "export.h"
+#include "IExport.h"
 #include "IModelTypes.h"
 #include "Updater.h"
 
