@@ -1,11 +1,12 @@
-cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.4.0)
 
 project(INScore)
 
+get_filename_component(ROOT ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
+
 #######################################
 # versions management
-set (VERSION 1.2.7)
-set (STRVERS "1.2.7")
+file (STRINGS "${ROOT}/version.txt" VERSION)
 macro (get_major_minor_patch version)
 	string( REGEX REPLACE "([0-9]*)\\.([0-9]*)\\.([0-9]*)" "\\1"  VERSION_MAJOR ${version} )
 	string( REGEX REPLACE "([0-9]*)\\.([0-9]*)\\.([0-9]*)" "\\2"  VERSION_MINOR ${version} )
@@ -21,19 +22,110 @@ option ( IOS 		"Generates project for iOS" off )
 option ( WASM 		"Generates an emcc based Makefile" off )
 option ( ANDROID 	"Generates an android Makefile" off )
 option ( QTVIEW 	"Includes Qt view" on )
-option ( HTMLVIEW 	"Includes HTML view" off )
+option ( MODEL 		"Generates the core model library" off )
 
 
+#######################################
+# Check options 
+if (QTVIEW AND HTMLVIEW)
+	message (FATAL "Incompatible options: can't generate both QTVIEW and HTMLVIEW")
+endif()
+if (IOS)
+	message (STATUS "Generates project for iOS (overrides other options)")
+	set (WASM off)
+	set (ANDROID off)
+	set (QTVIEW on)
+	set (MODEL  off)
+endif()
+if (WASM)
+	message (STATUS "Generates project for WASM (overrides other options)")
+	set (ANDROID off)
+	set (QTVIEW off)
+	set (IOS off)
+	set (MODEL  off)
+endif()
+if (MODEL)
+	message (STATUS "Generates project for core model library (overrides other options)")
+	set (ANDROID off)
+	set (QTVIEW off)
+	set (IOS off)
+	set (WASM  off)
+endif()
 
-get_filename_component(ROOT ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
-set (SRCDIR  	${ROOT}/src)
-set (GUIDOLIB 	${ROOT}/modules/guidolib)
-set (LIBXML 	${ROOT}/modules/libmusicxml)
-set (LOCALLIB 	${ROOT}/lib)
-set (QRENCODE 	${LOCALLIB}/qrencode)
-set (JSON   	${SRCDIR}/json)
-set (MAPPINGS 	${SRCDIR}/libmapping)
-set (IBUNDLE 	${SRCDIR}/QArchive)
+#######################################
+# set directories for src and headers.
+set (SRCDIR  	 ${ROOT}/src)
+set (INSCOREDIR  ${SRCDIR}/inscore)
+set (INSCORE2DIR ${SRCDIR}/inscore2) 
+set (MAPPINGDIR  ${SRCDIR}/libmapping/src)
+set (VIEWSDIR    ${SRCDIR}/view)
+set (JSON        ${SRCDIR}/json)
+set (PUBLICDIR   ${INSCOREDIR}/interface)
+
+set (LOCALLIB 	 ${ROOT}/lib)
+set (QRENCODE 	 ${LOCALLIB}/qrencode)
+set (GUIDOLIB 	 ${ROOT}/modules/guidolib)
+set (LIBXML 	 ${ROOT}/modules/libmusicxml)
+
+set (INSCOREDIRS 
+	${INSCOREDIR}/ITLParser
+	${INSCOREDIR}/controller
+	${INSCOREDIR}/events
+	${INSCOREDIR}/expression
+	${INSCOREDIR}/expression/parser
+	${INSCOREDIR}/interface
+	${INSCOREDIR}/lib
+	${INSCOREDIR}/mapping
+	${INSCOREDIR}/model
+	${INSCOREDIR}/scripting
+	${INSCOREDIR}/signal
+	${INSCOREDIR}/view
+
+	${INSCORE2DIR}
+	${INSCORE2DIR}/eval
+	${INSCORE2DIR}/parser
+	${INSCORE2DIR}/sorter
+
+	${MAPPINGDIR}/misc
+	${MAPPINGDIR}/parser
+	${MAPPINGDIR}/relations
+	${MAPPINGDIR}/segments
+	
+	${JSON}
+#	${JSON}/parser
+)
+
+#######################################
+# set sources and headers files
+foreach(DIR ${INSCOREDIRS})
+	file (GLOB DIRSRC 	${DIR}/*.cpp)
+	set (CORESRC ${CORESRC} ${DIRSRC})
+endforeach()
+
+foreach(DIR ${INSCOREDIRS})
+	file (GLOB DIRH 	${DIR}/*.h)
+	set (COREHEADERS ${COREHEADERS} ${DIRH})
+endforeach()
+
+foreach(DIR ${INSCOREDIRS})
+	set (INCDIRS ${INCDIRS} ${DIR})
+endforeach()
+
+#######################################
+# guidoar settings
+set (GUIDOAR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+find_package(GUIDOAR REQUIRED)
+set (SRC ${CORESRC} ${GUIDOAR_SRC})
+set (HEADERS ${COREHEADERS} ${GUIDOAR_HEADERS})
+set (INCDIRS ${INCDIRS} ${GUIDOAR_INCLUDE_DIRS} ${GUIDOLIB}/src/engine/include)
+
+file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${PUBLICDIR}/*.h")
+
+
+set (CMAKE_CXX_STANDARD 11)
+#######################################
+# set definitions
+set ( DEFS ${DEFS} -DINScore_EXPORTS -DJSON_ONLY)
 if (WIN32)
 	set ( DEFS ${DEFS} -DWINDOWS -DMSVC  -D_USE_MATH_DEFINES NOMINMAX -D_CRT_SECURE_NO_WARNINGS -DGUIDOAR_EXPORTS)
 elseif (APPLE)
@@ -44,105 +136,55 @@ elseif (APPLE)
 	endif()
 endif()
 
-set (CMAKE_CXX_STANDARD 11)
-
-
-#######################################
-# guidoar settings
-set (GUIDOAR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
-find_package(GUIDOAR REQUIRED)
-
-#######################################
-# Qt settings
-set (QTVIEW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
-find_package(QTVIEW REQUIRED)
-
-#######################################
-# OSC settings
-set (OSC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
-find_package(OSC REQUIRED)
-
-#message ("GUIDOAR_HEADERS ${GUIDOAR_HEADERS}")
-
-# HAVE_CONFIG_H defined for the qrencode library
-set ( DEFS ${DEFS} ${QTVIEW_DEFINITIONS} -DINScore_EXPORTS -DHAVE_CONFIG_H -DJSON_ONLY)
-
-#######################################
-# set sources and headers files
-file (GLOB SRC           RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
-	"${SRCDIR}/inscore/*/*.cpp" 
-	"${SRCDIR}/inscore/plugins/*/*.cpp" 
-	"${SRCDIR}/inscore/signal/faust/*.cpp" 
-	"${SRCDIR}/inscore/expression/parser/*.cpp" 
-	"${SRCDIR}/inscore2/*.cpp" 
-	"${SRCDIR}/inscore2/*/*.cpp"
-	"${MAPPINGS}/src/*/*.cpp"
-	"${IBUNDLE}/*.cpp"
-	"${JSON}/*.cpp"
-	"${QRENCODE}/*.c"
-)
-set (SRC ${SRC} ${GUIDOAR_SRC} ${QTVIEW_SRC} ${OSC_SRC})
-
-file (GLOB HEADERS       RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
-	"${SRCDIR}/inscore/*/*.h" 
-	"${SRCDIR}/inscore/plugins/*/*.h" 
-	"${SRCDIR}/inscore/signal/faust/*.h" 
-	"${SRCDIR}/inscore/expression/parser/*.h" 
-	"${SRCDIR}/inscore2/*.h" 
-	"${SRCDIR}/inscore2/*/*.h"
-	"${MAPPINGS}/src/*/*.h"
-	"${IBUNDLE}/*.h"
-	"${JSON}/*.h"
-	"${QRENCODE}/*.h"
-)
-set (HEADERS ${HEADERS} ${GUIDOAR_HEADERS} ${QTVIEW_HEADERS} ${OSC_HEADERS})
-
-
-file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${SRCDIR}/inscore/interface/*.h")
-
-#######################################
-# set includes
-set (INCL ${INCL} 
-	"${SRCDIR}/inscore/*" 
-	"${SRCDIR}/inscore/plugins/*" 
-	"${SRCDIR}/inscore/signal/faust" 
-	"${SRCDIR}/inscore/expression/parser" 
-	"${SRCDIR}/inscore2" "${SRCDIR}/inscore2/eval" "${SRCDIR}/inscore2/parser" "${SRCDIR}/inscore2/sorter"
-	"${MAPPINGS}/src/*"
-	"${GUIDOLIB}/src/engine/include"
-	"${JSON}"
-	"${QRENCODE}"
-)
-file (GLOB INCDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${INCL})
-set (INCDIRS ${INCDIRS} ${GUIDOAR_INCLUDE_DIRS} ${QTVIEW_INCLUDE_DIRS} ${QT_INCLUDE_DIRS} ${OSC_INCLUDE_DIRS})
-
-#message ("INCDIRS ${INCDIRS}")
-
-if (WIN32)
-	set (INCDIRS ${INCDIRS}  ${ROOT}/win32/dirent)
-endif()
-
-#######################################
-# libmicrohttp settings
-set (INCDIRS ${INCDIRS} "/usr/local/include" )
-
-if (APPLE AND NOT IOS)
-	set (LIBS ${LIBS} -F${GUIDOLIB}/build/lib "-framework GUIDOEngine")
-endif()
-if (WIN32)
-	enable_language(RC)
-	set(SRC ${SRC} ${ROOT}/win32/INScore.rc)
-	set (LIBS ${LIBS} ${GUIDOLIB}/build/lib/GUIDOEngine64.lib winmm.lib ws2_32.lib)
-else()
-	set (LIBS ${LIBS} -L/usr/local/lib -lmicrohttpd)
-endif()
-set (LIBS ${LIBS} ${QTVIEW_LIBRARIES} ${QT_LIBRARIES})
 
 #######################################
 # Output folders 
 set (BINDIR ${CMAKE_CURRENT_SOURCE_DIR}/cmbin)
 set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/cmlib)
 
+#######################################
+# Qt View settings
+if (QTVIEW)
+	set (QTVIEW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+	find_package(QTVIEW REQUIRED)
+
+	set (OSC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+	find_package(OSC REQUIRED)
+
+	set (DEFS ${DEFS} ${QTVIEW_DEFINITIONS})
+	set (SRC ${SRC} ${QTVIEW_SRC} ${OSC_SRC})
+	set (HEADERS ${HEADERS} ${QTVIEW_HEADERS} ${OSC_HEADERS})
+	set (INCDIRS ${INCDIRS} ${QTVIEW_INCLUDE_DIRS} ${QT_INCLUDE_DIRS} ${OSC_INCLUDE_DIRS})
+	set (LIBS ${LIBS} ${QT_LIBRARIES})
+
+	if (WIN32)
+		set (INCDIRS ${INCDIRS}  ${ROOT}/win32/dirent)
+	else()
+		set (INCDIRS ${INCDIRS} "/usr/local/include" ) # libmicrohttp settings
+	endif()
+
+	file (GLOB QRCSRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${QRENCODE}/*.c")
+	file (GLOB QRCH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${QRENCODE}/*.h")
+	set (SRC ${SRC} ${QRCSRC})
+	set (HEADERS ${HEADERS} ${QRCH})
+	set (INCDIRS ${INCDIRS} ${QRENCODE})
+	set ( DEFS ${DEFS} -DHAVE_CONFIG_H)  # HAVE_CONFIG_H defined for the qrencode library
+
+	if (APPLE AND NOT IOS)
+		set (LIBS ${LIBS} -F${GUIDOLIB}/build/lib "-framework GUIDOEngine")
+	endif()
+	if (WIN32)
+		enable_language(RC)
+		set(SRC ${SRC} ${ROOT}/win32/INScore.rc)
+		set (LIBS ${LIBS} ${GUIDOLIB}/build/lib/GUIDOEngine64.lib winmm.lib ws2_32.lib)
+	else()
+		set (LIBS ${LIBS} -L/usr/local/lib -lmicrohttpd)
+	endif()
+
+#message ("SRC ${SRC}")
+
+#######################################
+# library settings 
 set (target INScore)
 add_library(${target} SHARED ${SRC} ${HEADERS} ${PUBLICHEADERS})
 target_compile_definitions (${target} PRIVATE ${DEFS})
@@ -162,7 +204,6 @@ set_target_properties (${target} PROPERTIES
 
 #######################################
 # viewer settings
-
 set(CMAKE_AUTORCC ON)
 file (GLOB APPSRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.cpp)
 file (GLOB APPHEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.h)
@@ -202,3 +243,74 @@ set_target_properties (${viewer} PROPERTIES
 )
 add_dependencies(${viewer} ${target})
 
+endif(QTVIEW)
+
+#######################################
+# WASM settings
+if (WASM)
+	set (WASM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+	find_package(WASM REQUIRED)
+	set (SRC ${SRC} ${WASM_SRC})
+	set (HEADERS ${HEADERS} ${WASM_HEADERS})
+	set (INCDIRS ${INCDIRS} ${WASM_INCLUDE_DIRS})
+	set (DEFS    ${DEFS}    ${WASM_DEFINITIONS})
+
+	set (target wasm)
+	add_executable(${target} EXCLUDE_FROM_ALL ${SRC} ${HEADERS})
+	target_include_directories (${target} PRIVATE ${INCDIRS})
+	target_compile_definitions (${target} PRIVATE ${DEFS})
+	set_target_properties (${target} PROPERTIES
+		OUTPUT_NAME libINScore
+		LINK_FLAGS ${WASM_LINK_FLAGS}
+		COMPILE_FLAGS ${WASM_COMPILE_FLAGS} 
+		RUNTIME_OUTPUT_DIRECTORY ${LIBDIR}
+		SUFFIX ".js" )
+endif(WASM)
+
+#######################################
+# Core model library settings
+if (MODEL)
+	set (MODELVIEWDIR ${SRCDIR}/view/VoidView)
+	file (GLOB MODEL_SRC 		${MODELVIEWDIR}/*.cpp)
+	file (GLOB MODEL_HEADERS  ${MODELVIEWDIR}/*.h)
+	set (DEFS  ${DEFS} -DNO_OSCSTREAM -DNOVIEW)
+	set (SRC ${SRC} ${MODEL_SRC})
+	set (HEADERS ${HEADERS} ${MODEL_HEADERS})
+	set (INCDIRS ${INCDIRS} ${MODELVIEWDIR} ${INSCOREDIR}/osc)
+
+	if(APPLE)
+		set (LIBS ${LIBS} -F${GUIDOLIB}/build/lib "-framework GUIDOEngine")
+	elseif (UNIX)
+		set (LIBS ${LIBS}  -L/usr/local/lib -lGUIDOEngine)
+	elseif (WIN32)
+		enable_language(RC)
+		set (SRC ${SRC} ${ROOT}/win32/INScore.rc)
+		set (LIBS ${LIBS} ${GUIDOLIB}/build/lib/GUIDOEngine64.lib winmm.lib ws2_32.lib)
+	endif()
+
+	set (target INScoreModel)
+	add_library(${target} SHARED ${SRC} ${HEADERS})
+	target_compile_definitions (${target} PRIVATE ${DEFS})
+	target_include_directories (${target} PRIVATE ${INCDIRS})
+	target_link_libraries (${target} ${LIBS})
+	set_target_properties (${target} PROPERTIES
+			RUNTIME_OUTPUT_DIRECTORY  ${LIBDIR}
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
+			ARCHIVE_OUTPUT_DIRECTORY  ${LIBDIR}
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
+			LIBRARY_OUTPUT_DIRECTORY ${LIBDIR}
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIBDIR}
+			PUBLIC_HEADER "${PUBLICHEADERS}"
+			VERSION ${VERSION}
+			SOVERSION ${SOVERS}
+	)
+
+	set (testappl INScoreModelTest)
+	add_executable( ${testappl} ${CMAKE_CURRENT_SOURCE_DIR}/model/tests/main.cpp )
+	target_include_directories (${testappl} PRIVATE ${INSCOREDIR}/interface)
+	target_link_libraries( ${testappl} ${target})
+	set_target_properties(${testappl}  PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY ${BINDIR}
+		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BINDIR})
+	add_dependencies(${testappl} ${target})
+endif(MODEL)
