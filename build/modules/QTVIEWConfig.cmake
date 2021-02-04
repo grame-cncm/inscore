@@ -3,8 +3,10 @@ cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
 
 get_filename_component(ROOT ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 set (SRCDIR  	${ROOT}/src)
+set (INSCOREDIR ${SRCDIR}/inscore)
 set (GUIDOLIB 	${ROOT}/modules/guidolib)
 set (GUIDOQT 	${GUIDOLIB}/environments/Qt)
+set (IBUNDLE 	${SRCDIR}/QArchive)
 
 set (CMAKE_AUTOMOC ON)
 
@@ -27,6 +29,14 @@ file (GLOB QTVIEW_SRC  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 	"${SRCDIR}/Qt/*/*.cpp"
 	"${SRCDIR}/view/QtView/*.cpp" 
 	"${GUIDOQT}/libs/GuidoQt/*.cpp" 
+
+	"${INSCOREDIR}/httpserver/*.cpp" 
+	"${INSCOREDIR}/osc/*.cpp" 
+	"${INSCOREDIR}/signal/faust/*.cpp" 
+	"${INSCOREDIR}/plugins/*/*.cpp" 
+	"${INSCOREDIR}/servers/*.cpp" 
+	"${INSCOREDIR}/web/*.cpp" 
+	"${IBUNDLE}/*.cpp"
 )
 
 file (GLOB QTVIEW_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
@@ -34,6 +44,14 @@ file (GLOB QTVIEW_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 	"${SRCDIR}/Qt/*/*.h"
 	"${SRCDIR}/view/QtView/*.h" 
 	"${GUIDOQT}/libs/GuidoQt/include/*.h" 
+
+	"${INSCOREDIR}/httpserver/*.h" 
+	"${INSCOREDIR}/osc/*.h" 
+	"${INSCOREDIR}/plugins/*/*.h" 
+	"${INSCOREDIR}/signal/faust/*.h" 
+	"${INSCOREDIR}/servers/*.h" 
+	"${INSCOREDIR}/web/*.h" 
+	"${IBUNDLE}/*.h"
 )
 
 #######################################
@@ -43,6 +61,15 @@ set (QTVIEW_INCLUDE_DIRS ${QTVIEW_INCLUDE_DIRS}
 	"${SRCDIR}/Qt/sensors" 	
 	"${SRCDIR}/view/QtView" 
 	"${GUIDOQT}/libs/GuidoQt/include"
+
+	"${INSCOREDIR}/httpserver" 
+	"${INSCOREDIR}/osc" 
+	"${INSCOREDIR}/plugins/faustDSP" 
+	"${INSCOREDIR}/plugins/gesturefollower" 
+	"${INSCOREDIR}/signal/faust" 
+	"${INSCOREDIR}/servers" 
+	"${INSCOREDIR}/web" 
+	"${IBUNDLE}"
 ) 
 
 message (STATUS "Includes Qt View and Qt version ${Qt5Core_VERSION}")
