@@ -27,12 +27,12 @@ ifeq ($(system), Darwin)
 endif
 
 ifeq ($(system), MINGW)
-	GENERATOR ?= ""
+	GENERATOR ?= 
 	MAKEFILE = Makefile
 endif
 
 ifeq ($(system), Linux)
-	GENERATOR ?= ""
+	GENERATOR ?= 
 	MAKEFILE = Makefile
 endif
 
