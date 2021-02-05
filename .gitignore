@@ -48,7 +48,10 @@ Release
 
 build/android*
 build/archive
+build/inscoredir
 build/iosdir
+build/modeldir
+build/wasmdir
 build/bin
 build/lib
 
