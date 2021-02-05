@@ -30,4 +30,4 @@ jobs:
         run: |
           make -C build modules
           sudo make -C build install_modules
-          make -C build inscore.
+          make -C build inscore
