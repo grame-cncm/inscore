@@ -135,7 +135,7 @@ elseif (APPLE)
 		set ( DEFS ${DEFS} -DMACOS)
 	endif()
 elseif(UNIX)
-	set ( DEFS ${DEFS} -D__LINUX__)
+	set ( DEFS ${DEFS} -D__LINUX__ -DOSC_HOST_LITTLE_ENDIAN)
 endif()
 
 
