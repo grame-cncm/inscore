@@ -26,6 +26,9 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a set of commands using the runners shell
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+
       - name: Build inscore
         run: |
           qmake --version
