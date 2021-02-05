@@ -139,8 +139,9 @@ endif()
 
 #######################################
 # Output folders 
-set (BINDIR ${CMAKE_CURRENT_SOURCE_DIR}/cmbin)
-set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/cmlib)
+set (BINDIR ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set (LIBTYPE SHARED)  # by default, generates shared libraries
 
 #######################################
 # Qt View settings
@@ -163,6 +164,19 @@ if (QTVIEW)
 		set (INCDIRS ${INCDIRS} "/usr/local/include" ) # libmicrohttp settings
 	endif()
 
+	if (IOS)
+		set (IOS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+		find_package(IOS REQUIRED)
+		
+		set (DEFS ${DEFS} ${IOS_DEFINITIONS})
+		set (SRC ${SRC} ${IOS_SRC})
+		set (HEADERS ${HEADERS} ${IOS_HEADERS})
+		set (INCDIRS ${INCDIRS} ${IOS_INCLUDE_DIRS})
+		set (LIBS ${LIBS} ${GUIDOLIB}/build/lib/libGUIDOEngine.a)
+	elseif (APPLE)
+		set (LIBS ${LIBS} -F${GUIDOLIB}/build/lib "-framework GUIDOEngine")
+	endif()
+
 	file (GLOB QRCSRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${QRENCODE}/*.c")
 	file (GLOB QRCH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${QRENCODE}/*.h")
 	set (SRC ${SRC} ${QRCSRC})
@@ -170,9 +184,6 @@ if (QTVIEW)
 	set (INCDIRS ${INCDIRS} ${QRENCODE})
 	set ( DEFS ${DEFS} -DHAVE_CONFIG_H)  # HAVE_CONFIG_H defined for the qrencode library
 
-	if (APPLE AND NOT IOS)
-		set (LIBS ${LIBS} -F${GUIDOLIB}/build/lib "-framework GUIDOEngine")
-	endif()
 	if (WIN32)
 		enable_language(RC)
 		set(SRC ${SRC} ${ROOT}/win32/INScore.rc)
@@ -181,67 +192,64 @@ if (QTVIEW)
 		set (LIBS ${LIBS} -L/usr/local/lib -lmicrohttpd)
 	endif()
 
-#message ("SRC ${SRC}")
-
-#######################################
-# library settings 
-set (target INScore)
-add_library(${target} SHARED ${SRC} ${HEADERS} ${PUBLICHEADERS})
-target_compile_definitions (${target} PRIVATE ${DEFS})
-target_include_directories (${target} PRIVATE ${INCDIRS})
-target_link_libraries (${target} PRIVATE ${LIBS})
-set_target_properties (${target} PROPERTIES
-	RUNTIME_OUTPUT_DIRECTORY  ${LIBDIR}
-	RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
-	ARCHIVE_OUTPUT_DIRECTORY  ${LIBDIR}
-	ARCHIVE_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
-	LIBRARY_OUTPUT_DIRECTORY ${LIBDIR}
-	LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIBDIR}
-	PUBLIC_HEADER "${PUBLICHEADERS}"
-	VERSION ${VERSION}
-	SOVERSION ${SOVERS})
+	#######################################
+	# library settings 
+	set (target INScore)
+	add_library(${target} ${LIBTYPE} ${SRC} ${HEADERS} ${PUBLICHEADERS})
+	target_compile_definitions (${target} PRIVATE ${DEFS})
+	target_include_directories (${target} PRIVATE ${INCDIRS})
+	target_link_libraries (${target} PRIVATE ${LIBS})
+	set_target_properties (${target} PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY  ${LIBDIR}
+		RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
+		ARCHIVE_OUTPUT_DIRECTORY  ${LIBDIR}
+		ARCHIVE_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
+		LIBRARY_OUTPUT_DIRECTORY ${LIBDIR}
+		LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIBDIR}
+		PUBLIC_HEADER "${PUBLICHEADERS}"
+		VERSION ${VERSION}
+		SOVERSION ${SOVERS})
 
 
-#######################################
-# viewer settings
-set(CMAKE_AUTORCC ON)
-file (GLOB APPSRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.cpp)
-file (GLOB APPHEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.h)
-#file (GLOB APPPLUGINS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBXML}/build/lib/libmusicxml2*.dylib)
-set (APPLIBS ${target} ${QT_LIBRARIES} ${GUIDO_LIBRARIES})
-set (APP_INCLUDES ${SRCDIR}/inscore/interface ${QTVIEW_INCLUDE_DIRS} "${GUIDOLIB}/src/engine/include")
+	#######################################
+	# viewer settings
+	set(CMAKE_AUTORCC ON)
+	file (GLOB APPSRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.cpp)
+	file (GLOB APPHEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.h)
+	#file (GLOB APPPLUGINS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBXML}/build/lib/libmusicxml2*.dylib)
+	set (APPLIBS ${target} ${QT_LIBRARIES} ${GUIDO_LIBRARIES})
+	set (APP_INCLUDES ${SRCDIR}/inscore/interface ${QTVIEW_INCLUDE_DIRS} "${GUIDOLIB}/src/engine/include")
 
-set(MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns)
-set(VIEWER_ICON "${ROOT}/rsrc/INScoreViewer.icns")
-set_source_files_properties(${VIEWER_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-#set_source_files_properties(${APPPLUGINS} PROPERTIES MACOSX_PACKAGE_LOCATION "PlugIns")
+	set(MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns)
+	set(VIEWER_ICON "${ROOT}/rsrc/INScoreViewer.icns")
+	set_source_files_properties(${VIEWER_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+	#set_source_files_properties(${APPPLUGINS} PROPERTIES MACOSX_PACKAGE_LOCATION "PlugIns")
 
-set (APP_RSRC "${ROOT}/rsrc/inscore.qrc"  ${VIEWER_ICON})
+	set (APP_RSRC "${ROOT}/rsrc/inscore.qrc"  ${VIEWER_ICON})
 
-if (WIN32)
-	enable_language(RC)
-	set(APPSRC ${APPSRC} ${ROOT}/win32/Viewer/INScoreViewer.rc)
-	set(EXE WIN32)
-elseif(APPLE)
-	set(EXE MACOSX_BUNDLE)
-endif()
+	if (WIN32)
+		enable_language(RC)
+		set(APPSRC ${APPSRC} ${ROOT}/win32/Viewer/INScoreViewer.rc)
+		set(EXE WIN32)
+	elseif(APPLE)
+		set(EXE MACOSX_BUNDLE)
+	endif()
  
-set (viewer INScoreViewer)
-add_executable(${viewer} ${EXE} ${APPSRC} ${APPHEADERS} ${APP_RSRC})
-target_compile_definitions (${viewer} PRIVATE ${DEFS})
-target_include_directories (${viewer} PRIVATE ${APP_INCLUDES})
-target_link_libraries (${viewer} PRIVATE ${APPLIBS})
-set_target_properties (${viewer} PROPERTIES
-    BUNDLE true
-#    MACOSX_BUNDLE_GUI_IDENTIFIER fr.grame.INScore
-    MACOSX_BUNDLE_BUNDLE_NAME ${viewer}
-    MACOSX_BUNDLE_BUNDLE_VERSION "v.${VERSION}"
-    MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION}"
-    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist
-	RUNTIME_OUTPUT_DIRECTORY  ${BINDIR}
-	RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${BINDIR}
-)
-add_dependencies(${viewer} ${target})
+	set (viewer INScoreViewer)
+	add_executable(${viewer} ${EXE} ${APPSRC} ${APPHEADERS} ${APP_RSRC})
+	target_compile_definitions (${viewer} PRIVATE ${DEFS})
+	target_include_directories (${viewer} PRIVATE ${APP_INCLUDES})
+	target_link_libraries (${viewer} PRIVATE ${APPLIBS})
+	set_target_properties (${viewer} PROPERTIES
+		BUNDLE true
+		MACOSX_BUNDLE_BUNDLE_NAME ${viewer}
+		MACOSX_BUNDLE_BUNDLE_VERSION "v.${VERSION}"
+		MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION}"
+		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist
+		RUNTIME_OUTPUT_DIRECTORY  ${BINDIR}
+		RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${BINDIR}
+	)
+	add_dependencies(${viewer} ${target})
 
 endif(QTVIEW)
 
@@ -306,7 +314,7 @@ if (MODEL)
 	)
 
 	set (testappl INScoreModelTest)
-	add_executable( ${testappl} ${CMAKE_CURRENT_SOURCE_DIR}/model/tests/main.cpp )
+	add_executable( ${testappl} ${ROOT}/tools/TestModel/main.cpp )
 	target_include_directories (${testappl} PRIVATE ${INSCOREDIR}/interface)
 	target_link_libraries( ${testappl} ${target})
 	set_target_properties(${testappl}  PROPERTIES

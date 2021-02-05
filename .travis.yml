@@ -22,4 +22,4 @@ branches:
 script:
   - make -C build modules 
   - sudo make -C build  CMAKE=$CMAKE install_modules
-  - make -C build 
+  - make -C build inscore

@@ -2,88 +2,112 @@
 # 
 #
 
-.PHONY : macos ios win32 win64 linux android installAndroid mobileUI modules
+.PHONY : modules
 
 QMAKE ?= qmake
+CMAKE ?= cmake
 MAKE  ?= make
 RANGE ?= 
-TARGET := undefined
+
+INSCOREDIR  ?= inscoredir
+IOSDIR  	?= iosdir
+WASMDIR  	?= wasmdir
+MODELDIR  	?= modeldir
+ANDROIDDIR  ?= androiddir
 
 system	:= $(shell uname -s)
 # normalizes MINGW versions
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
 
-ifeq ($(TARGET), windows)
- WINARCH ?= $(shell ./qt-arch)
- MSVC ?= $(shell ./vs-path)
- WINOPTS := /maxcpucount:4 /p:Configuration=Release /p:Platform=$(WINARCH)
- SPEC ?= -spec win32-msvc2013
-endif
-
-OUT  := INScore.framework
 MOBILESCRIPTS := ../scripts/mobile
 
-INSCOREDIR  ?= inscoredir
-
 ifeq ($(system), Darwin)
-	LIBPROJ = INScore.xcodeproj
-	VIEWPROJ= INScoreViewer.xcodeproj
-	SPEC    = -spec macx-xcode
-	TARGET  = macos
-	PREFIX  ?= /usr/local
-	J       ?= 8   # parallele jobs for xcode
+	GENERATOR ?= -G Xcode
+	MAKEFILE = INScore.xcodeproj
 endif
 
 ifeq ($(system), MINGW)
-	TARGET = windows
-	LIBPROJ = INScore.vcxproj
-	VIEWPROJ = INScoreViewer.vcxproj
-	PREFIX  ?= "C:/Program Files"
+	GENERATOR ?= ""
+	MAKEFILE = Makefile
 endif
 
 ifeq ($(system), Linux)
-	TARGET   = linux
-	LIBPROJ  = Makefile.lib
-	VIEWPROJ = Makefile.app
-	PREFIX  ?= /usr/local
+	GENERATOR ?= ""
+	MAKEFILE = Makefile
 endif
-
 
 all :
 	$(MAKE) modules
-	$(MAKE) $(TARGET)
+	$(MAKE) inscore
 
-undefined:
-	$(error System is undefined, not target available)
+test:
+	echo GENERATOR $(GENERATOR)
 
 help :
-	@echo "This makefile is intended to build INScore for differents platforms."
-	@echo "Default target ($(TARGET)) is inferred from the current platform"
+	@echo "========== INScore project Makefile =========="
 	@echo "Available targets are : "
-	@echo "  macos : to build for Mac OS"
-	@echo "  ios : to build for iOS"
-	@echo "  windows : to build for Windows"
-	@echo "  linux : to build for Linux"
-	@echo "  android : to build for android"
-	@echo "  guidoandroidlibs : to build the guidoar and guidengine libraries"
-	@echo "  guidoandroidclean : clean the guidoar and guidengine libraries (required with ndk or sdk change)"
+	@echo "  all (default) : call the 'modules' and the 'inscore' targets"
+	@echo "  inscore       : build inscore library and inscoreviewer"
+	@echo "  modules       : recursively update and build submodules"
+	@echo "  wasm          : build the inscore wasm library"
+	@echo "  model         : build the inscore core model library"
+	@echo "  ios           : build for iOS"
+	@echo "  android       : build for android"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
 	@echo "       with XXX the device serial number (can be retrieved using 'make devandroid')"
 	@echo "       DEVICE is optional when only one Android device is connected"
 	@echo "  devandroid : to get the serial number of the connected device"
 	@echo "Project management: "
-	@echo "  qmake    : to regenerate the projects"
-	@echo "  modules  : update and regenerate submodules"
-	@echo "  voidview : to regenerate the projects with no view inside a 'noview' folder"
-	@echo "  log      : to generate the git log with optionnal revisions range"
+	@echo "  cmake    : regenerates the project"
+	@echo "  log      : generates the git log with optionnal revisions range"
 	@echo "             the range can be specified using the RANGE variable"
-	@echo "             e.g make RANGE=commitref1...commitref2"
+	@echo "             e.g make log RANGE=commitref1...commitref2"
 	@echo
 	@echo "Options:"
+	@echo "  INSCOREDIR   : build folder for the 'inscore' target (currently $(INSCOREDIR))"
+	@echo "  WASMDIR      : build folder for the 'wasm' target (currently $(WASMDIR))"
+	@echo "  MODELDIR     : build folder for the 'model' target (currently $(MODELDIR))"
+	@echo "  IOSDIR       : build folder for the 'ios' target (currently $(IOSDIR))"
+	@echo "  ANDROIDDIR   : build folder for the 'android' target (currently $(ANDROIDDIR))"
 	@echo "  ANDROID_API : define the android API to use (currently $(ANDROID_API))"
 	@echo "  ANDROID_ARCH: define the android architecture (currently $(ANDROID_ARCH))"
-	@echo "  GUIDOARDIR  : define the guidoar project location (currently $(GUIDOARDIR))"
-	@echo "  GUIDOLIBDIR : define the guidolib project location (currently $(GUIDOLIBDIR))"
+
+#===============================================================
+# building inscore and inscoreviewer
+#===============================================================
+inscore: $(INSCOREDIR) $(INSCOREDIR)/$(MAKEFILE)
+	$(CMAKE) --build $(INSCOREDIR) --config Release
+
+$(INSCOREDIR):
+	mkdir $(INSCOREDIR)
+
+$(INSCOREDIR)/$(MAKEFILE) : CMakelists.txt
+	cd $(INSCOREDIR) && $(CMAKE) .. $(CMAKEOPTS) $(GENERATOR)
+
+#===============================================================
+# building inscore wasm library
+#===============================================================
+wasm: $(WASMDIR) $(WASMDIR)/Makefile
+	$(MAKE) -C $(WASMDIR) wasm
+
+$(WASMDIR):
+	mkdir $(WASMDIR)
+
+$(WASMDIR)/Makefile : CMakelists.txt modules/WASMConfig.cmake
+	cd $(WASMDIR) && $(CMAKE) .. -DWASM=on
+
+#===============================================================
+# building for iOS
+#===============================================================
+ios: 
+	$(MAKE) inscore INSCOREDIR=$(IOSDIR) CMAKEOPTS='-DIOS=on'
+
+#===============================================================
+# building inscore model library
+#===============================================================
+model: 
+	$(MAKE) inscore INSCOREDIR=$(MODELDIR) CMAKEOPTS='-DMODEL=on'
+
 
 #===============================================================
 # utilities
@@ -91,6 +115,13 @@ help :
 log:
 	git log --format="%h - %Cblue%s%Creset - %cn %cd"  $(RANGE)
 
+cmake: $(INSCOREDIR)
+	cd $(INSCOREDIR) && $(CMAKE) .. $(GENERATOR)
+
+
+#===============================================================
+# submodules management
+#===============================================================
 modules:
 	git submodule update --init --recursive
 	$(MAKE) -C ../modules/guidolib/build lib
@@ -111,58 +142,45 @@ modules_android:
 	$(MAKE) -C ../modules/libmusicxml/build android
 
 #===============================================================
-# building inscore
+# building inscore library and application
 #===============================================================
-macos : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-#	$(MAKE) -C ../lib/GuidoEngine/macosx
-	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
-	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release
-	$(MAKE) ibundle
-
-linux : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-	$(MAKE) -C $(INSCOREDIR) -f $(LIBPROJ)
-	$(MAKE) -C $(INSCOREDIR) -f $(VIEWPROJ)
-	$(MAKE) ibundle
 
 ibundle : 
 	$(MAKE) -C ../tools/IBundle/build
 	cp ../tools/IBundle/IBundle bin
 
 
-ios :
-	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir
+# ios :
+# 	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir
+# 
+# _ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
+# 	@which $(QMAKE) > /dev/null || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
+# 	cp -rf ../rsrc/ tmp-rsc
+# 	make -C $(MOBILESCRIPTS)
+# 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
+# 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
 
-_ios : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-	@which $(QMAKE) > /dev/null || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
-	cp -rf ../rsrc/ tmp-rsc
-	make -C $(MOBILESCRIPTS)
-	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
-	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
-
-windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
-	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScoreViewer.vcxproj $(WINOPTS)"
+# windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
+# 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
+# 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScoreViewer.vcxproj $(WINOPTS)"
 #	$(MAKE) -C ../tools/IBundle/build
 
 
 #===============================================================
 # building projects
 #===============================================================
-$(INSCOREDIR)/$(LIBPROJ) : $(INSCOREDIR) library.pro
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
-
-$(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../viewer.pro -o $(VIEWPROJ)
-
-$(INSCOREDIR):
-	mkdir $(INSCOREDIR)
-
-voidview :
-	$(MAKE) qmake CONFIG="CONFIG+=NOVIEW" INSCOREDIR=noview
-
-qmake : $(INSCOREDIR)
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../library.pro -o $(LIBPROJ)
-	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../viewer.pro  -o $(VIEWPROJ)
+# $(INSCOREDIR)/$(LIBPROJ) : $(INSCOREDIR) library.pro
+# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
+# 
+# $(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
+# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../viewer.pro -o $(VIEWPROJ)
+# 
+# voidview :
+# 	$(MAKE) qmake CONFIG="CONFIG+=NOVIEW" INSCOREDIR=noview
+# 
+# qmake : $(INSCOREDIR)
+# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../library.pro -o $(LIBPROJ)
+# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../viewer.pro  -o $(VIEWPROJ)
 
 
 #===============================================================
@@ -234,22 +252,3 @@ link :
 clean :
 	rm -rf $(INSCOREDIR)
 	
-#===============================================================
-# target intended to compile the guidolib and guidoar libraries 
-# using a given android ndk & sdk
-#===============================================================
-GUIDOARDIR  ?= ../../../guido/guidoar
-GUIDOLIBDIR ?= ../../../guido/guidolib
-GUIDOAR  := $(GUIDOARDIR)/build
-GUIDOLIB := $(GUIDOLIBDIR)/platforms/android
-guidoandroidlibs : 
-guidoandroidlibs : 
-	make -C $(GUIDOAR) android PLATFORM=$(ANDROID_API) 
-	cp -r $(GUIDOAR)/android/libs/* ../lib/GuidoAR/android/
-	make -C $(GUIDOLIB) PLATFORM=$(ANDROID_API) 
-	cp -r $(GUIDOLIB)/guido-engine-android/libs/* ../lib/GuidoEngine/android/
-
-guidoandroidclean : 
-	make -C $(GUIDOAR) androidclean
-	make -C $(GUIDOLIB) clean 
-
