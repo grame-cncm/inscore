@@ -186,30 +186,30 @@ ibundle :
 #===============================================================
 # building INScore for Android
 #===============================================================
-SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
-ANDROID_API ?= 22
-ANDROID_ARCH ?= armeabi-v7a
-
-android : 
-	make _android INSCOREDIR=androiddir QMAKE=qmake-android
-
-_android : $(INSCOREDIR) $(INSCOREDIR)/Makefile
-	cp -rf ../rsrc/ tmp-rsc
-	$(MAKE) -C $(MOBILESCRIPTS)
-	$(MAKE) -C $(INSCOREDIR)
-	[ -d $(INSCOREDIR)/android-build ] || mkdir $(INSCOREDIR)/android-build
-	$(MAKE) -C $(INSCOREDIR) INSTALL_ROOT=android-build install
-	cd $(INSCOREDIR) && androiddeployqt --android-platform android-$(ANDROID_API) --release --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
-	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(INSCOREDIR)/../bin/INScoreViewer.apk
-
-$(INSCOREDIR)/Makefile: library.pro viewer.pro INScore.pro
-	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
-	[ -d $(INSCOREDIR) ] || mkdir $(INSCOREDIR)
-	cd $(INSCOREDIR) && $(QMAKE) -spec android-clang ../INScore.pro
-
-akey: ../rsrc/inscore.keystore
-../rsrc/inscore.keystore :
-	keytool -genkey -v -keystore ../inscore.keystore -alias grame-inscore -keyalg RSA -keysize 2048 -validity 10000
+# SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
+# ANDROID_API ?= 22
+# ANDROID_ARCH ?= armeabi-v7a
+# 
+# android : 
+# 	make _android INSCOREDIR=androiddir QMAKE=qmake-android
+# 
+# _android : $(INSCOREDIR) $(INSCOREDIR)/Makefile
+# 	cp -rf ../rsrc/ tmp-rsc
+# 	$(MAKE) -C $(MOBILESCRIPTS)
+# 	$(MAKE) -C $(INSCOREDIR)
+# 	[ -d $(INSCOREDIR)/android-build ] || mkdir $(INSCOREDIR)/android-build
+# 	$(MAKE) -C $(INSCOREDIR) INSTALL_ROOT=android-build install
+# 	cd $(INSCOREDIR) && androiddeployqt --android-platform android-$(ANDROID_API) --release --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+# 	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(INSCOREDIR)/../bin/INScoreViewer.apk
+# 
+# $(INSCOREDIR)/Makefile: library.pro viewer.pro INScore.pro
+# 	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
+# 	[ -d $(INSCOREDIR) ] || mkdir $(INSCOREDIR)
+# 	cd $(INSCOREDIR) && $(QMAKE) -spec android-clang ../INScore.pro
+# 
+# akey: ../rsrc/inscore.keystore
+# ../rsrc/inscore.keystore :
+# 	keytool -genkey -v -keystore ../inscore.keystore -alias grame-inscore -keyalg RSA -keysize 2048 -validity 10000
 
 devandroid:
 	adb get-serialno
