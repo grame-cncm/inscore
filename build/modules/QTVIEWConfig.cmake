@@ -13,11 +13,22 @@ set (CMAKE_AUTOMOC ON)
 #######################################
 # Qt settings
 set (QTMODULES Core Gui Widgets Svg PrintSupport Multimedia MultimediaWidgets WebSockets Sensors Qml OpenGL)
+if (IOS)
+	set (QTMODULES ${QTMODULES} Quick QuickWidgets)
+else()
+	set (QTMODULES ${QTMODULES} OpenGL)
+endif()
 find_package(Qt5 COMPONENTS ${QTMODULES} REQUIRED)
 set (QT_INCLUDE_DIRS  ${Qt5Core_INCLUDE_DIRS}  
 				${Qt5Gui_INCLUDE_DIRS} ${Qt5Widget_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS} 
-				${Qt5PrintSupport_INCLUDE_DIRS} ${Qt5Multimedia_INCLUDE_DIRS} ${Qt5MultimediaWidgets_INCLUDE_DIRS}
-				${Qt5WebSockets_INCLUDE_DIRS} ${Qt5Sensors_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS})
+				${Qt5PrintSupport_INCLUDE_DIRS} ${Qt5Multimedia_INCLUDE_DIRS} 
+				${Qt5MultimediaWidgets_INCLUDE_DIRS} ${Qt5WebSockets_INCLUDE_DIRS} 
+				${Qt5Sensors_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS})
+if (IOS)
+	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5Quick_INCLUDE_DIRS} ${Qt5QuickWidgets_INCLUDE_DIRS})
+else()
+	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS})
+endif()
 foreach (QTLIB ${QTMODULES})
 	set (QT_LIBRARIES ${QT_LIBRARIES} Qt5::${QTLIB})
 endforeach(QTLIB)
