@@ -134,6 +134,8 @@ elseif (APPLE)
 	else()
 		set ( DEFS ${DEFS} -DMACOS)
 	endif()
+elseif(UNIX)
+	set ( DEFS ${DEFS} -D__LINUX__)
 endif()
 
 
