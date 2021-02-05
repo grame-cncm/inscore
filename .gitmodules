@@ -9,4 +9,4 @@
 [submodule "modules/libmusicxml"]
 	path = modules/libmusicxml
 	url = https://github.com/grame-cncm/libmusicxml.git
-	branch = master
+	branch = dev

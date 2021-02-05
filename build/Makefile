@@ -125,7 +125,7 @@ cmake: $(INSCOREDIR)
 modules:
 	git submodule update --init --recursive
 	$(MAKE) -C ../modules/guidolib/build lib
-	$(MAKE) -C ../modules/libmusicxml/build CMAKEOPT="-DLILY=off -DFMWK=off"
+	$(MAKE) -C ../modules/libmusicxml/build minimal
 
 install_modules:
 	sudo $(MAKE) -C ../modules/guidolib/build install
