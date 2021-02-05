@@ -81,7 +81,7 @@ inscore: $(INSCOREDIR) $(INSCOREDIR)/$(MAKEFILE)
 $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
 
-$(INSCOREDIR)/$(MAKEFILE) : CMakelists.txt
+$(INSCOREDIR)/$(MAKEFILE) : CMakeLists.txt
 	cd $(INSCOREDIR) && $(CMAKE) .. $(CMAKEOPTS) $(GENERATOR)
 
 #===============================================================
@@ -93,7 +93,7 @@ wasm: $(WASMDIR) $(WASMDIR)/Makefile
 $(WASMDIR):
 	mkdir $(WASMDIR)
 
-$(WASMDIR)/Makefile : CMakelists.txt modules/WASMConfig.cmake
+$(WASMDIR)/Makefile : CMakeLists.txt modules/WASMConfig.cmake
 	cd $(WASMDIR) && $(CMAKE) .. -DWASM=on
 
 #===============================================================
