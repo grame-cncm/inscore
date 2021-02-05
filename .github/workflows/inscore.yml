@@ -29,10 +29,10 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
 
-      - name: Build inscore
+      - name: Build submodules
         run: |
-          qmake --version
-          cmake --version
-#          make -C build modules
-#          sudo make -C build install_modules
-#          make -C build inscore
+          make -C build modules
+          sudo make -C build install_modules
+
+      - name: Build inscore
+        run: make -C build inscore
