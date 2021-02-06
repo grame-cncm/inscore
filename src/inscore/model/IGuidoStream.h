@@ -28,7 +28,7 @@
 #define __IGuidoStream__
 
 #include <string>
-#include <strstream>
+#include <sstream>
 
 #include "IGuidoCode.h"
 #include "GUIDOParse.h"
