@@ -679,7 +679,7 @@ void evaluator::error  (const SINode& node, const std::string& what)
 //------------------------------------------------------------
 // bootstrap the evaluation with the current node environment
 //------------------------------------------------------------
-SINode evaluator::eval (const SINode& node) throw(evalException)
+SINode evaluator::eval (const SINode& node)
 {
 	try{
 		return eval (node, node->getEnv());

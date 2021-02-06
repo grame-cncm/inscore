@@ -107,7 +107,7 @@ SINode expandVal::expand (float from, float to, float step, const SINode& dur, c
 //------------------------------------------------------------
 // evaluation of the expand value form [n...m]
 //------------------------------------------------------------
-SINode expandVal::eval (const SINode& node, const TEnv& env) throw(expandValException)
+SINode expandVal::eval (const SINode& node, const TEnv& env)
 {
 	if (node->getType() != INode::kExpandVal) {
 		string what="unexpected node type ";

@@ -137,7 +137,7 @@ class evaluator
 	static SINode 	eval (const SINode& node, const TEnv&);
 
 	public:
-		static SINode 	eval (const SINode& node) throw(evalException);
+		static SINode 	eval (const SINode& node);
 };
 
 } // end namespace

@@ -63,7 +63,7 @@ class expandVal
 				 expandVal() {}
 		virtual ~expandVal() {}
 
-		static SINode 	eval 	 (const SINode& node, const TEnv& env) throw(expandValException);
+		static SINode 	eval 	 (const SINode& node, const TEnv& env);
 };
 
 } // end namespace
