@@ -26,9 +26,9 @@
 #define FAUSTFLOAT float
 #endif
 
-#if !defined(WIN32)
-#pragma GCC diagnostic ignored "-Wextern-c-compat"
-#endif
+//#if !defined(WIN32)
+//#pragma GCC diagnostic ignored "-Wextern-c-compat"
+//#endif
 
 #include "CUI.h"
 
