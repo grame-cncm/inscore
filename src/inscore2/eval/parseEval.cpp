@@ -38,7 +38,7 @@ namespace inscore2
 // evaluation of the parser output
 // handles seq and par operations
 //------------------------------------------------------------
-SINode parseEval::eval (const SINode& node) throw(parseEvalException)
+SINode parseEval::eval (const SINode& node)
 {
 	try {
 	switch(node->getType()) {

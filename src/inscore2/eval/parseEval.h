@@ -54,7 +54,7 @@ class parseEval
 				 parseEval() {}
 		virtual ~parseEval() {}
 
-		static SINode eval 	(const SINode& node) throw(parseEvalException);
+		static SINode eval 	(const SINode& node); 
 		static SINode seq	(const SINode& n1, const SINode& n2);
 };
 

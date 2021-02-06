@@ -37,7 +37,7 @@ namespace inscore2
 //------------------------------------------------------------
 // evaluation of the javascript sections
 //------------------------------------------------------------
-SINode jsEval::eval (const SINode& node) throw(jsEvalException)
+SINode jsEval::eval (const SINode& node) 
 {
 	try {
 	switch(node->getType()) {

@@ -63,7 +63,7 @@ class jsEval
 				 jsEval(JSEngine jsengine) : fJavascript(jsengine) {}
 		virtual ~jsEval() {}
 
-		SINode eval 	(const SINode& node) throw(jsEvalException);
+		SINode eval 	(const SINode& node);
 };
 
 } // end namespace

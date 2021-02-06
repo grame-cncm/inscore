@@ -200,7 +200,7 @@ TExpandInfos expandEval::getExpand (const string& str)
 //------------------------------------------------------------
 // evaluation of the exapnd form [n...m]
 //------------------------------------------------------------
-SINode expandEval::eval (const SINode& node) throw(expandEvalException)
+SINode expandEval::eval (const SINode& node) 
 {
 	switch(node->getType()) {
 		case INode::kExpand:	return evalExpand(node);
