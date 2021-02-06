@@ -13,9 +13,10 @@ help:
 	@echo "Makefile for docker image management."
 	@echo "Available targets are:"
 	@echo "  build (default) : build the docker image"
-	@echo "  list    : list current docker images and containers"
-	@echo "  run     : run the $(NAME) image"
-	@echo "  rm      : remove the $(NAME) image"
+	@echo "  list      : list current docker images and containers"
+	@echo "  run       : run the $(NAME) image"
+	@echo "  rm        : remove the $(NAME) image"
+	@echo "  rmstopped : remove all stopped containers"
 
 list:
 	docker images
