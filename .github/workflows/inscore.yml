@@ -29,6 +29,9 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
 
+      - name: Install packages
+        run: sudo apt-get install -y libmicrohttpd-dev
+
       - name: Build submodules
         run: |
           make -C build modules
