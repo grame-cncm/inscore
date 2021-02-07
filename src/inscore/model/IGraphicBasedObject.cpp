@@ -127,7 +127,6 @@ void IGraphicBasedObject::updateLocalMapping ()
 		const SIntPoint2RelativeTimeMapping & l2t_mapping = named.second;	// Get the 'local -> time' mapping.
 		TRelation<long,2, rational,1>::const_iterator iter = l2t_mapping->direct().begin();
 		while (iter != l2t_mapping->direct().end()) {					// Parse each 'local' element of the 'local -> time' mapping.
-			bool ok;
 			GraphicSegment gs;
 			if ( getGraphicSegment( iter->first, gs ) ) {				// find the GraphicSegment corresponding to the local segment.
 				g2l_mapping->add ( gs , iter->first);					// Put the 'graphic -> local' relation into the mapping.

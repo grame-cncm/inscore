@@ -93,7 +93,7 @@ bool ILine::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) co
 	if ((date < 0.) || (date > dur))	return false;
 	
 	TFloatPoint o(0,0);
-	float len = fPoint.distance (o);
+	float len = float(fPoint.distance (o));
 	float datelen = len * float(date) / float(dur);  // convert the date into a length
 	float ratio = datelen / len;					 // this is the relative position on the line
 	p.fX = fPoint.x() * ratio / getWidth();
@@ -107,9 +107,9 @@ bool ILine::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) co
 void ILine::setPoint(const TFloatPoint& p)
 {
 	fPoint = p;
-	fAngle = atan(p.y() / p.x()) * 180 / M_PI;
-	float a = fAngle * M_PI / 180;
-	fLineWidth = a ? p.y() / sin(a) : p.x() / cos(a);
+	fAngle = float(atan(p.y() / p.x()) * 180 / M_PI);
+	double a = fAngle * M_PI / 180;
+	fLineWidth = float(a ? p.y() / sin(a) : p.x() / cos(a));
 //	cerr << "ILine::setPoint computed " << p << " aw: " << fAngle << " " << fLineWidth << endl;
 }
 
