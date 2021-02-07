@@ -25,6 +25,10 @@
 
 #include <iostream>
 
+#ifdef WIN32
+#pragma warning (disable : 4244)
+#endif
+
 #include "GuidoMapCollector.h"
 #include "ITLError.h"
 #include "ScoreLayoutInfos.h"

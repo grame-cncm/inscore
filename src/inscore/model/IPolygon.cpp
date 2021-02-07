@@ -28,6 +28,10 @@
 #include "OSCStream.h"
 #include "Updater.h"
 
+#ifdef WIN32
+#pragma warning (disable: 4244)
+#endif
+
 using namespace std;
 
 namespace inscore
@@ -56,7 +60,7 @@ float IPolygon::getLength(const TFloatPoint& p1, const TFloatPoint& p2) const
 {
 	double x = p2.fX - p1.fX;
 	double y = p2.fY - p1.fY;
-	return sqrt ((x*x) + (y*y));
+	return float(sqrt ((x*x) + (y*y)));
 }
 
 //--------------------------------------------------------------------------
@@ -70,12 +74,12 @@ void IPolygon::getMetrics()
 	TFloatPoint p = fPoints[0];
 	for ( size_t i = 1 ; i < n ; i++ ) {
 		TFloatPoint pnext = fPoints[i];
-		float len = p.distance (pnext);
+		float len = float(p.distance (pnext));
 		fTotalLength += len;
 		fSegmentsLength.push_back(len);
 		p = pnext;
 	}
-	float len = p.distance (fPoints[0]);
+	float len = float(p.distance (fPoints[0]));
 	fSegmentsLength.push_back(len);
 	fTotalLength += len;
 }

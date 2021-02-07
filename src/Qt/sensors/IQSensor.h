@@ -28,6 +28,16 @@
 
 #include <map>
 
+#include <QAccelerometer>
+#include <QCompass>
+#include <QGyroscope>
+#include <QTiltSensor>
+#include <QRotationSensor>
+#include <QProximitySensor>
+#include <QOrientationSensor>
+#include <QMagnetometer>
+#include <QLightSensor>
+#include <QAmbientLightSensor>
 
 namespace inscore
 {

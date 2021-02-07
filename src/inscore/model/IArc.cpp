@@ -85,7 +85,7 @@ float IArc::arcLength () const
 		x1 = x2; y1 = y2;
 		angle += step;
 	}
-	return len;
+	return float(len);
 }
 //--------------------------------------------------------------------------
 float IArc::getR (float ratio) const
@@ -96,7 +96,7 @@ float IArc::getR (float ratio) const
 	double r2 = getHeight() / 2;
 	double dx = (p.fX * getWidth()) - r1;
 	double dy = (p.fY * getHeight()) - r2;
-	return sqrt((dx*dx) + (dy*dy));
+	return float(sqrt((dx*dx) + (dy*dy)));
 }
 
 //--------------------------------------------------------------------------
@@ -115,8 +115,8 @@ void IArc::print (ostream& out) const
 //--------------------------------------------------------------------------
 bool IArc::arc2FramePoint(float ratio, TFloatPoint& p) const
 {
-	float range	= getAngularRange()   /180 * M_PI;
-	float start = (180 - getStartAngle ()) /180 * M_PI;
+	double range	= getAngularRange()   /180 * M_PI;
+	double start = (180 - getStartAngle ()) /180 * M_PI;
 
 	double angle = 3 * M_PI + start - range + (ratio * range);
 	double r1 = getWidth() / 2;

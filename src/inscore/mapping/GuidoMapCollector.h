@@ -30,6 +30,11 @@
 #include <vector>
 #include <string>
 
+#ifdef WIN32
+#pragma warning (disable : 4244)
+#endif // WIN32
+
+
 #include "GUIDOScoreMap.h"
 #include "maptypes.h"
 #include "TIRect.h"

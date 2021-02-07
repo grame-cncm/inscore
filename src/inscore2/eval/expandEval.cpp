@@ -27,6 +27,7 @@
 #include <sstream>
 #include <cctype>
 #include <regex>
+#include <functional>
 
 #include "expandEval.h"
 #include "TreeTools.h"

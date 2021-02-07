@@ -78,8 +78,8 @@ TFloatRect IPosition::getBoundingRect() const
 	result.setSize( getDimension() );
 	if ( getRotateZ() != 0 )
 	{
-		float x = result.size().width() / 2.0f;
-		float y = result.size().height() / 2.0f;
+		float x = float(result.size().width() / 2.0f);
+		float y = float(result.size().height() / 2.0f);
 		float teta = atan( y / x );
 		float r = sqrt( x*x + y*y );
 		float topRightAngle = rad2degree( teta );
