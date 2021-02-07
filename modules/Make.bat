@@ -3,13 +3,13 @@
 
 echo Make sure the submodules are up-to-date
 echo Compiles guidolib
-CALL :COMPILE guidolib GUIDOEngine64 
+CALL :SUBCOMPILE guidolib GUIDOEngine64 
 
 echo Compiles libmusicxml
-CALL :COMPILE libmusicxml musicxml2 "-DLILY=off"
+CALL :SUBCOMPILE libmusicxml musicxml2 "-DGENTOOLS=off -DLILY=off -DGENSTATIC=off"
 GOTO :DONE
 
-:COMPILE
+:SUBCOMPILE
 	cd %~1/build
 	IF NOT EXIST win64 (
 		echo Create output folder
