@@ -18,6 +18,6 @@ branches:
 
 script:
   - make -C build modules 
-  - sudo make -C ../modules/guidolib/build install
-  - sudo make -C ../modules/libmusicxml/build install
+  - sudo make -C modules/guidolib/build install
+  - sudo make -C modules/libmusicxml/build install
   - make -C build inscore
