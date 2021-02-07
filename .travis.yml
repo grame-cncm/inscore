@@ -21,6 +21,6 @@ branches:
 
 script:
   - make -C build modules 
-  - sudo make -C modules/guidolib/build install CMAKE=$(CMAKE)
-  - sudo make -C modules/libmusicxml/build install CMAKE=$(CMAKE)
+  - sudo make -C modules/guidolib/build CMAKE=$CMAKE install 
+  - sudo make -C modules/libmusicxml/build CMAKE=$CMAKE install
   - make -C build inscore
