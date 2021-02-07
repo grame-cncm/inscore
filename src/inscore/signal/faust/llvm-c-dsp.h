@@ -44,9 +44,9 @@ extern "C"
      @{
      */
     
-    typedef struct {} llvm_dsp_factory;
+    typedef struct { int foo; } llvm_dsp_factory;
     
-    typedef struct {} llvm_dsp;
+    typedef struct { int foo; } llvm_dsp;
     
     
     /**
