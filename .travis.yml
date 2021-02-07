@@ -11,6 +11,9 @@ before_install:
   - sudo apt-get install qt514-meta-full
   - source /opt/qt514/bin/qt514-env.sh
 
+env:
+  - CMAKE=$(which cmake)
+
 branches:
   only:
   - dev
@@ -18,6 +21,6 @@ branches:
 
 script:
   - make -C build modules 
-  - sudo make -C modules/guidolib/build install
-  - sudo make -C modules/libmusicxml/build install
+  - sudo make -C modules/guidolib/build install CMAKE=$(CMAKE)
+  - sudo make -C modules/libmusicxml/build install CMAKE=$(CMAKE)
   - make -C build inscore
