@@ -198,7 +198,8 @@ bool BundleExtractor::readMapName(qarchive::QArchive* archive, std::map<std::str
 		return false;
 	}
 
-	QStringList mapping = QString::fromUtf8(data).split('\n',QString::SkipEmptyParts);
+//	QStringList mapping = QString::fromUtf8(data).split('\n',QString::SkipEmptyParts);
+	QStringList mapping = QString::fromUtf8(data).split('\n');
 	for(QStringList::const_iterator it=mapping.begin(); it!=mapping.end(); it++){
 		int id = it->indexOf('\t');
 		if(id==-1 || id==it->size()-1){

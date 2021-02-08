@@ -107,7 +107,8 @@ bool BundleCreator::failSafeBundle(std::string inputFile, std::string outputFile
 	}
 
 	// Parse files list
-	QStringList files = QString::fromUtf8(f.readAll()).split("\n", QString::SkipEmptyParts);
+//	QStringList files = QString::fromUtf8(f.readAll()).split("\n", QString::SkipEmptyParts);
+	QStringList files = QString::fromUtf8(f.readAll()).split("\n");
 	if(files.empty()){
 		fLog.error(inputFile+ " is empty, check if the text codec is utf8.");
 		return false;
