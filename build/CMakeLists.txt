@@ -215,36 +215,20 @@ if (QTVIEW)
 
 	#######################################
 	# viewer settings
-	set(CMAKE_AUTORCC ON)
-	file (GLOB APPSRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.cpp)
-	file (GLOB APPHEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.h)
-	#file (GLOB APPPLUGINS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBXML}/build/lib/libmusicxml2*.dylib)
-	if (UNIX AND NOT APPLE)
-		set (GUIDO_LIBRARIES -L/usr/local/lib -lGUIDOEngine)
-	endif()
-	set (APPLIBS ${target} ${QT_LIBRARIES} ${GUIDO_LIBRARIES})
-	set (APP_INCLUDES ${SRCDIR}/inscore/interface ${QTVIEW_INCLUDE_DIRS} "${GUIDOLIB}/src/engine/include")
-
-	set(MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns)
-	set(VIEWER_ICON "${ROOT}/rsrc/INScoreViewer.icns")
-	set_source_files_properties(${VIEWER_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-	#set_source_files_properties(${APPPLUGINS} PROPERTIES MACOSX_PACKAGE_LOCATION "PlugIns")
-
-	set (APP_RSRC "${ROOT}/rsrc/inscore.qrc"  ${VIEWER_ICON})
+	set (VIEWER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+	find_package(VIEWER REQUIRED)
 
 	if (WIN32)
-		enable_language(RC)
-		set(APPSRC ${APPSRC} ${ROOT}/win32/Viewer/INScoreViewer.rc)
 		set(EXE WIN32)
 	elseif(APPLE)
 		set(EXE MACOSX_BUNDLE)
 	endif()
  
 	set (viewer INScoreViewer)
-	add_executable(${viewer} ${EXE} ${APPSRC} ${APPHEADERS} ${APP_RSRC})
+	add_executable(${viewer} ${EXE} ${VIEWER_SRC} ${VIEWER_HEADERS} ${VIEWER_RSRC})
 	target_compile_definitions (${viewer} PRIVATE ${DEFS})
-	target_include_directories (${viewer} PRIVATE ${APP_INCLUDES})
-	target_link_libraries (${viewer} PRIVATE ${APPLIBS})
+	target_include_directories (${viewer} PRIVATE ${VIEWER_INCLUDE_DIRS})
+	target_link_libraries (${viewer} PRIVATE ${VIEWER_LIBS})
 	set_target_properties (${viewer} PROPERTIES
 		BUNDLE true
 		MACOSX_BUNDLE_BUNDLE_NAME ${viewer}
@@ -255,6 +239,21 @@ if (QTVIEW)
 		RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${BINDIR}
 	)
 	add_dependencies(${viewer} ${target})
+
+	#######################################
+	# ibundle settings
+	set (IBUNDLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+	find_package(IBUNDLE REQUIRED)
+
+	set (ibundle IBundle)
+	add_executable(${ibundle} ${IBUNDLE_SRC} ${IBUNDLE_HEADERS})
+	target_compile_definitions (${ibundle} PRIVATE ${IBUNDLE_DEFS})
+	target_include_directories (${ibundle} PRIVATE ${INCDIRS} ${IBUNDLE_INCLUDE_DIRS})
+	target_link_libraries (${ibundle} PRIVATE ${IBUNDLE_LIBRARIES})
+	set_target_properties (${ibundle} PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY  ${BINDIR}
+		RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${BINDIR}
+	)
 
 endif(QTVIEW)
 

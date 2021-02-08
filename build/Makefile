@@ -123,7 +123,6 @@ cmake: $(INSCOREDIR)
 # submodules management
 #===============================================================
 modules:
-	git submodule update --init --recursive
 	$(MAKE) -C ../modules
 
 install_modules:
@@ -144,8 +143,10 @@ modules_android:
 #===============================================================
 
 ibundle : 
-	$(MAKE) -C ../tools/IBundle/build
-	cp ../tools/IBundle/IBundle bin
+	$(CMAKE) --build $(INSCOREDIR) --config Release --target IBundle
+
+# 	$(MAKE) -C ../tools/IBundle/build
+# 	cp ../tools/IBundle/IBundle bin
 
 
 # ios :
