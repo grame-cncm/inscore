@@ -25,6 +25,7 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QScreen>
 
 #include "WindowEventFilter.h"
 #include "VSceneView.h"
@@ -89,7 +90,9 @@ void ResizeMoveEventFilter::updateModel()
     }
 
     float x, y;
-    QRect r = QApplication::desktop()->screenGeometry();
+//    QRect r = QApplication::desktop()->screenGeometry();
+	QList<QScreen *> screens = QGuiApplication::screens();
+	QRect r = screens[0]->geometry();
     float lowestDimension = qMin( r.width(), r.height() );
     if (fAbsoluteXY) {
         x = view->pos().x();

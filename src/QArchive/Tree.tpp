@@ -36,7 +36,7 @@ TreeNode<Type> *Tree<Type>::searchDir(QString path)
 	if(path.at(0) == '/')
 		n = &fRoot;
 
-	QStringList p = path.split("/", QString::SkipEmptyParts);
+	QStringList p = path.split('/'); //, QString::SkipEmptyParts);
 
 	while(!p.isEmpty()){
 		QString d = p.first();
@@ -126,7 +126,7 @@ TreeNode<Type>* Tree<Type>::extractPath(QString path, QString& name)
 	QString p = "";
 	if(path.at(0)=='/')
 		p="/";
-	QStringList pathList = path.split("/", QString::SkipEmptyParts);
+	QStringList pathList = path.split('/'); //, QString::SkipEmptyParts);
 	name = pathList.last();
 	pathList.removeLast();
 	p += pathList.join("/");
@@ -149,7 +149,7 @@ QString Tree<Type>::absolutePath(QString path)
 	}
 
 	int i = pathList.size();
-	pathList.append(path.split("/", QString::SkipEmptyParts));
+	pathList.append(path.split('/')); //, QString::SkipEmptyParts);
 	while(i<pathList.size()){
 		if(pathList.at(i)==".")
 			pathList.removeAt(i);

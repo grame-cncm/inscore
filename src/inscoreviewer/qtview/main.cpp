@@ -48,7 +48,8 @@ static void disableAppNap ()
 {
 	#if __APPLE__ && !defined(IOS)
 	QProcess process;
-	process.start("defaults write fr.grame.INScore NSAppSleepDisabled -bool YES");
+	QStringList args;
+	process.start("defaults write fr.grame.INScore NSAppSleepDisabled -bool YES", args);
 	#endif
 }
 

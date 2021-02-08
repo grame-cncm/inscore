@@ -25,13 +25,15 @@
 
 
 #include <QApplication>
-#include <QDesktopWidget>
-#include <QPlainTextEdit>
-#include <QIcon>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QToolButton>
 #include <QDebug>
+#include <QDesktopWidget>
+#include <QHBoxLayout>
+#include <QIcon>
+#include <QPlainTextEdit>
+#include <QScreen>
+#include <QToolButton>
+#include <QVBoxLayout>
+
 #include "VLogWindow.h"
 
 #include "IApplVNodes.h"
@@ -72,7 +74,10 @@ VLogWindow::VLogWindow(const char* name, IApplLog * logwindow)
     setLayout(mainLayout);
     setWindowTitle( tr(name) );
 
-	QRect r = QApplication::desktop()->screenGeometry();
+//	QRect r = QApplication::desktop()->screenGeometry();
+//	QRect r = screens[0]->screenGeometry();
+	QList<QScreen *> screens = QGuiApplication::screens();
+	QRect r = screens[0]->geometry();
 	fScreenDim = qMin( r.width(), r.height() );
 	fScreenCenter = r.center();
 }

@@ -23,18 +23,18 @@
 
 */
 
-#include <QImage>
-#include <QDebug>
-#include <QScreen>
-#include <QBuffer>
-#include <QPainter>
-#include <QGraphicsRectItem>
 #include <QApplication>
+#include <QBuffer>
+#include <QDebug>
 #include <QDesktopWidget>
-#include <QResizeEvent>
 #include <QGestureEvent>
-#include <QPinchGesture>
+#include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QImage>
+#include <QPainter>
+#include <QPinchGesture>
+#include <QResizeEvent>
+#include <QScreen>
 #ifndef __MOBILE__
 #include <QGLWidget>
 #endif
@@ -381,7 +381,10 @@ void VSceneView::foreground()
 //------------------------------------------------------------------------------------------------------------------------
 QPoint VSceneView::scenePos(const IScene * scene) const
 {
-	QRect r = QApplication::desktop()->screenGeometry();
+//	QRect r = QApplication::desktop()->screenGeometry();
+
+	QList<QScreen *> screens = QGuiApplication::screens();
+	QRect r = screens[0]->geometry();
 	QPoint pos;
 	if (scene->getAbsoluteCoordinates()) {
 		pos= QPoint (scene->getXPos(), scene->getYPos());
@@ -444,7 +447,9 @@ void VSceneView::updateOnScreen( IScene * scene )
 	// Size
 	if ( !fResizeMoveEventFilter->running() )	{		// do not update the size/position while the fEventFilter is running.
 		if (!scene->getFullScreen()) {		// don't resize or move in fullscreen mode
-			QRect r = QApplication::desktop()->screenGeometry();
+//			QRect r = QApplication::desktop()->screenGeometry();
+			QList<QScreen *> screens = QGuiApplication::screens();
+			QRect r = screens[0]->geometry();
 			float lowestDimension = qMin( r.width(), r.height() );
 
 
@@ -484,7 +489,9 @@ void VSceneView::updateOnScreen( IScene * scene )
 void VSceneView::updateOffScreen( IScene * scene )
 {
 	// Size
-	QRect r = QApplication::desktop()->screenGeometry();
+//	QRect r = QApplication::desktop()->screenGeometry();
+	QList<QScreen *> screens = QGuiApplication::screens();
+	QRect r = screens[0]->geometry();
 	float lowestDimension = qMin( r.width(), r.height() );
 	int w = scene->getWidth() * lowestDimension / 2;
 	int h = scene->getHeight() * lowestDimension / 2;
