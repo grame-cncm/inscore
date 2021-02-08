@@ -124,12 +124,10 @@ cmake: $(INSCOREDIR)
 #===============================================================
 modules:
 	git submodule update --init --recursive
-	$(MAKE) -C ../modules/guidolib/build lib
-	$(MAKE) -C ../modules/libmusicxml/build minimal
+	$(MAKE) -C ../modules
 
 install_modules:
-	sudo $(MAKE) -C ../modules/guidolib/build install
-	sudo $(MAKE) -C ../modules/libmusicxml/build install
+	$(MAKE) -C ../modules install
 
 modules_ios:
 	git submodule update --init --recursive

@@ -3,7 +3,7 @@
 
 echo Make sure the submodules are up-to-date
 echo Compiles guidolib
-CALL :SUBCOMPILE guidolib GUIDOEngine64 
+CALL :SUBCOMPILE guidolib GUIDOEngine64 "-DMIN=on"
 
 echo Compiles libmusicxml
 CALL :SUBCOMPILE libmusicxml musicxml2 "-DGENTOOLS=off -DLILY=off -DGENSTATIC=off"
