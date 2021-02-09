@@ -55,6 +55,7 @@ help :
 	@echo "  ibundle       : build ibundle (with Qt view only)"
 	@echo "  ios           : build for iOS"
 	@echo "  android       : build for android"
+	@echo "  install       : install the package"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
 	@echo "       with XXX the device serial number (can be retrieved using 'make devandroid')"
 	@echo "       DEVICE is optional when only one Android device is connected"
@@ -125,7 +126,6 @@ log:
 cmake: $(INSCOREDIR)
 	cd $(INSCOREDIR) && $(CMAKE) .. $(GENERATOR)
 
-
 #===============================================================
 # submodules management
 #===============================================================
@@ -145,6 +145,12 @@ modules_android:
 	$(MAKE) -C ../modules/guidolib/build android
 	$(MAKE) -C ../modules/libmusicxml/build android
 
+
+#===============================================================
+# installation
+#===============================================================
+install:
+	$(CMAKE) --build $(INSCOREDIR) --config Release --target install
 
 # ios :
 # 	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir
@@ -209,11 +215,11 @@ installBT350:
 #===============================================================
 # install target
 #===============================================================
-install:
-	make -C ../package
-
-uninstall:
-	make -C ../package uninstall
+# install:
+# 	make -C ../package
+# 
+# uninstall:
+# 	make -C ../package uninstall
 
 #===============================================================
 # building the library with mobileUI

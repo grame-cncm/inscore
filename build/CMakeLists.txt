@@ -327,3 +327,37 @@ if (MODEL)
 		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BINDIR})
 	add_dependencies(${testappl} ${target})
 endif(MODEL)
+
+
+#######################################
+# install target
+#######################################
+if (NOT QTVIEW)
+	RETURN()
+endif()
+
+set (CMAKE_INSTALL_PREFIX $ENV{HOME})
+message (STATUS "Install location is ${CMAKE_INSTALL_PREFIX}")
+
+
+####################################
+# install the faust compiler and libraries
+if (PACK)
+	set (CMAKE_INSTALL_PREFIX .)
+endif()
+
+install ( TARGETS ${viewer} ${ibundle} ${target}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/INScore
+	BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX}/INScore
+)
+
+
+####################################
+# install examples
+install (
+    DIRECTORY     ${ROOT}/scripts/Standalone DESTINATION ${CMAKE_INSTALL_PREFIX}/exemples
+    FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+    DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+    	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+    PATTERN ".DS_Store" EXCLUDE
+)
