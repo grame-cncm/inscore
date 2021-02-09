@@ -19,7 +19,7 @@ See [INScore wiki](https://github.com/grame-cncm/inscore/wiki) for building inst
 
 ## Acknowledgments
 
-INScore was initiated in the framework of the *Interlude* project (http://interlude.ircam.fr), 
+INScore was initiated in the framework of the **[Interlude](http://interlude.ircam.fr)** project, 
 funded by the French National Research Agency \[ANR-08-CORD-010\].
 
 I would like to thank all the people who have been contributing to INScore design and development, and especially:
