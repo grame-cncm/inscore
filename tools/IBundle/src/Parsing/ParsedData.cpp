@@ -22,6 +22,7 @@
 */
 
 #include <sstream>
+#include <algorithm>
 #include <deelx.h>
 
 #include "ExprInfo.h"
