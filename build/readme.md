@@ -4,11 +4,11 @@ INScore build system
 [Grame](http://www.grame.fr) - Centre National de Création Musicale
 ----------------------------------------------------------------------
 
----
-
-Status: ![CI](https://github.com/grame-cncm/inscore/workflows/CI/badge.svg)
-
----
+----
+Buildtatus: ![Ubuntu](https://github.com/grame-cncm/inscore/workflows/Ubuntu/badge.svg)
+![MacOS](https://github.com/grame-cncm/inscore/workflows/MacOS/badge.svg)
+![Windows](https://github.com/grame-cncm/inscore/workflows/Windows/badge.svg)
+----
 
 INScore build system is based on [CMake](https://cmake.org/). 
 This folder contains configuration files for setting up the different compilation targets with CMake.
