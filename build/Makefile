@@ -19,7 +19,8 @@ system	:= $(shell uname -s)
 # normalizes MINGW versions
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
 
-MOBILESCRIPTS := ../scripts/mobile
+MOBILESCRIPTS  := ../scripts/mobile
+MODULESCONFIGS := $(wildcard modules/*.cmake)
 
 ifeq ($(system), Darwin)
 	GENERATOR ?= -G Xcode
@@ -41,16 +42,17 @@ all :
 	$(MAKE) inscore
 
 test:
-	echo GENERATOR $(GENERATOR)
+	echo MODULESCONFIGS $(MODULESCONFIGS)
 
 help :
 	@echo "========== INScore project Makefile =========="
 	@echo "Available targets are : "
 	@echo "  all (default) : call the 'modules' and the 'inscore' targets"
-	@echo "  inscore       : build inscore library and inscoreviewer"
+	@echo "  inscore       : build inscore library, inscoreviewer and ibundle"
 	@echo "  modules       : recursively update and build submodules"
 	@echo "  wasm          : build the inscore wasm library"
 	@echo "  model         : build the inscore core model library"
+	@echo "  ibundle       : build ibundle (with Qt view only)"
 	@echo "  ios           : build for iOS"
 	@echo "  android       : build for android"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
@@ -81,7 +83,7 @@ inscore: $(INSCOREDIR) $(INSCOREDIR)/$(MAKEFILE)
 $(INSCOREDIR):
 	mkdir $(INSCOREDIR)
 
-$(INSCOREDIR)/$(MAKEFILE) : CMakeLists.txt
+$(INSCOREDIR)/$(MAKEFILE) : CMakeLists.txt $(MODULESCONFIGS)
 	cd $(INSCOREDIR) && $(CMAKE) .. $(CMAKEOPTS) $(GENERATOR)
 
 #===============================================================
@@ -108,6 +110,11 @@ ios:
 model: 
 	$(MAKE) inscore INSCOREDIR=$(MODELDIR) CMAKEOPTS='-DMODEL=on'
 
+#===============================================================
+# building ibundle
+#===============================================================
+ibundle : 
+	$(CMAKE) --build $(INSCOREDIR) --config Release --target IBundle
 
 #===============================================================
 # utilities
@@ -138,16 +145,6 @@ modules_android:
 	$(MAKE) -C ../modules/guidolib/build android
 	$(MAKE) -C ../modules/libmusicxml/build android
 
-#===============================================================
-# building inscore library and application
-#===============================================================
-
-ibundle : 
-	$(CMAKE) --build $(INSCOREDIR) --config Release --target IBundle
-
-# 	$(MAKE) -C ../tools/IBundle/build
-# 	cp ../tools/IBundle/IBundle bin
-
 
 # ios :
 # 	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir
@@ -163,23 +160,6 @@ ibundle :
 # 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
 # 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScoreViewer.vcxproj $(WINOPTS)"
 #	$(MAKE) -C ../tools/IBundle/build
-
-
-#===============================================================
-# building projects
-#===============================================================
-# $(INSCOREDIR)/$(LIBPROJ) : $(INSCOREDIR) library.pro
-# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../library.pro -o $(LIBPROJ)
-# 
-# $(INSCOREDIR)/$(VIEWPROJ) : $(INSCOREDIR) viewer.pro
-# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) ../viewer.pro -o $(VIEWPROJ)
-# 
-# voidview :
-# 	$(MAKE) qmake CONFIG="CONFIG+=NOVIEW" INSCOREDIR=noview
-# 
-# qmake : $(INSCOREDIR)
-# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../library.pro -o $(LIBPROJ)
-# 	cd $(INSCOREDIR) && $(QMAKE) $(SPEC) $(CONFIG) ../viewer.pro  -o $(VIEWPROJ)
 
 
 #===============================================================
