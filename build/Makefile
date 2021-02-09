@@ -107,13 +107,13 @@ ios:
 #===============================================================
 # building inscore model library
 #===============================================================
-model: 
+model: $(INSCOREDIR) $(INSCOREDIR)/$(MAKEFILE)
 	$(MAKE) inscore INSCOREDIR=$(MODELDIR) CMAKEOPTS='-DMODEL=on'
 
 #===============================================================
 # building ibundle
 #===============================================================
-ibundle : 
+ibundle : $(INSCOREDIR) $(INSCOREDIR)/$(MAKEFILE)
 	$(CMAKE) --build $(INSCOREDIR) --config Release --target IBundle
 
 #===============================================================
