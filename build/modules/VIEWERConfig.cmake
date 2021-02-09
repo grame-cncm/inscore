@@ -15,13 +15,12 @@ set(CMAKE_AUTORCC ON)
 file (GLOB VIEWER_SRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.cpp)
 file (GLOB VIEWER_HEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.h)
 #file (GLOB VIEWER_LUGINS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBXML}/build/lib/libmusicxml2*.dylib)
-if (UNIX AND NOT APPLE)
-	set (GUIDO_LIBRARIES -L/usr/local/lib -lGUIDOEngine)
-endif()
-set (VIEWER_LIBS ${target} ${QT_LIBRARIES} ${GUIDO_LIBRARIES})
-set (VIEWER_INCLUDE_DIRS ${SRCDIR}/inscore/interface 
+
+set (VIEWER_LIBS ${target} ${QT_LIBRARIES})
+set (VIEWER_INCLUDE_DIRS 
+	${SRCDIR}/inscore/interface 
 	${QTVIEW_INCLUDE_DIRS} 
-	"${GUIDOLIB}/src/engine/include")
+)
 
 set(MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns)
 set(VIEWER_ICON "${ROOT}/rsrc/INScoreViewer.icns")

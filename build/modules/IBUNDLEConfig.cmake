@@ -12,7 +12,6 @@ set (IBUNDLEDIR  ${ROOT}/tools/iBundle)
 #######################################
 # Qt settings
 find_package(Qt5 COMPONENTS Core REQUIRED)
-#set (QT_INCLUDE_DIRS  ${Qt5Core_INCLUDE_DIRS})
 set (IBUNDLE_LIBRARIES Qt5::Core)
 
 file (GLOB IBUNDLE_SRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
