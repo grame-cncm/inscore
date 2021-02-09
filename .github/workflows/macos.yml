@@ -31,7 +31,7 @@ jobs:
 
       - name: Install packages
         run: |
-          bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
           brew install libmicrohttpd
 
       - name: Build submodules
