@@ -107,6 +107,10 @@
 #include <assert.h>
 #include "mapreader.h"
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4100 4005)
+#endif
+
 
 
 /* Enabling traces.  */
@@ -129,7 +133,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 25 "mapping.y"
+#line 29 "mapping.y"
 {         
 	long int				num;
 	float					real;
@@ -143,7 +147,7 @@ typedef union YYSTYPE
 	libmapping::TSegment<float,1>*					floatseg;
 }
 /* Line 193 of yacc.c.  */
-#line 147 "mapping.tab.cpp"
+#line 151 "mapping.tab.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -165,7 +169,7 @@ typedef struct YYLTYPE
 
 
 /* Copy the second part of user declarations.  */
-#line 49 "mapping.y"
+#line 53 "mapping.y"
 
 
 #include <iostream>
@@ -186,7 +190,7 @@ int	yywrap(yyscan_t yyscanner)		{ return(1); }
 
 
 /* Line 216 of yacc.c.  */
-#line 190 "mapping.tab.cpp"
+#line 194 "mapping.tab.cpp"
 
 #ifdef short
 # undef short
@@ -488,11 +492,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    72,    72,    73,    74,    75,    76,    77,    78,    79,
-      85,    89,    93,   101,   102,   104,   105,   107,   112,   113,
-     115,   116,   121,   122,   124,   125,   127,   132,   133,   135,
-     136,   142,   143,   144,   146,   147,   148,   150,   151,   153,
-     155,   156,   158,   163,   165,   167
+       0,    76,    76,    77,    78,    79,    80,    81,    82,    83,
+      89,    93,    97,   105,   106,   108,   109,   111,   116,   117,
+     119,   120,   125,   126,   128,   129,   131,   136,   137,   139,
+     140,   146,   147,   148,   150,   151,   152,   154,   155,   157,
+     159,   160,   162,   167,   169,   171
 };
 #endif
 
@@ -1490,108 +1494,108 @@ yyreduce:
   switch (yyn)
     {
         case 10:
-#line 86 "mapping.y"
+#line 90 "mapping.y"
     { (yyval.rationalseg) = new libmapping::TSegment<libmapping::rational,1>(*(yyvsp[(3) - (7)].rat),*(yyvsp[(5) - (7)].rat));  delete (yyvsp[(3) - (7)].rat); delete (yyvsp[(5) - (7)].rat);;}
     break;
 
   case 11:
-#line 90 "mapping.y"
+#line 94 "mapping.y"
     { (yyval.real) = ((((yyvsp[(1) - (5)].num) * 60) + (yyvsp[(3) - (5)].num)) * 100 + (yyvsp[(5) - (5)].num)) / 100.f; ;}
     break;
 
   case 12:
-#line 94 "mapping.y"
+#line 98 "mapping.y"
     { (yyval.rationalseg) = new libmapping::TSegment<libmapping::rational,1>(libmapping::rational((yyvsp[(3) - (7)].real)/4),libmapping::rational((yyvsp[(5) - (7)].real)/4));;}
     break;
 
   case 15:
-#line 104 "mapping.y"
+#line 108 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].long2Dseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].long2Dseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 16:
-#line 105 "mapping.y"
+#line 109 "mapping.y"
     { (yyval.long2Dseg) = new libmapping::TSegment<long,2>(*(yyvsp[(2) - (4)].longInterv),*(yyvsp[(3) - (4)].longInterv)); delete (yyvsp[(2) - (4)].longInterv); delete (yyvsp[(3) - (4)].longInterv); ;}
     break;
 
   case 17:
-#line 107 "mapping.y"
+#line 111 "mapping.y"
     { (yyval.longInterv) = new libmapping::TInterval<long>((yyvsp[(2) - (5)].num),(yyvsp[(4) - (5)].num)); ;}
     break;
 
   case 20:
-#line 115 "mapping.y"
+#line 119 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].longseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].longseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 21:
-#line 116 "mapping.y"
+#line 120 "mapping.y"
     { (yyval.longseg) = new libmapping::TSegment<long,1>(*(yyvsp[(2) - (3)].longInterv)); delete (yyvsp[(2) - (3)].longInterv); ;}
     break;
 
   case 24:
-#line 124 "mapping.y"
+#line 128 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].floatseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].floatseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 25:
-#line 125 "mapping.y"
+#line 129 "mapping.y"
     { (yyval.floatseg) = new libmapping::TSegment<float,1>(*(yyvsp[(2) - (3)].floatInterv)); delete (yyvsp[(2) - (3)].floatInterv); ;}
     break;
 
   case 26:
-#line 127 "mapping.y"
+#line 131 "mapping.y"
     { (yyval.floatInterv) = new libmapping::TInterval<float>((yyvsp[(2) - (5)].real),(yyvsp[(4) - (5)].real)); ;}
     break;
 
   case 29:
-#line 135 "mapping.y"
+#line 139 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].float2Dseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].float2Dseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 30:
-#line 136 "mapping.y"
+#line 140 "mapping.y"
     { (yyval.float2Dseg) = new libmapping::TSegment<float,2>(*(yyvsp[(2) - (4)].floatInterv),*(yyvsp[(3) - (4)].floatInterv));  delete (yyvsp[(2) - (4)].floatInterv); delete (yyvsp[(3) - (4)].floatInterv); ;}
     break;
 
   case 33:
-#line 144 "mapping.y"
+#line 148 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].long2Dseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].long2Dseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 36:
-#line 148 "mapping.y"
+#line 152 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].float2Dseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].float2Dseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 39:
-#line 153 "mapping.y"
+#line 157 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].longseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].longseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 42:
-#line 158 "mapping.y"
+#line 162 "mapping.y"
     { if (!context->fReader->map(*(yyvsp[(1) - (2)].floatseg),*(yyvsp[(2) - (2)].rationalseg))) { _maperror } delete (yyvsp[(1) - (2)].floatseg); delete (yyvsp[(2) - (2)].rationalseg);;}
     break;
 
   case 43:
-#line 163 "mapping.y"
+#line 167 "mapping.y"
     { (yyval.rat) = new libmapping::rational((yyvsp[(1) - (3)].num),(yyvsp[(3) - (3)].num)); ;}
     break;
 
   case 44:
-#line 165 "mapping.y"
+#line 169 "mapping.y"
     { (yyval.num) = context->fInt; ;}
     break;
 
   case 45:
-#line 167 "mapping.y"
+#line 171 "mapping.y"
     { (yyval.real) = context->fFloat; ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1595 "mapping.tab.cpp"
+#line 1599 "mapping.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1811,7 +1815,7 @@ yyreturn:
 }
 
 
-#line 170 "mapping.y"
+#line 174 "mapping.y"
 
 
 

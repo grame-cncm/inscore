@@ -27,6 +27,10 @@
 
 #include <cassert>
 
+#ifdef WIN32
+#pragma warning (disable : 4312)
+#endif
+
 namespace libmapping
 {
 

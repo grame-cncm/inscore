@@ -4,6 +4,10 @@
 #include <assert.h>
 #include "mapreader.h"
 
+#ifdef WIN32
+#pragma warning (disable : 4267 4100 4005)
+#endif
+
 %}
 
 %pure-parser

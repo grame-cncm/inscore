@@ -32,7 +32,7 @@
 */
 
 #ifdef WIN32
-#pragma warning (disable : 4267 4100 4244)
+#pragma warning (disable : 4267 4100 4244 4005)
 #endif
 
 #include <iostream>

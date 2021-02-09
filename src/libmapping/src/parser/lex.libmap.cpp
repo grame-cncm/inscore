@@ -488,7 +488,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[28] =
 #line 12 "mapping.l"
 
 #ifdef WIN32
-#pragma warning (disable : 4267 4100)
+#pragma warning (disable : 4267 4100 4005)
 #endif
 
 #define YY_NO_UNISTD_H

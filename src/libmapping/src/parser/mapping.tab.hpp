@@ -66,7 +66,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 25 "mapping.y"
+#line 29 "mapping.y"
 {         
 	long int				num;
 	float					real;
