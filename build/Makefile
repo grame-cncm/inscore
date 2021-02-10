@@ -15,6 +15,8 @@ WASMDIR  	?= wasmdir
 MODELDIR  	?= modeldir
 ANDROIDDIR  ?= androiddir
 
+PREFIX ?= $(HOME)/INScore
+
 system	:= $(shell uname -s)
 # normalizes MINGW versions
 system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
@@ -40,7 +42,7 @@ all :
 	$(MAKE) inscore
 
 test:
-	echo MODULESCONFIGS $(MODULESCONFIGS)
+	echo HOME $(HOME)
 
 help :
 	@echo "========== INScore project Makefile =========="
@@ -70,6 +72,7 @@ help :
 	@echo "  MODELDIR     : build folder for the 'model' target (currently $(MODELDIR))"
 	@echo "  IOSDIR       : build folder for the 'ios' target (currently $(IOSDIR))"
 	@echo "  GENERATOR    : a cmake generator (e.g. '-G Xcode' on MacOS)"
+	@echo "  PREFIX       : the install prefix (currently $(PREFIX))"
 	@echo "  ANDROIDDIR   : build folder for the 'android' target (currently $(ANDROIDDIR))"
 	@echo "  ANDROID_API : define the android API to use (currently $(ANDROID_API))"
 	@echo "  ANDROID_ARCH: define the android architecture (currently $(ANDROID_ARCH))"
@@ -123,7 +126,7 @@ log:
 	git log --format="%h - %Cblue%s%Creset - %cn %cd"  $(RANGE)
 
 cmake: $(INSCOREDIR)
-	cd $(INSCOREDIR) && $(CMAKE) .. $(GENERATOR)
+	cd $(INSCOREDIR) && $(CMAKE) .. $(CMAKEOPTS) $(GENERATOR)
 
 #===============================================================
 # submodules management
@@ -149,6 +152,7 @@ modules_android:
 # installation
 #===============================================================
 install:
+	$(MAKE) cmake CMAKEOPTS="-DCMAKE_INSTALL_PREFIX=$(PREFIX)"
 	$(CMAKE) --build $(INSCOREDIR) --config Release --target install
 
 # ios :
