@@ -30,10 +30,10 @@ jobs:
         uses: jurplel/install-qt-action@v2
 
       - name: Install packages
-       run: sudo apt-get install -y libmicrohttpd-dev
+        run: sudo apt-get install -y libmicrohttpd-dev
 
       - name: Build submodules
-       run: |
+        run: |
          make -C build modules
          sudo make -C build install_modules
 
