@@ -23,19 +23,17 @@ MOBILESCRIPTS  := ../scripts/mobile
 MODULESCONFIGS := $(wildcard modules/*.cmake)
 
 ifeq ($(system), Darwin)
-	GENERATOR ?= -G Xcode
 	MAKEFILE = INScore.xcodeproj
 endif
 
 ifeq ($(system), MINGW)
-	GENERATOR ?= 
 	MAKEFILE = Makefile
 endif
 
 ifeq ($(system), Linux)
-	GENERATOR ?= 
 	MAKEFILE = Makefile
 endif
+GENERATOR ?= 
 
 all :
 	$(MAKE) modules
@@ -71,6 +69,7 @@ help :
 	@echo "  WASMDIR      : build folder for the 'wasm' target (currently $(WASMDIR))"
 	@echo "  MODELDIR     : build folder for the 'model' target (currently $(MODELDIR))"
 	@echo "  IOSDIR       : build folder for the 'ios' target (currently $(IOSDIR))"
+	@echo "  GENERATOR    : a cmake generator (e.g. '-G Xcode' on MacOS)"
 	@echo "  ANDROIDDIR   : build folder for the 'android' target (currently $(ANDROIDDIR))"
 	@echo "  ANDROID_API : define the android API to use (currently $(ANDROID_API))"
 	@echo "  ANDROID_ARCH: define the android architecture (currently $(ANDROID_ARCH))"
