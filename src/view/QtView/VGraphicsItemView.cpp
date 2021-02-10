@@ -638,7 +638,6 @@ void VGraphicsItemView::setSlave(SIObject o )
 TFloatRect VGraphicsItemView::referenceRect(QGraphicsItem * specItem) const
 {
     TFloatRect r;
-    float x, y, w, h;
     QRectF qr;
     if(specItem)
         qr = specItem->parentItem() ? specItem->parentItem()->boundingRect() : fScene->sceneRect();
