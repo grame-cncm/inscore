@@ -366,15 +366,6 @@ if (PACK)
 	set (CMAKE_INSTALL_PREFIX .)
 endif()
 
-if (APPLE)
-install ( CODE "message (STATUS \"Call macdeployqt\")"
-		  CODE "execute_process ( COMMAND macdeployqt ${CMAKE_CURRENT_SOURCE_DIR}/bin/${viewer}.app )"
-)
-elseif(WIN32)
-install ( CODE
-	execute_process ( COMMAND windeployqt ${CMAKE_CURRENT_SOURCE_DIR}/bin/${viewer}.exe )
-)
-endif()
 
 ####################################
 # install compiled resources
@@ -385,6 +376,18 @@ install ( TARGETS ${installtargets}
     ARCHIVE DESTINATION ${INSTALL_LIB}
     PUBLIC_HEADER DESTINATION ${INSTALL_INC}
 )
+
+if (APPLE)
+install ( CODE "message (STATUS \"Call macdeployqt\")"
+		  CODE "execute_process ( COMMAND macdeployqt ${INSTALL_BIN}/${viewer}.app )"
+)
+endif()
+
+if(WIN32)
+install ( CODE "message (STATUS \"Call windeployqt\")"
+		  CODE "execute_process ( COMMAND windeployqt ${INSTALL_BIN}/${viewer}.exe )"
+)
+endif()
 
 ####################################
 # install readme and changelog
