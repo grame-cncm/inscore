@@ -119,8 +119,6 @@ set (SRC ${CORESRC} ${GUIDOAR_SRC})
 set (HEADERS ${COREHEADERS} ${GUIDOAR_HEADERS})
 set (INCDIRS ${INCDIRS} ${GUIDOAR_INCLUDE_DIRS})
 
-file (GLOB PUBLICHEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${PUBLICDIR}/*.h")
-
 #######################################
 # guido settings
 set (GUIDO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
@@ -202,12 +200,12 @@ if (QTVIEW)
 
 	#######################################
 	# library settings 
-	set (target INScore)
-	add_library(${target} ${LIBTYPE} ${SRC} ${HEADERS} ${PUBLICHEADERS})
-	target_compile_definitions (${target} PRIVATE ${DEFS})
-	target_include_directories (${target} PRIVATE ${INCDIRS})
-	target_link_libraries (${target} PRIVATE ${LIBS})
-	set_target_properties (${target} PROPERTIES
+	set (libtarget INScore)
+	add_library(${libtarget} ${LIBTYPE} ${SRC} ${HEADERS} ${PUBLICHEADERS})
+	target_compile_definitions (${libtarget} PRIVATE ${DEFS})
+	target_include_directories (${libtarget} PRIVATE ${INCDIRS})
+	target_link_libraries (${libtarget} PRIVATE ${LIBS})
+	set_target_properties (${libtarget} PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY  ${LIBDIR}
 		RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
 		ARCHIVE_OUTPUT_DIRECTORY  ${LIBDIR}
@@ -234,7 +232,7 @@ if (QTVIEW)
 	add_executable(${viewer} ${EXE} ${VIEWER_SRC} ${VIEWER_HEADERS} ${VIEWER_RSRC})
 	target_compile_definitions (${viewer} PRIVATE ${DEFS})
 	target_include_directories (${viewer} PRIVATE ${VIEWER_INCLUDE_DIRS} ${GUIDO_INCLUDE_DIRS})
-	target_link_libraries (${viewer} PRIVATE ${VIEWER_LIBS})
+	target_link_libraries (${viewer} PRIVATE ${VIEWER_LIBS} ${libtarget})
 	set_target_properties (${viewer} PROPERTIES
 		BUNDLE true
 		MACOSX_BUNDLE_BUNDLE_NAME ${viewer}
@@ -244,7 +242,7 @@ if (QTVIEW)
 		RUNTIME_OUTPUT_DIRECTORY  ${BINDIR}
 		RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${BINDIR}
 	)
-	add_dependencies(${viewer} ${target})
+	add_dependencies(${viewer} ${libtarget})
 
 	#######################################
 	# ibundle settings
@@ -273,11 +271,11 @@ if (WASM)
 	set (INCDIRS ${INCDIRS} ${WASM_INCLUDE_DIRS})
 	set (DEFS    ${DEFS}    ${WASM_DEFINITIONS})
 
-	set (target wasm)
-	add_executable(${target} EXCLUDE_FROM_ALL ${SRC} ${HEADERS})
-	target_include_directories (${target} PRIVATE ${INCDIRS})
-	target_compile_definitions (${target} PRIVATE ${DEFS})
-	set_target_properties (${target} PROPERTIES
+	set (wasmtarget wasm)
+	add_executable(${wasmtarget} EXCLUDE_FROM_ALL ${SRC} ${HEADERS})
+	target_include_directories (${wasmtarget} PRIVATE ${INCDIRS})
+	target_compile_definitions (${wasmtarget} PRIVATE ${DEFS})
+	set_target_properties (${wasmtarget} PROPERTIES
 		OUTPUT_NAME libINScore
 		LINK_FLAGS ${WASM_LINK_FLAGS}
 		COMPILE_FLAGS ${WASM_COMPILE_FLAGS} 
@@ -301,19 +299,18 @@ if (MODEL)
 		set (SRC ${SRC} ${ROOT}/win32/INScore.rc)
 	endif()
 
-	set (target INScoreModel)
-	add_library(${target} SHARED ${SRC} ${HEADERS})
-	target_compile_definitions (${target} PRIVATE ${DEFS})
-	target_include_directories (${target} PRIVATE ${INCDIRS})
-	target_link_libraries (${target} ${LIBS})
-	set_target_properties (${target} PROPERTIES
+	set (modeltarget INScoreModel)
+	add_library(${modeltarget} SHARED ${SRC} ${HEADERS})
+	target_compile_definitions (${modeltarget} PRIVATE ${DEFS})
+	target_include_directories (${modeltarget} PRIVATE ${INCDIRS})
+	target_link_libraries (${modeltarget} ${LIBS})
+	set_target_properties (${modeltarget} PROPERTIES
 			RUNTIME_OUTPUT_DIRECTORY  ${LIBDIR}
 			RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
 			ARCHIVE_OUTPUT_DIRECTORY  ${LIBDIR}
 			ARCHIVE_OUTPUT_DIRECTORY_RELEASE  ${LIBDIR}
 			LIBRARY_OUTPUT_DIRECTORY ${LIBDIR}
 			LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIBDIR}
-			PUBLIC_HEADER "${PUBLICHEADERS}"
 			VERSION ${VERSION}
 			SOVERSION ${SOVERS}
 	)
@@ -321,11 +318,11 @@ if (MODEL)
 	set (testappl INScoreModelTest)
 	add_executable( ${testappl} ${ROOT}/tools/TestModel/main.cpp )
 	target_include_directories (${testappl} PRIVATE ${INSCOREDIR}/interface)
-	target_link_libraries( ${testappl} ${target})
+	target_link_libraries( ${testappl} ${modeltarget})
 	set_target_properties(${testappl}  PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY ${BINDIR}
 		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BINDIR})
-	add_dependencies(${testappl} ${target})
+	add_dependencies(${testappl} ${modeltarget})
 endif(MODEL)
 
 
@@ -336,52 +333,121 @@ if (NOT QTVIEW)
 	RETURN()
 endif()
 
-
-message (STATUS "Install location is ${CMAKE_INSTALL_PREFIX}")
-
-if (APPLE OR WIN32)
-set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX}/bin)
-set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/lib)
-set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/examples)
-set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/bundles)
-set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/share/inscore/tools)
-else()
-set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX}/bin)
-set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/lib)
-set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/examples)
-set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/bundles)
-set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/share/inscore/tools)
+if (APPLE)
+	set (CMAKE_INSTALL_PREFIX $ENV{HOME}/INScore-${VERSION})
+endif()
+if (DEFINED PREFIX)
+	set (CMAKE_INSTALL_PREFIX ${PREFIX})
 endif()
 
+message (STATUS "Install location is ${CMAKE_INSTALL_PREFIX}, use -DPREFIX option to change")
+
+if (APPLE OR WIN32)
+	set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX})
+	set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/dev)
+	set (INSTALL_INC 		${CMAKE_INSTALL_PREFIX}/dev/include)
+	set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/Examples)
+	set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/Bundles)
+	set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/Tools)
+	set (INSTALL_DOC 		${CMAKE_INSTALL_PREFIX}/Documentation)
+else()
+	set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX}/bin)
+	set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/lib)
+	set (INSTALL_INC 		${CMAKE_INSTALL_PREFIX}/include/inscore)
+	set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/examples)
+	set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/bundles)
+	set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/share/inscore/tools)
+	set (INSTALL_DOC 		${CMAKE_INSTALL_PREFIX}/share/inscore/doc)
+endif()
+set (installtargets 	${viewer} ${ibundle} ${libtarget})
+
 ####################################
-# install the faust compiler and libraries
 if (PACK)
 	set (CMAKE_INSTALL_PREFIX .)
 endif()
 
-install ( TARGETS ${viewer} ${ibundle} ${target}
+if (APPLE)
+install ( CODE "message (STATUS \"Call macdeployqt\")"
+		  CODE "execute_process ( COMMAND macdeployqt ${CMAKE_CURRENT_SOURCE_DIR}/bin/${viewer}.app )"
+)
+elseif(WIN32)
+install ( CODE
+	execute_process ( COMMAND windeployqt ${CMAKE_CURRENT_SOURCE_DIR}/bin/${viewer}.exe )
+)
+endif()
+
+####################################
+# install compiled resources
+install ( TARGETS ${installtargets}
 	RUNTIME DESTINATION ${INSTALL_BIN}
-	BUNDLE DESTINATION ${INSTALL_BIN}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${INSTALL_LIB}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/${INSTALL_LIB}
+	BUNDLE DESTINATION  ${INSTALL_BIN}
+    LIBRARY DESTINATION ${INSTALL_LIB}
+    ARCHIVE DESTINATION ${INSTALL_LIB}
+    PUBLIC_HEADER DESTINATION ${INSTALL_INC}
 )
 
 ####################################
-# install examples
+# install readme
+if (APPLE OR WIN32)
 install (
-    DIRECTORY     ${ROOT}/scripts/Standalone DESTINATION ${INSTALL_SAMPLES}
+    FILES   ${ROOT}/package/ReadMe.html DESTINATION ${CMAKE_INSTALL_PREFIX}
+    PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+)
+endif()
+
+####################################
+# install documentation
+install (
+    DIRECTORY     ${ROOT}/package/doc/ DESTINATION ${INSTALL_DOC}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
     	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
     PATTERN ".DS_Store" EXCLUDE
 )
+
+
+####################################
+# install examples
+set (EXEMPLES 	"Jeu est au autre"
+				M-sync-scores
+				MP-Turenas
+				MP-cursors
+				MP-first-demo
+				MP-graphsig-sinus
+				MP-graphsig-var
+				MP-interaction
+				MP-sync-cars
+				MP-sync-train
+				Max-tools
+				Perception
+				PureData-tools
+				Standalone
+)
+foreach (EX ${EXEMPLES})
+	set (EXFOLDERS ${EXFOLDERS} ${ROOT}/scripts/${EX})
+endforeach()
 install (
-    DIRECTORY     "${ROOT}/scripts/Jeu est au autre" DESTINATION ${INSTALL_SAMPLES}
+    DIRECTORY     ${EXFOLDERS} DESTINATION ${INSTALL_SAMPLES}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
     	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
     PATTERN ".DS_Store" EXCLUDE
     PATTERN "Paths.pdf" EXCLUDE
+)
+install (
+    FILES   ${ROOT}/scripts/readme.md DESTINATION ${INSTALL_SAMPLES}
+    PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+)
+
+####################################
+# install guido examples
+install (
+    DIRECTORY   ${GUIDOLIB}/gmn-examples/examples/ DESTINATION ${CMAKE_INSTALL_PREFIX}/GMN-Examples
+    FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+    DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+    	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+    PATTERN ".DS_Store" EXCLUDE
+    PATTERN "ShetMusic" EXCLUDE
 )
 
 ####################################
@@ -402,3 +468,44 @@ install (
     PATTERN ".DS_Store" EXCLUDE
     PATTERN ".*.jpg" EXCLUDE
 )
+
+####################################
+# install interfaces
+install (
+    DIRECTORY     "${ROOT}/interfaces" DESTINATION ${CMAKE_INSTALL_PREFIX}
+    FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+    DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+    	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+    PATTERN ".DS_Store" EXCLUDE
+)
+
+####################################
+# install fonts
+if (UNIX AND NOT APPLE)
+	set (INSTALL_FONTS /usr/share/fonts/inscore)
+else ()
+	set (INSTALL_FONTS ${CMAKE_INSTALL_PREFIX}/Fonts)
+endif()
+set (FONTS ${GUIDOLIB}/src/guido2.ttf ${ROOT}/rsrc/fonts/Carlito-Regular.ttf)
+install (
+    FILES   ${FONTS} DESTINATION ${INSTALL_FONTS}
+    PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+)
+
+####################################
+# install libmusicxml
+if (APPLE)
+	file (GLOB OLIBS ${CMAKE_CURRENT_SOURCE_DIR}/lib/libmusicxml2.*)
+	set (INSTALL_OLIB ${INSTALL_BIN}/${viewer}.app/Contents/Frameworks)
+elseif (WIN32)
+	set (OLIBS ${GUIDO_DLL} ${LIBXML}/build/lib/musicxml2.dll)
+	set (INSTALL_OLIB ${INSTALL_BIN})
+else ()
+	file (GLOB OLIBS ${CMAKE_CURRENT_SOURCE_DIR}/lib/libmusicxml2.*  ${CMAKE_CURRENT_SOURCE_DIR}/lib/libGUIDOEngine.*)
+	set (INSTALL_OLIB ${INSTALL_LIB})
+endif()
+install (
+	FILES   ${OLIBS} DESTINATION ${INSTALL_OLIB}
+	PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+)
+

@@ -15,11 +15,10 @@ WASMDIR  	?= wasmdir
 MODELDIR  	?= modeldir
 ANDROIDDIR  ?= androiddir
 
-PREFIX ?= $(HOME)/INScore
-
 system	:= $(shell uname -s)
 # normalizes MINGW versions
-system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
+system  := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
+VERSION := $(shell cat ../version.txt)
 
 MOBILESCRIPTS  := ../scripts/mobile
 MODULESCONFIGS := $(wildcard modules/*.cmake)
@@ -42,7 +41,7 @@ all :
 	$(MAKE) inscore
 
 test:
-	echo HOME $(HOME)
+	echo PREFIX $(PREFIX)
 
 help :
 	@echo "========== INScore project Makefile =========="
@@ -133,6 +132,8 @@ cmake: $(INSCOREDIR)
 #===============================================================
 modules:
 	$(MAKE) -C ../modules
+	cp -a ../modules/guidolib/build/lib/libGUIDOEngine* lib
+	cp -a ../modules/libmusicxml/build/lib/libmusicxml2* lib
 
 install_modules:
 	$(MAKE) -C ../modules install
@@ -152,8 +153,8 @@ modules_android:
 # installation
 #===============================================================
 install:
-	$(MAKE) cmake CMAKEOPTS="-DCMAKE_INSTALL_PREFIX=$(PREFIX)"
 	$(CMAKE) --build $(INSCOREDIR) --config Release --target install
+
 
 # ios :
 # 	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir

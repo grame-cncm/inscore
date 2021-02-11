@@ -14,9 +14,9 @@ set (IBUNDLEDIR  ${ROOT}/tools/iBundle)
 set(CMAKE_AUTORCC ON)
 file (GLOB VIEWER_SRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.cpp)
 file (GLOB VIEWER_HEADERS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRCDIR}/inscoreviewer/qtview/*.h)
-#file (GLOB VIEWER_LUGINS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBXML}/build/lib/libmusicxml2*.dylib)
+#file (GLOB VIEWER_PLUGINS 	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${LIBXML}/build/lib/libmusicxml2*.dylib)
 
-set (VIEWER_LIBS ${target} ${QT_LIBRARIES})
+set (VIEWER_LIBS ${QT_LIBRARIES})
 set (VIEWER_INCLUDE_DIRS 
 	${SRCDIR}/inscore/interface 
 	${QTVIEW_INCLUDE_DIRS} 
@@ -25,7 +25,7 @@ set (VIEWER_INCLUDE_DIRS
 set(MACOSX_BUNDLE_ICON_FILE INScoreViewer.icns)
 set(VIEWER_ICON "${ROOT}/rsrc/INScoreViewer.icns")
 set_source_files_properties(${VIEWER_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-#set_source_files_properties(${APPPLUGINS} PROPERTIES MACOSX_PACKAGE_LOCATION "PlugIns")
+#set_source_files_properties(${VIEWER_PLUGINS} PROPERTIES MACOSX_PACKAGE_LOCATION "PlugIns")
 
 set (VIEWER_RSRC "${ROOT}/rsrc/inscore.qrc"  ${VIEWER_ICON})
 
