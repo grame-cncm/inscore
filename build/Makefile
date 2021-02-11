@@ -22,9 +22,10 @@ VERSION := $(shell cat ../version.txt)
 
 MOBILESCRIPTS  := ../scripts/mobile
 MODULESCONFIGS := $(wildcard modules/*.cmake)
+PKGDIR := $(shell pwd)/INScore-$(VERSION)
 
 ifeq ($(system), Darwin)
-	MAKEFILE = INScore.xcodeproj
+	MAKEFILE = Makefile
 endif
 
 ifeq ($(system), MINGW)
@@ -41,7 +42,7 @@ all :
 	$(MAKE) inscore
 
 test:
-	echo PREFIX $(PREFIX)
+	echo PKGDIR $(PKGDIR)
 
 help :
 	@echo "========== INScore project Makefile =========="
@@ -55,6 +56,7 @@ help :
 	@echo "  ios           : build for iOS"
 	@echo "  android       : build for android"
 	@echo "  install       : install the package"
+	@echo "  package       : build the inscore package (MacOS only)"
 	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
 	@echo "       with XXX the device serial number (can be retrieved using 'make devandroid')"
 	@echo "       DEVICE is optional when only one Android device is connected"
@@ -150,10 +152,16 @@ modules_android:
 
 
 #===============================================================
-# installation
+# installation and packaging
 #===============================================================
 install:
 	$(CMAKE) --build $(INSCOREDIR) --config Release --target install
+
+package:
+	$(MAKE) cmake CMAKEOPTS="-DPREFIX=$(PKGDIR)"
+	$(CMAKE) --build $(INSCOREDIR) --config Release --target install
+	hdiutil create INScore-$(VERSION).dmg -fs HFS+ -srcfolder $(PKGDIR) -format UDBZ -ov
+	@echo "Warning: install location has moved to $(PKGDIR)"
 
 
 # ios :

@@ -387,10 +387,10 @@ install ( TARGETS ${installtargets}
 )
 
 ####################################
-# install readme
+# install readme and changelog
 if (APPLE OR WIN32)
 install (
-    FILES   ${ROOT}/package/ReadMe.html DESTINATION ${CMAKE_INSTALL_PREFIX}
+    FILES   ${ROOT}/package/ReadMe.html ${ROOT}/src/changelog.txt DESTINATION ${CMAKE_INSTALL_PREFIX}
     PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 )
 endif()
@@ -509,3 +509,26 @@ install (
 	PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 )
 
+
+####################################
+# cpack section
+####################################
+set (CPACK_PACKAGE_NAME   "INScore")
+set (CPACK_PACKAGE_VENDOR "GRAME")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "INScore - an environment for the design of interactive, augmented, dynamic music scores.")
+set (CPACK_PACKAGE_VERSION   ${VERSION})
+set (CPACK_PACKAGE_VERSION_MAJOR   ${VERSION_MAJOR})
+set (CPACK_PACKAGE_VERSION_MINOR   ${VERSION_MINOR})
+set (CPACK_PACKAGE_VERSION_PATCH   ${VERSION_PATCH})
+
+set (CPACK_MONOLITHIC_INSTALL true)
+set (CPACK_RESOURCE_FILE_LICENSE  ${ROOT}/src/license.txt)
+set (CPACK_PACKAGE_INSTALL_DIRECTORY  INScore)
+
+####################################
+# NSIS specific section
+set (CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
+set (CPACK_NSIS_MODIFY_PATH on)
+set (CPACK_NSIS_MUI_ICON "${ROOT}/rsrc/ITLViewer.ico")
+
+include (CPack)
