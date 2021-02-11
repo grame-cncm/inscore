@@ -7,7 +7,7 @@ set (INSCOREDIR  ${SRCDIR}/inscore)
 set (INSCORE2DIR ${SRCDIR}/inscore2)
 set (MAPDIR      ${SRCDIR}/libmapping)
 set (QARCHIVE 	 ${SRCDIR}/QArchive)
-set (IBUNDLEDIR  ${ROOT}/tools/iBundle)
+set (IBUNDLEDIR  ${ROOT}/tools/IBundle)
 
 #######################################
 # Qt settings
