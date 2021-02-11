@@ -339,11 +339,19 @@ endif()
 
 message (STATUS "Install location is ${CMAKE_INSTALL_PREFIX}")
 
+if (APPLE OR WIN32)
 set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX}/bin)
 set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/lib)
 set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/examples)
 set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/bundles)
 set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/share/inscore/tools)
+else()
+set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX}/bin)
+set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/lib)
+set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/examples)
+set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/bundles)
+set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/share/inscore/tools)
+endif()
 
 ####################################
 # install the faust compiler and libraries
@@ -354,6 +362,8 @@ endif()
 install ( TARGETS ${viewer} ${ibundle} ${target}
 	RUNTIME DESTINATION ${INSTALL_BIN}
 	BUNDLE DESTINATION ${INSTALL_BIN}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${INSTALL_LIB}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/${INSTALL_LIB}
 )
 
 ####################################
