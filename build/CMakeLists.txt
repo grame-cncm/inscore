@@ -53,6 +53,10 @@ if (MODEL)
 endif()
 
 #######################################
+# set sub modules path
+set (CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} modules)
+
+#######################################
 # set directories for src and headers.
 set (SRCDIR  	 ${ROOT}/src)
 set (INSCOREDIR  ${SRCDIR}/inscore)
@@ -92,7 +96,6 @@ set (INSCOREDIRS
 	${MAPPINGDIR}/segments
 	
 	${JSON}
-#	${JSON}/parser
 )
 
 #######################################
@@ -113,7 +116,6 @@ endforeach()
 
 #######################################
 # guidoar settings
-set (GUIDOAR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 find_package(GUIDOAR REQUIRED)
 set (SRC ${CORESRC} ${GUIDOAR_SRC})
 set (HEADERS ${COREHEADERS} ${GUIDOAR_HEADERS})
@@ -121,7 +123,6 @@ set (INCDIRS ${INCDIRS} ${GUIDOAR_INCLUDE_DIRS})
 
 #######################################
 # guido settings
-set (GUIDO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 find_package(GUIDO REQUIRED)
 set (INCDIRS ${INCDIRS} ${GUIDO_INCLUDE_DIRS})
 set (LIBS ${LIBS} ${GUIDO_LIBRARIES})
@@ -152,6 +153,12 @@ endif()
 
 
 #######################################
+# android section
+if (ANDROID)
+	find_package(Android REQUIRED)
+endif()
+
+#######################################
 # Output folders 
 set (BINDIR ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
@@ -160,10 +167,7 @@ set (LIBTYPE SHARED)  # by default, generates shared libraries
 #######################################
 # Qt View settings
 if (QTVIEW)
-	set (QTVIEW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 	find_package(QTVIEW REQUIRED)
-
-	set (OSC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 	find_package(OSC REQUIRED)
 
 	set (DEFS ${DEFS} ${QTVIEW_DEFINITIONS})
@@ -179,7 +183,6 @@ if (QTVIEW)
 	endif()
 
 	if (IOS)
-		set (IOS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 		find_package(IOS REQUIRED)
 		
 		set (DEFS ${DEFS} ${IOS_DEFINITIONS})
@@ -224,7 +227,6 @@ if (QTVIEW)
 
 	#######################################
 	# viewer settings
-	set (VIEWER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 	find_package(VIEWER REQUIRED)
 
 	if (WIN32)
@@ -251,7 +253,6 @@ if (QTVIEW)
 
 	#######################################
 	# ibundle settings
-	set (IBUNDLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 	find_package(IBUNDLE REQUIRED)
 
 	set (ibundle IBundle)
@@ -269,7 +270,6 @@ endif(QTVIEW)
 #######################################
 # WASM settings
 if (WASM)
-	set (WASM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 	find_package(WASM REQUIRED)
 	set (SRC ${SRC} ${WASM_SRC})
 	set (HEADERS ${HEADERS} ${WASM_HEADERS})
