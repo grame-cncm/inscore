@@ -347,16 +347,20 @@ if (APPLE OR WIN32)
 	set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/dev)
 	set (INSTALL_INC 		${CMAKE_INSTALL_PREFIX}/dev/include)
 	set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/Examples)
+	set (INSTALL_GMN_SAMPLES 	${CMAKE_INSTALL_PREFIX}/GMN-Examples)
 	set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/Bundles)
 	set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/Tools)
+	set (INSTALL_INTERFACES 	${CMAKE_INSTALL_PREFIX})
 	set (INSTALL_DOC 		${CMAKE_INSTALL_PREFIX}/Documentation)
 else()
 	set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX}/bin)
 	set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/lib)
 	set (INSTALL_INC 		${CMAKE_INSTALL_PREFIX}/include/inscore)
 	set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/examples)
+	set (INSTALL_GMN_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/GMN-Examples)
 	set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/bundles)
 	set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/share/inscore/tools)
+	set (INSTALL_INTERFACES 	${CMAKE_INSTALL_PREFIX}/share/inscore)
 	set (INSTALL_DOC 		${CMAKE_INSTALL_PREFIX}/share/inscore/doc)
 endif()
 set (installtargets 	${viewer} ${ibundle} ${libtarget})
@@ -445,7 +449,7 @@ install (
 ####################################
 # install guido examples
 install (
-    DIRECTORY   ${GUIDOLIB}/gmn-examples/examples/ DESTINATION ${CMAKE_INSTALL_PREFIX}/GMN-Examples
+    DIRECTORY   ${GUIDOLIB}/gmn-examples/examples/ DESTINATION ${INSTALL_GMN_SAMPLES}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
     	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
@@ -475,7 +479,7 @@ install (
 ####################################
 # install interfaces
 install (
-    DIRECTORY     "${ROOT}/interfaces" DESTINATION ${CMAKE_INSTALL_PREFIX}
+    DIRECTORY     "${ROOT}/interfaces" DESTINATION ${INSTALL_INTERFACES}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
     	GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
@@ -485,7 +489,7 @@ install (
 ####################################
 # install fonts
 if (UNIX AND NOT APPLE)
-	set (INSTALL_FONTS /usr/share/fonts/inscore)
+	set (INSTALL_FONTS ${CMAKE_INSTALL_PREFIX}/share/fonts/inscore)
 else ()
 	set (INSTALL_FONTS ${CMAKE_INSTALL_PREFIX}/Fonts)
 endif()
