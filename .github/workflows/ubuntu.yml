@@ -33,9 +33,7 @@ jobs:
         run: sudo apt-get install -y libmicrohttpd-dev
 
       - name: Build submodules
-        run: |
-         make -C build modules
-         sudo make -C build install_modules
+        run: make -C build modules
 
       - name: Build inscore
         run: make -C build inscore
