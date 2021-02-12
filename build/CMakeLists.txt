@@ -142,7 +142,12 @@ elseif (APPLE)
 		set ( DEFS ${DEFS} -DMACOS)
 	endif()
 elseif(UNIX)
-	set ( DEFS ${DEFS} -D__LINUX__ -DOSC_HOST_LITTLE_ENDIAN)
+	set ( DEFS ${DEFS} -D__LINUX__)
+endif()
+include (TestBigEndian)
+TEST_BIG_ENDIAN (BIGENDIAN)
+if (NOT BIGENDIAN)
+	set ( DEFS ${DEFS} -DOSC_HOST_LITTLE_ENDIAN -D__LITTLE_ENDIAN__)
 endif()
 
 
