@@ -541,57 +541,58 @@ SINode evaluator::evalMath (const SINode& node, const TEnv& env)
 		SINode en = evalQuest (node, l);
 		if (node->address()) en->setAddress(true);
 		return en;
-//		return evalQuest (node, l);
 	}
 
 	TType exprType = getType (l);
-	TCreateFunction f;
 	if (exprType == kDefer)
 		return node->clone(l);
 	
-	else switch (t) {
-		case INode::kAdd:		out = evalAdd		(node, l, exprType); break;
-		case INode::kSub:		out = evalSub		(node, l, exprType); break;
-		case INode::kDiv:		out = evalDiv		(node, l, exprType); break;
-		case INode::kMult:		out = evalMult		(node, l, exprType); break;
-		case INode::kModulo:	out = evalModulo	(node, l, exprType); break;
-		case INode::kNeg:		out = evalNeg		(node, l, exprType); break;
-		case INode::kEq:		out = evalEq		(node, l, exprType); break;
-		case INode::kGreater:	out = evalGreater	(node, l, exprType); break;
-		case INode::kGreatereq:	out = evalGreatereq (node, l, exprType); break;
-		case INode::kLess:		out = evalLess		(node, l, exprType); break;
-		case INode::kLesseq:	out = evalLesseq	(node, l, exprType); break;
-		case INode::kMin:		out = evalMin		(node, l, exprType); break;
-		case INode::kMax:		out = evalMax		(node, l, exprType); break;
-		case INode::kHas:		out = evalHas		(node, l); break;
+	else {
+		TCreateFunction f;
+		switch (t) {
+			case INode::kAdd:		out = evalAdd		(node, l, exprType); break;
+			case INode::kSub:		out = evalSub		(node, l, exprType); break;
+			case INode::kDiv:		out = evalDiv		(node, l, exprType); break;
+			case INode::kMult:		out = evalMult		(node, l, exprType); break;
+			case INode::kModulo:	out = evalModulo	(node, l, exprType); break;
+			case INode::kNeg:		out = evalNeg		(node, l, exprType); break;
+			case INode::kEq:		out = evalEq		(node, l, exprType); break;
+			case INode::kGreater:	out = evalGreater	(node, l, exprType); break;
+			case INode::kGreatereq:	out = evalGreatereq (node, l, exprType); break;
+			case INode::kLess:		out = evalLess		(node, l, exprType); break;
+			case INode::kLesseq:	out = evalLesseq	(node, l, exprType); break;
+			case INode::kMin:		out = evalMin		(node, l, exprType); break;
+			case INode::kMax:		out = evalMax		(node, l, exprType); break;
+			case INode::kHas:		out = evalHas		(node, l); break;
 
-		case INode::kSin:		out = evalSin	(getFArgValue(node, l, f), f); break;
-		case INode::kCos:		out = evalCos	(getFArgValue(node, l, f), f); break;
-		case INode::kTan:		out = evalTan	(getFArgValue(node, l, f), f); break;
-		case INode::kASin:		out = evalASin	(getFArgValue(node, l, f), f); break;
-		case INode::kACos:		out = evalACos	(getFArgValue(node, l, f), f); break;
-		case INode::kATan:		out = evalATan	(getFArgValue(node, l, f), f); break;
-		case INode::kSinh:		out = evalSinh	(getFArgValue(node, l, f), f); break;
-		case INode::kCosh:		out = evalCosh	(getFArgValue(node, l, f), f); break;
-		case INode::kTanh:		out = evalTanh	(getFArgValue(node, l, f), f); break;
-		case INode::kASinh:		out = evalASinh	(getFArgValue(node, l, f), f); break;
-		case INode::kACosh:		out = evalACosh	(getFArgValue(node, l, f), f); break;
-		case INode::kATanh:		out = evalATanh	(getFArgValue(node, l, f), f); break;
+			case INode::kSin:		{ float value = getFArgValue(node, l, f); out = evalSin	(value, f); break; }
+			case INode::kCos:		{ float value = getFArgValue(node, l, f); out = evalCos	(value, f); break; }
+			case INode::kTan:		{ float value = getFArgValue(node, l, f); out = evalTan	(value, f); break; }
+			case INode::kASin:		{ float value = getFArgValue(node, l, f); out = evalASin	(value, f); break; }
+			case INode::kACos:		{ float value = getFArgValue(node, l, f); out = evalACos	(value, f); break; }
+			case INode::kATan:		{ float value = getFArgValue(node, l, f); out = evalATan	(value, f); break; }
+			case INode::kSinh:		{ float value = getFArgValue(node, l, f); out = evalSinh	(value, f); break; }
+			case INode::kCosh:		{ float value = getFArgValue(node, l, f); out = evalCosh	(value, f); break; }
+			case INode::kTanh:		{ float value = getFArgValue(node, l, f); out = evalTanh	(value, f); break; }
+			case INode::kASinh:		{ float value = getFArgValue(node, l, f); out = evalASinh	(value, f); break; }
+			case INode::kACosh:		{ float value = getFArgValue(node, l, f); out = evalACosh	(value, f); break; }
+			case INode::kATanh:		{ float value = getFArgValue(node, l, f); out = evalATanh	(value, f); break; }
 
-		case INode::kExp: 		out = evalExp	(getFArgValue(node, l, f), f); break;
-		case INode::kLog: 		out = evalLog	(getFArgValue(node, l, f), f); break;
-		case INode::kLog10: 	out = evalLog10 (getFArgValue(node, l, f), f); break;
-		case INode::kLog2: 		out = evalLog2	(getFArgValue(node, l, f), f); break;
-		case INode::kSqrt: 		out = evalSqrt	(getFArgValue(node, l, f), f); break;
-		case INode::kCbrt: 		out = evalCbrt	(getFArgValue(node, l, f), f); break;
-		case INode::kCeil: 		out = evalCeil	(getFArgValue(node, l, f), f); break;
-		case INode::kFloor: 	out = evalFloor	(getFArgValue(node, l, f), f); break;
-		case INode::kRound: 	out = evalRound	(getFArgValue(node, l, f), f); break;
+			case INode::kExp: 		{ float value = getFArgValue(node, l, f); out = evalExp	(value, f); break; }
+			case INode::kLog: 		{ float value = getFArgValue(node, l, f); out = evalLog	(value, f); break; }
+			case INode::kLog10: 	{ float value = getFArgValue(node, l, f); out = evalLog10 (value, f); break; }
+			case INode::kLog2: 		{ float value = getFArgValue(node, l, f); out = evalLog2	(value, f); break; }
+			case INode::kSqrt: 		{ float value = getFArgValue(node, l, f); out = evalSqrt	(value, f); break; }
+			case INode::kCbrt: 		{ float value = getFArgValue(node, l, f); out = evalCbrt	(value, f); break; }
+			case INode::kCeil: 		{ float value = getFArgValue(node, l, f); out = evalCeil	(value, f); break; }
+			case INode::kFloor: 	{ float value = getFArgValue(node, l, f); out = evalFloor	(value, f); break; }
+			case INode::kRound: 	{ float value = getFArgValue(node, l, f); out = evalRound	(value, f); break; }
 
-		case INode::kPow: 		out = evalPow	(node, l, exprType); break;
-		case INode::kRand: 		out = evalRand(); break;
-		default:
-			;
+			case INode::kPow: 		out = evalPow	(node, l, exprType); break;
+			case INode::kRand: 		out = evalRand(); break;
+			default:
+				;
+		}
 	}
 
 	if (node->address()) out->setAddress(true);
