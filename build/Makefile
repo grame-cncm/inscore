@@ -134,9 +134,9 @@ cmake: $(INSCOREDIR)
 #===============================================================
 modules:
 	$(MAKE) -C ../modules
-	[-d lib] || mkdir lib
-	cp -a ../modules/guidolib/build/lib/*GUIDOEngine* lib
-	cp -a ../modules/libmusicxml/build/lib/*musicxml2* lib
+	[ -d lib ] || mkdir lib
+	cp -af ../modules/guidolib/build/lib/*GUIDOEngine.[^f]* lib
+	cp -af ../modules/libmusicxml/build/lib/*musicxml2.[^f]* lib
 
 install_modules:
 	$(MAKE) -C ../modules install
