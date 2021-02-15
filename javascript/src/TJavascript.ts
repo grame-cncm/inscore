@@ -1,5 +1,6 @@
 
 ///<reference path="lib/libINScore.d.ts"/>
+///<reference path="inscore.ts"/>
 
 class TJavascript {
 
