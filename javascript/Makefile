@@ -1,20 +1,32 @@
+#################################################################
 #
-# 
+# INScore Javascript Library Makefile
+# (c) GRAME-CNCM 2020-2021
 #
+#################################################################
 
-.PHONY : 
+.PHONY : pages
 
 MAKE ?= make
 
-CHECKDIR := TSCheck
-TSDIR := src
-GLUEDIR := glueSrc
-TSLIB := $(TSDIR)/lib
-GLUESRC := $(wildcard $(GLUEDIR)/*.ts)
-LIBSRC := $(wildcard $(TSDIR)/*.ts)
-OUT	  := $(patsubst $(TSDIR)/%.ts, $(CHECKDIR)/%.js, $(TSSRC))
+# location of the typescript sources
+TSDIR    := src
+GLUEDIR  := glueSrc
+# name of the output folder for the 'check' target
+CHECKDIR ?= TSCheck
 
+# collect source files
+GLUESRC  := $(wildcard $(GLUEDIR)/*.ts)
+LIBSRC   := $(wildcard $(TSDIR)/*.ts)
+
+# check target dependendies
+CHECKOUT := $(LIBSRC:$(TSDIR)/%.ts=$(CHECKDIR)/%.js)
+
+# external typescript libraries location
+TSLIB    := $(TSDIR)/lib
+# grame required modules
 MODULES     := node_modules/@grame
+
 GUIDO       := $(MODULES)/guidolib
 GUIDOLIB    := $(TSLIB)/libGUIDOEngine.d.ts lib/libGUIDOEngine.js lib/libGUIDOEngine.wasm $(TSLIB)/guidoengine.ts
 GUIDOMODULE := $(GUIDOLIB:lib/%=$(GUIDO)/%)
@@ -25,18 +37,27 @@ XMLMODULE   := $(XMLLIB:lib/%=$(MXML)/%)
 
 FAUST        := $(MODULES)/libfaust
 FAUSTLIB     := lib/libfaust-wasm.js lib/libfaust-wasm.wasm lib/libfaust-wasm.data lib/FaustLibrary.js
-LIB  := inscoreview.js
-GLUE := inscoreglue.js
 
+# inscore wasm library location and output files
 WASMDIR      := ../build/lib
 INSCOREWASM  := lib/libINScore.js lib/libINScore.wasm
 
+# output libraries names
+LIB  := inscoreview.js
+GLUE := inscoreglue.js
+
+#===============================================================
+# default target: build everything (including wasm library)
+#===============================================================
 all :
-	git submodule update --init
 	$(MAKE) ts
 	$(MAKE) wasm
+	$(MAKE) pages
 
-help :
+test:
+	@echo CHECKOUT $(CHECKOUT)
+
+help : node_modules
 	@echo "This makefile is intended to build the INScore Javascript library."
 	@echo "Available targets are : "
 	@echo "  all     : call the ts and wasm tagrgets (default)"
@@ -50,9 +71,6 @@ help :
 	@echo "  modules   : install the external librairies (called by install target)"
 	@echo
 
-test:
-	@echo $(GLUE)
-	
 #===============================================================
 # building inscore ts view
 #===============================================================
@@ -68,11 +86,14 @@ $(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 # building inscore wasm library
 #===============================================================
 wasm: 
-	$(MAKE) -C ../build/model wasm
+	$(MAKE) -C ../build wasm
 
 #===============================================================
 # project management
 #===============================================================
+node_modules:
+	$(MAKE) install
+
 install: lib
 	npm install
 	$(MAKE) modules
@@ -80,43 +101,61 @@ install: lib
 lib:
 	mkdir lib
 
+
+#===============================================================
+# external modules
+#===============================================================
 modules: $(GUIDOLIB) $(XMLLIB) $(FAUSTLIB) $(INSCOREWASM)
 
 $(TSLIB)/libGUIDOEngine.d.ts : $(GUIDO)/libGUIDOEngine.d.ts
 	cp $< $@
-$(TSLIB)/guidoengine.ts:  $(GUIDO)/guidoengine.ts
+$(TSLIB)/guidoengine.ts   	 :  $(GUIDO)/guidoengine.ts
 	cp $< $@
-$(TSLIB)/libmusicxml.ts : $(MXML)/libmusicxml.ts
+$(TSLIB)/libmusicxml.ts   	 : $(MXML)/libmusicxml.ts
 	cp $< $@
-$(TSLIB)/libmusicxml.d.ts : $(MXML)/libmusicxml.d.ts
+$(TSLIB)/libmusicxml.d.ts	 : $(MXML)/libmusicxml.d.ts
 	cp $< $@
 
-lib/libINScore.js : $(WASMDIR)/libINScore.js
+#===============================================================
+# expected modules in lib folder - for testing purpose 
+lib/libINScore.js 		: $(WASMDIR)/libINScore.js
 	cp $< $@
-lib/libINScore.wasm : $(WASMDIR)/libINScore.wasm
+lib/libINScore.wasm 	: $(WASMDIR)/libINScore.wasm
 	cp $< $@
-lib/libfaust-wasm.js  : $(FAUST)/libfaust-wasm.js
+lib/libfaust-wasm.js  	: $(FAUST)/libfaust-wasm.js
 	cp $< $@
 lib/libfaust-wasm.wasm  : $(FAUST)/libfaust-wasm.wasm
 	cp $< $@
-lib/FaustLibrary.js : $(FAUST)//FaustLibrary.js
+lib/FaustLibrary.js 	: $(FAUST)//FaustLibrary.js
 	cp $< $@
 lib/libfaust-wasm.data  : $(FAUST)/libfaust-wasm.data
 	cp $< $@
-lib/libGUIDOEngine.js  : $(GUIDO)/libGUIDOEngine.js
+lib/libGUIDOEngine.js  	: $(GUIDO)/libGUIDOEngine.js
 	cp $< $@
 lib/libGUIDOEngine.wasm : $(GUIDO)/libGUIDOEngine.wasm
 	cp $< $@
-lib/libmusicxml.js : $(MXML)/libmusicxml.js
+lib/libmusicxml.js 		: $(MXML)/libmusicxml.js
 	cp $< $@
-lib/libmusicxml.wasm : $(MXML)/libmusicxml.wasm
+lib/libmusicxml.wasm 	: $(MXML)/libmusicxml.wasm
 	cp $< $@
 
+#===============================================================
+# libfaust-wasm.data not found if not along the test pages 
+# (should likely be solved on libfaust side) 
+pages: pages/libfaust-wasm.data
+
+pages/libfaust-wasm.data:
+	cd pages && ln -s ../lib/libfaust-wasm.data .
+
+#===============================================================
+# clean removes the output libraries and the check target output
 clean : 
-	rm -f $(VIEW)
-	rm -f $(OUT)
+	rm -f $(LIB) $(GLUE) $(CHECKOUT)
 
-check: $(CHECKDIR) $(OUT)
+#===============================================================
+# check compiles each source file individually to make sure that
+# dependencies are correctly described
+check: $(CHECKDIR) $(CHECKOUT)
 
 $(CHECKDIR) :
 	mkdir $(CHECKDIR)
