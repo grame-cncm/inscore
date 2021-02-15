@@ -7,3 +7,4 @@ test.js
 TSCheck
 
 lib/*
+pages/libfaust-wasm.data
