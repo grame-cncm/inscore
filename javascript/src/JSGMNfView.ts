@@ -14,6 +14,7 @@ class JSGMNfView extends JSGMNView {
 			if (text) {
 				return TASyncUpdate.update (oid, (obj) => this.gmn2svg(obj, text, guido.page));
 			}
+			return false;
 		});
 		return false;
 	}

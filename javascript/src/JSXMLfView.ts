@@ -14,6 +14,7 @@ class JSXMLfView extends JSXMLView {
 			if (text) {
 				return TASyncUpdate.update (oid, (obj) => this.xml2gmn(obj, text, xml.page));
 			}
+			else return false;
 		});
 		return false;
 	}

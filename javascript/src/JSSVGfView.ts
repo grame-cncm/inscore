@@ -12,6 +12,7 @@ class JSSVGfView extends JSSVGView
 			if (text) {
 				return TASyncUpdate.update (oid, (obj) => this.setSvg(obj, text));
 			}
+			else return false;
 		});
 		return false;
 	}

@@ -12,6 +12,7 @@ class JSHtmlfView extends JSHtmlView {
 			if (text) {
 				return TASyncUpdate.update (oid, (obj) => { this.setHtml(obj, text); return true;} );
 			}
+			else return false;
 		});
 		return false;
 	}

@@ -149,6 +149,7 @@ class JSFaustView extends JSSvgBase {
             this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
             obj.ready();
             INScore.objects().del (obj);
+            return JSFaustView.kSuccess;
         });
         return JSFaustView.kSuccess;
     }

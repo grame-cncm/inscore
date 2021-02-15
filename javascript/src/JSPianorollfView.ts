@@ -14,6 +14,7 @@ class JSPianoRollfView extends JSPianoRollView {
 			if (text) {
 				return TASyncUpdate.update (oid, (obj) => this.proll2svg(obj, proll, text));
 			}
+			else return false;
 		});
 		return false;
 	}
