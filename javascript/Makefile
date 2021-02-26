@@ -58,7 +58,7 @@ test:
 	@echo CHECKOUT $(CHECKOUT)
 
 help : node_modules
-	@echo "This makefile is intended to build the INScore Javascript library."
+	@echo "INScore Javascript library makefile."
 	@echo "Available targets are : "
 	@echo "  all     : call the ts and wasm tagrgets (default)"
 	@echo "  ts      : to build the view and glue libraries"
@@ -120,6 +120,8 @@ $(TSLIB)/libmusicxml.d.ts	 : $(MXML)/libmusicxml.d.ts
 # expected modules in lib folder - for testing purpose 
 lib/libINScore.js 		: $(WASMDIR)/libINScore.js
 	cp $< $@
+$(WASMDIR)/libINScore.js:
+	$(MAKE) wasm
 lib/libINScore.wasm 	: $(WASMDIR)/libINScore.wasm
 	cp $< $@
 lib/libfaust-wasm.js  	: $(FAUST)/libfaust-wasm.js
