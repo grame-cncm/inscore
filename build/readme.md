@@ -5,7 +5,7 @@ INScore build system
 ----------------------------------------------------------------------
 
 ----
-Buildtatus: ![Ubuntu](https://github.com/grame-cncm/inscore/workflows/Ubuntu/badge.svg)
+Build status: ![Ubuntu](https://github.com/grame-cncm/inscore/workflows/Ubuntu/badge.svg)
 ![MacOS](https://github.com/grame-cncm/inscore/workflows/MacOS/badge.svg)
 ![Windows](https://github.com/grame-cncm/inscore/workflows/Windows/badge.svg)
 ----

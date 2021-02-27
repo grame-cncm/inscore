@@ -12,13 +12,32 @@ set (CMAKE_AUTOMOC ON)
 
 #######################################
 # Qt settings
+if (QT6)
+	set (QTVERS Qt6)
+else()
+	set (QTVERS Qt5)
+endif()
 set (QTMODULES Core Gui Widgets Svg PrintSupport Multimedia MultimediaWidgets WebSockets Sensors Qml OpenGL)
 if (IOS)
 	set (QTMODULES ${QTMODULES} Quick QuickWidgets)
 else()
 	set (QTMODULES ${QTMODULES} OpenGL)
 endif()
-find_package(Qt5 COMPONENTS ${QTMODULES} REQUIRED)
+find_package(${QTVERS} COMPONENTS ${QTMODULES} REQUIRED)
+
+if (QT6)
+set (QT_INCLUDE_DIRS  ${Qt6Core_INCLUDE_DIRS}  
+				${Qt6Gui_INCLUDE_DIRS} ${Qt6Widget_INCLUDE_DIRS} ${Qt6Svg_INCLUDE_DIRS} 
+				${Qt6PrintSupport_INCLUDE_DIRS} ${Qt6Multimedia_INCLUDE_DIRS} 
+				${Qt6MultimediaWidgets_INCLUDE_DIRS} ${Qt6WebSockets_INCLUDE_DIRS} 
+				${Qt6Sensors_INCLUDE_DIRS} ${Qt6Qml_INCLUDE_DIRS})
+if (IOS)
+	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt6Quick_INCLUDE_DIRS} ${Qt6QuickWidgets_INCLUDE_DIRS})
+else()
+	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt6OpenGL_INCLUDE_DIRS})
+endif()
+
+else(QT6)
 set (QT_INCLUDE_DIRS  ${Qt5Core_INCLUDE_DIRS}  
 				${Qt5Gui_INCLUDE_DIRS} ${Qt5Widget_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS} 
 				${Qt5PrintSupport_INCLUDE_DIRS} ${Qt5Multimedia_INCLUDE_DIRS} 
@@ -29,14 +48,12 @@ if (IOS)
 else()
 	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS})
 endif()
-foreach (QTLIB ${QTMODULES})
-	set (QT_LIBRARIES ${QT_LIBRARIES} Qt5::${QTLIB})
-endforeach(QTLIB)
-
-set (QTVIEW_DEFINITIONS -DQTVIEW  -DQTJSENGINE)
-if (${Qt5Widgets_VERSION} VERSION_GREATER_EQUAL "5.11")
-	set ( QTVIEW_DEFINITIONS ${QTVIEW_DEFINITIONS} -DQTFONTMETRICS_511)
 endif()
+
+foreach (QTLIB ${QTMODULES})
+	set (QT_LIBRARIES ${QT_LIBRARIES} ${QTVERS}::${QTLIB})
+endforeach(QTLIB)
+set (QTVIEW_DEFINITIONS -DQTVIEW  -DQTJSENGINE)
 
 
 file (GLOB QTVIEW_SRC  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 

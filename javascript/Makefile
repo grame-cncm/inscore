@@ -61,8 +61,8 @@ help : node_modules
 	@echo "INScore Javascript library makefile."
 	@echo "Available targets are : "
 	@echo "  all     : call the ts and wasm tagrgets (default)"
-	@echo "  ts      : to build the view and glue libraries"
-	@echo "  wasm    : to build the wasm library"
+	@echo "  ts      : builds the view and glue libraries"
+	@echo "  wasm    : builds the wasm library"
 	@echo
 	@echo "Project management: "
 	@echo "  clean     : remove all outputs"
