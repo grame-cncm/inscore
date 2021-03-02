@@ -1,5 +1,5 @@
 
-///<reference path="JSPianoRollView.ts"/>
+///<reference path="JSPianorollView.ts"/>
 ///<reference path="TFileLoader.ts"/>
 ///<reference path="TASyncUpdate.ts"/>
 
