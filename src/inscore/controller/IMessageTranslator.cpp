@@ -63,6 +63,12 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["mp4"]	= "video";
 		fFileTypeTranslationTable["m4v"]	= "video";
 		fFileTypeTranslationTable["mov"]	= "video";
+		fFileTypeTranslationTable["mp3"]	= "audio";
+		fFileTypeTranslationTable["wav"]	= "audio";
+		fFileTypeTranslationTable["aiff"]	= "audio";
+		fFileTypeTranslationTable["aif"]	= "audio";
+		fFileTypeTranslationTable["aac"]	= "audio";
+		fFileTypeTranslationTable["m4a"]	= "audio";
 		fFileTypeTranslationTable["mid"]	= "pianorollf";
 		fFileTypeTranslationTable["midi"]	= "pianorollf";
 		fFileTypeTranslationTable["vob"]	= "video";
