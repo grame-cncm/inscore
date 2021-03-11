@@ -69,47 +69,21 @@ string ForwardEndPoint::IMessage2String (const IMessage * imsg, int id) {
 	return jstream.str();
 }
 
+void ForwardEndPoint::log  (const char * msg) {
+	if (fLog) fLog->print (msg);
+}
 
 //--------------------------------------------------------------------------
 class OSCForwarder : public ForwardEndPoint
 {
 	public:
-				 OSCForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url) {}
+				 OSCForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url, 0) {}
 		virtual ~OSCForwarder () {}
 		
 		void send (const IMessage * imsg) {
 			OSCStream::sendEvent (imsg, dest().fHostname, dest().fPort);
 		}
 };
-
-//#if HASWSSupport
-////--------------------------------------------------------------------------
-//// Web Socket Forwarder
-////--------------------------------------------------------------------------
-//class WSForwarder : public ForwardEndPoint
-//{
-//	int			fID = 1;
-//	QWebSocket	fWSocket;
-//
-//	public:
-//				 WSForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url), fWSocket("INScore") {
-//					QString tmp ("ws://");
-//					tmp += url.fHostname.c_str();
-//					QUrl dest (tmp);
-//					dest.setPort(url.fPort);
-//cerr << "new WSForwarder " << tmp.toStdString() << endl;
-//					fWSocket.open (dest);
-//				 }
-//		virtual ~WSForwarder () { fWSocket.close(); }
-//
-//		void send (const IMessage * imsg) {
-//cerr << "WSForwarder::send " << imsg << endl;
-//			string json = IMessage2String(imsg, fID++);
-//			qint64 n = fWSocket.sendTextMessage (QString(json.c_str()));
-//		}
-//};
-//#endif
-
 
 //--------------------------------------------------------------------------
 void Forwarder::forward(const IMessage * imsg)
@@ -151,7 +125,7 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 			switch (url.fProtocol) {
 #if HASWSSupport
 				case IMessage::TUrl::kWSProtocol:
-					fForwardList.push_back(new WSForwarder(url));
+					fForwardList.push_back(new WSForwarder(url, fLog));
 					break;
 #endif
 #if HASHTTPSupport

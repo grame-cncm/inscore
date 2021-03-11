@@ -43,11 +43,9 @@ class HTTPForwarder : public QTcpServer, public ForwardEndPoint
 
 	int			fID = 1;
 	std::vector<QTcpSocket*>	fClients;
-	IApplLog*	fLog;
 
 	void clear ();
 	void send (QTcpSocket *s, const char * msg);
-	void log  (const char * msg);
 
 	public:
 				 HTTPForwarder (const IMessage::TUrl& url, IApplLog* log);

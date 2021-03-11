@@ -31,33 +31,20 @@
 #include "HttpForwarder.h"
 #endif
 
-#include "Forwarder.h"
-#include "IApplVNodes.h"
-
-#include "json_object.h"
-#include "json_element.h"
-#include "json_parser.h"
-#include "json_stream.h"
-
 using namespace std;
-using namespace json;
 
 namespace inscore
 {
 
 #if HASHTTPSupport
 
-HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url, IApplLog* log) : fLog(log), ForwardEndPoint(url)
+HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url, IApplLog* log) : ForwardEndPoint(url, log)
 {
 	connect(this, &QTcpServer::newConnection, this, &HTTPForwarder::accept);
 	listen(QHostAddress::Any, url.fPort);
 }
 
 HTTPForwarder::~HTTPForwarder ()		{ close(); }
-
-void HTTPForwarder::log  (const char * msg) {
-	if (fLog) fLog->print (msg);
-}
 
 void HTTPForwarder::accept () {
 	QTcpSocket* socket = nextPendingConnection();
