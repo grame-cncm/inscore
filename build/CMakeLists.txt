@@ -74,6 +74,7 @@ set (LIBXML 	 ${ROOT}/modules/libmusicxml)
 
 set (INSCOREDIRS 
 	${INSCOREDIR}/ITLParser
+	${INSCOREDIR}/communication
 	${INSCOREDIR}/controller
 	${INSCOREDIR}/events
 	${INSCOREDIR}/expression

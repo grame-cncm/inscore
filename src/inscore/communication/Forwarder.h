@@ -45,6 +45,9 @@ class ForwardEndPoint
 
 		virtual void send (const IMessage * imsg) = 0;
 		const IMessage::TUrl& dest() const		{ return fDest; }
+
+	protected:
+		std::string IMessage2String (const IMessage * imsg, int id);
 };
 
 /*!
