@@ -87,6 +87,7 @@ $(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 #===============================================================
 wasm: 
 	$(MAKE) -C ../build wasm
+	$(MAKE) modules
 
 #===============================================================
 # project management
