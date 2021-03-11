@@ -27,9 +27,12 @@
 
 #include <vector>
 
+#include <QString>
 #include <QWebSocket>
+#include <QWebSocketServer>
 
 #include "Forwarder.h"
+#include "IApplVNodes.h"
 #include "IMessage.h"
 
 namespace inscore
@@ -38,16 +41,25 @@ namespace inscore
 //--------------------------------------------------------------------------
 // Web Socket Forwarder
 //--------------------------------------------------------------------------
-class WSForwarder : public ForwardEndPoint
+class WSForwarder : public QWebSocketServer, public ForwardEndPoint
 {
+	Q_OBJECT
+
 	int			fID = 1;
-	QWebSocket	fWSocket;
+	std::vector<QWebSocket *> fClients;		///< the clients list
+
+	void clear ();
+	void send (QWebSocket *s, const QString& msg);
 
 	public:
-				 WSForwarder (const IMessage::TUrl& url);
+				 WSForwarder (const IMessage::TUrl& url, IApplLog* log);
 		virtual ~WSForwarder ();
 
-		void 	send (const IMessage * imsg);
+		void send (const IMessage * imsg);
+
+	private Q_SLOTS:
+		void accept ();
+		void disconnect ();
 };
 
 

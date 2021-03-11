@@ -43,25 +43,53 @@ namespace inscore
 //--------------------------------------------------------------------------
 // Web Socket Forwarder
 //--------------------------------------------------------------------------
-WSForwarder::WSForwarder (const IMessage::TUrl& url) : ForwardEndPoint(url), fWSocket("INScore")
+WSForwarder::WSForwarder (const IMessage::TUrl& url, IApplLog* log) :
+	QWebSocketServer(QStringLiteral("INScore"), QWebSocketServer::NonSecureMode),
+	ForwardEndPoint(url, log)
 {
-	QString tmp ("ws://");
-	tmp += url.fHostname.c_str();
-	QUrl dest (tmp);
-	dest.setPort(url.fPort);
-cerr << "new WSForwarder " << tmp.toStdString() << endl;
-	fWSocket.open (dest);
+	connect(this, &QWebSocketServer::newConnection, this, &WSForwarder::accept);
+	listen(QHostAddress::Any, url.fPort);
 }
 
-WSForwarder::~WSForwarder ()
-{
-	fWSocket.close();
+WSForwarder::~WSForwarder ()	{ close(); }
+
+void WSForwarder::send (QWebSocket* socket, const QString& msg) {
+//cerr << "WSForwarder::send " << imsg << endl;
+	qint64 n = socket->sendTextMessage (msg);
 }
 
-void WSForwarder::send (const IMessage * imsg) {
-cerr << "WSForwarder::send " << imsg << endl;
-	std::string json = IMessage2String(imsg, fID++);
-	qint64 n = fWSocket.sendTextMessage (QString(json.c_str()));
+void WSForwarder::send (const IMessage * imsg)
+{
+	string msgStr = IMessage2String (imsg, fID++);
+	QString qstr (msgStr.c_str());
+	QString b64 = qstr.toUtf8().toBase64();
+	for (auto socket: fClients) {
+		send (socket, b64);
+	}
+}
+
+void WSForwarder::accept () {
+	QWebSocket* socket = nextPendingConnection();
+	if (!socket) return;
+
+	stringstream sstr;
+	sstr << "New WebSocket connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort;
+	log (sstr.str().c_str());
+	connect(socket, &QWebSocket::disconnected, this, &WSForwarder::disconnect);
+	fClients.push_back(socket);		// add the client to the clients list
+	socket->flush();
+	send (socket, "INScore");
+}
+
+void WSForwarder::disconnect () {
+	QWebSocket *socket = qobject_cast<QWebSocket *>(sender());
+	if (socket) {
+		stringstream sstr;
+		sstr  << "WebSocket client " << socket->peerAddress().toString().toStdString() << ":" << dest().fPort << " disconnected.";
+		log (sstr.str().c_str());
+		// Remove the client from the list
+		fClients.erase(std::remove(fClients.begin(), fClients.end(), socket), fClients.end());
+	}
 }
 
 
