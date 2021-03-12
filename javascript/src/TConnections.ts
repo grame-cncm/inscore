@@ -80,7 +80,7 @@ class TWSConnection extends TConnection {
 	connect (url: string) {
 		this.fSocket = new WebSocket(url);
 		this.fSocket.onopen = () => { console.log("Connection to " + this.fUrl + " established"); };
-		this.fSocket.onmessage = (event) => { this.processData (event.data) };
+		this.fSocket.onmessage = (event) => { this.processData (event) };
 		this.fSocket.onerror = (error: Event) => { console.log ("Waiting for connection to " + this.fUrl + " ...") };
 	}
 		
