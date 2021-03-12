@@ -46,6 +46,7 @@ extern const char* kbrowse_SetMethod;
 extern const char* kbrowse_SetMethod;
 extern const char* kbrushStyle_GetSetMethod;
 extern const char* kcancel_SetMethod;
+extern const char* kclass_GetSetMethod;
 extern const char* kclippitch_GetSetMethod;
 extern const char* kcliptime_GetSetMethod;
 extern const char* kclock_SetMethod;

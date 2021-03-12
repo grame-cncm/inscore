@@ -636,6 +636,8 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos (int masterId) const
 		infos.deleted = true;
 	else {
 		infos.newdata = fObject->newData();
+		infos.newclass = fObject->classChanged()	;
+		infos.classNames = fObject->getClass();
 		infos.updatepos = _getPosition (fObject, infos.position);
 		infos.updatepos |= _getSyncPosition (fObject, (const IObject*)masterId, infos.position);
 		infos.updatebrush = _getPenBrush (fObject, infos.position.pen);

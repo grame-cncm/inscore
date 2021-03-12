@@ -43,6 +43,7 @@ const char* kblue_GetSetMethod		= "blue";			// Get Set
 const char* kbrightness_GetSetMethod= "brightness";		// Get Set
 const char* kbrowse_SetMethod		= "browse";			// Set
 const char* kcancel_SetMethod		= "cancel";			// Set
+const char* kclass_GetSetMethod		= "class";			// Get Set
 const char* kcliptime_GetSetMethod	= "clipTime";		// Get Set
 const char* kclippitch_GetSetMethod	= "clipPitch";		// Get Set
 const char* kclock_SetMethod		= "clock";			// Set

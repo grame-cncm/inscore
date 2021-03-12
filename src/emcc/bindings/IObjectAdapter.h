@@ -91,6 +91,7 @@ struct JSUpdateInfos {
 	JSColor  	color;
 	JSEffect	effect;
 	JSEvents	events;
+	std::string	classNames;
 	bool updatepos = false;
 	bool updatebrush = false;
 	bool updatecolor = false;
@@ -99,6 +100,7 @@ struct JSUpdateInfos {
 	bool showmap = false;
 	bool deleted = false;
 	bool newdata = false;
+	bool newclass = false;
 };
 
 struct JSTextInfos {
