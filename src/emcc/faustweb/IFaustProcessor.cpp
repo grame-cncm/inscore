@@ -27,6 +27,7 @@
 #include <sstream>
 
 #include "IFaustProcessor.h"
+#include "IMessageHandlers.h"
 #include "IScene.h"
 #include "ITLError.h"
 #include "OSCAddress.h"
@@ -57,6 +58,7 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kplay_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fPlaying);
+	fGetMultiMsgHandlerMap[kui_GetMethod]	= TGetParamMultiMethodHandler<IFaustProcessor, SIMessageList (IFaustProcessor::*)() const>::create(this, &IFaustProcessor::getUI);
 	setPending ();
 }
 
@@ -71,6 +73,19 @@ void IFaustProcessor::setFaustUI (std::string type, std::string label, std::stri
 {
 	FaustProcessorUIElement elt(type, label, init, min, max, step);
 	fAddressSpace[address] = elt;
+}
+
+//--------------------------------------------------------------------------
+SIMessageList IFaustProcessor::getUI () const
+{
+	SIMessageList list = IMessageList::create();
+	for (auto elt: fAddressSpace) {
+		const FaustProcessorUIElement& ui = elt.second;
+		SIMessage msg = IMessage::create (getOSCAddress() + elt.first);
+		*msg << ui.fType << ui.fLabel << ui.fMin << ui.fMax << ui.fStep;
+		list->list().push_back (msg);
+	}
+	return list;
 }
 
 //--------------------------------------------------------------------------

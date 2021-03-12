@@ -188,6 +188,7 @@ const char* ksuccess_SetMethod      = "success";		// Set
 const char* ktempo_GetSetMethod		= "tempo";			// Get Set
 const char* ktime_GetSetMethod		= "time";			// Get Set
 const char* kticks_GetSetMethod		= "ticks";			// Get Set
+const char* kui_GetMethod			= "ui";				// Get
 const char* kversion_GetMethod		= "version";		// Get
 
 const char* kguidoVersion_GetMethod = "guido-version";	// Get

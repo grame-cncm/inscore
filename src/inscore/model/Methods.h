@@ -189,6 +189,7 @@ extern const char* ksystemCount_GetMethod;
 extern const char* ktempo_GetSetMethod;
 extern const char* kticks_GetSetMethod;
 extern const char* ktime_GetSetMethod;
+extern const char* kui_GetMethod;
 extern const char* kvdate_GetSetMethod;
 extern const char* kvduration_GetMethod;
 extern const char* kversion_GetMethod;
