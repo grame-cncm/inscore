@@ -14,13 +14,17 @@ It has been supported by the ANR
 ----------------------------------------------------
 Version 1.27
 - merge library branch to dev
+- new 'ui' message supported by 'faust' object (web version)
+- new 'ws' protocol supported by 'connect' message (web version)
+- new 'class' message supported by all objects (web version)
+- new 'audio' object (implemented in version 1.21 but not documented)
 
 ----------------------------------------------------
 Version 1.26
 - new 'faust' object (web version)
-- new 'connect' method (web version)
+- new 'connect' message (web version)
 - INScore Web version
-- forwarding mechanism extended with http and ws support
+- forwarding mechanism extended with http support
 - 'scale' message supported by log windows
 
 ----------------------------------------------------
