@@ -44,17 +44,19 @@
 #  include "VQtLocalMappingUpdater.h"
 #  include "VQtUpdater.h"
 
+#if defined(__MOBILE__)
+#  include "VMobileQtInit.h"
+#  include "VMobileQtUpdater.h"
+#  include "VQtLocalMappingUpdater.h"
+#endif
+
 #elif defined(NOVIEW) || defined(MODELONLY)
 # include "VoidUpdater.h"
 
 #elif defined(HTMLVIEW)
 # include "HTMLUpdater.h"
-
-#elif defined(__MOBILE__)
-#  include "VMobileQtInit.h"
-#  include "VMobileQtUpdater.h"
-#  include "VQtLocalMappingUpdater.h"
 #endif
+
 
 #ifdef EMCC
 #include "JSCall.h"
