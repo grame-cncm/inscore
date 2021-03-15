@@ -54,5 +54,6 @@ build/modeldir
 build/wasmdir
 build/bin
 build/lib
+build/xcode
 
 

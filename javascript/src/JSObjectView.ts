@@ -105,7 +105,11 @@ abstract class JSObjectView {
 			let r = this.getSyncRatio();
 			infos.position.scale /= r;
 		}
-		
+
+		if (infos.newclass) {
+			this.getElement().className = infos.classNames;	
+			force = true;
+		}
 		if (infos.updatecolor) 
 			this.updateColor(infos.color);
 		if (infos.updatebrush)

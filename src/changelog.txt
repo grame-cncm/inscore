@@ -14,13 +14,17 @@ It has been supported by the ANR
 ----------------------------------------------------
 Version 1.27
 - merge library branch to dev
+- new 'ui' message supported by 'faust' object (web version)
+- new 'ws' protocol supported by 'connect' message (web version)
+- new 'class' message supported by all objects (web version)
+- new 'audio' object (implemented in version 1.21 but not documented)
 
 ----------------------------------------------------
 Version 1.26
 - new 'faust' object (web version)
-- new 'connect' method (web version)
+- new 'connect' message (web version)
 - INScore Web version
-- forwarding mechanism extended with http and ws support
+- forwarding mechanism extended with http support
 - 'scale' message supported by log windows
 
 ----------------------------------------------------
@@ -30,6 +34,7 @@ Version 1.25
 ----------------------------------------------------
 Version 1.24
 - new inscore2 scripting language
+- new parse message supported at application and scene levels to select a language version 
 - log window supports the 'scale' message.
 - colors: supports html color names and hex values with 0x as prefix
 - supports absolute time segments in mappings

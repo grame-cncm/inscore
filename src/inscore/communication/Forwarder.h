@@ -27,6 +27,7 @@
 
 #include "IMessage.h"
 #include "IMessageHandlers.h"
+#include "IApplVNodes.h"
 
 #include <vector>
 
@@ -38,13 +39,18 @@ class IApplLog;
 class ForwardEndPoint
 {
 	IMessage::TUrl 	fDest;
+	IApplLog*	fLog = 0;
 
 	public:
-				 ForwardEndPoint (const IMessage::TUrl& url) : fDest(url) {}
+				 ForwardEndPoint (const IMessage::TUrl& url, IApplLog* log) : fDest(url), fLog(log) {}
 		virtual ~ForwardEndPoint () {}
 
 		virtual void send (const IMessage * imsg) = 0;
 		const IMessage::TUrl& dest() const		{ return fDest; }
+
+	protected:
+		void log  (const char * msg);
+		std::string IMessage2String (const IMessage * imsg, int id);
 };
 
 /*!

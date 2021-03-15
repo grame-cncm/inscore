@@ -97,6 +97,7 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("color",   	&JSUpdateInfos::color)
 		.field("effect",   	&JSUpdateInfos::effect)
 		.field("events",   	&JSUpdateInfos::events)
+		.field("classNames",&JSUpdateInfos::classNames)
 		.field("updatepos", &JSUpdateInfos::updatepos)
 		.field("updatebrush", &JSUpdateInfos::updatebrush)
 		.field("updatecolor", &JSUpdateInfos::updatecolor)
@@ -104,7 +105,8 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("updateevents", &JSUpdateInfos::updateevents)
 		.field("showmap", 	&JSUpdateInfos::showmap)
 		.field("deleted", 	&JSUpdateInfos::deleted)
-		.field("newdata", 	&JSUpdateInfos::newdata);
+		.field("newdata", 	&JSUpdateInfos::newdata)
+		.field("newclass", 	&JSUpdateInfos::newclass);
 	
 	value_object<JSTextInfos>("JSTextInfos")
 		.field("text",  	&JSTextInfos::text)

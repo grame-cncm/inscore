@@ -68,7 +68,6 @@ QString CustomScripts::osname()
 #ifdef INSCORE_IOS
 	return "iOS";
 #endif
-
 }
 
 int CustomScripts::osid()
@@ -88,7 +87,6 @@ int CustomScripts::osid()
 #ifdef INSCORE_IOS
 	return 2;
 #endif
-
 }
 
 QJSValue CustomScripts::readfile(const QString &filename)

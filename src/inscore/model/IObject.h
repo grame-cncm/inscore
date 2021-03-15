@@ -101,8 +101,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		typedef std::vector<nodePtr>	subnodes;	///< the node sub elements container type
 
 	private:
-		std::string		fName;		///< the object name, used as identifier
-		subnodes		fSubNodes;	///< child objects list
+		std::string		fName;			///< the object name, used as identifier
+		subnodes		fSubNodes;		///< child objects list
+		std::string		fClassNames;	///< the object CSS classes (used by the web version, usunsed by the native version)
+		bool			fClassChanged = false;
  
 
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
@@ -433,6 +435,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual SIAppl			getAppl();
 		virtual const IAppl*	getAppl() const;
 
+		/// \brief gives the classNames attribute status
+		virtual bool 		  	classChanged() 	{ return fClassChanged; }
+		virtual std::string 	getClass() 		{ return fClassNames; }
+
 		/// \brief gives the tree root object
 		virtual const IObject*	getRoot() const;
 		virtual IObject*		getRoot();
@@ -673,6 +679,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief the \c 'export' message handler (export object without children)
 		virtual MsgHandler::msgStatus exportMsg(const IMessage* msg);
+
+		/// \brief the \c 'class' message handler
+		virtual MsgHandler::msgStatus setClass(const IMessage* msg);
 
 		/// \brief the \c 'exportAll' message handler (export object with childrens)
 		virtual MsgHandler::msgStatus exportAllMsg(const IMessage* msg);

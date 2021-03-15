@@ -74,6 +74,7 @@ set (LIBXML 	 ${ROOT}/modules/libmusicxml)
 
 set (INSCOREDIRS 
 	${INSCOREDIR}/ITLParser
+	${INSCOREDIR}/communication
 	${INSCOREDIR}/controller
 	${INSCOREDIR}/events
 	${INSCOREDIR}/expression
@@ -254,6 +255,7 @@ if (QTVIEW)
 
 	#######################################
 	# ibundle settings
+if (NOT IOS)
 	find_package(IBUNDLE REQUIRED)
 
 	set (ibundle IBundle)
@@ -265,6 +267,7 @@ if (QTVIEW)
 		RUNTIME_OUTPUT_DIRECTORY  ${BINDIR}
 		RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${BINDIR}
 	)
+endif()
 
 endif(QTVIEW)
 
