@@ -31,6 +31,7 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QPdfWriter>
+#include <QtGlobal>
 
 #define PDF_FORMAT				QString(".pdf")
 #define DEFAULT_EXPORT_FORMAT	PDF_FORMAT
@@ -222,7 +223,11 @@ void VExport::exportScene( QGraphicsView * view , QString fileName )
             QPrinter printer (QPrinter::HighResolution);
             printer.setOutputFileName( QString(fileName) );
             printer.setOutputFormat( QPrinter::PdfFormat );
+#if QT_VERSION >= QT_VERSION_CHECK(5, 3, 0)
+            printer.setPageSize( QPageSize(size, QPageSize::Point) );
+#else
             printer.setPaperSize( size , QPrinter::Point );
+#endif
             paintOnDevice (&printer, view);
 #endif
         }
