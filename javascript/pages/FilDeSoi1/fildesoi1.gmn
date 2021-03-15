@@ -1,0 +1,13 @@
+{
+[
+	\title<"Fil de soi 1">
+	\title<"à Amèlia Mazarico", dy=-6, fsize=12pt, fattrib="i">
+	\composer<"Alain Bonardi", dy=3>
+	\pageFormat<w=21cm, h=29.7cm, lm=2cm, rm=2cm, tm=5cm, bm=2cm>
+	\systemFormat<dx=2cm>
+
+	\clef<"g"> \meter<"4/4"> 
+	\instrument<"Guitare", autopos="on", fsize=14pt>
+	\slur<dy=2, h=1.5, dx2=-3, dy2=6.5>(b2/4 _) _ _
+]
+}
