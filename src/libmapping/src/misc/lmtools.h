@@ -75,7 +75,7 @@ template <typename T> class smartdouble : public _smartdouble {
 template <> class smartdouble<int>  : public _smartdouble {
 	public:
 				 smartdouble (double v) : _smartdouble(v) {}
-		inline operator int () const		{ return lround(fValue); }
+		inline operator int () const		{ return (int)lround(fValue); }
 };
 
 /// see _smartdouble

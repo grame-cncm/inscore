@@ -128,7 +128,7 @@ class IFaustProcessor : public IRectShape
 
 		void setPlay (bool status) 		{ fPlaying = status; }
 		SIMessageList getPaths() const;
-		
+		SIMessageList getUI() const;
 		/// \brief print the set message
 		virtual void	print (IMessage& out) const;
 

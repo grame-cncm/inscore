@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2020  Grame
+  Copyright (C) 2015  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-  Grame Research Laboratory, 11 cours de Verdun Gensoul 69002 Lyon - France
+  Grame Research Laboratory, 11 cours de Verdun Gensoul, 69002 Lyon - France
   research@grame.fr
 
 */
@@ -26,33 +26,34 @@
 #pragma once
 
 #include <vector>
-#include <QTcpServer>
-#include <QTcpSocket>
+
+#include <QString>
+#include <QWebSocket>
+#include <QWebSocketServer>
 
 #include "Forwarder.h"
+#include "IApplVNodes.h"
 #include "IMessage.h"
 
 namespace inscore
 {
 
-class IApplLog;
 //--------------------------------------------------------------------------
-class HTTPForwarder : public QTcpServer, public ForwardEndPoint
+// Web Socket Forwarder
+//--------------------------------------------------------------------------
+class WSForwarder : public QWebSocketServer, public ForwardEndPoint
 {
 	Q_OBJECT
 
 	int			fID = 1;
-	std::vector<QTcpSocket*>	fClients;
-	IApplLog*	fLog;
+	std::vector<QWebSocket *> fClients;		///< the clients list
 
-	std::string 	IMessage2String (const IMessage * imsg);
 	void clear ();
-	void send (QTcpSocket *s, const char * msg);
-	void log  (const char * msg);
+	void send (QWebSocket *s, const QString& msg);
 
 	public:
-				 HTTPForwarder (const IMessage::TUrl& url, IApplLog* log);
-		virtual ~HTTPForwarder ();
+				 WSForwarder (const IMessage::TUrl& url, IApplLog* log);
+		virtual ~WSForwarder ();
 
 		void send (const IMessage * imsg);
 
@@ -60,5 +61,6 @@ class HTTPForwarder : public QTcpServer, public ForwardEndPoint
 		void accept ();
 		void disconnect ();
 };
+
 
 } //

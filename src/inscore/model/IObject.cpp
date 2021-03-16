@@ -111,6 +111,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 
 	fMsgHandlerMap[kpush_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::pushMsg);
 	fMsgHandlerMap[kpop_SetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::popMsg);
+	fMsgHandlerMap[kclass_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::setClass);
 
 	fMsgHandlerMap[krefresh_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::refresh);
 
@@ -123,6 +124,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMsgHandlerMap[klock_GetSetMethod]	= TGetParamMethodHandler<IObject, bool(IObject::*)() const>::create(this, &IObject::getLocked);
 	fGetMsgHandlerMap[kcount_GetMethod]		= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getSize);
 	fGetMsgHandlerMap[krcount_GetMethod]	= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getRSize);
+	fGetMsgHandlerMap[kclass_GetSetMethod]	= TGetParamMsgHandler<string>::create(fClassNames);
 	
 	setModified();
 }
@@ -531,6 +533,7 @@ void IObject::cleanup ()
 			}
 		}
 	}
+	fClassChanged = false;
 	fState= kClean;
 }
 
@@ -1610,6 +1613,26 @@ MsgHandler::msgStatus IObject::lockMsg(const IMessage *msg)
 	fLock = lock;
 	return MsgHandler::kProcessed;
 }
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::setClass(const IMessage* msg)
+{
+	int n = msg->size();
+	fClassNames = "";
+	const char* sep = "";
+	for (int i=0; i<n; i++) {
+		string cssclass;
+		if (msg->param(i, cssclass)) {
+			fClassNames += sep;
+			fClassNames += cssclass;
+			sep = " ";
+		}
+		else return MsgHandler::kBadParameters;
+	}
+	fClassChanged = true;
+	return MsgHandler::kProcessed;
+}
+
 
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::evalMsg(const IMessage* msg)

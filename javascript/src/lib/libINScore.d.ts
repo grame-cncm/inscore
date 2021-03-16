@@ -131,6 +131,7 @@ interface OUpdateInfos {
 	color:     OColor;
 	effect:    OEffect;
 	events:	   OEvents;
+	classNames:	string;
 	updatepos:  boolean;
 	updatebrush:  boolean;
 	updatecolor:  boolean;
@@ -139,6 +140,7 @@ interface OUpdateInfos {
 	showmap:      boolean;
 	deleted:      boolean;
 	newdata:      boolean;
+	newclass:      boolean;
 }
 
 interface OArc {

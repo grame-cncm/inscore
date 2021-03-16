@@ -25,21 +25,34 @@
 <h1>INScore JS Tests</h1>
 <div class="inscore box" id="scene">
 
-/ITL/scene/_ctrl set txt Connect;
-/ITL/scene/_ctrl lock 1;
-/ITL/scene/_ctrl fontSize 24;
-/ITL/scene/_ctrl y 1.1;
-/ITL/scene/_ctrl color grey;
-/ITL/scene/_ctrl watch mouseEnter (/ITL/scene/_ctrl color black);
-/ITL/scene/_ctrl watch mouseLeave (/ITL/scene/_ctrl color grey);
-/ITL/scene/_ctrl watch mouseDown (
-	/ITL/scene/_ctrl push,
+/ITL/scene/_ctrlhttp set txt "Connect http";
+/ITL/scene/_ctrlws set txt "Connect ws";
+/ITL/scene/_ctrlhttp xorigin 1.1;
+/ITL/scene/_ctrlws xorigin -1.1;
+/ITL/scene/_ctrl* lock 1;
+/ITL/scene/_ctrl* fontSize 24;
+/ITL/scene/_ctrl* y 1.1;
+/ITL/scene/_ctrl* color grey;
+/ITL/scene/_ctrl* watch mouseEnter (/ITL/scene/$self color black);
+/ITL/scene/_ctrl* watch mouseLeave (/ITL/scene/$self color grey);
+/ITL/scene/_ctrlhttp watch mouseDown (
+	/ITL/scene/_ctrlhttp push,
 	/ITL/scene connect  "http://localhost:7100",
-	/ITL/scene/_ctrl set txt Disconnect,
-	/ITL/scene/_ctrl watch mouseDown (
+	/ITL/scene/_ctrlhttp set txt Disconnect,
+	/ITL/scene/_ctrlhttp watch mouseDown (
 		/ITL/scene connect,
-		/ITL/scene/_ctrl set txt Connect,
-		/ITL/scene/_ctrl pop
+		/ITL/scene/_ctrlhttp set txt "Connect http",
+		/ITL/scene/_ctrlhttp pop
+	)
+);
+/ITL/scene/_ctrlws watch mouseDown (
+	/ITL/scene/_ctrlws push,
+	/ITL/scene connect  "ws://localhost:7200",
+	/ITL/scene/_ctrlws set txt "Disconnect",
+	/ITL/scene/_ctrlws watch mouseDown (
+		/ITL/scene connect,
+		/ITL/scene/_ctrlws set txt "Connect ws",
+		/ITL/scene/_ctrlws pop
 	)
 );
 
