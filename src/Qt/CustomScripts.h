@@ -30,6 +30,8 @@
 #include <QJSValueList>
 #include <QString>
 
+#include "IApplVNodes.h"
+
 namespace inscore
 {
 
@@ -40,8 +42,8 @@ class CustomScripts : public QObject
 {
 		Q_OBJECT
     public:
-        CustomScripts(QObject *parent = 0);
-        virtual ~CustomScripts();
+				 CustomScripts(IApplLog* log, QObject *parent = 0) : fLog(log), QObject(parent) {}
+        virtual ~CustomScripts() {}
 
         public slots:
 		// All callback method of this object must be slot method.
@@ -52,6 +54,8 @@ class CustomScripts : public QObject
 		QJSValue readfile(const QString &filename);
 		void print(const QVariantList &args);
 		void post(const QVariantList &args);
+	private:
+		IApplLog* fLog = 0;
 };
 
 } // namespace

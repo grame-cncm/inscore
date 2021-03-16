@@ -108,7 +108,7 @@ class IAppl : public IObject, public TILoader
 		bool		fOffscreen;
 		INScoreApplicationGlue* fAppl;				// the Qt application
 		std::mutex	fTimeMutex;
-		TJSEngine	fJavascript;
+		TJSEngine*	fJavascript = 0;
 
 	public:
 		static unsigned long kUPDPort;	// Default listening port
@@ -224,7 +224,7 @@ class IAppl : public IObject, public TILoader
 		void		ptask ();
 		void		error () const;					//< trigger the error event, error must be checked before
 
-		TJSEngine*	getJSEngine()					{ return &fJavascript; }
+		TJSEngine*	getJSEngine()					{ return fJavascript; }
 
 		/// \brief gives the application node
 		virtual SIAppl			getAppl()			{ return this; }

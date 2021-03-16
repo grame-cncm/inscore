@@ -236,7 +236,7 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 }
 
 //--------------------------------------------------------------------------
-IAppl::~IAppl() 					{ }
+IAppl::~IAppl() 					{ delete fJavascript; }
 bool IAppl::oscDebug() const		{ return fApplDebug->getOSCDebug(); }
 
 //--------------------------------------------------------------------------
@@ -338,6 +338,7 @@ void IAppl::createVirtualNodes()
 	add (fFilterForward);
 	fForwarder.setFilter(fFilterForward);
 	fForwarder.setLog(fApplLog);
+	fJavascript = new TJSEngine (fApplLog);
 }
 
 //--------------------------------------------------------------------------

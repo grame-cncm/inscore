@@ -67,7 +67,7 @@ enum { kExternals, kPrintCallback, kPostCallback, kPrint, kPost, kVersion, kRead
 
 //--------------------------------------------------------------------------------------------
 // check for  conflicts with reserved tokens
-static bool checkConficts (const string& var)
+static bool checkConflicts (const string& var)
 {
 	for (int i = 0; i < kEndExternals; i++)
 		if (var == kReserved[i]) return true;
@@ -81,26 +81,26 @@ void TQtJs::setRootPath	(const char* path)
 }
 
 //--------------------------------------------------------------------------------------------
-TQtJs::TQtJs()	: fEngine(0), fDeleteEngine(true) { Initialize(); }
+TQtJs::TQtJs(IApplLog* log)	: fEngine(0), fDeleteEngine(true) { Initialize(log); }
 TQtJs::TQtJs(TQtJs* js)	: fEngine(js->engine()), fDeleteEngine(false) { }
 TQtJs::~TQtJs()	{ if (fDeleteEngine) delete fEngine; }
 
 //--------------------------------------------------------------------------------------------
 // Reset the current javascript engine (actually allocate a new one)
-void TQtJs::Initialize  ()
+void TQtJs::Initialize  (IApplLog* log)
 { 
 	delete fEngine;
 	fEngine = new QJSEngine;
 
 	// Javascript wrapper for variable argument number functions.
-	QJSValue print = fEngine->evaluate("function() { _printCallback_(Array.prototype.slice.apply(arguments));}");
+	QJSValue print = fEngine->evaluate("(function() { _printCallback_(Array.prototype.slice.apply(arguments));})");
 	fEngine->globalObject().setProperty(kReserved[kPrint], print);
 
-	QJSValue post = fEngine->evaluate("function() { _postCallback_(Array.prototype.slice.apply(arguments));}");
+	QJSValue post = fEngine->evaluate("(function() { _postCallback_(Array.prototype.slice.apply(arguments));})");
 	fEngine->globalObject().setProperty(kReserved[kPost], post);
 
 	// create object with method callback
-	CustomScripts * externals = new CustomScripts;
+	CustomScripts * externals = new CustomScripts(log);
 	QJSValue externalsVal	= fEngine->newQObject(externals);
 	fEngine->globalObject().setProperty(kReserved[kExternals], externalsVal);
 
@@ -144,7 +144,7 @@ bool TQtJs::bindEnv  (stringstream& s, const string& name, const IMessage::argPt
 void TQtJs::bindEnv  (stringstream& s, const string& name, const IMessage::argslist& values)
 {
 	if (values.size() == 0) return;
-	if (!checkConficts(name)) {
+	if (!checkConflicts(name)) {
 		stringstream tmp;
 		tmp << name << "=";
 		size_t n = values.size();
