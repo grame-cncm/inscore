@@ -48,10 +48,10 @@ class IMessage;
 class AudioNode
 {
     public:
-		typedef std::vector<AudioNode*>	AudioNodeList;
+		typedef std::vector<IObject*>	AudioNodeList;
 		
-				 AudioNode();
-		virtual ~AudioNode();
+				 AudioNode() {}
+		virtual ~AudioNode() {}
 
 		void	setIONums (int inputs, int outputs) { fNumInputs = inputs; fNumOutputs = outputs; }
 		int		getInputs () const  				{ return fNumInputs; }
@@ -74,9 +74,8 @@ class AudioNode
 		void 			cleanup(AudioNodeList& list);
 
 	private:
-		void 					clear ();
 		MsgHandler::msgStatus 	getAudioNodes(const IMessage* msg, AudioNodeList& list);
-		bool 					remove(const AudioNode* node, AudioNodeList& list);
+		bool 					remove(const IObject* node, AudioNodeList& list);
 };
 
 /*! @} */
