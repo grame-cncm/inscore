@@ -56,6 +56,8 @@ class AudioNode
 		void	setIONums (int inputs, int outputs) { fNumInputs = inputs; fNumOutputs = outputs; }
 		int		getInputs () const  				{ return fNumInputs; }
 		int		getOutputs () const  				{ return fNumOutputs; }
+		const AudioNodeList& newConnections() const { return fNotifyNew; }
+		const AudioNodeList& delConnections() const { return fNotifyDel; }
 	
 	protected:
 		AudioNodeList fOutputs;

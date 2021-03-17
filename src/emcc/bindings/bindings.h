@@ -194,4 +194,8 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("code",  	&JSFaustInfos::code)
 		.field("values",  	&JSFaustInfos::values)
 		.field("keys",  	&JSFaustInfos::keys);
+	
+	value_object<JSAudioNodeInfos>("JSAudioNodeInfos")
+		.field("connect",  	&JSAudioNodeInfos::connect)
+		.field("disconnect",&JSAudioNodeInfos::disconnect);
 }

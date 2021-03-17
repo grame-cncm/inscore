@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include "AudioNode.h"
 #include "HTMLObjectView.h"
 #include "IArc.h"
 #include "ICurve.h"
@@ -518,6 +519,31 @@ std::string IObjectAdapter::getSVGInfos () const
 	else return obj->getText();
 	return "";
 
+}
+
+//--------------------------------------------------------------------------
+static void putID (const IObject* obj, vector<int>& dest)
+{
+	const VObjectView* view = obj->getView();
+	const HTMLObjectView * htmlview = dynamic_cast<const HTMLObjectView*>(view);
+	if (htmlview)
+		dest.push_back (htmlview->getID());
+}
+
+//--------------------------------------------------------------------------
+JSAudioNodeInfos IObjectAdapter::getAudioInfos () const
+{
+	JSAudioNodeInfos infos;
+	AudioNode* obj = dynamic_cast<AudioNode*>((IObject*)fObject);
+	if (obj) {
+		for (auto elt: obj->newConnections())
+			putID (elt, infos.connect);
+		for (auto elt: obj->delConnections())
+			putID (elt, infos.disconnect);
+	}
+	else
+		cerr << "IObjectAdapter::getAudioInfos: unexpected null object!" << endl;
+	return infos;
 }
 
 //--------------------------------------------------------------------------

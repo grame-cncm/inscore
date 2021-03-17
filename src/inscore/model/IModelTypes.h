@@ -180,6 +180,8 @@ typedef class libmapping::SMARTP<IHttpd>		SIHttpd;
 #if INCLUDEFaustWeb
 class IFaustProcessor;
 typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
+class AudioIO;
+typedef class libmapping::SMARTP<AudioIO>			SAudioIO;
 #endif
 
 #if INCLUDEWebSocket
