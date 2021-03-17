@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2021  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -26,6 +26,7 @@
 
 #pragma once
 
+#include "AudioNode.h"
 #include "IMessageHandlers.h"
 #include "IRectShape.h"
 
@@ -74,12 +75,10 @@ class TFaustKeysUpdate {
 /*!
 	\brief a Faust processor (that is also a parallel signal)
 */
-class IFaustProcessor : public IRectShape
+class IFaustProcessor : public IRectShape, public AudioNode
 {
 	std::string	fDspCode;
 	int fVoices = 0;
-	int fNumInputs = 0;
-	int fNumOutputs = 0;
 	bool fPlaying = false;
 
 	typedef std::map<std::string,float> TParamsValues;
@@ -105,7 +104,6 @@ class IFaustProcessor : public IRectShape
 		std::string getCode () const 		{ return fDspCode; }
 		int			getVoices () const		{ return fVoices; }
 		bool		playing() const			{ return fPlaying; }
-		void		setIONums (int inputs, int outputs)  { fNumInputs = inputs; fNumOutputs = outputs; }
 		void	 	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
 		void	 	setParamValue (const std::string& address, float val, int type);
 
@@ -131,8 +129,9 @@ class IFaustProcessor : public IRectShape
 		SIMessageList getUI() const;
 		/// \brief print the set message
 		virtual void	print (IMessage& out) const;
+		virtual void 	cleanup();
 
-		/// \brief the set method handler
+		/// \brief method handlers
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyon (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyoff (const IMessage* msg);

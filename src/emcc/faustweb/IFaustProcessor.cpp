@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2020  Grame
+  Copyright (C) 2009,2021  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -53,13 +53,24 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 	fMsgHandlerMap[kkeyon_SetMethod]		= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::keyon);
 	fMsgHandlerMap[kkeyoff_SetMethod]		= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::keyoff);
 	fMsgHandlerMap[kallnotesoff_SetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::allNotesOff);
+	fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::connect);
+	fMsgHandlerMap[kdisconnect_SetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::disconnect);
+
 
 	fGetMsgHandlerMap[""]					= TGetParamMsgHandler<string>::create(fDspCode);
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kplay_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fPlaying);
 	fGetMultiMsgHandlerMap[kui_GetMethod]	= TGetParamMultiMethodHandler<IFaustProcessor, SIMessageList (IFaustProcessor::*)() const>::create(this, &IFaustProcessor::getUI);
+	fGetMsgHandlerMap[kconnect_GetSetMethod]= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &IFaustProcessor::getconnect);
 	setPending ();
+}
+
+//--------------------------------------------------------------------------
+void IFaustProcessor::cleanup ()
+{
+	IObject::cleanup();
+	AudioNode::cleanup(getOutputs());
 }
 
 //--------------------------------------------------------------------------
