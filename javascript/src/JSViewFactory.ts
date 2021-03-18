@@ -67,6 +67,7 @@ class JSViewFactory {
 			case "audio":	  view = new JSAudioView(parent); break;
 			case "faust":	  view = new JSFaustView(parent, inscorelibs.faust()); break;
 
+			case "audioio":
 			case "fileWatcher":
 			case "graph":
 			case "fastgraph":
