@@ -60,9 +60,7 @@ void VImageView::updateLocalMapping (IImage* img)
 		else setImage( file );
 	}
 	QRectF r = fImageItem->boundingRect();
-    img->setWidth(scene2RelativeWidth(r.width()));
-    img->setHeight(scene2RelativeHeight(r.height()));
-
+	updateObjectSize (img);
 	img->setBoundingRect (long(r.x()), long(r.y()), long(r.width()), long(r.height()));
 	img->updateLocalMapping();
 }
@@ -105,6 +103,10 @@ void VImageView::updateView ( IImage * img)
     img->cleanupSync();
     float alpha = img->getA() / 255.f;
 	fImageItem->setOpacity (alpha);
+	float w = relative2SceneWidth(img->getWidth());
+	QRectF r = fImageItem->boundingRect();
+	float ratio = w ? w / r.width() : 1;
+	fImageItem->setScale(ratio);
 	VIntPointObjectView::updateView (img);
 }
 

@@ -189,6 +189,9 @@ class VGraphicsItemView : public VObjectView
         /// \brief updates the attributes of the QItem
         void updateItem(QGraphicsItem* item, IObject* o);
 
+        /// \brief gives the scale of an object, taking account of its dimensions
+        float getScale (const QGraphicsItem* item, const IObject* o) const;
+
 		
 		// the methods below have been first implemented in VShapeView
 		// they moved here in order to support bounding boxes for all objects

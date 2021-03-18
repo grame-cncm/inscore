@@ -42,6 +42,9 @@ IGraphicBasedObject::IGraphicBasedObject( const std::string& name, IObject * par
 { 
 	fLocalMappings = TLocalMapping<long,2>::create();
 
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IGraphicBasedObject, float>::create(this, &IGraphicBasedObject::setWidth);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IGraphicBasedObject, float>::create(this, &IGraphicBasedObject::setHeight);
+
 	fMsgHandlerMap[kmap_GetSetMethod]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapMsg);
 	fMsgHandlerMap[kmapplus_SetMethod]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapAddMsg);
 	fMsgHandlerMap[kmapf_SetMethod]			= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapFileMsg);
@@ -79,6 +82,24 @@ void IGraphicBasedObject::setBoundingRect(long x, long y, long w, long h)
 	fBoundingRect.setWidth(w);
 	fBoundingRect.setHeight(h);
 	updateLocalMapping();
+}
+
+//-------------------------------------------------------------------------
+void IGraphicBasedObject::setWidth(float width)
+{
+	if (!width) return;
+	float ratio = getWidth() ? width / getWidth() : 0;
+	IObject::setWidth(width);
+	if (ratio) IObject::setHeight(getHeight() * ratio);
+}
+
+//-------------------------------------------------------------------------
+void IGraphicBasedObject::setHeight(float height)
+{
+	if (!height) return;
+	float ratio = getHeight() ? height / getHeight() : 0;
+	IObject::setHeight(height);
+	if (ratio) IObject::setWidth(getWidth() * ratio);
 }
 
 //------------------------------------------------------------------------------------------------------------

@@ -145,6 +145,11 @@ class IGuidoCode : public IObject
 		SIMessageList getMsgs(const IMessage* msg) const;
 
 		MsgHandler::msgStatus exprMsg(const IMessage* msg);
+
+		/// \brief Sets the width with height adjustment
+		virtual void	setWidth(float width);
+		/// \brief Sets the height with width adjustment
+		virtual void	setHeight(float height);
 };
 
 /*! @} */

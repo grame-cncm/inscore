@@ -814,14 +814,12 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				size_t n = targets.size();
 				for (size_t i = 0; i< n; i++) {
 					IObject * target = targets[i];
-#if EMCC
 					if (target->getPending()) { // && (msg->message() != krefresh_SetMethod)) {
 //cerr << "=> delayed: " << msg << endl;
 //						INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
 						msg->send(true);
 						return MsgHandler::kProcessedNoChange;
 					}
-#endif
 					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
 					if (result & MsgHandler::kProcessed) {
 						target->setModified();									// sets the modified state of the subnode

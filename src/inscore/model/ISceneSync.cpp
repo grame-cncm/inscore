@@ -222,14 +222,12 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& sl
 	if (!fParent->find(slave, sobj) || !fParent->find(master, mobj))
 		return MsgHandler::kBadParameters;						// no target objects for slave or for master
 
-#ifdef EMCC
 	for (auto m: mobj) {
 		if (m->getPending()) return MsgHandler::kDelayed;
 	}
 	for (auto so: sobj) {	// for each slave
 		if (so->getPending()) return MsgHandler::kDelayed;
 	}
-#endif
 
 	for (auto so: sobj) {	// for each slave
 
@@ -338,11 +336,8 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	Master::SyncType syncType = Master::kDefaultSync;
 	if (index == n) {	// we've reached the end of the parameters: creates the sync using default values
         MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
-#ifdef EMCC
 		if (ret == MsgHandler::kDelayed)
 			msg->send(true);
-//			INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
-#endif
 		return ret;
 	}
 
@@ -360,11 +355,8 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	} while (true);
 	// eventually sets the synchonization with the optional parameters
     MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
-#ifdef EMCC
 	if (ret == MsgHandler::kDelayed)
 		msg->send(true);
-//		INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
-#endif
     return ret;
 }
 

@@ -301,8 +301,11 @@ void VGraphicsItemView::drawBoundingBox(IObject* o, QGraphicsItem* item)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateObjectSize(IObject* o)
 {	
-	o->setWidth( getIObjectWidth() );
-	o->setHeight( getIObjectHeight() );
+	if (!o->getWidth()) {
+		o->setWidth( getIObjectWidth() );
+		o->setHeight( getIObjectHeight() );
+		o->ready();
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -359,7 +362,7 @@ void VGraphicsItemView::getFrame (const IObject* o, std::vector<float>& out)
 {
 	QRectF r = item()->boundingRect();
 	QTransform m = item()->transform();
-	m.scale(o->getScale(), o->getScale());
+	m.scale(getScale(item(), o), getScale(item(), o));
 	QPolygon po = m.mapToPolygon(r.toRect());
 	for (int i=0; i < po.size(); i++) {
 		QPoint p = po[i];
@@ -449,8 +452,8 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
     updateTransform (o, item);
     QRectF bbrect = getBoundingRect(o);
-    double xo = bbrect.width()  * (o->getXOrigin() + 1) * o->getScale() / 2;
-    double yo = bbrect.height() * (o->getYOrigin() + 1) * o->getScale() / 2;
+    double xo = bbrect.width()  * (o->getXOrigin() + 1) * getScale(item, o) / 2;
+    double yo = bbrect.height() * (o->getYOrigin() + 1) * getScale(item, o) / 2;
     item->setTransform(QTransform::fromTranslate(-xo, -yo), true);
 }
 
@@ -501,7 +504,7 @@ void VGraphicsItemView::updateView(IObject* o)
     // the item is not slaved
 	if(fTilerItems.empty())
 	{
-        fItem->setScale(  o->getScale() );
+        fItem->setScale( getScale(fItem, o) );
 	    updateGeometry(fItem, o, relative2SceneX(o->getXPos()), relative2SceneY(o->getYPos()));
         updateItem(fItem, o);
     }
@@ -511,7 +514,7 @@ void VGraphicsItemView::updateView(IObject* o)
 	std::pair<std::string, bool> myExport = o->getNextExportFlag();
 
 	while ( myExport.first.length() ) {
-		VExport::exportItem( item() , myExport.first.c_str() ,  o->getScale() ,  o->getScale(), myExport.second);
+		VExport::exportItem( item(), myExport.first.c_str(), getScale(item(), o), getScale(item(), o), myExport.second);
 		o->checkEvent(kExportEvent, rational(0,1), o);
 		myExport = o->getNextExportFlag();
 	}
@@ -550,6 +553,15 @@ QStretchTilerItem* VGraphicsItemView::buildTiler(SIObject o)
     MouseEventAble<QStretchTilerItem>* item = new MouseEventAble<QStretchTilerItem>( o );
     item->setOriginItem(fItem);
     return item;
+}
+
+//------------------------------------------------------------------------------------------------------------
+float VGraphicsItemView::getScale (const QGraphicsItem* item, const IObject* o) const
+{
+	float w = relative2SceneWidth(o->getWidth());
+	QRectF r = item->boundingRect();
+	float ratio = w ? w / r.width() : 1;
+	return ratio * o->getScale();
 }
 
 //------------------------------------------------------------------------------------------------------------

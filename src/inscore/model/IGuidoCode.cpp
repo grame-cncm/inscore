@@ -60,6 +60,9 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 
 	fTypeString = kGuidoCodeType;
 
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setWidth);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setHeight);
+
 	fMsgHandlerMap[kexpression_GetMethod]		= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::exprMsg);
 
 	fMsgHandlerMap[kpage_GetSetMethod]			= TSetMethodMsgHandler<IGuidoCode,int>::create(this, &IGuidoCode::setPage);
@@ -81,6 +84,24 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	setPending();
 }
 
+
+//-------------------------------------------------------------------------
+void IGuidoCode::setWidth(float width)
+{
+	if (!width) return;
+	float ratio = getWidth() ? width / getWidth() : 0;
+	IObject::setWidth(width);
+	if (ratio) IObject::setHeight(getHeight() * ratio);
+}
+
+//-------------------------------------------------------------------------
+void IGuidoCode::setHeight(float height)
+{
+	if (!height) return;
+	float ratio = getHeight() ? height / getHeight() : 0;
+	IObject::setHeight(height);
+	if (ratio) IObject::setWidth(getWidth() * ratio);
+}
 
 //--------------------------------------------------------------------------
 void IGuidoCode::ready()
