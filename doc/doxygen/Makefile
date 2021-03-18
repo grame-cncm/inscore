@@ -1,6 +1,6 @@
 
 # fetch the version number directly in the .pro file
-VERSION := $(shell grep '^VERSION' ../../build/library.pro | sed -e 's/[^0-9.]*//g')
+VERSION := $(shell cat ../../version.txt)
 ALL = ALL-$(VERSION)
 LIB = INScore-$(VERSION)
 	
