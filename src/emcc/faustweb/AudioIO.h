@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2015  Grame
+  Copyright (C) 2009,2021  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -23,41 +23,45 @@
 
 */
 
-#ifndef CUSTOMSCRIPTS_H
-#define CUSTOMSCRIPTS_H
 
-#include <QObject>
-#include <QJSValueList>
-#include <QString>
+#pragma once
 
-#include "IApplVNodes.h"
+#include <string>
+
+#include "AudioNode.h"
+#include "IRectShape.h"
 
 namespace inscore
 {
 
 /*!
- * \brief The CustomScripts class. Contains custom functions added to javascript engine
- */
-class CustomScripts : public QObject
-{
-		Q_OBJECT
-    public:
-				 CustomScripts(IApplLog* log, QObject *parent = 0) : fLog(log), QObject(parent) {}
-        virtual ~CustomScripts() {}
+\addtogroup ITLModel
+@{
+*/
 
-        public slots:
-		// All callback method of this object must be slot method.
-        // Their arguments must be of type const QMetaType
-        QString version();
-        QString osname();
-        int		osid();
-		QJSValue readfile(const QString &filename);
-		void print(const QVariantList &args);
-		void post(const QVariantList &args);
-	private:
-		IApplLog* fLog = 0;
+class Updater;
+class AudioIO;
+typedef class libmapping::SMARTP<AudioIO>	SAudioIO;
+
+//--------------------------------------------------------------------------
+/*!
+	\brief audio IO handler
+*/
+class AudioIO : public IRectShape, public AudioNode
+{
+    public:
+		static const std::string kAudioIOType;
+		static SAudioIO create(const std::string& name, IObject * parent)	{ return new AudioIO(name, parent); }
+		virtual void	accept (Updater* u);
+
+	protected:
+				 AudioIO(const std::string& name, IObject * parent);
+		virtual ~AudioIO() {}
+
+		/// \brief method handlers
+		virtual MsgHandler::msgStatus	set (const IMessage* msg);
 };
 
-} // namespace
+/*! @} */
 
-#endif // CUSTOMSCRIPTS_H
+} // end namespoace

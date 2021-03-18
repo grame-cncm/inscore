@@ -176,6 +176,11 @@ interface OGMNStreamInfos {
 	reset		: boolean;
 }
 
+interface OAudioNodeInfos {
+	connect		: IntVector;
+	disconnect	: IntVector;
+}
+
 interface OFaustInfos {
 	playing		: boolean;
 	voices		: number;
@@ -208,7 +213,8 @@ interface INScoreObject {
 	getMediaInfos():   OMedia;
 	getSceneInfos():   OSceneInfo;
 	getSVGInfos():     string;
-	getFaustInfos(getvalues: boolean, getcode: boolean):   OFaustInfos;
+	getFaustInfos(getvalues: boolean, getcode: boolean):  OFaustInfos;
+	getAudioInfos():   OAudioNodeInfos;
 	getMaps():     	   RectVector;
 
 	updateWidth (w: number):  void;

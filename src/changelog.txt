@@ -13,16 +13,18 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.27
-- merge library branch to dev
+- new 'audioio' object intended to represent physical inputs / outputs (web version)
+- new 'connect' and 'disconnect' messages supported by all audio objects, i.e. faust and audioio (web version)
 - new 'ui' message supported by 'faust' object (web version)
 - new 'ws' protocol supported by 'connect' message (web version)
 - new 'class' message supported by all objects (web version)
 - new 'audio' object (implemented in version 1.21 but not documented)
+- merge library branch to dev
 
 ----------------------------------------------------
 Version 1.26
 - new 'faust' object (web version)
-- new 'connect' message (web version)
+- new 'connect' message (counterpart of the forwarding mechanism)  (web version)
 - INScore Web version
 - forwarding mechanism extended with http support
 - 'scale' message supported by log windows

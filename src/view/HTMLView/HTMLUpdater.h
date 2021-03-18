@@ -68,6 +68,7 @@ class inscore_export HTMLLocalMapUpdater : public LocalMapUpdater {
 		virtual const char* name()	{ return "LocalMapUpdater"; }
 	static libmapping::SMARTP<HTMLLocalMapUpdater> create()	{ return new HTMLLocalMapUpdater(); }
 	
+	void updateTo (AudioIO* o);
 	void updateTo (IArc* o);
 	void updateTo (IAudio* o);
 	void updateTo (ICurve* o);

@@ -173,6 +173,11 @@ struct JSFaustInfos {
 	std::vector<JSFaustKeyValue> keys;
 };
 
+struct JSAudioNodeInfos {
+	std::vector<int> connect;
+	std::vector<int> disconnect;
+};
+
 struct JSGMNStreamInfos {
 	std::string	stream;
 	bool		reset = false;
@@ -238,6 +243,7 @@ class inscore_export IObjectAdapter
 		JSLineInfos   getLineInfos () const;
 		std::string   getFile () const;			// for file based object (e.g. image)
 		JSFaustInfos  getFaustInfos (bool getValues, bool getCode) const;
+		JSAudioNodeInfos  getAudioInfos () const;
 		std::string   getSVGInfos () const;
 		JSRadius      getRadius () const;		// for IRect
 		JSArcInfos    getArcInfos() const;

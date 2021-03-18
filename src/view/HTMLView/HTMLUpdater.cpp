@@ -24,6 +24,7 @@
 */
 
 
+#include "AudioIO.h"
 #include "HTMLUpdater.h"
 #include "IArc.h"
 #include "IAudio.h"
@@ -92,7 +93,7 @@ void HTMLLocalMapUpdater::updateTo (ICurve* o)			{ o->updateGraphic2GraphicMappi
 void HTMLLocalMapUpdater::updateTo (IEllipse* o)		{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IGraphicSignal* graph)		{}
 void HTMLLocalMapUpdater::updateTo (IGuidoCode* o)		{ o->updateScoreMapping(); }
-void HTMLLocalMapUpdater::updateTo (IGuidoPianoRoll* o)	{}
+void HTMLLocalMapUpdater::updateTo (IGuidoPianoRoll* o)	{ o->updateScoreMapping(); }
 void HTMLLocalMapUpdater::updateTo (IGuidoPianoRollStream* o) { o->updateScoreMapping(); }
 void HTMLLocalMapUpdater::updateTo (IHtml* text)		{ }
 void HTMLLocalMapUpdater::updateTo (IImage* o) 			{ o->updateLocalMapping(); }
@@ -100,6 +101,7 @@ void HTMLLocalMapUpdater::updateTo (ILine* o)			{ o->updateGraphic2GraphicMappin
 void HTMLLocalMapUpdater::updateTo (IPolygon* o)		{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IRect* o)			{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (IFaustProcessor* o)	{ o->updateGraphic2GraphicMapping(); }
+void HTMLLocalMapUpdater::updateTo (AudioIO* o)			{ o->updateGraphic2GraphicMapping(); }
 void HTMLLocalMapUpdater::updateTo (ISVG* o) 			{ o->updateLocalMapping(); }
 void HTMLLocalMapUpdater::updateTo (ISVGFile* o) 		{ o->updateLocalMapping(); }
 void HTMLLocalMapUpdater::updateTo (IText* text) {}

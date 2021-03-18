@@ -23,28 +23,21 @@
 
 */
 
+#include <QVariantList>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
 #include "CustomScripts.h"
 #include "OSCStream.h"
 #include "IAppl.h"
 #include "INScore.h"
 
-#include <QVariantList>
-#include <iostream>
-#include <fstream>
-#include <string>
-
 using namespace std;
 
 namespace inscore
 {
-
-CustomScripts::CustomScripts(QObject *parent) : QObject(parent)
-{
-}
-
-CustomScripts::~CustomScripts()
-{
-}
 
 QString CustomScripts::version()
 {
@@ -115,22 +108,22 @@ QJSValue CustomScripts::readfile(const QString &filename)
 void CustomScripts::print(const QVariantList &args)
 {
     bool first = true;
-    cout << "javascript: ";
+	stringstream sstr;
 #ifndef NO_OSCSTREAM
     oscout << OSCStart("javascript:");
 #endif
     for (QVariantList::const_iterator iter = args.constBegin(); iter != args.constEnd(); iter++) {
             if (first)
                     first = false;
-            else cout << " ";
+            else sstr << " ";
 
             string myString = (*iter).toString().toStdString();
-            cout << myString;
+            sstr << myString;
 #ifndef NO_OSCSTREAM
             oscout << myString;
 #endif
     }
-    cout << endl;
+    fLog->write(sstr.str());
 #ifndef NO_OSCSTREAM
     oscout << OSCEnd();
 #endif

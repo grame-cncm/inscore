@@ -35,6 +35,7 @@
 #include "IMessage.h"
 #endif
 
+#include "IApplVNodes.h"
 #include "smartpointer.h"
 
 namespace inscore 
@@ -61,11 +62,11 @@ class TQtJs
 		QJSEngine* engine()		{ return fEngine; }
 
 	public:	
-				 TQtJs();
+				 TQtJs(IApplLog* log);
 				 TQtJs(TQtJs* engine);
 		virtual ~TQtJs();
 
-		void	Initialize	();
+		void	Initialize	(IApplLog* log);
 		void	bindEnv		(const STEnv& env);
 		bool	eval		(int line, const char* script, std::string& outStr);
 		void	setRootPath	(const char* path);
