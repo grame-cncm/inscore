@@ -34,7 +34,7 @@ $xm = -2;
 	\meter<"2/4", dx=$xm> \i<"p", dy=$yi> $gslur (sol# _) |
 	\meter<"4/4"> \i<"mp", dy=$yi> si&/16 $aslur (la/8. _/4) |
 	\meter<"2/4"> \i<"p", dy=$yi> $b2slur2 (\acc(si/8) _) \i<"mp", dy=$yi> $b2slur2 (si/8 _) |
-	\meter<"4/4"> \i<"mf", dy=$yi> $slur ({fa/4, si/4} _) _ |
+	\meter<"4/4"> \i<"mf", dy=$yi> $slur ({fa/4, si/4} _) _ _ |
 	\meter<"1/4", dx=$xm> \i<"p", dy=$yi> $fslur (fa/8 _) |
 	\meter<"2/4"> \i<"mp", dy=$yi> $gslur (sol#/4 _) |
 	\meter<"4/4"> \i<"p", dy=$yi> $slur ({re/8, \acc(sol)} _/8) $fslur (fa# _) $slur (la# _) _/4 |
@@ -44,15 +44,15 @@ $xm = -2;
 		\i<"p", dy=$yi> {re/16, sol#/16} $b2slur (si/8. _/4) 
 		\i<"mp", dy=$yi> $slur ({\acc(sol), re} _) |
 	\meter<"3/4", dx=$xm> \i<"mp", dy=$yi> $slur (re/8 _) $slur (fa#/8 _) $slur (\acc(fa/8) _) |
-	\meter<"2/4"> \i<"mp", dy=$yi> $slur ({re, la#} _) |
+	\meter<"2/4"> \i<"mp", dy=$yi> $slur ({re, la#} _/4) |
 	\meter<"3/8"> \i<"pp", dy=$yi> $slur ({re / 16, sol / 16} _) $slur (la/16 _) $slur (fa#/16 _) |
-	\meter<"2/4"> \i<"p", dy=$yi> $slur (fa/4 _) |
+	\meter<"2/4"> \i<"p", dy=$yi> \acc($slur (fa/4 _)) |
 	\meter<"4/4"> \i<"mp", dy=$yi> $slur (do#/8 _/8) $slur (mi/8 _/8) $slur (re#/8 _/8) _/4|
-	\meter<"5/4", dx=$xm> \i<"p", dy=$yi> { re/4, si/4} _ _ _ _ |
-	\meter<"2/4"> \i<"mp", dy=$yi> $d2slur ({ re3, sol2 } _) |
-	\meter<"3/4"> \i<"mf", dy=$yi> { fa/16, la/16} $d2slur2 (re3/8 _/4) _ |
+	\meter<"5/4", dx=$xm> \i<"p", dy=$yi> \acc({ re2/4, si1/4}) _ _ _ _ |
+	\meter<"2/4"> \i<"mp", dy=$yi> $d2slur ({ re3, \acc(sol2) } _) |
+	\meter<"3/4"> \i<"mf", dy=$yi> { fa/16, la/16} $d2slur2 (re3/8. _/4) _ |
 	\meter<"2/4"> $slur ({ si2, re } _) |
-	\meter<"3/4", dx=$xm> \i<"p", dy=$yi> $slur (fa/16 _) $slur (la/16 _) $slur (sol#/16 _) $slur (si/16 _) _/4 |
+	\meter<"3/4", dx=$xm> \i<"p", dy=$yi> $slur (fa/16 _) $slur (la/16 _) $slur (sol#/16 _) $slur (si&/16 _) _/4 |
 	\meter<"4/4"> \i<"mf", dy=$yi> $slur ({sol#, re} _/8) $slur ({sol, re} _/4) _ |
 	\meter<"2/4"> \i<"mp", dy=$yi> fa#/16 _/16 {fa/16, re/16} _/16 sol#1/16 _/16 _/8 |
 	\meter<"4/4", dx=$xm> \i<"mf", dy=$yi> $slur ({\acc(sol2/4), si1/4} _/4) _/4 \i<"mp", dy=$yi> fa#1/16 _/8. |
