@@ -118,6 +118,7 @@ class JSFaustView extends JSSvgBase {
     }
 
     makeNode (oid: number, code: string, voices: number) : number {
+        // prevent building several objects in parallel
         if (JSFaustView.fCompilerLock) {
             setTimeout ( () => { this.makeNode (oid, code, voices)}, 50);
             return JSFaustView.kPending;
@@ -160,10 +161,12 @@ class JSFaustView extends JSSvgBase {
             return false;
         }
         let data = obj.getFaustInfos (false, true);
+        // start building the svg diagram
         let diagram = this.dsp2Svg(data.code, this.osc2svgname(obj.getOSCAddress()));
         if (diagram.error)
             this.error (obj.getOSCAddress(), diagram.error);
         else {
+            // success: display the svg diagram and build the audio node
             this.fSVG.innerHTML = diagram.svg;
             this.makeNode (oid, data.code, data.voices);
         }
