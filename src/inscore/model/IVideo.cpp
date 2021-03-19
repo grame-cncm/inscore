@@ -56,12 +56,33 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 
 	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
 	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
+	fMsgHandlerMap[kwidth_GetSetMethod]			= TSetMethodMsgHandler<IVideo, float>::create(this, &IVideo::setWidth);
+	fMsgHandlerMap[kheight_GetSetMethod]		= TSetMethodMsgHandler<IVideo, float>::create(this, &IVideo::setHeight);
 	
 	fGetMsgHandlerMap[kvideoMap_GetSetMethod]	= GetVideoMapMsgHandler::create(this);
 	
 	fTempo = 60.0f;
 	fStartSecond = 0.0f;
 	fConverter = Date2SecondTempoConverter::create( fTempo , fStartSecond );
+	setPending();
+}
+
+//-------------------------------------------------------------------------
+void IVideo::setWidth(float width)
+{
+	if (!width) return;
+	float ratio = getWidth() ? width / getWidth() : 0;
+	IObject::setWidth(width);
+	if (ratio) IObject::setHeight(getHeight() * ratio);
+}
+
+//-------------------------------------------------------------------------
+void IVideo::setHeight(float height)
+{
+	if (!height) return;
+	float ratio = getHeight() ? height / getHeight() : 0;
+	IObject::setHeight(height);
+	if (ratio) IObject::setWidth(getWidth() * ratio);
 }
 
 //--------------------------------------------------------------------------

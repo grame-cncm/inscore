@@ -62,11 +62,14 @@ class IVideo : public IMedia
 
 		/// \brief set the object duration according to the video duration (tempo assumed to be 60).
 		void	setVideoDuration( long mls)	{ setMediaDuration (mls); }
+		/// \brief Sets the width with height adjustment
+		virtual void	setWidth(float width);
+		/// \brief Sets the height with width adjustment
+		virtual void	setHeight(float height);
 
 	protected:
 				 IVideo( const std::string& name, IObject * parent);
 		virtual ~IVideo() {}
-
 
 		/// \brief the \c 'videoMapf' message handler
 		virtual MsgHandler::msgStatus videoMapFileMsg (const IMessage* msg );

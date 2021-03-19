@@ -65,6 +65,7 @@ class VVideoView: public VGraphicsItemView, public VMediaPlayer
 		virtual void initialize (IObject* obj)					{ initialize(static_cast<IVideo*>(obj)); }
 		virtual void updateView ( IVideo * video );
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ VMappedShapeView::updateGraphic2GraphicMapping(shapeMap); }
+		virtual void updateObjectSize(IObject* o) {} // overrides
 
 	virtual void mediaReady();
 	virtual void mediaEnd();

@@ -70,10 +70,13 @@ void VVideoView::error(QString msg)
 //----------------------------------------------------------------------
 void VVideoView::sizeChanged(const QSizeF & size)
 {
-//qDebug() << "VVideoView : VMediaPlayer::sizeChanged" << size;
+//qDebug() << "VVideoView : VMediaPlayer::sizeChanged" << size ;
 	fVideoItem->setSize (size);
-	fVideo->setWidth ( scene2RelativeWidth(size.width()) );
-	fVideo->setHeight( scene2RelativeHeight(size.height()) );
+	if (!fVideo->getWidth()) {
+		fVideo->setWidth ( scene2RelativeWidth(size.width()) );
+		fVideo->setHeight( scene2RelativeHeight(size.height()) );
+		fVideo->ready();
+	}
 	INScore::postMessage (fVideo->getOSCAddress().c_str(), kx_GetSetMethod, fVideo->getXPos());
 }
 
@@ -82,8 +85,8 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 {
 	setFile(videoFile);
 	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
-	video->setWidth(0.f);		// unknown width
-	video->setHeight(0.f);		// unknown height
+//	video->setWidth(0.f);		// unknown width
+//	video->setHeight(0.f);		// unknown height
 }
 
 //----------------------------------------------------------------------
