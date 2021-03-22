@@ -155,12 +155,16 @@ class JSFaustView extends JSSvgBase {
         return JSFaustView.kSuccess;
     }
     
+    getData(obj: INScoreObject) : OFaustInfos {
+        return obj.getFaustInfos (false, true);
+    }
+
     updateSpecial(obj: INScoreObject, oid: number)	: boolean {
         if (!this.fFaust) {
             console.log ("Faust engine is not available");
             return false;
         }
-        let data = obj.getFaustInfos (false, true);
+        let data = this.getData(obj);
         // start building the svg diagram
         let diagram = this.dsp2Svg(data.code, this.osc2svgname(obj.getOSCAddress()));
         if (diagram.error)

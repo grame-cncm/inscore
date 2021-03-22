@@ -24,6 +24,7 @@
 ///<reference path="JSAudioView.ts"/>
 ///<reference path="JSVideoView.ts"/>
 ///<reference path="JSFaustView.ts"/>
+///<reference path="JSFaustfView.ts"/>
 ///<reference path="TSyncManager.ts"/>
 ///<reference path="libraries.ts"/>
 
@@ -40,7 +41,7 @@ class JSViewFactory {
 	static create (parentid: number, type: string, objid: number) : number	{ 
 		let parent = JSObjectView.getVObject(parentid);
 		let view = null;
-
+		console.log(type)
 		switch (type) {
 			case "arc": 	  view = new JSArcView(parent); break;
 			case "curve":     view = new JSCurveView(parent); break;
@@ -66,6 +67,7 @@ class JSViewFactory {
 			case "video":	  view = new JSVideoView(parent); break;
 			case "audio":	  view = new JSAudioView(parent); break;
 			case "faust":	  view = new JSFaustView(parent, inscorelibs.faust()); break;
+			case "faustf":	  view = new JSFaustfView(parent, inscorelibs.faust()); break;
 
 			case "audioio":
 			case "fileWatcher":
