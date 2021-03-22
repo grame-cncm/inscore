@@ -51,6 +51,7 @@
 
 #if INCLUDEFaustWeb
 #include "IFaustProcessor.h"
+#include "IFaustfProcessor.h"
 #include "AudioIO.h"
 #endif
 
@@ -170,6 +171,7 @@ void IObjectFactory::init()
 #endif
 #if INCLUDEFaustWeb
 	fCreateMap[IFaustProcessor::kFaustProcessorType]		= _create<IFaustProcessor>;
+	fCreateMap[IFaustfProcessor::kFaustfProcessorfType]		= _create<IFaustfProcessor>;
 	fCreateMap[AudioIO::kAudioIOType]						= _create<AudioIO>;
 #endif
 #if INCLUDEGestureFollower
