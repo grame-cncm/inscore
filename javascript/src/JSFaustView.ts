@@ -155,8 +155,10 @@ class JSFaustView extends JSSvgBase {
         return JSFaustView.kSuccess;
     }
     
-    getData(obj: INScoreObject) : OFaustInfos {
-        return obj.getFaustInfos (false, true);
+    getCode(code: string) : Promise <string | null>	{ 
+        return new Promise( function (resolve) {
+            resolve (code);
+        })
     }
 
     updateSpecial(obj: INScoreObject, oid: number)	: boolean {
@@ -164,16 +166,24 @@ class JSFaustView extends JSSvgBase {
             console.log ("Faust engine is not available");
             return false;
         }
-        let data = this.getData(obj);
-        // start building the svg diagram
-        let diagram = this.dsp2Svg(data.code, this.osc2svgname(obj.getOSCAddress()));
-        if (diagram.error)
-            this.error (obj.getOSCAddress(), diagram.error);
-        else {
-            // success: display the svg diagram and build the audio node
-            this.fSVG.innerHTML = diagram.svg;
-            this.makeNode (oid, data.code, data.voices);
-        }
-        return super.updateSpecial (obj, oid);
+        let data = obj.getFaustInfos (false, true);
+        this.getCode (data.code).then ( (code) => {
+			if (code) {
+                let obj = INScore.objects().create(oid);
+
+                let diagram = this.dsp2Svg(code, this.osc2svgname(obj.getOSCAddress()));
+                if (diagram.error)
+                    this.error (obj.getOSCAddress(), diagram.error);
+                else {
+                    // success: display the svg diagram and build the audio node
+                    this.fSVG.innerHTML = diagram.svg;
+                    this.makeNode (oid, code, data.voices);
+                }
+                let ret = super.updateSpecial (obj, oid);
+				INScore.objects().del (obj);
+                return ret;
+            }
+            else return false;
+        });
     }
 }
