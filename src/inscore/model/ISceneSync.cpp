@@ -213,6 +213,16 @@ IObject::subnodes ISceneSync::newSync (const std::vector<SMaster>& masters, cons
 }
 
 //--------------------------------------------------------------------------
+// return the elements of list objects that require a new master
+bool ISceneSync::newSync (const std::vector<SMaster>& masters, const IObject* obj, const string& slaveMap) const
+{
+	bool found = false;
+	for (auto m: masters)
+		if ((m->getMaster() == obj) && (m->getSlaveMapName() == slaveMap)) { found = true; break; };
+	return (!found);
+}
+
+//--------------------------------------------------------------------------
 // creates a synchronization between objects
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& slaveMap, const string& master, const string& masterMap,
@@ -235,15 +245,15 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& sl
 		vector<SMaster> inlist = fParent->getMasters (so, master, masterMap);
 		vector<SMaster> notinlist  = diff (existing, inlist);
 		vector<SMaster> update  = diff (existing, notinlist);
-		subnodes newsync = newSync (inlist, sobj, slaveMap);
+		bool newsync = newSync (inlist, so, slaveMap);
 
 		for (auto m: update) {
 			if (m->getSlaveMapName() == slaveMap )
 				m->setSyncOptions (align, stretch, syncmode);
 		}
-		for (auto o: newsync) {
+		if (newsync) {
 			for (auto m: mobj)									// create the sync for each master
-				sync(o, Master::create(m, align, stretch, syncmode, masterMap , slaveMap ));
+				sync(so, Master::create(m, align, stretch, syncmode, masterMap , slaveMap ));
 		}
 		so->setState (kMasterModified);
 	}
