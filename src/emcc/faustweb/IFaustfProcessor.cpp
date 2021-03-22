@@ -24,6 +24,7 @@
 */
 
 #include "IFaustfProcessor.h"
+#include "Updater.h"
 
 using namespace std;
 
@@ -32,5 +33,11 @@ namespace inscore
 
 //--------------------------------------------------------------------------
 const string IFaustfProcessor::kFaustfProcessorfType("faustf");
+
+//--------------------------------------------------------------------------
+void IFaustfProcessor::accept (Updater* u)
+{
+	u->updateTo (SIFaustfProcessor(this));
+}
 
 }
