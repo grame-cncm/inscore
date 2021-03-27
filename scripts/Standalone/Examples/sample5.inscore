@@ -82,7 +82,7 @@ ntempo = -120;
 );
 
 # reload the script after a given duration
-/ITL/scene/cursor watch timeEnter 7 8 ( /ITL/scene load sample4.inscore );
+/ITL/scene/cursor watch timeEnter 7 8 ( /ITL/scene load sample5.inscore );
 /ITL/scene/cursor tempo $ptempo;
 
 __END__
