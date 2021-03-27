@@ -72,9 +72,11 @@ class IGuidoCode : public IObject
 	TFloatSize fPageFormat;		/// < Guido Page Format, in cm. Default: 21 x 29.7
 	int fNbOfPageColumns;		/// < Nb of columns of pages. (when the score has multiple pages). Default 2.
 	int fNbOfPageRows;			/// < Nb of rows of pages. (when the score has multiple pages) Default 1.
+	bool fUserWidth = false;
 
 	const	SLocalMapping& localMappings() const	{ return fLocalMappings; }
 			SLocalMapping& localMappings()			{ return fLocalMappings; }
+	void 	resetWidth();
 	
 	protected:
 		std::string	fGMN;								/// < Guido Music Notation code.
@@ -127,11 +129,11 @@ class IGuidoCode : public IObject
 		virtual ~IGuidoCode() {}
 
 		void setGMN( const std::string& gmn )				{ fGMN = gmn; localMapModified(true); }
-		void setPage( int page )							{ fPage = page; localMapModified(true); }
+		void setPage( int page )							{ fPage = page; resetWidth(); localMapModified(true); }
 		void setdPage( int dpage );
-		void setPageFormat( const TFloatSize& pageFormat )	{ fPageFormat = pageFormat; localMapModified(true); }
-		void setNbOfPageColumns(int columns)				{ fNbOfPageColumns = columns; localMapModified(true); }
-		void setNbOfPageRows(int rows)						{ fNbOfPageRows = rows; localMapModified(true); }
+		void setPageFormat( const TFloatSize& pageFormat )	{ fPageFormat = pageFormat; resetWidth(); localMapModified(true); }
+		void setNbOfPageColumns(int columns)				{ fNbOfPageColumns = columns; resetWidth(); localMapModified(true); }
+		void setNbOfPageRows(int rows)						{ fNbOfPageRows = rows; resetWidth(); localMapModified(true); }
 
 		/// \brief overrides IObject method to accept score specific events
 		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;

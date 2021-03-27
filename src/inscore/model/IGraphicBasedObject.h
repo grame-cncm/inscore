@@ -52,7 +52,8 @@ class IGraphicBasedObject : public IObject
 		typedef libmapping::SMARTP<TLocalMapping<long,2> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 		
-		TLongRect fBoundingRect;
+		TLongRect 	fBoundingRect;
+		bool		fUserWidth = false;
 
 		/// \brief get an object maps
 		virtual SIMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }
@@ -79,6 +80,9 @@ class IGraphicBasedObject : public IObject
 
 		bool 		getGraphicSegment( const IntPointSegment& segment, GraphicSegment& outSegment ) const;
 		TFloatPoint view2ItemPoint(const TLongPoint& point) const;
+
+		/// \brief the \c 'set' message handler
+		void setCalled ();
 
 		/// \brief the \c 'mapf' message handler
 		MsgHandler::msgStatus mapFileMsg (const IMessage* msg );

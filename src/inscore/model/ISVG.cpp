@@ -70,6 +70,7 @@ MsgHandler::msgStatus ISVG::set(const IMessage* msg )
 	status = msg->param (1, fSvg) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
 	if (status & MsgHandler::kProcessed)
 		newData(true);
+	setCalled();
 	return status;
 }
 

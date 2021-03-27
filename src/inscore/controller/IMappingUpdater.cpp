@@ -342,7 +342,10 @@ void IMappingUpdater::updateIObject (IObject* object)
     {
         const IObject* mobj = masters[i]->getMaster();
 		if (!mobj->getView()) continue;		// sync on an object without view
-        if (object->localMapModified() || object->getState() || object->dateModified()
+//        if (object->localMapModified() || object->getState() || object->dateModified()
+//            || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
+		int state = object->getState() & (IObject::kNewObject + IObject::kModified);
+        if (object->localMapModified() || state || object->dateModified()
             || mobj->localMapModified() || masters[i]->modified() || mobj->dateModified()) {
             mobj->getView()->refreshSyncCache();
             if (!updateNOHStretch ( object, masters[i]))

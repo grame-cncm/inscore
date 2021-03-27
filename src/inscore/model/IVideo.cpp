@@ -55,10 +55,7 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 	fTypeString = kVideoType;
 
 	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
-	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);
-	fMsgHandlerMap[kwidth_GetSetMethod]			= TSetMethodMsgHandler<IVideo, float>::create(this, &IVideo::setWidth);
-	fMsgHandlerMap[kheight_GetSetMethod]		= TSetMethodMsgHandler<IVideo, float>::create(this, &IVideo::setHeight);
-	
+	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);	
 	fGetMsgHandlerMap[kvideoMap_GetSetMethod]	= GetVideoMapMsgHandler::create(this);
 	
 	fTempo = 60.0f;
@@ -68,12 +65,26 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 }
 
 //-------------------------------------------------------------------------
+MsgHandler::msgStatus IVideo::set (const IMessage* msg )
+{
+	MsgHandler::msgStatus ret = IMedia::set (msg);
+	if (ret == MsgHandler::kProcessed && !fUserWidth) {
+		IObject::setWidth(0);
+		IObject::setHeight(0);
+	}
+	return ret;
+}
+
+//-------------------------------------------------------------------------
 void IVideo::setWidth(float width)
 {
 	if (!width) return;
 	float ratio = getWidth() ? width / getWidth() : 0;
 	IObject::setWidth(width);
-	if (ratio) IObject::setHeight(getHeight() * ratio);
+	if (ratio) {
+		IObject::setHeight(getHeight() * ratio);
+		fUserWidth = true;
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -82,7 +93,10 @@ void IVideo::setHeight(float height)
 	if (!height) return;
 	float ratio = getHeight() ? height / getHeight() : 0;
 	IObject::setHeight(height);
-	if (ratio) IObject::setWidth(getWidth() * ratio);
+	if (ratio) {
+		IObject::setWidth(getWidth() * ratio);
+		fUserWidth = true;
+	}
 }
 
 //--------------------------------------------------------------------------

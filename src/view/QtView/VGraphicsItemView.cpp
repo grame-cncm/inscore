@@ -31,8 +31,10 @@
 #include "QStretchTilerItem.h"
 
 #include "Events.h"
+#include "INScore.h"
 #include "IObject.h"
 #include "maptypes.h"
+#include "Methods.h"
 #include "MouseEventAble.h"
 #include "TIRect.h"
 #include "TSegment.h"
@@ -461,7 +463,7 @@ void VGraphicsItemView::updateGeometry(QGraphicsItem* item, IObject* o, float x,
 void VGraphicsItemView::updateItem(QGraphicsItem* item, IObject* o)
 {
     // Visibility
-    item->setVisible(  o->getVisible() );
+    item->setVisible( getVisible(o) );
 
     // Z order. A negative 'z' value puts the object behind its parent - if it has one.
     item->setFlag( QGraphicsItem::ItemStacksBehindParent , (o->getZOrder() < 0) );

@@ -66,6 +66,8 @@ class VVideoView: public VGraphicsItemView, public VMediaPlayer
 		virtual void updateView ( IVideo * video );
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ VMappedShapeView::updateGraphic2GraphicMapping(shapeMap); }
 		virtual void updateObjectSize(IObject* o) {} // overrides
+		// overrides default: a video must be visible to trigger the size change signal, which makes the object ready
+        virtual bool getVisible (const IObject* o) const	{ return o->getPending() ? true : o->getVisible(); }
 
 	virtual void mediaReady();
 	virtual void mediaEnd();

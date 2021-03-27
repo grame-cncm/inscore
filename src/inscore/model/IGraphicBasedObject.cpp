@@ -85,12 +85,24 @@ void IGraphicBasedObject::setBoundingRect(long x, long y, long w, long h)
 }
 
 //-------------------------------------------------------------------------
+void IGraphicBasedObject::setCalled ()
+{
+	if (!fUserWidth) {
+		IObject::setWidth(0);
+		IObject::setHeight(0);
+	}
+}
+
+//-------------------------------------------------------------------------
 void IGraphicBasedObject::setWidth(float width)
 {
 	if (!width) return;
 	float ratio = getWidth() ? width / getWidth() : 0;
 	IObject::setWidth(width);
-	if (ratio) IObject::setHeight(getHeight() * ratio);
+	if (ratio) {
+		IObject::setHeight(getHeight() * ratio);
+		fUserWidth = true;
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -99,7 +111,10 @@ void IGraphicBasedObject::setHeight(float height)
 	if (!height) return;
 	float ratio = getHeight() ? height / getHeight() : 0;
 	IObject::setHeight(height);
-	if (ratio) IObject::setWidth(getWidth() * ratio);
+	if (ratio) {
+		IObject::setWidth(getWidth() * ratio);
+		fUserWidth = true;
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------

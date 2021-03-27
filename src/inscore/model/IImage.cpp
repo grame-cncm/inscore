@@ -57,7 +57,9 @@ MsgHandler::msgStatus IImage::set (const IMessage* msg )
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 
 	status = TFile::set( msg );
-	if (status & MsgHandler::kProcessed) newData(true);
+	if (status & MsgHandler::kProcessed)
+		newData(true);
+	setCalled();
 	return status;
 }
 

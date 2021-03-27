@@ -73,11 +73,15 @@ MsgHandler::msgStatus ITextFile::set(const IMessage* msg )
         {
             if (!read(fText))
                 status = MsgHandler::kCreateFailure;
-            else newData(true);
+            else {
+				newData(true);
+				setCalled();
+			}
         }
 #else
 		setPending();
 		newData(true);
+		setCalled();
 #endif
 	}
 	return status;

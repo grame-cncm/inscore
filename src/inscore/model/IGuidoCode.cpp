@@ -84,6 +84,14 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 	setPending();
 }
 
+//-------------------------------------------------------------------------
+void IGuidoCode::resetWidth()
+{
+	if (!fUserWidth) {
+		IObject::setWidth(0);
+		IObject::setHeight(0);
+	}
+}
 
 //-------------------------------------------------------------------------
 void IGuidoCode::setWidth(float width)
@@ -91,7 +99,10 @@ void IGuidoCode::setWidth(float width)
 	if (!width) return;
 	float ratio = getWidth() ? width / getWidth() : 0;
 	IObject::setWidth(width);
-	if (ratio) IObject::setHeight(getHeight() * ratio);
+	if (ratio) {
+		IObject::setHeight(getHeight() * ratio);
+		fUserWidth = true;
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -100,7 +111,10 @@ void IGuidoCode::setHeight(float height)
 	if (!height) return;
 	float ratio = getHeight() ? height / getHeight() : 0;
 	IObject::setHeight(height);
-	if (ratio) IObject::setWidth(getWidth() * ratio);
+	if (ratio) {
+		IObject::setWidth(getWidth() * ratio);
+		fUserWidth = true;
+	}
 }
 
 //--------------------------------------------------------------------------

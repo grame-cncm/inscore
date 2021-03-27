@@ -82,6 +82,10 @@ IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(
 	fMsgHandlerMap[kfontWeight_GetSetMethod]	= TMethodMsgHandler<IText>::create(this, &IText::setFontWeight);
 
 	fMsgHandlerMap[kwrite_SetMethod]			= TMethodMsgHandler<IText, MsgHandler::msgStatus (IText::*)(const IMessage*)>::create(this, &IText::writeMsg);
+
+	// disable width and height methods for text. Use fontSize instead.
+	fMsgHandlerMap[kwidth_GetSetMethod]		= 0;
+	fMsgHandlerMap[kheight_GetSetMethod]	= 0;
 	setPending();
 }
 
@@ -123,6 +127,7 @@ MsgHandler::msgStatus IText::set( const IMessage* msg )
 		status = MsgHandler::kProcessed;
 	}
 	else status = MsgHandler::kBadParameters;
+	setCalled();
 	return status;
 }
 

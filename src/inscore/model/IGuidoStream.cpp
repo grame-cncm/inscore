@@ -112,6 +112,7 @@ void IGuidoStream::clear()
 	GuidoResetStream(fGuidoStream);
 	setGMN("");
 	newData(true);
+	resetWidth();
 }
 
 
@@ -124,6 +125,7 @@ MsgHandler::msgStatus IGuidoStream::write (const IMessage* msg )
 	if ((msg->size() == 1) && msg->param(0, t)) {
         status = MsgHandler::kProcessed;
         writeStream(t);
+        resetWidth();
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;

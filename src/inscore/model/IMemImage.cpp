@@ -70,6 +70,7 @@ MsgHandler::msgStatus IMemImage::set (const IMessage* msg )
 				view->setImage(srcview);
 				view->updateLocalMapping(this);
 			}
+			setCalled();
 			return MsgHandler::kProcessed;
 		}
 	}

@@ -72,6 +72,7 @@ MsgHandler::msgStatus ISVGFile::set(const IMessage* msg )
 	status = TFile::set (msg);
 	if (status & MsgHandler::kProcessed)
 		newData(true);
+	setCalled();
 	return status;
 }
 

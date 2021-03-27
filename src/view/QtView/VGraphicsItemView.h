@@ -190,7 +190,9 @@ class VGraphicsItemView : public VObjectView
         void updateItem(QGraphicsItem* item, IObject* o);
 
         /// \brief gives the scale of an object, taking account of its dimensions
-        float getScale (const QGraphicsItem* item, const IObject* o) const;
+        virtual float getScale (const QGraphicsItem* item, const IObject* o) const;
+        /// \brief gives the  object visibility, taking account of its pending state
+        virtual bool  getVisible (const IObject* o) const	{ return o->getPending() ? false : o->getVisible(); }
 
 		
 		// the methods below have been first implemented in VShapeView

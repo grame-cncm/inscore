@@ -383,10 +383,11 @@ void IObject::newData (bool state) {
 //--------------------------------------------------------------------------
 void IObject::ready()
 {
-//	std::cout << "IObject::ready " << getOSCAddress() << " ready." << std::endl;
+//	cerr << "IObject::ready " << getOSCAddress() << " ready." << endl;
 	IPosition::modified();
 	setModified();
 	fPending = 0;
+	INScore::postMessage (getOSCAddress().c_str(), kx_GetSetMethod, getXPos());
 }
 
 //--------------------------------------------------------------------------
@@ -814,15 +815,21 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				size_t n = targets.size();
 				for (size_t i = 0; i< n; i++) {
 					IObject * target = targets[i];
-					if (target->getPending()) { // && (msg->message() != krefresh_SetMethod)) {
-//cerr << "=> delayed: " << msg << endl;
-//						INScore::delayMessage (msg->address().c_str(), INScore::MessagePtr(msg));
-						msg->send(true);
-						return MsgHandler::kProcessedNoChange;
+					if (target->getPending()  && (msg->message() != kdel_SetMethod)) {
+//cerr << "=> delayed: " << target->getOSCAddress().c_str() << " " << msg->address() << " " << msg->message() << endl;
+						SIMessage copy = IMessage::create (*msg);
+						copy->setAddress(target->getOSCAddress());
+						copy->send(true);
+//						INScore::delayMessage (target->getOSCAddress().c_str(), INScore::MessagePtr(msg));
+//						msg->send(true);
+						result |= MsgHandler::kProcessedNoChange;
 					}
-					result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
-					if (result & MsgHandler::kProcessed) {
-						target->setModified();									// sets the modified state of the subnode
+					else {
+//cerr << "execute: " << msg << endl;
+						result |= target->execute(translated ? translated : msg);	// asks the subnode to execute the message
+						if (result & MsgHandler::kProcessed) {
+							target->setModified();									// sets the modified state of the subnode
+						}
 					}
 				}
 			}

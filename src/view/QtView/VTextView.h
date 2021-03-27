@@ -82,6 +82,7 @@ class VTextView: public VIntPointObjectView
 
 		class TextInterface;
 		virtual void updateLocalMapping (IText* text, TextInterface& textInterface);
+        virtual float getScale (const QGraphicsItem* item, const IObject* o) const 	{ return o->getScale(); }
 	
 		void updateQtTextTable();
 

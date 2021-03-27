@@ -50,7 +50,8 @@ typedef class libmapping::SMARTP<IVideo>	SIVideo;
 */
 class IVideo : public IMedia
 {
-	int musicalTime2mls (float date) const;
+	bool	fUserWidth = false;
+	int 	musicalTime2mls (float date) const;
 
 	public:
 		static const std::string kVideoType;
@@ -70,6 +71,9 @@ class IVideo : public IMedia
 	protected:
 				 IVideo( const std::string& name, IObject * parent);
 		virtual ~IVideo() {}
+
+		/// \brief the \c 'set' message handler
+		virtual MsgHandler::msgStatus set (const IMessage* msg );
 
 		/// \brief the \c 'videoMapf' message handler
 		virtual MsgHandler::msgStatus videoMapFileMsg (const IMessage* msg );
