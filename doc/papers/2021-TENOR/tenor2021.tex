@@ -173,8 +173,8 @@ Finally, we will show how INScore's communication system has been extended to al
 %=========================================================
 \section{Introduction}\label{sec:introduction}
 
-The deployment of music notation tools on the Internet has been investigated since the late 1990s. The Guido Note Server \cite{renz98}, designed as a client-server architecture and based on the Guido Music Description Language \cite{hoos98} (GMN) is an example of such systems. It will be followed by a large number of applications offering online music editing services in a design modelled on traditional score editors (e.g., MuseScore\footnote{MuseScore \url{https://musescore.com/}}), enhanced by sharing services. 
-In this area, we can mention Noteflight,\footnote{Noteflight \url{https://www.noteflight.com/}} Scorio,\footnote{Scorio \url{https://www.scorio.com/}}, or also in the line of description languages associated to compilers, LilyBin\footnote{LilyBin \url{http://lilybin.com/}} or the GuidoEditor,\footnote{GuidoEditor \url{https://guidoeditor.grame.fr/}} the latter having the particularity to embed the compiler in a web page.
+The deployment of music notation tools on the Internet has been investigated since the late 1990s. The Guido Note Server \cite{renz98}, designed as a client-server architecture and based on the Guido Music Description Language \cite{hoos98} (GMN) is an example of such systems. It was followed by a large number of applications offering online music editing services in a design modelled on traditional score editors (e.g., MuseScore\footnote{MuseScore \url{https://musescore.com/}}), enhanced by sharing services. 
+In this area, we can mention Noteflight,\footnote{Noteflight \url{https://www.noteflight.com/}} Scorio,\footnote{Scorio \url{https://www.scorio. com/}}, or also in the line of description languages associated to compilers, LilyBin\footnote{LilyBin \url{http://lilybin.com/}} or the GuidoEditor,\footnote{GuidoEditor \url{https://guidoeditor.grame.fr/}} the latter having the particularity to embed the compiler in a web page.
 All these systems are based on a traditional approach of musical notation and do not deal with problems related to network performances.
 
 It is more recently and often thanks to the impulse of composers that distributed score systems have emerged.
@@ -185,13 +185,16 @@ However, these systems are implemented as native applications (Quintet.net is ba
 Facing similar problems, SmartVox \cite{bell:hal-01660184} uses a standard browser to distribute and synchronize musical scores, which are also accompanied by audio signals. In the same line but with a focus on improvised music, John, the semi-conductor \cite{goudard:hal-01923258} is another web-based approach to music notation.
 It is more recently that Drawsocket \cite{rama_gottfried_2019_3373369} appears, a platform for generating synchronized, browser-based scores across an array of networked devices. Firmly rooted in web technologies (i.e., SVG, CSS, HTML and Javascript), it provides an API to develop networked scores.
 
-Naturally turned towards network communication, INScore \cite{fober:hal-02158817} (presented in section \ref{sec:inscore}) is also open to web uses \cite{fober:hal-01348511}, in particular due to web server objects (\icode{http} or \icode{websocket}) that can be embedded in a score, and by providing a basic Web API allowing us to interact with the score from a browser. 
+INScore \cite{fober:hal-02158817} (presented in section \ref{sec:inscore}), is an environment for designing dynamic, interactive and augmented musical scores, built as a message-based system and controlled by OSC messages. It is naturally oriented towards network communication and is also open to web uses \cite{fober:hal-01348511}, in particular due to web server objects (\icode{http} or \icode{websocket}) that can be embedded in a score, and by providing a basic Web API allowing us to interact with the score from a browser. 
 However, this approach is inherent to the native application and constrains its use as a client/server architecture, limiting both the ability to interact with the score and its dynamical aspects. 
 We have therefore developed a Javascript version of the INScore environment, in the form of a library that can be integrated into a web page as a stand-alone engine. 
-Taking advantage of the modular architecture of the Web, in particular thanks to the Node Package Manager (NPM), this implementation makes it possible to embed the Faust compiler \cite{orlarey:hal-02159014} \cite{ren:hal-03087763} and thus to provide signal processing objects within the score.
-A simple extension of the existing communication scheme can also be used to control a web score from the native version of INScore.
+Taking advantage of the modular architecture of the Web, in particular thanks to the Node Package Manager (NPM), this implementation makes it possible to embed the Faust compiler \cite{orlarey:hal-02159014} \cite{ren:hal-03087763} and thus to provide signal processing objects within the score. 
+This type of extension was never considered for the native version because we considered that collaboration of specialized applications was a flexible model to implement. It is indeed possible to use INScore with Max/MSP as well as with SuperCollider or any other audio application, as long as it can communicate via OSC. 
+The equivalent model of the Web lies rather in the aggregation of components.
 
-The next section is a quick reminder of INScore's approach to music representation. The following sections will detail the more technical aspects of the implementation for the web, the integration of Faust objects and the extension of the communication scheme, before concluding with the new perspectives offered by this environment and future works.
+Finally, a simple extension of the existing communication scheme has been designed to allow a web score to be controlled from the native version of INScore.
+
+The next section is a quick review of INScore's approach to music representation. The following sections will detail the more technical aspects of the implementation for the web, the integration of Faust objects and the extension of the communication scheme, before concluding with the new perspectives offered by this environment and future works.
 
 
 %=========================================================
@@ -201,7 +204,7 @@ INScore is an environment for the design of augmented, dynamic, and interactive 
 The design of a score is based on a specific scripting language and therefore also addresses the field of programming languages for the description of music \cite{fober:hal-02368958}. 
 
 \subsection{Extended Scores}
-INScore allows you to extend the symbolic notation, or even replace it, with arbitrary graphical objects: images, text, vector graphics, and videos. All these objects, including symbolic notation, have the same status as musical objects and an identical temporal dimension (i.e., date, duration and tempo). This homogeneity makes it possible to synchronize them in arbitrary combinations.
+INScore allows you to extend symbolic notation practices, or even replace it, with arbitrary graphical objects: images, text, vector graphics, and videos. All these objects, including symbolic notation, have the same status as musical objects and an identical temporal dimension (i.e., date, duration and tempo). This homogeneity makes it possible to synchronize them in arbitrary combinations.
 
 \subsection{Representing the Time of Heterogeneous Objects}
 INScore takes advantage of the homogenous temporal dimension of the score objects to provide what we call \emph{time synchronisation in the graphical space}, making it possible to represent the temporal relationships between objects using a synchronization mechanism. If we imagine that each pixel of an object carries a date (computed from the date and duration of the object) the synchronization system potentially makes it possible to graphically align all the pixels of two or more objects carrying the same date. The design of a cursor positioned at the current date of a score is achieved with a simple synchronization command. But above all, it becomes possible to reason in the temporal space and therefore in a metaphor close to musical thought, the rendering engine automatically \emph{translate} the temporal dimensions in the graphic space.
@@ -216,7 +219,7 @@ An interaction system complements these dynamic aspects. The time of a score, co
 
 INScore was originally designed to be driven by Open Sound Control (OSC) messages. It is therefore particularly suited to networks and the exchange of messages between INScore scores are native features. A simple \emph{message forwarding} system, allows a score to control a set of other scores distributed over a local network, or to build a distributed music system on a client/server model \cite{slavko_zagorac_2018_1289685}.
 
-As mentioned before, a score can also embed a web server, making it available from the Internet and providing control from a browser. On the other hand, the objects of a score can refer to resources distributed over the Internet, similarly to a browser that can aggregate content from different websites.
+As mentioned before, a score can also embed a web server \cite{fober:hal-01348511}, making it available from the Internet and providing control from a browser. On the other hand, the objects of a score can refer to resources distributed over the Internet, similarly to a browser that can aggregate content from different websites.
 
 \subsection{INScore Scripting Language}
 A score is described in a specific scripting language consisting of a textual form of OSC messages, extended with variables, control primitives, as well as symbolic score composition primitives. The following script is used to concisely describe the score in Figure~\ref{fig:score}:
@@ -412,10 +415,12 @@ The server receives as an input messages from user actions (e.g., drag \& drop o
 %=========================================================
 \section{Conclusions}
 
-The Web deployment of the INScore engine is not a recent project. The design issues that we encountered in the past were solved by the evolution of languages and compilation technologies, allowing us to support various platforms from the same source.
+The Web deployment of the INScore engine is an ongoing project started in 2017 in parallel to the native version development. The design issues that we encountered in the past were solved by the evolution of languages and compilation technologies, allowing us to support various platforms from the same source code.
 
-The web version of INScore opens new perspectives, particularly relevant in the context of the current health crisis: the publication and sharing of musical scores on the Web is an essential tool for the dissemination of contemporary creation. 
-The fact that the active and reactive sound part of a work can also be embedded within the score makes it possible to publish a musical piece in its entirety i.e., the musical score as well as the electronic parts, which may include real-time processing, generators or sound files. Remote control could also open up new prospects, both from an educational point of view and for the performance of the music.
+The web version of INScore opens new perspectives, particularly relevant in the context of the current health crisis, where the web has taken a central place. 
+The distribution of musical works involving electronic parts has never been straightforward. The fact of being able to publish such works on the web, to make them available without prior installation, ready to be played from home, may constitue an essential tool for the dissemination of contemporary creation. It is with this in perspective that the encoding of existing musical works in INScore and Faust is underway.
+
+Remote control could also open up new prospects, both from an educational point of view and for the performance of the music: a composer will be able to perform his piece from home, interacting dynamically with its performance, while a set of connected listeners will be able to follow its performance, having at their disposal both the representation of the work and its sound rendering.
 
 Future work will deal in particular with better deployment on all types of platforms and especially mobile platforms. Better integration of CSS should improve rendering on mobile phones.
 
