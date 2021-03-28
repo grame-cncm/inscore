@@ -25,6 +25,9 @@ option ( QTVIEW 	"Includes Qt view" on )
 option ( MODEL 		"Generates the core model library" off )
 option ( QT6 		"Use Qt version 6" off )
 
+set (CMAKE_BUILD_RPATH ../lib)
+set (CMAKE_SKIP_BUILD_RPATH FALSE)
+
 
 #######################################
 # Check options 
