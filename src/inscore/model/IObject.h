@@ -110,7 +110,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
 		bool	fLock;					///< if true the object can't be deleted
-		int		fPending = 0;			///< true when the object data are pending  (like width, height, mapping...)
+		bool	fPending = false;		///< true when the object data are pending  (like width, height, mapping...)
 		int		fState;					///< the object modification state
 		///< the object export flag and the object childexport option flag (if the children should be exported as well)
 		std::deque<std::pair<std::string, bool> >	fExportFlag;
@@ -140,8 +140,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 
 	protected:
-		std::string fTypeString;		///< the type string
+	static bool gSerialise;				///< used to serialize incoming messages
 
+		std::string fTypeString;		///< the type string
 		SIObjectDebug	fDebug;			///< debug virtual node
         SISceneSync		fSync;
         SISignalNode	fSignals;
@@ -154,7 +155,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		*/
 		std::map<std::string,SMsgHandler>			fMsgHandlerMap;
     
-        std::map<std::string,SSigHandler>          fSigHandlerMap;
+        std::map<std::string,SSigHandler>           fSigHandlerMap;
 
 		/// \brief state query handlers map
 		std::map<std::string, SGetParamMsgHandler>	fGetMsgHandlerMap;
@@ -175,8 +176,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			\param parent its parent object
 			\note an object name is used as an unique identifier within the address space
 		*/
-		static SIObject create(const std::string& name, IObject* parent)	
+		static SIObject create(const std::string& name, IObject* parent)
 			{ return new IObject(name, parent); }
+		static bool pendingScene()		{ return gSerialise; }
 
 		/// \brief returns the object sub-nodes
 				subnodes& elements()				{ return fSubNodes; }
@@ -668,7 +670,11 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		/// \brief the \c 'effect' message handler
 		virtual MsgHandler::msgStatus effectMsg(const IMessage* msg);
 		virtual bool           getLocked () const 	{ return fLock;}
-		virtual void           setPending () 		{ fPending++; }
+#ifdef EMCC
+		virtual void           setPending () 		{ fPending = true; }
+#else
+		virtual void           setPending () 		{}
+#endif
 		virtual SIMessageList  getWatch () const;
 		virtual SIMessageList  getStack () const;
 		virtual SIMessageList  getAliases () const;

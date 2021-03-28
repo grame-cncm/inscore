@@ -232,13 +232,6 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const string& slave, const string& sl
 	if (!fParent->find(slave, sobj) || !fParent->find(master, mobj))
 		return MsgHandler::kBadParameters;						// no target objects for slave or for master
 
-	for (auto m: mobj) {
-		if (m->getPending()) return MsgHandler::kDelayed;
-	}
-	for (auto so: sobj) {	// for each slave
-		if (so->getPending()) return MsgHandler::kDelayed;
-	}
-
 	for (auto so: sobj) {	// for each slave
 
 		vector<SMaster> existing = fParent->getMasters (so);
@@ -346,8 +339,6 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	Master::SyncType syncType = Master::kDefaultSync;
 	if (index == n) {	// we've reached the end of the parameters: creates the sync using default values
         MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
-		if (ret == MsgHandler::kDelayed)
-			msg->send(true);
 		return ret;
 	}
 
@@ -365,8 +356,6 @@ MsgHandler::msgStatus ISceneSync::syncMsg (const IMessage* msg)
 	} while (true);
 	// eventually sets the synchonization with the optional parameters
     MsgHandler::msgStatus ret = syncMsg (slave, slaveMapName, master, masterMapName, stretch, syncType, align);
-	if (ret == MsgHandler::kDelayed)
-		msg->send(true);
     return ret;
 }
 

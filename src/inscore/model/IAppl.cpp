@@ -315,6 +315,7 @@ void IAppl::cleanup()
 	}
 
 	IObject::cleanup();
+	IObject::gSerialise = false;
 
 	if(quit) INScore::postMessage("/ITL","quit");
 }
@@ -433,6 +434,12 @@ int IAppl::processAlias (const TAlias& alias, const IMessage* imsg)
 //--------------------------------------------------------------------------
 int IAppl::processMsg (const std::string& address, const std::string& addressTail, const IMessage* imsg)
 {
+	if (gSerialise) {
+//cerr << "serialize: " << imsg << endl;
+		imsg->send(true);
+		return MsgHandler::kProcessedNoChange;
+	}
+
 	setReceivedOSC (1);
 
 	if (imsg->extendedAddress()) {

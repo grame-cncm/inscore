@@ -83,6 +83,7 @@ OSCStream& operator <<(OSCStream& s, const TFloatPoint& val)
 	return s;
 }
 
+bool IObject::gSerialise = false;
 
 //--------------------------------------------------------------------------
 // IObject implementation
@@ -386,8 +387,8 @@ void IObject::ready()
 //	cerr << "IObject::ready " << getOSCAddress() << " ready." << endl;
 	IPosition::modified();
 	setModified();
-	fPending = 0;
-	INScore::postMessage (getOSCAddress().c_str(), kx_GetSetMethod, getXPos());
+	fPending = false;
+//	INScore::postMessage (getOSCAddress().c_str(), kx_GetSetMethod, getXPos());
 }
 
 //--------------------------------------------------------------------------
@@ -521,7 +522,7 @@ void IObject::cleanup ()
 	EventsAble::cleanup();
 	fNewData = false;
 	localMapModified (false);
-	fExportFlag.clear();
+	if (!gSerialise) fExportFlag.clear();
  	if (getState() & kSubModified) {     // todo: could be optimised - to be checked
 		subnodes::iterator i = elements().begin();
 		while (i!=elements().end()) {
@@ -816,12 +817,9 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 				for (size_t i = 0; i< n; i++) {
 					IObject * target = targets[i];
 					if (target->getPending()  && (msg->message() != kdel_SetMethod)) {
-//cerr << "=> delayed: " << target->getOSCAddress().c_str() << " " << msg->address() << " " << msg->message() << endl;
-						SIMessage copy = IMessage::create (*msg);
-						copy->setAddress(target->getOSCAddress());
-						copy->send(true);
-//						INScore::delayMessage (target->getOSCAddress().c_str(), INScore::MessagePtr(msg));
-//						msg->send(true);
+//cerr << "delay: " << msg << endl;
+						msg->send(true);
+						gSerialise = true;
 						result |= MsgHandler::kProcessedNoChange;
 					}
 					else {
@@ -836,7 +834,10 @@ int IObject::processMsg (const string& address, const string& addressTail, const
 			// can't find the target node but name is a regular expression: ignore 
 			else if (Tools::regexp(beg)) result = MsgHandler::kProcessedNoChange;
 			// can't find the target node: try to create it
-			else result = IProxy::execute (translated ? translated : msg, beg, this);
+			else {
+//cerr << "proxy: " << msg << endl;
+				result = IProxy::execute (translated ? translated : msg, beg, this);
+			}
 		}
 	}
     return result;
@@ -1650,7 +1651,6 @@ MsgHandler::msgStatus IObject::evalMsg(const IMessage* msg)
 		size_t n = watchMsg->list().size();
 		if (!n) return MsgHandler::kBadParameters;
 
-
 		for (unsigned int i=0; i < n; i++) {
 			SIMessage msg = watchMsg->list()[i];
 			string address;
@@ -1841,8 +1841,6 @@ MsgHandler::msgStatus IObject::editMsg (const IMessage* msg)
 void IObject::refresh ()
 {
 	setState (kModified);
-//	newData(true);
-	if (fPending) fPending--;
 	if (elements().size()) setState (kSubModified);
 	for (auto elt: elements()) {
 		elt->refresh();

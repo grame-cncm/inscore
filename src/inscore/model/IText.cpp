@@ -86,7 +86,9 @@ IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(
 	// disable width and height methods for text. Use fontSize instead.
 	fMsgHandlerMap[kwidth_GetSetMethod]		= 0;
 	fMsgHandlerMap[kheight_GetSetMethod]	= 0;
+#ifdef EMCC
 	setPending();
+#endif
 }
 
 //--------------------------------------------------------------------------
