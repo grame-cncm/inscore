@@ -515,10 +515,12 @@ void VGraphicsItemView::updateView(IObject* o)
 	//Exports the item if necessary.
 	std::pair<std::string, bool> myExport = o->getNextExportFlag();
 
-	while ( myExport.first.length() ) {
-		VExport::exportItem( item(), myExport.first.c_str(), getScale(item(), o), getScale(item(), o), myExport.second);
-		o->checkEvent(kExportEvent, rational(0,1), o);
-		myExport = o->getNextExportFlag();
+	if (!o->getPending()) {
+		while ( myExport.first.length() ) {
+			VExport::exportItem( item(), myExport.first.c_str(), getScale(item(), o), getScale(item(), o), myExport.second);
+			o->checkEvent(kExportEvent, rational(0,1), o);
+			myExport = o->getNextExportFlag();
+		}
 	}
 
 	//	Debug mapping mode:

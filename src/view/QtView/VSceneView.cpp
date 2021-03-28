@@ -162,11 +162,12 @@ std::string ZoomingGraphicsView::getSceneAddress() const
 void ZoomingGraphicsView::paintEvent (QPaintEvent * event) 
 {
     QGraphicsView::paintEvent (event);
-	if (fScene)  {
+
+	if (fScene && !IObject::pendingScene())  {
 		fScene->endPaint();
 
 		VSceneView * sceneView = dynamic_cast<VSceneView*>(fScene->getView());
-		sceneView->updateSreenShot(fScene->isUpdateVersion());
+		sceneView->updateScreenShot(fScene->isUpdateVersion());
 		// Initialisation of updated flag after redrawing the scene
 		fScene->setUpdateVersion(false);
 	}
@@ -537,6 +538,8 @@ void VSceneView::updateView( IScene * scene )
 	fGraphicsView->setScene (scene);
 
     // Export
+	if (IObject::pendingScene()) return;
+
 	std::pair<std::string, bool> myExport = scene->getNextExportFlag();
     while ( myExport.first.length() ) {
         VExport::exportScene( fGraphicsView , myExport.first.c_str() );
@@ -546,7 +549,7 @@ void VSceneView::updateView( IScene * scene )
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-void VSceneView::updateSreenShot(bool newVersion)
+void VSceneView::updateScreenShot(bool newVersion)
 {
 	if(newVersion) fNewVersion++;
 
