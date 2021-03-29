@@ -60,6 +60,9 @@
 #include "Updater.h"
 #include "VObjectView.h"
 
+#ifdef EMCC
+#include "IObjectAdapter.h"
+#endif
 
 using namespace std;
 using namespace libmapping;
@@ -128,6 +131,9 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMsgHandlerMap[kclass_GetSetMethod]	= TGetParamMsgHandler<string>::create(fClassNames);
 	
 	setModified();
+#ifdef EMCC
+	fAdapter = new IObjectAdapter (this);
+#endif
 }
 
 
@@ -350,6 +356,9 @@ IObject::~IObject()
 		elements()[i]->fParent = fParent;
     }
 	delete fView;
+#ifdef EMCC
+	delete fAdapter;
+#endif
 }
 
 void IObject::del() {

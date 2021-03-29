@@ -76,6 +76,7 @@ class ISceneSync;
 typedef class libmapping::SMARTP<ISceneSync>		SISceneSync;
 class ISignalNode;
 typedef class libmapping::SMARTP<ISignalNode>		SISignalNode;
+class IObjectAdapter;
 
 class TQtJs;
 
@@ -105,7 +106,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		subnodes		fSubNodes;		///< child objects list
 		std::string		fClassNames;	///< the object CSS classes (used by the web version, usunsed by the native version)
 		bool			fClassChanged = false;
- 
+#ifdef EMCC
+		IObjectAdapter * fAdapter;
+#endif
 
 		float	fDispStart, fDispEnd;	///< the object displayed range (0-1 covers the whole range)
 		bool	fDelete;				///< true when an object should be deleted
@@ -209,6 +212,10 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief clear the pending state of an object
 		virtual void	ready();
+
+#ifdef EMCC
+		IObjectAdapter* getAdapter()		{ return fAdapter; }
+#endif
 
 		/*!
 		 * \brief returns the next object export-flag with file path and draw children flag to draw or not object children.
