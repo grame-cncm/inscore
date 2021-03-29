@@ -18,7 +18,7 @@ class JSArcView extends JSSvgBase
 
     updateSVGDimensions(w: number, h: number) : void {}
 
-    updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+    updateSpecial ( obj: INScoreObject)	: boolean {		
         let arc = obj.getArcInfos();
         let r1 = this.relative2SceneWidth (arc.width) / 2;
         let r2 = this.relative2SceneHeight (arc.height) / 2;

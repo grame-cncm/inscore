@@ -14,9 +14,9 @@ class JSVideoView extends JSAutoSize {
     }     
 	clone (parent: JSObjectView) : JSObjectView { return new JSVideoView(parent); }
 
-	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+	updateSpecial ( obj: INScoreObject )	: boolean {		
         this.fVideo.src  = obj.getFile();
-		return this.updateSizeASync (objid );
+		return this.updateSizeASync (obj );
 	}
  
 	setShadow(elt: HTMLElement, val: OShadow): void {

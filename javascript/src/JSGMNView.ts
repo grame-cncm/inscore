@@ -98,7 +98,7 @@ class JSGMNView extends JSSvgBase {
 		return true;
 	}
 	
-	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+	updateSpecial(obj: INScoreObject)	: boolean {
 		if (!this.checkGuido()) return false;
 		let guido = obj.getGuidoInfos();
 		return this.gmn2svg (obj, guido.code, guido.page);
@@ -108,13 +108,12 @@ class JSGMNView extends JSSvgBase {
 	static getMapping (mapname: string, id: number, oid: number) : void {
 		let view = <JSGMNView>JSObjectView.getObjectView(id);
     	if (view) {
-			let obj = INScore.objects().create(oid);
+			let obj = INScore.objects().adapter(oid);
 			let vb = view.viewBox();
 			let w = vb.width; 
 			let h = vb.height;
 			let map = view.getMap (mapname, w, h);
 			obj.updateGraphic2TimeMap (mapname, map, w, h);
-			INScore.objects().del (obj);
 		}
 	}
 

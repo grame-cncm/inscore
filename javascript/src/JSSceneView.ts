@@ -22,7 +22,9 @@ class JSSceneView extends JSObjectView {
 		let absolute = style.position == "absolute";
 		super(div, null, absolute);
 		this.fAbsolutePos = absolute;
-		this.updateObjectSize (objid, div.clientWidth, div.clientHeight);
+		let obj = INScore.objects().adapter(objid);
+		this.updateObjectSizeSync (obj, div.clientWidth, div.clientHeight);
+		// this.updateObjectSize (objid, div.clientWidth, div.clientHeight);
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)
 		div.style.filter = `blur(0px)`;

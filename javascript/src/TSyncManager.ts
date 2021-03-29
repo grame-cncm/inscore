@@ -35,7 +35,7 @@ class TSyncManager implements GraphicSyncManager {
 
 	toString() : string		    { return "TSyncManager"; }
 
-	updateSync(obj: INScoreObject, oid: number): boolean {
+	updateSync(obj: INScoreObject /*, oid: number*/): boolean {
 		let m = obj.getMasters();
 		let n = m.size() + this.countMasters();
 		if (!n) return false;
@@ -55,7 +55,7 @@ class TSyncManager implements GraphicSyncManager {
 		let updated = 0;
 		this.fSync.forEach( (m: TMaster, index: number) : void => {
 			if (m) {
-				m.slave().updateView (obj, oid, m.master().getIObject(), false, true);
+				m.slave().updateView (obj, /*oid,*/ m.master().getIObject(), false, true);
 				updated++;
 			}
 		});

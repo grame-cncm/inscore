@@ -74,7 +74,7 @@ class JSHtmlView extends JSAutoSize {
 
 	getText (text: string) : string { return text }
 
-	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+	updateSpecial ( obj: INScoreObject)	: boolean {		
 		let infos = obj.getTextInfos();
 		this.setHtml (obj, this.getText(infos.text));
 		return true;

@@ -34,7 +34,7 @@ class JSPianoRollView extends JSGMNView {
 		return false;
 	}
 
-	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+	updateSpecial(obj: INScoreObject)	: boolean {
 		if (!this.checkGuido()) return false;
 		let proll = obj.getPianorollInfos();
 		return this.proll2svg (obj, proll, proll.code);

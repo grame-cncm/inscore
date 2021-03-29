@@ -41,7 +41,6 @@ class JSViewFactory {
 	static create (parentid: number, type: string, objid: number) : number	{ 
 		let parent = JSObjectView.getVObject(parentid);
 		let view = null;
-		console.log(type)
 		switch (type) {
 			case "arc": 	  view = new JSArcView(parent); break;
 			case "curve":     view = new JSCurveView(parent); break;

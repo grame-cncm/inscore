@@ -190,8 +190,9 @@ interface OFaustInfos {
 }
 
 interface INScoreObject {
-    create(id: number):        INScoreObject;
-    del(obj: INScoreObject):   void;
+    // create(id: number):        INScoreObject;
+    // del(obj: INScoreObject):   void;
+    adapter(id: number):  INScoreObject;
 
     newData():   	   boolean;
 	deleted():   	   boolean;

@@ -38,9 +38,9 @@ class JSImageView extends JSAutoSize
 	getSyncRatio()	: number    { return 1; }   // no scaling for images, appearance is already preserved 
     getAutoSize() : Point       { return { x: this.fImage.clientWidth, y: this.fImage.clientHeight }; }
 
-	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+	updateSpecial ( obj: INScoreObject)	: boolean {		
         this.fImage.src  = obj.getFile();
-        return this.updateSizeASync (objid);
+        return this.updateSizeASync (obj);
 	}
     
 	setShadow(elt: HTMLElement, val: OShadow): void {

@@ -23,7 +23,7 @@ class JSLineView extends JSSvgBase {
 		return Math.max (Math.min(div.clientWidth, div.clientHeight) / Math.min(div.parentElement.clientWidth, div.parentElement.clientHeight), 0.022); 
 	}
 
-	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+	updateSpecial ( obj: INScoreObject)	: boolean {		
 		let line = obj.getLineInfos();
 		let x1 = this.relative2SceneWidth (line.x1);
 		let y1 = this.relative2SceneHeight (line.y1);

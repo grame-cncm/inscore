@@ -14,9 +14,9 @@ class JSAudioView extends JSAutoSize {
     }     
 	clone (parent: JSObjectView) : JSObjectView { return new JSAudioView(parent); }
 
-	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+	updateSpecial ( obj: INScoreObject)	: boolean {		
 		this.fAudio.src  = obj.getFile();
-		return this.updateSizeASync (objid );
+		return this.updateSizeASync (obj);
 	}
  
 	setShadow(elt: HTMLElement, val: OShadow): void {

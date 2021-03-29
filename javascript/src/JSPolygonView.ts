@@ -18,7 +18,7 @@ class JSPolygonView extends JSSvgBase {
 
     updateSVGDimensions(w: number, h: number) : void {}
 
-    updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+    updateSpecial ( obj: INScoreObject )	: boolean {		
         let points = obj.getPolygonInfos();
         let minx = 0x1fffffff;
         let miny = 0x1fffffff;

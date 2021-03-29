@@ -29,7 +29,7 @@ class JSSVGView extends JSSvgBase {
 		return true;
 	}
 
-	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+	updateSpecial(obj: INScoreObject)	: boolean {
 		return this.setSvg(obj, obj.getSVGInfos());
     }
 }

@@ -26,7 +26,7 @@ abstract class JSObjectView {
 	private fElement : HTMLElement;
 	private fParent  : JSObjectView;
 	private fSyncManager : GraphicSyncManager;
-	private fIObject : number;			// a pointer to an IObject stored as a number
+	private fIObject : number;			// a pointer to the IObject (used with sync management)
 	private fOrigin : Point;
 
     constructor(elt: HTMLElement, parent: JSObjectView, absolute=true) { 
@@ -35,7 +35,7 @@ abstract class JSObjectView {
     	this.fParent = parent; 
 		this.fElement = elt; 
 		this.fSyncManager = null;
-		this.fIObject = 0;
+		this.fIObject = null;
 		this.fOrigin = { x: 0, y: 0};
 		if (parent) parent.getElement().appendChild (elt);
 		if (absolute) elt.style.position = "absolute";
@@ -67,7 +67,7 @@ abstract class JSObjectView {
 		return Math.min(elt.clientWidth, elt.clientHeight); 
 	}
 	
-	updateSpecial(obj: INScoreObject, oid: number)	: boolean { return true; }
+	updateSpecial(obj: INScoreObject /*, oid: number*/)	: boolean { return true; }
 	updateSpecific(obj: INScoreObject)	: void { }
 
 	// the scale applied to preserve proportional rendering regarding scene size
@@ -91,14 +91,14 @@ abstract class JSObjectView {
 	//---------------------------------------------------------------------
 	// update methods
 	//---------------------------------------------------------------------
-	updateView(obj: INScoreObject, oid: number, master: number, force: boolean, keepRatio = false) : void {
+	updateView(obj: INScoreObject, /*oid: number,*/ master: number, force: boolean, keepRatio = false) : void {
 		if (obj.deleted()) { this.delete(); return; }
 
-		if (this.fSyncManager && this.fSyncManager.updateSync (obj, oid))  
+		if (this.fSyncManager && this.fSyncManager.updateSync (obj /*, oid*/))
 			return;			// object is synchronized, update is done
 
 		if (obj.newData()) 
-			if (!this.updateSpecial (obj, oid)) return;
+			if (!this.updateSpecial (obj /*, oid*/)) return;
 
 		let infos = obj.getUpdateInfos(master);
 		if (keepRatio) {
@@ -307,11 +307,11 @@ abstract class JSObjectView {
 
 	//---------------------------------------------------------------------
 	// called to update object size on model side
-	updateObjectSize (objid : number, w: number, h: number) : void {
-		let obj = INScore.objects().create(objid);
-		this.updateObjectSizeSync (obj, w, h);
-		INScore.objects().del (obj);		
-	}
+	// updateObjectSize (objid : number, w: number, h: number) : void {
+	// 	let obj = INScore.objects().create(objid);
+	// 	this.updateObjectSizeSync (obj, w, h);
+	// 	INScore.objects().del (obj);		
+	// }
 
 	updateObjectSizeSync (obj: INScoreObject, w: number, h: number) : void {
 		obj.updateWidth  (this.scene2RelativeWidth  (w)); 
@@ -348,16 +348,17 @@ abstract class JSObjectView {
 	//---------------------------------------------------------------------
 	// Main update method
 	// id  : the view id 
-	// oid : the IObject id (actually a pointer stored as number)
+	// optr : the IObject id (actually a pointer stored as number)
 	// forcepos : used to enforce updatePosition
-	static updateObjectView (id : number, oid : number, forcepos: boolean)	: void { 
+	static updateObjectView (id : number, optr : number, forcepos: boolean)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {
-			view.setIObject (oid);
+			view.setIObject (optr);
 			try {
-				let obj = INScore.objects().create(oid);
-				view.updateView (obj, oid, 0, forcepos); 
-				INScore.objects().del (obj);
+				// let obj = INScore.objects().create(oid);
+				let obj = INScore.objects().adapter(optr);
+				view.updateView (obj, /*oid,*/ 0, forcepos); 
+				// INScore.objects().del (obj);
 			}
 			catch (error) {
 				console.error (error);

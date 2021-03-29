@@ -1,7 +1,5 @@
 
 ///<reference path="JSObjectView.ts"/>
-///<reference path="TASyncUpdate.ts"/>
-
 
 abstract class JSAutoSize extends JSObjectView 
 {
@@ -16,18 +14,18 @@ abstract class JSAutoSize extends JSObjectView
         return { x: elt.clientWidth, y: elt.clientHeight };
     }
 
-    updateSizeSync (obj: INScoreObject) {
+    updateSizeSync (obj: INScoreObject) : boolean {
         let p = this.getAutoSize();
         this.updateObjectSizeSync (obj, p.x, p.y);
         obj.ready();
         return true;
     }
 
-    updateSizeASync (objid: number) : boolean {
+    updateSizeASync (obj: INScoreObject) : boolean {
         let size = this.getAutoSize();
-        if (!size.x || !size.y)  setTimeout (() => this.updateSizeASync (objid), 20) ;
+        if (!size.x || !size.y)  setTimeout (() => this.updateSizeASync (obj), 20) ;
         else {
-            return TASyncUpdate.update (objid, (obj) => this.updateSizeSync(obj) );
+            return this.updateSizeSync (obj);
         }
         return false;
 	}

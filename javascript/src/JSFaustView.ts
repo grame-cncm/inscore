@@ -117,10 +117,10 @@ class JSFaustView extends JSSvgBase {
 		// else console.log ("Faust audio node is not available");
     }
 
-    makeNode (oid: number, code: string, voices: number) : number {
+    makeNode (obj: INScoreObject, code: string, voices: number) : number {
         // prevent building several objects in parallel
         if (JSFaustView.fCompilerLock) {
-            setTimeout ( () => { this.makeNode (oid, code, voices)}, 50);
+            setTimeout ( () => { this.makeNode (obj, code, voices)}, 50);
             return JSFaustView.kPending;
         }
         JSFaustView.fCompilerLock = true;
@@ -129,7 +129,7 @@ class JSFaustView extends JSSvgBase {
             if (this.fAudioNode) this.fAudioNode.disconnect(); 
             this.fAudioNode = node;
             this.fVoices = voices;
-            let obj = INScore.objects().create(oid);
+            // let obj = INScore.objects().create(oid);
             if (!node) {
                 let address = obj.getOSCAddress();
                 this.error (address, "Cannot compile " + address + ".");
@@ -145,11 +145,11 @@ class JSFaustView extends JSSvgBase {
                 else
                     obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
             });
-            this.updateSpecific(obj);
+            this.updateSpecific (obj);
             let bb = this.fSVG.getBBox();
             this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
             obj.ready();
-            INScore.objects().del (obj);
+            // INScore.objects().del (obj);
             return JSFaustView.kSuccess;
         });
         return JSFaustView.kSuccess;
@@ -161,7 +161,7 @@ class JSFaustView extends JSSvgBase {
         })
     }
 
-    updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+    updateSpecial(obj: INScoreObject)	: boolean {
         if (!this.fFaust) {
             console.log ("Faust engine is not available");
             return false;
@@ -169,21 +169,19 @@ class JSFaustView extends JSSvgBase {
         let data = obj.getFaustInfos (false, true);
         this.getCode (data.code).then ( (code) => {
 			if (code) {
-                let obj = INScore.objects().create(oid);
-
                 let diagram = this.dsp2Svg(code, this.osc2svgname(obj.getOSCAddress()));
                 if (diagram.error)
                     this.error (obj.getOSCAddress(), diagram.error);
                 else {
                     // success: display the svg diagram and build the audio node
                     this.fSVG.innerHTML = diagram.svg;
-                    this.makeNode (oid, code, data.voices);
+                    this.makeNode (obj, code, data.voices);
                 }
-                let ret = super.updateSpecial (obj, oid);
-				INScore.objects().del (obj);
+                let ret = super.updateSpecial (obj /*, oid*/);
                 return ret;
             }
             else return false;
         });
+        return false;
     }
 }

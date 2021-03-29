@@ -27,7 +27,7 @@ class JSXMLView extends JSGMNView {
 		return gmn.length ? this.gmn2svg (obj, gmn, page) : false;
 	}
 
-	updateSpecial(obj: INScoreObject, oid: number)	: boolean {
+	updateSpecial(obj: INScoreObject)	: boolean {
 		if (this.checkxml()) {
 			let xml = obj.getXMLInfos();
 			return this.xml2gmn (obj, xml.code, xml.page);

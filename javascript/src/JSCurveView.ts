@@ -18,7 +18,7 @@ class JSCurveView extends JSSvgBase {
 	getSVGTarget() : SVGShape   { return this.fCurve; }
 	updateSVGDimensions(w: number, h: number) : void {}
 
-	updateSpecial ( obj: INScoreObject, objid: number)	: boolean {		
+	updateSpecial ( obj: INScoreObject)	: boolean {		
 		let curve = obj.getCurveInfos();
 		let n = curve.size();
 		for (let i=0; i < (n-7); i+=8) {
