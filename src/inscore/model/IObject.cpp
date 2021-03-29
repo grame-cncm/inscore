@@ -136,6 +136,42 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 #endif
 }
 
+//--------------------------------------------------------------------------
+IObject::~IObject()
+{
+	// removes all the child objects refs to me
+	for (int i=0; i < size(); i++)
+    {
+		elements()[i]->fParent = fParent;
+    }
+	delete fView;
+#ifdef EMCC
+	delete fAdapter;
+#endif
+}
+
+void IObject::del() {
+	int subdel = 0;
+	for (auto o: fSubNodes) {
+		o->del();
+		subdel++;
+	}
+	_del(true);
+}
+void IObject::_del(bool delsigcnx)
+{
+	if(fLock){
+		ITLErr<<"Impossible to delete " << getOSCAddress()<< ", the object is locked." << ITLEndl;
+		return;
+	}
+    // we set the delete flag to 1
+    fDelete = true;
+	IAppl::delAliases (getOSCAddress());
+
+	// cleanup signal connections
+	if (delsigcnx)
+		getParent()->signalsNode()->cleanupTarget(this);
+}
 
 //--------------------------------------------------------------------------
 void IObject::setHandlers()
@@ -345,43 +381,6 @@ void IObject::delsubnodes()
 		elements()[i]->del();
 		elements()[i]->setModified();
 	}
-}
-
-//--------------------------------------------------------------------------
-IObject::~IObject() 
-{
-	// removes all the child objects refs to me
-	for (int i=0; i < size(); i++)
-    {
-		elements()[i]->fParent = fParent;
-    }
-	delete fView;
-#ifdef EMCC
-	delete fAdapter;
-#endif
-}
-
-void IObject::del() {
-	int subdel = 0;
-	for (auto o: fSubNodes) {
-		o->del();
-		subdel++;
-	}
-	_del(true);
-}
-void IObject::_del(bool delsigcnx)
-{
-	if(fLock){
-		ITLErr<<"Impossible to delete " << getOSCAddress()<< ", the object is locked." << ITLEndl;
-		return;
-	}
-    // we set the delete flag to 1
-    fDelete = true;
-	IAppl::delAliases (getOSCAddress());
-
-	// cleanup signal connections
-	if (delsigcnx)
-		getParent()->signalsNode()->cleanupTarget(this);
 }
 
 //--------------------------------------------------------------------------

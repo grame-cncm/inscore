@@ -31,6 +31,7 @@
 #include "VSceneView.h"
 #ifdef EMCC
 #include <emscripten.h>
+#include "IObjectAdapter.h"
 #endif
 
 using namespace std;
@@ -40,10 +41,10 @@ namespace inscore
 
 #ifdef EMCC
 int JSSceneCreate (const char* id, const IObject* obj) {
-	return EM_ASM_INT( { return JSViewFactory.createScene(Module.UTF8ToString($0), $1);}, id, int(obj));
+	return EM_ASM_INT( { return JSViewFactory.createScene(Module.UTF8ToString($0), $1);}, id, int(obj->getAdapter()));
 }
 int JSObjectCreate (int parent, const char* type, const IObject* obj) {
-	return EM_ASM_INT( { return JSViewFactory.create($0, Module.UTF8ToString($1), $2);}, parent, type, int(obj));
+	return EM_ASM_INT( { return JSViewFactory.create($0, Module.UTF8ToString($1), $2);}, parent, type, int(obj->getAdapter()));
 }
 #else
 int JSSceneCreate  (const char* , const IObject* ) 			{ return 0; }

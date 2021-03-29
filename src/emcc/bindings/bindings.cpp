@@ -53,8 +53,9 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 	class_<IObjectAdapter>("IObjectAdapter")
 		.constructor<>()
 
-		.function("create", 		&IObjectAdapter::create, allow_raw_pointers())
-		.function("del", 			&IObjectAdapter::del, allow_raw_pointers())
+		.function("adapter", 		&IObjectAdapter::adapter, allow_raw_pointers())
+//		.function("create", 		&IObjectAdapter::create, allow_raw_pointers())
+//		.function("del", 			&IObjectAdapter::del, allow_raw_pointers())
 
 		.function("newData",  		&IObjectAdapter::newData)
 		.function("deleted",  		&IObjectAdapter::deleted)

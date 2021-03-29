@@ -26,6 +26,7 @@
 #include <iostream>
 #ifdef EMCC
 #include <emscripten.h>
+#include "IObjectAdapter.h"
 #endif
 
 #include "HTMLObjectView.h"
@@ -52,7 +53,7 @@ HTMLObjectView::HTMLObjectView(int id, HTMLObjectView* parent) :
 void HTMLObjectView::updateView(IObject * object)
 {
 #ifdef EMCC
-	EM_ASM( { JSObjectView.updateObjectView($0, $1, $3);}, getID(), int(object), false);
+	EM_ASM( { JSObjectView.updateObjectView($0, $1, $3);}, getID(), int(object->getAdapter()), false);
 #endif
 }
 

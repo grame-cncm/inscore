@@ -249,10 +249,10 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
 }
 
 #ifdef EMCC
-static void getJSMap (HTMLObjectView* view, string mapname, int objid)
+static void getJSMap (HTMLObjectView* view, string mapname, IObject* obj)
 {
 	if (view) {
-		EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapname.c_str(), view->getID(), objid);
+		EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapname.c_str(), view->getID(), obj->getAdapter());
 	}
 }
 #endif
@@ -290,7 +290,7 @@ MsgHandler::msgStatus IGuidoCode::mapMsg (const IMessage* msg )
 				else
 				{
 #ifdef EMCC
-					getJSMap (dynamic_cast<HTMLObjectView*>(getView()), mapName, int(this));
+					getJSMap (dynamic_cast<HTMLObjectView*>(getView()), mapName, this);
 //					HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(getView());
 //					if (view) {
 //						EM_ASM( { JSGMNView.getMapping(Module.UTF8ToString($0), $1, $2);}, mapName.c_str(), view->getID(), int(this));
@@ -417,7 +417,7 @@ void IGuidoCode::updateScoreMapping ()
 	for (auto m: namedMappings()) {
 		if (m.first.size()) {
 //cerr << "  => " << m.first << endl;
-			getJSMap (dynamic_cast<HTMLObjectView*>(getView()), m.first, int(this));
+			getJSMap (dynamic_cast<HTMLObjectView*>(getView()), m.first, this);
 		}
 	}
 #endif

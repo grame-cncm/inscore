@@ -214,7 +214,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void	ready();
 
 #ifdef EMCC
-		IObjectAdapter* getAdapter()		{ return fAdapter; }
+		IObjectAdapter* getAdapter()				{ return fAdapter; }
+		const IObjectAdapter* getAdapter() const	{ return fAdapter; }
 #endif
 
 		/*!

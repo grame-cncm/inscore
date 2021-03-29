@@ -201,7 +201,7 @@ class IMedia;
 */
 class inscore_export IObjectAdapter
 {
-	SIObject fObject;
+	IObject* fObject;
 	
 	static std::map<std::string, int> fBrushStyles;
 	static std::map<std::string, int> fPenStyles;
@@ -229,12 +229,13 @@ class inscore_export IObjectAdapter
 		typedef const std::string	jsString;
 	
 				 IObjectAdapter();
-				 IObjectAdapter(const SIObject& object) : fObject(object) {}
+				 IObjectAdapter(IObject* object) : fObject(object) {}
 		virtual ~IObjectAdapter() {}
 		
 		bool 		  newData () const		{ return fObject->newData(); }
 		bool 		  deleted () const		{ return fObject->getDeleted(); }
 		void 		  ready ()				{ if (fObject) fObject->ready(); }		// should be called from js when a pending object is ready
+		const IObject* getObject () const  { return fObject; };
 
 		std::vector<int> getMasters () const;
 		JSUpdateInfos getUpdateInfos (int masterId) const;
@@ -269,8 +270,9 @@ class inscore_export IObjectAdapter
 		void	setFaustInOut (int inputs, int outputs);
 		void	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
 
-	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
-	void 			del(IObjectAdapter* obj) 	{ delete obj; }
+	IObjectAdapter* adapter(int id) 				{ return (IObjectAdapter*)id; }
+//	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
+//	void 			del(IObjectAdapter* obj) 	{ delete obj; }
 };
 
 }

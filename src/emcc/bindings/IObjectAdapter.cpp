@@ -665,7 +665,8 @@ JSUpdateInfos IObjectAdapter::getUpdateInfos (int masterId) const
 		infos.newclass = fObject->classChanged()	;
 		infos.classNames = fObject->getClass();
 		infos.updatepos = _getPosition (fObject, infos.position);
-		infos.updatepos |= _getSyncPosition (fObject, (const IObject*)masterId, infos.position);
+		const IObjectAdapter* mptr = (const IObjectAdapter*)masterId;
+		infos.updatepos |= _getSyncPosition (fObject, mptr->getObject(), infos.position);
 		infos.updatebrush = _getPenBrush (fObject, infos.position.pen);
 		infos.position.pen.color = color2htmlColor(*fObject, false);
 		infos.position.pen.alpha = fObject->getA() / 255.f;
