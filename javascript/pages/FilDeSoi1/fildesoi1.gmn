@@ -1,13 +1,62 @@
+
+$gslur = "\sl<dx1=0.3, dy=2, h=1.5, dx2=-3, dy2=4.5>";
+$aslur = "\sl<dx1=0.3, dy=2, h=1.5, dx2=-3, dy2=5.2>";
+$fslur = "\sl<dx1=0.3, dy=2, h=1.5, dx2=0, dy2=2>";
+$d2slur = "\sl<dx1=0.3, dy=2, h=1.5, dx2=-3, dy2=8>";
+$d2slur2 = "\sl<dx1=0.3, dy=2, h=1.5, dx2=0, dy2=8>";
+$b2slur = "\sl<dx1=0.3, dy=2, h=1.5, dx2=-3, dy2=6>";
+$b2slur2 = "\sl<dx1=0.3, dy=2, h=1.5, dx2=0, dy2=5>";
+$slur = "\sl<dx1=0.3, dy=2, h=1.5, dx2=-1, dy2=2>";
+$yi = -1;
+$xm = -2;
+
 {
 [
+	\pageFormat<w=21cm, h=29.7cm, lm=2cm, rm=2cm, tm=4cm, bm=2cm>
 	\title<"Fil de soi 1">
-	\title<"à Amèlia Mazarico", dy=-6, fsize=12pt, fattrib="i">
-	\composer<"Alain Bonardi", dy=3>
-	\pageFormat<w=21cm, h=29.7cm, lm=2cm, rm=2cm, tm=5cm, bm=2cm>
-	\systemFormat<dx=2cm>
-
-	\clef<"g"> \meter<"4/4"> 
+	\title<"à Amèlia Mazarico", dy=-5, fsize=12pt, fattrib="i">
 	\instrument<"Guitare", autopos="on", fsize=14pt>
-	\slur<dy=2, h=1.5, dx2=-3, dy2=6.5>(b2/4 _) _ _
+	\composer<"Alain Bonardi", dy=5>
+	\tempo<"[1/4] = 60", fsize=13pt, dy=1> 
+	\systemFormat<dx=16mm> \barFormat<"system">
+	\mark<"1", dx=-11, dy=3, enclosure="square", fsize=16pt>
+	\clef<"g">
+	\meter<"4/4">
+	
+	\text<"Differencier les nuances au maximum", dx=6, fsize=11pt, dy=20>(
+		\i<"mp", dy=$yi> $gslur (si2 _)) _ _ 
+		\i<"mf", dy=$yi> $gslur (si2 _)  _ _ |
+	\meter<"2/4"> \i<"mp", dy=$yi> $aslur (la#2 _) |
+	\meter<"4/4", dx=$xm> \i<"mf", dy=$yi> $aslur (la#2 _) _ _
+		\i<"mp", dy=$yi> $b2slur (si2 _) _ _    |
+	\meter<"2/4"> \i<"mp", dy=$yi>  $gslur (sol _) |
+	\meter<"4/4"> $aslur (la _) _ _ |
+	\meter<"2/4", dx=$xm> \i<"p", dy=$yi> $gslur (sol# _) |
+	\meter<"4/4"> \i<"mp", dy=$yi> si&/16 $aslur (la/8. _/4) |
+	\meter<"2/4"> \i<"p", dy=$yi> $b2slur2 (\acc(si/8) _) \i<"mp", dy=$yi> $b2slur2 (si/8 _) |
+	\meter<"4/4"> \i<"mf", dy=$yi> $slur ({fa/4, si/4} _) _ _ |
+	\meter<"1/4", dx=$xm> \i<"p", dy=$yi> $fslur (fa/8 _) |
+	\meter<"2/4"> \i<"mp", dy=$yi> $gslur (sol#/4 _) |
+	\meter<"4/4"> \i<"p", dy=$yi> $slur ({re/8, \acc(sol)} _/8) $fslur (fa# _) $slur (la# _) _/4 |
+	\meter<"2/4"> \i<"mp", dy=$yi> $aslur (\acc(la) _) |
+	\meter<"4/4", dx=$xm> { fa#/16, do/16} $slur (fa/8. _/4) _ _ |
+	\meter<"2/4"> \i<"mp", dy=$yi> $b2slur ({ si, re } _) |
+		\i<"p", dy=$yi> {re/16, sol#/16} $b2slur (si/8. _/4) 
+		\i<"mp", dy=$yi> $slur ({\acc(sol), re} _) |
+	\meter<"3/4", dx=$xm> \i<"mp", dy=$yi> $slur (re/8 _) $slur (fa#/8 _) $slur (\acc(fa/8) _) |
+	\meter<"2/4"> \i<"mp", dy=$yi> $slur ({re, la#} _/4) |
+	\meter<"3/8"> \i<"pp", dy=$yi> $slur ({re / 16, sol / 16} _) $slur (la/16 _) $slur (fa#/16 _) |
+	\meter<"2/4"> \i<"p", dy=$yi> \acc($slur (fa/4 _)) |
+	\meter<"4/4"> \i<"mp", dy=$yi> $slur (do#/8 _/8) $slur (mi/8 _/8) $slur (re#/8 _/8) _/4|
+	\meter<"5/4", dx=$xm> \i<"p", dy=$yi> \acc({ re2/4, si1/4}) _ _ _ _ |
+	\meter<"2/4"> \i<"mp", dy=$yi> $d2slur ({ re3, \acc(sol2) } _) |
+	\meter<"3/4"> \i<"mf", dy=$yi> { fa/16, la/16} $d2slur2 (re3/8. _/4) _ |
+	\meter<"2/4"> $slur ({ si2, re } _) |
+	\meter<"3/4", dx=$xm> \i<"p", dy=$yi> $slur (fa/16 _) $slur (la/16 _) $slur (sol#/16 _) $slur (si&/16 _) _/4 |
+	\meter<"4/4"> \i<"mf", dy=$yi> $slur ({sol#, re} _/8) $slur ({sol, re} _/4) _ |
+	\meter<"2/4"> \i<"mp", dy=$yi> fa#/16 _/16 {fa/16, re/16} _/16 sol#1/16 _/16 _/8 |
+	\meter<"4/4", dx=$xm> \i<"mf", dy=$yi> $slur ({\acc(sol2/4), si1/4} _/4) _/4 \i<"mp", dy=$yi> fa#1/16 _/8. |
+	\meter<"5/4"> re#2/16 _/16 fa1/16 _/16 re2/16 _/16 _/8 _/4 _/4 \fermata(_/4)
+
 ]
 }

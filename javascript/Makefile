@@ -67,6 +67,7 @@ help : node_modules
 	@echo "Project management: "
 	@echo "  clean     : remove all outputs"
 	@echo "  check     : check typescript code"
+	@echo "  cmake     : regenerate the wasm project"
 	@echo "  install   : install the required npm components"
 	@echo "  modules   : install the external librairies (called by install target)"
 	@echo
@@ -88,6 +89,9 @@ $(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
 wasm: 
 	$(MAKE) -C ../build wasm
 	$(MAKE) modules
+
+cmake:
+	cd ../build/wasmdir && cmake ..
 
 #===============================================================
 # project management

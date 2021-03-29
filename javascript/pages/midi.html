@@ -1,0 +1,127 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libmusicxml.js"></script>
+	<script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoreglue.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+
+	</style>
+	<script>
+		 function midiMessageReceived(ev)
+            {
+                var cmd = ev.data[0] >> 4;
+                var channel = ev.data[0] & 0xf;
+                var data1 = ev.data[1];
+                var data2 = ev.data[2];
+
+                if (channel === 9) {
+                    return;
+                } else if (cmd === 8 || ((cmd === 9) && (data2 === 0))) {
+                    keyOff(channel, data1, data2);
+                } else if (cmd === 9) {
+                    keyOn(channel, data1, data2);
+                } else if (cmd === 11) {
+                    ctrlChange(channel, data1, data2);
+                } else if (cmd === 14) {
+                    pitchWheel(channel, (data2 * 128.0 + data1));
+                }
+                
+                /*
+                // Direct message
+                if (DSP && isPoly) {
+                    DSP.midiMessage(ev.data);
+                }
+                */
+            }
+		function onerrorcallback(error)
+		{
+			console.log(error);
+		}
+					
+		function onsuccesscallbackStandard(access)
+		{
+			access.onstatechange = function(e) {
+				if (e.port.type === "input") {
+					if (e.port.state === "connected") {
+						console.log(e.port.name + " is connected");
+						e.port.onmidimessage = midiMessageReceived;
+					} else if (e.port.state  === "disconnected") {
+						console.log(e.port.name + " is disconnected");
+						e.port.onmidimessage = null;
+					}
+				}
+			}
+						
+			for (var input of access.inputs.values()) {
+				input.onmidimessage = midiMessageReceived;
+				console.log(input.name + " is connected");
+			}
+		}
+		function activateMIDIInput()
+		{
+			console.log("activateMIDIInput");
+			console.log(navigator);
+			if (typeof(navigator.requestMIDIAccess) !== "undefined") {
+			navigator.requestMIDIAccess().then(onsuccesscallbackStandard, onerrorcallback);
+			} else {
+			alert("MIDI input cannot be activated, either your browser still does't have it, or you need to 						explicitly activate it.");
+			}
+		}
+		</script>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="inscore box" id="scene">
+
+/ITL/scene/* del;
+
+/ITL/scene/javascript run "activateMIDIInput()";
+
+<!-- # Long score -->
+/ITL/scene/score set gmnf '../scripts/bachexample.gmn.txt';
+<!-- /ITL/scene/score set gmn '[ a b c d e f a b c d e f a b c d e f]'; -->
+<!-- # TODO: find a way to scale the object with pagecount or something to place it correctly -->
+/ITL/scene/score scale 0.4;
+/ITL/scene/score y 0;
+/ITL/scene/score x 1;
+/ITL/scene/buttondown set rect 0.1 0.1;
+/ITL/scene/buttonup set rect 0.1 0.1;
+/ITL/scene/buttonup y 1;
+/ITL/scene/buttonup color blue;
+/ITL/scene/buttondown y -1;
+/ITL/scene/buttonup watch "mouseDown"(
+	/ITL/scene/score dx -2,
+	/ITL/scene/score get pageCount
+);
+
+/ITL/scene/buttondown watch "mouseDown"(
+	/ITL/scene/score dx 2
+);
+
+/ITL/scene/score watch midi chan 0(/ITL/scene/score get pageCount
+);
+
+/ITL/log show 1;
+/ITL/log level 2;
+/ITL/scene/score get;
+/ITL/scene/score get y;
+	
+</div>
+
+</body>
+
+</html>
