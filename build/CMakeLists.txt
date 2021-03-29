@@ -25,9 +25,10 @@ option ( QTVIEW 	"Includes Qt view" on )
 option ( MODEL 		"Generates the core model library" off )
 option ( QT6 		"Use Qt version 6" off )
 
+if (NOT WASM)
 set (CMAKE_BUILD_RPATH ../lib)
 set (CMAKE_SKIP_BUILD_RPATH FALSE)
-
+endif()
 
 #######################################
 # Check options 
