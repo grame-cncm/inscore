@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.27
+- extension of the width and height attributes in write mode (images, svg,...)
 - new 'audioio' object intended to represent physical inputs / outputs (web version)
 - new 'connect' and 'disconnect' messages supported by all audio objects, i.e. faust and audioio (web version)
 - new 'ui' message supported by 'faust' object (web version)
