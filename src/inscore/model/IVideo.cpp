@@ -65,12 +65,20 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 }
 
 //-------------------------------------------------------------------------
+void IVideo::setSize (float w, float h)
+{
+	if (!getWidth()) {
+		IObject::setWidth(w);
+		IObject::setHeight(h);
+	}
+}
+
+//-------------------------------------------------------------------------
 MsgHandler::msgStatus IVideo::set (const IMessage* msg )
 {
 	MsgHandler::msgStatus ret = IMedia::set (msg);
-	if (ret == MsgHandler::kProcessed && !fUserWidth) {
-		IObject::setWidth(0);
-		IObject::setHeight(0);
+	if (ret == MsgHandler::kProcessed) {
+		getView()->initView(this);
 	}
 	return ret;
 }
@@ -80,8 +88,8 @@ void IVideo::setWidth(float width)
 {
 	if (!width) return;
 	float ratio = getWidth() ? width / getWidth() : 0;
-	IObject::setWidth(width);
 	if (ratio) {
+		IObject::setWidth(width);
 		IObject::setHeight(getHeight() * ratio);
 		fUserWidth = true;
 	}
@@ -92,8 +100,8 @@ void IVideo::setHeight(float height)
 {
 	if (!height) return;
 	float ratio = getHeight() ? height / getHeight() : 0;
-	IObject::setHeight(height);
 	if (ratio) {
+		IObject::setHeight(height);
 		IObject::setWidth(getWidth() * ratio);
 		fUserWidth = true;
 	}

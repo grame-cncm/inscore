@@ -63,6 +63,8 @@ class IVideo : public IMedia
 
 		/// \brief set the object duration according to the video duration (tempo assumed to be 60).
 		void	setVideoDuration( long mls)	{ setMediaDuration (mls); }
+		void 	setSize (float w, float h);
+		
 		/// \brief Sets the width with height adjustment
 		virtual void	setWidth(float width);
 		/// \brief Sets the height with width adjustment

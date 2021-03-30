@@ -71,10 +71,9 @@ void VVideoView::error(QString msg)
 void VVideoView::sizeChanged(const QSizeF & size)
 {
 //qDebug() << "VVideoView : VMediaPlayer::sizeChanged" << size ;
-	fVideoItem->setSize (size);
+//	fVideoItem->setSize (size);
 	if (!fVideo->getWidth()) {
-		fVideo->setWidth ( scene2RelativeWidth(size.width()) );
-		fVideo->setHeight( scene2RelativeHeight(size.height()) );
+		fVideo->setSize ( scene2RelativeWidth(size.width()), scene2RelativeHeight(size.height()) );
 		fVideo->ready();
 	}
 }
@@ -83,18 +82,27 @@ void VVideoView::sizeChanged(const QSizeF & size)
 void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 {
 	setFile(videoFile);
-	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
-//	video->setWidth(0.f);		// unknown width
-//	video->setHeight(0.f);		// unknown height
+//	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
 }
 
 //----------------------------------------------------------------------
-void VVideoView::initialize( IVideo * video  )
+bool VVideoView::initView  ( IObject* obj)
+{
+	initialize (static_cast<IVideo*>(obj));
+	QSizeF size = fVideoItem->size();
+	fVideo->setSize ( scene2RelativeWidth(size.width()), scene2RelativeHeight(size.height()) );
+}
+
+//----------------------------------------------------------------------
+bool VVideoView::initialize( IVideo * video  )
 {
 	fVideo = video;
 	QString file = VApplView::toQString( video->getPath().c_str() );
-	if ( QFile::exists(  file  ) ) 
+	if ( QFile::exists(  file  ) ) {
 		initFile (video, file);
+		return true;
+	}
+	return false;
 }
 
 //----------------------------------------------------------------------

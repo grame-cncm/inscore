@@ -61,8 +61,9 @@ class VVideoView: public VGraphicsItemView, public VMediaPlayer
 				 VVideoView(QGraphicsScene * scene, const IVideo* h);
 		virtual ~VVideoView() {}
 
-				void initialize( IVideo * video );
-		virtual void initialize (IObject* obj)					{ initialize(static_cast<IVideo*>(obj)); }
+		virtual bool initView  ( IObject* obj);
+				bool initialize( IVideo * video );
+
 		virtual void updateView ( IVideo * video );
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ VMappedShapeView::updateGraphic2GraphicMapping(shapeMap); }
 		virtual void updateObjectSize(IObject* o) {} // overrides
