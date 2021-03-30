@@ -60,6 +60,7 @@ MsgHandler::msgStatus IImage::set (const IMessage* msg )
 	if (status & MsgHandler::kProcessed)
 		newData(true);
 	setCalled();
+	getView()->initView (this);
 	return status;
 }
 

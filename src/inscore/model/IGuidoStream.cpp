@@ -95,6 +95,8 @@ MsgHandler::msgStatus IGuidoStream::set (const IMessage* msg )
 			GuidoResetStream(fGuidoStream);
 			writeStream(t);
 			status = MsgHandler::kProcessed;
+			resetWidth();
+			getView()->initView (this);
 		}else status = MsgHandler::kProcessedNoChange;
 	}
 	else status = MsgHandler::kBadParameters;
@@ -113,6 +115,7 @@ void IGuidoStream::clear()
 	setGMN("");
 	newData(true);
 	resetWidth();
+	getView()->initView (this);
 }
 
 
@@ -126,6 +129,7 @@ MsgHandler::msgStatus IGuidoStream::write (const IMessage* msg )
         status = MsgHandler::kProcessed;
         writeStream(t);
         resetWidth();
+        getView()->initView (this);
 	}
 	else status = MsgHandler::kBadParameters;
 	return status;

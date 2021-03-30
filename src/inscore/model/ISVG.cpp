@@ -26,6 +26,7 @@
 #include "ISVG.h"
 #include "IMessage.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -68,9 +69,11 @@ MsgHandler::msgStatus ISVG::set(const IMessage* msg )
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
 	status = msg->param (1, fSvg) ? MsgHandler::kProcessed : MsgHandler::kBadParameters;
-	if (status & MsgHandler::kProcessed)
+	if (status & MsgHandler::kProcessed) {
 		newData(true);
-	setCalled();
+		setCalled();
+		getView()->initView (this);
+	}
 	return status;
 }
 

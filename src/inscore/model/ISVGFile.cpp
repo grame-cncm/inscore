@@ -70,9 +70,11 @@ MsgHandler::msgStatus ISVGFile::set(const IMessage* msg )
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
 	status = TFile::set (msg);
-	if (status & MsgHandler::kProcessed)
+	if (status & MsgHandler::kProcessed) {
 		newData(true);
-	setCalled();
+		setCalled();
+		getView()->initView (this);		
+	}
 	return status;
 }
 

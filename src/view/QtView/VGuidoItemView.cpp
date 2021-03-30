@@ -173,10 +173,21 @@ VGuidoItemView::VGuidoItemView(QGraphicsScene * scene, const IGuidoCode* h)
 }
 
 //----------------------------------------------------------------------
+bool VGuidoItemView::initView (IObject* obj)
+{
+	IGuidoCode * gmn = static_cast<IGuidoCode *>(obj);
+	if (gmnUpdate (gmn)) {
+		updateObjectSize (obj);
+		return true;
+	}
+	return false;
+}
+
+//----------------------------------------------------------------------
 void VGuidoItemView::updateView( IGuidoCode * guidoCode  )
 {
     guidoCode->cleanupSync();
-	gmnUpdate(guidoCode);
+//	gmnUpdate(guidoCode);
     // 2. Update Score color
 	QColor color(guidoCode->getR(), guidoCode->getG(), guidoCode->getB() , guidoCode->getA());
 	if ( fGuidoItem->getScoreColor() != color )

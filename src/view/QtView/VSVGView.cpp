@@ -90,17 +90,37 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg)
 	: VIntPointObjectView( scene , new MouseEventAble<VSVGItem>(svg) )
     {}
 
+
+//----------------------------------------------------------------------
+bool VSVGView::initView (IObject* obj)
+{
+	ISVG* 		svg  = dynamic_cast<ISVG*>(obj);
+	ISVGFile* 	svgf = dynamic_cast<ISVGFile*>(obj);
+	if (svg)
+		item()->setText (svg->getText().c_str());
+	else if (svgf) {
+		if(svgf->hasData())
+            item()->setText(svgf->data());
+        else
+            item()->setFile (svgf->getPath().c_str());
+		svgf->changed(false);
+	}
+	else return false;
+	updateObjectSize (obj);
+	return true;
+}
+
 //----------------------------------------------------------------------
 void VSVGView::updateView( ISVGFile * svg  )
 {
     svg->cleanupSync();
-    if (svg->changed()) {
-        if(svg->hasData())
-            item()->setText(svg->data());
-        else
-            item()->setFile (svg->getPath().c_str());
-		svg->changed(false);
-	}
+//    if (svg->changed()) {
+//        if(svg->hasData())
+//            item()->setText(svg->data());
+//        else
+//            item()->setFile (svg->getPath().c_str());
+//		svg->changed(false);
+//	}
 	float alpha = svg->getA() / 255.f;
 	item()->setOpacity (alpha);
 	item()->setAnimate(svg->getAnimate());
@@ -112,9 +132,9 @@ void VSVGView::updateView( ISVGFile * svg  )
 void VSVGView::updateView( ISVG * svg  )
 {
     svg->cleanupSync();
-    if (svg->newData()) {
-		item()->setText (svg->getText().c_str());
-	}
+//    if (svg->newData()) {
+//		item()->setText (svg->getText().c_str());
+//	}
 	float alpha = svg->getA() / 255.f;
 	item()->setOpacity (alpha);
 	item()->setAnimate(svg->getAnimate());

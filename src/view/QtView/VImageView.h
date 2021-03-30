@@ -83,6 +83,7 @@ class VImageView:  public VIntPointObjectView
 		virtual void setImage (const unsigned char * data, int len);
 
 		virtual void setImage (VObjectView* src);
+		virtual bool initView (IObject* obj);
 
 	protected:
 		GraphicSegment getGraphicSegment( const IntPointSegment& intPointSegment , const IGraphicBasedObject * object , bool& mapOk ) const;

@@ -37,9 +37,10 @@
 #include "IMessageHandlers.h"
 #include "MapTools.h"
 #include "TLocalMapping.h"
+#include "TMapMsgHandler.h"
 #include "TRefinedComposition.h"
 #include "Updater.h"
-#include "TMapMsgHandler.h"
+#include "VObjectView.h"
 
 using namespace std;
 using namespace libmapping;
@@ -240,6 +241,7 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
             setGMN( t );
             status = MsgHandler::kProcessed;
             newData(true);
+			getView()->initView (this);
 		}
 		else status = MsgHandler::kProcessedNoChange;
 

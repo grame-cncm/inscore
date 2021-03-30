@@ -93,6 +93,9 @@ class VSVGView: public VIntPointObjectView
 				 VSVGView(QGraphicsScene * scene, const ISVG* svg);
 				 VSVGView(QGraphicsScene * scene, const ISVGFile* svg);
 		virtual ~VSVGView() {}
+
+		virtual bool initView (IObject* obj);
+
 		virtual void updateView( ISVGFile * rect );
 		virtual void updateView( ISVG * rect );
 		virtual void updateLocalMapping (ISVG* img);

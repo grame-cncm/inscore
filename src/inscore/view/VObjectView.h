@@ -63,6 +63,7 @@ class VObjectView
 		virtual void setParentItem( VObjectView* parent )	{}
 
 		virtual void setEffect (const IEffect* effect)		{}
+		virtual bool initView  ( IObject* obj)				{ return true; }
 
 		/// \brief Maps the IObject [-1,1] y coordinate to the referenceRect().
 		virtual float relative2SceneY(float y, VObjectContext item = 0 ) const;

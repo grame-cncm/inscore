@@ -77,7 +77,7 @@ void VTextView::updateView( IText * text )
     if(!text->getParent()->getMaster(text) && !text->getParent()->getDeleted())
     {
         if(text->getParent()->getTypeString() != IScene::kSceneType)
-            setParentItem(text->getParent()->getView()?text->getParent()->getView():0);
+            setParentItem(text->getParent()->getView() ? text->getParent()->getView() : 0);
     }
   
 	// 1. Update color

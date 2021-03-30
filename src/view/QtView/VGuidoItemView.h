@@ -102,6 +102,7 @@ class VGuidoItemView: public VGraphicsItemView
 
 		virtual void updateView( IGuidoCode * guidoCode );
 		virtual void updateLocalMapping (IGuidoCode* guidoCode);
+		virtual bool initView (IObject* obj);
 
 	protected:
 		/// update to guido code i.e. update ar and gr handlers
