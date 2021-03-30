@@ -53,6 +53,7 @@ class VCurveView: public VMappedShapeView
 				 VCurveView(QGraphicsScene * scene, const ICurve* h);
 		virtual ~VCurveView() {}
 		
+		virtual bool initView  ( IObject* obj);
 		virtual void updateView( ICurve * Curve  );
 };
 

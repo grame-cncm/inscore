@@ -96,10 +96,9 @@ class inscore_export VQtUpdater : public ViewUpdater
 				obj->setView (0);
 			}
 			else {
-//				obj->getView()->setParentView (obj);
 				V* view = static_cast<V*>(obj->getView());
-				view->updateView (obj);				
-				view->updateObjectSize (obj);
+				view->updateView (obj);
+//				view->updateObjectSize (obj);
 			}
 		}
 };

@@ -49,6 +49,14 @@ void GraphicsRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
 }
 
 //----------------------------------------------------------------------
+bool VRectView::initView  ( IObject* obj)
+{
+    QRectF rect( 0,0,  relative2SceneWidth(obj->getWidth()), relative2SceneHeight(obj->getHeight()) );
+	item()->setRect( rect );
+	return true;
+}
+
+//----------------------------------------------------------------------
 VRectView::VRectView(QGraphicsScene * scene, const IRect* h)
 	: VMappedShapeView( scene , new MouseEventAble<GraphicsRoundedRectItem>(h) )
     {}

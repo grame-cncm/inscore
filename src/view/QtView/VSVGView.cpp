@@ -90,7 +90,6 @@ VSVGView::VSVGView(QGraphicsScene * scene, const ISVG* svg)
 	: VIntPointObjectView( scene , new MouseEventAble<VSVGItem>(svg) )
     {}
 
-
 //----------------------------------------------------------------------
 bool VSVGView::initView (IObject* obj)
 {

@@ -26,6 +26,7 @@
 #include "IArc.h"
 #include "IMessage.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -205,6 +206,7 @@ MsgHandler::msgStatus IArc::set (const IMessage* msg)
 //cout << "IArc::set " << fArcLen << " " << fR1 << " " << fR2 << endl;
 			newData(true);
 			status = MsgHandler::kProcessed;
+			getView()->initView (this);
 		}
 		else status = MsgHandler::kProcessedNoChange;
 	}

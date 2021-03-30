@@ -72,6 +72,7 @@ class VRectView: public VMappedShapeView
 				 VRectView(QGraphicsScene * scene, const IRect* h);
 		virtual ~VRectView() {}
 
+		virtual bool initView  ( IObject* obj);
 		virtual void updateView( IRect * rect );
 		virtual void updateObjectSize( IObject *  )		{}
 };

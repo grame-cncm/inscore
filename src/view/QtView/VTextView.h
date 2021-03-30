@@ -73,6 +73,7 @@ class VTextView: public VIntPointObjectView
 				 VTextView(QGraphicsScene * scene, const IHtmlFile*);
 		virtual ~VTextView() {}
 		
+		virtual bool initView (IObject* obj);
 		virtual void updateView( IText * text );
 
 		virtual void updateLocalMapping (IText* text);

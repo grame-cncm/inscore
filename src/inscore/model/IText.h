@@ -84,7 +84,7 @@ class IText : public IGraphicBasedObject
 		virtual void		accept (Updater*);
 		
 		int getFontSize() const { return fFontSize; }
-		void setFontSize(int fontSize) {fFontSize = fontSize;}
+		void setFontSize(int fontSize);
 
 		std::string getFontFamily() const { return fFontFamily; }
 		void setFontFamily(const std::string & fontFamily) { fFontFamily = fontFamily; }
