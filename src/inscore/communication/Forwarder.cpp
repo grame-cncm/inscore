@@ -66,6 +66,7 @@ string ForwardEndPoint::IMessage2String (const IMessage * imsg, int id) {
 	json->add (new json_element("data", new json_string_value(msgstr.c_str())));
 	std::ostringstream jstream;
 	json->print(jstream);
+	delete json;
 	return jstream.str();
 }
 
