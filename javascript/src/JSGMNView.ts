@@ -73,7 +73,7 @@ class JSGMNView extends JSSvgBase {
 			
 			let innerSvg = this.fSVG.getElementsByTagName('svg');
 			this.fViewBox = this.scanViewBox (innerSvg[0].getAttribute('viewBox'));	
-			this.updateObjectSizeSync (obj, this.fViewBox.width, this.fViewBox.height);
+			this.updateObjectSize (obj, this.fViewBox.width, this.fViewBox.height);
 			obj.updateTime2TimeMap (this.fGuido.getTimeMap (ar));
 
 			if (this.fGR) {

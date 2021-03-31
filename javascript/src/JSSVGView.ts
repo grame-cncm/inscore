@@ -24,7 +24,7 @@ class JSSVGView extends JSSvgBase {
 	setSvg (obj: INScoreObject, content: string) : boolean {
 		this.fSVG.innerHTML = content;
 		let bb = this.fSVG.getBBox();
-		this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+		this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
 		obj.ready();
 		return true;
 	}
