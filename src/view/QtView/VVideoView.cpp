@@ -72,8 +72,9 @@ void VVideoView::sizeChanged(const QSizeF & size)
 {
 //qDebug() << "VVideoView : VMediaPlayer::sizeChanged" << size ;
 //	fVideoItem->setSize (size);
-	if (!fVideo->getWidth()) {
+	if (!fVideo->userWidth()) {
 		fVideo->setSize ( scene2RelativeWidth(size.width()), scene2RelativeHeight(size.height()) );
+//std::cerr << "VVideoView::sizeChanged w/h " << size.width() << "/" << size.height() << " " << fVideo->getWidth() << "/" << fVideo->getHeight() << std::endl;
 		fVideo->ready();
 	}
 }
@@ -88,9 +89,10 @@ void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 //----------------------------------------------------------------------
 bool VVideoView::initView  ( IObject* obj)
 {
-	initialize (static_cast<IVideo*>(obj));
+	bool ret = initialize (static_cast<IVideo*>(obj));
 	QSizeF size = fVideoItem->size();
 	fVideo->setSize ( scene2RelativeWidth(size.width()), scene2RelativeHeight(size.height()) );
+	return ret;
 }
 
 //----------------------------------------------------------------------
@@ -111,8 +113,11 @@ void VVideoView::updateView( IVideo * video  )
 	video->cleanupSync();
 	fVideoItem->setOpacity (video->getA() / 255.f);
 	QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
-	if (size != fVideoItem->size()) fVideoItem->setSize( size );
-	
+	QSizeF asize = fVideoItem->size();
+	if (size != asize) {
+		fVideoItem->setSize( size );
+//std::cerr << "VVideoView::updateView w/h " << size.width() << "/" << size.height() << " vs " << asize.width() << "/" << asize.height()  << std::endl;
+	}
 	updatePlayer (video);
 
 	itemChanged();

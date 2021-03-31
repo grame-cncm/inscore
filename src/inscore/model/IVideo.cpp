@@ -67,10 +67,8 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 //-------------------------------------------------------------------------
 void IVideo::setSize (float w, float h)
 {
-	if (!getWidth()) {
-		IObject::setWidth(w);
-		IObject::setHeight(h);
-	}
+	IObject::setWidth(w);
+	IObject::setHeight(h);
 }
 
 //-------------------------------------------------------------------------
