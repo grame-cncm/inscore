@@ -89,6 +89,11 @@ abstract class JSObjectView {
 
 
 	//---------------------------------------------------------------------
+	// synchronous initialisation method - must be overriden by subclasses
+	//---------------------------------------------------------------------
+	initView (obj: INScoreObject) : boolean { return true; }
+
+	//---------------------------------------------------------------------
 	// update methods
 	//---------------------------------------------------------------------
 	updateView(obj: INScoreObject, /*oid: number,*/ master: number, force: boolean, keepRatio = false) : void {
@@ -313,7 +318,7 @@ abstract class JSObjectView {
 	// 	INScore.objects().del (obj);		
 	// }
 
-	updateObjectSizeSync (obj: INScoreObject, w: number, h: number) : void {
+	updateObjectSize (obj: INScoreObject, w: number, h: number) : void {
 		obj.updateWidth  (this.scene2RelativeWidth  (w)); 
 		obj.updateHeight (this.scene2RelativeHeight (h)); 
 		let div = this.getElement();
@@ -353,12 +358,29 @@ abstract class JSObjectView {
 	static updateObjectView (id : number, optr : number, forcepos: boolean)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {
+			// view.setIObject (optr);
+			try {
+				let obj = INScore.objects().adapter(optr);
+				view.updateView (obj, 0, forcepos); 
+			}
+			catch (error) {
+				console.error (error);
+			}
+    	}
+    }
+ 
+	//---------------------------------------------------------------------
+	// Synchronous init method
+	// id  : the view id 
+	// optr : the IObject id (actually a pointer stored as number)
+	// forcepos : used to enforce updatePosition
+	static initObjectView (id : number, optr : number)	: void { 
+    	let view = JSObjectView.fObjects[id];
+    	if (view) {
 			view.setIObject (optr);
 			try {
-				// let obj = INScore.objects().create(oid);
 				let obj = INScore.objects().adapter(optr);
-				view.updateView (obj, /*oid,*/ 0, forcepos); 
-				// INScore.objects().del (obj);
+				view.initView (obj); 
 			}
 			catch (error) {
 				console.error (error);
