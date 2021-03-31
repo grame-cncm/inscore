@@ -56,6 +56,7 @@ class HTMLObjectView :  public VObjectView
 		int getID() const			{ return fID; }
 		int parentID() const		{ return fParent ? fParent->getID() : 0; }
 
+		virtual bool initView  ( IObject* obj);
 		virtual void updateView(IObject * object);
 		virtual void updateObjectSize( IObject *  )		{} // default do nothing
 		virtual void setParentItem( VObjectView* obj )	{ fParent = dynamic_cast<HTMLObjectView*>(obj); }
