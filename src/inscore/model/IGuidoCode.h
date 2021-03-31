@@ -35,6 +35,7 @@
 #include "GUIDOEngine.h"
 #include "TLocalMapping.h"
 #include "IExpressionHandler.h"
+#include "IProportionalAsyncDims.h"
 #include "GmnEvaluator.h"
 
 struct NodeGR;
@@ -56,7 +57,7 @@ typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 /*!
 	\brief a textual guido music notation object.
 */
-class IGuidoCode : public IObject
+class IGuidoCode : public IObject, public IProportionalAsyncDims
 {
 	protected:
 		typedef libmapping::SMARTP<TLocalMapping<libmapping::rational,1> >	SLocalMapping;
@@ -72,7 +73,7 @@ class IGuidoCode : public IObject
 	TFloatSize fPageFormat;		/// < Guido Page Format, in cm. Default: 21 x 29.7
 	int fNbOfPageColumns;		/// < Nb of columns of pages. (when the score has multiple pages). Default 2.
 	int fNbOfPageRows;			/// < Nb of rows of pages. (when the score has multiple pages) Default 1.
-	bool fUserWidth = false;
+//	bool fUserWidth = false;
 
 	const	SLocalMapping& localMappings() const	{ return fLocalMappings; }
 			SLocalMapping& localMappings()			{ return fLocalMappings; }
@@ -149,9 +150,9 @@ class IGuidoCode : public IObject
 		MsgHandler::msgStatus exprMsg(const IMessage* msg);
 
 		/// \brief Sets the width with height adjustment
-		virtual void	setWidth(float width);
+		virtual void	setPWidth(float width);
 		/// \brief Sets the height with width adjustment
-		virtual void	setHeight(float height);
+		virtual void	setPHeight(float height);
 };
 
 /*! @} */

@@ -28,6 +28,7 @@
 #define __IGraphicBasedObject__
 
 #include "IObject.h"
+#include "IProportionalAsyncDims.h"
 #include "maptypes.h"
 #include "TLocalMapping.h"
 #include "TMapMsgHandler.h"
@@ -47,13 +48,16 @@ typedef class libmapping::SMARTP<IGraphicBasedObject>	SIGraphicBasedObject;
 /*!
 	\brief the base class for objects that supports "2-dimensions long int" segmentations
 */
-class IGraphicBasedObject : public IObject
+class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
 {
 		typedef libmapping::SMARTP<TLocalMapping<long,2> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
 		
 		TLongRect 	fBoundingRect;
-		bool		fUserWidth = false;
+//		bool		fUserWidth = false;
+//		float		fRequestedWidth = 0;
+//		float 		fRequestedHeight = 0;
+
 
 		/// \brief get an object maps
 		virtual SIMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }
@@ -70,9 +74,11 @@ class IGraphicBasedObject : public IObject
 		virtual void		accept (Updater*);
 
 		/// \brief Sets the width with height adjustment
-		virtual void	setWidth(float width);
+		virtual void	setPWidth(float width);
 		/// \brief Sets the height with width adjustment
-		virtual void	setHeight(float height);
+		virtual void	setPHeight(float height);
+		/// \brief clear the pending state of an object
+		virtual void	ready();
 
 	protected:
 				 IGraphicBasedObject( const std::string& name, IObject * parent );
