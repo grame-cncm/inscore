@@ -40,17 +40,18 @@ void json_array_value::print(osc_stream& out) const		{ fValue->print(out); }
 //--------------------------------------------------------------------------
 json_string_value::json_string_value(const char* val)
 {
-	while (*val) {
-		if ((*val == '\\') && (val[1])) {
-			if ((val[1] == '"') || (val[1] == '\\') || (val[1] == '/')) {
-				fValue += val[1];
-				val++;
-			}
-			else fValue += *val;
-		}
-		else fValue += *val;
-		val++;
-	}
+	fValue = val;
+//	while (*val) {
+//		if ((*val == '\\') && (val[1])) {
+//			if ((val[1] == '"') || (val[1] == '\\') || (val[1] == '/')) {
+//				fValue += val[1];
+//				val++;
+//			}
+//			else fValue += *val;
+//		}
+//		else fValue += *val;
+//		val++;
+//	}
 }
 
 //--------------------------------------------------------------------------
