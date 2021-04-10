@@ -46,6 +46,7 @@ IMedia::IMedia( const std::string& name, IObject * parent )
 	
 	fMsgHandlerMap[kplay_GetSetMethod]			= TSetMethodMsgHandler<IMedia,bool>::create(this, &IMedia::setPlay);
 	fMsgHandlerMap[kvolume_GetSetMethod]		= TSetMethodMsgHandler<IMedia,float>::create(this, &IMedia::setVolume);
+	fMsgHandlerMap[kdvolume_SetMethod]			= TSetMethodMsgHandler<IMedia,float>::create(this, &IMedia::setdVolume);
 	fMsgHandlerMap[krate_GetSetMethod]			= TSetMethodMsgHandler<IMedia,float>::create(this, &IMedia::setRate);
 	fMsgHandlerMap[kvdate_GetSetMethod]			= TMethodMsgHandler<IMedia, MsgHandler::msgStatus (IMedia::*)(const IMessage*)>::create(this, &IMedia::vdateMsg);
 	
@@ -67,6 +68,7 @@ IMedia::IMedia( const std::string& name, IObject * parent )
 //--------------------------------------------------------------------------
 void IMedia::setPlay (bool state)		{ fPlaying = state;  }
 void IMedia::setVolume (float vol)		{ fVolume = vol;  }
+void IMedia::setdVolume (float vol)		{ fVolume += vol;  }
 void IMedia::setRate (float rate)		{ fRate = rate; fRateModified = true;  }
 void IMedia::setVDate (long date)		{ fCDate = fVDate = int(date); fDateModified=true;  }
 void IMedia::setIDate (long date)		{ fCDate = int(date); }
