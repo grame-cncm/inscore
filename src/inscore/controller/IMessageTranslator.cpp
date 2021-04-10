@@ -50,6 +50,7 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["htm"]	= "htmlf";
 		fFileTypeTranslationTable["gmn"]	= "gmnf";
 		fFileTypeTranslationTable["xml"]	= "musicxmlf";
+		fFileTypeTranslationTable["musicxml"]= "musicxmlf";
 		fFileTypeTranslationTable["jpg"]	= "img";
 		fFileTypeTranslationTable["jpeg"]	= "img";
 		fFileTypeTranslationTable["gif"]	= "img";
@@ -63,6 +64,7 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["mp4"]	= "video";
 		fFileTypeTranslationTable["m4v"]	= "video";
 		fFileTypeTranslationTable["mov"]	= "video";
+		fFileTypeTranslationTable["vob"]	= "video";
 		fFileTypeTranslationTable["mp3"]	= "audio";
 		fFileTypeTranslationTable["wav"]	= "audio";
 		fFileTypeTranslationTable["aiff"]	= "audio";
@@ -71,8 +73,11 @@ IMessageTranslator::IMessageTranslator()
 		fFileTypeTranslationTable["m4a"]	= "audio";
 		fFileTypeTranslationTable["mid"]	= "pianorollf";
 		fFileTypeTranslationTable["midi"]	= "pianorollf";
-		fFileTypeTranslationTable["vob"]	= "video";
+#ifdef EMCC
+        fFileTypeTranslationTable["dsp"]	= "faustf";
+#else
         fFileTypeTranslationTable["dsp"]	= "faustdspf";
+#endif
 	}
 }
 
