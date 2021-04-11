@@ -77,7 +77,7 @@ class VMediaPlayer: public QObject
 		void	positionChanged(qint64 position);
 
 	protected:
-		int							fReady;
+		int							fReady = 0;
 
 	private:
 		QMediaPlayer				fMediaPlayer;

@@ -24,6 +24,7 @@
 */
 
 #include <cstdlib>
+#include <iostream>
 
 #include <QFile>
 #include <QDebug>
@@ -34,27 +35,54 @@
 #include "VAudioView.h"
 #include "VApplView.h"
 
+using namespace std;
+
 namespace inscore
 {
 
 //----------------------------------------------------------------------
-TAudioReader::TAudioReader()
+//TAudioReader::TAudioReader()
+//{
+//
+//	fAudioProbe = new QAudioProbe();
+//    connect(fAudioProbe, SIGNAL(audioBufferProbed(const QAudioBuffer&)),this, SLOT(processBuffer(const QAudioBuffer&)));
+//}
+//
+////----------------------------------------------------------------------
+//void TAudioReader::setSource (QMediaPlayer* player)
+//{
+//	if (!fAudioProbe->setSource(player))
+//		qDebug() << "TAudioReader::setSource FAILED: audio probe not supported";
+//}
+//
+////----------------------------------------------------------------------
+//void TAudioReader::processBuffer (const QAudioBuffer& buffer)
+//{
+//qDebug() << "TAudioReader::processBuffer frames:" << buffer.frameCount();
+//}
+
+//----------------------------------------------------------------------
+void TAudioReader::setSource (const QIODevice* dev)
 {
-	fAudioProbe = new QAudioProbe();
-    connect(fAudioProbe, SIGNAL(audioBufferProbed(const QAudioBuffer&)),this, SLOT(processBuffer(const QAudioBuffer&)));
+	QIODevice* read = const_cast<QIODevice*>(dev);
+	qint64 pos = read->pos();
+	fData = read->readAll();
+	read->seek(pos);
+cerr << "TAudioReader::setSource : " << getSize() << " data" << endl;
 }
 
 //----------------------------------------------------------------------
-void TAudioReader::setSource (QMediaPlayer* player)
+float TAudioReader::getValue (int index, int size)
 {
-	if (!fAudioProbe->setSource(player))
-		qDebug() << "TAudioReader::setSource FAILED: audio probe not supported";
-}
-
-//----------------------------------------------------------------------
-void TAudioReader::processBuffer (const QAudioBuffer& buffer)
-{
-qDebug() << "TAudioReader::processBuffer frames:" << buffer.frameCount();
+	int n = getSize();
+	if (index >= n) return 0.f;
+	int end = ((index + size) >= n) ? n : index + n;
+	int max = -1000;
+	for (int i = index; i < end; i++) {
+		char val = fData.at(i);
+		if (val > max) max = val;
+	}
+	return max /127.f;
 }
 
 
@@ -65,11 +93,13 @@ VAudioView::VAudioView(QGraphicsScene * scene, const IAudio* audio)
  :	VMappedShapeView( scene , new MouseEventAble<QGraphicsPathItem>(audio)), fAudio(0)
 {
 	fCacheW = fCacheH = 0;
+    connect(player(), SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
 }
 
 //----------------------------------------------------------------------
 void VAudioView::mediaReady() {
 	fAudio->setMediaDuration(player()->duration());
+//	fReader.setSource (player()->mediaStream());  mediaStream is null
 	fAudio->mediaReady();
 }
 void VAudioView::posChanged(qint64 pos)		{ fAudio->setIDate(pos); }
@@ -82,13 +112,18 @@ void VAudioView::error(QString msg)
 }
 
 //----------------------------------------------------------------------
+void VAudioView::durationChanged(qint64 duration)		{
+	mediaReady();
+}
+
+//----------------------------------------------------------------------
 void VAudioView::initialize( IAudio * audio  )
 {
 	fAudio = audio;
 	QString file = VApplView::toQString( audio->getPath().c_str() );
 	if ( QFile::exists(  file  ) ) {
 		setFile (file);
-		fReader.setSource(player());
+//		fReader.setSource(player()->mediaStream());
 	}
 }
 
