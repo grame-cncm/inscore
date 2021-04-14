@@ -139,7 +139,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		MsgHandler::msgStatus genericExport(const IMessage* msg, bool drawChildren);
 
 		/// \brief propagates modification state up to parents
-		virtual void	propagateSubModified ();
+		virtual void	propagateSubModified (bool toparents = true);
 
 
 	protected:
@@ -183,6 +183,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 			{ return new IObject(name, parent); }
 		static bool pendingScene()		{ return gSerialise; }
 
+		void	propagateModified ()				{ propagateSubModified(false); }
 		/// \brief returns the object sub-nodes
 				subnodes& elements()				{ return fSubNodes; }
 		/// \brief returns the object sub-nodes

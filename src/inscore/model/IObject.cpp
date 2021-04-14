@@ -514,10 +514,22 @@ void IObject::setState (state s)			{ fState |= s; }
 void IObject::setModified ()				{ setState(kModified); propagateSubModified(); }
 
 //--------------------------------------------------------------------------
-void IObject::propagateSubModified ()	{
-	if (fParent) {
-		fParent->setState(kSubModified);
-		fParent->propagateSubModified();
+void IObject::propagateSubModified (bool toparents)	{
+	if (toparents){
+		if (fParent) {
+			fParent->setState(kSubModified);
+			fParent->propagateSubModified (true);
+		}
+	}
+	else {
+		for (auto elt: elements()) {
+			if (elt->getView()) {
+				elt->modify();
+				elt->setState(kModified);
+				elt->propagateSubModified(false);
+				setState(kSubModified);
+			}
+		}
 	}
 };
 
