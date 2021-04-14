@@ -358,7 +358,7 @@ abstract class JSObjectView {
 	static updateObjectView (id : number, optr : number, forcepos: boolean)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {
-			// view.setIObject (optr);
+			view.setIObject (optr);
 			try {
 				let obj = INScore.objects().adapter(optr);
 				view.updateView (obj, 0, forcepos); 
@@ -373,7 +373,6 @@ abstract class JSObjectView {
 	// Synchronous init method
 	// id  : the view id 
 	// optr : the IObject id (actually a pointer stored as number)
-	// forcepos : used to enforce updatePosition
 	static initObjectView (id : number, optr : number)	: void { 
     	let view = JSObjectView.fObjects[id];
     	if (view) {

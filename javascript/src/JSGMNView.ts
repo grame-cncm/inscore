@@ -62,6 +62,7 @@ class JSGMNView extends JSSvgBase {
 
 	// scaled to get a size similar to native app
 	parentScale() : number { return this.getParent().parentScale() * this.fScalingFactor; }
+	getScale(scale: number) : number {  return scale; }
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
 		let ret = false;
