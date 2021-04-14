@@ -8,9 +8,9 @@
 	<script src="lib/libGUIDOEngine.js"></script>
 	<script src="lib/libfaust-wasm.js"></script>
 	<script src="lib/FaustLibrary.js"></script>
-	<script src="lib/libINScore.js"></script>
-	<script src="lib/inscoreview.js"></script>
-	<script src="lib/inscoreglue.js"></script>
+	<script src="../../lib/libINScore.js"></script>
+	<script src="../..//inscoreview.js"></script>
+	<script src="../..//inscoreglue.js"></script>
 	<style>
 	body { position: fixed; width: 100%; height: 100%; margin: 0; background: white; height: 100%; }
 	.connect { margin-left: 20px; }
@@ -22,12 +22,16 @@
 <div class="inscore box" id="scene">
 
 /ITL/scene/* del;
+<!-- /ITL/scene/rect set rect 2 2;
+/ITL/scene/rect alpha 50; -->
 
 /ITL/scene/htitle set txt "Perspectives Temporelles";
 /ITL/scene/htitle fontSize 24;
+<!-- /ITL/scene/htitle scale 2; -->
 /ITL/scene/htitle y -0.8;
 /ITL/scene/hcomposer set txt "Jonathan Bell";
 /ITL/scene/hcomposer fontSize 18;
+<!-- /ITL/scene/htitle scale 1.5; -->
 /ITL/scene/hcomposer y -0.73;
 /ITL/scene/h* fontFamily Helvetica;
 /ITL/scene/h* color darkgrey;
@@ -61,7 +65,8 @@ rsrc = "rsrc/";
 /ITL/scene/p7 map '( [567, 2880[ [210, 1745[ ) 	( [0:36:53, 0:41:50[ )';
 /ITL/scene/p8 map '( [1, 2825[ [190, 1570[ ) 	( [0:41:50, 0:46:20[ )';
 
-/ITL/scene/p* scale 0.7;
+<!-- /ITL/scene/p* scale 0.7; -->
+/ITL/scene/p* width 1.8;
 /ITL/scene/p* show 0;
 /ITL/scene/p1 show 1;
 click = (/ITL/scene/cursor date '$date', /ITL/scene/audio vdate '$date');
@@ -76,7 +81,7 @@ click = (/ITL/scene/cursor date '$date', /ITL/scene/audio vdate '$date');
 # cursor and synchronisation
 #==================================================
  -->
-/ITL/scene/cursor set rect 0.03 1.;
+/ITL/scene/cursor set rect 0.01 1.;
 /ITL/scene/cursor color 0xff0000aa;
 /ITL/scene/sync cursor p* v; 
 
@@ -113,20 +118,24 @@ alpha = 120;
 play  = 'rsrc/play.png';
 pause = 'rsrc/pause.png';
 stop  = 'rsrc/stop.png';
+w = 0.09;
 /ITL/scene/ctrlplay set img $play;
 /ITL/scene/ctrlstop set img $stop;
 /ITL/scene/ctrlplay xorigin $origin;
 /ITL/scene/ctrlstop xorigin $origin * -1;
-/ITL/scene/ctrl* scale 0.05;
 /ITL/scene/ctrl* y 0.8;
+/ITL/scene/ctrl* width $w;
+<!-- /ITL/scene/ctrl* scale 0.15; -->
 /ITL/scene/ctrl* alpha $alpha;
 
 initplay =	(/ITL/scene/ctrlplay push,
 			/ITL/scene/ctrlplay set img $pause,
+			/ITL/scene/ctrlplay width $w,
 			/ITL/scene/cursor tempo 60,
 			/ITL/scene/audio play 1,
 			/ITL/scene/ctrlplay watch mouseDown ( 
 				/ITL/scene/ctrlplay set img $play,
+				/ITL/scene/ctrlplay width $w,
 				/ITL/scene/cursor tempo 0,
 				/ITL/scene/audio play 0,
 				/ITL/scene/ctrlplay pop
@@ -139,6 +148,7 @@ initplay =	(/ITL/scene/ctrlplay push,
 
 /ITL/scene watch STOP (
 	/ITL/scene/ctrlplay set img $play,
+	/ITL/scene/ctrlplay width $w,
 	/ITL/scene/ctrlplay pop,
 	/ITL/scene/ctrlplay watch mouseDown $initplay,
 	/ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self alpha 255 ),
@@ -152,6 +162,7 @@ initplay =	(/ITL/scene/ctrlplay push,
 
 /ITL/scene watch END (
 	/ITL/scene/ctrlplay set img $play,
+	/ITL/scene/ctrlplay width $w,
 	/ITL/scene/ctrlplay pop,
 	/ITL/scene/ctrlplay watch mouseDown $initplay,
 	/ITL/scene/cursor tempo 0,
@@ -165,12 +176,13 @@ initplay =	(/ITL/scene/ctrlplay push,
  -->
 next = $rsrc + 'next.png';
 prev = $rsrc + 'prev.png';
-x = 0.3;
+x = 0.2;
+/ITL/log write os $OSName;
 /ITL/scene/bnext set img $next;
 /ITL/scene/bprev set img $prev;
 /ITL/scene/bnext x $x;
 /ITL/scene/bprev x $x * -1;
-/ITL/scene/b* scale 0.06;
+/ITL/scene/b* scale 0.19;
 /ITL/scene/b* y 0.8;
 /ITL/scene/b* alpha $alpha;
 /ITL/scene/b* watch mouseEnter ( /ITL/scene/$self alpha 255 );
