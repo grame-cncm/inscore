@@ -34,7 +34,15 @@ namespace inscore
 
 static const float kNoWhere = 99999.f;
 
-
+//--------------------------------------------------------------------------
+// The functions below (scalePos & scaleHeight) are intended to
+// make synchronisation transparent to the javascript view.
+// Due to the current model, the coordinate system is based on a square which
+// size is the min(width, height) but a synchronised object has to take
+// account of the whole dimensions of the master object. The scaling functions
+// purpose is to convert coordinates to this whole dimensions.
+// scalePos is used for position.
+// scaleHeight is used for v stretch.
 //--------------------------------------------------------------------------
 static TFloatPoint	scalePos (const IObject* obj, const TFloatPoint& pos)
 {
@@ -52,6 +60,18 @@ static TFloatPoint	scalePos (const IObject* obj, const TFloatPoint& pos)
 		if (!h) y = 0;
 	}
 	return TFloatPoint (x, y);
+}
+
+//--------------------------------------------------------------------------
+static float scaleHeight (const IObject* obj, float height)
+{
+	float w = obj->getWidth();
+	float h = obj->getHeight();
+	float ratio = 1.f;
+	if (h && w) {
+		if (w < h)  ratio = h / w;
+	}
+	return height * ratio;
 }
 
 //--------------------------------------------------------------------------
@@ -95,8 +115,9 @@ TFloatPoint	getSyncPosition (const IObject* obj, const SMaster& master, float& v
 	}
 	else {
 		if (master->getStretch() == Master::kStretchV) {
-			vstretch = 2; //masterobj->getHeight();
-//			cout << "getSyncPosition vstretch: " << vstretch << endl;
+			std::string mapName = masterobj->name() + ":" + master->getMasterMapName();
+			vstretch = scaleHeight (masterobj, obj->getSyncHeight(mapName));
+//cerr << "getSyncPosition vstretch: " << vstretch << " " << mapName << " " << masterobj->getHeight()<< endl;
 		}
 		location = date2MasterPosition (master, obj, date);
 	}
