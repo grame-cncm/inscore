@@ -432,9 +432,9 @@ void VGraphicsItemView::updateItemNoStretch(QStretchTilerItem* item, IObject* o,
     double width = relative2SceneWidth(o->getSyncWidth(mapName), item);
     double height = relative2SceneHeight(o->getSyncHeight(mapName), item);
     
-    double x = relative2SceneX( o->getSyncPos(mapName).x(), item );
-    double y = relative2SceneY( o->getSyncPos(mapName).y(), item );
- 
+    TFloatPoint p = o->getSyncPos(mapName);
+    double x = relative2SceneX( p.x(), item );
+    double y = relative2SceneY( p.y(), item );
     item->setRect(QRectF(0,0,width,height));
     item->setPos(x, y);
     item->resetTransform();	// Resets the transform (scale and rotation) before setting the new values.
