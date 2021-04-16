@@ -52,12 +52,7 @@ class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
 {
 		typedef libmapping::SMARTP<TLocalMapping<long,2> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
-		
 		TLongRect 	fBoundingRect;
-//		bool		fUserWidth = false;
-//		float		fRequestedWidth = 0;
-//		float 		fRequestedHeight = 0;
-
 
 		/// \brief get an object maps
 		virtual SIMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }

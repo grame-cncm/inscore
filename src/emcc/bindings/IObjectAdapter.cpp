@@ -74,11 +74,15 @@ string IObjectAdapter::color2RGBAColor (const IColor& color) {
 
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateWidth (IPosition* pos, float w) {
+	const IGraphicBasedObject* gobj = dynamic_cast<const IGraphicBasedObject*>(pos);
+	if (gobj && gobj->userDims()) return;
 	pos->_setWidth (w);
 }
 	
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateHeight (IPosition* pos, float h) {
+	const IGraphicBasedObject* gobj = dynamic_cast<const IGraphicBasedObject*>(pos);
+	if (gobj && gobj->userDims()) return;
 	pos->_setHeight (h);
 }
 

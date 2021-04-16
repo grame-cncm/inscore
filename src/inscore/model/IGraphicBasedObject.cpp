@@ -77,11 +77,13 @@ MsgHandler::msgStatus IGraphicBasedObject::mapMsg (const IMessage* msg )
 //-------------------------------------------------------------------------
 void IGraphicBasedObject::setBoundingRect(long x, long y, long w, long h)
 {
-	fBoundingRect.setX(x);
-	fBoundingRect.setY(y);
-	fBoundingRect.setWidth(w);
-	fBoundingRect.setHeight(h);
-	updateLocalMapping();
+	if (!userDims()) {
+		fBoundingRect.setX(x);
+		fBoundingRect.setY(y);
+		fBoundingRect.setWidth(w);
+		fBoundingRect.setHeight(h);
+		updateLocalMapping();
+	}
 }
 
 //-------------------------------------------------------------------------
