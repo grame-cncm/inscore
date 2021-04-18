@@ -98,7 +98,7 @@ void IMedia::mediaEnd ()
 bool IMedia::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	string ev(t);
-	if ( (ev == kEndEvent) || (ev == kReadyEvent)) return true;
+	if ( (ev == kEndEvent) || (ev == kReadyEvent) || (ev == kErrorEvent)) return true;
 	return IObject::acceptSimpleEvent(t);
 }
 
