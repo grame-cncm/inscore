@@ -64,8 +64,11 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("updateWidth", 	&IObjectAdapter::updateWidth)
 		.function("updateHeight", 	&IObjectAdapter::updateHeight)
 		.function("updateViewBoundingRect", &IObjectAdapter::updateViewBoundingRect)
+		.function("updateDuration", &IObjectAdapter::updateDuration)
 		.function("updateTime2TimeMap", 	&IObjectAdapter::updateTime2TimeMap)
 		.function("updateGraphic2TimeMap",	&IObjectAdapter::updateGraphic2TimeMap)
+
+		.function("event",			&IObjectAdapter::event)
 
 		.function("setFaustInOut",	&IObjectAdapter::setFaustInOut)
 		.function("setFaustUI",		&IObjectAdapter::setFaustUI, allow_raw_pointers())

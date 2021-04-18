@@ -46,6 +46,7 @@
 #include "IText.h"
 #include "MapBuilder.h"
 #include "TFile.h"
+#include "TMessageEvaluator.h"
 
 
 using namespace std;
@@ -91,6 +92,22 @@ void IObjectAdapter::updateViewBoundingRect(float x, float y, float w, float h) 
 	IGraphicBasedObject* gobj = dynamic_cast<IGraphicBasedObject*>((IObject*)fObject);
 	if (gobj)
 		gobj->setBoundingRect (x, y, w, h);
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::updateDuration(float duration) {
+	IMedia* obj = dynamic_cast<IMedia*>((IObject*)fObject);
+	if (obj)
+		obj->setMediaDuration (long(duration));
+	else cerr << obj->getOSCAddress() << ": unexpected updateDuration called for non media object." << endl;
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::event(string event) {
+	if (fObject) {
+		EventContext context (fObject);
+		fObject->checkEvent (event.c_str(), context);
+	}
 }
 
 //--------------------------------------------------------------------------

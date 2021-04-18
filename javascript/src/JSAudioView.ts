@@ -1,7 +1,8 @@
 
 ///<reference path="JSAutoSize.ts"/>
+///<reference path="TMedia.ts"/>
 
-class JSAudioView extends JSAutoSize {
+class JSAudioView extends TMedia { //JSAutoSize {
     fAudio: HTMLAudioElement;
 	fFile : string;
     
@@ -10,12 +11,15 @@ class JSAudioView extends JSAutoSize {
         super(audio, parent); 
         this.fAudio = audio;
 		this.fFile = "";
-        this.getElement().className = "inscore-audio";
+		// this.fReady = false;
     }     
 	clone (parent: JSObjectView) : JSObjectView { return new JSAudioView(parent); }
+	toString() : string			{ return "JSAudioView"; }
 
-	updateSpecial ( obj: INScoreObject)	: boolean {		
+	updateSpecial ( obj: INScoreObject)	: boolean {	
+		this.addHandlers( this.fAudio, obj);
 		this.fAudio.src  = obj.getFile();
+		this.fAudio.currentTime = 0;
 		return this.updateSizeASync (obj);
 	}
  
