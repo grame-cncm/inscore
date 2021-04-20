@@ -3,13 +3,23 @@ class AIOScanner {
     static fOutput: AudioNode = null;
     static readonly kInputName : string = "audioInput";
     static readonly kOutputName : string = "audioOutput";
+    static fAudioContext : AudioContext = null;
+    static fUnlockEvents = ["touchstart", "touchend", "mousedown", "keydown"];
 
-    static scan (context: AudioContext, address: string) {
-        AIOScanner.fOutput = context.destination;
+    static init()
+    {
+        if (!AIOScanner.fAudioContext) {
+            AIOScanner.fAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            AIOScanner.unlockAudioContext(AIOScanner.fAudioContext);
+        }
+    }
+
+    static scan (address: string) {
+        AIOScanner.fOutput = AIOScanner.fAudioContext.destination;
         AIOScanner.send (address, AIOScanner.kOutputName, AIOScanner.fOutput);
         navigator.mediaDevices.getUserMedia({audio: true, video: false})
         .then((stream: MediaStream) => {
-            AIOScanner.fInput = context.createMediaStreamSource(stream);
+            AIOScanner.fInput = AIOScanner.fAudioContext.createMediaStreamSource(stream);
             AIOScanner.send (address, AIOScanner.kInputName, AIOScanner.fInput);
             // AIOScanner.fInput.connect(this.fOutput);
         })
@@ -35,4 +45,16 @@ class AIOScanner {
     //     return aObject;
     // }
 
+    static unlockclean ()  { AIOScanner.fUnlockEvents.forEach(e => document.body.removeEventListener(e, this.unlock)); } 
+    static unlock ()       { AIOScanner.fAudioContext.resume().then(AIOScanner.unlockclean) } 
+    static unlockAudioContext(audioCtx: AudioContext) {
+        if (audioCtx.state !== "suspended") return;
+        AIOScanner.fUnlockEvents.forEach(e => document.body.addEventListener(e, AIOScanner.unlock, false));
+    }
+
 }
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    AIOScanner.init();
+    console.log('DOM is ready.')
+});

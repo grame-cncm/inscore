@@ -2,12 +2,14 @@
 ///<reference path="lib/libINScore.d.ts"/>
 ///<reference path="JSAutoSize.ts"/>
 
-abstract class TMedia extends JSAutoSize {
+abstract class TMedia extends JSAutoSize implements AudioObject {
 	private fReady : boolean = false;
 	private fListen : boolean = false;
+	fAudioNode : AudioNode = null;
 
-	constructor(elt: HTMLElement, parent: JSObjectView) {
-        super(elt, parent); 
+	constructor(elt: HTMLMediaElement, parent: JSObjectView) {
+        super(elt, parent);
+		this.fAudioNode = AIOScanner.fAudioContext.createMediaElementSource(elt);
     }     
 
 	abstract clone (parent: JSObjectView) : JSObjectView;
@@ -34,4 +36,9 @@ abstract class TMedia extends JSAutoSize {
 		console.log (obj.getOSCAddress() + ": " + event.message);
 		obj.event ("error");
 	}
+
+	toAudioObject() : AudioObject { return this; }
+	getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.channelCount : 0; } 
+    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.channelCount : 0; }
+    getAudioNode() : AudioNode  { return this.fAudioNode; }
 }
