@@ -1,7 +1,8 @@
 class AudioTools {
     static updateConnections(obj: JSObjectView) {
         let cnx = obj.getAudioInfos();
-
+        AudioTools.connect(obj, cnx.connect);
+        AudioTools.disconnect(obj, cnx.disconnect);
     }
 
     static connect(obj: AudioObject, list: IntVector) {
