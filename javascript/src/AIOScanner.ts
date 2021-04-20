@@ -1,35 +1,36 @@
 class AIOScanner {
-    private fInput: AudioNode;
-    private fOutput: AudioNode;
-    private context: AudioContext;
+    static fInput: AudioNode = null;
+    static fOutput: AudioNode = null;
+    static readonly kInputName : string = "audioInput";
+    static readonly kOutputName : string = "audioOutput";
 
-    constructor (context: AudioContext) {
-        this.context = context;
-        this.scan();
-    } // have the audio context upon creation
-
-    scan () {
-        this.fOutput = this.context.destination;
+    static scan (context: AudioContext, address: string) {
+        AIOScanner.fOutput = context.destination;
+        AIOScanner.send (address, AIOScanner.kOutputName, AIOScanner.fOutput);
         navigator.mediaDevices.getUserMedia({audio: true, video: false})
         .then((stream: MediaStream) => {
-            this.fInput = this.context.createMediaStreamSource(stream);
-            this.fInput.connect(this.fOutput);
+            AIOScanner.fInput = context.createMediaStreamSource(stream);
+            AIOScanner.send (address, AIOScanner.kInputName, AIOScanner.fInput);
+            // AIOScanner.fInput.connect(this.fOutput);
         })
         .catch(function(err) {
-            console.log("the following error occured: " + err);
+            AIOScanner.send (address, AIOScanner.kInputName, null);
+            console.log("AIOScanner can't get input device: " + err);
         });
     } // Get All Physical in/out and populate finput & foutput
 
-    send (scene: string, audioInput: string) {
+    private static send (address: string, name: string, node: AudioNode) {
         let msg = inscore.newMessageM ("set");
-        inscore.msgAddStr (msg, "audio");
-        inscore.msgAddI (msg, 1); // nb inpuit
-        inscore.msgAddI (msg, 0); // nb output
-        inscore.postMessage ("/ITL/" + scene + "/" + audioInput + "", msg);
+        let prefix = address.substring (0, address.lastIndexOf("/"));
+        inscore.msgAddStr (msg, "audioio");
+        inscore.msgAddI (msg, node ? node.numberOfInputs : 0);     // nb input
+        inscore.msgAddI (msg, node ? node.numberOfOutputs : 0);    // nb output
+        inscore.postMessage (prefix + "/" + name + "", msg);
     } // can send a set audioio message for each physical input/output
-    create(inNode: AudioNode, outNode: AudioNode) : AudioObject { // Create AudioObject
-        var aObject = new AudioObject;
-        return aObject;
-    }
+
+    // create(inNode: AudioNode, outNode: AudioNode) : AudioObject { // Create AudioObject
+    //     var aObject = new AudioObject;
+    //     return aObject;
+    // }
 
 }
