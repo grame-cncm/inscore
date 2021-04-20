@@ -236,6 +236,6 @@ interface INScoreObject {
 	updateGraphic2TimeMap(name: string, map: string, width: number, height: number): void;
 	updateTime2TimeMap(map: string): void;
 
-	setFaustInOut (inputs: number, output: number): void;
+	setAudioInOut (inputs: number, output: number): void;
 	setFaustUI (type: string, label: string, address: string, init: number, min: number, max: number, step: number): void;
 }

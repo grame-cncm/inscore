@@ -70,7 +70,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("event",			&IObjectAdapter::event)
 
-		.function("setFaustInOut",	&IObjectAdapter::setFaustInOut)
+		.function("setAudioInOut",	&IObjectAdapter::setAudioInOut)
 		.function("setFaustUI",		&IObjectAdapter::setFaustUI, allow_raw_pointers())
 
 		.function("getMasters",  	&IObjectAdapter::getMasters, allow_raw_pointers())

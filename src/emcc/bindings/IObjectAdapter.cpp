@@ -616,13 +616,13 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 }
 
 //--------------------------------------------------------------------------
-void IObjectAdapter::setFaustInOut (int inputs, int outputs)
+void IObjectAdapter::setAudioInOut (int inputs, int outputs)
 {
-	IFaustProcessor* obj = dynamic_cast<IFaustProcessor*>((IObject*)fObject);
+	AudioNode* obj = dynamic_cast<AudioNode*>((IObject*)fObject);
 	if (obj)
 		obj->setIONums (inputs, outputs);
 	else
-		cerr << "IObjectAdapter::setFaustInOut: unexpected null object!" << endl;
+		cerr << "IObjectAdapter::setAudioInOut: unexpected null object!" << endl;
 }
 
 //--------------------------------------------------------------------------

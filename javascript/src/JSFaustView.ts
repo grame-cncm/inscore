@@ -132,7 +132,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                 return JSFaustView.kFailed;
             }
 
-            obj.setFaustInOut (node.getNumInputs(), node.getNumOutputs());
+            obj.setAudioInOut (node.getNumInputs(), node.getNumOutputs());
             let ui = node.getDescriptors();
             ui.forEach ( (elt) => { 
 // console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
