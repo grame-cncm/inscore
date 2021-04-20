@@ -1,29 +1,57 @@
+
+///<reference path="JSObjectView.ts"/>
+///<reference path="AudioObject.ts"/>
+///<reference path="AIOScanner.ts"/>
+
 class JSAudioioView extends JSObjectView implements AudioObject {
-    fAudioNode : AudioNode;
+    fAudioNode : AudioNode = null;
 
     constructor(parent: JSObjectView) {
 		super(document.createElement('div'), parent); 
     }
 
-    getNumInputs() : number {
-        return this.fAudioNode.numberOfInputs;
-    } 
-    getNumOutputs() : number {
-        return this.fAudioNode.numberOfOutputs;
-    }
-    getAudioNode() : AudioNode {
-        return this.fAudioNode;
-    }
+    getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.numberOfInputs : 0; } 
+    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.numberOfOutputs : 0; }
+    getAudioNode() : AudioNode  { return this.fAudioNode; }
+
     connect(to: AudioObject) : boolean {
-        this.fAudioNode.connect(to.fAudioNode);
-        return true;
+        if (this.fAudioNode) {
+            this.fAudioNode.connect(to.fAudioNode);
+            return true;
+        }
+        return false;
     }
     disconnect(obj: AudioObject) : boolean {
-        this.fAudioNode.disconnect(obj.fAudioNode);
-        return true;
+        if (this.fAudioNode) {
+            this.fAudioNode.disconnect(obj.fAudioNode);
+            return true;
+        }
+        return false;
     }
 
     clone (parent: JSObjectView) : JSObjectView {
         return new JSAudioioView(parent);
+    }
+
+    updateSpecific(obj: INScoreObject)	: void {
+        AudioTools.updateConnections(obj, this);
+    }
+
+    updateSpecial(obj: INScoreObject) : boolean {
+        let infos = obj.getIOInfos();
+        if (infos.inputs && infos.outputs) {
+            console.log ("Warning: JSAudioioView created with " + infos.inputs + " inputs and " + infos.outputs + " outputs."  );
+        }
+        if (infos.inputs ) {
+            this.fAudioNode = AIOScanner.fOutput;
+            if (this.getNumInputs() != infos.inputs )
+                console.log ("JSAudioioView Warning: device has not the requested number of inputs: " + this.getNumInputs() + " instead of "  + infos.inputs);
+            }
+        else if (infos.outputs) {
+            this.fAudioNode = AIOScanner.fInput;
+            if (this.getNumOutputs() != infos.outputs )
+                console.log ("JSAudioioView Warning: device has not the requested number of outputs: " + this.getNumOutputs() + " instead of "  + infos.outputs);
+        }
+        return true;
     }
 }
