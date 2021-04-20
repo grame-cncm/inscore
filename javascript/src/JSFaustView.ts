@@ -2,12 +2,14 @@
 ///<reference path="JSSVGBase.ts"/>
 ///<reference path="faust.ts"/>
 ///<reference path="AIOScanner.ts"/>
+///<reference path="AudioTools.ts"/>
+///<reference path="AudioObject.ts"/>
 
 interface FaustSVG extends SVGSVGElement {
     diagram: Faust.SVGDiagrams;
 }
 
-class JSFaustView extends JSSvgBase {
+class JSFaustView extends JSSvgBase implements AudioObject {
     private fFaust : faust;
     static fAudioContext : AudioContext = null;
     private fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode = null;
@@ -27,6 +29,11 @@ class JSFaustView extends JSSvgBase {
         }
         this.getElement().className = "inscore-svg";
     }
+
+    toAudioObject() : AudioObject { return this; }
+    getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.getNumInputs() : 0; }
+    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.getNumOutputs() : 0; }
+    getAudioNode() : AudioNode  { return this.fAudioNode; }
 
     clone (parent: JSObjectView) : JSObjectView { return new JSFaustView(parent, this.fFaust); }
     toString() : string		                    { return "JSFaustView"; }
@@ -85,11 +92,12 @@ class JSFaustView extends JSSvgBase {
 
     updateSpecific(obj: INScoreObject)	: void {
         if (this.fAudioNode) {
+            AudioTools.updateConnections(obj, this);
             let data = obj.getFaustInfos(true, false);
-            if (data.playing)
-                this.fAudioNode.connect (JSFaustView.fAudioContext.destination);
-            else
-                this.fAudioNode.disconnect();
+            // if (data.playing)
+            //     this.fAudioNode.connect (JSFaustView.fAudioContext.destination);
+            // else
+            //     this.fAudioNode.disconnect();
             
             let val = data.values;
             let n = val.size();
