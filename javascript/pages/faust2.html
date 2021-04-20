@@ -29,16 +29,17 @@
 	/ITL/scene/text fontSize 32;
 
 	/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
-	/ITL/scene/faust scale 0.7;
+	/ITL/scene/faust scale 0.5;
 	/ITL/scene/faust y -0.3;
 	/ITL/scene/faust2 set faust 'import("stdfaust.lib"); process = dm.freeverb_demo;';
 	/ITL/scene/faust2 scale 0.15;
 	/ITL/scene/faust2 y 0.4;
-
-
+	/ITL/scene/faust2 connect audioOutput;
+	/ITL/scene/faust2/Freeverb/0x00/RoomSize 0.9;
+	/ITL/scene/faust2/Freeverb/Wet 0.5;
+	
 	/ITL/scene/play1 set txt "Start";
 	/ITL/scene/play* x 0.98;
-	/ITL/scene/play* xorigin 1;
 	/ITL/scene/play* fontSize 24;
 	/ITL/scene/play1 y -0.3;
 	/ITL/scene/play* watch mouseEnter ( /ITL/scene/$self color red );
@@ -56,6 +57,24 @@
 			/ITL/scene/$self pop
 		)
 	);
+
+	/ITL/scene/reverb set txt "Reverb";
+	/ITL/scene/reverb x 0.98;
+	/ITL/scene/reverb fontSize 24;
+	/ITL/scene/reverb y 0.3;
+	/ITL/scene/reverb watch mouseEnter ( /ITL/scene/$self color red );
+	/ITL/scene/reverb watch mouseLeave ( /ITL/scene/$self color black );
+	/ITL/scene/reverb watch mouseDown (
+		/ITL/scene/$self push,
+		/ITL/scene/$self set txt "Dry",
+		/ITL/scene/faust connect faust2,
+		/ITL/scene/reverb watch mouseDown (
+			/ITL/scene/$self set txt "Reverb",
+			/ITL/scene/faust disconnect faust2,
+			/ITL/scene/$self pop
+		)
+	);
+
 	<!-- /ITL/scene/abc set faustf '/pages/test.dsp.txt'; -->
 
 </div>
