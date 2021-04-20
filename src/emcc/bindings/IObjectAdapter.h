@@ -187,6 +187,11 @@ struct JSSceneInfos {
 	bool fullscreen = false;
 };
 
+struct JSIOInfos {
+	int inputs = 0;
+	int outputs = 0;
+};
+
 class IText;
 class ILine;
 class ICurve;
@@ -256,6 +261,7 @@ class inscore_export IObjectAdapter
 		JSMediaInfos 		getMediaInfos() const;
 		JSGMNStreamInfos  	getGuidoStream() const;
 		std::vector<JSRect> getMaps() const;
+		JSIOInfos			getIOInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }

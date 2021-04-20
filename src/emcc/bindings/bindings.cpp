@@ -92,6 +92,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getSVGInfos",    &IObjectAdapter::getSVGInfos)
 		.function("getFaustInfos",  &IObjectAdapter::getFaustInfos)
 		.function("getAudioInfos",  &IObjectAdapter::getAudioInfos)
+		.function("getIOInfos",  	&IObjectAdapter::getIOInfos)
 		.function("getMaps",    	&IObjectAdapter::getMaps);
 
 	register_vector<float>	("vector<float>");

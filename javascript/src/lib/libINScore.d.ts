@@ -188,6 +188,10 @@ interface OFaustInfos {
 	values		: FaustParamValuesVector;
 	keys		: FaustKeyValuesVector;
 }
+interface OIOInfos {
+	inputs	: number;
+	outputs	: number;
+}
 
 interface INScoreObject {
     // create(id: number):        INScoreObject;
@@ -216,6 +220,7 @@ interface INScoreObject {
 	getSVGInfos():     string;
 	getFaustInfos(getvalues: boolean, getcode: boolean):  OFaustInfos;
 	getAudioInfos():   OAudioNodeInfos;
+	getIOInfos():      OIOInfos;
 	getMaps():     	   RectVector;
 
 	updateWidth (w: number):  void;

@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include "AudioIO.h"
 #include "AudioNode.h"
 #include "HTMLObjectView.h"
 #include "IArc.h"
@@ -529,6 +530,20 @@ JSMediaInfos IObjectAdapter::getMediaInfos() const
 	if (!_getMedia(dynamic_cast<IMedia*>((IObject*)fObject), infos))
 		cerr << "IObjectAdapter::getMediaInfos: unexpected null object!" << endl;
 	return infos;
+}
+
+//--------------------------------------------------------------------------
+JSIOInfos IObjectAdapter::getIOInfos() const
+{
+	JSIOInfos out;
+	const AudioIO* obj = dynamic_cast<AudioIO*>((IObject*)fObject);
+	if (!obj)
+		cerr << "IObjectAdapter::getIOInfos: unexpected null object!" << endl;
+	else {
+		out.inputs = obj->getInputs();
+		out.outputs = obj->getOutputs();
+	}
+	return out;
 }
 
 //--------------------------------------------------------------------------
