@@ -1,11 +1,7 @@
-interface AudioObject {
-    fAudioNode : AudioNode;
 
+
+interface AudioObject {
     getNumInputs() : number
     getNumOutputs() : number
     getAudioNode() : AudioNode
-
-    connect(to: AudioObject) : boolean
-
-    disconnect(obj: AudioObject) : boolean
 }

@@ -10,24 +10,12 @@ class JSAudioioView extends JSObjectView implements AudioObject {
 		super(document.createElement('div'), parent); 
     }
 
-    getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.numberOfInputs : 0; } 
-    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.numberOfOutputs : 0; }
+	toAudioObject() : AudioObject { return this; }
+    // getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.numberOfInputs : 0; } 
+    // getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.numberOfOutputs : 0; }
+    getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.channelCount : 0; } 
+    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.channelCount : 0; }
     getAudioNode() : AudioNode  { return this.fAudioNode; }
-
-    connect(to: AudioObject) : boolean {
-        if (this.fAudioNode) {
-            this.fAudioNode.connect(to.fAudioNode);
-            return true;
-        }
-        return false;
-    }
-    disconnect(obj: AudioObject) : boolean {
-        if (this.fAudioNode) {
-            this.fAudioNode.disconnect(obj.fAudioNode);
-            return true;
-        }
-        return false;
-    }
 
     clone (parent: JSObjectView) : JSObjectView {
         return new JSAudioioView(parent);
