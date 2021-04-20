@@ -11,10 +11,8 @@ interface FaustSVG extends SVGSVGElement {
 
 class JSFaustView extends JSSvgBase implements AudioObject {
     private fFaust : faust;
-    static fAudioContext : AudioContext = null;
     private fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode = null;
     private fVoices = 0;
-    static fUnlockEvents = ["touchstart", "touchend", "mousedown", "keydown"];
     static fCompilerLock = false;
     static readonly kFailed  = 0;
     static readonly kSuccess = 1;
@@ -23,10 +21,6 @@ class JSFaustView extends JSSvgBase implements AudioObject {
     constructor(parent: JSObjectView, compiler: faust) {
         super(parent);
         this.fFaust = compiler;
-        if (!JSFaustView.fAudioContext) {
-            JSFaustView.fAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-            this.unlockAudioContext(JSFaustView.fAudioContext);
-        }
         this.getElement().className = "inscore-svg";
     }
 
@@ -83,19 +77,12 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         return {svg: "", error: "While generating Faust svg diagram :" + svg.error()};
     }
 
-    unlockclean ()  { JSFaustView.fUnlockEvents.forEach(e => document.body.removeEventListener(e, this.unlock)); } 
-    unlock ()       { JSFaustView.fAudioContext.resume().then(this.unlockclean) } 
-    unlockAudioContext(audioCtx: AudioContext) {
-        if (audioCtx.state !== "suspended") return;
-        JSFaustView.fUnlockEvents.forEach(e => document.body.addEventListener(e, this.unlock, false));
-    }
-
     updateSpecific(obj: INScoreObject)	: void {
         if (this.fAudioNode) {
             AudioTools.updateConnections(obj, this);
             let data = obj.getFaustInfos(true, false);
             // if (data.playing)
-            //     this.fAudioNode.connect (JSFaustView.fAudioContext.destination);
+            //     this.fAudioNode.connect (AIOScanner.fAudioContext.destination);
             // else
             //     this.fAudioNode.disconnect();
             
@@ -133,7 +120,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             return JSFaustView.kPending;
         }
         JSFaustView.fCompilerLock = true;
-        Faust.compileAudioNode(JSFaustView.fAudioContext, this.fFaust.module(), code, null, voices).then ( node => {
+        Faust.compileAudioNode(AIOScanner.fAudioContext, this.fFaust.module(), code, null, voices).then ( node => {
             JSFaustView.fCompilerLock = false;
             if (this.fAudioNode) this.fAudioNode.disconnect(); 
             this.fAudioNode = node;
@@ -175,7 +162,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             console.log ("Faust engine is not available");
             return false;
         }
-        AIOScanner.scan (JSFaustView.fAudioContext, obj.getOSCAddress());
+        AIOScanner.scan (obj.getOSCAddress());
         let data = obj.getFaustInfos (false, true);
         this.getCode (data.code).then ( (code) => {
 			if (code) {
