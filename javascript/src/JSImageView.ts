@@ -25,9 +25,7 @@ class JSImageView extends JSAutoSize
 
 	toString() : string			{ return "JSImageView"; }
 	getSyncRatio()	: number    { return 1; }   // no scaling for images, appearance is already preserved 
-    getAutoSize() : Point       { 
-        console.log ("JSImageView.getAutoSize " + this.fImage.naturalWidth + " " + this.fImage.naturalHeight)
-        return { x: this.fImage.naturalWidth, y: this.fImage.naturalHeight }; }
+    getAutoSize() : Point       { return { x: this.fImage.naturalWidth, y: this.fImage.naturalHeight }; }
     getScale(scale: number) : number {  return scale; }
 
 	updateSpecial ( obj: INScoreObject)	: boolean {
