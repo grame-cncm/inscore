@@ -13,8 +13,8 @@ class JSSVGView extends JSSvgBase {
 
 	getSVGTarget() : SVGShape   { return this.fSVG; }
 	updateSVGDimensions(w: number, h: number) : void { 
-		if (!this.fSVG.viewBox.baseVal.width) {
-			// set viewBox here dimensions are incorrect at content setting 
+		if (!this.fSVG.viewBox.baseVal) {
+			// set viewBox dimensions 
 			this.fSVG.setAttribute ("viewBox", 0 + " " + 0 + " " + w + " " + h);
 		}
 	}
