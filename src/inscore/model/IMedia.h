@@ -29,6 +29,7 @@
 
 #include <string>
 
+#include "AudioNode.h"
 #include "TFile.h"
 #include "IRectShape.h"
 
@@ -44,7 +45,7 @@ namespace inscore
 /*!
 	\brief a media object.
 */
-class IMedia : public IRectShape, public TFile
+class IMedia : public IRectShape, public TFile, public AudioNode
 {
 	int musicalTime2mls (float date) const;
 
