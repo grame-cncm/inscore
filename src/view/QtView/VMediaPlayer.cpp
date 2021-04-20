@@ -38,7 +38,7 @@ namespace inscore
 
 //----------------------------------------------------------------------
 VMediaPlayer::VMediaPlayer () :
-	fMediaPlayer(0, QMediaPlayer::VideoSurface), fReady(0)
+	fMediaPlayer(0, QMediaPlayer::VideoSurface)
 {
     connect(&fMediaPlayer, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(error(QMediaPlayer::Error)));
     connect(&fMediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));

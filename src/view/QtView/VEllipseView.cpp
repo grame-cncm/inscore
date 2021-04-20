@@ -35,6 +35,14 @@ VEllipseView::VEllipseView(QGraphicsScene * scene, const IEllipse* h)
     {}
 
 //----------------------------------------------------------------------
+bool VEllipseView::initView  ( IObject* obj)
+{
+    QRectF rect( 0,0,  relative2SceneWidth(obj->getWidth()), relative2SceneHeight(obj->getHeight()) );
+	item()->setRect( rect );
+	return true;
+}
+
+//----------------------------------------------------------------------
 void VEllipseView::updateView( IEllipse * ellipse )
 {
     ellipse->cleanupSync();

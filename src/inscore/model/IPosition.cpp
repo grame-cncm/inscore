@@ -60,6 +60,20 @@ void IPosition::setPos(const IPosition& p)
 }
 
 //--------------------------------------------------------------------------
+void IPosition::setWidth(float width) {
+	fWidth = width; fModified = true;
+	IObject* obj = static_cast<IObject*>(this);
+	obj->propagateModified();
+}
+
+//--------------------------------------------------------------------------
+void IPosition::setHeight(float height) {
+	fHeight = height; fModified = true;
+	IObject* obj = static_cast<IObject*>(this);
+	obj->propagateModified();
+}
+
+//--------------------------------------------------------------------------
 // geometry 
 //--------------------------------------------------------------------------
 //#define PI 3.1415f

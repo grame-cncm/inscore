@@ -62,6 +62,7 @@ class JSGMNView extends JSSvgBase {
 
 	// scaled to get a size similar to native app
 	parentScale() : number { return this.getParent().parentScale() * this.fScalingFactor; }
+	getScale(scale: number) : number {  return scale; }
 
 	gmn2svg(obj: INScoreObject, gmn: string, page: number)	: boolean {
 		let ret = false;
@@ -73,7 +74,7 @@ class JSGMNView extends JSSvgBase {
 			
 			let innerSvg = this.fSVG.getElementsByTagName('svg');
 			this.fViewBox = this.scanViewBox (innerSvg[0].getAttribute('viewBox'));	
-			this.updateObjectSizeSync (obj, this.fViewBox.width, this.fViewBox.height);
+			this.updateObjectSize (obj, this.fViewBox.width, this.fViewBox.height);
 			obj.updateTime2TimeMap (this.fGuido.getTimeMap (ar));
 
 			if (this.fGR) {

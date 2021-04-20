@@ -130,9 +130,9 @@ class IPosition
 		virtual void	print(std::ostream& out) const;
 
 		/// \brief Sets the width
-		virtual void	setWidth(float width)		{ fWidth = width; fModified = true; }
+		virtual void	setWidth(float width);
 		/// \brief Sets the height
-		virtual void	setHeight(float height)		{ fHeight = height; fModified = true; }
+		virtual void	setHeight(float height);
 		/// \brief Sets the width without modifying the status
 		virtual void	_setWidth(float width)		{ fWidth = width; }
 		/// \brief Sets the height without modifying the status

@@ -147,7 +147,7 @@ class JSFaustView extends JSSvgBase {
             });
             this.updateSpecific (obj);
             let bb = this.fSVG.getBBox();
-            this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+            this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
             obj.ready();
             // INScore.objects().del (obj);
             return JSFaustView.kSuccess;

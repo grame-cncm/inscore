@@ -70,6 +70,22 @@ VTextView::VTextView(QGraphicsScene * scene, const IHtmlFile* h)
 	fHtmlFile = h;
 }
 
+
+//----------------------------------------------------------------------
+bool VTextView::initView (IObject* obj)
+{
+	IText* text  = dynamic_cast<IText*>(obj);
+	IHtml* html  = dynamic_cast<IHtml*>(obj);
+	updateView (text);
+	if (html)
+		updateLocalMapping (html);
+	else if (text)
+		updateLocalMapping (text);
+//	obj->setWidth( getIObjectWidth() );
+//	obj->setHeight( getIObjectHeight() );
+	return true;
+}
+
 //----------------------------------------------------------------------
 void VTextView::updateView( IText * text )
 {

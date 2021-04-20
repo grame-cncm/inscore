@@ -71,10 +71,10 @@ void VVideoView::error(QString msg)
 void VVideoView::sizeChanged(const QSizeF & size)
 {
 //qDebug() << "VVideoView : VMediaPlayer::sizeChanged" << size ;
-	fVideoItem->setSize (size);
-	if (!fVideo->getWidth()) {
-		fVideo->setWidth ( scene2RelativeWidth(size.width()) );
-		fVideo->setHeight( scene2RelativeHeight(size.height()) );
+//	fVideoItem->setSize (size);
+	if (!fVideo->userWidth()) {
+		fVideo->setSize ( scene2RelativeWidth(size.width()), scene2RelativeHeight(size.height()) );
+//std::cerr << "VVideoView::sizeChanged w/h " << size.width() << "/" << size.height() << " " << fVideo->getWidth() << "/" << fVideo->getHeight() << std::endl;
 		fVideo->ready();
 	}
 }
@@ -83,18 +83,28 @@ void VVideoView::sizeChanged(const QSizeF & size)
 void VVideoView::initFile( IVideo * video, const QString&  videoFile )
 {
 	setFile(videoFile);
-	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
-//	video->setWidth(0.f);		// unknown width
-//	video->setHeight(0.f);		// unknown height
+//	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
 }
 
 //----------------------------------------------------------------------
-void VVideoView::initialize( IVideo * video  )
+bool VVideoView::initView  ( IObject* obj)
+{
+	bool ret = initialize (static_cast<IVideo*>(obj));
+	QSizeF size = fVideoItem->size();
+	fVideo->setSize ( scene2RelativeWidth(size.width()), scene2RelativeHeight(size.height()) );
+	return ret;
+}
+
+//----------------------------------------------------------------------
+bool VVideoView::initialize( IVideo * video  )
 {
 	fVideo = video;
 	QString file = VApplView::toQString( video->getPath().c_str() );
-	if ( QFile::exists(  file  ) ) 
+	if ( QFile::exists(  file  ) ) {
 		initFile (video, file);
+		return true;
+	}
+	return false;
 }
 
 //----------------------------------------------------------------------
@@ -103,8 +113,11 @@ void VVideoView::updateView( IVideo * video  )
 	video->cleanupSync();
 	fVideoItem->setOpacity (video->getA() / 255.f);
 	QSizeF size ( relative2SceneWidth(video->getWidth()),relative2SceneHeight(video->getHeight()));
-	if (size != fVideoItem->size()) fVideoItem->setSize( size );
-	
+	QSizeF asize = fVideoItem->size();
+	if (size != asize) {
+		fVideoItem->setSize( size );
+//std::cerr << "VVideoView::updateView w/h " << size.width() << "/" << size.height() << " vs " << asize.width() << "/" << asize.height()  << std::endl;
+	}
 	updatePlayer (video);
 
 	itemChanged();

@@ -221,6 +221,12 @@ interface INScoreObject {
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 	updateViewBoundingRect(x: number, y: number, w: number, h: number): void;
+	// next method is intended to media objects (audio, video)
+	updateDuration(duration: number): void;
+
+	// trigger the event given as parameter
+	event(name: string): void;
+
 	// next methods should only be called by guido score, otherwise ignored
 	updateGraphic2TimeMap(name: string, map: string, width: number, height: number): void;
 	updateTime2TimeMap(map: string): void;

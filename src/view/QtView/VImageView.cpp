@@ -63,6 +63,10 @@ bool VImageView::initView (IObject* obj)
 			updateObjectSize (img);
 		}
 	}
+	else {
+		ITLErr << img->getFile() << ": no such file" << ITLEndl;
+		return false;
+	}
 	return true;
 }
 

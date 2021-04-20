@@ -61,8 +61,8 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 
 	fTypeString = kGuidoCodeType;
 
-	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setWidth);
-	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setHeight);
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setPWidth);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setPHeight);
 
 	fMsgHandlerMap[kexpression_GetMethod]		= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::exprMsg);
 
@@ -88,35 +88,15 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 //-------------------------------------------------------------------------
 void IGuidoCode::resetWidth()
 {
-	if (!fUserWidth) {
-		IObject::setWidth(0);
-		IObject::setHeight(0);
+	if (!userDims()) {
+//		setWidth(0);
+//		setHeight(0);
 	}
 }
 
 //-------------------------------------------------------------------------
-void IGuidoCode::setWidth(float width)
-{
-	if (!width) return;
-	float ratio = getWidth() ? width / getWidth() : 0;
-	IObject::setWidth(width);
-	if (ratio) {
-		IObject::setHeight(getHeight() * ratio);
-		fUserWidth = true;
-	}
-}
-
-//-------------------------------------------------------------------------
-void IGuidoCode::setHeight(float height)
-{
-	if (!height) return;
-	float ratio = getHeight() ? height / getHeight() : 0;
-	IObject::setHeight(height);
-	if (ratio) {
-		IObject::setWidth(getWidth() * ratio);
-		fUserWidth = true;
-	}
-}
+void IGuidoCode::setPWidth(float width)		{ setPropWidth(this, width); }
+void IGuidoCode::setPHeight(float height)	{ setPropHeight(this, height); }
 
 //--------------------------------------------------------------------------
 void IGuidoCode::ready()

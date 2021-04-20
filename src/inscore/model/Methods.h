@@ -87,6 +87,7 @@ extern const char* kdstart_SetMethod;
 extern const char* kdtempo_SetMethod;
 extern const char* kduration_GetSetMethod;
 extern const char* kdurClock_SetMethod;
+extern const char* kdvolume_SetMethod;
 extern const char* kdx_SetMethod;
 extern const char* kdxorigin_SetMethod;
 extern const char* kdy_SetMethod;

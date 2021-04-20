@@ -54,6 +54,7 @@ class VEllipseView: public VMappedShapeView
 				 VEllipseView(QGraphicsScene * scene, const IEllipse* h);
 		virtual ~VEllipseView() {}
 		
+		virtual bool initView  ( IObject* obj);
 		virtual void updateView( IEllipse * ellipse );
 		virtual void updateObjectSize( IObject * )		{}
 };

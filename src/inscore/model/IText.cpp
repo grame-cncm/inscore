@@ -31,6 +31,7 @@
 #include "IMessage.h"
 #include "Tools.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -127,10 +128,18 @@ MsgHandler::msgStatus IText::set( const IMessage* msg )
 		setText( stream.str() );
 		newData(true);
 		status = MsgHandler::kProcessed;
+		getView()->initView (this);
 	}
 	else status = MsgHandler::kBadParameters;
-	setCalled();
 	return status;
+}
+
+
+//--------------------------------------------------------------------------
+void IText::setFontSize(int fontSize)
+{
+	fFontSize = fontSize;
+	getView()->initView (this);
 }
 
 //--------------------------------------------------------------------------
@@ -145,6 +154,7 @@ MsgHandler::msgStatus IText::writeMsg (const IMessage* msg)
 		}
 		setText( fText + sstr.str() );
 		newData(true);
+		getView()->initView (this);
 		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;

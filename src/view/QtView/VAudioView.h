@@ -27,7 +27,7 @@
 #ifndef __VAudioView__
 #define __VAudioView__
 
-#include <QAudioProbe>
+#include <QIODevice>
 
 #include "VMediaPlayer.h"
 #include "VRectView.h"
@@ -44,19 +44,33 @@ namespace inscore
 */
 
 //----------------------------------------------------------------------
-class TAudioReader : public QAudioProbe
+//class TAudioReader : public QAudioProbe
+//{
+//	Q_OBJECT
+//
+//	QAudioProbe * fAudioProbe;
+//	public:
+//				 TAudioReader();
+//		virtual ~TAudioReader() { delete fAudioProbe; }
+//
+//		void	setSource (QMediaPlayer* player);
+//
+//	protected slots:
+//		void processBuffer (const QAudioBuffer &buffer);
+//};
+
+//----------------------------------------------------------------------
+class TAudioReader
 {
-	Q_OBJECT
+	QByteArray fData;
 
-	QAudioProbe * fAudioProbe;
 	public:
-				 TAudioReader();
-		virtual ~TAudioReader() { delete fAudioProbe; }
+				 TAudioReader() {}
+		virtual ~TAudioReader() {}
 	
-		void	setSource (QMediaPlayer* player);
-
-	protected slots:
-		void processBuffer (const QAudioBuffer &buffer);
+		void	setSource (const QIODevice * dev);
+		int 	getSize () const 		{ return fData.size(); }
+		float 	getValue (int index, int size);
 };
 
 class IAudio;
@@ -88,6 +102,9 @@ class VAudioView: public VMediaPlayer, public VMappedShapeView
 		virtual void posChanged(qint64 pos);
 		virtual void error(QString msg);
 		virtual void updateObjectSize( IObject * )		{}
+
+	protected slots:
+		void	durationChanged(qint64 duration);
 
 	private:
 		IAudio *		fAudio;

@@ -58,6 +58,15 @@ void HTMLObjectView::updateView(IObject * object)
 }
 
 //--------------------------------------------------------------------------
+bool HTMLObjectView::initView  ( IObject* object)
+{
+#ifdef EMCC
+	EM_ASM( { JSObjectView.initObjectView($0, $1);}, getID(), int(object->getAdapter()));
+#endif
+	return true;
+}
+
+//--------------------------------------------------------------------------
 void HTMLObjectView::setEffect (const IEffect* effect )	{}
 
 //--------------------------------------------------------------------------

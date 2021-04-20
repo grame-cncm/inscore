@@ -55,6 +55,7 @@ class VArcView: public VMappedShapeView
 				 VArcView(QGraphicsScene * scene, const IArc* h);
 		virtual ~VArcView() {}
 		
+		virtual bool initView  ( IObject* obj);
 		virtual void updateView( IArc * arc );
 		virtual QRectF getBoundingRect (IObject * o) const;
 		virtual void updateObjectSize( IObject * )		{}

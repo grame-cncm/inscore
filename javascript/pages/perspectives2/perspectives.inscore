@@ -1,0 +1,164 @@
+
+/ITL/scene/* del;
+
+
+/ITL/scene/htitle set txt "Perspectives Temporelles";
+/ITL/scene/htitle fontSize 24;
+/ITL/scene/htitle y -0.8;
+/ITL/scene/hcomposer set txt "Jonathan Bell";
+/ITL/scene/hcomposer fontSize 18;
+/ITL/scene/hcomposer y -0.7;
+/ITL/scene/h* fontFamily Helvetica;
+/ITL/scene/h* color darkgrey;
+
+# the variables below represent the end date of each page
+d1 = 5.75 / 4;
+d2 = 11.0 / 4;
+d3 = 16.66 / 4;
+d4 = 23.00 / 4;
+d5 = 28.60 / 4;
+d6 = 36.53 / 4;
+d7 = 41.5 / 4;
+d8 = 46.2 / 4;
+
+rsrc = "rsrc/";
+/ITL/scene/p1 set img $rsrc + '1.png';
+/ITL/scene/p2 set img $rsrc + '2.png';
+/ITL/scene/p3 set img $rsrc + '3.png';
+/ITL/scene/p4 set img $rsrc + '4.png';
+/ITL/scene/p5 set img $rsrc + '5.png';
+/ITL/scene/p6 set img $rsrc + '6.png';
+/ITL/scene/p7 set img $rsrc + '7.png';
+/ITL/scene/p8 set img $rsrc + '8.png';
+/ITL/scene/p1 map '( [470, 540[ [280, 1684[ ) 	( [0:0:0,  0:0:81[ )
+				   ( [540, 2880[ [280, 1684[ )	( [0:0:81, 0:5:75[ )';
+/ITL/scene/p2 map '( [1, 2769[ [101, 1649[ ) 	( [0:5:75, 0:11:0[ )';
+/ITL/scene/p3 map '( [458, 2879[ [144, 1664[ )	( [0:11:0, 0:16:66[ )';
+/ITL/scene/p4 map '( [4, 2828[ [89, 1590[ ) 	( [0:16:66, 0:23:00[ )';
+/ITL/scene/p5 map '( [563, 2879[ [194, 1676[ )	( [0:23:00, 0:28:60[ )';
+/ITL/scene/p6 map '( [5, 2880[ [190, 1670[ ) 	( [0:28:60, 0:36:53[ )';
+/ITL/scene/p7 map '( [567, 2880[ [210, 1745[ ) 	( [0:36:53, 0:41:50[ )';
+/ITL/scene/p8 map '( [1, 2825[ [190, 1570[ ) 	( [0:41:50, 0:46:20[ )';
+
+/ITL/scene/p* scale 0.23;
+/ITL/scene/p* show 0;
+/ITL/scene/p1 show 1;
+click = (/ITL/scene/cursor date '$date', /ITL/scene/audio vdate '$date');
+/ITL/scene/p* watch mouseMove $click;
+/ITL/scene/p* watch mouseDown $click;
+
+/ITL/scene/audio set audio $rsrc + 'perspectives.mp3';
+/ITL/scene/audio show 0;
+
+#==================================================
+# cursor and synchronisation
+#==================================================
+/ITL/scene/cursor set rect 0.03 0.5;
+/ITL/scene/cursor color 0xff0000aa;
+/ITL/scene/sync cursor p* v ; 
+
+#==================================================
+# time events
+#==================================================
+/ITL/scene/vnext set txt "next page";
+/ITL/scene/vprev set txt "prev page";
+/ITL/scene/v* show 0;
+/ITL/scene watch PAGECHGE (
+	/ITL/scene/vprev date '$1',
+	/ITL/scene/vnext date '$2'
+);
+/ITL/scene event PAGECHGE 0. $d1;
+/ITL/scene/cursor watch timeEnter 0 $d1 	( /ITL/scene/p* show 0, /ITL/scene/p1 show 1, /ITL/scene event PAGECHGE 0. $d1);
+/ITL/scene/cursor watch timeEnter $d1 $d2 	( /ITL/scene/p* show 0, /ITL/scene/p2 show 1, /ITL/scene event PAGECHGE 0  $d2 );
+/ITL/scene/cursor watch timeEnter $d2 $d3 	( /ITL/scene/p* show 0, /ITL/scene/p3 show 1, /ITL/scene event PAGECHGE $d1 $d3 );
+/ITL/scene/cursor watch timeEnter $d3 $d4 	( /ITL/scene/p* show 0, /ITL/scene/p4 show 1, /ITL/scene event PAGECHGE $d2 $d4 );
+/ITL/scene/cursor watch timeEnter $d4 $d5 	( /ITL/scene/p* show 0, /ITL/scene/p5 show 1, /ITL/scene event PAGECHGE $d3 $d5 );
+/ITL/scene/cursor watch timeEnter $d5 $d6 	( /ITL/scene/p* show 0, /ITL/scene/p6 show 1, /ITL/scene event PAGECHGE $d4 $d6 );
+/ITL/scene/cursor watch timeEnter $d6 $d7 	( /ITL/scene/p* show 0, /ITL/scene/p7 show 1, /ITL/scene event PAGECHGE $d5 $d7 );
+/ITL/scene/cursor watch timeEnter $d7 $d8 	( /ITL/scene/p* show 0, /ITL/scene/p8 show 1, /ITL/scene event PAGECHGE $d6 $d8 );
+/ITL/scene/cursor watch timeEnter $d8 100 	( /ITL/scene event END, /ITL/scene event PAGECHGE $d7 0 );
+
+#==================================================
+# play control
+#==================================================
+origin = 1.2;
+alpha = 120;
+play  = $rsrc + 'play.png';
+pause = $rsrc + 'pause.png';
+stop  = $rsrc + 'stop.png';
+/ITL/scene/ctrlplay set img $play;
+/ITL/scene/ctrlstop set img $stop;
+/ITL/scene/ctrlplay xorigin $origin;
+/ITL/scene/ctrlstop xorigin $origin * -1;
+/ITL/scene/ctrl* scale 0.13;
+/ITL/scene/ctrl* y 0.8;
+/ITL/scene/ctrl* alpha $alpha;
+
+initplay =	(/ITL/scene/ctrlplay push,
+			/ITL/scene/ctrlplay set img $pause,
+			/ITL/scene/cursor tempo 60,
+			/ITL/scene/audio play 1,
+			/ITL/scene/ctrlplay watch mouseDown ( 
+				/ITL/scene/ctrlplay set img $play,
+				/ITL/scene/cursor tempo 0,
+				/ITL/scene/audio play 0,
+				/ITL/scene/ctrlplay pop
+			));
+
+/ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self alpha 255 );
+/ITL/scene/ctrl* watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+/ITL/scene/ctrlstop watch mouseDown ( /ITL/scene event STOP );
+/ITL/scene/ctrlplay watch mouseDown $initplay ;
+
+/ITL/scene watch STOP (
+	/ITL/scene/ctrlplay set img $play,
+	/ITL/scene/ctrlplay pop,
+	/ITL/scene/ctrlplay watch mouseDown $initplay,
+	/ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self alpha 255 ),
+	/ITL/scene/ctrl* watch mouseLeave ( /ITL/scene/$self alpha $alpha ),
+	/ITL/scene/cursor tempo 0,
+	/ITL/scene/audio play 0,
+	/ITL/scene/audio vdate 0,
+	/ITL/scene/cursor date 1000,
+	/ITL/scene/cursor date 0
+);
+
+/ITL/scene watch END (
+	/ITL/scene/ctrlplay set img $play,
+	/ITL/scene/ctrlplay pop,
+	/ITL/scene/ctrlplay watch mouseDown $initplay,
+	/ITL/scene/cursor tempo 0,
+	/ITL/scene/audio play 0
+);
+
+
+#==================================================
+# browsing
+#==================================================
+next = $rsrc + 'next.png';
+prev = $rsrc + 'prev.png';
+x = 0.3;
+/ITL/scene/bnext set img $next;
+/ITL/scene/bprev set img $prev;
+/ITL/scene/bnext x $x;
+/ITL/scene/bprev x $x * -1;
+/ITL/scene/b* scale 0.15;
+/ITL/scene/b* y 0.8;
+/ITL/scene/b* alpha $alpha;
+/ITL/scene/b* watch mouseEnter ( /ITL/scene/$self alpha 255 );
+/ITL/scene/b* watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+/ITL/scene/bnext watch mouseDown ( 
+	/ITL/scene/cursor date '$(/ITL/scene/vnext get date)', 
+	/ITL/scene/audio vdate '$(/ITL/scene/vnext get date)'
+);
+/ITL/scene/bprev watch mouseDown ( 
+	/ITL/scene/cursor date '$(/ITL/scene/vprev get date)', 
+	/ITL/scene/audio vdate '$(/ITL/scene/vprev get date)'
+);
+
+/ITL/scene/filter reject "/ITL/scene" load ddate quit;
+/ITL/scene forward "http://localhost:7200";
+/ITL/log show 1;
+
+__END__
+

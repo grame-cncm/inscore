@@ -386,6 +386,13 @@ endif()
 
 ####################################
 # install compiled resources
+
+if (APPLE)
+install ( CODE "message (STATUS \"Call macdeployqt\")"
+		  CODE "execute_process ( COMMAND macdeployqt ${BINDIR}/${viewer}.app )"
+)
+endif()
+
 install ( TARGETS ${installtargets}
 	RUNTIME DESTINATION ${INSTALL_BIN}
 	BUNDLE DESTINATION  ${INSTALL_BIN}
@@ -393,12 +400,6 @@ install ( TARGETS ${installtargets}
     ARCHIVE DESTINATION ${INSTALL_LIB}
     PUBLIC_HEADER DESTINATION ${INSTALL_INC}
 )
-
-if (APPLE)
-install ( CODE "message (STATUS \"Call macdeployqt\")"
-		  CODE "execute_process ( COMMAND macdeployqt ${INSTALL_BIN}/${viewer}.app )"
-)
-endif()
 
 if(WIN32)
 install ( CODE "message (STATUS \"Call windeployqt\")"

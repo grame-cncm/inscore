@@ -85,6 +85,7 @@ const char* kdstart_SetMethod		= "dstart";			// Set
 const char* kdtempo_SetMethod		= "dtempo";			// Set
 const char* kdurClock_SetMethod		= "durClock";		// Set
 const char* kduration_GetSetMethod	= "duration";		// Get Set
+const char* kdvolume_SetMethod		= "dvolume";		// Set
 const char* kdx_SetMethod			= "dx";				// Set
 const char* kdxorigin_SetMethod		= "dxorigin";		// Set
 const char* kdy_SetMethod			= "dy";				// Set

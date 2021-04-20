@@ -46,6 +46,7 @@
 #include "IText.h"
 #include "MapBuilder.h"
 #include "TFile.h"
+#include "TMessageEvaluator.h"
 
 
 using namespace std;
@@ -74,11 +75,15 @@ string IObjectAdapter::color2RGBAColor (const IColor& color) {
 
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateWidth (IPosition* pos, float w) {
+	const IGraphicBasedObject* gobj = dynamic_cast<const IGraphicBasedObject*>(pos);
+	if (gobj && gobj->userDims()) return;
 	pos->_setWidth (w);
 }
 	
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateHeight (IPosition* pos, float h) {
+	const IGraphicBasedObject* gobj = dynamic_cast<const IGraphicBasedObject*>(pos);
+	if (gobj && gobj->userDims()) return;
 	pos->_setHeight (h);
 }
 
@@ -87,6 +92,22 @@ void IObjectAdapter::updateViewBoundingRect(float x, float y, float w, float h) 
 	IGraphicBasedObject* gobj = dynamic_cast<IGraphicBasedObject*>((IObject*)fObject);
 	if (gobj)
 		gobj->setBoundingRect (x, y, w, h);
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::updateDuration(float duration) {
+	IMedia* obj = dynamic_cast<IMedia*>((IObject*)fObject);
+	if (obj)
+		obj->setMediaDuration (long(duration));
+	else cerr << obj->getOSCAddress() << ": unexpected updateDuration called for non media object." << endl;
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::event(string event) {
+	if (fObject) {
+		EventContext context (fObject);
+		fObject->checkEvent (event.c_str(), context);
+	}
 }
 
 //--------------------------------------------------------------------------

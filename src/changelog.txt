@@ -12,6 +12,11 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
+Version 1.28
+- new 'dvolume' method for media objects
+- fix ready event for audio objects
+
+----------------------------------------------------
 Version 1.27
 - extension of the width and height attributes in write mode (images, svg,...)
 - new 'audioio' object intended to represent physical inputs / outputs (web version)

@@ -60,9 +60,12 @@ class IVideo : public IMedia
 	
 		/// \brief Returns the current video time in seconds, according to the object's date and videoMap.
 		float	currentTime() const;
+		bool	userWidth() const	{ return fUserWidth; }
 
 		/// \brief set the object duration according to the video duration (tempo assumed to be 60).
 		void	setVideoDuration( long mls)	{ setMediaDuration (mls); }
+		void 	setSize (float w, float h);
+		
 		/// \brief Sets the width with height adjustment
 		virtual void	setWidth(float width);
 		/// \brief Sets the height with width adjustment

@@ -195,6 +195,7 @@ void IScene::createVirtualNodes()
 	fJSObject = IJavascript::create(this);
 	fFilterForward = IFilterForward::create(this);
 	fForwarder.setFilter(fFilterForward);
+	fForwarder.setLog(getAppl()->getLogWindow());
 #if INCLUDEFileWatcher
 	fFileWatcher = QFileWatcher::create(this);
 	add ( fFileWatcher );

@@ -27,7 +27,7 @@ class JSCurveView extends JSSvgBase {
 
 			// update object size
 			let bb = this.fSVG.getBBox();
--			this.updateObjectSizeSync (obj, bb.width, bb.height);
+-			this.updateObjectSize (obj, bb.width, bb.height);
 		}
 		return true;
 	}

@@ -43,6 +43,13 @@ QRectF VArcView::getBoundingRect( IObject * o ) const
 }
 
 //----------------------------------------------------------------------
+bool VArcView::initView  ( IObject* obj)
+{
+	updateView (static_cast<IArc*>(obj));
+	return true;
+}
+
+//----------------------------------------------------------------------
 void VArcView::updateView( IArc * arc )
 {
     arc->cleanupSync();

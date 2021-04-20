@@ -28,6 +28,7 @@
 #include "IRectShape.h"
 #include "IMessage.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -71,6 +72,7 @@ MsgHandler::msgStatus IRectShape::set (const IMessage* msg)
 			setHeight( height );
 			newData(true);
 			status = MsgHandler::kProcessed;
+			getView()->initView (this);
 		}
 		else status = MsgHandler::kProcessedNoChange;
 	}

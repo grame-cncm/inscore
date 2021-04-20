@@ -1,0 +1,46 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<link href="../css/inscore.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libmusicxml.js"></script>
+	<script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoreglue.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+	.rect { border-color: red !important; border-radius: 15px; border-width: 3px !important;}
+	.txt { font-size: 36px !important; color: blue !important; }
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="inscore box" id="scene">
+	/ITL/scene/* del;
+	/ITL/scene/video set video "/imgs/smartfaust.mp4";
+	/ITL/scene/video watch ready ( 
+		/ITL/scene/video width 1.5,
+		/ITL/scene/video play 1,
+		/ITL/scene/video get vduration
+	);
+	/ITL/scene/video watch end ( 
+		/ITL/scene/video play 0,
+		/ITL/log write video end
+	);
+	/ITL/scene/video watch error (  /ITL/log write video error );
+
+</div>
+
+</body>
+
+</html>

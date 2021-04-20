@@ -166,6 +166,9 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
+
+		virtual void	setWidth(float width)	{ IObject::setWidth(width); }
+		virtual void	setHeight(float height)	{ IObject::setHeight(height); }
 	
 		ARHandler fArHandler;
 		PianoRoll * fPianoRoll;

@@ -95,6 +95,9 @@ class IMedia : public IRectShape, public TFile
 		/// \brief the \c 'volume' message handler
 		virtual void setVolume (float volume);
 
+		/// \brief the \c 'dvolume' message handler
+		virtual void setdVolume (float vol);
+
 		/// \brief the \c 'volume' message handler
 		virtual void setRate (float rate);
 

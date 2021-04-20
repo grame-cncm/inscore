@@ -13,8 +13,8 @@ class JSSVGView extends JSSvgBase {
 
 	getSVGTarget() : SVGShape   { return this.fSVG; }
 	updateSVGDimensions(w: number, h: number) : void { 
-		if (!this.fSVG.viewBox.baseVal.width) {
-			// set viewBox here dimensions are incorrect at content setting 
+		if (!this.fSVG.viewBox.baseVal) {
+			// set viewBox dimensions 
 			this.fSVG.setAttribute ("viewBox", 0 + " " + 0 + " " + w + " " + h);
 		}
 	}
@@ -24,7 +24,7 @@ class JSSVGView extends JSSvgBase {
 	setSvg (obj: INScoreObject, content: string) : boolean {
 		this.fSVG.innerHTML = content;
 		let bb = this.fSVG.getBBox();
-		this.updateObjectSizeSync (obj, bb.width + bb.x, bb.height + bb.y);
+		this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
 		obj.ready();
 		return true;
 	}

@@ -264,8 +264,10 @@ class inscore_export IObjectAdapter
 		void	updateWidth(float w)			{ _updateWidth (fObject, w); }
 		void	updateHeight(float h)			{ _updateHeight(fObject, h); }
 		void	updateViewBoundingRect(float x, float y, float w, float h);
+		void	updateDuration (float duration);
 		void	updateTime2TimeMap (std::string jsonmap);
 		void	updateGraphic2TimeMap (std::string name, std::string jsonmap, float width, float height);
+		void	event (std::string ev); // trigger the event 'ev'
 		
 		void	setFaustInOut (int inputs, int outputs);
 		void	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);

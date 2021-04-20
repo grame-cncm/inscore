@@ -23,7 +23,7 @@ class JSSceneView extends JSObjectView {
 		super(div, null, absolute);
 		this.fAbsolutePos = absolute;
 		let obj = INScore.objects().adapter(objid);
-		this.updateObjectSizeSync (obj, div.clientWidth, div.clientHeight);
+		this.updateObjectSize (obj, div.clientWidth, div.clientHeight);
 		// this.updateObjectSize (objid, div.clientWidth, div.clientHeight);
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)

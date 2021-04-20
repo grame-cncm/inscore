@@ -4,9 +4,7 @@
 abstract class JSAutoSize extends JSObjectView 
 {
     constructor(elt: HTMLElement, parent: JSObjectView) 	{ 
-        super (elt, parent); 
-        // elt.style.height = "auto";
-        // elt.style.width  = "auto";
+        super (elt, parent);
     }
 
     getAutoSize() : Point {
@@ -16,7 +14,7 @@ abstract class JSAutoSize extends JSObjectView
 
     updateSizeSync (obj: INScoreObject) : boolean {
         let p = this.getAutoSize();
-        this.updateObjectSizeSync (obj, p.x, p.y);
+        this.updateObjectSize (obj, p.x, p.y);
         obj.ready();
         return true;
     }

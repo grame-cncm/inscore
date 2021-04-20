@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<title>INScore Scene Test</title>
 
 	<link href="../fonts/fonts.css" rel="stylesheet">
@@ -26,11 +26,24 @@
 
 url = "../imgs/";
 
+<!-- /ITL/scene/c set rect 2 2;
+/ITL/scene/c color grey; -->
+
 /ITL/scene/score set img $url + "Applebaum.jpg";
-/ITL/scene/score scale 0.9;
-/ITL/scene/score duration 8;
+/ITL/scene/score width 2;
+
+/ITL/scene/cursor set rect 0.01 0.6;
+/ITL/scene/cursor color blue;
+/ITL/scene/cursor alpha 160;
+
+/ITL/scene/sync cursor score v;
+/ITL/scene/cursor tempo 60 ;
+/ITL/scene/cursor watch timeEnter 1 2 (/ITL/scene/cursor tempo -60);
+/ITL/scene/cursor watch timeEnter -1 0 (/ITL/scene/cursor tempo 60);
+
 
 <!-- 
+/ITL/scene/score scale 0.9;
 /ITL/scene/cursor set rect 0.009 0.1;
 /ITL/scene/c set rect 0.01 0.6;
 /ITL/scene/c color grey;
