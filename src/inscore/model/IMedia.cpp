@@ -60,6 +60,8 @@ IMedia::IMedia( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kdisconnect_SetMethod]		= TMethodMsgHandler<IMedia>::create(this, &IMedia::disconnect);
 	fGetMsgHandlerMap[kvduration_GetMethod]		= TGetParamMethodHandler<IMedia, rational (IMedia::*)() const>::create(this, &IMedia::getMediaDuration);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &IMedia::getconnect);
+	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
+	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
 #endif
 	fPlaying = false;
 	fVolume = 1.f;						// QMediaPlayer max value
