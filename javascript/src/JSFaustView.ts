@@ -1,6 +1,7 @@
 
 ///<reference path="JSSVGBase.ts"/>
 ///<reference path="faust.ts"/>
+///<reference path="AIOScanner.ts"/>
 
 interface FaustSVG extends SVGSVGElement {
     diagram: Faust.SVGDiagrams;
@@ -166,6 +167,7 @@ class JSFaustView extends JSSvgBase {
             console.log ("Faust engine is not available");
             return false;
         }
+        AIOScanner.scan (JSFaustView.fAudioContext, obj.getOSCAddress());
         let data = obj.getFaustInfos (false, true);
         this.getCode (data.code).then ( (code) => {
 			if (code) {
