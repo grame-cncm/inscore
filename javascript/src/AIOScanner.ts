@@ -23,8 +23,10 @@ class AIOScanner {
         let msg = inscore.newMessageM ("set");
         let prefix = address.substring (0, address.lastIndexOf("/"));
         inscore.msgAddStr (msg, "audioio");
-        inscore.msgAddI (msg, node ? node.numberOfInputs : 0);     // nb input
-        inscore.msgAddI (msg, node ? node.numberOfOutputs : 0);    // nb output
+        inscore.msgAddI (msg, node ? node.channelCount : 0);     // nb input
+        inscore.msgAddI (msg, node ? node.channelCount : 0);    // nb output
+        // inscore.msgAddI (msg, node ? node.numberOfInputs : 0);     // nb input
+        // inscore.msgAddI (msg, node ? node.numberOfOutputs : 0);    // nb output
         inscore.postMessage (prefix + "/" + name + "", msg);
     } // can send a set audioio message for each physical input/output
 
