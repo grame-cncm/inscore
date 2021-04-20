@@ -32,8 +32,8 @@
 	/ITL/scene/faust scale 0.7;
 	/ITL/scene/faust y -0.3;
 	/ITL/scene/faust2 set faust 'import("stdfaust.lib"); process = dm.freeverb_demo;';
-	/ITL/scene/faust2 scale 0.25;
-	/ITL/scene/faust2 y 0.3;
+	/ITL/scene/faust2 scale 0.15;
+	/ITL/scene/faust2 y 0.4;
 
 
 	/ITL/scene/play1 set txt "Start";
@@ -47,14 +47,16 @@
 	/ITL/scene/play1 watch mouseDown (
 		/ITL/scene/$self push,
 		/ITL/scene/$self set txt "Stop",
-		/ITL/scene/faust play 1,
+		<!-- /ITL/scene/faust play 1, -->
+		/ITL/scene/faust connect audioOutput,
 		/ITL/scene/play1 watch mouseDown (
 			/ITL/scene/$self set txt "Start",
-			/ITL/scene/faust play 0,
+			/ITL/scene/faust disconnect audioOutput,
+			<!-- /ITL/scene/faust play 0, -->
 			/ITL/scene/$self pop
 		)
 	);
-	/ITL/scene/abc set faustf '/pages/test.dsp.txt';
+	<!-- /ITL/scene/abc set faustf '/pages/test.dsp.txt'; -->
 
 </div>
 
