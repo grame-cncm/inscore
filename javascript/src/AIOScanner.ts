@@ -1,3 +1,7 @@
+
+///<reference path="lib/inscore.d.ts"/>
+
+
 class AIOScanner {
     static fInput: AudioNode = null;
     static fOutput: AudioNode = null;
@@ -40,14 +44,9 @@ class AIOScanner {
         inscore.postMessage (prefix + "/" + name + "", msg);
     } // can send a set audioio message for each physical input/output
 
-    // create(inNode: AudioNode, outNode: AudioNode) : AudioObject { // Create AudioObject
-    //     var aObject = new AudioObject;
-    //     return aObject;
-    // }
-
-    static unlockclean ()  { AIOScanner.fUnlockEvents.forEach(e => document.body.removeEventListener(e, this.unlock)); } 
-    static unlock ()       { AIOScanner.fAudioContext.resume().then(AIOScanner.unlockclean) } 
-    static unlockAudioContext(audioCtx: AudioContext) {
+    private static unlockclean ()  { AIOScanner.fUnlockEvents.forEach(e => document.body.removeEventListener(e, this.unlock)); } 
+    private static unlock ()       { AIOScanner.fAudioContext.resume().then(AIOScanner.unlockclean) } 
+    private static unlockAudioContext(audioCtx: AudioContext) {
         if (audioCtx.state !== "suspended") return;
         AIOScanner.fUnlockEvents.forEach(e => document.body.addEventListener(e, AIOScanner.unlock, false));
     }
@@ -56,5 +55,5 @@ class AIOScanner {
 
 document.addEventListener("DOMContentLoaded", (event) => {
     AIOScanner.init();
-    console.log('DOM is ready.')
+    // console.log('DOM is ready.')
 });

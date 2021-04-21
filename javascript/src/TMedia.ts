@@ -1,16 +1,18 @@
 
 ///<reference path="lib/libINScore.d.ts"/>
 ///<reference path="JSAutoSize.ts"/>
+///<reference path="AIOScanner.ts"/>
+///<reference path="AudioObject.ts"/>
 
 abstract class TMedia extends JSAutoSize implements AudioObject {
 	private fReady : boolean = false;
 	private fListen : boolean = false;
-	fAudioNode : AudioNode = null;
+	private fAudioNode : AudioNode = null;
 
 	constructor(elt: HTMLMediaElement, parent: JSObjectView) {
         super(elt, parent);
 		this.fAudioNode = AIOScanner.fAudioContext.createMediaElementSource(elt);
-	}     
+	}
 
 	abstract clone (parent: JSObjectView) : JSObjectView;
 
@@ -29,7 +31,7 @@ abstract class TMedia extends JSAutoSize implements AudioObject {
 			obj.updateDuration (elt.duration * 1000);
 			obj.setAudioInOut (this.getNumInputs(), this.getNumOutputs());
 			obj.event ("ready");
-			inscore.postMessageStrStr (obj.getOSCAddress(), "connect", "audioOutput");
+			inscore.postMessageStrStr (obj.getOSCAddress(), "connect", AIOScanner.kOutputName);
 			this.fReady = true;
 		}
 	}

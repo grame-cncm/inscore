@@ -1,6 +1,9 @@
 
 ///<reference path="JSAutoSize.ts"/>
 ///<reference path="TMedia.ts"/>
+///<reference path="AIOScanner.ts"/>
+///<reference path="AudioObject.ts"/>
+///<reference path="AudioTools.ts"/>
 
 class JSVideoView extends TMedia {
     fVideo: HTMLVideoElement;
@@ -11,12 +14,12 @@ class JSVideoView extends TMedia {
         super(video, parent); 
         this.fVideo = video;
 		this.fFile = "";
-        this.getElement().className = "inscore-video";
     }     
 	clone (parent: JSObjectView) : JSObjectView { return new JSVideoView(parent); }
 	toString() : string			{ return "JSVideoView"; }
 
 	updateSpecial ( obj: INScoreObject )	: boolean {		
+        AIOScanner.scan (obj.getOSCAddress());
 		this.addHandlers( this.fVideo, obj);
         this.fVideo.src  = obj.getFile();
 		return this.updateSizeASync (obj );
@@ -27,6 +30,7 @@ class JSVideoView extends TMedia {
 	}
 
 	updateSpecific(obj: INScoreObject)	: void {
+		AudioTools.updateConnections (obj, this);
 		let media = obj.getMediaInfos();
 		if (media.playing) this.fVideo.play();
 		else this.fVideo.pause();
