@@ -2,6 +2,7 @@
 ///<reference path="JSObjectView.ts"/>
 ///<reference path="AudioObject.ts"/>
 ///<reference path="AIOScanner.ts"/>
+///<reference path="AudioTools.ts"/>
 
 class JSAudioioView extends JSObjectView implements AudioObject {
     fAudioNode : AudioNode = null;

@@ -1,6 +1,8 @@
 
 ///<reference path="JSAutoSize.ts"/>
 ///<reference path="TMedia.ts"/>
+///<reference path="AIOScanner.ts"/>
+///<reference path="AudioTools.ts"/>
 
 class JSAudioView extends TMedia { 
     fAudio: HTMLAudioElement;
@@ -16,6 +18,7 @@ class JSAudioView extends TMedia {
 	toString() : string			{ return "JSAudioView"; }
 
 	updateSpecial ( obj: INScoreObject)	: boolean {	
+        AIOScanner.scan (obj.getOSCAddress());
 		this.addHandlers( this.fAudio, obj);
 		this.fAudio.src  = obj.getFile();
 		this.fAudio.currentTime = 0;
