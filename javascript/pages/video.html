@@ -5,13 +5,11 @@
 
 	<link href="../fonts/fonts.css" rel="stylesheet">
 	<link href="../css/inscore.css" rel="stylesheet">
-	<script src="../lib/libINScore.js"></script>
-	<script src="../lib/libGUIDOEngine.js"></script>
-	<script src="../lib/libmusicxml.js"></script>
-	<script src="../lib/libfaust-wasm.js"></script> 
-	<script src="../lib/FaustLibrary.js"></script>
-	<script src="../inscoreview.js"></script>
-	<script src="../inscoreglue.js"></script>
+	<script src="../../lib/libINScore.js"></script>
+	<script src="../../lib/libfaust-wasm.js"></script> 
+	<script src="../../lib/FaustLibrary.js"></script>
+	<script src="../../inscoreview.js"></script>
+	<script src="../../inscoreglue.js"></script>
 	<style>
 	body { margin: 50; background: gainsboro; height: 100%; }
 	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
@@ -27,6 +25,15 @@
 <h1>INScore JS Tests</h1>
 <div class="inscore box" id="scene">
 	/ITL/scene/* del;
+
+	/ITL/scene/effect set faust 'import("stdfaust.lib"); process =  ef.echo1s, ef.echo1s;';
+	/ITL/scene/effect/echo__1000/feedback 70;
+	/ITL/scene/effect/echo__1000/millisecond 280;
+	/ITL/scene/effect scale 0.15;
+	/ITL/scene/effect y 0.4;
+	/ITL/scene/effect show 0;
+	/ITL/scene/effect connect audioOutput;
+
 	/ITL/scene/video set video "/imgs/smartfaust.mp4";
 	/ITL/scene/video watch ready ( 
 		/ITL/scene/video width 1.5,
@@ -35,9 +42,31 @@
 	);
 	/ITL/scene/video watch end ( 
 		/ITL/scene/video play 0,
-		/ITL/log write video end
+		/ITL/scene/video vdate 0,
+		/ITL/scene/video play 1,
+		/ITL/log write "video end: loop"
 	);
 	/ITL/scene/video watch error (  /ITL/log write video error );
+<!-- 
+#==================================================
+# effect control
+#==================================================
+ -->
+ /ITL/scene/ctrleffect set txt "Effect";
+ /ITL/scene/ctrleffect fontSize 32;
+ /ITL/scene/ctrleffect y 0.5;
+ /ITL/scene/ctrleffect watch mouseEnter ( /ITL/scene/$self color blue );
+ /ITL/scene/ctrleffect watch mouseLeave ( /ITL/scene/$self color black );
+ /ITL/scene/ctrleffect watch mouseDown (
+	/ITL/scene/ctrleffect push,
+	/ITL/scene/ctrleffect set txt "Dry",
+	/ITL/scene/video connect effect,
+	/ITL/scene/ctrleffect watch mouseDown (
+		/ITL/scene/ctrleffect set txt "Effect",
+		/ITL/scene/video disconnect effect,
+		/ITL/scene/ctrleffect pop
+	)
+ );
 
 </div>
 

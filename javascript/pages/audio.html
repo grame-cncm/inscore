@@ -1,0 +1,113 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="/fonts/fonts.css" rel="stylesheet">
+	<link href="/css/inscore.css" rel="stylesheet">
+	<script src="/lib/libINScore.js"></script>
+	<script src="/lib/libfaust-wasm.js"></script> 
+	<script src="/lib/FaustLibrary.js"></script>
+	<script src="/inscoreview.js"></script>
+	<script src="/inscoreglue.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+	.rect { border-color: red !important; border-radius: 15px; border-width: 3px !important;}
+	.txt { font-size: 36px !important; color: blue !important; }
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore JS Tests</h1>
+<div class="inscore box" id="scene">
+	/ITL/scene/* del;
+
+	/ITL/scene/effect set faust 'import("stdfaust.lib"); process =  ef.echo1s, ef.echo1s;';
+	/ITL/scene/effect/echo__1000/feedback 70;
+	/ITL/scene/effect/echo__1000/millisecond 280;
+	/ITL/scene/effect scale 0.40;
+	/ITL/scene/effect y 0.45;
+	/ITL/scene/effect connect audioOutput;
+
+	/ITL/scene/audio set audio "perspectives2/rsrc/perspectives.mp3";
+	/ITL/scene/audio watch ready ( 
+		/ITL/scene/audio get vduration
+	);
+	/ITL/scene/audio watch end ( 
+		/ITL/scene event STOP
+	);
+	/ITL/scene/audio watch error (  /ITL/log write audio error );
+
+<!-- 
+#==================================================
+# play control
+#==================================================
+ -->
+ origin = 1.2;
+ alpha = 120;
+ play  = '/imgs/play.png';
+ pause = '/imgs/pause.png';
+ stop  = '/imgs/stop.png';
+ w = 0.09;
+ /ITL/scene/ctrlplay set img $play;
+ /ITL/scene/ctrlstop set img $stop;
+ /ITL/scene/ctrlplay xorigin $origin;
+ /ITL/scene/ctrlstop xorigin $origin * -1;
+ /ITL/scene/ctrl* width $w;
+ /ITL/scene/ctrl* alpha $alpha;
+
+ initplay =	(/ITL/scene/ctrlplay push,
+	/ITL/scene/ctrlplay set img $pause,
+	/ITL/scene/audio play 1,
+	/ITL/scene/ctrlplay watch mouseDown ( 
+		/ITL/scene/ctrlplay set img $play,
+		/ITL/scene/audio play 0,
+		/ITL/scene/ctrlplay pop
+ ));
+
+/ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self alpha 255 );
+/ITL/scene/ctrl* watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+/ITL/scene/ctrlstop watch mouseDown ( /ITL/scene event STOP );
+/ITL/scene/ctrlplay watch mouseDown $initplay ;
+
+/ITL/scene watch STOP (
+	/ITL/scene/ctrlplay set img $play,
+	/ITL/scene/ctrlplay pop,
+	/ITL/scene/ctrlplay watch mouseDown $initplay,
+	/ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self alpha 255 ),
+	/ITL/scene/ctrl* watch mouseLeave ( /ITL/scene/$self alpha $alpha ),
+	/ITL/scene/audio play 0,
+	/ITL/scene/audio vdate 0
+);
+
+<!-- 
+#==================================================
+# effect control
+#==================================================
+ -->
+ /ITL/scene/ctrleffect set txt "Effect";
+ /ITL/scene/ctrleffect fontSize 32;
+ /ITL/scene/ctrleffect y 0.2;
+ /ITL/scene/ctrleffect watch mouseEnter ( /ITL/scene/$self color blue );
+ /ITL/scene/ctrleffect watch mouseLeave ( /ITL/scene/$self color black );
+ /ITL/scene/ctrleffect watch mouseDown (
+	/ITL/scene/ctrleffect push,
+	/ITL/scene/ctrleffect set txt "Dry",
+	/ITL/scene/audio connect effect,
+	/ITL/scene/ctrleffect watch mouseDown (
+		/ITL/scene/ctrleffect set txt "Effect",
+		/ITL/scene/audio disconnect effect,
+		/ITL/scene/ctrleffect pop
+	)
+ );
+
+
+</div>
+
+</body>
+
+</html>
