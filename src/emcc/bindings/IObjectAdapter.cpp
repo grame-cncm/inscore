@@ -576,6 +576,7 @@ JSAudioNodeInfos IObjectAdapter::getAudioInfos () const
 			putID (elt, infos.connect);
 		for (auto elt: obj->delConnections())
 			putID (elt, infos.disconnect);
+		obj->resetNotifications();
 	}
 	else
 		cerr << "IObjectAdapter::getAudioInfos: unexpected null object!" << endl;
