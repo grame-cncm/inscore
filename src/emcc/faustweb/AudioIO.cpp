@@ -38,6 +38,7 @@ const string AudioIO::kAudioIOType("audioio");
 AudioIO::AudioIO (const std::string& name, IObject * parent) : IRectShape(name, parent)
 {
 	fTypeString = kAudioIOType;
+	fGetMsgHandlerMap[""]				= TGetParamMethodHandler<AudioIO, std::vector<int> (AudioIO::*)() const>::create(this, &AudioIO::getInOut);
 	fGetMsgHandlerMap[kin_GetMethod]	= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]	= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &AudioIO::getconnect);
@@ -50,6 +51,15 @@ AudioIO::AudioIO (const std::string& name, IObject * parent) : IRectShape(name, 
 void AudioIO::accept (Updater* u)
 {
 	u->updateTo (SAudioIO(this));
+}
+
+//--------------------------------------------------------------------------
+vector<int> AudioIO::getInOut() const
+{
+	vector<int> out;
+	out.push_back (fNumInputs);
+	out.push_back (fNumOutputs);
+	return out;
 }
 
 //--------------------------------------------------------------------------
