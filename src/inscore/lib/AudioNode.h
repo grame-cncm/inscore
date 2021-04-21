@@ -58,6 +58,7 @@ class AudioNode
 		int		getOutputs () const  				{ return fNumOutputs; }
 		const AudioNodeList& newConnections() const { return fNotifyNew; }
 		const AudioNodeList& delConnections() const { return fNotifyDel; }
+		void	resetNotifications() 				{ fNotifyDel.clear(); fNotifyNew.clear(); }
 	
 	protected:
 		AudioNodeList fOutputs;

@@ -49,14 +49,20 @@ IMedia::IMedia( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kdvolume_SetMethod]			= TSetMethodMsgHandler<IMedia,float>::create(this, &IMedia::setdVolume);
 	fMsgHandlerMap[krate_GetSetMethod]			= TSetMethodMsgHandler<IMedia,float>::create(this, &IMedia::setRate);
 	fMsgHandlerMap[kvdate_GetSetMethod]			= TMethodMsgHandler<IMedia, MsgHandler::msgStatus (IMedia::*)(const IMessage*)>::create(this, &IMedia::vdateMsg);
-	
+
 	fGetMsgHandlerMap[kplay_GetSetMethod]		= TGetParamMsgHandler<bool>::create(fPlaying);
 	fGetMsgHandlerMap[kvolume_GetSetMethod]		= TGetParamMsgHandler<float>::create(fVolume);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMsgHandler<float>::create(fRate);
 	fGetMsgHandlerMap[kvdate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fCDate);
 	fGetMsgHandlerMap[kmls_GetMethod]			= TGetParamMsgHandler<int>::create(fVDuration);
+#ifdef EMCC
+	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IMedia>::create(this, &IMedia::connect);
+	fMsgHandlerMap[kdisconnect_SetMethod]		= TMethodMsgHandler<IMedia>::create(this, &IMedia::disconnect);
 	fGetMsgHandlerMap[kvduration_GetMethod]		= TGetParamMethodHandler<IMedia, rational (IMedia::*)() const>::create(this, &IMedia::getMediaDuration);
-	
+	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &IMedia::getconnect);
+	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
+	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
+#endif
 	fPlaying = false;
 	fVolume = 1.f;						// QMediaPlayer max value
 	fRate = 1.f;						// QMediaPlayer default value

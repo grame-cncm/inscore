@@ -187,6 +187,11 @@ struct JSSceneInfos {
 	bool fullscreen = false;
 };
 
+struct JSIOInfos {
+	int inputs = 0;
+	int outputs = 0;
+};
+
 class IText;
 class ILine;
 class ICurve;
@@ -256,6 +261,7 @@ class inscore_export IObjectAdapter
 		JSMediaInfos 		getMediaInfos() const;
 		JSGMNStreamInfos  	getGuidoStream() const;
 		std::vector<JSRect> getMaps() const;
+		JSIOInfos			getIOInfos() const;
 
 		libmapping::rational getDate () const		{ return fObject->getDate(); }
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
@@ -269,7 +275,7 @@ class inscore_export IObjectAdapter
 		void	updateGraphic2TimeMap (std::string name, std::string jsonmap, float width, float height);
 		void	event (std::string ev); // trigger the event 'ev'
 		
-		void	setFaustInOut (int inputs, int outputs);
+		void	setAudioInOut (int inputs, int outputs);
 		void	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
 
 	IObjectAdapter* adapter(int id) 				{ return (IObjectAdapter*)id; }

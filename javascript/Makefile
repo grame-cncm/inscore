@@ -167,7 +167,8 @@ check: $(CHECKDIR) $(CHECKOUT)
 $(CHECKDIR) :
 	mkdir $(CHECKDIR)
 
-TSOPT  := --jsx react --target es5 --lib es2015,dom --noImplicitAny  --noImplicitReturns --alwaysStrict
+#TSOPT  := --jsx react --target es5 --lib es2015,dom --noImplicitAny  --noImplicitReturns --alwaysStrict
+TSOPT  := --module system --target es5 --lib es2015,dom --noImplicitAny  --noImplicitReturns --alwaysStrict
 $(CHECKDIR)/%.js: $(TSDIR)/%.ts
 	tsc $(TSOPT) -out $@ $< || rm $@
 

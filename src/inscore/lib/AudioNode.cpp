@@ -52,9 +52,9 @@ void AudioNode::cleanup (AudioNodeList& list)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus AudioNode::connect (const IMessage* msg)
 {
-//cerr << "AudioNode::connect " << msg << endl;
 	AudioNodeList list;
 	MsgHandler::msgStatus status = getAudioNodes(msg, list);
+//cerr << "AudioNode::connect " << list.size() << " " << fNotifyNew.size() << " " << msg << endl;
 	if (status == MsgHandler::kProcessed) {
 		for (auto elt: list) {
 			AudioNode * anode = dynamic_cast<AudioNode*>((IObject*)elt);
@@ -62,9 +62,10 @@ MsgHandler::msgStatus AudioNode::connect (const IMessage* msg)
 				ITLErr << "cannot connect a " << fNumOutputs << " outputs object to " << anode->getInputs() << " inputs" << ITLEndl;
 				return MsgHandler::kBadParameters;
 			}
-			if (find (fOutputs.begin(), fOutputs.end(), elt) == fOutputs.end())
+			if (find (fOutputs.begin(), fOutputs.end(), elt) == fOutputs.end()) {
 				fOutputs.push_back(elt);
-			fNotifyNew.push_back(elt);
+				fNotifyNew.push_back(elt);
+			}
 		}
 	}
 	return status;
@@ -85,13 +86,14 @@ vector<string> AudioNode::getconnect () const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus AudioNode::disconnect (const IMessage* msg)
 {
-//cerr << "AudioNode::disconnect " << msg << endl;
 	AudioNodeList list;
 	MsgHandler::msgStatus status = getAudioNodes(msg, list);
+//cerr << "AudioNode::disconnect " << list.size() << " " << fNotifyDel.size() << " "  << msg << endl;
 	if (status == MsgHandler::kProcessed) {
 		for (auto elt: list) {
-			if (remove (elt, fOutputs))
+			if (remove (elt, fOutputs)) {
 				fNotifyDel.push_back(elt);
+			}
 		}
 	}
 	return status;

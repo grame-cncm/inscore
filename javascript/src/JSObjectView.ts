@@ -1,5 +1,6 @@
 
 ///<reference path="lib/libINScore.d.ts"/>
+///<reference path="AudioObject.ts"/>
 ///<reference path="inscore.ts"/>
 ///<reference path="interfaces.ts"/>
 
@@ -57,6 +58,7 @@ abstract class JSObjectView {
 		if (parent) parent.removeChild (this.getElement());
 		JSObjectView.fObjects[this.fID] = null; 
 	}
+	toAudioObject() : AudioObject { return null; }
 
 	parentWidth() : number			{ 
 		let elt = this.getElement().parentElement;

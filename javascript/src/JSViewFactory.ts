@@ -21,8 +21,9 @@
 ///<reference path="JSPianorollfView.ts"/>
 ///<reference path="JSLayerView.ts"/>
 ///<reference path="JSSVGfView.ts"/>
-///<reference path="JSAudioView.ts"/>
 ///<reference path="JSVideoView.ts"/>
+///<reference path="JSAudioView.ts"/>
+///<reference path="JSAudioioView.ts"/>
 ///<reference path="JSFaustView.ts"/>
 ///<reference path="JSFaustfView.ts"/>
 ///<reference path="TSyncManager.ts"/>
@@ -67,8 +68,8 @@ class JSViewFactory {
 			case "audio":	  view = new JSAudioView(parent); break;
 			case "faust":	  view = new JSFaustView(parent, inscorelibs.faust()); break;
 			case "faustf":	  view = new JSFaustfView(parent, inscorelibs.faust()); break;
+			case "audioio":   view = new JSAudioioView(parent); break;
 
-			case "audioio":
 			case "fileWatcher":
 			case "graph":
 			case "fastgraph":
@@ -78,7 +79,7 @@ class JSViewFactory {
 			case "memimg":
 			case "sig":
 			case "signode":
-				console.log (type + "type is not yet supported");
+				console.log (type + ": type is not yet supported");
 				break; 
 
 			default:
