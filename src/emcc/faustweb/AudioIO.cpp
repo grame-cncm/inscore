@@ -25,6 +25,7 @@
 
 #include "AudioIO.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -75,6 +76,7 @@ MsgHandler::msgStatus AudioIO::set (const IMessage* msg)
 	setIONums (in, out);
 	newData(true);
 	setVisible (false);
+	getView()->initView (this);
 	return MsgHandler::kProcessed;
 }
 
