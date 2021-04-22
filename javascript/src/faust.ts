@@ -31,7 +31,7 @@ class faust {
 	async test() {
 		let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-		Faust.compileAudioNode (audioCtx, this.fModule, "process=+;", null, 0).then ( (node => {
+		Faust.compileAudioNode (audioCtx, this.fModule, "process=+;", null, 0, 0).then ( (node => {
 			console.log ("test function: " + node.setParamValue ("/toto", 1))
 		})
 		);
