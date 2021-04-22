@@ -21,11 +21,9 @@ class AIOScanner {
     static scan (address: string) {
         AIOScanner.fOutput = AIOScanner.fAudioContext.destination;
         AIOScanner.send (address, AIOScanner.kOutputName, AIOScanner.fOutput);
-        navigator.mediaDevices.getUserMedia({audio: true, video: false})
-        .then((stream: MediaStream) => {
+        navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream: MediaStream) => {
             AIOScanner.fInput = AIOScanner.fAudioContext.createMediaStreamSource(stream);
             AIOScanner.send (address, AIOScanner.kInputName, AIOScanner.fInput);
-            // AIOScanner.fInput.connect(this.fOutput);
         })
         .catch(function(err) {
             AIOScanner.send (address, AIOScanner.kInputName, null);
@@ -39,8 +37,6 @@ class AIOScanner {
         inscore.msgAddStr (msg, "audioio");
         inscore.msgAddI (msg, node ? (node.numberOfInputs  ? node.channelCount : 0) : 0);     // nb input
         inscore.msgAddI (msg, node ? (node.numberOfOutputs ? node.channelCount : 0) : 0);    // nb output
-        // inscore.msgAddI (msg, node ? node.numberOfInputs : 0);     // nb input
-        // inscore.msgAddI (msg, node ? node.numberOfOutputs : 0);    // nb output
         inscore.postMessage (prefix + "/" + name + "", msg);
     } // can send a set audioio message for each physical input/output
 
@@ -53,7 +49,3 @@ class AIOScanner {
 
 }
 
-document.addEventListener("DOMContentLoaded", (event) => {
-    AIOScanner.init();
-    // console.log('DOM is ready.')
-});
