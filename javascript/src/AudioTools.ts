@@ -23,7 +23,7 @@ class AudioTools {
             }
             return true;
         }
-        console.log ("AudioTools error: trying to connect null AudioNode");
+        console.log ("AudioTools error: trying to connect null AudioNode (" + src + " " + dest + ")");
         return false;
     }
     static disconnectSrcDest(src: AudioNode, dest: AudioNode) : boolean {
@@ -36,7 +36,7 @@ class AudioTools {
             }
             return true;
         }
-        console.log ("AudioTools error: trying to disconnect null AudioNode");
+        console.log ("AudioTools error: trying to disconnect null AudioNode (" + src + " " + dest + ")");
         return false;
     }
 
