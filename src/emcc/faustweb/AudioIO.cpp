@@ -25,6 +25,7 @@
 
 #include "AudioIO.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -38,6 +39,7 @@ const string AudioIO::kAudioIOType("audioio");
 AudioIO::AudioIO (const std::string& name, IObject * parent) : IRectShape(name, parent)
 {
 	fTypeString = kAudioIOType;
+	fGetMsgHandlerMap[""]				= TGetParamMethodHandler<AudioIO, std::vector<int> (AudioIO::*)() const>::create(this, &AudioIO::getInOut);
 	fGetMsgHandlerMap[kin_GetMethod]	= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]	= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &AudioIO::getconnect);
@@ -53,6 +55,15 @@ void AudioIO::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
+vector<int> AudioIO::getInOut() const
+{
+	vector<int> out;
+	out.push_back (fNumInputs);
+	out.push_back (fNumOutputs);
+	return out;
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus AudioIO::set (const IMessage* msg)
 {
 	MsgHandler::msgStatus status = IObject::set(msg);
@@ -65,6 +76,7 @@ MsgHandler::msgStatus AudioIO::set (const IMessage* msg)
 	setIONums (in, out);
 	newData(true);
 	setVisible (false);
+	getView()->initView (this);
 	return MsgHandler::kProcessed;
 }
 

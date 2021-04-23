@@ -120,7 +120,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             return JSFaustView.kPending;
         }
         JSFaustView.fCompilerLock = true;
-        Faust.compileAudioNode(AIOScanner.fAudioContext, this.fFaust.module(), code, null, voices).then ( node => {
+        Faust.compileAudioNode(AIOScanner.fAudioContext, this.fFaust.module(), code, null, voices, 0).then ( node => {
             JSFaustView.fCompilerLock = false;
             if (this.fAudioNode) this.fAudioNode.disconnect(); 
             this.fAudioNode = node;
@@ -134,13 +134,13 @@ class JSFaustView extends JSSvgBase implements AudioObject {
 
             obj.setAudioInOut (node.getNumInputs(), node.getNumOutputs());
             let ui = node.getDescriptors();
-            ui.forEach ( (elt) => { 
-// console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
-                if (elt.type == "button")
+             ui.forEach ( (elt) => { 
+//  console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+                if ((elt.type == "button") || (elt.type == "checkbox"))
                     obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
                 else
                     obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
-            });
+             });
             this.updateSpecific (obj);
             let bb = this.fSVG.getBBox();
             this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);

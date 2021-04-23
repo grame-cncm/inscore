@@ -3,16 +3,21 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 	<title>Perspectives - J. Bell</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="fonts/fonts.css" rel="stylesheet">
 	<script src="lib/libGUIDOEngine.js"></script>
 	<script src="lib/libfaust-wasm.js"></script>
 	<script src="lib/FaustLibrary.js"></script>
 	<script src="../../lib/libINScore.js"></script>
-	<script src="../..//inscoreview.js"></script>
-	<script src="../..//inscoreglue.js"></script>
+	<script src="../../inscoreview.js"></script>
+	<script src="../../inscoreglue.js"></script>
 	<style>
-	body { position: fixed; width: 100%; height: 100%; margin: 0; background: white; height: 100%; }
+	body { position: fixed; width: 100%; height: 100%; margin: 0; background: white; height: 100%; 
+		text-size-adjust: none;
+  		-webkit-text-size-adjust: none;
+  		-moz-text-size-adjust: none;
+  		-ms-text-size-adjust: none;
+  	}
 	.connect { margin-left: 20px; }
 	.box { width: 100%; height: 95%; background: white; border-radius: 0px; font-size: 1px; }
 	</style>
@@ -22,17 +27,13 @@
 <div class="inscore box" id="scene">
 
 /ITL/scene/* del;
-<!-- /ITL/scene/rect set rect 2 2;
-/ITL/scene/rect alpha 50; -->
 
 /ITL/scene/htitle set txt "Perspectives Temporelles";
 /ITL/scene/htitle fontSize 24;
-<!-- /ITL/scene/htitle scale 2; -->
 /ITL/scene/htitle y -0.8;
 /ITL/scene/hcomposer set txt "Jonathan Bell";
 /ITL/scene/hcomposer fontSize 18;
-<!-- /ITL/scene/htitle scale 1.5; -->
-/ITL/scene/hcomposer y -0.73;
+/ITL/scene/hcomposer y -0.70;
 /ITL/scene/h* fontFamily Helvetica;
 /ITL/scene/h* color darkgrey;
 
@@ -65,7 +66,6 @@ rsrc = "rsrc/";
 /ITL/scene/p7 map '( [567, 2880[ [210, 1745[ ) 	( [0:36:53, 0:41:50[ )';
 /ITL/scene/p8 map '( [1, 2825[ [190, 1570[ ) 	( [0:41:50, 0:46:20[ )';
 
-<!-- /ITL/scene/p* scale 0.7; -->
 /ITL/scene/p* width 1.8;
 /ITL/scene/p* show 0;
 /ITL/scene/p1 show 1;
@@ -125,7 +125,6 @@ w = 0.09;
 /ITL/scene/ctrlstop xorigin $origin * -1;
 /ITL/scene/ctrl* y 0.8;
 /ITL/scene/ctrl* width $w;
-<!-- /ITL/scene/ctrl* scale 0.15; -->
 /ITL/scene/ctrl* alpha $alpha;
 
 initplay =	(/ITL/scene/ctrlplay push,
@@ -177,12 +176,12 @@ initplay =	(/ITL/scene/ctrlplay push,
 next = $rsrc + 'next.png';
 prev = $rsrc + 'prev.png';
 x = 0.2;
-/ITL/log write os $OSName;
+
 /ITL/scene/bnext set img $next;
 /ITL/scene/bprev set img $prev;
-/ITL/scene/bnext x $x;
-/ITL/scene/bprev x $x * -1;
-/ITL/scene/b* scale 0.19;
+/ITL/scene/bnext x $w * 2;
+/ITL/scene/bprev x $w * -2;
+/ITL/scene/b* width $w * 1.2;
 /ITL/scene/b* y 0.8;
 /ITL/scene/b* alpha $alpha;
 /ITL/scene/b* watch mouseEnter ( /ITL/scene/$self alpha 255 );

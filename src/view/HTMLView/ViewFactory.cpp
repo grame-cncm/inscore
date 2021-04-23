@@ -55,7 +55,7 @@ int JSObjectCreate (int , const char* , const IObject* )	{ return 0; }
 VObjectView*	ViewFactory::create (const IObject* obj, HTMLObjectView* parent)
 {
 	int id = JSObjectCreate(parent->getID(), obj->getTypeString().c_str(), obj);
-//	cout << "ViewFactory::create object " << obj->name() << " div id: " << id  << " parent: " << (void*)parent << endl;
+//	cerr << "ViewFactory::create object " << obj->name() << " div id: " << id  << " parent: " << (void*)parent << endl;
 	return new HTMLObjectView (id, parent);
 }
 
@@ -64,7 +64,7 @@ VSceneView* ViewFactory::create(const IScene* obj)
 {
 	const char* name = obj->name().c_str();
 	int id = JSSceneCreate(name, obj);
-//	cout << "ViewFactory::create scene " << name << " div id: " << id << " state: " << obj->getState() << " new: " << obj->newData() << endl;
+//	cerr << "ViewFactory::create scene " << name << " div id: " << id << " state: " << obj->getState() << " new: " << obj->newData() << endl;
 	return new VSceneView (id);
 }
 

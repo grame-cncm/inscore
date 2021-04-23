@@ -48,6 +48,7 @@ IAudio::IAudio( const std::string& name, IObject * parent )
 	setHeight(0.5);
 	setPenWidth (1.0);
 	setBrushStyle ("none");
+	setPending();
 }
 
 //--------------------------------------------------------------------------

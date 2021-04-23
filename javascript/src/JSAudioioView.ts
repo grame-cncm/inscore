@@ -12,8 +12,6 @@ class JSAudioioView extends JSObjectView implements AudioObject {
     }
 
 	toAudioObject() : AudioObject { return this; }
-    // getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.numberOfInputs : 0; } 
-    // getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.numberOfOutputs : 0; }
     getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.channelCount : 0; } 
     getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.channelCount : 0; }
     getAudioNode() : AudioNode  { return this.fAudioNode; }
@@ -26,7 +24,7 @@ class JSAudioioView extends JSObjectView implements AudioObject {
         AudioTools.updateConnections(obj, this);
     }
 
-    updateSpecial(obj: INScoreObject) : boolean {
+    initView (obj: INScoreObject) : boolean {
         let infos = obj.getIOInfos();
         if (infos.inputs && infos.outputs) {
             console.log ("Warning: JSAudioioView created with " + infos.inputs + " inputs and " + infos.outputs + " outputs."  );
@@ -41,6 +39,10 @@ class JSAudioioView extends JSObjectView implements AudioObject {
             if (this.getNumOutputs() != infos.outputs )
                 console.log ("JSAudioioView Warning: device has not the requested number of outputs: " + this.getNumOutputs() + " instead of "  + infos.outputs);
         }
+        return true;    
+    }
+    
+    updateSpecial(obj: INScoreObject) : boolean {
         return true;
     }
 }

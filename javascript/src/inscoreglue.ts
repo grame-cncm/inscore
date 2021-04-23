@@ -2,6 +2,7 @@
 ///<reference path="inscore.ts"/>
 ///<reference path="libraries.ts"/>
 ///<reference path="navigator.ts"/>
+///<reference path="AIOScanner.ts"/>
 
 //----------------------------------------------------------------------------
 class INScoreGlue {
@@ -21,7 +22,10 @@ class INScoreGlue {
 			(() => { 
 				this.fInscore.start();
 				inscorelibs.initialise().then 
-					(() => { this.initialise(); success(this); })
+					(() => { 
+						AIOScanner.init(); 
+						this.initialise(); 
+						success(this); })
 			});
 		});
 	}
