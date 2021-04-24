@@ -32,6 +32,7 @@
 #endif
 #if HASHTTPSupport
 #include "HttpForwarder.h"
+#include "HttpsForwarder.h"
 #endif
 
 #include "Forwarder.h"
@@ -132,6 +133,9 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 #if HASHTTPSupport
 				case IMessage::TUrl::kHTTPProtocol:
 					fForwardList.push_back(new HTTPForwarder(url, fLog));
+					break;
+				case IMessage::TUrl::kHTTPSProtocol:
+					fForwardList.push_back(new HTTPSForwarder(url, fLog));
 					break;
 #endif
 				case IMessage::TUrl::kOSCProtocol:

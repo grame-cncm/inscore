@@ -186,6 +186,7 @@ bool IMessage::TUrl::parse (const std::string& address)
 	string ws = "ws://";
 	string osc = "osc://";
 	string http = "http://";
+	string https = "https://";
 	string tail = address;
 	if (address.compare (0, ws.length(), ws) == 0) {
 		fProtocol = kWSProtocol;
@@ -199,8 +200,12 @@ bool IMessage::TUrl::parse (const std::string& address)
 		fProtocol = kHTTPProtocol;
 		tail = address.substr(http.length());
 	}
+	else if (address.compare (0, https.length(), https) == 0) {
+		fProtocol = kHTTPSProtocol;
+		tail = address.substr(https.length());
+	}
 	else if (address.find_first_of('/') != string::npos) {
-		ITLErr << address << ": incorrect url or unsupported protocol in " << ITLEndl;
+		ITLErr << address << ": incorrect url or unsupported protocol." << ITLEndl;
 		return false;
 	}
 	size_t startPort = tail.find_first_of(':');
@@ -453,8 +458,11 @@ IMessage::TUrl::operator string() const
 {
 	stringstream str;
 	switch (fProtocol) {
-		case kWSProtocol:	str << "ws://"; break;
-		case kHTTPProtocol:	str << "http://"; break;
+		case kWSProtocol:		str << "ws://"; break;
+		case kHTTPProtocol:		str << "http://"; break;
+		case kHTTPSProtocol:	str << "https://"; break;
+		default:
+			cerr << "IMessage::TUrl:: operator string: unknown protocol " << fProtocol << endl;
 	}
 	str << fHostname;
 	if (fPort) str << ':' << fPort;

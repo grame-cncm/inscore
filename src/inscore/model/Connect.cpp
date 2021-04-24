@@ -58,6 +58,7 @@ MsgHandler::msgStatus Connect::processConnectMsg(const IMessage* msg)
 			switch (url.fProtocol) {
 				case IMessage::TUrl::kWSProtocol:
 				case IMessage::TUrl::kHTTPProtocol:
+				case IMessage::TUrl::kHTTPSProtocol:
 					connect (string(url).c_str(), i==0);
 					fCnxList.push_back(url);
 					break;
