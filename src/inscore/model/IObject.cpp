@@ -1813,6 +1813,10 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 		else if (n == 1) {									// this is a simple event
 			if (checkEvent(event.c_str(), getDate(), this))
 				return MsgHandler::kProcessed;
+			else {
+//				ITLErr << msg->address() << "has no handler for event" << event << ITLEndl;
+				return MsgHandler::kProcessedNoChange;
+			}
 		}
 	}
 	return MsgHandler::kBadParameters;
