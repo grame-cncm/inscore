@@ -15,6 +15,7 @@ It has been supported by the ANR
 Version 1.28
 - new 'dvolume' method for media objects
 - fix ready event for audio objects
+- native version: new ssl static application node for ssl certificates management
 
 ----------------------------------------------------
 Version 1.27
