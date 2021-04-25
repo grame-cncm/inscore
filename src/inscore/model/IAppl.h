@@ -52,8 +52,10 @@ class INScoreApplicationGlue;
 class IAppl;
 typedef class libmapping::SMARTP<IAppl>	SIAppl;
 
+class IApplSsl;
+typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
 class IApplDebug;
-typedef class libmapping::SMARTP<IApplDebug> SIApplDebug;
+typedef class libmapping::SMARTP<IApplDebug> 	SIApplDebug;
 class IApplStat;
 typedef class libmapping::SMARTP<IApplStat>		SIApplStat;
 class IApplLog;
@@ -102,6 +104,7 @@ class IAppl : public IObject, public TILoader
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
+		SIApplSsl	fSsl;						// ssl certificates
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		Connect		fConnecter;					// A connect class to manage host connections
@@ -131,6 +134,7 @@ class IAppl : public IObject, public TILoader
 		static void				delAliases( const std::string& address);
 		static void				getAliases( const std::string& address, std::vector<TAlias>& aliases);
 		static void				setRootPath();
+		static std::string		getHome();
 		static int				getParseVersion	();
 
 		static bool	running() 		{ return fRunning; }
@@ -151,6 +155,9 @@ class IAppl : public IObject, public TILoader
 	
 		void				logMsgs(const SIMessageList& msgs);
 		IApplLog*			getLogWindow()				{ return fApplLog; }
+#if HASHTTPSupport
+		const IApplSsl*		getSsl() const				{ return fSsl; }
+#endif
 		INScoreApplicationGlue* getApplicatonGlue() 	{ return fAppl; }
 	
 		/*!

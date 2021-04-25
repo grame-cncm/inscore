@@ -234,6 +234,12 @@ extern const char* ksmooth_GetSetMethod;
 
 extern const char* krefresh_SetMethod;
 
+// ssl methods
+extern const char* kcert_GetSetMethod;
+extern const char* kcacert_GetSetMethod;
+extern const char* kkey_GetSetMethod;
+
+
 } //namespace
 
 #endif

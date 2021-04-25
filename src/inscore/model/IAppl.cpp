@@ -112,6 +112,8 @@ string IAppl::fRootPath;
 
 //--------------------------------------------------------------------------
 void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
+std::string IAppl::getHome()	{ return getFilePath(); }
+
 
 
 inscore::SIMenu getMenuNode(inscore::IAppl * appl) {
@@ -337,6 +339,10 @@ void IAppl::createVirtualNodes()
 	add ( fApplLog );
 	add ( IApplPlugin::create(this) );
 	add (fFilterForward);
+#if HASHTTPSupport
+	fSsl = IApplSsl::create (this);
+	add (fSsl);
+#endif
 	fForwarder.setFilter(fFilterForward);
 	fForwarder.setLog(fApplLog);
 	fJavascript = new TJSEngine (fApplLog);
