@@ -135,7 +135,7 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 					fForwardList.push_back(new HTTPForwarder(url, fLog));
 					break;
 				case IMessage::TUrl::kHTTPSProtocol:
-					fForwardList.push_back(new HTTPSForwarder(url, fLog));
+					fForwardList.push_back(new HTTPSForwarder(url, fLog->getAppl()));
 					break;
 #endif
 				case IMessage::TUrl::kOSCProtocol:

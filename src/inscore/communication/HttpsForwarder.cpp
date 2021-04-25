@@ -26,11 +26,14 @@
 #include <string>
 
 #include "Modules.h"
+#include "IAppl.h"
+//#include "IApplVNodes.h"
 
 #if HASHTTPSupport
 #include <QSslCertificate>
 #include <QSslKey>
-#include <QFile>
+#include <QSslConfiguration>
+
 #include "HttpsForwarder.h"
 #endif
 
@@ -41,18 +44,11 @@ namespace inscore
 
 #if HASHTTPSupport
 
-const string kCERTPrefix = "/Users/fober/src/INScore/inscore/javascript/77.130.131.153/";
-const string kKeyName  = kCERTPrefix + "private.key";
-//const string kCertName = kCERTPrefix + "ca_bundle.crt";
-const string kCertName = kCERTPrefix + "certificate.crt";
-const string kCAName   = kCERTPrefix + "ca_bundle.crt";
-
 //----------------------------------------------------------------------------
-HTTPSForwarder::HTTPSForwarder (const IMessage::TUrl& url, IApplLog* log)
-	: ForwardEndPoint(url, log) //, fServerSocket (this)
+HTTPSForwarder::HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl)
+	: ForwardEndPoint(url, appl->getLogWindow()) //, fServerSocket (this)
 {
-	if (initialize()) {
-//		connect(this, &QTcpServer::newConnection, this, &HTTPSForwarder::accept);
+	if (initialize(appl)) {
 		if (!listen(QHostAddress::Any, url.fPort)) {
 			ITLErr << "HTTPS server failed to start" << errorString().toStdString() << ITLEndl;
 		}
@@ -63,62 +59,33 @@ HTTPSForwarder::HTTPSForwarder (const IMessage::TUrl& url, IApplLog* log)
 HTTPSForwarder::~HTTPSForwarder ()
 {
 	close();
-	delete fKey;
-	delete fCert;
 }
 
 //----------------------------------------------------------------------------
-bool HTTPSForwarder::initialize()
+bool HTTPSForwarder::initialize(IAppl* appl)
 {
-	fKey = getKey(kKeyName);
-	fCert = getCert(kCertName);
-	fCA = getCert(kCAName);
-	if (!fKey || !fCert || !fCA) {
-		ITLErr << "HTTPS server failed to load INScore certificate" << ITLEndl;
+	const IApplSsl* ssl = appl->getSsl();
+	fSsl = ssl->getSslInfos();
+	if (!fSsl.cert || !fSsl.key || !fSsl.cacert) {
+		ITLErr << "HTTPS server failed to start: INScore certificates are missing." << ITLEndl;
 		return false;
 	}
 	return true;
 }
 
 //----------------------------------------------------------------------------
-QSslCertificate* HTTPSForwarder::getCert (const string & name) const
-{
-    QFile file (name.c_str());
-    if(file.open(QIODevice::ReadOnly)){
-        QByteArray cert = file.readAll();
-        file.close();
-        return new QSslCertificate (cert);
-    }
-    else
-        qDebug() << file.errorString();
-	return nullptr;
-}
-
-//----------------------------------------------------------------------------
-QSslKey* HTTPSForwarder::getKey (const string & name) const
-{
-    QByteArray key;
-
-    QFile keyFile (name.c_str());
-    if (keyFile.open(QIODevice::ReadOnly)) {
-        QByteArray key = keyFile.readAll();
-        keyFile.close();
-        return new QSslKey (key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey, "localhost");
-    }
-    else
-        qDebug() << keyFile.errorString();
-    return nullptr;
-}
-
-//----------------------------------------------------------------------------
 QSslSocket* HTTPSForwarder::newConnection (qintptr socketDescriptor)
 {
-	if (fKey && fCert && fCA) {
+	if (fSsl.cert || fSsl.key || fSsl.cacert) {
+		QSslConfiguration config;
+		config.addCaCertificate (*fSsl.cacert);
+		config.setLocalCertificate (*fSsl.cert);
+		config.setPrivateKey(*fSsl.key);
+		config.setPeerVerifyMode(QSslSocket::VerifyPeer);
+		
 		QSslSocket* socket = new QSslSocket(this);
-		socket->setLocalCertificate (*fCert);
-		socket->setPrivateKey (*fKey);
+		socket->setSslConfiguration(config);
 		socket->setSocketOption(QAbstractSocket::KeepAliveOption, true );
-		socket->setPeerVerifyMode(QSslSocket::VerifyPeer);
 		if (socket->setSocketDescriptor(socketDescriptor)) {
 			addPendingConnection(socket);
 			socket->startServerEncryption();

@@ -30,6 +30,7 @@
 #include <QTcpSocket>
 
 #include "Forwarder.h"
+#include "IApplVNodes.h"
 #include "IMessage.h"
 
 class QSslKey;
@@ -38,7 +39,7 @@ class QSslCertificate;
 namespace inscore
 {
 
-class IApplLog;
+class IAppl;
 //--------------------------------------------------------------------------
 class HTTPSForwarder : public QTcpServer, public ForwardEndPoint
 {
@@ -58,19 +59,20 @@ class HTTPSForwarder : public QTcpServer, public ForwardEndPoint
 		virtual void	incomingConnection(qintptr socketDescriptor);
 
 	public:
-				 HTTPSForwarder (const IMessage::TUrl& url, IApplLog* log);
+				 HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl);
 		virtual ~HTTPSForwarder ();
 
 		void send (const IMessage * imsg);
 
 	private:
-		QSslKey* 		 fKey  = 0;
-		QSslCertificate* fCert = 0;
-		QSslCertificate* fCA = 0;
+		IApplSsl::Ssl		fSsl;
+//		const QSslKey* 		 	fKey  = nullptr;
+//		const QSslCertificate*	fCert = nullptr;
+//		const QSslCertificate*	fCA = nullptr;
 
-		bool 			 initialize () ;
-		QSslKey* 		 getKey (const std::string & name) const;
-		QSslCertificate* getCert (const std::string & name) const;
+		bool 			 initialize (IAppl* appl) ;
+//		QSslKey* 		 getKey (const std::string & name) const;
+//		QSslCertificate* getCert (const std::string & name) const;
 		
 	private Q_SLOTS:
 		void disconnect ();
