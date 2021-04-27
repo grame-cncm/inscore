@@ -27,10 +27,39 @@
 <h1>INScore FilDeSoi Test</h1>
 
 <div class="inscore box" id="scene">
-	/ITL/scene/wait set txt "Loading..."; 
+	
+	<!-- /ITL/scene/wait set txt "Loading..."; 
 	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
 	/ITL/scene/faust show 0;
-	/ITL/scene/wait del; 
+	/ITL/scene/wait del;  -->
+
+	/ITL/scene/score set gmnf "fildesoi1.gmn.txt";
+	/ITL/scene/score height 1.8;
+	/ITL/scene/score map staff1;
+	/ITL/scene/score set date 1 4;
+	/ITL/scene/score watch mouseDown (
+		/ITL/scene/cursor date '$date:staff1',
+		/ITL/scene/audio vdate '$date:staff1'
+	);
+	/ITL/scene/score watch mouseMove (
+		/ITL/scene/cursor date '$date:staff1',
+		/ITL/scene/audio vdate '$date:staff1'
+	);
+	/ITL/scene/score watch mouseEnter;
+
+	/ITL/scene/audio set audio "FilDeSoi1_guitare_1_2_3_4.wav";
+	/ITL/scene/audio show 0;
+
+	/ITL/scene/audio watch ready (
+		/ITL/scene/cursor tempo 60,
+		/ITL/scene/audio play 1
+	);
+
+	w = 0.07;
+	/ITL/scene/cursor set ellipse $w $w;
+	/ITL/scene/cursor color blue;
+	/ITL/scene/cursor alpha 120;
+	/ITL/scene/sync cursor "score:staff1" relative;
 
 	<!-- /ITL/scene/faust scale 0.7;
 	/ITL/scene/faust y -0.3; -->
