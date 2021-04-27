@@ -8,3 +8,5 @@ TSCheck
 
 lib/*
 pages/libfaust-wasm.data
+pages/FilDeSoi1/FilDeSoi1-srcs/
+pages/FilDeSoi1/libfaust-wasm.data
