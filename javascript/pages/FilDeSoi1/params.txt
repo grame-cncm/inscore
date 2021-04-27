@@ -552,9 +552,9 @@ sp 60
 sp 77
 sp 94
 sp  9
-renv freq
-renv short
-renv trim
+renv_freq
+renv_short
+renv_trim
 a 0
 a 1
 a 2
