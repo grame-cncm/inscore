@@ -1,0 +1,45 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScore Scene Test</title>
+
+	<link href="/fonts/fonts.css" rel="stylesheet">
+	<link href="/css/inscore.css" rel="stylesheet">
+	<script src="/lib/libINScore.js"></script>
+	<script src="/lib/libGUIDOEngine.js"></script>
+	<script src="/lib/libfaust-wasm.js"></script> 
+	<script src="/lib/FaustLibrary.js"></script>
+	<script src="/inscoreview.js"></script>
+	<script src="/inscoreglue.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 100%; }
+	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
+	.test { margin: 10px; padding: 10px; background: black; }
+
+	</style>
+</head>
+
+<body>
+
+<h1>INScore FilDeSoi Test</h1>
+
+<div class="inscore box" id="scene">
+	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
+	<!-- /ITL/scene/faust scale 0.7;
+	/ITL/scene/faust y -0.3; -->
+
+	<!-- /ITL/scene/text set html "Faust objects";
+	/ITL/scene/text y -0.7;
+	/ITL/scene/text fontSize 32;
+
+	
+	/ITL/scene/play1 set txt "Start";
+	/ITL/scene/play1 x 1;
+	/ITL/scene/play1 y -0.3;
+	/ITL/scene/play* xorigin 1;
+	/ITL/scene/play* fontSize 24; -->
+
+</div>
+
+</body>
+</html>
