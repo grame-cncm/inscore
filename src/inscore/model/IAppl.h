@@ -51,9 +51,6 @@ namespace inscore
 class INScoreApplicationGlue;
 class IAppl;
 typedef class libmapping::SMARTP<IAppl>	SIAppl;
-
-class IApplSsl;
-typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
 class IApplDebug;
 typedef class libmapping::SMARTP<IApplDebug> 	SIApplDebug;
 class IApplStat;
@@ -62,6 +59,11 @@ class IApplLog;
 typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 class IFilterForward;
 typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
+
+#if HASHTTPSupport
+class IApplSsl;
+typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
+#endif
 
 //--------------------------------------------------------------------------
 /*!
@@ -104,7 +106,9 @@ class IAppl : public IObject, public TILoader
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
+#if HASHTTPSupport
 		SIApplSsl	fSsl;						// ssl certificates
+#endif
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		Connect		fConnecter;					// A connect class to manage host connections

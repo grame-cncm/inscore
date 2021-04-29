@@ -49,6 +49,8 @@ namespace inscore
 
 extern SIMessageStack gMsgStack;
 
+#if HASHTTPSupport
+
 //--------------------------------------------------------------------------
 // ssl certificates management
 //--------------------------------------------------------------------------
@@ -184,6 +186,8 @@ bool IApplSsl::setKey (const std::string& filename)
 void IApplSsl::delCert () 	{ fCertFile.clear(); delete fCert; fCert = nullptr; }
 void IApplSsl::delCA ()		{ fCAFile.clear(); delete fCA; fCA = nullptr; }
 void IApplSsl::delKey ()	{ fKeyFile.clear(); delete fKey; fKey = nullptr; }
+
+#endif 
 
 //--------------------------------------------------------------------------
 // debug node
