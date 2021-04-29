@@ -25,7 +25,9 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
+
 #include <QTcpServer>
 #include <QTcpSocket>
 
@@ -35,27 +37,33 @@
 namespace inscore
 {
 
+class IAppl;
 class IApplLog;
 //--------------------------------------------------------------------------
 class HTTPForwarder : public QTcpServer, public ForwardEndPoint
 {
 	Q_OBJECT
 
-	int			fID = 1;
-	std::vector<QTcpSocket*>	fClients;
+	int	fID = 1;	// a monotonic id used for inscore messages
 
-	void clear ();
-	void send (QTcpSocket *s, const char * msg);
+	protected:
+		std::vector<QTcpSocket*>	fClients;
+				void clear ();
+				void send (QTcpSocket *s, const char * msg);
+		virtual bool initialize (const IAppl* appl)	{ return true; }
+		virtual std::string protocol () const	{ return "HTTP"; }
 
 	public:
 				 HTTPForwarder (const IMessage::TUrl& url, IApplLog* log);
 		virtual ~HTTPForwarder ();
 
-		void send (const IMessage * imsg);
+		void send  (const IMessage * imsg);
+//		bool start (const IAppl* appl);
 
 	private Q_SLOTS:
 		void accept ();
 		void disconnect ();
+		void stateChanged(QAbstractSocket::SocketState socketState);
 };
 
 } //

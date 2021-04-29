@@ -25,57 +25,32 @@
 
 #pragma once
 
-#include <QTcpServer>
-#include <QSslSocket>
-#include <QTcpSocket>
+#include "HttpForwarder.h"
 
-#include "Forwarder.h"
-#include "IApplVNodes.h"
-#include "IMessage.h"
-
-class QSslKey;
-class QSslCertificate;
+class QSslSocket;
 
 namespace inscore
 {
 
 class IAppl;
 //--------------------------------------------------------------------------
-class HTTPSForwarder : public QTcpServer, public ForwardEndPoint
+class HTTPSForwarder : public HTTPForwarder
 {
 	Q_OBJECT
 
-	int			fID = 1;
-	std::vector<QSslSocket*>	fClients;
-//	std::vector<QTcpSocket*>	fClients;
-//	QSslSocket					fServerSocket;
-
-	void clear ();
-//	void send (QTcpSocket *s, const char * msg);
-	void send (QSslSocket *s, const char * msg);
 	QSslSocket* newConnection (qintptr socketDescriptor);
 
 	protected:
-		virtual void	incomingConnection(qintptr socketDescriptor);
+		virtual void		incomingConnection(qintptr socketDescriptor);
+		virtual std::string protocol () const	{ return "HTTPS"; }
+		virtual bool 		initialize (const IAppl* appl) ;
 
 	public:
 				 HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl);
 		virtual ~HTTPSForwarder ();
 
-		void send (const IMessage * imsg);
-
 	private:
 		IApplSsl::Ssl		fSsl;
-//		const QSslKey* 		 	fKey  = nullptr;
-//		const QSslCertificate*	fCert = nullptr;
-//		const QSslCertificate*	fCA = nullptr;
-
-		bool 			 initialize (IAppl* appl) ;
-//		QSslKey* 		 getKey (const std::string & name) const;
-//		QSslCertificate* getCert (const std::string & name) const;
-		
-	private Q_SLOTS:
-		void disconnect ();
 };
 
 } //

@@ -29,34 +29,46 @@
 
 #if HASHTTPSupport
 #include "HttpForwarder.h"
-#endif
+#include "IAppl.h"
+#include "IApplVNodes.h"
 
 using namespace std;
 
 namespace inscore
 {
 
-#if HASHTTPSupport
-
 HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url, IApplLog* log) : ForwardEndPoint(url, log)
 {
-	connect(this, &QTcpServer::newConnection, this, &HTTPForwarder::accept);
-	listen(QHostAddress::Any, url.fPort);
+	if (initialize(log->getAppl())) {
+		connect(this, &QTcpServer::newConnection, this, &HTTPForwarder::accept);
+		if (!listen(QHostAddress::Any, url.fPort)) {
+			ITLErr << protocol() << " server failed to start" << errorString().toStdString() << ITLEndl;
+		}
+	}
 }
 
 HTTPForwarder::~HTTPForwarder ()		{ close(); }
 
 void HTTPForwarder::accept () {
 	QTcpSocket* socket = nextPendingConnection();
+cerr << "HTTPForwarder::accept called " << (void*)socket << endl;
 	if (!socket) return;
 
 	stringstream sstr;
-	sstr << "New HTTP connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort;
+	sstr << "New " << protocol() << " connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort << " - client #" << fClients.size() + 1;
 	log (sstr.str().c_str());
 	connect(socket, &QTcpSocket::disconnected, this, &HTTPForwarder::disconnect);
+//	connect(socket, &QTcpSocket::stateChanged, this, &HTTPForwarder::stateChanged);
 	fClients.push_back(socket);		// add the client to the clients list
 	socket->flush();
 	send (socket, "INScore");
+}
+
+void HTTPForwarder::stateChanged(QAbstractSocket::SocketState socketState)
+{
+qDebug() << "HTTPForwarder::stateChanged " << socketState;
+//	if (socketState == QAbstractSocket::ConnectedState)
+//		send (socket, "INScore");
 }
 
 void HTTPForwarder::disconnect () {
@@ -74,9 +86,11 @@ void HTTPForwarder::send (QTcpSocket *socket, const char * msg) {
 	const char* nl = "\n";
 	stringstream netmsg;
 	netmsg << "HTTP/1.1 200 OK" << nl
+		<< "Server:inscorejs" << nl
 		<< "Content-Type: text/event-stream" << nl
 		<< "Access-Control-Allow-Origin: *" << nl
 		<< "Connection: keep-alive" << nl
+//		<< "Content-Length: " << strlen(msg) << nl
 		<< "Cache-Control: no-cache" << nl << nl
 		<< "data: " << msg << nl << nl;
 	qint64 n = socket->write(netmsg.str().c_str());
@@ -91,6 +105,6 @@ void HTTPForwarder::send (const IMessage * imsg) {
 		send (socket, b64.toStdString().c_str());
 	}
 }
-#endif
 
 }
+#endif

@@ -27,12 +27,12 @@
 
 #include "Modules.h"
 #include "IAppl.h"
-//#include "IApplVNodes.h"
 
 #if HASHTTPSupport
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslConfiguration>
+#include <QSslSocket>
 
 #include "HttpsForwarder.h"
 #endif
@@ -46,23 +46,18 @@ namespace inscore
 
 //----------------------------------------------------------------------------
 HTTPSForwarder::HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl)
-	: ForwardEndPoint(url, appl->getLogWindow()) //, fServerSocket (this)
+	: HTTPForwarder(url, appl->getLogWindow()) //, fServerSocket (this)
 {
-	if (initialize(appl)) {
-		if (!listen(QHostAddress::Any, url.fPort)) {
-			ITLErr << "HTTPS server failed to start" << errorString().toStdString() << ITLEndl;
-		}
-	}
+	initialize(appl);
 }
 
 //----------------------------------------------------------------------------
 HTTPSForwarder::~HTTPSForwarder ()
 {
-	close();
 }
 
 //----------------------------------------------------------------------------
-bool HTTPSForwarder::initialize(IAppl* appl)
+bool HTTPSForwarder::initialize(const IAppl* appl)
 {
 	const IApplSsl* ssl = appl->getSsl();
 	fSsl = ssl->getSslInfos();
@@ -77,23 +72,30 @@ bool HTTPSForwarder::initialize(IAppl* appl)
 QSslSocket* HTTPSForwarder::newConnection (qintptr socketDescriptor)
 {
 	if (fSsl.cert || fSsl.key || fSsl.cacert) {
-		QSslConfiguration config;
+		QSslSocket* socket = new QSslSocket(this);
+		QSslConfiguration config = socket->sslConfiguration();
 		config.addCaCertificate (*fSsl.cacert);
 		config.setLocalCertificate (*fSsl.cert);
 		config.setPrivateKey(*fSsl.key);
-		config.setPeerVerifyMode(QSslSocket::VerifyPeer);
+		config.setPeerVerifyMode(QSslSocket::VerifyNone);
+		config.setSslOption(QSsl::SslOptionDisableServerNameIndication, true);
+		config.setSslOption(QSsl::SslOptionDisableLegacyRenegotiation, true);
 		
-		QSslSocket* socket = new QSslSocket(this);
 		socket->setSslConfiguration(config);
 		socket->setSocketOption(QAbstractSocket::KeepAliveOption, true );
 		if (socket->setSocketDescriptor(socketDescriptor)) {
-			addPendingConnection(socket);
 			socket->startServerEncryption();
 			return socket;
 		}
-		else socket->close();
+		else {
+			ITLErr << protocol() << " failed to create socket: " << errorString().toStdString() << ITLEndl;
+			socket->close();
+		}
      }
-     return nullptr;
+	else {
+		ITLErr << protocol() << " connection request failed to create socket: missing certificates" << ITLEndl;
+	}
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------
@@ -101,49 +103,9 @@ void HTTPSForwarder::incomingConnection(qintptr socketDescriptor)
 {
 	QSslSocket* socket = newConnection(socketDescriptor);
 	if (!socket) return;
-
-	stringstream sstr;
-	sstr << "New HTTPS connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort << " - client #" << fClients.size() + 1;
-	log (sstr.str().c_str());
-	connect(socket, &QTcpSocket::disconnected, this, &HTTPSForwarder::disconnect);
-	fClients.push_back(socket);		// add the client to the clients list
-	socket->flush();
-	send (socket, "INScore");
+	addPendingConnection(socket);
 }
 
-
-void HTTPSForwarder::disconnect () {
-	QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-	if (socket) {
-		stringstream sstr;
-		sstr  << "HTTP client " << socket->peerAddress().toString().toStdString() << ":" << dest().fPort << " disconnected.";
-		log (sstr.str().c_str());
-		// Remove the client from the list
-		fClients.erase(std::remove(fClients.begin(), fClients.end(), socket), fClients.end());
-	}
-}
-
-void HTTPSForwarder::send (QSslSocket *socket, const char * msg) {
-	const char* nl = "\n";
-	stringstream netmsg;
-	netmsg << "HTTP/1.1 200 OK" << nl
-		<< "Content-Type: text/event-stream" << nl
-		<< "Access-Control-Allow-Origin: *" << nl
-		<< "Connection: keep-alive" << nl
-		<< "Cache-Control: no-cache" << nl << nl
-		<< "data: " << msg << nl << nl;
-	qint64 n = socket->write(netmsg.str().c_str());
-	socket->flush();
-}
-
-void HTTPSForwarder::send (const IMessage * imsg) {
-	string msgStr = IMessage2String (imsg, fID++);
-	QString qstr (msgStr.c_str());
-	QString b64 = qstr.toUtf8().toBase64();
-	for (auto socket: fClients) {
-		send (socket, b64.toStdString().c_str());
-	}
-}
 #endif
 
 }
