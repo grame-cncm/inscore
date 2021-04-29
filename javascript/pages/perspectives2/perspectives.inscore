@@ -156,9 +156,12 @@ x = 0.3;
 	/ITL/scene/audio vdate '$(/ITL/scene/vprev get date)'
 );
 
-/ITL/scene/filter reject "/ITL/scene" load ddate quit;
-/ITL/scene forward "http://localhost:7200";
-/ITL/log show 1;
+#/ITL/log show 1;
+#/ITL/ssl cert 	"inscorejs.grame.fr/certificate.crt";
+#/ITL/ssl key 	"inscorejs.grame.fr/private.key";
+#/ITL/ssl cacert "inscorejs.grame.fr/ca_bundle.crt";
+#/ITL/filter reject "/ITL/scene" load ddate quit;
+#/ITL forward  "https://localhost:7200";
 
 __END__
 
