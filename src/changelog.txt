@@ -16,6 +16,9 @@ Version 1.28
 - new 'dvolume' method for media objects
 - fix ready event for audio objects
 - native version: new ssl static application node for ssl certificates management
+	- new cert, key, cacert message to manage ssl certificates and keys 
+	- new get clients messages at application level
+	- add https support to forwarding mechanism
 
 ----------------------------------------------------
 Version 1.27
