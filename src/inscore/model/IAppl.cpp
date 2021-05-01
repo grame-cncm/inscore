@@ -221,6 +221,9 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
 
+	fGetMultiMsgHandlerMap[kclients_GeMethod]	= TGetParamMultiMethodHandler<IAppl, SIMessageList (IAppl::*)() const>::create(this, &IAppl::getClients);
+
+
 #ifdef EMCC
 	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::connect);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getCnxList);

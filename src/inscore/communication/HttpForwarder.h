@@ -57,13 +57,12 @@ class HTTPForwarder : public QTcpServer, public ForwardEndPoint
 				 HTTPForwarder (const IMessage::TUrl& url, IApplLog* log);
 		virtual ~HTTPForwarder ();
 
-		void send  (const IMessage * imsg);
-//		bool start (const IAppl* appl);
+		void 	send  (const IMessage * imsg);
+		size_t  getClients () const 	{ return fClients.size(); }
 
 	private Q_SLOTS:
 		void accept ();
 		void disconnect ();
-		void stateChanged(QAbstractSocket::SocketState socketState);
 };
 
 } //

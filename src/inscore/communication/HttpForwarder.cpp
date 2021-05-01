@@ -51,24 +51,15 @@ HTTPForwarder::~HTTPForwarder ()		{ close(); }
 
 void HTTPForwarder::accept () {
 	QTcpSocket* socket = nextPendingConnection();
-cerr << "HTTPForwarder::accept called " << (void*)socket << endl;
 	if (!socket) return;
 
 	stringstream sstr;
 	sstr << "New " << protocol() << " connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort << " - client #" << fClients.size() + 1;
 	log (sstr.str().c_str());
 	connect(socket, &QTcpSocket::disconnected, this, &HTTPForwarder::disconnect);
-//	connect(socket, &QTcpSocket::stateChanged, this, &HTTPForwarder::stateChanged);
 	fClients.push_back(socket);		// add the client to the clients list
 	socket->flush();
 	send (socket, "INScore");
-}
-
-void HTTPForwarder::stateChanged(QAbstractSocket::SocketState socketState)
-{
-qDebug() << "HTTPForwarder::stateChanged " << socketState;
-//	if (socketState == QAbstractSocket::ConnectedState)
-//		send (socket, "INScore");
 }
 
 void HTTPForwarder::disconnect () {
@@ -90,7 +81,6 @@ void HTTPForwarder::send (QTcpSocket *socket, const char * msg) {
 		<< "Content-Type: text/event-stream" << nl
 		<< "Access-Control-Allow-Origin: *" << nl
 		<< "Connection: keep-alive" << nl
-//		<< "Content-Length: " << strlen(msg) << nl
 		<< "Cache-Control: no-cache" << nl << nl
 		<< "data: " << msg << nl << nl;
 	qint64 n = socket->write(netmsg.str().c_str());
