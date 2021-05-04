@@ -33,6 +33,9 @@
 	/ITL/scene/faust show 0;
 	/ITL/scene/wait del;  -->
 
+	/ITL/scene/play* watch mouseEnter ( /ITL/scene/$self color red );
+	/ITL/scene/play* watch mouseLeave ( /ITL/scene/$self color black );
+
 	/ITL/scene/score set gmnf "fildesoi1.gmn.txt";
 	/ITL/scene/score height 1.8;
 	/ITL/scene/score map staff1;
@@ -50,13 +53,58 @@
 	/ITL/scene/audio set audio "FilDeSoi1_guitare_1_2_3_4.wav";
 	/ITL/scene/audio show 0;
 
-	/ITL/scene/audio watch ready (
+	
+	<!-- Buttons variables -->
+	play  = 'rsrc/play.png';
+	pause = 'rsrc/pause.png';
+	stop  = 'rsrc/stop.png';
+	origin = 1.2;
+	alpha = 120;
+	w = 0.09;
+	<!-- Button Play / Pause-->
+
+	/ITL/scene/play set img $play;
+	/ITL/scene/play y 0.9;
+	/ITL/scene/play xorigin $origin;
+	/ITL/scene/play width $w;
+	/ITL/scene/play alpha $alpha;
+
+	/ITL/scene/play watch mouseDown (
+		/ITL/scene/$self push,
+		/ITL/scene/play set img $pause,
 		/ITL/scene/cursor tempo 60,
-		/ITL/scene/audio play 1
+		/ITL/scene/audio play 1,
+		/ITL/scene/play watch mouseDown (
+			/ITL/scene/play set img $play,
+			/ITL/scene/cursor tempo 0,
+			/ITL/scene/audio play 0,
+			/ITL/scene/$self pop
+		)
+	);
+	
+	<!-- Button Stop -->
+	/ITL/scene/stop set img $stop;
+	/ITL/scene/stop y 0.9;
+	/ITL/scene/stop xorigin $origin * -1;
+	/ITL/scene/stop width $w;
+	/ITL/scene/stop alpha $alpha;
+
+	/ITL/scene/stop watch mouseDown ( /ITL/scene event STOP );
+	
+	/ITL/scene watch STOP (
+		/ITL/scene/play set img $play,
+		/ITL/scene/play width $w,
+		/ITL/scene/play pop,
+		/ITL/scene/play watch mouseDown $initplay,
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0,
+		/ITL/scene/audio vdate 0,
+		/ITL/scene/cursor date 1000,
+		/ITL/scene/cursor date 0
 	);
 
-	w = 0.07;
-	/ITL/scene/cursor set ellipse $w $w;
+	cursorWidth = 0.07;
+	/ITL/scene/cursor set ellipse $cursorWidth $cursorWidth;
 	/ITL/scene/cursor color blue;
 	/ITL/scene/cursor alpha 120;
 	/ITL/scene/sync cursor "score:staff1" relative;
@@ -66,14 +114,9 @@
 
 	<!-- /ITL/scene/text set html "Faust objects";
 	/ITL/scene/text y -0.7;
-	/ITL/scene/text fontSize 32;
+	/ITL/scene/text fontSize 32; -->
 
 	
-	/ITL/scene/play1 set txt "Start";
-	/ITL/scene/play1 x 1;
-	/ITL/scene/play1 y -0.3;
-	/ITL/scene/play* xorigin 1;
-	/ITL/scene/play* fontSize 24; -->
 
 </div>
 
