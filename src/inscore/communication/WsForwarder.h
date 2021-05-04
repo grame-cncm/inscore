@@ -55,7 +55,8 @@ class WSForwarder : public QWebSocketServer, public ForwardEndPoint
 				 WSForwarder (const IMessage::TUrl& url, IApplLog* log);
 		virtual ~WSForwarder ();
 
-		void send (const IMessage * imsg);
+		void 	send (const IMessage * imsg);
+		size_t  getClients () const 	{ return fClients.size(); }
 
 	private Q_SLOTS:
 		void accept ();

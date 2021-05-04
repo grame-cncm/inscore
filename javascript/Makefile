@@ -5,7 +5,7 @@
 #
 #################################################################
 
-.PHONY : pages
+.PHONY : pages testlib npm
 
 MAKE ?= make
 
@@ -46,6 +46,11 @@ INSCOREWASM  := lib/libINScore.js lib/libINScore.wasm
 LIB  := inscoreview.js
 GLUE := inscoreglue.js
 
+# npm settings
+NPMDIR  := npm
+NPMLIB  := INScoreJS.js
+NPMDEV  := $(NPMDIR)/dev
+
 #===============================================================
 # default target: build everything (including wasm library)
 #===============================================================
@@ -65,11 +70,12 @@ help : node_modules
 	@echo "  wasm    : builds the wasm library"
 	@echo
 	@echo "Project management: "
-	@echo "  clean     : remove all outputs"
-	@echo "  check     : check typescript code"
-	@echo "  cmake     : regenerate the wasm project"
-	@echo "  install   : install the required npm components"
-	@echo "  modules   : install the external librairies (called by install target)"
+	@echo "  clean   : remove all outputs"
+	@echo "  check   : check typescript code"
+	@echo "  cmake   : regenerate the wasm project"
+	@echo "  install : install the required npm components"
+	@echo "  modules : install the external librairies (called by install target)"
+	@echo "  npm     : prepares the $(NPMDIR) folder for publishing to npm "
 	@echo
 
 #===============================================================
@@ -105,6 +111,24 @@ install: lib
 
 lib:
 	mkdir lib
+
+
+#===============================================================
+# packaging
+#===============================================================
+npm: $(NPMDIR)/$(NPMLIB) $(NPMDEV)/src
+	cp src/lib/inscore.d.ts	$(NPMDIR)
+	cp lib/libINScore.js lib/libINScore.wasm $(NPMDIR)
+	cp $(LIB) $(GLUE) $(NPMDEV)
+	cp glueSrc/*.ts $(NPMDEV)/src
+	cp -r fonts $(NPMDIR)
+
+$(NPMDEV)/src: 
+	mkdir -p $(NPMDEV)/src
+
+$(NPMDIR)/$(NPMLIB): $(GLUESRC) $(LIBSRC)
+	tsc -p npmconfig.json
+	mv $(NPMLIB) $(NPMDIR)
 
 
 #===============================================================

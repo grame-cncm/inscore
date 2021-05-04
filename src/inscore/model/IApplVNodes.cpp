@@ -34,6 +34,11 @@
 #ifdef __MOBILE__
 #include "VMobileQtInit.h"
 #endif
+#if HASHTTPSupport
+#include <QSslCertificate>
+#include <QSslKey>
+#include <QFile>
+#endif
 
 #include "VLogWindow.h"
 
@@ -44,6 +49,148 @@ namespace inscore
 
 extern SIMessageStack gMsgStack;
 
+#if HASHTTPSupport
+
+//--------------------------------------------------------------------------
+// ssl certificates management
+//--------------------------------------------------------------------------
+IApplSsl::IApplSsl(IObject * parent) : IVNode("ssl", parent)
+{
+	fMsgHandlerMap[kcert_GetSetMethod]		= TMethodMsgHandler<IApplSsl>::create(this, &IApplSsl::setCert);
+	fMsgHandlerMap[kcacert_GetSetMethod]	= TMethodMsgHandler<IApplSsl>::create(this, &IApplSsl::setCA);
+	fMsgHandlerMap[kkey_GetSetMethod]		= TMethodMsgHandler<IApplSsl>::create(this, &IApplSsl::setKey);
+	
+	fGetMsgHandlerMap[kcert_GetSetMethod]	= TGetParamMsgHandler<string>::create(fCertFile);
+	fGetMsgHandlerMap[kcacert_GetSetMethod]	= TGetParamMsgHandler<string>::create(fCAFile);
+	fGetMsgHandlerMap[kkey_GetSetMethod]	= TGetParamMsgHandler<string>::create(fKeyFile);
+
+	fGetMsgHandlerMap[kmap_GetSetMethod]	= SGetParamMsgHandler(0);
+	fGetMsgHandlerMap[kname_GetSetMethod]	= SGetParamMsgHandler(0);
+}
+
+//----------------------------------------------------------------------------
+IApplSsl::~IApplSsl()
+{
+	delete fCA;
+	delete fCert;
+	delete fKey;
+}
+
+//----------------------------------------------------------------------------
+IApplSsl::Ssl IApplSsl::getSslInfos () const
+{
+	IApplSsl::Ssl out;
+	out.cert = fCert;
+	out.cacert = fCA;
+	out.key = fKey;
+	return out;
+}
+
+//----------------------------------------------------------------------------
+bool IApplSsl::readFile (const string& name, QByteArray& data) const
+{
+	string path = TILoader::makeAbsolutePath(IAppl::getHome() + ".ssh/", name);
+    QFile file (path.c_str());
+    if(file.open(QIODevice::ReadOnly)){
+        data = file.readAll();
+        file.close();
+        return true;
+    }
+	ITLErr << "can't read file" << name << ITLEndl;
+    return false;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplSsl::setCert (const IMessage* msg)
+{
+	string file;
+	switch (msg->size()) {
+		case 0:
+			delCert();
+			return MsgHandler::kProcessed;
+		case 1:
+			if (getFileName(msg, file) && setCert (file))
+				return MsgHandler::kProcessed;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+bool IApplSsl::getFileName  (const IMessage* msg, std::string& name) const { return msg->param(0, name); }
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplSsl::setCA (const IMessage* msg)
+{
+	string file;
+	switch (msg->size()) {
+		case 0:
+			delCA();
+			return MsgHandler::kProcessed;
+		case 1:
+			if (getFileName(msg, file) && setCA (file))
+				return MsgHandler::kProcessed;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IApplSsl::setKey (const IMessage* msg)
+{
+	string file;
+	switch (msg->size()) {
+		case 0:
+			delKey();
+			return MsgHandler::kProcessed;
+		case 1:
+			if (getFileName(msg, file) && setKey (file))
+				return MsgHandler::kProcessed;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+bool IApplSsl::setCert (const std::string& filename)
+{
+	QByteArray data;
+	if (readFile (filename, data)) {
+		fCertFile = filename;
+		delete fCert;
+		fCert = new QSslCertificate (data);
+		return true;
+	}
+	return false;
+}
+bool IApplSsl::setCA (const std::string& filename)
+{
+	QByteArray data;
+	if (readFile (filename, data)) {
+		fCAFile = filename;
+		delete fCA;
+		fCA = new QSslCertificate (data);
+		return true;
+	}
+	return false;
+}
+bool IApplSsl::setKey (const std::string& filename)
+{
+	QByteArray data;
+	if (readFile (filename, data)) {
+		fKeyFile = filename;
+		delete fKey;
+		fKey = new QSslKey (data, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey, "localhost");
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+void IApplSsl::delCert () 	{ fCertFile.clear(); delete fCert; fCert = nullptr; }
+void IApplSsl::delCA ()		{ fCAFile.clear(); delete fCA; fCA = nullptr; }
+void IApplSsl::delKey ()	{ fKeyFile.clear(); delete fKey; fKey = nullptr; }
+
+#endif 
+
+//--------------------------------------------------------------------------
+// debug node
 //--------------------------------------------------------------------------
 IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 {
@@ -52,7 +199,6 @@ IApplDebug::IApplDebug(IObject * parent) : IObjectDebug(parent), fOSCDebug(true)
 
 	fGetMsgHandlerMap[kmap_GetSetMethod]	= SGetParamMsgHandler(0);
 	fGetMsgHandlerMap[kname_GetSetMethod]	= SGetParamMsgHandler(0);
-//	fGetMsgHandlerMap[ksignal_GetMethod]	= SGetParamMsgHandler(0);
 }
 
 //--------------------------------------------------------------------------
@@ -241,29 +387,13 @@ void IApplLog::setYPos (float y)			{ fYPos = y;  fWindow->imove(fXPos, fYPos); }
 //--------------------------------------------------------------------------
 void IApplLog::setWidth (float x)			{ fWidth = x;  fWindow->istretch(fWidth, fHeight); }
 void IApplLog::setHeight (float y)			{ fHeight = y; fWindow->istretch(fWidth, fHeight); }
-
 void IApplLog::setZoom (float zoom)			{ fZoom = zoom; fWindow->izoom(zoom); }
 
 //--------------------------------------------------------------------------
-void IApplLog::accept (Updater* u)
-{
-	u->updateTo(this);
-}
-
-void IApplLog::clear()
-{
-	fWindow->clear();
-}
-
-void IApplLog::setWrap(bool state)
-{
-	fWindow->wrap (state);
-}
-
-void IApplLog::print(const char* str)
-{
-	fWindow->append (str);
-}
+void IApplLog::accept (Updater* u)			{ u->updateTo(this); }
+void IApplLog::clear()						{ fWindow->clear(); }
+void IApplLog::setWrap(bool state) 			{ fWindow->wrap (state); }
+void IApplLog::print(const char* str)		{ fWindow->append (str); }
 
 
 

@@ -1,0 +1,66 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>INScoreJS Welcome</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<script src="../libINScore.js"></script>
+	<script src="../INScoreJS.js"></script>
+	<style>
+	body { margin: 50; background-color: black; color: white}
+	.inscore { background-color: white; border-color: grey; width: 100%; height: 90%; }
+	.center { text-align: center; }
+	</style>
+</head>
+
+<body>
+
+<h1>INScoreJS - Welcome</h1>
+<div class="inscore" id="scene">
+	grey = 180 180 180;
+	shadow = shadow 5 5 $grey 75 3;
+	color = 20 0 150;
+	
+	/ITL/scene/welcome set txt "Welcome to INScoreJS";
+	/ITL/scene/welcome color $color;
+	/ITL/scene/welcome fontSize 36;
+	/ITL/scene/welcome fontWeight bold;
+	/ITL/scene/welcome effect $shadow;
+	/ITL/scene/welcome y -0.8;
+	
+	/ITL/scene/version set txt "Version" $(/ITL get version);
+	/ITL/scene/version fontSize 18;
+	/ITL/scene/version y -0.7;
+	
+	/ITL/scene/what set html 'An environment for the design of
+	&lt;br />interactive, augmented music scores.';
+	/ITL/scene/what y -0.5;
+	/ITL/scene/what fontSize 22;
+	/ITL/scene/what class center;
+	
+	/ITL/scene/score set img "rsrc/score.png";
+	/ITL/scene/score effect $shadow;
+	/ITL/scene/score width 1;
+	/ITL/scene/score penWidth 1;
+	/ITL/scene/score penColor lightgrey;
+	/ITL/scene/score y -0.05;
+	
+	/ITL/scene/comment set html 'INScore is an open source project developed by GRAME.&lt;br />
+	More information on &lt;br />
+	&lt;a href=https://inscore.grame.fr style="font-size: 110%" target=_blank>inscore.grame.fr&lt;/a>';
+	/ITL/scene/comment y 0.45;
+	/ITL/scene/comment class center;
+	
+	/ITL/scene/logo set img "rsrc/grame.png";
+	/ITL/scene/logo width 0.2;
+	/ITL/scene/logo y 0.8;
+	alpha = 190;
+	/ITL/scene/logo alpha $alpha;
+	/ITL/scene/logo watch mouseEnter (/ITL/scene/logo alpha 255);
+	/ITL/scene/logo watch mouseLeave (/ITL/scene/logo alpha $alpha);
+	/ITL/scene/logo watch mouseDown  (/ITL browse "https://grame.fr" );
+	</div>
+
+</body>
+
+</html>

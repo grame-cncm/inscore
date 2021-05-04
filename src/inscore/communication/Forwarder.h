@@ -45,8 +45,10 @@ class ForwardEndPoint
 				 ForwardEndPoint (const IMessage::TUrl& url, IApplLog* log) : fDest(url), fLog(log) {}
 		virtual ~ForwardEndPoint () {}
 
-		virtual void send (const IMessage * imsg) = 0;
+		virtual void 	send (const IMessage * imsg) = 0;
+		virtual size_t 	getClients () const = 0;
 		const IMessage::TUrl& dest() const		{ return fDest; }
+		const int protocol() const				{ return fDest.fProtocol; }
 
 	protected:
 		void log  (const char * msg);
@@ -101,11 +103,20 @@ class Forwarder
          * \return
          */
         const std::vector<IMessage::TUrl> getForwardList() const; // { return fForwardList; }
+		
+        /*!
+         * \brief gives the count of connected clients
+         * \return
+         */
+		SIMessageList getClients() const;
+
 
 
     private:
         std::vector<ForwardEndPoint*>	fForwardList;	// list of hosts to forward incoming messages
         IFilterForward * fFilter;
+        
+        SIMessage makeCount (const char* address, const char* proto, size_t count) const;
 };
 
 } //

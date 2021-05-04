@@ -44,6 +44,7 @@ const char* kbrightness_GetSetMethod= "brightness";		// Get Set
 const char* kbrowse_SetMethod		= "browse";			// Set
 const char* kcancel_SetMethod		= "cancel";			// Set
 const char* kclass_GetSetMethod		= "class";			// Get Set
+const char* kclients_GeMethod		= "clients";		// Get
 const char* kcliptime_GetSetMethod	= "clipTime";		// Get Set
 const char* kclippitch_GetSetMethod	= "clipPitch";		// Get Set
 const char* kclock_SetMethod		= "clock";			// Set
@@ -238,5 +239,9 @@ const char* ksmooth_GetSetMethod		= "smooth";					// Get Set
 // introduced for the javascript implementation
 const char* krefresh_SetMethod		= "refresh";					// Set
 
+// ssl methods
+const char* kcert_GetSetMethod			= "cert";				// Get Set
+const char* kcacert_GetSetMethod		= "cacert";				// Get Set
+const char* kkey_GetSetMethod			= "key";				// Get Set
 
 } //namespace

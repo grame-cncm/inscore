@@ -25,44 +25,32 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
+#include "HttpForwarder.h"
 
-#include <QTcpServer>
-#include <QTcpSocket>
-
-#include "Forwarder.h"
-#include "IMessage.h"
+class QSslSocket;
 
 namespace inscore
 {
 
 class IAppl;
-class IApplLog;
 //--------------------------------------------------------------------------
-class HTTPForwarder : public QTcpServer, public ForwardEndPoint
+class HTTPSForwarder : public HTTPForwarder
 {
 	Q_OBJECT
 
-	int	fID = 1;	// a monotonic id used for inscore messages
+	QSslSocket* newConnection (qintptr socketDescriptor);
 
 	protected:
-		std::vector<QTcpSocket*>	fClients;
-				void clear ();
-				void send (QTcpSocket *s, const char * msg);
-		virtual bool initialize (const IAppl* appl)	{ return true; }
-		virtual std::string protocol () const	{ return "HTTP"; }
+		virtual void		incomingConnection(qintptr socketDescriptor);
+		virtual std::string protocol () const	{ return "HTTPS"; }
+		virtual bool 		initialize (const IAppl* appl) ;
 
 	public:
-				 HTTPForwarder (const IMessage::TUrl& url, IApplLog* log);
-		virtual ~HTTPForwarder ();
+				 HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl);
+		virtual ~HTTPSForwarder ();
 
-		void 	send  (const IMessage * imsg);
-		size_t  getClients () const 	{ return fClients.size(); }
-
-	private Q_SLOTS:
-		void accept ();
-		void disconnect ();
+	private:
+		IApplSsl::Ssl		fSsl;
 };
 
 } //

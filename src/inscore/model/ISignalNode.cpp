@@ -414,11 +414,11 @@ std::vector<SISignalConnection> ISignalNode::getConnectionsOf(const IObject* obj
 SIMessageList ISignalNode::getAllConnections() const
 {
     SIMessageList list = IMessageList::create();
-    const char* address = getOSCAddress().c_str();
+    string address = getOSCAddress();
     
 	for (unsigned int i = 0; i < fConnections.size(); i++)
     {
-        SIMessage msg = IMessage::create (address, kconnect_GetSetMethod);
+        SIMessage msg = IMessage::create (address.c_str(), kconnect_GetSetMethod);
         std::string objectMethodWithRange = fConnections[i]->getObjectMethod();
         objectMethodWithRange.append(fConnections[i]->getRangeString());
         *msg << fConnections[i]->getSignal()->signal(0)->getName() << objectMethodWithRange;

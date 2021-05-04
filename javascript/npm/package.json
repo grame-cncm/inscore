@@ -1,0 +1,32 @@
+{
+  "name": "@grame/libINScore",
+  "author": "GRAME-CNCM",
+  "version": "1.0.0",
+  "description": "The INScore engine providing augmented interactive musical scores.",
+  "main": "inscoreview.js",
+  "directories": {
+    "exemples": "exemples"
+  },
+  "scripts": {},
+  "dependencies": {
+    "@grame/guidolib": "^1.7.1",
+    "@grame/libfaust": "^1.0.2",
+    "@grame/libmusicxml": "^3.19.1"
+  },
+  "types": "inscore.d.ts",
+  "homepage": "https://inscore.grame.fr",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grame-cncm/inscore.git"
+  },
+  "bugs": { 
+    "url" : "https://github.com/grame-cncm/inscore/issues"
+  },
+  "keywords": [
+    "INScore",
+    "Musical score",
+    "Music notation"
+  ],
+  "license": "GPL-2.0"
+}
+

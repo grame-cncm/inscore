@@ -2,7 +2,7 @@
 
   INScore Project
 
-  Copyright (C) 2009,2010  Grame
+  Copyright (C) 2009,2021  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -23,11 +23,23 @@
 
 */
 
-#ifndef __IApplVNodes__
-#define __IApplVNodes__
+#pragma once
+
+#include <string>
+#include <ostream>
+
+#include "Modules.h"
+
+#if HASHTTPSupport
+#include <QByteArray>
+class QSslCertificate;
+class QSslCertificate;
+class QSslKey;
+#endif
 
 #include "IVNode.h"
 #include "IObjectVNodes.h"
+
 
 namespace inscore
 {
@@ -177,10 +189,9 @@ class IApplLog : public IVNode
 
 class IApplPlugin;
 typedef class libmapping::SMARTP<IApplPlugin>		SIApplPlugin;
-
 //--------------------------------------------------------------------------
 /*!
-	\brief a virtual node for plugins managemen
+	\brief a virtual node for plugins management
 */
 class IApplPlugin : public IVNode
 {
@@ -191,7 +202,7 @@ class IApplPlugin : public IVNode
 		/// \brief print the object state \param out the output stream
 		virtual void	print(std::ostream& ) const	{}
 
-	protected:	
+	protected:
 				 IApplPlugin(IObject * parent);
 		virtual ~IApplPlugin()	{}
 
@@ -202,9 +213,56 @@ class IApplPlugin : public IVNode
 		virtual MsgHandler::msgStatus reset (const IMessage* msg) const;
 };
 
+#if HASHTTPSupport
+class IApplSsl;
+typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
+//--------------------------------------------------------------------------
+/*!
+	\brief a virtual node for ssl certificates management
+*/
+class IApplSsl : public IVNode
+{
+	public:
+		typedef struct {
+			QSslCertificate* cert = nullptr;
+			QSslCertificate* cacert = nullptr;
+			QSslKey* 		 key = nullptr;
+		} Ssl;
+		
+		/// \brief creates a new IApplSsl
+		static SIApplSsl create(IObject * parent)		{ return new IApplSsl(parent); }
+		
+		Ssl getSslInfos () const;
+
+	protected:
+				 IApplSsl(IObject * parent);
+		virtual ~IApplSsl();
+
+		virtual MsgHandler::msgStatus setCert (const IMessage* msg);
+		virtual MsgHandler::msgStatus setCA (const IMessage* msg);
+		virtual MsgHandler::msgStatus setKey (const IMessage* msg);
+
+	private:
+		QSslCertificate* fCert = nullptr;
+		QSslCertificate* fCA = nullptr;
+		QSslKey* 		 fKey = nullptr;
+	
+		bool readFile (const std::string& name, QByteArray& data) const;
+
+		bool getFileName  (const IMessage* msg, std::string& name) const;
+		bool setCert (const std::string& filename);
+		bool setCA (const std::string& filename);
+		bool setKey (const std::string& filename);
+		void delCert ();
+		void delCA ();
+		void delKey ();
+	
+		std::string fCertFile;
+		std::string fCAFile;
+		std::string fKeyFile;
+};
+#endif
 
 /*! @} */
 
 } // end namespoace
-
-#endif

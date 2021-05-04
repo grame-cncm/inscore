@@ -185,11 +185,11 @@ package:
 # building INScore for Android
 #===============================================================
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
-ANDROID_API ?= 22
+ANDROID_API ?= 26
 ANDROID_ARCH ?= armeabi-v7a
  
 android : 
-	make _android INSCOREDIR?=androiddir QMAKE=qmake-android
+	make _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
 
 _android : $(ANDROIDDIR) $(ANDROIDDIR)/Makefile
 	cp -rf ../rsrc/ tmp-rsc
@@ -200,8 +200,8 @@ _android : $(ANDROIDDIR) $(ANDROIDDIR)/Makefile
 	cd $(INSCOREDIR) && androiddeployqt --android-platform android-$(ANDROID_API) --release --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
 	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(INSCOREDIR)/../bin/INScoreViewer.apk
 
-$(ANDROIDDIR) :
-	mkdir $(ANDROIDDIR)
+# $(ANDROIDDIR) :
+# 	mkdir $(ANDROIDDIR)
 
 $(ANDROIDDIR)/Makefile: library.pro viewer.pro INScore.pro
 	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)

@@ -32,6 +32,7 @@
 #endif
 #if HASHTTPSupport
 #include "HttpForwarder.h"
+#include "HttpsForwarder.h"
 #endif
 
 #include "Forwarder.h"
@@ -84,6 +85,7 @@ class OSCForwarder : public ForwardEndPoint
 		void send (const IMessage * imsg) {
 			OSCStream::sendEvent (imsg, dest().fHostname, dest().fPort);
 		}
+		size_t 	getClients () const 	{ return 0; }
 };
 
 //--------------------------------------------------------------------------
@@ -133,6 +135,9 @@ MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 				case IMessage::TUrl::kHTTPProtocol:
 					fForwardList.push_back(new HTTPForwarder(url, fLog));
 					break;
+				case IMessage::TUrl::kHTTPSProtocol:
+					fForwardList.push_back(new HTTPSForwarder(url, fLog->getAppl()));
+					break;
 #endif
 				case IMessage::TUrl::kOSCProtocol:
 					fForwardList.push_back(new OSCForwarder(url));
@@ -157,5 +162,53 @@ void Forwarder::clear()
 	for (auto a: fForwardList) delete a;
 	fForwardList.clear();
 }
+
+//--------------------------------------------------------------------------
+SIMessage Forwarder::makeCount (const char* address, const char* proto, size_t count) const
+{
+	SIMessage msg = IMessage::create(address, kclients_GeMethod);
+	msg->add (proto);
+	msg->add (int(count));
+	return msg;
+}
+
+//--------------------------------------------------------------------------
+SIMessageList Forwarder::getClients() const
+{
+	SIMessageList out = IMessageList::create();
+	size_t http = 0;
+	size_t https = 0;
+	size_t ws = 0;
+	size_t wss = 0;
+	for (auto endpoint: fForwardList) {
+		int proto = endpoint->protocol();
+		size_t clients = endpoint->getClients();
+		switch (proto) {
+			case IMessage::TUrl::kWSProtocol:		ws 		+= clients; break;
+			case IMessage::TUrl::kHTTPProtocol:		http	+= clients; break;
+			case IMessage::TUrl::kHTTPSProtocol:	https	+= clients; break;
+		}
+	}
+
+	size_t total = http + https + ws + wss;
+	const char* dest = "/ITL";
+	if (total) {
+		if (http)
+			out->list().push_back( makeCount(dest, "http", http) );
+		if (https)
+			out->list().push_back( makeCount(dest, "https", https) );
+		if (ws)
+			out->list().push_back( makeCount(dest, "ws", ws) );
+		if (out->list().size() > 1)
+			out->list().push_back( makeCount(dest, "total", total) );
+	}
+	else {
+		SIMessage msg = IMessage::create(dest, kclients_GeMethod);
+		msg->add (0);
+        out->list().push_back(msg);
+	}
+	return out;
+}
+
 
 }

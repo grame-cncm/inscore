@@ -112,6 +112,8 @@ string IAppl::fRootPath;
 
 //--------------------------------------------------------------------------
 void IAppl::setRootPath()		{ fRootPath = getFilePath(); }
+std::string IAppl::getHome()	{ return getFilePath(); }
+
 
 
 inscore::SIMenu getMenuNode(inscore::IAppl * appl) {
@@ -218,6 +220,9 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fAltGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
 	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
+
+	fGetMultiMsgHandlerMap[kclients_GeMethod]	= TGetParamMultiMethodHandler<IAppl, SIMessageList (IAppl::*)() const>::create(this, &IAppl::getClients);
+
 
 #ifdef EMCC
 	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::connect);
@@ -337,6 +342,10 @@ void IAppl::createVirtualNodes()
 	add ( fApplLog );
 	add ( IApplPlugin::create(this) );
 	add (fFilterForward);
+#if HASHTTPSupport
+	fSsl = IApplSsl::create (this);
+	add (fSsl);
+#endif
 	fForwarder.setFilter(fFilterForward);
 	fForwarder.setLog(fApplLog);
 	fJavascript = new TJSEngine (fApplLog);

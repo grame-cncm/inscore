@@ -156,12 +156,109 @@ x = 0.3;
 	/ITL/scene/audio vdate '$(/ITL/scene/vprev get date)'
 );
 
-#/ITL/log show 1;
-#/ITL/ssl cert 	"inscorejs.grame.fr/certificate.crt";
-#/ITL/ssl key 	"inscorejs.grame.fr/private.key";
-#/ITL/ssl cacert "inscorejs.grame.fr/ca_bundle.crt";
-#/ITL/filter reject "/ITL/scene" load ddate quit;
-#/ITL forward  "https://localhost:7200";
+#==================================================
+# forwarding
+#==================================================
+/ITL/log show 1;
+/ITL/ssl cert 	"inscorejs.grame.fr/certificate.crt";
+/ITL/ssl key 	"inscorejs.grame.fr/private.key";
+/ITL/ssl cacert "inscorejs.grame.fr/ca_bundle.crt";
+/ITL/filter reject "/ITL/scene" "/ITL/scene/ctrlfaust*" "/ITL/scene/ctrlecho*"  "/ITL/scene/cursorecho*"  load ddate quit;
+/ITL forward  "https://localhost:7200";
+/ITL get forward;
+
+#==================================================
+# remote control
+#==================================================
+/ITL/scene/ctrlfaustdiagram set txt "Show diagram";
+/ITL/scene/ctrlfaustdiagram y -0.88;
+/ITL/scene/ctrlfaustdiagram watch mouseDown ( 
+	/ITL/scene/ctrlfaustdiagram push,
+	/ITL/scene/echo show 1,
+	/ITL/scene/ctrlfaustdiagram set txt "Hide diagram",
+	/ITL/scene/ctrlfaustdiagram watch mouseDown ( 
+		/ITL/scene/echo show 0,
+		/ITL/scene/ctrlfaustdiagram set txt "Show diagram",
+		/ITL/scene/ctrlfaustdiagram pop
+	)
+);
+
+/ITL/scene/ctrlfaustecho set txt "Connect echo";
+/ITL/scene/ctrlfaustecho y -0.8;
+/ITL/scene/ctrlfaustecho watch mouseDown ( 
+	/ITL/scene/ctrlfaustecho push,
+	/ITL/scene/echo connect audioOutput,
+	/ITL/scene/audio connect echo,
+	/ITL/scene/ctrlfaustecho set txt "Disconnect echo",
+	/ITL/scene/ctrlfaustecho watch mouseDown ( 
+#		/ITL/scene/echo disconnect audioOutput,
+		/ITL/scene/audio disconnect echo,
+		/ITL/scene/ctrlfaustecho set txt "Connect echo",
+		/ITL/scene/ctrlfaustecho pop
+	)
+);
+
+y1 = -0.63;
+y2 = -0.57;
+x = -0.80;
+/ITL/scene/ctrlfaust* fontSize 24;
+/ITL/scene/ctrlfaust* alpha $alpha;
+/ITL/scene/ctrlfaust* watch mouseEnter ( /ITL/scene/$self alpha 255 );
+/ITL/scene/ctrlfaust* watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+/ITL/scene/ctrlfaust* color blue;
+/ITL/scene/ctrlfaust* xorigin -1;
+/ITL/scene/ctrlfaust* x $x;
+
+/ITL/scene/ctrlechodelay set rect 0.7 0.04;
+/ITL/scene/ctrlechodelay y $y1;
+/ITL/scene/ctrlechodelay duration 1000 ;
+/ITL/scene/ctrlechofeedback set rect 0.7 0.04;
+/ITL/scene/ctrlechofeedback y $y2;
+/ITL/scene/ctrlechofeedback duration 100 ;
+
+/ITL/scene/ctrlecho* penWidth 1;
+/ITL/scene/ctrlecho* brushStyle none;
+/ITL/scene/ctrlecho* xorigin -1;
+/ITL/scene/ctrlecho* x $x;
+
+/ITL/scene/ctrlecholabel1 set txt "Delay";
+/ITL/scene/ctrlecholabel2 set txt "Feedback";
+/ITL/scene/ctrlechovalue1 set txt " ";
+/ITL/scene/ctrlechovalue2 set txt " ";
+/ITL/scene/ctrlecho*1 y $y1;
+/ITL/scene/ctrlecho*2 y $y2;
+/ITL/scene/ctrlecholabel* fontSize 14;
+/ITL/scene/ctrlecholabel* xorigin -1;
+/ITL/scene/ctrlecholabel* x $x + 0.71;
+/ITL/scene/ctrlechovalue* xorigin 1.1;
+/ITL/scene/ctrlechovalue* x $x;
+
+w = 0.025;
+/ITL/scene/cursorechodelay set ellipse $w $w;
+/ITL/scene/cursorechofeedback set ellipse $w $w;
+/ITL/scene/cursorecho* color red;
+/ITL/scene/cursorechodelay date 80 ;
+/ITL/scene/cursorechofeedback date 80 ;
+/ITL/scene/sync cursorechodelay ctrlechodelay ;
+/ITL/scene/sync cursorechofeedback ctrlechofeedback ;
+
+delay = (
+	/ITL/scene/cursorechodelay date "$date",
+	/ITL/scene/ctrlechovalue1 set txt "$date%f",
+	/ITL/scene/echo/echo__1000/millisecond "$date%f"
+);
+/ITL/scene/ctrlechodelay watch mouseDown $delay;
+/ITL/scene/ctrlechodelay watch mouseMove $delay;
+
+feedback = (
+	/ITL/scene/cursorechofeedback date "$date",
+	/ITL/scene/ctrlechovalue2 set txt "$date%f",
+	/ITL/scene/echo/echo__1000/feedback "$date%f"
+);
+/ITL/scene/ctrlechofeedback watch mouseDown $feedback;
+/ITL/scene/ctrlechofeedback watch mouseMove $feedback;
 
 __END__
+
+/ITL/scene/echo get ui;
 

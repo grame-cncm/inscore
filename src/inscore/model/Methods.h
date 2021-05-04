@@ -47,6 +47,7 @@ extern const char* kbrowse_SetMethod;
 extern const char* kbrushStyle_GetSetMethod;
 extern const char* kcancel_SetMethod;
 extern const char* kclass_GetSetMethod;
+extern const char* kclients_GeMethod;
 extern const char* kclippitch_GetSetMethod;
 extern const char* kcliptime_GetSetMethod;
 extern const char* kclock_SetMethod;
@@ -233,6 +234,12 @@ extern const char* kmode_GetSetMethod;
 extern const char* ksmooth_GetSetMethod;
 
 extern const char* krefresh_SetMethod;
+
+// ssl methods
+extern const char* kcert_GetSetMethod;
+extern const char* kcacert_GetSetMethod;
+extern const char* kkey_GetSetMethod;
+
 
 } //namespace
 

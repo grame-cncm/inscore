@@ -199,7 +199,7 @@ x = 0.2;
 </div>
 <div class="connect" id="cnx">
 <button type="button" id="connect" onclick="connect()">Connect</button>
-<input type="text" id="dest" name="dest" value="http://localhost:7200" size="30">
+<input type="text" id="dest" name="dest" value="https://inscorejs.grame.fr:7200" size="30">
 </div>
 </body>
 
@@ -213,6 +213,7 @@ x = 0.2;
 			cnx.textContent = "Connect";		
 		}
 		else {
+console.log ("dest " + dest.value);
 			inscore.postMessageStrStr("/ITL/scene", "connect", dest.value);	
 			cnx.textContent = "Disconnect";
 		}

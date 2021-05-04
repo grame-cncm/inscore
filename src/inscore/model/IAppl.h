@@ -51,15 +51,19 @@ namespace inscore
 class INScoreApplicationGlue;
 class IAppl;
 typedef class libmapping::SMARTP<IAppl>	SIAppl;
-
 class IApplDebug;
-typedef class libmapping::SMARTP<IApplDebug> SIApplDebug;
+typedef class libmapping::SMARTP<IApplDebug> 	SIApplDebug;
 class IApplStat;
 typedef class libmapping::SMARTP<IApplStat>		SIApplStat;
 class IApplLog;
 typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 class IFilterForward;
 typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
+
+#if HASHTTPSupport
+class IApplSsl;
+typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
+#endif
 
 //--------------------------------------------------------------------------
 /*!
@@ -102,6 +106,9 @@ class IAppl : public IObject, public TILoader
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
+#if HASHTTPSupport
+		SIApplSsl	fSsl;						// ssl certificates
+#endif
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		Connect		fConnecter;					// A connect class to manage host connections
@@ -131,6 +138,7 @@ class IAppl : public IObject, public TILoader
 		static void				delAliases( const std::string& address);
 		static void				getAliases( const std::string& address, std::vector<TAlias>& aliases);
 		static void				setRootPath();
+		static std::string		getHome();
 		static int				getParseVersion	();
 
 		static bool	running() 		{ return fRunning; }
@@ -151,6 +159,9 @@ class IAppl : public IObject, public TILoader
 	
 		void				logMsgs(const SIMessageList& msgs);
 		IApplLog*			getLogWindow()				{ return fApplLog; }
+#if HASHTTPSupport
+		const IApplSsl*		getSsl() const				{ return fSsl; }
+#endif
 		INScoreApplicationGlue* getApplicatonGlue() 	{ return fAppl; }
 	
 		/*!
@@ -159,6 +170,7 @@ class IAppl : public IObject, public TILoader
 		 */
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fConnecter.getCnxList(); }
+		SIMessageList getClients() const						 { return fForwarder.getClients(); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 		virtual void		cleanup ();

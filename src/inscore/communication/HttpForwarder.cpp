@@ -29,19 +29,22 @@
 
 #if HASHTTPSupport
 #include "HttpForwarder.h"
-#endif
+#include "IAppl.h"
+#include "IApplVNodes.h"
 
 using namespace std;
 
 namespace inscore
 {
 
-#if HASHTTPSupport
-
 HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url, IApplLog* log) : ForwardEndPoint(url, log)
 {
-	connect(this, &QTcpServer::newConnection, this, &HTTPForwarder::accept);
-	listen(QHostAddress::Any, url.fPort);
+	if (initialize(log->getAppl())) {
+		connect(this, &QTcpServer::newConnection, this, &HTTPForwarder::accept);
+		if (!listen(QHostAddress::Any, url.fPort)) {
+			ITLErr << protocol() << " server failed to start" << errorString().toStdString() << ITLEndl;
+		}
+	}
 }
 
 HTTPForwarder::~HTTPForwarder ()		{ close(); }
@@ -51,7 +54,7 @@ void HTTPForwarder::accept () {
 	if (!socket) return;
 
 	stringstream sstr;
-	sstr << "New HTTP connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort;
+	sstr << "New " << protocol() << " connection from " << socket->peerAddress().toString().toStdString() << " on port " << dest().fPort << " - client #" << fClients.size() + 1;
 	log (sstr.str().c_str());
 	connect(socket, &QTcpSocket::disconnected, this, &HTTPForwarder::disconnect);
 	fClients.push_back(socket);		// add the client to the clients list
@@ -74,6 +77,7 @@ void HTTPForwarder::send (QTcpSocket *socket, const char * msg) {
 	const char* nl = "\n";
 	stringstream netmsg;
 	netmsg << "HTTP/1.1 200 OK" << nl
+		<< "Server:inscorejs" << nl
 		<< "Content-Type: text/event-stream" << nl
 		<< "Access-Control-Allow-Origin: *" << nl
 		<< "Connection: keep-alive" << nl
@@ -91,6 +95,6 @@ void HTTPForwarder::send (const IMessage * imsg) {
 		send (socket, b64.toStdString().c_str());
 	}
 }
-#endif
 
 }
+#endif

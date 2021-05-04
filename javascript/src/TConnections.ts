@@ -114,7 +114,8 @@ class TConnections {
 			let proto = cnx.replace (/([a-z]+):\/\/..*/, "$1");
 			switch (proto) {
 				case "http":
-					this.fCnx.push (new THTTPConnection (cnx));
+				case "https":
+						this.fCnx.push (new THTTPConnection (cnx));
 					break;
 				case "ws":
 					this.fCnx.push (new TWSConnection (cnx));
