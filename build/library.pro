@@ -211,7 +211,7 @@ android {
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$GUIDO_PATH/build/lib/ -lGUIDOEngine.$${ARCH}
-    ANDROID_API_VERSION = 22
+    ANDROID_API_VERSION = 26
     QT += androidextras
 	QT += quick quickwidgets 
 }
