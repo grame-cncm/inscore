@@ -76,6 +76,7 @@ help : node_modules
 	@echo "  install : install the required npm components"
 	@echo "  modules : install the external librairies (called by install target)"
 	@echo "  npm     : prepares the $(NPMDIR) folder for publishing to npm "
+	@echo "  publish : publish to npm (use with caution)"
 	@echo
 
 #===============================================================
@@ -129,6 +130,15 @@ $(NPMDEV)/src:
 $(NPMDIR)/$(NPMLIB): $(GLUESRC) $(LIBSRC)
 	tsc -p npmconfig.json
 	mv $(NPMLIB) $(NPMDIR)
+
+publish: VERSION := $(shell grep version $(NPMDIR)/package.json | cut -d: -f 2 | sed -e 's/[^0-9.]*//g')
+publish: 
+	$(MAKE) npm
+	@echo "You are about to publish the INScoreJS package v.$(VERSION) on npm."
+	@echo "Make sure you are logged in (npm login)"
+	@read -p "Continue [y|n]: " answer && [ $$answer == "y" ]
+	cd $(NPMDIR) && npm publish --access public
+	@echo "INScoreJS version " $(VERSION) " published"
 
 
 #===============================================================
