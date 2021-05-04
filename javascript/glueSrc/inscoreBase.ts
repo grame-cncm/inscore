@@ -1,5 +1,6 @@
 
 ///<reference path="../src/lib/inscore.d.ts"/>
+///<reference path="../src/inscoreglue.ts"/>
 ///<reference path="constants.ts"/>
 
 class INScoreDiv {
@@ -11,8 +12,8 @@ class INScoreDiv {
 	}
 }
 
-interface IGlue { start():Promise<any>; }
-declare var gGlue: IGlue;
+// interface IGlue { start():Promise<any>; }
+// declare var gGlue: IGlue;
 
 //----------------------------------------------------------------------------
 class INScoreBase {
