@@ -1,5 +1,5 @@
 {
-  "name": "@grame/INScoreJS",
+  "name": "@grame/inscorejs",
   "author": "GRAME-CNCM",
   "version": "1.0.0",
   "description": "The INScore engine providing augmented, dynamic, interactive musical scores.",
