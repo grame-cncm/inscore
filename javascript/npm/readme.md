@@ -27,7 +27,7 @@ The INScore package depends on several libraries, only necessary if you're using
 To display any of the provided examples, you must first launch a web server from the root of this package.
 Python provides such services. Using python 3:
 ~~~~~~~~~~
-$ python -m http.server
+$ python -m http.server [optionnal port number (default is 8000)]
 ~~~~~~~~~~
 Http servers are also available from [npm](https://www.npmjs.com/package/http-server).
 
@@ -59,4 +59,8 @@ INScoreJS is still in alpha version. The engine has been tested on the following
 | Ubuntu  | -      |   OK     |   -     |   -   |  -   |   -   |
 | Windows | OK     |   OK     |   -     |   -   | OK   | unsupported |
 | Android |  OK    |   OK     |   -     |   -   |  -   |   -   |
+
+
+----
+[INScore](https://inscore.grame.fr/) is a project developed by [GRAME-CNCM](https://www.grame.fr) Computer Research Lab.
 

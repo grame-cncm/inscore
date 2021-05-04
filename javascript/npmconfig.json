@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+       "lib": [ "es2015", "dom" ],
+       "module": "system",
+        "target": "es5",
+        "noImplicitAny": true,
+        "outDir": "npm",
+        "out": "INScoreJS.js",
+        "sourceMap": false,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "allowJs": false,
+    },
+	"exclude" : [
+		"obsolete",
+		"validation",
+		"examples",
+		"npm",
+		"tmp"
+	]
+}
