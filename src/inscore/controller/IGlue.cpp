@@ -223,7 +223,7 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	cout << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 #elif defined(EMCC)
 	string version ("INScore JS v. ");
-	fModel->getLogWindow()->write (version + INScore::versionStr() + " alpha");
+	fModel->getLogWindow()->write (version + INScore::versionStr() + " beta");
 #else
 	cout << "INScore v. " << INScore::versionStr() << " compiled without OSC support" << endl;
 #endif
