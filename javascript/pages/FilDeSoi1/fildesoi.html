@@ -36,17 +36,52 @@
 	/ITL/scene/play* watch mouseEnter ( /ITL/scene/$self color red );
 	/ITL/scene/play* watch mouseLeave ( /ITL/scene/$self color black );
 
-	/ITL/scene/score set gmnf "fildesoi1.gmn.txt";
+	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
 	/ITL/scene/score height 1.8;
-	/ITL/scene/score map staff1;
-	/ITL/scene/score set date 1 4;
+
+	<!-- TODO: Mapper en plus les mesures / segments qui ne sont pas callés comme il faut -->
+	/ITL/scene/score map   "([300, 670[ [245, 310[) ([0:1:70, 0:12:05[)
+							([670, 790[ [245, 310[) ([0:12:05, 0:14:00[)
+							([790, 950[ [245, 310[) ([0:14:00, 0:18:80[)
+							([950, 1035[ [245, 310[) ([0:18:80, 0:23:90[)
+							
+							([230, 570[ [503, 563[) ([0:23:90, 0:30:20[)
+							([570, 950[ [503, 563[) ([0:30:20, 0:37:60[)
+							([950, 1035[ [503, 563[) ([0:37:60, 0:40:00[)
+
+							([230, 470[ [652, 712[) ([0:40:00, 0:44:80[)
+							([470, 615[ [652, 712[) ([0:44:80, 0:46:00[)
+							([615, 1035[ [652, 712[) ([0:46:00, 0:53:70[)
+
+							([230, 580[ [801, 862[) ([00:53:70, 01:01:80[)
+							([580, 800[ [801, 862[) ([01:01:80, 01:08:30[)
+							([800, 1035[ [801, 862[) ([01:08:30, 01:14:00[)
+
+							([230, 345[ [949, 1010[) ([01:14:00, 01:17:00[)
+							([345, 560[ [949, 1010[) ([01:17:00, 01:19:00[)
+							([560, 920[ [949, 1010[) ([01:19:00, 01:25:00[)
+							([920, 1035[ [949, 1010[) ([01:25:00, 01:30:30[)
+							
+							([230, 520[ [1089, 1163[) ([01:30:30, 01:36:40[)
+							([520, 1080[ [1089, 1163[) ([01:36:00, 01:45:80[)
+							
+							([230, 500[ [1270, 1330[) ([01:45:80, 01:48:20[)
+							([500, 640[ [1270, 1330[) ([01:48:20, 01:51:50[)
+							([640, 900[ [1270, 1330[) ([01:51:20, 01:54:60[)
+							([900, 1035[ [1270, 1330[) ([01:54:60, 01:58:50[)
+							
+							";
+		<!-- ([188, 979[ [1252, 1314[) ([, [)
+		([979, 1035[ [1252, 1314[) ([, [)" ; -->
+	<!-- /ITL/scene/score map staff1; -->
+	<!-- /ITL/scene/score set date 1 4; -->
 	/ITL/scene/score watch mouseDown (
-		/ITL/scene/cursor date '$date:staff1',
-		/ITL/scene/audio vdate '$date:staff1'
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
 	);
 	/ITL/scene/score watch mouseMove (
-		/ITL/scene/cursor date '$date:staff1',
-		/ITL/scene/audio vdate '$date:staff1'
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
 	);
 	/ITL/scene/score watch mouseEnter;
 
@@ -69,7 +104,7 @@
 	/ITL/scene/play width $w;
 	/ITL/scene/play alpha $alpha;
 
-	/ITL/scene/play watch mouseDown (
+	initplay = (
 		/ITL/scene/$self push,
 		/ITL/scene/play set img $pause,
 		/ITL/scene/cursor tempo 60,
@@ -81,7 +116,7 @@
 			/ITL/scene/$self pop
 		)
 	);
-	
+	/ITL/scene/play watch mouseDown $initplay;
 	<!-- Button Stop -->
 	/ITL/scene/stop set img $stop;
 	/ITL/scene/stop y 0.9;
@@ -107,7 +142,7 @@
 	/ITL/scene/cursor set ellipse $cursorWidth $cursorWidth;
 	/ITL/scene/cursor color blue;
 	/ITL/scene/cursor alpha 120;
-	/ITL/scene/sync cursor "score:staff1" relative;
+	/ITL/scene/sync cursor score;
 
 	<!-- /ITL/scene/faust scale 0.7;
 	/ITL/scene/faust y -0.3; -->
