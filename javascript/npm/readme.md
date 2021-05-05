@@ -20,7 +20,7 @@ The INScore package depends on several libraries, only necessary if you're using
 - [libmusicxml](https://www.npmjs.com/package/@grame/libmusicxml): required to import MusicXML files (assumes that the `guidolib` is also present).
 - [libfaust](https://www.npmjs.com/package/@grame/libfaust): required to use `faust` objects.
 
-<!-- All these libraries should automatically come with this package. -->
+All these libraries should automatically come with this package.
 
 ## Examples
 
