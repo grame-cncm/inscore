@@ -1,6 +1,5 @@
 
 declare var INScoreModule : any;
-interface TMessage     {}
         
 //------------------------------------------------------------------------
 // INScore glue interface 
