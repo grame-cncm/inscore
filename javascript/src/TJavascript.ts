@@ -5,6 +5,7 @@
 class TJavascript {
 
 	static run (script: string ) : number {
+	try {
 		let out = window.eval (script);
 		if (out) {
 			if (typeof out === 'string') {
@@ -21,5 +22,9 @@ class TJavascript {
 			}
 		}
 		return 1;
+	}
+	catch (e) {
+		console.log ("Failed to evaluate Javascript code: " + e + "\n" + script);
+	}
 	}
 }
