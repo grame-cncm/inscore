@@ -27,7 +27,8 @@ class AIOScanner {
         })
         .catch(function(err) {
             AIOScanner.send (address, AIOScanner.kInputName, null);
-            console.log("AIOScanner can't get input device: " + err);
+// silently ignore missing input device
+//            console.log("AIOScanner can't get input device: " + err);
         });
     } // Get All Physical in/out and populate finput & foutput
 
