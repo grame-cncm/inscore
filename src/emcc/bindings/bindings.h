@@ -202,4 +202,8 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	value_object<JSIOInfos>("JSIOInfos")
 		.field("inputs",  	&JSIOInfos::inputs)
 		.field("outputs",	&JSIOInfos::outputs);
+
+	value_object<JSMaster>("JSMaster")
+		.field("viewid",  	&JSMaster::viewid)
+		.field("vstretch",	&JSMaster::vstretch);
 }

@@ -95,10 +95,11 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getIOInfos",  	&IObjectAdapter::getIOInfos)
 		.function("getMaps",    	&IObjectAdapter::getMaps);
 
-	register_vector<float>	("vector<float>");
-	register_vector<int>	("vector<int>");
-	register_vector<string> ("vector<string>");
-	register_vector<JSRect> ("vector<JSRect>");
+	register_vector<float>		("vector<float>");
+	register_vector<int>		("vector<int>");
+	register_vector<string> 	("vector<string>");
+	register_vector<JSRect> 	("vector<JSRect>");
+	register_vector<JSMaster>	("vector<JSMaster>");
 	register_vector<JSFaustParamValue> ("vector<JSFaustParamValue>");
 	register_vector<JSFaustKeyValue>   ("vector<JSFaustKeyValue>");
 

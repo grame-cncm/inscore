@@ -192,6 +192,11 @@ struct JSIOInfos {
 	int outputs = 0;
 };
 
+struct JSMaster {
+	int  viewid = 0;
+	bool vstretch = false;
+};
+
 class IText;
 class ILine;
 class ICurve;
@@ -242,7 +247,7 @@ class inscore_export IObjectAdapter
 		void 		  ready ()				{ if (fObject) fObject->ready(); }		// should be called from js when a pending object is ready
 		const IObject* getObject () const  { return fObject; };
 
-		std::vector<int> getMasters () const;
+		std::vector<JSMaster> getMasters () const;
 		JSUpdateInfos getUpdateInfos (int masterId) const;
 		JSSceneInfos  getSceneInfos () const;
 		JSTextInfos   getTextInfos () const;
