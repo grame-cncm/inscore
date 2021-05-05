@@ -101,7 +101,7 @@ abstract class JSObjectView {
 	updateView(obj: INScoreObject, /*oid: number,*/ master: number, force: boolean, keepRatio = false) : void {
 		if (obj.deleted()) { this.delete(); return; }
 
-		if (this.fSyncManager && this.fSyncManager.updateSync (obj /*, oid*/))
+		if (this.fSyncManager && this.fSyncManager.updateSync (obj))
 			return;			// object is synchronized, update is done
 
 		if (obj.newData()) 
