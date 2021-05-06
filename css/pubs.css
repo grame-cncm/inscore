@@ -1,0 +1,56 @@
+.publications {
+    padding-top: 1em;
+    padding-left: 20px;
+}
+
+.pub_entry { 
+    padding-top: 0.5em; 
+    padding-bottom: 0.5em; 
+    padding-left: 25px;
+}
+
+.pub_type  { 
+    color: grey; 
+    font-style: italic; 
+}
+.pub_title { font-weight: bold; }
+.pub_title::before { 
+	content: "\25BA  "; 
+	color: blue;
+    margin-left: -20px;
+}
+
+.pub_authors {}
+.pub_ref    {}
+
+.pub_button { 
+    color:#3BA9E8; 
+    padding-left: 20px;
+    font-size: 90%;
+}
+.pub_button:hover { cursor: pointer; }
+
+.pub_pdf { 
+    float: right; 
+    margin-right: 10px;
+}
+
+.pub_abstract { 
+    border-left-style: solid; 
+    border-color: #3BA9E8; 
+    border-width: 5px; 
+    font-size: 85%; 
+    margin-top: 5px; 
+    margin-left: 20px; 
+    padding-left: 20px;
+}
+
+.pub_bibtex { 
+    border-width: 1px; 
+    border-radius: 5px; 
+    color: rgb(26, 27, 32); 
+    font-size: 70%; 
+    background-color: #efefef;
+    margin-left: 20px;
+    margin-top: 5px;
+}

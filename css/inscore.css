@@ -14,7 +14,7 @@
 
 section.download {
     color: #fff;
-    background: #18bc9c;
+    background: #2853d3;
 }
 
 section.download a,
@@ -35,7 +35,7 @@ section.download a:hover {
 
 .news {
   font-size: 14pt;
-  color: #C00;
+  color: #CC0;
   display: inline-block;
   vertical-align: middle;
   -webkit-transform: translateZ(0);
@@ -51,7 +51,7 @@ section.download a:hover {
 .news a:visited {
   left: 0;
   right: 0;
-  color: #C00;
+  color: #CC0;
 }
 
 .news:before {
@@ -61,8 +61,8 @@ section.download a:hover {
   left: 50%;
   right: 50%;
   bottom: 0;
-  background: #F00;
-  height: 3px;
+  background: #CC0;
+  height: 2px;
   -webkit-transition-property: left, right;
   transition-property: left, right;
   -webkit-transition-duration: 0.3s;
@@ -73,7 +73,7 @@ section.download a:hover {
 
 .news:hover  {
 	text-decoration: none;
-  	color: #F00;
+  	color: #CC0;
 }
 
 .news:hover:before, .news:focus:before, .news:active:before {
