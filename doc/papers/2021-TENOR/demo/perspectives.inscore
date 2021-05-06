@@ -198,6 +198,18 @@ x = 0.3;
 	)
 );
 
+/ITL/scene/clients set txt "Clients";
+/ITL/scene/clients fontSize 24;
+/ITL/scene/clients color blue;
+/ITL/scene/clients xorigin -1;
+/ITL/scene/clients x -0.8;
+/ITL/scene/clients y -0.72;
+/ITL/scene/clients alpha $alpha;
+/ITL/scene/clients watch mouseDown ( /ITL get clients ); 
+/ITL/scene/clients* watch mouseEnter ( /ITL/scene/$self alpha 255 );
+/ITL/scene/clients* watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+
+
 y1 = -0.63;
 y2 = -0.57;
 x = -0.80;
