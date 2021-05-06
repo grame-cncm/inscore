@@ -163,7 +163,7 @@ x = 0.3;
 /ITL/ssl cert 	"inscorejs.grame.fr/certificate.crt";
 /ITL/ssl key 	"inscorejs.grame.fr/private.key";
 /ITL/ssl cacert "inscorejs.grame.fr/ca_bundle.crt";
-/ITL/filter reject "/ITL/scene" "/ITL/scene/ctrlfaust*" "/ITL/scene/ctrlecho*"  "/ITL/scene/cursorecho*"  load ddate quit;
+/ITL/filter reject "/ITL" "/ITL/scene" "/ITL/scene/ctrlfaust*" "/ITL/scene/ctrlecho*"  "/ITL/scene/cursorecho*"  load ddate quit;
 /ITL forward  "https://localhost:7200";
 /ITL get forward;
 
