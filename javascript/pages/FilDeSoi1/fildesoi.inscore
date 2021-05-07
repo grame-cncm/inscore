@@ -1,41 +1,10 @@
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
-	<meta http-equiv="Pragma" content="no-cache" /> 
-	<meta http-equiv="Expires" content="0" />
-	<title>Fil De Soi 1</title>
+/ITL/log show 1;
 
-	<link href="/fonts/fonts.css" rel="stylesheet">
-	<!-- <link href="/css/inscore.css" rel="stylesheet"> -->
-	<script src="/lib/libINScore.js"></script>
-	<!-- <script src="/lib/libGUIDOEngine.js"></script> -->
-	<script src="/lib/libfaust-wasm.js"></script> 
-	<script src="/lib/FaustLibrary.js"></script>
-	<script src="/inscoreview.js"></script>
-	<script src="/inscoreglue.js"></script>
-	<style>
-	body { margin: 10; background: white; }
-	.box { width: 100%; height: 100%; font-size: 1px; }
-
-	</style>
-</head>
-
-<body>
-
-<div class="inscore box" id="scene">
-	
-	/ITL/scene/wait set txt "Loading..."; 
-	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
-	/ITL/scene/faust scale 0.2;
-	/ITL/scene/faust show 0;
-	/ITL/scene/wait del; 
+/ITL/scene/* del;
 
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
 	/ITL/scene/score height 1.8;
-	/ITL/scene/score y -0.12; 
 
-	<!-- TODO: Mapper en plus les mesures / segments qui ne sont pas callés comme il faut -->
 	/ITL/scene/score map   "([300, 670[ [245, 310[) ([0:1:70, 0:12:05[)
 							([670, 790[ [245, 310[) ([0:12:05, 0:14:00[)
 							([790, 950[ [245, 310[) ([0:14:00, 0:18:80[)
@@ -59,18 +28,24 @@
 							([920, 1035[ [949, 1010[) ([01:25:00, 01:30:30[)
 							
 							([230, 520[ [1089, 1163[) ([01:30:30, 01:36:40[)
-							([520, 1080[ [1089, 1163[) ([01:36:40, 01:45:80[)
+							([520, 1080[ [1089, 1163[) ([01:36:00, 01:45:80[)
 							
 							([230, 500[ [1270, 1330[) ([01:45:80, 01:48:20[)
 							([500, 640[ [1270, 1330[) ([01:48:20, 01:51:50[)
-							([640, 900[ [1270, 1330[) ([01:51:50, 01:54:60[)
+							([640, 900[ [1270, 1330[) ([01:51:20, 01:54:60[)
 							([900, 1035[ [1270, 1330[) ([01:54:60, 01:58:50[)
 							
 							";
-		<!-- ([188, 979[ [1252, 1314[) ([, [)
-		([979, 1035[ [1252, 1314[) ([, [)" ; -->
-	<!-- /ITL/scene/score map staff1; -->
-	<!-- /ITL/scene/score set date 1 4; -->
+
+
+__END__
+
+/ITL/scene/score/debug map 1; 
+/ITL/scene/score get map; 
+/ITL/scene/score scale 0.5; 
+
+
+
 	/ITL/scene/score watch mouseDown (
 		/ITL/scene/cursor date '$date',
 		/ITL/scene/audio vdate '$date'
@@ -85,14 +60,14 @@
 	/ITL/scene/audio show 0;
 
 	
-	<!-- Buttons variables -->
+#	<!-- Buttons variables -->
 	play  = 'rsrc/play.png';
 	pause = 'rsrc/pause.png';
 	stop  = 'rsrc/stop.png';
 	origin = 1.2;
 	alpha = 120;
 	w = 0.09;
-	<!-- Button Play / Pause-->
+#	<!-- Button Play / Pause-->
 
 	/ITL/scene/play set img $play;
 	/ITL/scene/play y 0.9;
@@ -100,7 +75,7 @@
 	/ITL/scene/play width $w;
 	/ITL/scene/play alpha $alpha;
 
-	initplay = (
+	/ITL/scene/play watch mouseDown (
 		/ITL/scene/$self push,
 		/ITL/scene/play set img $pause,
 		/ITL/scene/cursor tempo 60,
@@ -112,8 +87,8 @@
 			/ITL/scene/$self pop
 		)
 	);
-	/ITL/scene/play watch mouseDown $initplay;
-	<!-- Button Stop -->
+	
+#	<!-- Button Stop -->
 	/ITL/scene/stop set img $stop;
 	/ITL/scene/stop y 0.9;
 	/ITL/scene/stop xorigin $origin * -1;
@@ -138,50 +113,12 @@
 	/ITL/scene/cursor set ellipse $cursorWidth $cursorWidth;
 	/ITL/scene/cursor color blue;
 	/ITL/scene/cursor alpha 120;
-	/ITL/scene/sync cursor score;
+	/ITL/scene/sync cursor score ;
 
-	/ITL/scene/evt2btn set txt "EVENT2";
-	/ITL/scene/evt2btn xorigin 0;
-	/ITL/scene/evt2btn x 1;
-	/ITL/scene/evt2btn y 0.9;
+#	<!-- /ITL/scene/faust scale 0.7;
+#	/ITL/scene/faust y -0.3; -->
+#
+#	<!-- /ITL/scene/text set html "Faust objects";
+#	/ITL/scene/text y -0.7;
+#	/ITL/scene/text fontSize 32; -->
 
-	<!-- /ITL/scene/faust scale 0.7;
-	/ITL/scene/faust y -0.3; -->
-
-	<!-- /ITL/scene/text set html "Faust objects";
-	/ITL/scene/text y -0.7;
-	/ITL/scene/text fontSize 32; -->
-	/ITL/scene/evt2btn watch mouseEnter (/ITL/scene/$self color red);
-	/ITL/scene/evt2btn watch mouseLeave (/ITL/scene/$self color black);
-	/ITL/scene/evt2btn watch mouseDown ( /ITL/scene event EVENT2 );
-
-	
-	/ITL/scene watch EVENT2 (
-		/ITL/scene/audio connect faust,
-		/ITL/scene/audio get in out,
-		/ITL/scene/faust get in out,
-
-		/ITL/scene/faust connect audioOutput,
-		/ITL/scene/faust get connect,
-		/ITL/scene/faust get connect,
-
-		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75
-	);
-
-	/ITL/scene watch EVENT3 (
-		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
-
-	);
-
-	/ITL/scene watch EVENT4 (
-		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
-		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.0
-	);
-	
-
-		
-
-</div>
-
-</body>
-</html>
