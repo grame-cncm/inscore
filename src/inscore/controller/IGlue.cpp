@@ -171,18 +171,6 @@ void IGlue::oscinit (OSCStream& osc, const std::string& address, int port)
 }
 
 //--------------------------------------------------------------------------
-bool IGlue::getSceneView(unsigned int* , int , int , bool )
-{ 
-//	QRect r = QApplication::desktop()->screenGeometry();
-//	float lowestDimension = qMin( r.width(), r.height() );
-//	fScene->setWidth((2*w) / lowestDimension);
-//	fScene->setHeight((2*h) / lowestDimension);
-
-	return false;
-//	return getSceneView()->copy(dest, w, h, smooth );
-}
-
-//--------------------------------------------------------------------------
 void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 {
 	ag->startView();
