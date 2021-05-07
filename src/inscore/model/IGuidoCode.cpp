@@ -89,8 +89,8 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 void IGuidoCode::resetWidth()
 {
 	if (!userDims()) {
-//		setWidth(0);
-//		setHeight(0);
+		setWidth(0);
+		setHeight(0);
 	}
 }
 
