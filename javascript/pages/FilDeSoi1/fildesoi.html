@@ -28,13 +28,10 @@
 
 <div class="inscore box" id="scene">
 	
-	<!-- /ITL/scene/wait set txt "Loading..."; 
+	/ITL/scene/wait set txt "Loading..."; 
 	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
 	/ITL/scene/faust show 0;
-	/ITL/scene/wait del;  -->
-
-	/ITL/scene/play* watch mouseEnter ( /ITL/scene/$self color red );
-	/ITL/scene/play* watch mouseLeave ( /ITL/scene/$self color black );
+	/ITL/scene/wait del; 
 
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
 	/ITL/scene/score height 1.8;
@@ -144,14 +141,38 @@
 	/ITL/scene/cursor alpha 120;
 	/ITL/scene/sync cursor score;
 
+	/ITL/scene/evt2btn set txt "EVENT2";
+	/ITL/scene/evt2btn xorigin 0;
+	/ITL/scene/evt2btn x 1;
+	/ITL/scene/evt2btn y 0.9;
+
 	<!-- /ITL/scene/faust scale 0.7;
 	/ITL/scene/faust y -0.3; -->
 
 	<!-- /ITL/scene/text set html "Faust objects";
 	/ITL/scene/text y -0.7;
 	/ITL/scene/text fontSize 32; -->
-
 	
+	/ITL/scene watch EVENT2 (
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider hWin 1.0 22.0 0.01,
+	)
+
+	/ITL/scene watch EVENT3 (
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7,
+
+	)
+
+	/ITL/scene watch EVENT4 (
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.,
+	)
+	
+
+	/ITL/scene/evt2btn watch mouseDown (/ITL/scene event EVENT2);
+	/ITL/scene/evt2btn watch mouseEnter (/ITL/scene/$self alpha 255);
+	/ITL/scene/evt2btn watch mouseLeave (/ITL/scene/$self alpha $alpha);
+		
 
 </div>
 
