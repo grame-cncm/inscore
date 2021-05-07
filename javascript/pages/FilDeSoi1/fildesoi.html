@@ -4,37 +4,36 @@
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
 	<meta http-equiv="Pragma" content="no-cache" /> 
 	<meta http-equiv="Expires" content="0" />
-	<title>INScore Scene Test</title>
+	<title>Fil De Soi 1</title>
 
 	<link href="/fonts/fonts.css" rel="stylesheet">
-	<link href="/css/inscore.css" rel="stylesheet">
+	<!-- <link href="/css/inscore.css" rel="stylesheet"> -->
 	<script src="/lib/libINScore.js"></script>
-	<script src="/lib/libGUIDOEngine.js"></script>
+	<!-- <script src="/lib/libGUIDOEngine.js"></script> -->
 	<script src="/lib/libfaust-wasm.js"></script> 
 	<script src="/lib/FaustLibrary.js"></script>
 	<script src="/inscoreview.js"></script>
 	<script src="/inscoreglue.js"></script>
 	<style>
-	body { margin: 50; background: gainsboro; height: 100%; }
-	.box { width: 50%; height: 70%; border-radius: 15px; font-size: 1px; }
-	.test { margin: 10px; padding: 10px; background: black; }
+	body { margin: 10; background: white; }
+	.box { width: 100%; height: 100%; font-size: 1px; }
 
 	</style>
 </head>
 
 <body>
 
-<h1>INScore FilDeSoi Test</h1>
-
 <div class="inscore box" id="scene">
 	
 	/ITL/scene/wait set txt "Loading..."; 
 	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
+	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
 	/ITL/scene/wait del; 
 
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
 	/ITL/scene/score height 1.8;
+	/ITL/scene/score y -0.12; 
 
 	<!-- TODO: Mapper en plus les mesures / segments qui ne sont pas callés comme il faut -->
 	/ITL/scene/score map   "([300, 670[ [245, 310[) ([0:1:70, 0:12:05[)
@@ -155,18 +154,18 @@
 	
 	/ITL/scene watch EVENT2 (
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75,
-		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider hWin 1.0 22.0 0.01,
-	)
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider hWin 1.0 22.0 0.01
+	);
 
 	/ITL/scene watch EVENT3 (
-		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
 
-	)
+	);
 
 	/ITL/scene watch EVENT4 (
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
-		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.,
-	)
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.
+	);
 	
 
 	/ITL/scene/evt2btn watch mouseDown (/ITL/scene event EVENT2);
