@@ -355,7 +355,7 @@ chowningPanner(as, ahp) = _ <: (*(chowningLeftLevel), *(chowningRighLevel))
  	};
 multiChowningPan(n, ahp) = par(i, n, (chowningPanner(ahp*(2*i/(n-1)-1), ahp))) :> (_, _);
 
-process = guitar_process : toSpat_process : (spat_process, _, _, _, _,  _, _ ) : (_, inputSort(6)) : (_, +, +, +, +, +, +) : generalGainBlock(7) : myambisonicdecoder(3, 8) : multiChowningPan(8, phi0);
+process = + : guitar_process : toSpat_process : (spat_process, _, _, _, _,  _, _ ) : (_, inputSort(6)) : (_, +, +, +, +, +, +) : generalGainBlock(7) : myambisonicdecoder(3, 8) : multiChowningPan(8, phi0);
 
 
 
