@@ -109,7 +109,7 @@ function getPublications (url, destdiv) {
 
 const pubdiv = document.getElementById("publications");
 if (pubdiv) {
-    const url = "http://api.archives-ouvertes.fr/search/INSCORE" 
+    const url = "https://api.archives-ouvertes.fr/search/INSCORE" 
     const options = "indent=true&wt=json&rows=2000&fl=*&sort=publicationDateY_i%20desc";
     getPublications(url + "?" + options).then ( (result) => { display(result, pubdiv); });
 }
