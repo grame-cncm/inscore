@@ -17,6 +17,7 @@ if (QT6)
 else()
 	set (QTVERS Qt5)
 endif()
+# Core must be the first module, don't move it, it's used at packaging level to fix incorrect qr deployement
 set (QTMODULES Core Gui Widgets Svg PrintSupport Multimedia MultimediaWidgets WebSockets Sensors Qml OpenGL)
 if (IOS)
 	set (QTMODULES ${QTMODULES} Quick QuickWidgets)

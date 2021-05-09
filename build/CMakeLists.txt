@@ -402,13 +402,16 @@ install ( TARGETS ${installtargets}
 )
 
 if(WIN32)
+string( REPLACE ";" " -" MODULES "${QTMODULES}")
+string( REPLACE "Core" " -Core" MODULES "${MODULES}")
+string( TOLOWER  "${MODULES}" MODULES)
 if (PACK)
 	set (DEPLOYLOCATION "_CPack_Packages/win64/NSIS64/INScore-${VERSION}-win64")
 else ()
 	set (DEPLOYLOCATION ${INSTALL_BIN})
 endif()
-install ( CODE "message (STATUS \"Call windeployqt\")"
-		  CODE "execute_process ( COMMAND windeployqt ${DEPLOYLOCATION}/${viewer}.exe )"
+install ( CODE "message (STATUS \"Call windeployqt\" \"${MODULES}\")"
+		  CODE "execute_process ( COMMAND windeployqt  ${MODULES} ${DEPLOYLOCATION}/${viewer}.exe )"
 )
 endif()
 
