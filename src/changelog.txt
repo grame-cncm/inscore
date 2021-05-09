@@ -20,6 +20,10 @@ Version 1.28
 	- new get clients messages at application level
 	- add https support to forwarding mechanism
 
+Known issues:
+- [windows, linux] opening multiple windows may result in endless switch of focus between windows 
+- 'arc' objects are incorrectly rendered depending on the angle and the range
+
 ----------------------------------------------------
 Version 1.27
 - extension of the width and height attributes in write mode (images, svg,...)
