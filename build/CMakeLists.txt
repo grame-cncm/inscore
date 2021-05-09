@@ -355,6 +355,11 @@ endif()
 
 message (STATUS "Install location is ${CMAKE_INSTALL_PREFIX}, use -DPREFIX option to change")
 
+####################################
+if (PACK)
+	set (CMAKE_INSTALL_PREFIX .)
+endif()
+
 if (APPLE OR WIN32)
 	set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX})
 	set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/dev)
@@ -377,11 +382,6 @@ else()
 	set (INSTALL_DOC 		${CMAKE_INSTALL_PREFIX}/share/inscore/doc)
 endif()
 set (installtargets 	${viewer} ${ibundle} ${libtarget})
-
-####################################
-if (PACK)
-	set (CMAKE_INSTALL_PREFIX .)
-endif()
 
 
 ####################################
