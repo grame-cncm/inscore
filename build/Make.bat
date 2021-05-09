@@ -50,12 +50,12 @@ EXIT /B
 
 @rem --- packaging ----------------------------------
 :PACKAGE
-cd inscoredir
-cmake .. -DPACK=on
-cmake --build . --config Release 
-cpack -G NSIS64
-move INScore-*.exe ..
-cd ..
+	cd inscoredir
+	cmake .. -DPACK=on
+	cmake --build . --config Release 
+	cpack -G NSIS64
+	move INScore-*.exe ..
+	cd ..
 EXIT /B
 
 @rem --- deployment ----------------------------------
@@ -76,8 +76,11 @@ EXIT /B
 @rem --- submodules compilation ----------------------
 :MODULES
 	echo Compiles submodules
+	echo Make sure the submodules are synced to github
+	set CONT="no"
+	set /p CONT=Type Y to continue... 
+	if /i NOT %CONT%==Y exit
 	cd ../modules
-echo in modules
 	CALL Make.bat
 	cd ../build
 EXIT /B
