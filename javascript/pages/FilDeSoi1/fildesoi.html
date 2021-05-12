@@ -38,37 +38,38 @@
 	/ITL/scene/score y -0.12; 
 
 										<!-- Mapping -->
-	/ITL/scene/score map   "([280, 300[ [310, 350[) ([0:00:00, 0:1:70[)
+	/ITL/scene/score map   "([278, 300[ [310, 350[) ([0:00:00, 0:1:70[)
 							([300, 670[ [310, 350[) ([0:1:70, 0:12:05[)
 							([670, 790[ [310, 350[) ([0:12:05, 0:14:00[)
 							([790, 950[ [310, 350[) ([0:14:00, 0:18:80[)
-							([950, 1050[ [310, 350[) ([0:18:80, 0:23:90[)
+							([950, 1084[ [310, 350[) ([0:18:80, 0:23:90[)
 							
-							([230, 570[ [560, 600[) ([0:23:90, 0:30:20[)
-							([570, 950[ [560, 600[) ([0:30:20, 0:37:60[)
-							([950, 1050[ [560, 600[) ([0:37:60, 0:40:00[)
+							([224, 570[ [560, 605[) ([0:23:90, 0:30:20[)
+							([570, 950[ [560, 605[) ([0:30:20, 0:37:60[)
+							([950, 1084[ [560, 605[) ([0:37:60, 0:40:00[)
 
-							([230, 470[ [710, 750[) ([0:40:00, 0:44:80[)
-							([470, 615[ [710, 750[) ([0:44:80, 0:46:00[)
-							([615, 1050[ [710, 750[) ([0:46:00, 0:53:70[)
+							([224, 470[ [710, 754[) ([0:40:00, 0:44:80[)
+							([470, 615[ [710, 754[) ([0:44:80, 0:46:00[)
+							([615, 1084[ [710, 754[) ([0:46:00, 0:53:70[)
 
 							([230, 580[ [860, 900[) ([00:53:70, 01:01:80[)
 							([580, 800[ [860, 900[) ([01:01:80, 01:08:30[)
-							([800, 1050[ [860, 900[) ([01:08:30, 01:14:00[)
+							([800, 1084[ [860, 900[) ([01:08:30, 01:14:00[)
 
-							([230, 345[ [1010, 1050[) ([01:14:00, 01:17:00[)
+							([233, 345[ [1010, 1050[) ([01:14:00, 01:17:00[)
 							([345, 560[ [1010, 1050[) ([01:17:00, 01:19:00[)
 							([560, 920[ [1010, 1050[) ([01:19:00, 01:25:00[)
-							([920, 1050[ [1010, 1050[) ([01:25:00, 01:30:30[)
+							([920, 1084[ [1010, 1050[) ([01:25:00, 01:30:30[)
 							
-							([230, 520[ [1160, 1200[) ([01:30:30, 01:36:40[)
-							([520, 1080[ [1160, 1200[) ([01:36:40, 01:45:80[)
+							([233, 520[ [1160, 1205[) ([01:30:30, 01:36:40[)
+							([520, 1080[ [1160, 1205[) ([01:36:40, 01:45:80[)
 							
-							([230, 500[ [1310, 1350[) ([01:45:80, 01:48:20[)
-							([500, 640[ [1310, 1350[) ([01:48:20, 01:51:50[)
-							([640, 900[ [1310, 1350[) ([01:51:50, 01:54:60[)
-							([900, 1050[ [1310, 1350[) ([01:54:60, 01:58:50[)";
-
+							([233, 500[ [1310, 1355[) ([01:45:80, 01:48:20[)
+							([500, 640[ [1310, 1355[) ([01:48:20, 01:51:50[)
+							([640, 900[ [1310, 1355[) ([01:51:50, 01:54:60[)
+							([900, 1025[ [1310, 1355[) ([01:54:60, 01:58:50[)
+							([1025, 1065[ [1310, 1355[) ([01:58:50, 02:10:00[)";
+						
 	/ITL/scene/score watch mouseDown (
 		/ITL/scene/cursor date '$date',
 		/ITL/scene/audio vdate '$date'
@@ -140,7 +141,7 @@
 	/ITL/scene/cursor set rect 0.01 0.1;
 	/ITL/scene/cursor color 0xff0000aa;
 	/ITL/scene/cursor alpha 120;
-	/ITL/scene/sync cursor score;
+	/ITL/scene/sync cursor score v;
 
 	<!-- /ITL/scene/faust scale 0.7;
 	/ITL/scene/faust y -0.3; -->
@@ -152,12 +153,13 @@
 	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self color black, /ITL/scene/$self alpha $alpha);
 
 	<!-- Audio Control Buttons -->
+	x = 0.5;
 	/ITL/scene/audioCtrltxtbtnWavOnly set txt "WAV to audioOutput";
 	/ITL/scene/audioCtrltxtbtnWavToDSP set txt "WAV to DSP";
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP set txt "AudioInput to DSP";
 	
-	/ITL/scene/audioCtrltxtbtn* xorigin 0;
-	/ITL/scene/audioCtrltxtbtn* x 0.8;
+	/ITL/scene/audioCtrltxtbtn* xorigin -1.1;
+	/ITL/scene/audioCtrltxtbtn* x $x;
 
 	/ITL/scene/audioCtrltxtbtnWavOnly y 0.85;
 	/ITL/scene/audioCtrltxtbtnWavToDSP y 0.9;
@@ -168,12 +170,13 @@
 	/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick;
 
 	/ITL/scene/audioCtrlbtn* alpha 180;
-	/ITL/scene/audioCtrlbtn* xorigin 0;
-	/ITL/scene/audioCtrlbtn* x 0.5;
+	/ITL/scene/audioCtrlbtn* width 0.04;
+	/ITL/scene/audioCtrlbtn* xorigin 1.15;
+	/ITL/scene/audioCtrlbtn* x $x;
 	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
 	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
 	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.95;
-	/ITL/scene/audioCtrlbtn* scale 0.05;
+	<!-- /ITL/scene/audioCtrlbtn* scale 0.05; -->
 
 	/ITL/scene/audioCtrlbtn* watch mouseEnter (/ITL/scene/$self alpha 120);
 	/ITL/scene/audioCtrlbtn* watch mouseLeave (/ITL/scene/$self alpha 255);
