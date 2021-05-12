@@ -152,19 +152,27 @@
 	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self color black, /ITL/scene/$self alpha $alpha);
 
 	<!-- Audio Control Buttons -->
-	/ITL/scene/audioCtrlbtnWavOnly set ellipse $cursorWidth $cursorWidth;
-	/ITL/scene/audioCtrlbtnWavToDSP set ellipse $cursorWidth $cursorWidth;
-	/ITL/scene/audioCtrlbtnAudioInToDSP set ellipse $cursorWidth $cursorWidth;
+	/ITL/scene/audioCtrltxtbtnWavOnly set txt "WAV to audioOutput";
+	/ITL/scene/audioCtrltxtbtnWavToDSP set txt "WAV to DSP";
+	/ITL/scene/audioCtrltxtbtnAudioInToDSP set txt "AudioInput to DSP";
+	
+	/ITL/scene/audioCtrltxtbtn* xorigin 0;
+	/ITL/scene/audioCtrltxtbtn* x 0.8;
 
-	/ITL/scene/audioCtrlbtn* alpha 180;
-	/ITL/scene/audioCtrlbtn* xorigin 0;
-	/ITL/scene/audioCtrlbtn* x 1;
-	/ITL/scene/audioCtrlbtnWavOnly y -0.1;
-	/ITL/scene/audioCtrlbtnWavToDSP y 0;
-	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.1;
+	/ITL/scene/audioCtrltxtbtnWavOnly y 0.85;
+	/ITL/scene/audioCtrltxtbtnWavToDSP y 0.9;
+	/ITL/scene/audioCtrltxtbtnAudioInToDSP y 0.95;
+
 	/ITL/scene/audioCtrlbtnWavOnly set img $ticked;
 	/ITL/scene/audioCtrlbtnWavToDSP set img $ticked;
 	/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked;
+
+	/ITL/scene/audioCtrlbtn* alpha 180;
+	/ITL/scene/audioCtrlbtn* xorigin 0;
+	/ITL/scene/audioCtrlbtn* x 0.5;
+	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
+	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
+	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.95;
 	/ITL/scene/audioCtrlbtn* scale 0.05;
 
 	/ITL/scene/audioCtrlbtn* watch mouseEnter (/ITL/scene/$self alpha 120);
