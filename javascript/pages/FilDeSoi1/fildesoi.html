@@ -26,7 +26,9 @@
 <div class="inscore box" id="scene">
 	
 	/ITL/scene/wait set txt "Loading..."; 
-	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
+	<!-- /ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt"; -->
+	/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
+
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
 	/ITL/scene/wait del; 
@@ -36,35 +38,36 @@
 	/ITL/scene/score y -0.12; 
 
 										<!-- Mapping -->
-	/ITL/scene/score map   "([300, 670[ [245, 310[) ([0:1:70, 0:12:05[)
-							([670, 790[ [245, 310[) ([0:12:05, 0:14:00[)
-							([790, 950[ [245, 310[) ([0:14:00, 0:18:80[)
-							([950, 1050[ [245, 310[) ([0:18:80, 0:23:90[)
+	/ITL/scene/score map   "([280, 300[ [310, 350[) ([0:00:00, 0:1:70[)
+							([300, 670[ [310, 350[) ([0:1:70, 0:12:05[)
+							([670, 790[ [310, 350[) ([0:12:05, 0:14:00[)
+							([790, 950[ [310, 350[) ([0:14:00, 0:18:80[)
+							([950, 1050[ [310, 350[) ([0:18:80, 0:23:90[)
 							
-							([230, 570[ [503, 563[) ([0:23:90, 0:30:20[)
-							([570, 950[ [503, 563[) ([0:30:20, 0:37:60[)
-							([950, 1050[ [503, 563[) ([0:37:60, 0:40:00[)
+							([230, 570[ [560, 600[) ([0:23:90, 0:30:20[)
+							([570, 950[ [560, 600[) ([0:30:20, 0:37:60[)
+							([950, 1050[ [560, 600[) ([0:37:60, 0:40:00[)
 
-							([230, 470[ [652, 712[) ([0:40:00, 0:44:80[)
-							([470, 615[ [652, 712[) ([0:44:80, 0:46:00[)
-							([615, 1050[ [652, 712[) ([0:46:00, 0:53:70[)
+							([230, 470[ [710, 750[) ([0:40:00, 0:44:80[)
+							([470, 615[ [710, 750[) ([0:44:80, 0:46:00[)
+							([615, 1050[ [710, 750[) ([0:46:00, 0:53:70[)
 
-							([230, 580[ [801, 862[) ([00:53:70, 01:01:80[)
-							([580, 800[ [801, 862[) ([01:01:80, 01:08:30[)
-							([800, 1050[ [801, 862[) ([01:08:30, 01:14:00[)
+							([230, 580[ [860, 900[) ([00:53:70, 01:01:80[)
+							([580, 800[ [860, 900[) ([01:01:80, 01:08:30[)
+							([800, 1050[ [860, 900[) ([01:08:30, 01:14:00[)
 
-							([230, 345[ [949, 1010[) ([01:14:00, 01:17:00[)
-							([345, 560[ [949, 1010[) ([01:17:00, 01:19:00[)
-							([560, 920[ [949, 1010[) ([01:19:00, 01:25:00[)
-							([920, 1050[ [949, 1010[) ([01:25:00, 01:30:30[)
+							([230, 345[ [1010, 1050[) ([01:14:00, 01:17:00[)
+							([345, 560[ [1010, 1050[) ([01:17:00, 01:19:00[)
+							([560, 920[ [1010, 1050[) ([01:19:00, 01:25:00[)
+							([920, 1050[ [1010, 1050[) ([01:25:00, 01:30:30[)
 							
-							([230, 520[ [1089, 1163[) ([01:30:30, 01:36:40[)
-							([520, 1080[ [1089, 1163[) ([01:36:40, 01:45:80[)
+							([230, 520[ [1160, 1200[) ([01:30:30, 01:36:40[)
+							([520, 1080[ [1160, 1200[) ([01:36:40, 01:45:80[)
 							
-							([230, 500[ [1270, 1330[) ([01:45:80, 01:48:20[)
-							([500, 640[ [1270, 1330[) ([01:48:20, 01:51:50[)
-							([640, 900[ [1270, 1330[) ([01:51:50, 01:54:60[)
-							([900, 1050[ [1270, 1330[) ([01:54:60, 01:58:50[)";
+							([230, 500[ [1310, 1350[) ([01:45:80, 01:48:20[)
+							([500, 640[ [1310, 1350[) ([01:48:20, 01:51:50[)
+							([640, 900[ [1310, 1350[) ([01:51:50, 01:54:60[)
+							([900, 1050[ [1310, 1350[) ([01:54:60, 01:58:50[)";
 
 	/ITL/scene/score watch mouseDown (
 		/ITL/scene/cursor date '$date',
@@ -84,6 +87,8 @@
 	play  = 'rsrc/play.png';
 	pause = 'rsrc/pause.png';
 	stop  = 'rsrc/stop.png';
+	tick = 'rsrc/tick1.png';
+	ticked = 'rsrc/tick2.png';
 	origin = 1.2;
 	alpha = 120;
 	w = 0.09;
@@ -132,8 +137,8 @@
 
 	<!-- Cursor -->
 	cursorWidth = 0.07;
-	/ITL/scene/cursor set ellipse $cursorWidth $cursorWidth;
-	/ITL/scene/cursor color blue;
+	/ITL/scene/cursor set rect 0.01 0.1;
+	/ITL/scene/cursor color 0xff0000aa;
 	/ITL/scene/cursor alpha 120;
 	/ITL/scene/sync cursor score;
 
@@ -147,34 +152,45 @@
 	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self color black, /ITL/scene/$self alpha $alpha);
 
 	<!-- Audio Control Buttons -->
-	/ITL/scene/audioCtrlbtnWavOnly set ellipse $cursorWidth $cursorWidth;
-	/ITL/scene/audioCtrlbtnWavToDSP set ellipse $cursorWidth $cursorWidth;
-	/ITL/scene/audioCtrlbtnAudioInToDSP set ellipse $cursorWidth $cursorWidth;
+	/ITL/scene/audioCtrltxtbtnWavOnly set txt "WAV to audioOutput";
+	/ITL/scene/audioCtrltxtbtnWavToDSP set txt "WAV to DSP";
+	/ITL/scene/audioCtrltxtbtnAudioInToDSP set txt "AudioInput to DSP";
+	
+	/ITL/scene/audioCtrltxtbtn* xorigin 0;
+	/ITL/scene/audioCtrltxtbtn* x 0.8;
+
+	/ITL/scene/audioCtrltxtbtnWavOnly y 0.85;
+	/ITL/scene/audioCtrltxtbtnWavToDSP y 0.9;
+	/ITL/scene/audioCtrltxtbtnAudioInToDSP y 0.95;
+
+	/ITL/scene/audioCtrlbtnWavOnly set img $ticked;
+	/ITL/scene/audioCtrlbtnWavToDSP set img $tick;
+	/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick;
 
 	/ITL/scene/audioCtrlbtn* alpha 180;
 	/ITL/scene/audioCtrlbtn* xorigin 0;
-	/ITL/scene/audioCtrlbtn* x 2;
-	/ITL/scene/audioCtrlbtnWavOnly y -0.1;
-	/ITL/scene/audioCtrlbtnWavToDSP y 0;
-	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.1;
+	/ITL/scene/audioCtrlbtn* x 0.5;
+	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
+	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
+	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.95;
+	/ITL/scene/audioCtrlbtn* scale 0.05;
 
-	/ITL/scene/audioCtrlbtn* watch mouseEnter (/ITL/scene/$self alpha 50);
+	/ITL/scene/audioCtrlbtn* watch mouseEnter (/ITL/scene/$self alpha 120);
 	/ITL/scene/audioCtrlbtn* watch mouseLeave (/ITL/scene/$self alpha 255);
 	
 	toggleWavOnly = (
 		/ITL/scene/$self push,
 		
 		<!-- TODO:Change button appearance -->
-		/ITL/scene/audioCtrlbtnWavOnly color blue,
-		/ITL/scene/audioCtrlbtnWavOnly blue 120,
+		/ITL/scene/audioCtrlbtnWavOnly set img $tick,
 
-		/ITL/scene/audio connect audioOutput,
+		/ITL/scene/audio disconnect audioOutput,
 		
 		/ITL/scene/audioCtrlbtnWavOnly watch mouseDown (
 			<!-- TODO:Change button appearance -->
-			/ITL/scene/audioCtrlbtnWavOnly blue 255,
+			/ITL/scene/audioCtrlbtnWavOnly set img $ticked,
 
-			/ITL/scene/audio disconnect audioOutput,
+			/ITL/scene/audio connect audioOutput,
 			
 			/ITL/scene/$self pop
 		)
@@ -183,19 +199,17 @@
 	toggleWavToDSP = (
 		/ITL/scene/$self push,
 		<!-- TODO:Change button appearance -->
-		/ITL/scene/audioCtrlbtnWavToDSP color green,
-		/ITL/scene/audioCtrlbtnWavToDSP green 120,
-	
+		/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
 		/ITL/scene/audio connect faust,
 		/ITL/scene/faust connect audioOutput,
 	
 		/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
-			/ITL/scene/audioCtrlbtnWavToDSP green 255,
-
+			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,
+			
 			/ITL/scene/audio disconnect faust,
 			/ITL/scene/faust disconnect audioOutput,
-
+	
 			/ITL/scene/$self pop
 		)
 	);
@@ -203,25 +217,24 @@
 	toggleAudioInToDSP = (
 		/ITL/scene/$self push,
 		<!-- TODO:Change button appearance -->
-		/ITL/scene/audioCtrlbtnAudioInToDSP color red,
-		/ITL/scene/audioCtrlbtnAudioInToDSP red 120,
+		/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
 
 		/ITL/scene/audioInput connect faust,
-		/ITL/scene/faust connect audioOutput,		
-	
+		/ITL/scene/faust connect audioOutput,	
+		
 		/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
-			/ITL/scene/audioCtrlbtnAudioInToDSP red 255,
+			/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
 
 			/ITL/scene/audioInput disconnect faust,
-			/ITL/scene/faust disconnect audioOutput,
-
+			/ITL/scene/faust disconnect audioOutput,	
+	
 			/ITL/scene/$self pop
 		)
 	);
 		
 	/ITL/scene/audioCtrlbtnWavOnly watch mouseDown $toggleWavOnly;
-	/ITL/scene/audioCtrlbtnWavOnly watch mouseDown $toggleWavOnly;
+	/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown $toggleWavToDSP;
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
 
 	<!-- TODO: Events -->
