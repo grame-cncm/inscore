@@ -26,8 +26,8 @@
 <div class="inscore box" id="scene">
 	
 	/ITL/scene/wait set txt "Loading..."; 
-	<!-- /ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt"; -->
-	/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
+	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
+	<!-- /ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;'; -->
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -238,6 +238,7 @@
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
 
 	<!-- TODO: Events -->
+	
 	<!-- /ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75 EVENT 2-->
 	<!-- /ITL/scene watch EVENT3 (
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
