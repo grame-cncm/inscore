@@ -147,6 +147,10 @@ elseif (APPLE)
 		set ( DEFS ${DEFS} -DINSCORE_IOS)
 	else()
 		set ( DEFS ${DEFS} -DMACOS)
+		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.13)
+		set (CMAKE_LDFLAGS -mmacosx-version-min=10.13)
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
+		set (MACOSX_DEPLOYMENT_TARGET 10.13)
 	endif()
 elseif(UNIX)
 	set ( DEFS ${DEFS} -D__LINUX__)
@@ -355,6 +359,11 @@ endif()
 
 message (STATUS "Install location is ${CMAKE_INSTALL_PREFIX}, use -DPREFIX option to change")
 
+####################################
+if (PACK)
+	set (CMAKE_INSTALL_PREFIX .)
+endif()
+
 if (APPLE OR WIN32)
 	set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX})
 	set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/dev)
@@ -378,11 +387,6 @@ else()
 endif()
 set (installtargets 	${viewer} ${ibundle} ${libtarget})
 
-####################################
-if (PACK)
-	set (CMAKE_INSTALL_PREFIX .)
-endif()
-
 
 ####################################
 # install compiled resources
@@ -402,8 +406,16 @@ install ( TARGETS ${installtargets}
 )
 
 if(WIN32)
-install ( CODE "message (STATUS \"Call windeployqt\")"
-		  CODE "execute_process ( COMMAND windeployqt ${INSTALL_BIN}/${viewer}.exe )"
+string( REPLACE ";" " -" MODULES "${QTMODULES}")
+string( REPLACE "Core" " -Core" MODULES "${MODULES}")
+string( TOLOWER  "${MODULES}" MODULES)
+if (PACK)
+	set (DEPLOYLOCATION "_CPack_Packages/win64/NSIS64/INScore-${VERSION}-win64")
+else ()
+	set (DEPLOYLOCATION ${INSTALL_BIN})
+endif()
+install ( CODE "message (STATUS \"Call windeployqt\" \"${MODULES}\")"
+		  CODE "execute_process ( COMMAND windeployqt  ${MODULES} ${DEPLOYLOCATION}/${viewer}.exe )"
 )
 endif()
 

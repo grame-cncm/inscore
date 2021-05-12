@@ -160,10 +160,12 @@ x = 0.3;
 # forwarding
 #==================================================
 /ITL/log show 1;
+/ITL/log x $(/ITL/scene get x);
+#/ITL/scene watch x (/ITL/log x '$(/ITL/scene get x)');
 /ITL/ssl cert 	"inscorejs.grame.fr/certificate.crt";
 /ITL/ssl key 	"inscorejs.grame.fr/private.key";
 /ITL/ssl cacert "inscorejs.grame.fr/ca_bundle.crt";
-/ITL/filter reject "/ITL/scene" "/ITL/scene/ctrlfaust*" "/ITL/scene/ctrlecho*"  "/ITL/scene/cursorecho*"  load ddate quit;
+/ITL/filter reject "/ITL" "/ITL/scene" "/ITL/log" "/ITL/scene/ctrlfaust*" "/ITL/scene/ctrlecho*"  "/ITL/scene/cursorecho*"  "/ITL/scene/demo2"  load ddate quit;
 /ITL forward  "https://localhost:7200";
 /ITL get forward;
 
@@ -197,6 +199,18 @@ x = 0.3;
 		/ITL/scene/ctrlfaustecho pop
 	)
 );
+
+/ITL/scene/clients set txt "Clients";
+/ITL/scene/clients fontSize 24;
+/ITL/scene/clients color blue;
+/ITL/scene/clients xorigin -1;
+/ITL/scene/clients x -0.8;
+/ITL/scene/clients y -0.72;
+/ITL/scene/clients alpha $alpha;
+/ITL/scene/clients watch mouseDown ( /ITL get clients ); 
+/ITL/scene/clients* watch mouseEnter ( /ITL/scene/$self alpha 255 );
+/ITL/scene/clients* watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+
 
 y1 = -0.63;
 y2 = -0.57;
@@ -258,7 +272,37 @@ feedback = (
 /ITL/scene/ctrlechofeedback watch mouseDown $feedback;
 /ITL/scene/ctrlechofeedback watch mouseMove $feedback;
 
+
+/ITL/scene/demo2 set txt Next;
+/ITL/scene/demo2 fontSize 24;
+/ITL/scene/demo2 alpha $alpha;
+/ITL/scene/demo2 watch mouseEnter ( /ITL/scene/$self alpha 255 );
+/ITL/scene/demo2 watch mouseLeave ( /ITL/scene/$self alpha $alpha );
+/ITL/scene/demo2 color blue;
+/ITL/scene/demo2 xorigin 1;
+/ITL/scene/demo2 x 0.85;
+/ITL/scene/demo2 y -0.88;
+/ITL/scene/demo2 watch mouseDown ( 
+	/ITL/scene/next set txt "Go to the next demo at",
+	/ITL/scene/nexturl set txt "https://inscoreweb.grame.fr",
+	/ITL/scene/next* fontSize 28,
+	/ITL/scene/next color blue,
+	/ITL/scene/nexturl color red,
+	/ITL/scene/nexturl alpha $alpha,
+	/ITL/scene/nexturl watch mouseEnter ( /ITL/scene/$self alpha 255 ),
+	/ITL/scene/nexturl watch mouseLeave ( /ITL/scene/$self alpha $alpha ),
+	/ITL/scene/next* y 0.6,
+	/ITL/scene/nexturl y 0.69,
+	/ITL/scene/nexturl watch mouseDown ( 
+		/ITL browse "https://inscoreweb.grame.fr/?src=examples/syncFrame/syncframe1.inscore"
+	)
+);
+
+
 __END__
 
 /ITL/scene/echo get ui;
+/ITL/scene/next* y 0.65;
+/ITL/scene/next y -0.08;
+/ITL/scene/nexturl y 0.11;
 

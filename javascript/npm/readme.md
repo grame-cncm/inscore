@@ -20,14 +20,14 @@ The INScore package depends on several libraries, only necessary if you're using
 - [libmusicxml](https://www.npmjs.com/package/@grame/libmusicxml): required to import MusicXML files (assumes that the `guidolib` is also present).
 - [libfaust](https://www.npmjs.com/package/@grame/libfaust): required to use `faust` objects.
 
-<!-- All these libraries should automatically come with this package. -->
+All these libraries should automatically come with this package.
 
 ## Examples
 
 To display any of the provided examples, you must first launch a web server from the root of this package.
 Python provides such services. Using python 3:
 ~~~~~~~~~~
-$ python -m http.server
+$ python -m http.server [optionnal port number (default is 8000)]
 ~~~~~~~~~~
 Http servers are also available from [npm](https://www.npmjs.com/package/http-server).
 
@@ -42,10 +42,15 @@ You can start from the template provided in the example folder.
 INScoreJS do not support all the messages of the native version and provides specific messages. See the [INScore Web documentation](https://inscoredoc.grame.fr) for more details.
 
 
-### Important note
+
+
+### Important notes
 
 INScoreJS is still a project under development. The compatibility of the graphic rendering is not yet guaranteed for future versions.
+In particular, improvements should be made for a rendering closer to the native version.
 If you develop your own pages, it is therefore recommended to save the libraries used for preservation reasons.
+
+Note also that the content of an inscore div is interpreted by browsers as html code. Thus avoid using `<` (opening tag character) and replace it with the textual form `&lt;`. Comments should also be expressed using the html form `<!-- commented section -->` and not using inscore comments (#). This is valid for inline code only and does not apply to inscore files that you could drop on an inscore div.
 
 
 
@@ -59,4 +64,8 @@ INScoreJS is still in alpha version. The engine has been tested on the following
 | Ubuntu  | -      |   OK     |   -     |   -   |  -   |   -   |
 | Windows | OK     |   OK     |   -     |   -   | OK   | unsupported |
 | Android |  OK    |   OK     |   -     |   -   |  -   |   -   |
+
+
+----
+[INScore](https://inscore.grame.fr/) is a project developed by [GRAME-CNCM](https://www.grame.fr) Computer Research Lab.
 

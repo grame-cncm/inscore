@@ -2,20 +2,25 @@
 ///<reference path="JSObjectView.ts"/>
 ///<reference path="interfaces.ts"/>
 
+interface MasterInfo {view: JSObjectView, vstretch: boolean; }
+
 class TMaster {
 	private fMaster: JSObjectView;
 	private fSlave: JSObjectView;
 	private fClone: JSObjectView;
+	private fVStretch: boolean;
 
-	constructor(m: JSObjectView, s: JSObjectView) {
+	constructor(m: JSObjectView, s: JSObjectView, vstretch: boolean) {
 		this.fMaster = m;
 		this.fSlave = s;
 		this.fClone = s.clone (m);
+		this.fVStretch = vstretch;
 		m.getElement().appendChild (this.fClone.getElement());
 	}
 
-	master() : JSObjectView	{ return this.fMaster; }
+	master() : JSObjectView		{ return this.fMaster; }
 	slave()  : JSObjectView 	{ return this.fClone; }
+	scale()  : boolean 	 		{ return !this.fVStretch; }
 
 	unsync () : void	{ 
 		this.master().getElement().removeChild(this.fClone.getElement()); 
@@ -35,7 +40,7 @@ class TSyncManager implements GraphicSyncManager {
 
 	toString() : string		    { return "TSyncManager"; }
 
-	updateSync(obj: INScoreObject /*, oid: number*/): boolean {
+	updateSync(obj: INScoreObject): boolean {
 		let m = obj.getMasters();
 		let n = m.size() + this.countMasters();
 		if (!n) return false;
@@ -49,13 +54,13 @@ class TSyncManager implements GraphicSyncManager {
 			this.fRemoveChild = false;
 		}
 		removed.forEach ( (element: TMaster, index: number): void => { this.remove(index); } );
-		newmasters.forEach ( (element: JSObjectView, index: number): void => { this.add(element); } );
+		newmasters.forEach ( (element: MasterInfo, index: number): void => { this.add(element); } );
 
 		// the sync list is now updated
 		let updated = 0;
 		this.fSync.forEach( (m: TMaster, index: number) : void => {
 			if (m) {
-				m.slave().updateView (obj, /*oid,*/ m.master().getIObject(), false, true);
+				m.slave().updateView (obj, m.master().getIObject(), false, m.scale());
 				updated++;
 			}
 		});
@@ -73,11 +78,11 @@ class TSyncManager implements GraphicSyncManager {
 	// table utilities
 	//-----------------------------------------------------------------------
 	// convert a vector of identifiers into a table of JSObjectView (masters)
-	private masters2Objects (vec: IntVector) : Array<JSObjectView> {
-		let m = new Array<JSObjectView>();
+	private masters2Objects (vec: MastersVector) : Array<MasterInfo> {
+		let m = new Array<MasterInfo>();
 		for (let i=0; i < vec.size(); i++) {
-			let id = vec.get(i);
-			m[id] = JSObjectView.getVObject(id);
+			let master = vec.get(i);
+			m[master.viewid] = { view: JSObjectView.getVObject(master.viewid), vstretch: master.vstretch };
 		}
 		return m;
 	}
@@ -90,9 +95,9 @@ class TSyncManager implements GraphicSyncManager {
 		return count;
 	}
 		
-	private add (obj: JSObjectView) : void {
-		let m = new TMaster(obj, this.fTarget);
-		this.fSync[obj.getId()] = m;
+	private add (obj: MasterInfo) : void {
+		let m = new TMaster(obj.view, this.fTarget, obj.vstretch);
+		this.fSync[obj.view.getId()] = m;
 	}
 
 	private remove (index: number) : void {
@@ -102,16 +107,16 @@ class TSyncManager implements GraphicSyncManager {
 	}
 
 	// give a table of the objects not sync list
-	private newSync (objs: Array<JSObjectView>) : Array<JSObjectView> {
-		let out = new Array<JSObjectView>();
-		objs.forEach ( (element: JSObjectView, index: number) : void => {
+	private newSync (objs: Array<MasterInfo>) : Array<MasterInfo> {
+		let out = new Array<MasterInfo>();
+		objs.forEach ( (element: MasterInfo, index: number) : void => {
 			if (!this.fSync[index]) out.push(objs[index]);
 		} );
 		return out;
 	}
 
 	// give a table of obsolete masters in sync list
-	private obsolete (f: Array<JSObjectView>) : Array<TMaster> {
+	private obsolete (f: Array<MasterInfo>) : Array<TMaster> {
 		let out = new Array<TMaster>();
 		this.fSync.forEach ( (element: TMaster, index: number) : void => {
 			let current = this.fSync[index];

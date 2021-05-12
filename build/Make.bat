@@ -2,7 +2,7 @@
 @echo off
 
 set MSVC="Visual Studio 15 2017 Win64"
-set VERSION="1.2.7"
+set VERSION="1.2.8"
 
 IF [%1]==[]     GOTO USAGE
 IF %1==modules (
@@ -25,26 +25,37 @@ IF %1==package (
 	CALL :PACKAGE
 	GOTO DONE
 )
+IF %1==cmake (
+	CALL :CMAKE
+	GOTO DONE
+)
 IF %1==help 	GOTO USAGE
 
 GOTO USAGE
 
+@rem --- cmake -------------------------------
+:CMAKE
+cd inscoredir
+cmake .. 
+cd ..
+EXIT /B
+
 @rem --- installation -------------------------------
 :INSTALL
 cd inscoredir
-cmake .. -DPREFIX=../INScore-%VERSION%
+cmake .. -DPREFIX=../INScore-%VERSION% -DPACK=off
 cmake --build . --config Release --target install
 cd ..
 EXIT /B
 
 @rem --- packaging ----------------------------------
 :PACKAGE
-cd inscoredir
-cmake .. -DPACK=on
-cmake --build . --config Release 
-cpack -G NSIS64
-move INScore-*.exe ..
-cd ..
+	cd inscoredir
+	cmake .. -DPACK=on
+	cmake --build . --config Release 
+	cpack -G NSIS64
+	move INScore-*.exe ..
+	cd ..
 EXIT /B
 
 @rem --- deployment ----------------------------------
@@ -65,8 +76,11 @@ EXIT /B
 @rem --- submodules compilation ----------------------
 :MODULES
 	echo Compiles submodules
+	echo Make sure the submodules are synced to github
+	set CONT="no"
+	set /p CONT=Type Y to continue... 
+	if /i NOT %CONT%==Y exit
 	cd ../modules
-echo in modules
 	CALL Make.bat
 	cd ../build
 EXIT /B
@@ -95,6 +109,7 @@ echo   inscore : compile inscore (call modules when not already done)
 echo   deploy  : call windeployqt and copy dependent libraries
 echo   install : install inscore in current folder
 echo   package : build the inscore package
+echo   cmake   : regenerate the project
 echo   help    : display this help
 echo This script is using %MSVC% to compile, edit 
 echo the script and set the MSVC variable to change. 

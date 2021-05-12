@@ -173,13 +173,17 @@ bool IObjectAdapter::_getSyncPosition (IObject* obj, const IObject* master, JSPo
 }
 
 //--------------------------------------------------------------------------
-vector<int> IObjectAdapter::getMasters () const
+vector<JSMaster> IObjectAdapter::getMasters () const
 {
-	vector<int> masters;
+	vector<JSMaster> masters;
 	for (auto m: fObject->getMasters()) {
 		HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(m->getMaster()->getView());
-		if (view)
-			masters.push_back(view->getID());
+		if (view) {
+			JSMaster jm;
+			jm.viewid = view->getID();
+			jm.vstretch = m->getStretch () & Master::kStretchV;
+			masters.push_back(jm);
+		}
 		else
 			cerr << "IObjectAdapter::getMasters: master " << m->getMaster()->name() << " has no view." << endl;
 	}

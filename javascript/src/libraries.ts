@@ -15,9 +15,6 @@ class libraries {
     }
 
 	async initialise():Promise<any> { 
-		// return this.guidoinit().then ( 
-		// 	() => { return this.xmlinit().then (); }
-		// 	);
 		await this.guidoinit();
 		await this.xmlinit();
 		return this.faustinit();

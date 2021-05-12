@@ -1,6 +1,5 @@
 
 declare var INScoreModule : any;
-interface TMessage     {}
         
 //------------------------------------------------------------------------
 // INScore glue interface 
@@ -62,10 +61,13 @@ interface RectVector	{ size(): number; get(i: number) : number; }
 interface FloatVector	{ size(): number; get(i: number) : number; }
 interface StringVector	{ size(): number; get(i: number) : string; }
 interface IntVector 	{ size(): number; get(i: number) : number; }
+interface MastersVector { size(): number; get(i: number) : OMasterInfo; }
 interface FaustParamValue 	{ address: string; value : number; type: number }
 interface FaustParamValuesVector 	{ size(): number; get(i: number) : FaustParamValue; }
 interface FaustKeyValue 	{ type : number; chan: number; pitch: number; vel: number; }
 interface FaustKeyValuesVector 	{ size(): number; get(i: number) : FaustKeyValue; }
+
+interface OMasterInfo { viewid: number; vstretch: boolean }
 
 interface OSceneInfo { fullscreen: boolean; }
 
@@ -201,7 +203,7 @@ interface INScoreObject {
     newData():   	   boolean;
 	deleted():   	   boolean;
 	ready():	       void;
-    getMasters():      IntVector;
+    getMasters():      MastersVector;
     getOSCAddress():   string;
     getUpdateInfos(masterId: number):  OUpdateInfos;
     getTextInfos():    OTextInfo;

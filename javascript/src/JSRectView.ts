@@ -20,7 +20,6 @@ class JSRectView extends JSSvgBase {
         this.fRect.style.height = h + "px";
 	}
     getScale(scale: number) : number {  return scale; }
-	getSyncRatio()	: number {  return 1; }
 
     updateSpecific(obj: INScoreObject)	: void { 
         let radius = obj.getRadius();

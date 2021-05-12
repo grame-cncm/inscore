@@ -1,9 +1,10 @@
 
-///<reference path="libINScore.d.ts"/>
 
 //----------------------------------------------------------------------------
 // INScore interface
 //----------------------------------------------------------------------------
+interface TMessage     {}
+
 interface INScore {
 
     initialise():Promise<any> ;

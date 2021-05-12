@@ -126,12 +126,10 @@ class inscore_export IGlue : public MsgListener, public INScoreGlue
 				void setOSCErr (const std::string& a);
 
 				void setGraphicListener(GraphicUpdateListener* listener)	{ fViewListener = listener; }
-				bool getSceneView(unsigned int* dest, int w, int h, bool smooth=false );
 				const IObject* root () const;
 				IAppl* getAppl() 	{ return fModel; }
 
 		virtual int  getRate() const override;
-//		virtual void timerEvent (bool viewUpdate) override;
 		virtual void timeTask  () override;
 		virtual void sorterTask () override;
 

@@ -24,17 +24,7 @@ MOBILESCRIPTS  := ../scripts/mobile
 MODULESCONFIGS := $(wildcard modules/*.cmake)
 PKGDIR := $(shell pwd)/INScore-$(VERSION)
 
-ifeq ($(system), Darwin)
-	MAKEFILE = Makefile
-endif
-
-ifeq ($(system), MINGW)
-	MAKEFILE = Makefile
-endif
-
-ifeq ($(system), Linux)
-	MAKEFILE = Makefile
-endif
+MAKEFILE  ?= Makefile		# used to check the dependency to CMakeList
 GENERATOR ?= 
 
 all :
