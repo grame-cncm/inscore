@@ -164,8 +164,8 @@
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP y 0.95;
 
 	/ITL/scene/audioCtrlbtnWavOnly set img $ticked;
-	/ITL/scene/audioCtrlbtnWavToDSP set img $ticked;
-	/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked;
+	/ITL/scene/audioCtrlbtnWavToDSP set img $tick;
+	/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick;
 
 	/ITL/scene/audioCtrlbtn* alpha 180;
 	/ITL/scene/audioCtrlbtn* xorigin 0;
@@ -199,17 +199,17 @@
 	toggleWavToDSP = (
 		/ITL/scene/$self push,
 		<!-- TODO:Change button appearance -->
-		/ITL/scene/audioCtrlbtnWavToDSP set img $tick,
-	
-		/ITL/scene/audio disconnect faust,
-		/ITL/scene/faust disconnect audioOutput,
+		/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
+		/ITL/scene/audio connect faust,
+		/ITL/scene/faust connect audioOutput,
 	
 		/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
-			/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
-			/ITL/scene/audio connect faust,
-			/ITL/scene/faust connect audioOutput,
-
+			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,
+			
+			/ITL/scene/audio disconnect faust,
+			/ITL/scene/faust disconnect audioOutput,
+	
 			/ITL/scene/$self pop
 		)
 	);
@@ -217,24 +217,24 @@
 	toggleAudioInToDSP = (
 		/ITL/scene/$self push,
 		<!-- TODO:Change button appearance -->
-		/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
+		/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
 
-		/ITL/scene/audioInput disconnect faust,
-		/ITL/scene/faust disconnect audioOutput,
+		/ITL/scene/audioInput connect faust,
+		/ITL/scene/faust connect audioOutput,	
 		
 		/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
-			/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
+			/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
 
-			/ITL/scene/audioInput connect faust,
-			/ITL/scene/faust connect audioOutput,	
+			/ITL/scene/audioInput disconnect faust,
+			/ITL/scene/faust disconnect audioOutput,	
 	
 			/ITL/scene/$self pop
 		)
 	);
 		
 	/ITL/scene/audioCtrlbtnWavOnly watch mouseDown $toggleWavOnly;
-	/ITL/scene/audioCtrlbtnWavOnly watch mouseDown $toggleWavOnly;
+	/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown $toggleWavToDSP;
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
 
 	<!-- TODO: Events -->
