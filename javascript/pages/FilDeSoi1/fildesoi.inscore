@@ -1,4 +1,4 @@
-/ITL/log show 1;
+#/ITL/log show 1;
 
 /ITL/scene/* del;
 
@@ -37,10 +37,10 @@
 							
 							";
 
+/ITL/scene/score/debug map 1; 
 
 __END__
 
-/ITL/scene/score/debug map 1; 
 /ITL/scene/score get map; 
 /ITL/scene/score scale 0.5; 
 
