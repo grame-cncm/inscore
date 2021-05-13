@@ -121,6 +121,11 @@ class IGuidoCode : public IObject, public IProportionalAsyncDims
 		/// \brief gives the systems count as a list of count ordered by page number
 		virtual std::vector<int> getSystemsCount() const;
 
+		/// \brief Returns the real width
+		virtual float	getRealWidth() const		{ return fRealWidth; }
+		/// \brief Returns the real height
+		virtual float	getRealHeight() const		{ return fRealHeight; }
+
 		void	setPageCount(int count);
 		void 	updateScoreMapping ();
 		virtual void	ready();

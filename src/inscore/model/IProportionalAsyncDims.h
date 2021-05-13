@@ -49,7 +49,8 @@ class IProportionalAsyncDims
 				 IProportionalAsyncDims() {}
 		virtual ~IProportionalAsyncDims() {}
 
-		bool 	userDims () const 	{ return fUserDims; }
+		bool 	userDims () const 					{ return fUserDims; }
+		void 	setRealDims (float w, float h)		{ fRealWidth = w; fRealHeight = h; }
 
 	protected:
 		// real object dimensions need to be captured for the event system
