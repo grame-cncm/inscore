@@ -118,6 +118,10 @@ class IPosition
 		virtual float	getWidth() const			{ return fWidth; }
 		/// \brief Returns the height
 		virtual float	getHeight() const			{ return fHeight; }
+		/// \brief Returns the width
+		virtual float	getRealWidth() const		{ return fWidth; }
+		/// \brief Returns the height
+		virtual float	getRealHeight() const		{ return fHeight; }
 		/// \brief Returns the dimension
 		virtual TFloatSize getDimension() const		{ return TFloatSize( fWidth , fHeight ); }
 		/// \brief Returns the shear attributes

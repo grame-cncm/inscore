@@ -55,8 +55,8 @@ void _MouseEventAble::handleEvent (const IObject * obj, float x, float y,  Event
 	if (!msgs || msgs->list().empty()) return;		// nothing to do, no associated message
 	
 	VObjectView*	view = obj->getView();
-	float w = view->relative2SceneWidth (obj->getWidth());		// next get the object width and height
-	float h = view->relative2SceneHeight(obj->getHeight());		// in scene coordinates space
+	float w = view->relative2SceneWidth (obj->getRealWidth());		// next get the object width and height
+	float h = view->relative2SceneHeight(obj->getRealHeight());		// in scene coordinates space
 
 	float xpos = obj->getXPos();								// here is the object position
 	float ypos = obj->getYPos();								// in scene coordinates space

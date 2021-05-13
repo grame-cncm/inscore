@@ -85,6 +85,7 @@ void VImageView::updateLocalMapping (IImage* img)
 	QRectF r = fImageItem->boundingRect();
 //	updateObjectSize (img);
 	img->setBoundingRect (long(r.x()), long(r.y()), long(r.width()), long(r.height()));
+	img->setRealDims (scene2RelativeWidth(r.width()), scene2RelativeHeight(r.height()));
 	img->updateLocalMapping();
 }
 
