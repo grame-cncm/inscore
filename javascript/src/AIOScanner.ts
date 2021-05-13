@@ -21,15 +21,18 @@ class AIOScanner {
     static scan (address: string) {
         AIOScanner.fOutput = AIOScanner.fAudioContext.destination;
         AIOScanner.send (address, AIOScanner.kOutputName, AIOScanner.fOutput);
-        navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream: MediaStream) => {
-            AIOScanner.fInput = AIOScanner.fAudioContext.createMediaStreamSource(stream);
-            AIOScanner.send (address, AIOScanner.kInputName, AIOScanner.fInput);
-        })
-        .catch(function(err) {
+        if (navigator.mediaDevices) {
+            navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream: MediaStream) => {
+                AIOScanner.fInput = AIOScanner.fAudioContext.createMediaStreamSource(stream);
+                AIOScanner.send (address, AIOScanner.kInputName, AIOScanner.fInput);
+            })
+            .catch(function(err) {
+                AIOScanner.send (address, AIOScanner.kInputName, null);
+                // console.log("AIOScanner can't get input device: " + err);
+            });
+        } else {
             AIOScanner.send (address, AIOScanner.kInputName, null);
-// silently ignore missing input device
-//            console.log("AIOScanner can't get input device: " + err);
-        });
+        }
     } // Get All Physical in/out and populate finput & foutput
 
     private static send (address: string, name: string, node: AudioNode) {

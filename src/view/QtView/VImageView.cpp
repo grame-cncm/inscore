@@ -61,6 +61,7 @@ bool VImageView::initView (IObject* obj)
 		else {
 			setImage( file );
 			updateObjectSize (img);
+			updateLocalMapping (img);
 		}
 	}
 	else {

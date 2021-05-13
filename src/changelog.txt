@@ -12,6 +12,11 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
+Version 1.29
+- fix non visible mapping for images
+
+
+----------------------------------------------------
 Version 1.28
 - new 'dvolume' method for media objects
 - fix ready event for audio objects

@@ -1,0 +1,124 @@
+#/ITL/log show 1;
+
+/ITL/scene/* del;
+
+	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
+	/ITL/scene/score height 1.8;
+
+	/ITL/scene/score map   "([278, 300[ [310, 350[) ([0:00:00, 0:1:70[)
+							([300, 670[ [310, 350[) ([0:1:70, 0:12:05[)
+							([670, 790[ [310, 350[) ([0:12:05, 0:14:00[)
+							([790, 950[ [310, 350[) ([0:14:00, 0:18:80[)
+							([950, 1084[ [310, 350[) ([0:18:80, 0:23:90[)
+							
+							([224, 570[ [560, 605[) ([0:23:90, 0:30:20[)
+							([570, 950[ [560, 605[) ([0:30:20, 0:37:60[)
+							([950, 1084[ [560, 605[) ([0:37:60, 0:40:00[)
+
+							([224, 470[ [710, 754[) ([0:40:00, 0:44:80[)
+							([470, 615[ [710, 754[) ([0:44:80, 0:46:00[)
+							([615, 1084[ [710, 754[) ([0:46:00, 0:53:70[)
+
+							([230, 580[ [860, 900[) ([00:53:70, 01:01:80[)
+							([580, 800[ [860, 900[) ([01:01:80, 01:08:30[)
+							([800, 1084[ [860, 900[) ([01:08:30, 01:14:00[)
+
+							([233, 345[ [1010, 1050[) ([01:14:00, 01:17:00[)
+							([345, 560[ [1010, 1050[) ([01:17:00, 01:19:00[)
+							([560, 920[ [1010, 1050[) ([01:19:00, 01:25:00[)
+							([920, 1084[ [1010, 1050[) ([01:25:00, 01:30:30[)
+							
+							([233, 520[ [1160, 1205[) ([01:30:30, 01:36:40[)
+							([520, 1080[ [1160, 1205[) ([01:36:40, 01:45:80[)
+							
+							([233, 500[ [1310, 1355[) ([01:45:80, 01:48:20[)
+							([500, 640[ [1310, 1355[) ([01:48:20, 01:51:50[)
+							([640, 900[ [1310, 1355[) ([01:51:50, 01:54:60[)
+							([900, 1025[ [1310, 1355[) ([01:54:60, 01:58:50[)
+							([1025, 1065[ [1310, 1355[) ([01:58:50, 02:10:00[)";
+
+/ITL/scene/score/debug map 1; 
+
+__END__
+
+/ITL/scene/score get map; 
+/ITL/scene/score scale 0.5; 
+
+
+
+	/ITL/scene/score watch mouseDown (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
+	/ITL/scene/score watch mouseMove (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
+	/ITL/scene/score watch mouseEnter;
+
+	/ITL/scene/audio set audio "FilDeSoi1_guitare_1_2_3_4.wav";
+	/ITL/scene/audio show 0;
+
+	
+#	<!-- Buttons variables -->
+	play  = 'rsrc/play.png';
+	pause = 'rsrc/pause.png';
+	stop  = 'rsrc/stop.png';
+	origin = 1.2;
+	alpha = 120;
+	w = 0.09;
+#	<!-- Button Play / Pause-->
+
+	/ITL/scene/play set img $play;
+	/ITL/scene/play y 0.9;
+	/ITL/scene/play xorigin $origin;
+	/ITL/scene/play width $w;
+	/ITL/scene/play alpha $alpha;
+
+	/ITL/scene/play watch mouseDown (
+		/ITL/scene/$self push,
+		/ITL/scene/play set img $pause,
+		/ITL/scene/cursor tempo 60,
+		/ITL/scene/audio play 1,
+		/ITL/scene/play watch mouseDown (
+			/ITL/scene/play set img $play,
+			/ITL/scene/cursor tempo 0,
+			/ITL/scene/audio play 0,
+			/ITL/scene/$self pop
+		)
+	);
+	
+#	<!-- Button Stop -->
+	/ITL/scene/stop set img $stop;
+	/ITL/scene/stop y 0.9;
+	/ITL/scene/stop xorigin $origin * -1;
+	/ITL/scene/stop width $w;
+	/ITL/scene/stop alpha $alpha;
+
+	/ITL/scene/stop watch mouseDown ( /ITL/scene event STOP );
+	
+	/ITL/scene watch STOP (
+		/ITL/scene/play set img $play,
+		/ITL/scene/play width $w,
+		/ITL/scene/play pop,
+		/ITL/scene/play watch mouseDown $initplay,
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0,
+		/ITL/scene/audio vdate 0,
+		/ITL/scene/cursor date 1000,
+		/ITL/scene/cursor date 0
+	);
+
+	cursorWidth = 0.07;
+	/ITL/scene/cursor set ellipse $cursorWidth $cursorWidth;
+	/ITL/scene/cursor color blue;
+	/ITL/scene/cursor alpha 120;
+	/ITL/scene/sync cursor score ;
+
+#	<!-- /ITL/scene/faust scale 0.7;
+#	/ITL/scene/faust y -0.3; -->
+#
+#	<!-- /ITL/scene/text set html "Faust objects";
+#	/ITL/scene/text y -0.7;
+#	/ITL/scene/text fontSize 32; -->
+

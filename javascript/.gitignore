@@ -11,6 +11,7 @@ pages/libfaust-wasm.data
 pages/levinas
 pages/FilDeSoi1_rawPatch_Grame2021
 libfaust-wasm.data
+pages/FilDeSoi1/FilDeSoi1-srcs/
 
 npm/libINScore.*
 npm/INScoreJS.js
