@@ -1,0 +1,34 @@
+TODO
+
+- scene update dimensions en mode non absolute
+- pianoroll : pitch lines, voices color
+
+- sync frame avec les lines
+- nested sync
+- faire le ménage dans les fonctions de mapping côté view
+
+- purger la table des identifiants d'objets
+
+- bug time 2 time mapping dans guido 
+
+- hstrech
+- start animation sur chrome 
+- npm publish guidoengine (corrections interface ts)
+- lock with failure on guido objects
+- support extended urls
+- implement get frame
+- interface pour récupérer le mapping d'un objet
+
+# voir également user events pas forwardé (?)
+
+- revoir scripts/M-signalConnection/Process-activity (pb javascript)
+
+- system bloqué avec manyscenes.inscore (linux) ou rafraichissement auto rapide (windows)
+
+- ajouter un événement keyboard
+- gérer le message rate du côté javascript
+
+- support pdf https://doc.qt.io/qt-5/qpdfdocument.html
+
+voir édition de mappings
+traiter changement d'entrées/sorties vs connections

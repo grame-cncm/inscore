@@ -55,5 +55,6 @@ build/wasmdir
 build/bin
 build/lib
 build/xcode
+build/INScore-1.*
 
 
