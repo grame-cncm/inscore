@@ -204,14 +204,12 @@
 		<!-- TODO:Change button appearance -->
 		/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
 		/ITL/scene/audio connect faust,
-		/ITL/scene/faust connect audioOutput,
 	
 		/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
 			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,
 			
 			/ITL/scene/audio disconnect faust,
-			/ITL/scene/faust disconnect audioOutput,
 	
 			/ITL/scene/$self pop
 		)
@@ -223,32 +221,42 @@
 		/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
 
 		/ITL/scene/audioInput connect faust,
-		/ITL/scene/faust connect audioOutput,	
 		
 		/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
 			/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
 
 			/ITL/scene/audioInput disconnect faust,
-			/ITL/scene/faust disconnect audioOutput,	
 	
 			/ITL/scene/$self pop
 		)
 	);
 		
+	/ITL/scene/faust connect audioOutput;
 	/ITL/scene/audioCtrlbtnWavOnly watch mouseDown $toggleWavOnly;
 	/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown $toggleWavToDSP;
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
 
 	<!-- TODO: Events -->
+
+	/ITL/scene/cursor watch timeEnter 9 15 (
+		/ITL/scene/cursor color blue,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75
+	);
 	
+	/ITL/scene/cursor watch timeLeave 9 15 (
+		/ITL/scene/cursor color red
+	);
+
 	<!-- /ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75 EVENT 2-->
-	<!-- /ITL/scene watch EVENT3 (
+	/ITL/scene/cursor watch timeEnter 15 22 (
+		/ITL/scene/cursor color green,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
 
 	);
 
-	/ITL/scene watch EVENT4 (
+	/ITL/scene/cursor watch timeEnter 22 30 (
+		/ITL/scene/cursor color orange,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.0
 	); -->
