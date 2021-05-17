@@ -74,6 +74,11 @@ class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
 		virtual void	setPHeight(float height);
 		/// \brief clear the pending state of an object
 		virtual void	ready();
+		/// \brief Returns the real width
+		virtual float	getRealWidth() const		{ return fRealWidth; }
+		/// \brief Returns the real height
+		virtual float	getRealHeight() const		{ return fRealHeight; }
+		void setRealDims (float w, float h);
 
 	protected:
 				 IGraphicBasedObject( const std::string& name, IObject * parent );
@@ -84,7 +89,7 @@ class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
 
 		/// \brief the \c 'set' message handler
 		void setCalled ();
-
+		
 		/// \brief the \c 'mapf' message handler
 		MsgHandler::msgStatus mapFileMsg (const IMessage* msg );
 		/// \brief the \c 'map' message handler

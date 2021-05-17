@@ -14,6 +14,7 @@ It has been supported by the ANR
 ----------------------------------------------------
 Version 1.29
 - fix non visible mapping for images
+- fix incorrect $x et $y variables value for proportional dimension objects
 
 
 ----------------------------------------------------

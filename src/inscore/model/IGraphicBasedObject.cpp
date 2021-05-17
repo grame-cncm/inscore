@@ -87,6 +87,13 @@ void IGraphicBasedObject::setBoundingRect(long x, long y, long w, long h)
 }
 
 //-------------------------------------------------------------------------
+void IGraphicBasedObject::setRealDims (float w, float h)
+{
+	fRealWidth = w;
+	fRealHeight = h;
+}
+
+//-------------------------------------------------------------------------
 void IGraphicBasedObject::setCalled ()
 {
 	if (!userDims()) {

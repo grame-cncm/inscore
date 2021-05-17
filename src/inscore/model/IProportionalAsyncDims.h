@@ -52,6 +52,10 @@ class IProportionalAsyncDims
 		bool 	userDims () const 	{ return fUserDims; }
 
 	protected:
+		// real object dimensions need to be captured for the event system
+		float 	fRealWidth = 0;
+		float 	fRealHeight = 0;
+
 		/// \brief Sets the width with height adjustment
 		void	checkPending(IObject* obj);
 		/// \brief Sets the width with height adjustment
