@@ -24,8 +24,6 @@
 <body>
 
 <div class="inscore box" id="scene">
-	
-	/ITL/scene/wait set txt "Loading..."; 
 	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
 	<!-- /ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;'; -->
 
@@ -57,12 +55,16 @@
 							([800, 1084[ [860, 900[) ([01:08:30, 01:14:00[)
 
 							([233, 345[ [1010, 1050[) ([01:14:00, 01:17:00[)
-							([345, 560[ [1010, 1050[) ([01:17:00, 01:19:00[)
-							([560, 920[ [1010, 1050[) ([01:19:00, 01:25:00[)
-							([920, 1084[ [1010, 1050[) ([01:25:00, 01:30:30[)
+							([345, 560[ [1010, 1050[) ([01:17:00, 01:18:50[)
+							([560, 684[ [1010, 1050[) ([01:18:50, 01:21:00[)
+							([684, 920[ [1010, 1050[) ([01:21:00, 01:26:00[)
+							([924, 1084[ [1010, 1050[) ([01:26:00, 01:30:00[)
 							
-							([233, 520[ [1160, 1205[) ([01:30:30, 01:36:40[)
-							([520, 1080[ [1160, 1205[) ([01:36:40, 01:45:80[)
+							([233, 350[ [1160, 1205[) ([01:30:00, 01:33:20[)
+							([350, 520[ [1160, 1205[) ([01:33:20, 01:36:60[)
+							([520, 630[ [1160, 1205[) ([01:36:60, 01:39:00[)
+							([630, 930[ [1160, 1205[) ([01:39:00, 01:42:70[)
+							([930, 1080[ [1160, 1205[) ([01:42:70, 01:45:80[)
 							
 							([233, 500[ [1310, 1355[) ([01:45:80, 01:48:20[)
 							([500, 640[ [1310, 1355[) ([01:48:20, 01:51:50[)
@@ -244,17 +246,10 @@
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75
 	);
 	
-	/ITL/scene/cursor watch timeLeave 9 15 (
-		/ITL/scene/cursor color red
-	);
-	/ITL/scene/cursor watch timeLeave 15 22 (
-		/ITL/scene/cursor color red
-	);
-	/ITL/scene/cursor watch timeLeave 22 30 (
+	/ITL/scene/cursor watch timeEnter 0 9 (
 		/ITL/scene/cursor color red
 	);
 
-	<!-- /ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75 EVENT 2-->
 	/ITL/scene/cursor watch timeEnter 15 22 (
 		/ITL/scene/cursor color green,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
