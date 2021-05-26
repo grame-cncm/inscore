@@ -24,8 +24,8 @@
 <body>
 
 <div class="inscore box" id="scene">
-	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
-	<!-- /ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;'; -->
+	<!-- /ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt"; -->
+	/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -97,6 +97,25 @@
 	alpha = 120;
 	w = 0.09;
 	
+	intodsp_black = "./rsrc/intodsp_black.png";
+	wavtoout_black = "./rsrc/wavtoout_black.png";
+	wavtodsp_black = "./rsrc/wavtodsp_black.png";
+	dsptoout_black = "./rsrc/dsptoout_black.png";
+
+	intodsp_green = "./rsrc/intodsp_green.png";
+	wavtoout_green = "./rsrc/wavtoout_green.png";
+	wavtodsp_green = "./rsrc/wavtodsp_green.png";
+	dsptoout_green = "./rsrc/dsptoout_green.png";
+
+	/ITL/scene/schemeBase set img "./rsrc/base.png";
+	/ITL/scene/schemeAudioIntoDSP set img $intodsp_black;
+	/ITL/scene/schemeWavtoAudioOutput set img $wavtoout_green;
+	/ITL/scene/schemeDSPtoAudioOut set img $dsptoout_black;
+	/ITL/scene/schemeWavtoDSP set img $wavtodsp_black;
+	/ITL/scene/scheme* x -0.5;
+	/ITL/scene/scheme* y 0.85;
+	/ITL/scene/scheme* scale 0.5;
+
 	<!-- Button Play / Pause-->
 	/ITL/scene/btnplay set img $play;
 	/ITL/scene/btnplay y 0.9;
@@ -183,19 +202,20 @@
 
 	/ITL/scene/audioCtrlbtn* watch mouseEnter (/ITL/scene/$self alpha 120);
 	/ITL/scene/audioCtrlbtn* watch mouseLeave (/ITL/scene/$self alpha 255);
-	
+
 	toggleWavOnly = (
 		/ITL/scene/$self push,
 		
 		<!-- TODO:Change button appearance -->
 		/ITL/scene/audioCtrlbtnWavOnly set img $tick,
+		/ITL/scene/schemeWavtoAudioOutput set img $wavtoout_black,
 
 		/ITL/scene/audio disconnect audioOutput,
 		
 		/ITL/scene/audioCtrlbtnWavOnly watch mouseDown (
 			<!-- TODO:Change button appearance -->
 			/ITL/scene/audioCtrlbtnWavOnly set img $ticked,
-
+			/ITL/scene/schemeWavtoAudioOutput set img $wavtoout_green,
 			/ITL/scene/audio connect audioOutput,
 			
 			/ITL/scene/$self pop
@@ -206,29 +226,31 @@
 		/ITL/scene/$self push,
 		<!-- TODO:Change button appearance -->
 		/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
+		/ITL/scene/schemeWavtoDSP set img $wavtodsp_green,
 		/ITL/scene/audio connect faust,
 	
 		/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
 			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,
+			/ITL/scene/schemeWavtoDSP set img $wavtodsp_black,
 			
 			/ITL/scene/audio disconnect faust,
 	
 			/ITL/scene/$self pop
 		)
 	);
-	
+
 	toggleAudioInToDSP = (
 		/ITL/scene/$self push,
 		<!-- TODO:Change button appearance -->
 		/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
-
+		/ITL/scene/schemeAudioIntoDSP set img $intodsp_green,
 		/ITL/scene/audioInput connect faust,
 		
 		/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown (
 			<!-- TODO:Change button appearance -->
 			/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
-
+			/ITL/scene/schemeAudioIntoDSP set img $intodsp_black,
 			/ITL/scene/audioInput disconnect faust,
 	
 			/ITL/scene/$self pop
@@ -274,10 +296,8 @@
 		/ITL/scene/eventIndicator color orange,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.0
-	); -->
-	
+	);
 
-		
 
 </div>
 
