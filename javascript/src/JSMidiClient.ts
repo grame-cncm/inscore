@@ -1,22 +1,68 @@
-interface MidiClient {
-    midiInput(chan : number, type: string, data: Uint8Array) : void;
-    onErrorCallback() : void; // ?
-}
+///<reference types="@types/webmidi"/>
 
-class MidiIn {
-    addClient(client: MidiClient) {
-        if (typeof(navigator.requestMIDIAccess) !== "undefined") {
-            navigator.requestMIDIAccess().then(client.midiInput, client.onErrorCallback);
+class MidiSetup {
+    static midiClients : Array<string>;
+    static accessSetup : WebMidi.MIDIAccess;
+
+    static midiInput(event: WebMidi.MIDIMessageEvent) {
+        var cmd = event.data[0] >> 4;
+        var channel = event.data[0] & 0xf;
+        var data1 = event.data[1];
+        var data2 = event.data[2];
+        let msg = inscore.newMessageM("event");
+        MidiSetup.midiClients.forEach((addr) => {
+            console.log(cmd);
+            inscore.msgAddI(msg, channel);
+            inscore.msgAddI(msg, data1);
+            inscore.msgAddI(msg, data2);
+            // create msg
+            //send using postMesssage
+            console.log(data1, data2, channel, cmd);
+            inscore.postMessage(addr, msg);
+        });
+    }
+
+    static onErrorCallback() {
+        console.log("connection error");
+    }
+
+    static onConnectionCallback(access : WebMidi.MIDIAccess) {
+        MidiSetup.accessSetup = access;
+        access.onstatechange = function(e: WebMidi.MIDIConnectionEvent) {
+            if (e.port.type === "input") {
+                let port = e.port as WebMidi.MIDIInput;
+                if (e.port.state === "connected") {
+                    console.log(e.port.name + " is connected");
+                    port.onmidimessage = MidiSetup.midiInput;
+                } else if (e.port.state  === "disconnected") {
+                    console.log(e.port.name + " is disconnected");
+                    port.onmidimessage = null;
+                }
+            }
+        }
+        access.inputs.forEach((input: WebMidi.MIDIInput) => {
+            input.onmidimessage = MidiSetup.midiInput;
+            console.log(input.name + " is connected");
+        }) 
+    }
+
+    static addListener(addr : string) {
+        if (typeof(navigator.requestMIDIAccess) !== "undefined" && MidiSetup.accessSetup !== null) {
+            navigator.requestMIDIAccess().then(
+                () => {
+                    MidiSetup.onConnectionCallback
+                    MidiSetup.midiClients.push(addr);
+                }, this.onErrorCallback
+            );
         } else {
             alert("MIDI input cannot be activated, either your browser still does't have it, or you need to 						explicitly activate it.");
         }
     }
     
-    removeClient(client: MidiClient) {
+    static removeListener(addr : string) {
 
-    } 
+    }
 }
-
 // find a way to store what to filter
 // exemple watch midi 30: post le message seulement si la touche 30 a été pressée
 
