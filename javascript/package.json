@@ -24,6 +24,7 @@
     "@grame/guidolib": "^1.6.8-a",
     "@grame/libfaust": "^1.0.2",
     "@grame/libmusicxml": "^3.19.1",
-    "@types/node": "^13.13.51"
+    "@types/node": "^13.13.51",
+    "@types/webmidi": "^2.0.4"
   }
 }
