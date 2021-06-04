@@ -1,0 +1,305 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
+	<meta http-equiv="Pragma" content="no-cache" /> 
+	<meta http-equiv="Expires" content="0" />
+	<title>Fil De Soi 1</title>
+
+	<link href="/fonts/fonts.css" rel="stylesheet">
+	<!-- <link href="/css/inscore.css" rel="stylesheet"> -->
+	<script src="/lib/libINScore.js"></script>
+	<!-- <script src="/lib/libGUIDOEngine.js"></script> -->
+	<script src="/lib/libfaust-wasm.js"></script> 
+	<script src="/lib/FaustLibrary.js"></script>
+	<script src="/inscoreview.js"></script>
+	<script src="/inscoreglue.js"></script>
+	<style>
+	body { margin: 10; background: white; }
+	.box { width: 100%; height: 100%; font-size: 1px; }
+
+	</style>
+</head>
+
+<body>
+
+<div class="inscore box" id="scene">
+	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
+	<!-- /ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;'; -->
+
+	/ITL/scene/faust scale 0.2;
+	/ITL/scene/faust show 0;
+	/ITL/scene/wait del; 
+
+	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
+	/ITL/scene/score height 1.8;
+	/ITL/scene/score y -0.12; 
+
+										<!-- Mapping -->
+	/ITL/scene/score map   "([278, 300[ [310, 350[) ([0:00:00, 0:1:70[)
+							([300, 670[ [310, 350[) ([0:1:70, 0:12:05[)
+							([670, 790[ [310, 350[) ([0:12:05, 0:14:00[)
+							([790, 950[ [310, 350[) ([0:14:00, 0:18:80[)
+							([950, 1084[ [310, 350[) ([0:18:80, 0:23:90[)
+							
+							([224, 570[ [560, 605[) ([0:23:90, 0:30:20[)
+							([570, 950[ [560, 605[) ([0:30:20, 0:37:60[)
+							([950, 1084[ [560, 605[) ([0:37:60, 0:40:00[)
+
+							([224, 470[ [710, 754[) ([0:40:00, 0:44:80[)
+							([470, 615[ [710, 754[) ([0:44:80, 0:46:00[)
+							([615, 1084[ [710, 754[) ([0:46:00, 0:53:70[)
+
+							([230, 580[ [860, 900[) ([00:53:70, 01:01:80[)
+							([580, 800[ [860, 900[) ([01:01:80, 01:08:30[)
+							([800, 1084[ [860, 900[) ([01:08:30, 01:14:00[)
+
+							([233, 345[ [1010, 1050[) ([01:14:00, 01:17:00[)
+							([345, 560[ [1010, 1050[) ([01:17:00, 01:18:50[)
+							([560, 684[ [1010, 1050[) ([01:18:50, 01:21:00[)
+							([684, 920[ [1010, 1050[) ([01:21:00, 01:26:00[)
+							([924, 1084[ [1010, 1050[) ([01:26:00, 01:30:00[)
+							
+							([233, 350[ [1160, 1205[) ([01:30:00, 01:33:20[)
+							([350, 520[ [1160, 1205[) ([01:33:20, 01:36:60[)
+							([520, 630[ [1160, 1205[) ([01:36:60, 01:39:00[)
+							([630, 930[ [1160, 1205[) ([01:39:00, 01:42:70[)
+							([930, 1080[ [1160, 1205[) ([01:42:70, 01:45:80[)
+
+							([233, 500[ [1310, 1355[) ([01:45:80, 01:48:20[)
+							([500, 650[ [1310, 1355[) ([01:48:20, 01:52:40[)
+							([650, 750[ [1310, 1355[) ([01:52:40, 01:52:44[)
+							([750, 900[ [1310, 1355[) ([01:52:40, 01:53:50[)
+							([900, 1065[ [1310, 1355[) ([01:53:50, 02:10:00[)";
+
+						
+	/ITL/scene/score watch mouseDown (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
+	/ITL/scene/score watch mouseMove (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
+	/ITL/scene/score watch mouseEnter;
+
+	/ITL/scene/audio set audio "FilDeSoi1_guitare_1_2_3_4.wav";
+	/ITL/scene/audio show 0;
+
+	
+	<!-- Buttons variables -->
+	play  = 'rsrc/play.png';
+	pause = 'rsrc/pause.png';
+	stop  = 'rsrc/stop.png';
+	tick = 'rsrc/tick1.png';
+	ticked = 'rsrc/tick2.png';
+	origin = 1.2;
+	alpha = 120;
+	w = 0.06;
+	
+	<!-- intodsp_black = "./rsrc/intodsp_black.png";
+	wavtoout_black = "./rsrc/wavtoout_black.png";
+	wavtodsp_black = "./rsrc/wavtodsp_black.png";
+	dsptoout_black = "./rsrc/dsptoout_black.png";
+
+	intodsp_green = "./rsrc/intodsp_green.png";
+	wavtoout_green = "./rsrc/wavtoout_green.png";
+	wavtodsp_green = "./rsrc/wavtodsp_green.png";
+	dsptoout_green = "./rsrc/dsptoout_green.png"; -->
+
+	<!-- /ITL/scene/schemeBase set img "./rsrc/base.png";
+	/ITL/scene/schemeAudioIntoDSP set img $intodsp_black;
+	/ITL/scene/schemeWavtoAudioOutput set img $wavtoout_green;
+	/ITL/scene/schemeDSPtoAudioOut set img $dsptoout_black;
+	/ITL/scene/schemeWavtoDSP set img $wavtodsp_black;
+	/ITL/scene/scheme* x -0.5;
+	/ITL/scene/scheme* y 0.85;
+	/ITL/scene/scheme* scale 0.5; -->
+
+	<!-- Button Play / Pause-->
+	/ITL/scene/btnplay set img $play;
+	/ITL/scene/btnplay y 0.9;
+	/ITL/scene/btnplay xorigin $origin;
+	/ITL/scene/btnplay width $w;
+	/ITL/scene/btnplay alpha $alpha;
+
+	initplay = (
+		/ITL/scene/$self push,
+		/ITL/scene/btnplay set img $pause,
+		/ITL/scene/cursor tempo 60,
+		/ITL/scene/audio play 1,
+		/ITL/scene/btnplay watch mouseDown (
+			/ITL/scene/btnplay set img $play,
+			/ITL/scene/cursor tempo 0,
+			/ITL/scene/audio play 0,
+			/ITL/scene/$self pop
+		)
+	);
+	/ITL/scene/btnplay watch mouseDown $initplay;
+
+	<!-- Button Stop -->
+	/ITL/scene/btnstop set img $stop;
+	/ITL/scene/btnstop y 0.9;
+	/ITL/scene/btnstop xorigin $origin * -1;
+	/ITL/scene/btnstop width $w;
+	/ITL/scene/btnstop alpha $alpha;
+
+	/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP );
+	
+	/ITL/scene watch STOP (
+		/ITL/scene/btnplay set img $play,
+		/ITL/scene/btnplay width $w,
+		/ITL/scene/btnplay pop,
+		/ITL/scene/btnplay watch mouseDown $initplay,
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0,
+		/ITL/scene/audio vdate 0,
+		/ITL/scene/cursor date 1000,
+		/ITL/scene/cursor date 0
+	);
+
+	<!-- Cursor -->
+	cursorWidth = 0.07;
+	/ITL/scene/cursor set rect 0.01 0.1;
+	/ITL/scene/cursor color 0xff0000aa;
+	/ITL/scene/cursor alpha 120;
+	/ITL/scene/sync cursor score v;
+
+	<!-- /ITL/scene/faust scale 0.7;
+	/ITL/scene/faust y -0.3; -->
+
+	<!-- /ITL/scene/text set html "Faust objects";
+	/ITL/scene/text y -0.7;
+	/ITL/scene/text fontSize 32; -->
+	/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self color red);
+	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self color black, /ITL/scene/$self alpha $alpha);
+
+	<!-- Audio Control Buttons -->
+	x = 0.5;
+	/ITL/scene/audioCtrltxtbtnWavOnly set txt "WAV to audioOutput";
+	/ITL/scene/audioCtrltxtbtnWavToDSP set txt "WAV to DSP";
+	/ITL/scene/audioCtrltxtbtnAudioInToDSP set txt "AudioInput to DSP";
+	
+	/ITL/scene/audioCtrltxtbtn* xorigin -1.1;
+	/ITL/scene/audioCtrltxtbtn* x $x;
+
+	/ITL/scene/audioCtrltxtbtnWavOnly y 0.85;
+	/ITL/scene/audioCtrltxtbtnWavToDSP y 0.9;
+	/ITL/scene/audioCtrltxtbtnAudioInToDSP y 0.95;
+
+	/ITL/scene/audioCtrlbtnWavOnly set img $ticked;
+	/ITL/scene/audioCtrlbtnWavToDSP set img $tick;
+	/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick;
+
+	/ITL/scene/audioCtrlbtn* alpha 180;
+	/ITL/scene/audioCtrlbtn* width 0.04;
+	/ITL/scene/audioCtrlbtn* xorigin 1.15;
+	/ITL/scene/audioCtrlbtn* x $x;
+	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
+	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
+	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.95;
+	<!-- /ITL/scene/audioCtrlbtn* scale 0.05; -->
+
+	/ITL/scene/audioCtrlbtn* watch mouseEnter (/ITL/scene/$self alpha 120);
+	/ITL/scene/audioCtrlbtn* watch mouseLeave (/ITL/scene/$self alpha 255);
+
+	toggleWavOnly = (
+		/ITL/scene/$self push,
+		
+		<!-- TODO:Change button appearance -->
+		/ITL/scene/audioCtrlbtnWavOnly set img $tick,
+		<!-- /ITL/scene/schemeWavtoAudioOutput set img $wavtoout_black, -->
+
+		/ITL/scene/audio disconnect audioOutput,
+		
+		/ITL/scene/audioCtrlbtnWavOnly watch mouseDown (
+			<!-- TODO:Change button appearance -->
+			/ITL/scene/audioCtrlbtnWavOnly set img $ticked,
+			<!-- /ITL/scene/schemeWavtoAudioOutput set img $wavtoout_green, -->
+			/ITL/scene/audio connect audioOutput,
+			
+			/ITL/scene/$self pop
+		)
+	);
+
+	toggleWavToDSP = (
+		/ITL/scene/$self push,
+		<!-- TODO:Change button appearance -->
+		/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
+		<!-- /ITL/scene/schemeWavtoDSP set img $wavtodsp_green, -->
+		/ITL/scene/audio connect faust,
+	
+		/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown (
+			<!-- TODO:Change button appearance -->
+			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,
+			<!-- /ITL/scene/schemeWavtoDSP set img $wavtodsp_black, -->
+			
+			/ITL/scene/audio disconnect faust,
+	
+			/ITL/scene/$self pop
+		)
+	);
+
+	toggleAudioInToDSP = (
+		/ITL/scene/$self push,
+		<!-- TODO:Change button appearance -->
+		/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
+		<!-- /ITL/scene/schemeAudioIntoDSP set img $intodsp_green, -->
+		/ITL/scene/audioInput connect faust,
+		
+		/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown (
+			<!-- TODO:Change button appearance -->
+			/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
+			<!-- /ITL/scene/schemeAudioIntoDSP set img $intodsp_black, -->
+			/ITL/scene/audioInput disconnect faust,
+	
+			/ITL/scene/$self pop
+		)
+	);
+		
+	/ITL/scene/faust connect audioOutput;
+	/ITL/scene/audioCtrlbtnWavOnly watch mouseDown $toggleWavOnly;
+	/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown $toggleWavToDSP;
+	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
+
+	<!-- TODO: Events -->
+	<!-- /ITL/scene/eventIndicator set txt "EVENT 1";
+	/ITL/scene/eventIndicator xorigin 1;
+	/ITL/scene/eventIndicator x 0.5;
+	/ITL/scene/eventIndicator y -0.9;
+	/ITL/scene/eventIndicator color red; -->
+
+	/ITL/scene/cursor watch timeEnter 9 15 (
+		/ITL/scene/cursor color blue,
+		<!-- /ITL/scene/eventIndicator set txt "EVENT 2", -->
+		<!-- /ITL/scene/eventIndicator color blue, -->
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75
+	);
+	
+	/ITL/scene/cursor watch timeEnter 0 9 (
+		/ITL/scene/cursor color red
+		<!-- /ITL/scene/eventIndicator set txt "EVENT 1", -->
+		<!-- /ITL/scene/eventIndicator color red -->
+	);
+
+	/ITL/scene/cursor watch timeEnter 15 22 (
+		/ITL/scene/cursor color green,
+		<!-- /ITL/scene/eventIndicator set txt "EVENT 3",
+		/ITL/scene/eventIndicator color green, -->
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
+
+	);
+
+	/ITL/scene/cursor watch timeEnter 22 30 (
+		/ITL/scene/cursor color orange,
+		<!-- /ITL/scene/eventIndicator set txt "EVENT 4",
+		/ITL/scene/eventIndicator color orange, -->
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.0
+	);
+
+
+</div>
+
+</body>
+</html>
