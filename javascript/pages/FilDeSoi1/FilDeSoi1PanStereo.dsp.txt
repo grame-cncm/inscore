@@ -15,14 +15,14 @@ import("stdfaust.lib");
 //--------------------------------------------------------------------------------------//
 //FEEDBACK REINJECTION MATRIX N x N
 //--------------------------------------------------------------------------------------//
-fd_toggle(c, in) = checkbox("h:Lines/h:Reinjection_Matrix/v:Del%2c-->/r%3in");
+fd_toggle(c, in) = checkbox("h:Lines/h:Reinjection_Matrix/v:Del%2c--/r%3in");
 fd_Mixer(N,out) = par(in, N, *(fd_toggle(in, in+out*N)) ) :> _ ;
 fdMatrix(N) 	= par(in, N, _) <: par(out, N, fd_Mixer(N, out));
 
 //--------------------------------------------------------------------------------------//
 //SPATIALIZATION MATRIX N x M
 //--------------------------------------------------------------------------------------//
-sp_toggle(c, in) = checkbox("h:Lines/h:SpatializationMatrix/v:Sig%2c-->/sp%3in") : spatSmoothLine;
+sp_toggle(c, in) = checkbox("h:Lines/h:SpatializationMatrix/v:Sig%2c--/sp%3in") : spatSmoothLine;
 sp_Mixer(N,out) = par(in, N, *(sp_toggle(in, in+out*N)) ) :> _ ;
 spMatrix(N,M) 	= par(in, N, _) <: par(out, M, sp_Mixer(N, out));
 
