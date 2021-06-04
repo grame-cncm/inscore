@@ -1,6 +1,6 @@
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" >
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
 	<meta http-equiv="Pragma" content="no-cache" /> 
 	<meta http-equiv="Expires" content="0" />
@@ -250,6 +250,7 @@
 		/ITL/scene/cursor color blue,
 		<!-- /ITL/scene/eventIndicator set txt "EVENT 2", -->
 		<!-- /ITL/scene/eventIndicator color blue, -->
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 22,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75
 	);
 	
@@ -263,6 +264,7 @@
 		/ITL/scene/cursor color green,
 		<!-- /ITL/scene/eventIndicator set txt "EVENT 3", -->
 		<!-- /ITL/scene/eventIndicator color green, -->
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 24,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
 
 	);
@@ -271,6 +273,8 @@
 		/ITL/scene/cursor color orange,
 		<!-- /ITL/scene/eventIndicator set txt "EVENT 4", -->
 		<!-- /ITL/scene/eventIndicator color orange, -->
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 22,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd113  hslider 0.4,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.0
 	);
@@ -387,297 +391,45 @@
 	/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 24;
 	/ITL/scene/faust/FaustDSP/Global_Parameters/smoothDuration  hslider 50;
 
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r__0  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r_16  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r_32  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r_48  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r_64  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r_80  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r_96  checkbox 0;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/*/* checkbox 0;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0--/r__0  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1--/r_17  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2--/r_34  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3--/r_51  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4--/r_68  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5--/r_85  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6--/r102  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7--/r119  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r__8  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r_72  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r136  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9--/r_25  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9--/r153  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10--/r_42  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10--/r170  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r_59  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r123  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r187  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_13  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_29  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_45  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_77  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r109  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r205  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r221  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r237  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r253  checkbox 1;
 
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r112  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r128  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r144  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r160  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r176  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r192  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r208  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r224  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0-->/r240  checkbox 0;
-	
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r__1  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r_17  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r_33  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r_49  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r_65  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r_81  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r_97  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r113  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r129  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r145  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r161  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r177  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r193  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r209  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r225  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1-->/r241  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r__2  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r_18  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r_34  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r_50  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r_66  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r_82  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r_98  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r114  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r130  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r146  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r162  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r178  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r194  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r210  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r226  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2-->/r242  checkbox 0;
-	
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r__3  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r_19  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r_35  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r_51  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r_67  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r_83  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r_99  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r115  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r131  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r147  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r163  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r179  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r195  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r211  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r227  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3-->/r243  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r__4  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r_20  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r_36  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r_52  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r_68  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r_84  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r100  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r116  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r132  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r148  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r164  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r180  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r196  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r212  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r228  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4-->/r244  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r__5  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r_21  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r_37  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r_53  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r_69  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r_85  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r101  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r117  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r133  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r149  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r165  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r181  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r197  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r213  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r229  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5-->/r245  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r__6  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r_22  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r_38  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r_54  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r_70  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r_86  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r102  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r118  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r134  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r150  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r166  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r182  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r198  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r214  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r230  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6-->/r246  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r__7  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r_23  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r_39  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r_55  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r_71  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r_87  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r103  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r119  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r135  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r151  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r167  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r183  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r199  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r215  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r231  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7-->/r247  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r__8  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r_24  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r_40  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r_56  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r_72  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r_88  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r120  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r136  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r152  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r168  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r184  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r200  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r216  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r232  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8-->/r248  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r__9  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r_25  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r_41  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r_57  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r_73  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r_89  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r105  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r121  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r137  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r153  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r169  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r185  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r201  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r217  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r233  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9-->/r249  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r_10  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r_26  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r_42  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r_58  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r_74  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r_90  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r106  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r122  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r138  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r154  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r170  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r186  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r202  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r218  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r234  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10-->/r250  checkbox 0;
-	
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r_11  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r_27  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r_43  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r_59  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r_75  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r_91  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r107  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r123  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r139  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r155  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r171  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r187  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r203  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r219  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r235  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11-->/r251  checkbox 0;
-	
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r_12  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r_28  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r_44  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r_60  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r_76  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r_92  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r108  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r124  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r140  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r156  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r172  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r188  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r204  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r220  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r236  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del12-->/r252  checkbox 0;
-	
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r_13  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r_29  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r_45  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r_61  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r_77  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r_93  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r109  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r125  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r141  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r157  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r173  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r189  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r205  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r221  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r237  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13-->/r253  checkbox 1;
-	
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r_14  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r_30  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r_46  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r_62  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r_78  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r_94  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r110  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r126  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r142  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r158  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r174  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r190  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r206  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r222  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r238  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del14-->/r254  checkbox 0;
-	
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r_15  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r_31  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r_47  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r_63  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r_79  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r_95  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r111  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r127  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r143  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r159  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r175  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r191  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r207  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r223  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r239  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del15-->/r255  checkbox 0;
-
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_0-->/sp119  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_1-->/sp137  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_4-->/sp157  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_6-->/sp_23  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig12-->/sp_80  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig13-->/sp_47  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig14-->/sp116  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig15-->/sp100  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig16-->/sp_16  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_2-->/sp_19  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_4-->/sp_21  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_6-->/sp_40  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig12-->/sp_63  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig13-->/sp_81  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig14-->/sp_99  checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig15-->/sp117  checkbox 0;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/*/* checkbox 0;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_0--/sp119  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_1--/sp137  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_4--/sp157  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_6--/sp_23  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig12--/sp_80  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig13--/sp_47  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig14--/sp116  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig15--/sp100  checkbox 1;
+	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig16--/sp_16  checkbox 1;
 
 	/ITL/scene/faust/FaustDSP/Encoders/rotfreq3  hslider 0.; 
 	/ITL/scene/faust/FaustDSP/Encoders/rotfreq2  hslider 0.8;
@@ -694,6 +446,9 @@
 	/ITL/scene/faust/FaustDSP/RandomEnv/renv_freq  nentry 13.;
 	/ITL/scene/faust/FaustDSP/RandomEnv/renv_short  hslider 0.5;
 	/ITL/scene/faust/FaustDSP/Global_Parameters/generalGain  hslider 0.;
+
+	/ITL/scene/faust get ui;
+
 </div>
 
 </body>
