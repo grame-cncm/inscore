@@ -22,12 +22,13 @@
 <body>
 
 <div class="inscore" id="scene">
+	/ITL/scene/wait set txt "Loading..."; 
 	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
 	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
-	<!-- /ITL/scene/wait del;  -->
+	/ITL/scene/wait del; 
 
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
 	/ITL/scene/score height 1.8;
@@ -97,10 +98,17 @@
 
 	<!-- Button Play / Pause-->
 	/ITL/scene/btnplay set img $play;
-	/ITL/scene/btnplay y 0.9;
 	/ITL/scene/btnplay xorigin $origin;
-	/ITL/scene/btnplay width $w;
-	/ITL/scene/btnplay alpha $alpha;
+
+	<!-- Button Stop -->
+	/ITL/scene/btnstop set img $stop;
+	/ITL/scene/btnstop xorigin $origin * -1;
+
+	/ITL/scene/btn* y 0.9;
+	/ITL/scene/btn* width 0.070;
+	/ITL/scene/btn* alpha $alpha;
+
+	/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP );
 
 	initplay = (	
 		/ITL/scene/$self push,
@@ -115,25 +123,13 @@
 		)
 	);
 	/ITL/scene/btnplay watch mouseDown $initplay;
-
-	<!-- Button Stop -->
-	/ITL/scene/btnstop set img $stop;
-	/ITL/scene/btnstop y 0.9;
-	/ITL/scene/btnstop xorigin $origin * -1;
-	/ITL/scene/btnstop width $w;
-	/ITL/scene/btnstop alpha $alpha;
-
-	/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP );
 	
 	/ITL/scene watch STOP (
 		/ITL/scene/btnplay set img $play,
-		/ITL/scene/btnplay width $w,
 		/ITL/scene/btnplay pop,
-		/ITL/scene/btnplay watch mouseDown $initplay,
 		/ITL/scene/cursor tempo 0,
 		/ITL/scene/audio play 0,
 		/ITL/scene/audio vdate 0,
-		/ITL/scene/cursor date 1000,
 		/ITL/scene/cursor date 0
 	);
 
@@ -150,14 +146,14 @@
 	<!-- /ITL/scene/text set html "Faust objects";
 	/ITL/scene/text y -0.7;
 	/ITL/scene/text fontSize 32; -->
-	/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self color red);
-	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self color black, /ITL/scene/$self alpha $alpha);
+	/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self alpha 255);
+	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self alpha $alpha);
 
 	<!-- Audio Control Buttons -->
 	x = 0.5;
-	/ITL/scene/audioCtrltxtbtnWavOnly set txt "WAV to audioOutput";
+	/ITL/scene/audioCtrltxtbtnWavOnly set txt "WAV to audio output";
 	/ITL/scene/audioCtrltxtbtnWavToDSP set txt "WAV to DSP";
-	/ITL/scene/audioCtrltxtbtnAudioInToDSP set txt "AudioInput to DSP";
+	/ITL/scene/audioCtrltxtbtnAudioInToDSP set txt "Audio input to DSP";
 	
 	/ITL/scene/audioCtrltxtbtn* xorigin -1.1;
 	/ITL/scene/audioCtrltxtbtn* x $x;
@@ -177,65 +173,47 @@
 	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
 	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
 	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.95;
-	<!-- /ITL/scene/audioCtrlbtn* scale 0.05; -->
 
 	/ITL/scene/audioCtrlbtn* watch mouseEnter (/ITL/scene/$self alpha 120);
 	/ITL/scene/audioCtrlbtn* watch mouseLeave (/ITL/scene/$self alpha 255);
 
 	toggleWavOnly = (
 		/ITL/scene/$self push,
-		
-		<!-- TODO:Change button appearance -->
 		/ITL/scene/audioCtrlbtnWavOnly set img $tick,
-
 		/ITL/scene/audio disconnect audioOutput,
-		
 		/ITL/scene/audioCtrlbtnWavOnly watch mouseDown (
-			<!-- TODO:Change button appearance -->
 			/ITL/scene/audioCtrlbtnWavOnly set img $ticked,
-			/ITL/scene/audio connect audioOutput,
-			
+			/ITL/scene/audio connect audioOutput,			
 			/ITL/scene/$self pop
 		)
 	);
 
 	toggleWavToDSP = (
 		/ITL/scene/$self push,
-		<!-- TODO:Change button appearance -->
 		/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
-		/ITL/scene/audio connect faust,
-	
+		/ITL/scene/audio connect faust,	
 		/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown (
-			<!-- TODO:Change button appearance -->
-			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,
-			
+			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,			
 			/ITL/scene/audio disconnect faust,
-
 			/ITL/scene/$self pop
 		)
 	);
 
 	toggleAudioInToDSP = (
 		/ITL/scene/$self push,
-		<!-- TODO:Change button appearance -->
 		/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
-		/ITL/scene/audioInput connect faust,
-		
+		/ITL/scene/audioInput connect faust,		
 		/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown (
-			<!-- TODO:Change button appearance -->
 			/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
-			/ITL/scene/audioInput disconnect faust,
-	
+			/ITL/scene/audioInput disconnect faust,	
 			/ITL/scene/$self pop
 		)
 	);
-		
+
 	/ITL/scene/faust connect audioOutput;
 	/ITL/scene/audioCtrlbtnWavOnly watch mouseDown $toggleWavOnly;
 	/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown $toggleWavToDSP;
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
-
-
 	
 	/ITL/scene/cursor watch timeEnter 0 9 (
 		/ITL/scene/cursor color red,
@@ -254,8 +232,11 @@
 
 	/ITL/scene/cursor watch timeEnter 22 30 (
 		/ITL/scene/faust event SECTION3,
-		/ITL/scene/cursor color orange
-		
+		/ITL/scene/cursor color orange		
+	);
+
+	/ITL/scene/cursor watch timeEnter 30 1000 (
+		/ITL/scene event STOP
 	);
 
 	/ITL/scene/faust watch SECTION1 (
