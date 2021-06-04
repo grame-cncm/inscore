@@ -104,10 +104,8 @@
 	/ITL/scene/btnplay width $w;
 	/ITL/scene/btnplay alpha $alpha;
 
-	initplay = (
-
-	
-
+	initplay = (	
+		/ITL/scene/faust event INIT,
 		/ITL/scene/$self push,
 		/ITL/scene/btnplay set img $pause,
 		/ITL/scene/cursor tempo 60,
@@ -240,212 +238,215 @@
 	/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown $toggleWavToDSP;
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
 
-	<!-- TODO: Events -->
-	<!-- /ITL/scene/eventIndicator set txt "EVENT 1"; -->
-	<!-- /ITL/scene/eventIndicator xorigin 1; -->
-	<!-- /ITL/scene/eventIndicator x 0.5; -->
-	<!-- /ITL/scene/eventIndicator y -0.9; -->
-	<!-- /ITL/scene/eventIndicator color red; -->
-	/ITL/scene/cursor watch timeEnter 9 15 (
-		/ITL/scene/cursor color blue,
-		<!-- /ITL/scene/eventIndicator set txt "EVENT 2", -->
-		<!-- /ITL/scene/eventIndicator color blue, -->
-		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 22,
-		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75
-	);
+
 	
 	/ITL/scene/cursor watch timeEnter 0 9 (
-		/ITL/scene/cursor color red
-		<!-- /ITL/scene/eventIndicator set txt "EVENT 1", -->
-		<!-- /ITL/scene/eventIndicator color red -->
+		/ITL/scene/cursor color red,
+		/ITL/scene/faust event INIT
+	);
+
+	/ITL/scene/cursor watch timeEnter 9 15 (
+		/ITL/scene/faust event SECTION1,
+		/ITL/scene/cursor color blue
 	);
 
 	/ITL/scene/cursor watch timeEnter 15 22 (
-		/ITL/scene/cursor color green,
-		<!-- /ITL/scene/eventIndicator set txt "EVENT 3", -->
-		<!-- /ITL/scene/eventIndicator color green, -->
-		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 24,
-		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
-
+		/ITL/scene/faust event SECTION2,
+		/ITL/scene/cursor color green
 	);
 
 	/ITL/scene/cursor watch timeEnter 22 30 (
-		/ITL/scene/cursor color orange,
-		<!-- /ITL/scene/eventIndicator set txt "EVENT 4", -->
-		<!-- /ITL/scene/eventIndicator color orange, -->
-		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 22,
-		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd113  hslider 0.4,
+		/ITL/scene/faust event SECTION3,
+		/ITL/scene/cursor color orange
+		
+	);
+
+	/ITL/scene/faust watch SECTION1 (
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin   22,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75
+	);
+
+	/ITL/scene/faust watch SECTION2 (
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin   24,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7
+	);
+
+	/ITL/scene/faust watch SECTION3 (
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin   22,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd113   0.4,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.0
 	);
 
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_0 hslider 300;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_1 hslider 425;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_2 hslider 800;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_3 hslider 925;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_4 hslider 1300;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_5 hslider 1800;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_6 hslider 2050;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_7 hslider 2300;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_8 hslider 200;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_9 hslider 500;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d10 hslider 600;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d11 hslider 1000;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d12 hslider 3000;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d13 hslider 2500;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d14 hslider 700;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d15 hslider 300;
-
+	/ITL/scene/faust watch INIT (
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_0  300,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_1  425,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_2  800,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_3  925,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_4  1300,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_5  1800,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_6  2050,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_7  2300,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_8  200,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_9  500,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d10  600,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d11  1000,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d12  3000,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d13  2500,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d14  700,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d15  300,
 	
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_0 hslider 0.8;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_1 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_2 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_3 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_4 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_5 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_6 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_7 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_8 hslider 0.5;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_9 hslider 0.5;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd110 hslider 0.2;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd111 hslider 0.5;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd112 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd113 hslider 0.;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd114 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd115 hslider 0.9;
-
-
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_0 hslider 386;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_1 hslider 772;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_2 hslider -386;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_3 hslider 180;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_4 hslider 386;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_5 hslider -772;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_6 hslider -45;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_7 hslider 180;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_8 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_9 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr10 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr11 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr12 hslider -500;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr13 hslider 50;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr14 hslider -1000;
-	/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr15 hslider -1200;
-
-
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_0 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_1 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_2 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_3 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_4 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_5 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_6 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_7 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_8 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_9 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd10 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd11 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd12 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd13 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd14 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd15 hslider 1;
-
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_0 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_1 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_2 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_3 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_4 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_5 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_6 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_7 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_8 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_9 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp10 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp11 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp12 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp13 hslider 1;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp14 hslider 0.5;
-	/ITL/scene/faust/FaustDSP/Lines/Line_input/inp15 hslider 1;
-
-
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_0 hslider 0.25;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_1 hslider 0.3;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_2 hslider 0.35;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_3 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_4 hslider 0.25;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_5 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_6 hslider 0.9;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_7 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_8 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out_9 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out10 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out11 hslider 0;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out12 hslider 0.4;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out13 hslider 0.4;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out14 hslider 0.3;
-	/ITL/scene/faust/FaustDSP/Lines/Line_output/out15 hslider 0.3;
-
-	/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch  hslider 0.8;
-	/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch  hslider 4;
+		
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_0  0.8,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_1  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_2  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_3  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_4  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_5  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_6  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_7  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_8  0.5,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd1_9  0.5,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd110  0.2,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd111  0.5,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd112  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd113  0.,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd114  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd115  0.9,
 	
-	/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 24;
-	/ITL/scene/faust/FaustDSP/Global_Parameters/smoothDuration  hslider 50;
-
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/*/* checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0--/r__0  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1--/r_17  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2--/r_34  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3--/r_51  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4--/r_68  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5--/r_85  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6--/r102  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7--/r119  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r__8  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r_72  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r136  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9--/r_25  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9--/r153  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10--/r_42  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10--/r170  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r_59  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r123  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r187  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_13  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_29  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_45  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_77  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r109  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r205  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r221  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r237  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r253  checkbox 1;
-
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/*/* checkbox 0;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_0--/sp119  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_1--/sp137  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_4--/sp157  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_6--/sp_23  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig12--/sp_80  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig13--/sp_47  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig14--/sp116  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig15--/sp100  checkbox 1;
-	/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig16--/sp_16  checkbox 1;
-
-	/ITL/scene/faust/FaustDSP/Encoders/rotfreq3  hslider 0.; 
-	/ITL/scene/faust/FaustDSP/Encoders/rotfreq2  hslider 0.8;
-	/ITL/scene/faust/FaustDSP/Encoders/rotfreq1  hslider -0.4;
-	/ITL/scene/faust/FaustDSP/Encoders/rotfreq0  hslider 0.3;
-	/ITL/scene/faust/FaustDSP/Encoders/rotphase3  hslider 0.;
-	/ITL/scene/faust/FaustDSP/Encoders/rotphase2  hslider 0.;
-	/ITL/scene/faust/FaustDSP/Encoders/rotphase1  hslider 0.;
-	/ITL/scene/faust/FaustDSP/Encoders/rotphase0  hslider 0.;
-
-	/ITL/scene/faust/FaustDSP/Global_Parameters/guitarGain  hslider -10.2;
-	/ITL/scene/faust/FaustDSP/Global_Parameters/delharmoGain  hslider 0.;
-	/ITL/scene/faust/FaustDSP/RandomEnv/renv_trim  hslider 0.;
-	/ITL/scene/faust/FaustDSP/RandomEnv/renv_freq  nentry 13.;
-	/ITL/scene/faust/FaustDSP/RandomEnv/renv_short  hslider 0.5;
-	/ITL/scene/faust/FaustDSP/Global_Parameters/generalGain  hslider 0.;
+	
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_0  386,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_1  772,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_2  -386,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_3  180,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_4  386,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_5  -772,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_6  -45,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_7  180,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_8  0,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr_9  0,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr10  0,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr11  0,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr12  -500,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr13  50,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr14  -1000,
+		/ITL/scene/faust/FaustDSP/Lines/Harmo_Transpositions/tr15  -1200,
+	
+	
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_0  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_1  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_2  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_3  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_4  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_5  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_6  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_7  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_8  0,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd_9  0,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd10  0,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd11  0,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd12  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd13  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd14  1,
+		/ITL/scene/faust/FaustDSP/Lines/EffeX_vs_Del/xvd15  1,
+	
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_0  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_1  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_2  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_3  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_4  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_5  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_6  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_7  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_8  1,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp_9  1,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp10  1,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp11  1,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp12  1,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp13  1,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp14  0.5,
+		/ITL/scene/faust/FaustDSP/Lines/Line_input/inp15  1,
+	
+	
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_0  0.25,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_1  0.3,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_2  0.35,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_3  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_4  0.25,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_5  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_6  0.9,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_7  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_8  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out_9  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out10  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out11  0,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out12  0.4,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out13  0.4,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out14  0.3,
+		/ITL/scene/faust/FaustDSP/Lines/Line_output/out15  0.3,
+	
+		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch   0.8,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hStretch   4,
+		
+		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin   24,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/smoothDuration   50,
+	
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/*/* 0,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_0--/r__0  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_1--/r_17  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_2--/r_34  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_3--/r_51  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_4--/r_68  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_5--/r_85  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_6--/r102  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_7--/r119  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r__8  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r_72  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_8--/r136  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9--/r_25  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del_9--/r153  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10--/r_42  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del10--/r170  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r_59  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r123  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del11--/r187  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_13  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_29  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_45  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r_77  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r109  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r205  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r221  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r237  1,
+		/ITL/scene/faust/FaustDSP/Lines/Reinjection_Matrix/Del13--/r253  1,
+	
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/*/* 0,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_0--/sp119  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_1--/sp137  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_4--/sp157  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig_6--/sp_23  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig12--/sp_80  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig13--/sp_47  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig14--/sp116  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig15--/sp100  1,
+		/ITL/scene/faust/FaustDSP/Lines/SpatializationMatrix/Sig16--/sp_16  1,
+	
+		/ITL/scene/faust/FaustDSP/Encoders/rotfreq3   0., 
+		/ITL/scene/faust/FaustDSP/Encoders/rotfreq2   0.8,
+		/ITL/scene/faust/FaustDSP/Encoders/rotfreq1   -0.4,
+		/ITL/scene/faust/FaustDSP/Encoders/rotfreq0   0.3,
+		/ITL/scene/faust/FaustDSP/Encoders/rotphase3   0.,
+		/ITL/scene/faust/FaustDSP/Encoders/rotphase2   0.,
+		/ITL/scene/faust/FaustDSP/Encoders/rotphase1   0.,
+		/ITL/scene/faust/FaustDSP/Encoders/rotphase0   0.,
+	
+		/ITL/scene/faust/FaustDSP/Global_Parameters/guitarGain   -10.2,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/delharmoGain   0.,
+		/ITL/scene/faust/FaustDSP/RandomEnv/renv_trim   0.,
+		/ITL/scene/faust/FaustDSP/RandomEnv/renv_freq  nentry 13.,
+		/ITL/scene/faust/FaustDSP/RandomEnv/renv_short   0.5,
+		/ITL/scene/faust/FaustDSP/Global_Parameters/generalGain   0.
+	);
 
 	/ITL/scene/faust get ui;
 
