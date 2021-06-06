@@ -1625,8 +1625,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		}
 	}
 	else if (EventsAble::isKeyEvent(event)) {
-		extern const char* kKeyDownEvent;
-		bool down = what == kKeyDownEvent;
+		bool down = what == "keyDown";
 		if (msg->size() == 1) {
 			if (!add)
 				eventsHandler()->clearKeyMsg(down);
