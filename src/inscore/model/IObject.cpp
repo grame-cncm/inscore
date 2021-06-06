@@ -1624,8 +1624,48 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			}
 		}
 	}
+	else if (EventsAble::isKeyEvent(event)) {
+		extern const char* kKeyDownEvent;
+		bool down = what == kKeyDownEvent;
+		if (msg->size() == 1) {
+			if (!add)
+				eventsHandler()->clearKeyMsg(down);
+			else return MsgHandler::kBadParameters;
+		}
+		else if (msg->size() >= 2) {
+			string keys;
+			if (!msg->param (1, keys)) return MsgHandler::kBadParameters;
+			if (msg->size() == 2) eventsHandler()->delKeyMsg(keys, down); 		// remove a specific key handler
+			else {
+				SIMessageList watchMsg = msg->watchMsg2Msgs (2);
+				if (!watchMsg) return MsgHandler::kBadParameters;
+				size_t n = keys.size();
+				if ((n == 1) || ((n > 2) && (keys[0] == '[') && (keys[n-1] == ']')))
+					eventsHandler()->addKeyMsg( keys, watchMsg, down);
+			}
+		}
+		else return MsgHandler::kBadParameters;
+	}
+	else if (EventsAble::isMidiEvent(event)) {
+cerr << "IObject::_watchMsg midi event" << endl;
+	}
 	else return MsgHandler::kBadParameters;
 	return MsgHandler::kProcessed;
+}
+
+//--------------------------------------------------------------------------
+void IObject::keyPressEvent( std::string str, bool down)
+{
+	SIMessageList msgs = getKeyMessages(str, down);
+	if (msgs && msgs->list().size()) {
+		MouseLocation mouse (0,0,0,0,0,0);
+		EventContext env(mouse, getDate(), this);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, 0, 0, env);
+		if (outmsgs && outmsgs->list().size()) outmsgs->send();	// when not empty, sends the evaluated messages
+	}
+	for (auto elt: elements())									// propagate the key pressed to childrens
+		elt->keyPressEvent(str, down);
 }
 
 //--------------------------------------------------------------------------

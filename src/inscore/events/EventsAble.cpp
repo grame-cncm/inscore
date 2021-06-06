@@ -23,6 +23,8 @@
 
 */
 
+#include <regex>
+
 #include "EventsAble.h"
 #include "IMessageStream.h"
 #include "TInterval.h"
@@ -41,6 +43,10 @@ const char* kMouseUpEvent			= "mouseUp";
 const char* kMouseEnterEvent		= "mouseEnter";
 const char* kMouseLeaveEvent		= "mouseLeave";
 const char* kMouseDoubleClickEvent	= "doubleClick";
+
+const char* kKeyDownEvent			= "keyDown";
+const char* kKeyUpEvent				= "keyUp";
+const char* kMidiEvent				= "midi";
 
 const char* kTouchBeginEvent		= "touchBegin";
 const char* kTouchEndEvent			= "touchEnd";
@@ -128,6 +134,8 @@ void EventsAble::reset ()
 	fTimeLeaveMsgMap.clear();
 	fDurEnterMsgMap.clear();
 	fDurLeaveMsgMap.clear();
+	fKeyDownMsgMap.clear();
+	fKeyUpMsgMap.clear();
 	while (fWatchStack.size())
 		fWatchStack.pop();
 
@@ -146,6 +154,8 @@ void EventsAble::pushWatch ()
 	m.fTimeLeaveMsg	= fTimeLeaveMsgMap;
 	m.fDurEnterMsg	= fDurEnterMsgMap;
 	m.fDurLeaveMsg	= fDurLeaveMsgMap;
+	m.fKeyDownMsg	= fKeyDownMsgMap;
+	m.fKeyUpMsg		= fKeyUpMsgMap;
 	fWatchStack.push(m);
 }
 
@@ -158,8 +168,9 @@ bool EventsAble::popWatch ()
 		fTimeEnterMsgMap= m.fTimeEnterMsg;
 		fTimeLeaveMsgMap= m.fTimeLeaveMsg;
 		fDurEnterMsgMap	= m.fDurEnterMsg;
-
 		fDurLeaveMsgMap	= m.fDurLeaveMsg;
+		fKeyDownMsgMap	= m.fKeyDownMsg;
+		fKeyUpMsgMap	= m.fKeyUpMsg;
 		fWatchStack.pop();
 
 		fMouseSensible = checkMouseSensibility();
@@ -200,6 +211,27 @@ void EventsAble::addTimeMsg (eventype t, const RationalInterval& time, SIMessage
 }
 
 //----------------------------------------------------------------------
+SIMessageList EventsAble::getKeyMessages (const std::string& key, bool down) const
+{
+	SIMessageList msgs = IMessageList::create();
+	const TWatcher<std::string>& map = down ? fKeyDownMsgMap : fKeyUpMsgMap;
+	for (auto elt: map) {
+		if (acceptKey (elt.first, key))
+			msgs->list().push_back (elt.second->list());
+	}
+	return msgs;
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::acceptKey (const std::string& filter, const std::string& key) const
+{
+	if (filter == "*") return true;
+	if ((filter.size() == 1) && (filter == key)) return true;
+	if (std::regex_match (key, std::regex(filter))) return true;
+	return false;
+}
+
+//----------------------------------------------------------------------
 const IMessageList* EventsAble::getTimeMsgs (eventype t, const RationalInterval& time) const
 {
 	const IMessageList* msgs = 0;
@@ -225,6 +257,19 @@ SIMessage EventsAble::buildGetMsg (const char * address, const string& what, con
 }
 
 //----------------------------------------------------------------------
+SIMessage EventsAble::buildGetMsg (const char * address, const string& what, const string& key, const IMessageList* mlist) const
+{
+	SIMessage msg = IMessage::create (address, kwatch_GetSetMethod);
+	*msg << what << key;
+	if (mlist) {
+		SIMessageList msgs = IMessageList::create();
+		*msgs = *mlist;
+		*msg << msgs;
+	}
+	return msg;
+}
+
+//----------------------------------------------------------------------
 SIMessage EventsAble::buildGetMsg (const char * address, const string& what, const SIMessageList& msgs) const
 {
 	SIMessage msg = IMessage::create (address, kwatch_GetSetMethod);
@@ -236,20 +281,41 @@ SIMessage EventsAble::buildGetMsg (const char * address, const string& what, con
 SIMessageList EventsAble::getWatch (const char* address) const
 {
 	SIMessageList list = IMessageList::create();
-	for (TWatcher<size_t>::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, fHashCodes[i->first], i->second));
+//	for (TWatcher<size_t>::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++)
+//		list->list().push_back( buildGetMsg (address, fHashCodes[i->first], i->second));
+//
+//	for (TWatcher<RationalInterval>::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++)
+//		list->list().push_back( buildGetMsg (address, kTimeEnterEvent, i->first, i->second));
+//
+//	for (TWatcher<RationalInterval>::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++)
+//		list->list().push_back( buildGetMsg (address, kTimeLeaveEvent, i->first, i->second));
+//
+//	for (TWatcher<RationalInterval>::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++)
+//		list->list().push_back( buildGetMsg (address, kDurEnterEvent, i->first, i->second));
+//
+//	for (TWatcher<RationalInterval>::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
+//		list->list().push_back( buildGetMsg (address, kDurLeaveEvent, i->first, i->second));
 
-	for (TWatcher<RationalInterval>::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kTimeEnterEvent, i->first, i->second));
+	for (auto elt: fMsgMap)
+		list->list().push_back( buildGetMsg (address, fHashCodes[elt.first], elt.second));
 
-	for (TWatcher<RationalInterval>::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kTimeLeaveEvent, i->first, i->second));
+	for (auto elt: fTimeEnterMsgMap)
+		list->list().push_back( buildGetMsg (address, kTimeEnterEvent, elt.first, elt.second));
 
-	for (TWatcher<RationalInterval>::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kDurEnterEvent, i->first, i->second));
+	for (auto elt: fTimeLeaveMsgMap)
+		list->list().push_back( buildGetMsg (address, kTimeLeaveEvent, elt.first, elt.second));
 
-	for (TWatcher<RationalInterval>::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
-		list->list().push_back( buildGetMsg (address, kDurLeaveEvent, i->first, i->second));
+	for (auto elt: fDurEnterMsgMap)
+		list->list().push_back( buildGetMsg (address, kDurEnterEvent, elt.first, elt.second));
+
+	for (auto elt: fDurLeaveMsgMap)
+		list->list().push_back( buildGetMsg (address, kDurLeaveEvent, elt.first, elt.second));
+
+
+	for (auto elt: fKeyDownMsgMap)
+		list->list().push_back( buildGetMsg (address, kKeyDownEvent, elt.first, elt.second));
+	for (auto elt: fKeyUpMsgMap)
+		list->list().push_back( buildGetMsg (address, kKeyUpEvent, elt.first, elt.second));
 
 	if (list->list().empty()) list->list().push_back(IMessage::create (address, kwatch_GetSetMethod));
 	return list;
@@ -327,6 +393,19 @@ bool EventsAble::isMouseEvent(size_t type)
 }
 
 //----------------------------------------------------------------------
+bool EventsAble::isKeyEvent(size_t type)
+{
+	return	(type == fHash(kKeyDownEvent)) ||
+			(type == fHash(kKeyUpEvent));
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::isMidiEvent(size_t type)
+{
+	return	(type == fHash(kMidiEvent));
+}
+
+//----------------------------------------------------------------------
 bool EventsAble::checkMouseSensibility() const
 {
 	for(auto it = fMsgMap.begin(); it != fMsgMap.end(); it++){
@@ -363,6 +442,9 @@ void EventsAble::init ()
 		hash (kMouseEnterEvent);
 		hash (kMouseLeaveEvent);
 		hash (kMouseDoubleClickEvent);
+
+		hash (kKeyDownEvent);
+		hash (kKeyUpEvent);
 
 		hash (kTouchBeginEvent);
 		hash (kTouchEndEvent);
