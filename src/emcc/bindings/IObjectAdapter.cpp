@@ -112,6 +112,15 @@ void IObjectAdapter::event(string event) {
 }
 
 //--------------------------------------------------------------------------
+void IObjectAdapter::keyEvent (std::string ev, std::string key)
+{
+	if (fObject) {
+		bool down = ev == "keyDown";
+		fObject->keyPressEvent (key, down);
+	}
+}
+
+//--------------------------------------------------------------------------
 void IObjectAdapter::updateTime2TimeMap (std::string jsonmap)
 {
 	IGuidoCode* obj = dynamic_cast<IGuidoCode*>((IObject*)fObject);

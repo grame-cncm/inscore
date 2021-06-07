@@ -69,6 +69,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("updateGraphic2TimeMap",	&IObjectAdapter::updateGraphic2TimeMap)
 
 		.function("event",			&IObjectAdapter::event)
+		.function("keyEvent",		&IObjectAdapter::keyEvent)
 
 		.function("setAudioInOut",	&IObjectAdapter::setAudioInOut)
 		.function("setFaustUI",		&IObjectAdapter::setFaustUI, allow_raw_pointers())
