@@ -223,7 +223,7 @@ typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
 class IApplSsl : public IVNode
 {
 	public:
-		typedef struct {
+		typedef struct ssl {
 			QSslCertificate* cert = nullptr;
 			QSslCertificate* cacert = nullptr;
 			QSslKey* 		 key = nullptr;
