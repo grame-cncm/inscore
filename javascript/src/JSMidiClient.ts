@@ -3,21 +3,21 @@
 class MidiSetup {
     static midiClients : Array<string>;
     static accessSetup : WebMidi.MIDIAccess;
-
+    
     static midiInput(event: WebMidi.MIDIMessageEvent) {
         var cmd = event.data[0] >> 4;
         var channel = event.data[0] & 0xf;
         var data1 = event.data[1];
         var data2 = event.data[2];
-        let msg = inscore.newMessageM("event");
+        let msg = inscore.newMessageM("event midi");
         MidiSetup.midiClients.forEach((addr) => {
-            console.log(cmd);
-            inscore.msgAddI(msg, channel);
             inscore.msgAddI(msg, data1);
-            inscore.msgAddI(msg, data2);
+            inscore.msgAddI(msg, cmd);
             // create msg
             //send using postMesssage
             console.log(data1, data2, channel, cmd);
+            console.log("msg", msg);
+            console.log(addr, "event midi", data1, cmd);
             inscore.postMessage(addr, msg);
         });
     }
@@ -28,6 +28,7 @@ class MidiSetup {
 
     static onConnectionCallback(access : WebMidi.MIDIAccess) {
         MidiSetup.accessSetup = access;
+        console.log("in callback");
         access.onstatechange = function(e: WebMidi.MIDIConnectionEvent) {
             if (e.port.type === "input") {
                 let port = e.port as WebMidi.MIDIInput;
@@ -48,10 +49,13 @@ class MidiSetup {
 
     static addListener(addr : string) {
         if (typeof(navigator.requestMIDIAccess) !== "undefined" && MidiSetup.accessSetup !== null) {
-            navigator.requestMIDIAccess().then(
-                () => {
-                    MidiSetup.onConnectionCallback
+            navigator.requestMIDIAccess({"sysex": true}).then(
+                (access : WebMidi.MIDIAccess) => {
+                    if (!MidiSetup.midiClients) {
+                        MidiSetup.midiClients = [];
+                    }
                     MidiSetup.midiClients.push(addr);
+                    MidiSetup.onConnectionCallback(access);
                 }, this.onErrorCallback
             );
         } else {
