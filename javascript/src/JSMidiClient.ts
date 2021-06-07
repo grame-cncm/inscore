@@ -9,10 +9,14 @@ class MidiSetup {
         var channel = event.data[0] & 0xf;
         var data1 = event.data[1];
         var data2 = event.data[2];
-        let msg = inscore.newMessageM("event midi");
         MidiSetup.midiClients.forEach((addr) => {
+            let msg = inscore.newMessageM("event");
+            inscore.msgAddStr(msg, "midi");
+            if (cmd === 8)
+                inscore.msgAddStr(msg, "keyUp");
+            else if (cmd === 9)
+                inscore.msgAddStr(msg, "keyDown");
             inscore.msgAddI(msg, data1);
-            inscore.msgAddI(msg, cmd);
             // create msg
             //send using postMesssage
             console.log(data1, data2, channel, cmd);

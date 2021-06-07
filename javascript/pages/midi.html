@@ -71,7 +71,7 @@
 		// }
 		function activateMIDIInput()
 		{
-			MidiSetup.addListener("score");
+			MidiSetup.addListener("/ITL/scene/score");
 			console.log("finished listener adder");
 			// console.log("activateMIDIInput");
 			// console.log(navigator);
@@ -115,7 +115,7 @@
 	/ITL/scene/score dx 2
 );
 
-/ITL/scene/score watch midi chan 0(/ITL/scene/score get pageCount
+/ITL/scene/score watch keyDown "1" (/ITL/scene/score get pageCount
 );
 
 /ITL/log show 1;
