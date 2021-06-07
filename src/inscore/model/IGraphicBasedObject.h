@@ -78,7 +78,6 @@ class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
 		virtual float	getRealWidth() const		{ return fRealWidth; }
 		/// \brief Returns the real height
 		virtual float	getRealHeight() const		{ return fRealHeight; }
-		void setRealDims (float w, float h);
 
 	protected:
 				 IGraphicBasedObject( const std::string& name, IObject * parent );

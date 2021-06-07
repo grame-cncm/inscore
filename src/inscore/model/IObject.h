@@ -213,6 +213,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief clear the pending state of an object
 		virtual void	ready();
+		/// \brief called when a key is pressed
+		virtual void	keyPressEvent( std::string str, bool down) ;
 
 #ifdef EMCC
 		IObjectAdapter* getAdapter()				{ return fAdapter; }

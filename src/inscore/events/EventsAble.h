@@ -65,6 +65,18 @@ class EventsAble
 		void			addTimeMsg (eventype t, const RationalInterval& time, SIMessageList msg);
 		/// \brief clear a time message list
 		void			clearTimeMsg (eventype t);
+		/// \brief clear the key message list
+		void			clearKeyMsg (bool down)									{ if (down) clearKeyDownMsg(); else clearKeyUpMsg(); }
+		void			clearKeyDownMsg ()										{ fKeyDownMsgMap.clear(); }
+		void			clearKeyUpMsg ()										{ fKeyUpMsgMap.clear(); }
+		/// \brief add  a key event handler
+		void			addKeyMsg (const std::string& expr, SIMessageList msg, bool down)	{ if (down) addKeyDownMsg(expr, msg); else addKeyUpMsg(expr, msg); }
+		void			addKeyDownMsg (const std::string& expr, SIMessageList msg)	{ fKeyDownMsgMap.set (expr, msg); }
+		void			addKeyUpMsg (const std::string& expr, SIMessageList msg)	{ fKeyUpMsgMap.set (expr, msg); }
+		/// \brief add  a key event handler
+		void			delKeyMsg (const std::string& expr, bool down)				{ if (down) delKeyDownMsg(expr); else delKeyUpMsg(expr); }
+		void			delKeyDownMsg (const std::string& expr)						{ fKeyDownMsgMap.set (expr, nullptr); }
+		void			delKeyUpMsg (const std::string& expr)						{ fKeyUpMsgMap.set (expr, nullptr); }
 
 		virtual void		pushWatch ();		///< push the current watched events and associated msgs on a stack
 		virtual bool		popWatch ();		///< restore watched events and associated messages from the stack
@@ -73,6 +85,7 @@ class EventsAble
 		const IMessageList*	getMouseMsgs (eventype t) const					{ return fMsgMap.get(fHash(t)); }
 		const IMessageList*	getTimeMsgs (eventype t, const RationalInterval& time) const;
 		const size_t		countMouseMsgs (eventype t) const				{ return fMsgMap.count(fHash(t)); }
+		SIMessageList		getKeyMessages (const std::string& key, bool down) const;
 
 		void triggerEvent(eventype t, const bool& delay=false) const		{fMsgMap.trigger(fHash(t), delay);}
 
@@ -83,6 +96,10 @@ class EventsAble
 		static void	init ();
 		static bool		isMouseEvent(size_t hashtype);
 		static bool		isMouseEvent(eventype t)				{ return isMouseEvent(fHash(t)); }
+		static bool 	isKeyEvent(size_t hashtype);
+		static bool		isKeyEvent(eventype t)					{ return isKeyEvent (fHash(t)); }
+		static bool 	isMidiEvent(size_t type);
+		static bool		isMidiEvent(eventype t)					{ return isMidiEvent (fHash(t)); }
 		static bool		isTimeEvent(size_t hashtype);
 		static bool		isTimeEvent(eventype t)					{ return isTimeEvent(fHash(t)); }
 		static bool		isDurEvent(size_t hashtype);
@@ -100,6 +117,8 @@ class EventsAble
 			TWatcher<RationalInterval>	fTimeLeaveMsg;
 			TWatcher<RationalInterval>	fDurEnterMsg;
 			TWatcher<RationalInterval>	fDurLeaveMsg;
+			TWatcher<std::string>		fKeyDownMsg;
+			TWatcher<std::string>		fKeyUpMsg;
 		} EventsMaps;
 		std::stack<EventsMaps>	fWatchStack;
 		
@@ -108,10 +127,14 @@ class EventsAble
 		TWatcher<RationalInterval>	fTimeLeaveMsgMap;
 		TWatcher<RationalInterval>	fDurEnterMsgMap;
 		TWatcher<RationalInterval>	fDurLeaveMsgMap;
+		TWatcher<std::string>		fKeyDownMsgMap;
+		TWatcher<std::string>		fKeyUpMsgMap;
 
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const SIMessageList&) const;
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const RationalInterval&, const IMessageList*) const;
+		SIMessage	buildGetMsg (const char * address, const std::string& type, const std::string&, const IMessageList*) const;
 
+		bool acceptKey (const std::string& filter, const std::string& key) const;
 		bool checkMouseSensibility() const;
 
 	static std::hash<std::string> fHash;

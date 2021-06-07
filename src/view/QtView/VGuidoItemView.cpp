@@ -177,6 +177,8 @@ bool VGuidoItemView::initView (IObject* obj)
 {
 	IGuidoCode * gmn = static_cast<IGuidoCode *>(obj);
 	if (gmnUpdate (gmn)) {
+		QRectF r = fGuidoItem->boundingRect();
+		gmn->setRealDims (scene2RelativeWidth(r.width()), scene2RelativeHeight(r.height()));
 		updateObjectSize (obj);
 		return true;
 	}

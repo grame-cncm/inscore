@@ -24,10 +24,11 @@ class JSSceneView extends JSObjectView {
 		this.fAbsolutePos = absolute;
 		let obj = INScore.objects().adapter(objid);
 		this.updateObjectSize (obj, div.clientWidth, div.clientHeight);
-		// this.updateObjectSize (objid, div.clientWidth, div.clientHeight);
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)
 		div.style.filter = `blur(0px)`;
+		window.addEventListener ("keydown", (event) => { obj.keyEvent ('keyDown', event.key); }, {capture: false});
+		window.addEventListener ("keyup",   (event) => { obj.keyEvent ('keyUp', event.key); }, {capture: false});
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
 	toString() : string					{ return "JSSceneView"; }

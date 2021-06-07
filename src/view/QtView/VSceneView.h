@@ -30,6 +30,7 @@
 #include <QGraphicsView>
 #include <QStack>
 #include <QPair>
+#include <QKeyEvent>
 
 #include <string>
 #include "VDummyObjectView.h"
@@ -193,6 +194,8 @@ class ZoomingGraphicsView : public QGraphicsView
 		void setScene		(IScene* scene)		{ fScene = scene; }
 		IScene* getScene	()					{ return fScene; }
 
+		void	keyPressEvent(QKeyEvent *event) override;
+		void	keyReleaseEvent(QKeyEvent *event) override;
 		/*!
          * \brief should be called on fullscreen change triggered by the UI.
 		 */
@@ -248,15 +251,15 @@ class ZoomingGraphicsView : public QGraphicsView
 		bool fFocus;
 
 
-		virtual void	closeEvent	(QCloseEvent *);
-		virtual void	paintEvent  (QPaintEvent * );
+		virtual void	closeEvent	(QCloseEvent *) override;
+		virtual void	paintEvent  (QPaintEvent * ) override;
 
 		/*!
 		 * \brief viewportEvent Gesture event are fired on viewport.
 		 * \param event the event
 		 * \return
 		 */
-		virtual bool viewportEvent(QEvent *event);
+		virtual bool viewportEvent(QEvent *event) override;
 		/*!
 		 * \brief gestureEvent process gesture event
 		 * \param event
@@ -270,10 +273,10 @@ class ZoomingGraphicsView : public QGraphicsView
 		void pinchTriggered(QPinchGesture *event);
 
 
-		void resizeEvent ( QResizeEvent * );
+		void resizeEvent ( QResizeEvent * ) override;
 
 #ifndef __MOBILE__
-		virtual void changeEvent(QEvent *e);
+		virtual void changeEvent(QEvent *e) override;
 #endif
 };
 

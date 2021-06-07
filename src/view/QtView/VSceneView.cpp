@@ -116,6 +116,17 @@ void ZoomingGraphicsView::stateChange ( bool fullscreen )
 }
 
 //------------------------------------------------------------------------------------------------------------------------
+void ZoomingGraphicsView::keyPressEvent(QKeyEvent *event)
+{
+	if (fScene) fScene->keyPressEvent(event->text().toStdString(), true);
+}
+
+void ZoomingGraphicsView::keyReleaseEvent(QKeyEvent *event)
+{
+	if (fScene) fScene->keyPressEvent(event->text().toStdString(), false);
+}
+
+//------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::resizeEvent ( QResizeEvent * )
 {
 	// scene adaptation to avoid scroll bars
