@@ -7,22 +7,19 @@ class MidiSetup {
     static midiInput(event: WebMidi.MIDIMessageEvent) {
         var cmd = event.data[0] >> 4;
         var channel = event.data[0] & 0xf;
-        var data1 = event.data[1];
-        var data2 = event.data[2];
+        var pitch = event.data[1];
+        var press = event.data[2];
         MidiSetup.midiClients.forEach((addr) => {
+
             let msg = inscore.newMessageM("event");
             inscore.msgAddStr(msg, "midi");
-            if (cmd === 8)
-                inscore.msgAddStr(msg, "keyUp");
-            else if (cmd === 9)
-                inscore.msgAddStr(msg, "keyDown");
-            inscore.msgAddI(msg, data1);
-            // create msg
-            //send using postMesssage
-            console.log(data1, data2, channel, cmd);
-            console.log("msg", msg);
-            console.log(addr, "event midi", data1, cmd);
+            inscore.msgAddStr(msg, "keyDown");
+            inscore.msgAddI(msg, pitch);
             inscore.postMessage(addr, msg);
+
+            console.log(pitch, press, channel, cmd);
+            console.log("msg", msg);
+            console.log(addr, "event midi", pitch, cmd);
         });
     }
 
