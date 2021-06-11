@@ -112,6 +112,7 @@
 		/ITL/scene/btnplay/fg set polygon 0 0 0 1 0.8 0.5,
 		/ITL/scene/btnplay/fg color white,
 		/ITL/scene/btnplay xorigin 0,
+		/ITL/scene/btnplay/mask set rect 0.4 1,
 		/ITL/scene/btnplay/mask alpha 0,
 		/ITL/scene/btn* y 0.9,
 		/ITL/scene/btn* scale $w,
@@ -176,7 +177,7 @@
 	/ITL/scene watch STOP (
 		/ITL/log write STOP,
 		/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
-		/ITL/scene/btnplay set img $play,
+		/ITL/scene event SETPLAYIMG,
 		/ITL/scene/btnplay pop,
 		/ITL/scene/cursor tempo 0,
 		/ITL/scene/audio play 0,
