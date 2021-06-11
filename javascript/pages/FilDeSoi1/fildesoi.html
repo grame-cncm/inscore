@@ -112,11 +112,11 @@
 		/ITL/scene/btnplay/fg set polygon 0 0 0 1 0.8 0.5,
 		/ITL/scene/btnplay/fg color white,
 		/ITL/scene/btnplay xorigin 0,
-		/ITL/scene/btnplay/mask set rect 0.4 1,
-		/ITL/scene/btnplay/mask alpha 0,
 		/ITL/scene/btn* y 0.9,
 		/ITL/scene/btn* scale $w,
 		/ITL/scene/btn* alpha $alpha,
+		/ITL/scene/btnplay/mask set rect 0.4 1,
+		/ITL/scene/btnplay/mask alpha 0,
 		/ITL/scene/btnplay x -0.05	
 	);
 	
@@ -126,13 +126,13 @@
 		/ITL/scene/btnplay color grey,
 		/ITL/scene/btnplay/fg set rect 1 1,
 		/ITL/scene/btnplay/fg color white,
-		/ITL/scene/btnplay/mask set rect 0.4 1,
-		/ITL/scene/btnplay/mask color grey,
-		/ITL/scene/btnplay/mask alpha $alpha,
 		/ITL/scene/btnplay xorigin 0,
 		/ITL/scene/btn* y 0.9,
 		/ITL/scene/btn* scale $w,
 		/ITL/scene/btn* alpha $alpha,
+		/ITL/scene/btnplay/mask set rect 0.4 1,
+		/ITL/scene/btnplay/mask color grey,
+		/ITL/scene/btnplay/mask alpha $alpha,
 		/ITL/scene/btnplay x -0.05	
 	);
 	<!-- Button Stop -->
@@ -517,7 +517,22 @@
 
 
 	/ITL/scene/docLayer set layer;
-	/ITL/scene/docLayer/bonjour set txt "bonjour";
+	/ITL/scene/docLayer/bg set rect 1 1;
+	/ITL/scene/docLayer/bg color white;
+	/ITL/scene/docLayer/bg penWidth 1;
+	/ITL/scene/docLayer/bg/title set txt "Change Event with keys";
+	/ITL/scene/docLayer/bg/title y -0.9;
+	/ITL/scene/docLayer/bg/keys1 set txt "EVENT 1 : 1";
+	/ITL/scene/docLayer/bg/keys1 y -0.7;
+
+	/ITL/scene/docLayer/bg/keys2 set txt "EVENT 2 : 2";
+	/ITL/scene/docLayer/bg/keys2 y -0.5;
+	/ITL/scene/docLayer/bg/keys3 set txt "EVENT 3 : 3";
+	/ITL/scene/docLayer/bg/keys3 y -0.3;
+	/ITL/scene/docLayer/bg/keys4 set txt "EVENT 4 : 4";
+	/ITL/scene/docLayer/bg/keys4 y -0.1;
+	/ITL/scene/docLayer/bg/keysSpace set txt "PLAY / PAUSE : Space";
+	/ITL/scene/docLayer/bg/keysSpace y 0.2;
 	/ITL/scene/docLayer show 0;
 	docInit = (
 		/ITL/scene/$self push,
