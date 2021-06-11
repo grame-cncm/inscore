@@ -22,9 +22,12 @@
 <body>
 
 <div class="inscore" id="scene">
+	<!-- dossier score completement independant: Readme, ressouces, fildesoi.inscore sans dsp + index.html (fildesoi.html) package.json avec les dep, reference au librairies ou recopier les nodesmodules -->
+	<!-- TOTO: faire sous forme d'un package indépendant : le sortir de la page web ? contenu de la page html - dsp sous forme .inscore -->
+	<!-- TODO: Stop les images go les rect & polygones -->
 	/ITL/scene/wait set txt "Loading..."; 
-	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
-	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
+	<!-- /ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt"; -->
+	/ITL/scene/faust set faust 'process =  _,_ ;';
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -96,34 +99,66 @@
 	play  = 'rsrc/play.png';
 	pause = 'rsrc/pause.png';
 	stop  = 'rsrc/stop.png';
-	tick = 'rsrc/tick1.png';
-	ticked = 'rsrc/tick2.png';
 	origin = 1.2;
 	alpha = 120;
 	w = 0.09;
 
 	<!-- Button Play / Pause-->
-	/ITL/scene/btnplay set img $play;
-	/ITL/scene/btnplay xorigin $origin;
 
+	/ITL/scene/btnplay set ellipse 1 1;
+
+	/ITL/scene watch SETPLAYIMG (
+		/ITL/scene/btnplay color grey,
+		/ITL/scene/btnplay/fg set polygon 0 0 0 1 0.8 0.5,
+		/ITL/scene/btnplay/fg color white,
+		/ITL/scene/btnplay xorigin 0,
+		/ITL/scene/btnplay/mask alpha 0,
+		/ITL/scene/btn* y 0.9,
+		/ITL/scene/btn* scale $w,
+		/ITL/scene/btn* alpha $alpha,
+		/ITL/scene/btnplay x -0.05	
+	);
+	
+	/ITL/scene/btnplay set ellipse 1 1;
+
+	/ITL/scene watch SETPAUSEIMG (
+		/ITL/scene/btnplay color grey,
+		/ITL/scene/btnplay/fg set rect 1 1,
+		/ITL/scene/btnplay/fg color white,
+		/ITL/scene/btnplay/mask set rect 0.4 1,
+		/ITL/scene/btnplay/mask color grey,
+		/ITL/scene/btnplay/mask alpha $alpha,
+		/ITL/scene/btnplay xorigin 0,
+		/ITL/scene/btn* y 0.9,
+		/ITL/scene/btn* scale $w,
+		/ITL/scene/btn* alpha $alpha,
+		/ITL/scene/btnplay x -0.05	
+	);
 	<!-- Button Stop -->
-	/ITL/scene/btnstop set img $stop;
-	/ITL/scene/btnstop xorigin $origin * -1;
+	/ITL/scene/btnstop set ellipse 1 1;
 
-	/ITL/scene/btn* y 0.9;
-	/ITL/scene/btn* width 0.070;
-	/ITL/scene/btn* alpha $alpha;
-
-	/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 );
+	/ITL/scene watch SETSTOPIMG (
+		/ITL/scene/btnstop color grey,
+		/ITL/scene/btnstop/fg set rect 1 1,
+		/ITL/scene/btnstop/fg color white,
+		/ITL/scene/btnstop xorigin 0,
+		/ITL/scene/btn* y 0.9,
+		/ITL/scene/btn* scale $w,
+		/ITL/scene/btn* alpha $alpha,
+		/ITL/scene/btnstop x 0.05
+		
+	);
 
 	initplay = (	
 		/ITL/scene/$self push,
-		/ITL/scene/btnplay set img $pause,
+		<!-- /ITL/scene/btnplay set img $pause, -->
+		/ITL/scene event SETPAUSEIMG,
 		/ITL/scene/cursor tempo 60,
 		/ITL/scene/audio play 1,
 		/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP ),
 		/ITL/scene/btnplay watch mouseDown (
-			/ITL/scene/btnplay set img $play,
+			/ITL/scene event SETPLAYIMG,
+			<!-- /ITL/scene/btnplay set img $play, -->
 			/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
 			/ITL/scene/cursor tempo 0,
 			/ITL/scene/audio play 0,
@@ -131,22 +166,13 @@
 		)
 	);
 
-	playpause = (
-		/ITL/scene/$self push,
-		/ITL/scene/btnplay set img $pause,
-		/ITL/scene/cursor tempo 60,
-		/ITL/scene/audio play 1,
-		/ITL/scene/btnplay watch keyDown " " (
-			/ITL/scene/btnplay set img $play,
-			/ITL/scene/cursor tempo 0,
-			/ITL/scene/audio play 0,
-			/ITL/scene/$self pop
-		)
-	);
-
 	/ITL/scene/btnplay watch mouseDown $initplay;
-	/ITL/scene/btnplay watch keyDown " " $playpause;
-	
+	/ITL/scene/btnplay watch keyDown " " (/ITL/scene/btnplay event mouseDown 0 0);
+	/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 );
+
+	/ITL/scene event SETPLAYIMG;
+	/ITL/scene event SETSTOPIMG;
+
 	/ITL/scene watch STOP (
 		/ITL/log write STOP,
 		/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
@@ -177,7 +203,9 @@
 	/ITL/scene/text y -0.7;
 	/ITL/scene/text fontSize 32; -->
 	/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self alpha 255);
+	/ITL/scene/btnplay/mask watch mouseEnter (/ITL/scene/$self alpha 255);
 	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self alpha $alpha);
+	/ITL/scene/btnplay/mask watch mouseLeave (/ITL/scene/$self alpha $alpha);
 
 	<!-- Audio Control Buttons -->
 	x = 0.5;
@@ -185,7 +213,8 @@
 	/ITL/scene/audioCtrltxtbtnWavToDSP 		set txt "Playback to DSP";
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	
-	/ITL/scene/audioCtrltxtbtn* xorigin -1.1;
+	/ITL/scene/audioCtrltxtbtn* xorigin 0;
+	/ITL/scene/audioCtrltxtbtn* fontSize 8;
 	/ITL/scene/audioCtrltxtbtn* x $x;
 	/ITL/scene/audioCtrltxtbtnWavOnly dx -0.006;
 
@@ -193,13 +222,23 @@
 	/ITL/scene/audioCtrltxtbtnWavToDSP y 0.9;
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP y 0.95;
 
-	/ITL/scene/audioCtrlbtnWavOnly set img $ticked;
-	/ITL/scene/audioCtrlbtnWavToDSP set img $tick;
-	/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick;
+	
+	/ITL/scene/audioCtrlbtnWavOnly set rect 0.04 0.04;
+	/ITL/scene/audioCtrlbtnWavOnly radius 5 5;
+	/ITL/scene/audioCtrlbtnWavOnly color green;
+	/ITL/scene/audioCtrlbtnWavOnly penWidth 1;
+	
+	/ITL/scene/audioCtrlbtnWavToDSP set rect 0.04 0.04;
+	/ITL/scene/audioCtrlbtnWavToDSP radius 5 5;
+	/ITL/scene/audioCtrlbtnWavToDSP color white;
+	/ITL/scene/audioCtrlbtnWavToDSP penWidth 1;
 
-	/ITL/scene/audioCtrlbtn* alpha 180;
-	/ITL/scene/audioCtrlbtn* width 0.04;
-	/ITL/scene/audioCtrlbtn* xorigin 1.15;
+	/ITL/scene/audioCtrlbtnAudioInToDSP set rect 0.04 0.04;
+	/ITL/scene/audioCtrlbtnAudioInToDSP radius 5 5;
+	/ITL/scene/audioCtrlbtnAudioInToDSP color white;
+	/ITL/scene/audioCtrlbtnAudioInToDSP penWidth 1;
+
+	/ITL/scene/audioCtrlbtn* xorigin 10;
 	/ITL/scene/audioCtrlbtn* x $x;
 	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
 	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
@@ -210,10 +249,10 @@
 
 	toggleWavOnly = (
 		/ITL/scene/$self push,
-		/ITL/scene/audioCtrlbtnWavOnly set img $tick,
+		/ITL/scene/audioCtrlbtnWavOnly color white,
 		/ITL/scene/audio disconnect audioOutput,
 		/ITL/scene/audioCtrlbtnWavOnly watch mouseDown (
-			/ITL/scene/audioCtrlbtnWavOnly set img $ticked,
+			/ITL/scene/audioCtrlbtnWavOnly color green,
 			/ITL/scene/audio connect audioOutput,			
 			/ITL/scene/$self pop
 		)
@@ -221,10 +260,10 @@
 
 	toggleWavToDSP = (
 		/ITL/scene/$self push,
-		/ITL/scene/audioCtrlbtnWavToDSP set img $ticked,
+		/ITL/scene/audioCtrlbtnWavToDSP color green,
 		/ITL/scene/audio connect faust,	
 		/ITL/scene/audioCtrlbtnWavToDSP watch mouseDown (
-			/ITL/scene/audioCtrlbtnWavToDSP set img $tick,			
+			/ITL/scene/audioCtrlbtnWavToDSP color white,			
 			/ITL/scene/audio disconnect faust,
 			/ITL/scene/$self pop
 		)
@@ -232,10 +271,10 @@
 
 	toggleAudioInToDSP = (
 		/ITL/scene/$self push,
-		/ITL/scene/audioCtrlbtnAudioInToDSP set img $ticked,
+		/ITL/scene/audioCtrlbtnAudioInToDSP color green,
 		/ITL/scene/audioInput connect faust,		
 		/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown (
-			/ITL/scene/audioCtrlbtnAudioInToDSP set img $tick,
+			/ITL/scene/audioCtrlbtnAudioInToDSP color white,
 			/ITL/scene/audioInput disconnect faust,	
 			/ITL/scene/$self pop
 		)
@@ -474,6 +513,38 @@
 	);
 
 	/ITL/scene/faust event INIT;
+
+
+	/ITL/scene/docLayer set layer;
+	/ITL/scene/docLayer/bonjour set txt "bonjour";
+	/ITL/scene/docLayer show 0;
+	docInit = (
+		/ITL/scene/$self push,
+		/ITL/scene/docLayer show 1,
+		/ITL/scene/docbtn watch mouseDown (
+			/ITL/scene/docLayer show 0,
+			/ITL/scene/$self pop
+		)
+	);
+
+	/ITL/scene/docbtn set txt "Documentation";
+	/ITL/scene/docbtn color blue;
+
+	/ITL/scene/docbtn xorigin 0;
+	/ITL/scene/docbtn x -$x;
+	/ITL/scene/docbtn y 0.90;
+	/ITL/scene/docbtn fontSize 8;	
+
+	/ITL/scene/docbtn watch mouseDown $docInit;	
+
+	/ITL/scene/linkToDoc set txt "Link to FilDeSoi Doc";
+	/ITL/scene/linkToDoc color blue;
+	/ITL/scene/linkToDoc xorigin 0;
+	/ITL/scene/linkToDoc x -$x;
+	/ITL/scene/linkToDoc y 0.95;
+	/ITL/scene/linkToDoc fontSize 8;
+	
+	/ITL/scene/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
 
 </div>
 
