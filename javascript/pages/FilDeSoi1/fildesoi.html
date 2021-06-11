@@ -105,6 +105,7 @@
 
 	<!-- Button Play / Pause-->
 
+	/ITL/scene/btnstop set ellipse 1 1;
 	/ITL/scene/btnplay set ellipse 1 1;
 
 	/ITL/scene watch SETPLAYIMG (
@@ -115,13 +116,12 @@
 		/ITL/scene/btn* y 0.9,
 		/ITL/scene/btn* scale $w,
 		/ITL/scene/btn* alpha $alpha,
-		/ITL/scene/btnplay/mask set rect 0.4 1,
-		/ITL/scene/btnplay/mask alpha 0,
+		/ITL/scene/btnplay/fg/mask set rect 0.4 1,
+		/ITL/scene/btnplay/fg/mask alpha 0,
 		/ITL/scene/btnplay x -0.05	
 	);
 	
-	/ITL/scene/btnplay set ellipse 1 1;
-
+	
 	/ITL/scene watch SETPAUSEIMG (
 		/ITL/scene/btnplay color grey,
 		/ITL/scene/btnplay/fg set rect 1 1,
@@ -130,13 +130,12 @@
 		/ITL/scene/btn* y 0.9,
 		/ITL/scene/btn* scale $w,
 		/ITL/scene/btn* alpha $alpha,
-		/ITL/scene/btnplay/mask set rect 0.4 1,
-		/ITL/scene/btnplay/mask color grey,
-		/ITL/scene/btnplay/mask alpha $alpha,
+		/ITL/scene/btnplay/fg/mask set rect 1 2,
+		/ITL/scene/btnplay/fg/mask color grey,
+		/ITL/scene/btnplay/fg/mask alpha $alpha,
 		/ITL/scene/btnplay x -0.05	
-	);
-	<!-- Button Stop -->
-	/ITL/scene/btnstop set ellipse 1 1;
+		);
+		<!-- Button Stop -->
 
 	/ITL/scene watch SETSTOPIMG (
 		/ITL/scene/btnstop color grey,
