@@ -23,6 +23,7 @@
 
 */
 
+#include <strstream>
 #include <regex>
 
 #include "EventsAble.h"
@@ -82,12 +83,107 @@ const char* kPageCountEvent			= "pageCount";
 const char* kEndEvent				= "end";
 const char* kReadyEvent				= "ready";
 
+// midi filters keys
+const char* kMidiAll				= "*";
+const char* kMidiChan				= "chan";
+const char* kMidiKeyon				= "keyon";
+const char* kMidiKeyoff				= "keyoff";
+const char* kMidiVel				= "vel";
+const char* kMidiProg				= "prog";
+const char* kMidiCtrl				= "ctrl";
+
+
 map<size_t, std::string>	EventsAble::fHashCodes;
 std::hash<string>			EventsAble::fHash;
 
 //----------------------------------------------------------------------
 EventsAble::EventsAble ():	fMouseSensible(false) { init(); }
 EventsAble::~EventsAble ()	{}
+
+//----------------------------------------------------------------------
+static string getStringValue(const IMessage* msg, int i) {
+	int num; string val;
+	if (msg->param (i, num)) {
+		stringstream str;
+		str << num;
+		return str.str();
+	}
+	if (msg->param (i, val))
+		return val;
+	return "";
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::setMidiFilterMsgs(const IMessage* msg, int index, const TMidiFilter& filter)
+{
+	SIMessageList watchMsg = msg->watchMsg2Msgs (index);
+	if (!watchMsg) return false;
+	addMidiMsg (filter, watchMsg);
+	return true;
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::endParse(const IMessage* msg, int size, int index, const TMidiFilter& filter)
+{
+	if (size < index) 			// no more parameter, remove the filter
+		delMidiMsg (filter);
+	else return setMidiFilterMsgs (msg, index, filter);
+	return true;
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::parseWatchMidi (const IMessage* msg, bool add)
+{
+	int n = msg->size();
+	TMidiFilter filter;
+	int i = 1;
+	string evt;
+	if (!msg->param (i++, evt)) return false;
+	if (evt == kMidiAll) {		// accept any midi input
+		return endParse (msg, n, i, filter);
+	}
+
+	if (evt == kMidiChan) {
+		int chan;
+		if (!msg->param (i++, chan)) return false;
+		filter.setChan (chan);
+		if (!msg->param (i, evt)) return endParse(msg, n, i, filter);
+		else i++;
+	}
+	
+	bool keyon = (evt == kMidiKeyon);
+	if (keyon || (evt == kMidiKeyoff)) {
+		string val = getStringValue(msg, i++);
+		if (val.empty()) return false;
+		string vel;
+		if (msg->param (i, vel) && (vel == kMidiVel)) {
+			i += 1;
+			string vval = getStringValue(msg, i++);
+			if (vval.empty() || !filter.setKey (keyon, val, vval)) return false;
+		}
+		else if (!filter.setKey (keyon, val)) return false;
+		return endParse (msg, n, i, filter);
+	}
+
+	else if (evt == kMidiProg) {
+		int num;
+		if (!msg->param (i++, num) || !filter.setProg (num) ) return false;
+		return endParse (msg, n, i, filter);
+	}
+
+	else if (evt == kMidiCtrl) {
+		int num;
+		if (!msg->param (i++, num)) return false;		// get the controler number
+		string val = getStringValue(msg, i++);			// get the values
+		if (val.empty() || !filter.setCtrl (num, val)) return false;
+		return endParse (msg, n, i, filter);
+	}
+	else {
+		ITLErr << "unknown MIDI selector" << evt << ITLEndl;
+		return false;		// unknown selector
+	}
+	return true;
+}
 
 //----------------------------------------------------------------------
 void EventsAble::setMsg(EventsAble::eventype t, SIMessageList msgs)
@@ -136,6 +232,7 @@ void EventsAble::reset ()
 	fDurLeaveMsgMap.clear();
 	fKeyDownMsgMap.clear();
 	fKeyUpMsgMap.clear();
+	fMidiMsgMap.clear();
 	while (fWatchStack.size())
 		fWatchStack.pop();
 
@@ -156,6 +253,7 @@ void EventsAble::pushWatch ()
 	m.fDurLeaveMsg	= fDurLeaveMsgMap;
 	m.fKeyDownMsg	= fKeyDownMsgMap;
 	m.fKeyUpMsg		= fKeyUpMsgMap;
+	m.fMidiMsg		= fMidiMsgMap;
 	fWatchStack.push(m);
 }
 
@@ -171,6 +269,7 @@ bool EventsAble::popWatch ()
 		fDurLeaveMsgMap	= m.fDurLeaveMsg;
 		fKeyDownMsgMap	= m.fKeyDownMsg;
 		fKeyUpMsgMap	= m.fKeyUpMsg;
+		fMidiMsgMap		= m.fMidiMsg;
 		fWatchStack.pop();
 
 		fMouseSensible = checkMouseSensibility();
@@ -232,6 +331,11 @@ bool EventsAble::acceptKey (const std::string& filter, const std::string& key) c
 }
 
 //----------------------------------------------------------------------
+bool EventsAble::acceptMidi (char status, char data1, char data2) const
+{
+}
+
+//----------------------------------------------------------------------
 const IMessageList* EventsAble::getTimeMsgs (eventype t, const RationalInterval& time) const
 {
 	const IMessageList* msgs = 0;
@@ -241,6 +345,30 @@ const IMessageList* EventsAble::getTimeMsgs (eventype t, const RationalInterval&
 	else if (ht == fHash(kDurEnterEvent))		msgs = fDurEnterMsgMap.get(time);
 	else if (ht == fHash(kDurLeaveEvent))		msgs = fDurLeaveMsgMap.get(time);
 	return msgs;
+}
+
+//----------------------------------------------------------------------
+SIMessage EventsAble::buildGetMsg (const char * address, const std::string& type, const TMidiFilter& filter, const IMessageList* mlist) const
+{
+	SIMessage msg = IMessage::create (address, kwatch_GetSetMethod);
+	*msg << type;
+	const TMidiFilter::TMsgFilter* f = filter.getCurrent();
+	if (f == nullptr) {
+		if (filter.getChan() < 0)
+			*msg << "*";
+		else *msg << kMidiChan << filter.getChan();
+	}
+	else {
+		if (filter.getChan() >= 0)
+			*msg << kMidiChan << filter.getChan();
+		f->print (msg);
+	}
+	if (mlist) {
+		SIMessageList msgs = IMessageList::create();
+		*msgs = *mlist;
+		*msg << msgs;
+	}
+	return msg;
 }
 
 //----------------------------------------------------------------------
@@ -281,20 +409,6 @@ SIMessage EventsAble::buildGetMsg (const char * address, const string& what, con
 SIMessageList EventsAble::getWatch (const char* address) const
 {
 	SIMessageList list = IMessageList::create();
-//	for (TWatcher<size_t>::const_iterator i = fMsgMap.begin(); i != fMsgMap.end(); i++)
-//		list->list().push_back( buildGetMsg (address, fHashCodes[i->first], i->second));
-//
-//	for (TWatcher<RationalInterval>::const_iterator i = fTimeEnterMsgMap.begin(); i != fTimeEnterMsgMap.end(); i++)
-//		list->list().push_back( buildGetMsg (address, kTimeEnterEvent, i->first, i->second));
-//
-//	for (TWatcher<RationalInterval>::const_iterator i = fTimeLeaveMsgMap.begin(); i != fTimeLeaveMsgMap.end(); i++)
-//		list->list().push_back( buildGetMsg (address, kTimeLeaveEvent, i->first, i->second));
-//
-//	for (TWatcher<RationalInterval>::const_iterator i = fDurEnterMsgMap.begin(); i != fDurEnterMsgMap.end(); i++)
-//		list->list().push_back( buildGetMsg (address, kDurEnterEvent, i->first, i->second));
-//
-//	for (TWatcher<RationalInterval>::const_iterator i = fDurLeaveMsgMap.begin(); i != fDurLeaveMsgMap.end(); i++)
-//		list->list().push_back( buildGetMsg (address, kDurLeaveEvent, i->first, i->second));
 
 	for (auto elt: fMsgMap)
 		list->list().push_back( buildGetMsg (address, fHashCodes[elt.first], elt.second));
@@ -311,11 +425,13 @@ SIMessageList EventsAble::getWatch (const char* address) const
 	for (auto elt: fDurLeaveMsgMap)
 		list->list().push_back( buildGetMsg (address, kDurLeaveEvent, elt.first, elt.second));
 
-
 	for (auto elt: fKeyDownMsgMap)
 		list->list().push_back( buildGetMsg (address, kKeyDownEvent, elt.first, elt.second));
 	for (auto elt: fKeyUpMsgMap)
 		list->list().push_back( buildGetMsg (address, kKeyUpEvent, elt.first, elt.second));
+
+	for (auto elt: fMidiMsgMap)
+		list->list().push_back( buildGetMsg (address, "midi", elt.first, elt.second));
 
 	if (list->list().empty()) list->list().push_back(IMessage::create (address, kwatch_GetSetMethod));
 	return list;
