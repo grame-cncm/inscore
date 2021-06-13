@@ -132,6 +132,33 @@ bool EventsAble::endParse(const IMessage* msg, int size, int index, const TMidiF
 }
 
 //----------------------------------------------------------------------
+bool EventsAble::checkKeyEvent (const IMessage* msg, std::string& key, bool& down)
+{
+	if (msg->size() == 2) {
+		string evt;
+		if (!msg->param (0, evt) || !isKeyEvent(evt.c_str())) return false;
+		if (!msg->param (1, key)) return false;
+		down = (evt == kKeyDownEvent);
+		return true;
+	}
+	return false;
+}
+
+//----------------------------------------------------------------------
+bool EventsAble::checkMidiEvent (const IMessage* msg)
+{
+	if (msg->size() == 4) {
+		string evt;
+		if (!msg->param (1, evt) || !isMidiEvent(evt.c_str())) return false;
+		
+		int data1, data2;
+		if (!msg->param (2, data1) || !msg->param (3, data2)) return false;
+		return true;
+	}
+	return false;
+}
+
+//----------------------------------------------------------------------
 bool EventsAble::parseWatchMidi (const IMessage* msg, bool add)
 {
 	int n = msg->size();
@@ -331,8 +358,12 @@ bool EventsAble::acceptKey (const std::string& filter, const std::string& key) c
 }
 
 //----------------------------------------------------------------------
-bool EventsAble::acceptMidi (char status, char data1, char data2) const
+bool EventsAble::acceptMidi (char status, char data1, char data2)
 {
+//	for (std::pair<TMidiFilter, SIMessage> elt: fMidiMsgMap) {
+//		if (elt.first.accept(status, data1, data2)) {
+//		}
+//	}
 }
 
 //----------------------------------------------------------------------

@@ -89,6 +89,8 @@ class EventsAble
 		void			delMidiMsg (const TMidiFilter& filter)						{ fMidiMsgMap.set (filter, nullptr); }
 		
 		bool 			parseWatchMidi (const IMessage* msg, bool add);
+		bool 			checkMidiEvent (const IMessage* msg);
+		bool 			checkKeyEvent (const IMessage* msg, std::string& key, bool& down);
 
 
 		virtual void		pushWatch ();		///< push the current watched events and associated msgs on a stack
@@ -151,7 +153,7 @@ class EventsAble
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const TMidiFilter&, const IMessageList*) const;
 
 		bool acceptKey (const std::string& filter, const std::string& key) const;
-		bool acceptMidi (char status, char data1, char data2) const;
+		bool acceptMidi (char status, char data1, char data2);
 		bool checkMouseSensibility() const;
 
 	static std::hash<std::string> fHash;
