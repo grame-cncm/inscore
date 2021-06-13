@@ -1646,7 +1646,14 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 		else return MsgHandler::kBadParameters;
 	}
 	else if (EventsAble::isMidiEvent(event)) {
-cerr << "IObject::_watchMsg midi event" << endl;
+		int n = msg->size();
+		if (msg->size() == 1) {
+			if (!add)
+				eventsHandler()->clearMidiMsg();
+			else return MsgHandler::kBadParameters;
+		}
+		else if (!eventsHandler()->parseWatchMidi(msg, add))
+			return MsgHandler::kBadParameters;
 	}
 	else return MsgHandler::kBadParameters;
 	return MsgHandler::kProcessed;

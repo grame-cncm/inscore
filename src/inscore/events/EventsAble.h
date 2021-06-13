@@ -35,6 +35,7 @@
 
 #include "IMessage.h"
 #include "maptypes.h"
+#include "TMidiFilter.h"
 #include "TWatcher.h"
 
 namespace inscore
@@ -44,6 +45,9 @@ namespace inscore
 class EventsAble
 {
 	bool	fModified = false;   // a flag for EMCC, active for mouse events  only
+	
+	bool 	setMidiFilterMsgs(const IMessage* msg, int index, const TMidiFilter& filter);
+	bool 	endParse(const IMessage* msg, int size, int index, const TMidiFilter& filter);
 
 	public:
 		typedef const char* eventype;
@@ -73,10 +77,19 @@ class EventsAble
 		void			addKeyMsg (const std::string& expr, SIMessageList msg, bool down)	{ if (down) addKeyDownMsg(expr, msg); else addKeyUpMsg(expr, msg); }
 		void			addKeyDownMsg (const std::string& expr, SIMessageList msg)	{ fKeyDownMsgMap.set (expr, msg); }
 		void			addKeyUpMsg (const std::string& expr, SIMessageList msg)	{ fKeyUpMsgMap.set (expr, msg); }
-		/// \brief add  a key event handler
+		/// \brief remove  a key event handler
 		void			delKeyMsg (const std::string& expr, bool down)				{ if (down) delKeyDownMsg(expr); else delKeyUpMsg(expr); }
 		void			delKeyDownMsg (const std::string& expr)						{ fKeyDownMsgMap.set (expr, nullptr); }
 		void			delKeyUpMsg (const std::string& expr)						{ fKeyUpMsgMap.set (expr, nullptr); }
+		/// \brief clear the midi message list
+		void			clearMidiMsg ()												{ fMidiMsgMap.clear(); }
+		/// \brief add  a midi event handler
+		void			addMidiMsg (const TMidiFilter& filter, SIMessageList msg)	{ fMidiMsgMap.set (filter, msg); }
+		/// \brief remove  a midi event handler
+		void			delMidiMsg (const TMidiFilter& filter)						{ fMidiMsgMap.set (filter, nullptr); }
+		
+		bool 			parseWatchMidi (const IMessage* msg, bool add);
+
 
 		virtual void		pushWatch ();		///< push the current watched events and associated msgs on a stack
 		virtual bool		popWatch ();		///< restore watched events and associated messages from the stack
@@ -119,6 +132,7 @@ class EventsAble
 			TWatcher<RationalInterval>	fDurLeaveMsg;
 			TWatcher<std::string>		fKeyDownMsg;
 			TWatcher<std::string>		fKeyUpMsg;
+			TWatcher<TMidiFilter>		fMidiMsg;
 		} EventsMaps;
 		std::stack<EventsMaps>	fWatchStack;
 		
@@ -129,12 +143,15 @@ class EventsAble
 		TWatcher<RationalInterval>	fDurLeaveMsgMap;
 		TWatcher<std::string>		fKeyDownMsgMap;
 		TWatcher<std::string>		fKeyUpMsgMap;
+		TWatcher<TMidiFilter>		fMidiMsgMap;
 
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const SIMessageList&) const;
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const RationalInterval&, const IMessageList*) const;
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const std::string&, const IMessageList*) const;
+		SIMessage	buildGetMsg (const char * address, const std::string& type, const TMidiFilter&, const IMessageList*) const;
 
 		bool acceptKey (const std::string& filter, const std::string& key) const;
+		bool acceptMidi (char status, char data1, char data2) const;
 		bool checkMouseSensibility() const;
 
 	static std::hash<std::string> fHash;
