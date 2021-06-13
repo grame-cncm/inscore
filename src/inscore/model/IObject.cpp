@@ -1850,7 +1850,7 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 				}
 			}
 		}
-		else if (checkUserEvent (event.c_str())) {			// this is a use defined event
+		else if (checkUserEvent (event.c_str())) {			// this is a user defined event
 			IMessage::argslist args;						// supports arbitrary args count
 			for (int i=1; i<n; i++) args.push_back(msg->param(i));
 			if (checkEvent(event.c_str(), args))
@@ -1863,6 +1863,17 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 //				ITLErr << msg->address() << "has no handler for event" << event << ITLEndl;
 				return MsgHandler::kProcessedNoChange;
 			}
+		}
+		else if (n == 2) {
+			string key; bool down;
+			if (eventsHandler()->checkKeyEvent (msg, key, down)) {
+				keyPressEvent (key, down);
+				return MsgHandler::kProcessed;
+			}
+		}
+		else if (n == 4) {
+			if (eventsHandler()->checkMidiEvent (msg))
+				return MsgHandler::kProcessed;
 		}
 	}
 	return MsgHandler::kBadParameters;
