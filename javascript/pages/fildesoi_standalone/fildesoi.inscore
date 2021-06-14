@@ -1,4 +1,4 @@
-/ITL/scene/wait set txt "Loading..."; 
+	/ITL/scene/wait set txt "Loading..."; 
 	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
 
 	/ITL/scene/faust scale 0.2;
@@ -9,7 +9,6 @@
 	/ITL/scene/score height 1.8;
 	/ITL/scene/score y -0.12; 
 
-			<!-- Mapping -->
 	/ITL/scene/score map   "([278, 300[ [310, 350[) ([0:00:00, 0:1:70[)
 			([300, 475[ [310, 350[) ([0:1:70, 0:07:00[)
 			([475, 670[ [310, 350[) ([0:07:00, 0:12:05[)
@@ -57,25 +56,24 @@
 		/ITL/scene/cursor date '$date',
 		/ITL/scene/audio vdate '$date'
 	);
+
 	/ITL/scene/score watch mouseMove (
 		/ITL/scene/cursor date '$date',
 		/ITL/scene/audio vdate '$date'
 	);
+
 	/ITL/scene/score watch mouseEnter;
 
 	/ITL/scene/audio set audio "FilDeSoi1_guitare_1_2_3_4.wav";
 	/ITL/scene/audio show 0;
 
 	
-	<!-- Buttons variables -->
 	play  = 'rsrc/play.png';
 	pause = 'rsrc/pause.png';
 	stop  = 'rsrc/stop.png';
 	origin = 1.2;
 	alpha = 120;
 	w = 0.09;
-
-	<!-- Button Play / Pause-->
 
 	/ITL/scene/btnstop set ellipse 1 1;
 	/ITL/scene/btnplay set ellipse 1 1;
@@ -107,7 +105,6 @@
 		/ITL/scene/btnplay/fg/mask alpha $alpha,
 		/ITL/scene/btnplay x -0.05	
 		);
-		<!-- Button Stop -->
 
 	/ITL/scene watch SETSTOPIMG (
 		/ITL/scene/btnstop color grey,
@@ -123,14 +120,12 @@
 
 	initplay = (	
 		/ITL/scene/$self push,
-		<!-- /ITL/scene/btnplay set img $pause, -->
 		/ITL/scene event SETPAUSEIMG,
 		/ITL/scene/cursor tempo 60,
 		/ITL/scene/audio play 1,
 		/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP ),
 		/ITL/scene/btnplay watch mouseDown (
 			/ITL/scene event SETPLAYIMG,
-			<!-- /ITL/scene/btnplay set img $play, -->
 			/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
 			/ITL/scene/cursor tempo 0,
 			/ITL/scene/audio play 0,
@@ -146,7 +141,6 @@
 	/ITL/scene event SETSTOPIMG;
 
 	/ITL/scene watch STOP (
-		/ITL/log write STOP,
 		/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
 		/ITL/scene event SETPLAYIMG,
 		/ITL/scene/btnplay pop,
@@ -156,30 +150,21 @@
 		/ITL/scene/cursor date 0
 	);
 	/ITL/scene watch STOP1 (
-		/ITL/log write STOP1,
 		/ITL/scene/audio vdate 0,
 		/ITL/scene/cursor date 0
 	);
 
-	<!-- Cursor -->
 	cursorWidth = 0.07;
 	/ITL/scene/cursor set rect 0.01 0.1;
 	/ITL/scene/cursor color 0xff0000aa;
 	/ITL/scene/cursor alpha 120;
 	/ITL/scene/sync cursor score v;
 
-	<!-- /ITL/scene/faust scale 0.7;
-	/ITL/scene/faust y -0.3; -->
-
-	<!-- /ITL/scene/text set html "Faust objects";
-	/ITL/scene/text y -0.7;
-	/ITL/scene/text fontSize 32; -->
 	/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self alpha 255);
 	/ITL/scene/btnplay/mask watch mouseEnter (/ITL/scene/$self alpha 255);
 	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self alpha $alpha);
 	/ITL/scene/btnplay/mask watch mouseLeave (/ITL/scene/$self alpha $alpha);
 
-	<!-- Audio Control Buttons -->
 	x = 0.5;
 	/ITL/scene/audioCtrltxtbtnWavOnly 		set txt "Playback to audio output";
 	/ITL/scene/audioCtrltxtbtnWavToDSP 		set txt "Playback to DSP";
@@ -258,22 +243,18 @@
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
 	
 	/ITL/scene/cursor watch keyDown "1" (
-		/ITL/log write KEYDOWN1,
 		/ITL/scene/faust event INIT
 	);
 
 	/ITL/scene/cursor watch keyDown "2" (
-		/ITL/log write KEYDOWN2,
 		/ITL/scene/faust event SECTION1
 	);
 
 	/ITL/scene/cursor watch keyDown "3" (
-		/ITL/log write KEYDOWN3,
 		/ITL/scene/faust event SECTION2
 	);
 
 	/ITL/scene/cursor watch keyDown "4" (
-		/ITL/log write KEYDOWN4,
 		/ITL/scene/faust event SECTION3
 	);
 
@@ -330,6 +311,7 @@
 	/ITL/scene/docLayer/bg/keysSpace set txt "PLAY / PAUSE : Space";
 	/ITL/scene/docLayer/bg/keysSpace y 0.2;
 	/ITL/scene/docLayer show 0;
+	
 	docInit = (
 		/ITL/scene/$self push,
 		/ITL/scene/docLayer show 1,

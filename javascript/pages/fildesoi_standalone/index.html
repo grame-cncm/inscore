@@ -6,11 +6,11 @@
 	<meta http-equiv="Expires" content="0" />
 	<title>Fil De Soi 1</title>
 
-	<link href="/fonts/fonts.css" rel="stylesheet">
-	<script src="/node_modules/@grame/inscorejs/libINScore.js"></script>
-	<script src="/node_modules/@grame/inscorejs/INScoreJS.js"></script>
-	<script src="/node_modules/@grame/libfaust/libfaust-wasm.js"></script>
-	<script src="/node_modules/@grame/libfaust/FaustLibrary.js"></script>
+	<link href="node_modules/@grame/inscorejs/fonts/fonts.css" rel="stylesheet">
+	<script src="node_modules/@grame/inscorejs/libINScore.js"></script>
+	<script src="node_modules/@grame/inscorejs/INScoreJS.js"></script>
+	<script src="node_modules/@grame/libfaust/libfaust-wasm.js"></script>
+	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>
 	<style>
 	body { margin: 10; background: white; }
 	.inscore { width: 100%; height: 100%; font-size: 1px; }
@@ -22,7 +22,8 @@
 
 <div class="inscore" id="scene">
 	/ITL/scene/wait set txt "Loading..."; 
-	/ITL/scene/faust set faust 'process =  _,_ ;';
+	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
+	/ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt";
 
 
 	/ITL/scene/faust scale 0.2;
