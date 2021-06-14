@@ -89,7 +89,7 @@ class EventsAble
 		void			delMidiMsg (const TMidiFilter& filter)						{ fMidiMsgMap.set (filter, nullptr); }
 		
 		bool 			parseWatchMidi (const IMessage* msg, bool add);
-		bool 			checkMidiEvent (const IMessage* msg);
+		bool 			checkMidiEvent (const IMessage* msg, int& data1, int& data2, int& data3);
 		bool 			checkKeyEvent (const IMessage* msg, std::string& key, bool& down);
 
 
@@ -101,6 +101,7 @@ class EventsAble
 		const IMessageList*	getTimeMsgs (eventype t, const RationalInterval& time) const;
 		const size_t		countMouseMsgs (eventype t) const				{ return fMsgMap.count(fHash(t)); }
 		SIMessageList		getKeyMessages (const std::string& key, bool down) const;
+		SIMessageList		getMidiMessages (int status, int data1, int data2);
 
 		void triggerEvent(eventype t, const bool& delay=false) const		{fMsgMap.trigger(fHash(t), delay);}
 
@@ -153,7 +154,6 @@ class EventsAble
 		SIMessage	buildGetMsg (const char * address, const std::string& type, const TMidiFilter&, const IMessageList*) const;
 
 		bool acceptKey (const std::string& filter, const std::string& key) const;
-		bool acceptMidi (char status, char data1, char data2);
 		bool checkMouseSensibility() const;
 
 	static std::hash<std::string> fHash;

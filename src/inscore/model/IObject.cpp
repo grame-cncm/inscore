@@ -1675,6 +1675,19 @@ void IObject::keyPressEvent( std::string str, bool down)
 }
 
 //--------------------------------------------------------------------------
+void IObject::midiEvent( int status, int data1, int data2)
+{
+	SIMessageList msgs = getMidiMessages(status, data1, data2);
+	if (msgs && msgs->list().size()) {
+		MouseLocation mouse (0,0,0,0,0,0);
+		EventContext env(mouse, getDate(), this);
+		TMessageEvaluator me;
+		SIMessageList outmsgs = me.eval (msgs, 0, 0, env);
+		if (outmsgs && outmsgs->list().size()) outmsgs->send();	// when not empty, sends the evaluated messages
+	}
+}
+
+//--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::lockMsg(const IMessage *msg)
 {
 	if (!msg->size()) return MsgHandler::kBadParameters;
@@ -1860,7 +1873,6 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 			if (checkEvent(event.c_str(), getDate(), this))
 				return MsgHandler::kProcessed;
 			else {
-//				ITLErr << msg->address() << "has no handler for event" << event << ITLEndl;
 				return MsgHandler::kProcessedNoChange;
 			}
 		}
@@ -1872,8 +1884,11 @@ MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 			}
 		}
 		else if (n == 4) {
-			if (eventsHandler()->checkMidiEvent (msg))
+			int data1, data2, data3;
+			if (eventsHandler()->checkMidiEvent (msg, data1, data2, data3)) {
+				midiEvent (data1, data2, data3);
 				return MsgHandler::kProcessed;
+			}
 		}
 	}
 	return MsgHandler::kBadParameters;

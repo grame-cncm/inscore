@@ -57,7 +57,7 @@ class TMidiFilter
 	typedef struct midistatus {
 		int chan;
 		int type;
-		midistatus (char status) { type = status >> 4; chan = status & 0xf; }
+		midistatus (unsigned char status) { type = status >> 4; chan = status & 0xf; }
 	} TMidiStatus;
 
 	typedef struct valuefilter {
@@ -65,17 +65,18 @@ class TMidiFilter
 	} TValueFilter;
 
 	typedef struct midivaluerange : public valuefilter {
+		enum { kIn, kEnter, kLeave };
 		int low		= 0;			// the low value of the range
 		int high 	= 0;			// the upper value
-		bool enter	= true;			// denotes if new values must enter or leave the interval
+		int mode	= kIn;			// denotes if new values must enter or leave the interval
 		int last    = 0;			// the last value checked
 		midivaluerange() {}
 		midivaluerange(const midivaluerange& val) { *this = val; }
 		
 		bool accept (int val) override;
-		bool operator == (const midivaluerange& v) const { return (low == v.low) && (high == v.high) && (enter == v.enter); }
+		bool operator == (const midivaluerange& v) const { return (low == v.low) && (high == v.high) && (mode == v.mode); }
 		bool operator != (const midivaluerange& v) const { return !(*this == v); }
-		bool operator < (const midivaluerange& v) const { return (enter < v.enter) || (low < v.low) || (high < v.high); }
+		bool operator < (const midivaluerange& v) const { return (mode < v.mode) || (low < v.low) || (high < v.high); }
 	} TMidiValueRange;
 
 	typedef struct midivaluesel : public valuefilter {

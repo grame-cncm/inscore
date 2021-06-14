@@ -42,14 +42,13 @@ namespace inscore
 template <typename T> class TWatcher
 {
 	private:
-		typedef typename std::map<T, SIMessageList>::iterator	iterator;
-
 		///	\brief send a list of messages
 		void send (const IMessageList* l, const bool& delay = false) const					{ if (l) l->send(delay); }
 
 	public:
 		typedef typename std::map<T, SIMessageList>	TWatchList;
 		typedef typename std::map<T, SIMessageList>::const_iterator	const_iterator;
+		typedef typename std::map<T, SIMessageList>::iterator		iterator;
 		TWatchList	fWatchList;
 	
 				 TWatcher()	{}
@@ -57,6 +56,8 @@ template <typename T> class TWatcher
 
 		const_iterator	begin() const							{ return fWatchList.begin(); }
 		const_iterator	end() const								{ return fWatchList.end(); }
+		iterator		begin() 								{ return fWatchList.begin(); }
+		iterator		end() 									{ return fWatchList.end(); }
 		int				size() const							{ return fWatchList.size(); }
 
 		/// \brief gives the map of messages list

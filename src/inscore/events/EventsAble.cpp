@@ -145,15 +145,12 @@ bool EventsAble::checkKeyEvent (const IMessage* msg, std::string& key, bool& dow
 }
 
 //----------------------------------------------------------------------
-bool EventsAble::checkMidiEvent (const IMessage* msg)
+bool EventsAble::checkMidiEvent (const IMessage* msg, int& data1, int& data2, int& data3)
 {
 	if (msg->size() == 4) {
 		string evt;
-		if (!msg->param (1, evt) || !isMidiEvent(evt.c_str())) return false;
-		
-		int data1, data2;
-		if (!msg->param (2, data1) || !msg->param (3, data2)) return false;
-		return true;
+		if (msg->param (0, evt) && isMidiEvent(evt.c_str()))
+			return (msg->param (1, data1) && msg->param (2, data2) && msg->param (3, data3));
 	}
 	return false;
 }
@@ -349,21 +346,26 @@ SIMessageList EventsAble::getKeyMessages (const std::string& key, bool down) con
 }
 
 //----------------------------------------------------------------------
+SIMessageList EventsAble::getMidiMessages (int status, int data1, int data2)
+{
+	SIMessageList msgs = IMessageList::create();
+	TWatcher<TMidiFilter>::iterator i = fMidiMsgMap.begin();
+	while (i != fMidiMsgMap.end()) {
+		TMidiFilter* filter = (TMidiFilter*)&i->first;
+		if (filter->accept (char(status), char(data1), char(data2)))
+			msgs->list().push_back (i->second->list());
+		i++;
+	}
+	return msgs;
+}
+
+//----------------------------------------------------------------------
 bool EventsAble::acceptKey (const std::string& filter, const std::string& key) const
 {
 	if (filter == "*") return true;
 	if ((filter.size() == 1) && (filter == key)) return true;
 	if (std::regex_match (key, std::regex(filter))) return true;
 	return false;
-}
-
-//----------------------------------------------------------------------
-bool EventsAble::acceptMidi (char status, char data1, char data2)
-{
-//	for (std::pair<TMidiFilter, SIMessage> elt: fMidiMsgMap) {
-//		if (elt.first.accept(status, data1, data2)) {
-//		}
-//	}
 }
 
 //----------------------------------------------------------------------
@@ -592,6 +594,7 @@ void EventsAble::init ()
 
 		hash (kKeyDownEvent);
 		hash (kKeyUpEvent);
+		hash (kMidiEvent);
 
 		hash (kTouchBeginEvent);
 		hash (kTouchEndEvent);
