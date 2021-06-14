@@ -22,7 +22,8 @@
 
 <div class="inscore" id="scene">
 	/ITL/scene/wait set txt "Loading..."; 
-	/ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt";
+	/ITL/scene/faust set faust 'process =  _,_ ;';
+
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -159,7 +160,6 @@
 	/ITL/scene event SETSTOPIMG;
 
 	/ITL/scene watch STOP (
-		/ITL/log write STOP,
 		/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
 		/ITL/scene event SETPLAYIMG,
 		/ITL/scene/btnplay pop,
@@ -169,7 +169,6 @@
 		/ITL/scene/cursor date 0
 	);
 	/ITL/scene watch STOP1 (
-		/ITL/log write STOP1,
 		/ITL/scene/audio vdate 0,
 		/ITL/scene/cursor date 0
 	);
@@ -264,22 +263,18 @@
 	/ITL/scene/audioCtrlbtnAudioInToDSP watch mouseDown $toggleAudioInToDSP;
 	
 	/ITL/scene/cursor watch keyDown "1" (
-		/ITL/log write KEYDOWN1,
 		/ITL/scene/faust event INIT
 	);
 
 	/ITL/scene/cursor watch keyDown "2" (
-		/ITL/log write KEYDOWN2,
 		/ITL/scene/faust event SECTION1
 	);
 
 	/ITL/scene/cursor watch keyDown "3" (
-		/ITL/log write KEYDOWN3,
 		/ITL/scene/faust event SECTION2
 	);
 
 	/ITL/scene/cursor watch keyDown "4" (
-		/ITL/log write KEYDOWN4,
 		/ITL/scene/faust event SECTION3
 	);
 
@@ -492,25 +487,31 @@
 
 	/ITL/scene/faust event INIT;
 
-
 	/ITL/scene/docLayer set layer;
 	/ITL/scene/docLayer/bg set rect 1 1;
 	/ITL/scene/docLayer/bg color white;
 	/ITL/scene/docLayer/bg penWidth 1;
-	/ITL/scene/docLayer/bg/title set txt "Change Event with keys";
+	/ITL/scene/docLayer/bg/title set txt "Switch current section with numpad keys";
+	/ITL/scene/docLayer/bg/title fontSize 12;
+	/ITL/scene/docLayer/bg/subtitle set txt "A section will activate DSP parametters";
+	/ITL/scene/docLayer/bg/subtitle fontSize 10;
+	/ITL/scene/docLayer/bg/subtitle y -0.8;
 	/ITL/scene/docLayer/bg/title y -0.9;
-	/ITL/scene/docLayer/bg/keys1 set txt "EVENT 1 : 1";
-	/ITL/scene/docLayer/bg/keys1 y -0.7;
 
-	/ITL/scene/docLayer/bg/keys2 set txt "EVENT 2 : 2";
+	/ITL/scene/docLayer/bg/keys1 set txt "Section 1 : numpad 1";
+	/ITL/scene/docLayer/bg/keys1 y -0.6;
+	/ITL/scene/docLayer/bg/keys2 set txt "Section 2 : numpad 2";
 	/ITL/scene/docLayer/bg/keys2 y -0.5;
-	/ITL/scene/docLayer/bg/keys3 set txt "EVENT 3 : 3";
-	/ITL/scene/docLayer/bg/keys3 y -0.3;
-	/ITL/scene/docLayer/bg/keys4 set txt "EVENT 4 : 4";
-	/ITL/scene/docLayer/bg/keys4 y -0.1;
-	/ITL/scene/docLayer/bg/keysSpace set txt "PLAY / PAUSE : Space";
-	/ITL/scene/docLayer/bg/keysSpace y 0.2;
+	/ITL/scene/docLayer/bg/keys3 set txt "Section 3 : numpad 3";
+	/ITL/scene/docLayer/bg/keys3 y -0.4;
+	/ITL/scene/docLayer/bg/keys4 set txt "Section 4 : numpad 4";
+	/ITL/scene/docLayer/bg/keys4 y -0.3;
+	/ITL/scene/docLayer/bg/keysSpace set txt "play / pause : Space";
+	/ITL/scene/docLayer/bg/keysSpace y -0.2;
+	/ITL/scene/docLayer/bg/keys* fontSize 9;
+	/ITL/scene/docLayer/bg/keys* x -0.5;
 	/ITL/scene/docLayer show 0;
+	
 	docInit = (
 		/ITL/scene/$self push,
 		/ITL/scene/docLayer show 1,
@@ -520,7 +521,7 @@
 		)
 	);
 
-	/ITL/scene/docbtn set txt "Documentation";
+	/ITL/scene/docbtn set txt "Help";
 	/ITL/scene/docbtn color blue;
 
 	/ITL/scene/docbtn xorigin 0;
@@ -530,7 +531,7 @@
 
 	/ITL/scene/docbtn watch mouseDown $docInit;	
 
-	/ITL/scene/linkToDoc set txt "Link to FilDeSoi Doc";
+	/ITL/scene/linkToDoc set txt "Fildesoi";
 	/ITL/scene/linkToDoc color blue;
 	/ITL/scene/linkToDoc xorigin 0;
 	/ITL/scene/linkToDoc x -$x;
