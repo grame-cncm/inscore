@@ -215,6 +215,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		virtual void	ready();
 		/// \brief called when a key is pressed
 		virtual void	keyPressEvent( std::string str, bool down) ;
+		/// \brief called for incoming midi messages (user triggered only for the native version)
+		virtual void 	midiEvent( int status, int data1, int data2);
 
 #ifdef EMCC
 		IObjectAdapter* getAdapter()				{ return fAdapter; }

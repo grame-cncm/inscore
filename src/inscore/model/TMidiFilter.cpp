@@ -60,9 +60,13 @@ TMidiFilter::TMidiValueSelector::operator string () const
 		str << rend;
 	}
 	else {
-		if (!range.enter) {
-			rstart = "]";
-			rend   = "[";
+		if (range.mode == midivaluerange::kLeave) {
+			rstart = ")";
+			rend   = "(";
+		}
+		else if (range.mode == midivaluerange::kEnter) {
+			rstart = "(";
+			rend   = ")";
 		}
 		str << rstart << range.low << "-" << range.high << rend;
 	}
@@ -98,20 +102,24 @@ bool TMidiFilter::operator < (const TMidiFilter& f) const
 		if (type == kKeyFilter) return *getKey() < *(f.getKey());
 		else if (type == kCtrlFilter) return *getCtrl() < *(f.getCtrl());
 	}
-	else return false;
+	return false;
 }
 
 //--------------------------------------------------------------------------
 bool TMidiFilter::midivaluerange::accept (int val)
 {
 	bool result = false;
-	if (enter) {
-		if ((last < low) || (last > high))
-			result = (val >= low) && (val <= high);
-	}
-	else {
-		if ((last >= low) && (last <= high))
-			result = (val < low) || (val > high);
+	switch (mode) {
+		case kEnter:
+			if ((last < low) || (last > high))
+				result = (val >= low) && (val <= high);
+			break;
+		case kLeave:
+			if ((last >= low) && (last <= high))
+				result = (val < low) || (val > high);
+			break;
+		case kIn:
+			return (val >= low) && (val <= high);
 	}
 	last = val;
 	return result;
@@ -180,7 +188,7 @@ bool TMidiFilter::string2valueRange (const char* str, TMidiValueRange& val) cons
 		if (str[i] != '-' ) return false;
 		str += i + 1;
 		int high = stoi(str, &i);
-		if ((str[i] != '[') && (str[i] != ']')) return false;
+//		if ((str[i] != '[') && (str[i] != ']')) return false; :: checked at upper level
 		val.low = low;
 		val.high = high;
 	}
@@ -213,19 +221,26 @@ bool TMidiFilter::string2valueSelector (const std::string& str, TMidiValueSelect
 	// allowed forms are :
 	// - a integer number
 	// - a list of space separated int i.e. [a b c]
-	// - a range i.e. [a-c] or ]a-b[
-	if (std::regex_match (str, std::regex("[^0-9[] -"))) return false;
+	// - a range i.e. [a-b] or (a-c) or )a-b(
+	if (std::regex_match (str, std::regex("[^0-9[]() -"))) return false;
 	const char* ptr = str.c_str();
-	if ((ptr[0] == ']') && (ptr[n-1] == '[')) {
-		if (!string2valueRange (ptr, val.range)) return false;
-		val.range.enter = false;
-	}
-	else if ((ptr[0] == '[') && (ptr[n-1] == ']')) {
+	if ((ptr[0] == '[') && (ptr[n-1] == ']')) {
 		if (string2valueRange (ptr, val.range))
-			val.range.enter = true;
-		else if (!string2valueList (ptr, val.literal)) return false;
+			val.range.mode = midivaluerange::kIn;
+		else return string2valueList (ptr, val.literal);
 	}
-	else val.literal.insert (stoi(ptr));
+	else if ((ptr[0] == ')') && (ptr[n-1] == '(')) {
+		if (!string2valueRange (ptr, val.range)) return false;
+		val.range.mode = midivaluerange::kLeave;
+	}
+	else if ((ptr[0] == '(') && (ptr[n-1] == ')')) {
+		if (!string2valueRange (ptr, val.range)) return false;
+		val.range.mode = midivaluerange::kEnter;
+	}
+	else {
+		try { val.literal.insert (stoi(ptr)); }
+		catch (exception) { return false; }
+	}
 	return true;
 }
 
