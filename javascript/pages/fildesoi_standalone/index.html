@@ -115,7 +115,7 @@
 		/ITL/scene/btnplay x -0.05	
 	);
 	
-	
+
 	/ITL/scene watch SETPAUSEIMG (
 		/ITL/scene/btnplay color grey,
 		/ITL/scene/btnplay/fg set rect 1 1,
@@ -505,16 +505,16 @@
 	/ITL/scene/docLayer/bg color white;
 	/ITL/scene/docLayer/bg penWidth 1;
 	/ITL/scene/docLayer/bg/title set txt "Switch current section with numpad keys";
-	/ITL/scene/docLayer/bg/title fontSize 15;
+	/ITL/scene/docLayer/bg/title fontSize 20;
 	/ITL/scene/docLayer/bg/subtitle set txt "A section will turn on DSP parametters on activation";
-	/ITL/scene/docLayer/bg/subtitle fontSize 12;
+	/ITL/scene/docLayer/bg/subtitle fontSize 18;
 	/ITL/scene/docLayer/bg/subtitle y $titlePosy + 0.1;
 	/ITL/scene/docLayer/bg/title y $titlePosy;
 
 	/ITL/scene/docLayer/bg/SwitchTitle set txt "Switch to :";
 	/ITL/scene/docLayer/bg/SwitchTitle y -0.65;
 	/ITL/scene/docLayer/bg/SwitchTitle x -0.5;
-	/ITL/scene/docLayer/bg/SwitchTitle fontSize 13;
+	/ITL/scene/docLayer/bg/SwitchTitle fontSize 15;
 
 	/ITL/scene/docLayer/bg/numkey1 set rect 0.1 0.1;
 	/ITL/scene/docLayer/bg/numkey1 color red;
@@ -563,10 +563,17 @@
 	/ITL/scene/docLayer/bg/playpause y -0.65;
 	/ITL/scene/docLayer/bg/playpause x 0.5;
 
-	/ITL/scene/docLayer/bg/keys* fontSize 12;
+	/ITL/scene/docLayer/bg/keys* fontSize 15;
 	/ITL/scene/docLayer/bg/keys* x -0.7;
 	/ITL/scene/docLayer/bg/keyspace x 0.5;
 
+	/ITL/scene/docLayer/linkToDoc set txt "Fildesoi";
+	/ITL/scene/docLayer/linkToDoc color blue;
+	/ITL/scene/docLayer/linkToDoc y 0;
+	/ITL/scene/docLayer/linkToDoc fontSize 20;
+	
+	/ITL/scene/docLayer/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
+	
 	/ITL/scene/docLayer show 0;
 	
 	docInit = (
@@ -586,17 +593,7 @@
 	/ITL/scene/docbtn y 0.90;
 	/ITL/scene/docbtn fontSize 10;	
 
-	/ITL/scene/docbtn watch mouseDown $docInit;	
-
-	/ITL/scene/linkToDoc set txt "Fildesoi";
-	/ITL/scene/linkToDoc color blue;
-	/ITL/scene/linkToDoc xorigin 0;
-	/ITL/scene/linkToDoc x -$x;
-	/ITL/scene/linkToDoc y 0.95;
-	/ITL/scene/linkToDoc fontSize 10;
-	
-	/ITL/scene/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
-
+	/ITL/scene/docbtn watch mouseDown $docInit;
 </div>
 
 </body>
