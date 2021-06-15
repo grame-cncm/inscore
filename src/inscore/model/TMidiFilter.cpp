@@ -108,6 +108,9 @@ bool TMidiFilter::operator < (const TMidiFilter& f) const
 //--------------------------------------------------------------------------
 bool TMidiFilter::midivaluerange::accept (int val)
 {
+	if (mode == kIn) return (val >= low) && (val <= high);
+
+	if (last < 0) { last = val; return false; }
 	bool result = false;
 	switch (mode) {
 		case kEnter:
@@ -118,8 +121,6 @@ bool TMidiFilter::midivaluerange::accept (int val)
 			if ((last >= low) && (last <= high))
 				result = (val < low) || (val > high);
 			break;
-		case kIn:
-			return (val >= low) && (val <= high);
 	}
 	last = val;
 	return result;
@@ -188,7 +189,8 @@ bool TMidiFilter::string2valueRange (const char* str, TMidiValueRange& val) cons
 		if (str[i] != '-' ) return false;
 		str += i + 1;
 		int high = stoi(str, &i);
-//		if ((str[i] != '[') && (str[i] != ']')) return false; :: checked at upper level
+		char end = str[i];
+		if ((end != '(') && (end != ')') && (end != ']')) return false;
 		val.low = low;
 		val.high = high;
 	}
@@ -200,15 +202,19 @@ bool TMidiFilter::string2valueRange (const char* str, TMidiValueRange& val) cons
 bool TMidiFilter::string2valueList (const char* ptr, std::set<int>& list) const
 {
 	size_t i;
-	do {
-		int num = 0;
-		try { num = stoi(&ptr[1], &i); }
-		catch (exception) { return false; }
-		if (num < 0) return false;
-		ptr += i;
-		if (*ptr++ != ' ') return false;
-		list.insert (num);
-	} while (*ptr);
+	ptr++;		// skip the leading list marker
+	try {
+		do {
+			int num = 0;
+			num = stoi(ptr, &i);
+			if (num < 0) return false;
+			list.insert (num);
+			ptr += i;
+			if (*ptr == ']') break;
+			else if (*ptr++ != ' ') return false;
+		} while (*ptr);
+	}
+	catch (exception) { return false; }
 	return true;
 }
 
