@@ -112,8 +112,6 @@
 		/ITL/scene/btn* y 0.9,
 		/ITL/scene/btn* scale $w,
 		/ITL/scene/btn* alpha $alpha,
-		/ITL/scene/btnplay/fg/mask set rect 0.4 1,
-		/ITL/scene/btnplay/fg/mask alpha 0,
 		/ITL/scene/btnplay x -0.05	
 	);
 	
@@ -187,10 +185,8 @@
 	/ITL/scene/cursor alpha 120;
 	/ITL/scene/sync cursor score v;
 
-	/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self alpha 255);
-	/ITL/scene/btnplay/mask watch mouseEnter (/ITL/scene/$self alpha 255);
-	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self alpha $alpha);
-	/ITL/scene/btnplay/mask watch mouseLeave (/ITL/scene/$self alpha $alpha);
+	/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self alpha 255, /ITL/scene/$self/fg/mask alpha 255);
+	/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self alpha $alpha, /ITL/scene/$self/fg/mask alpha $alpha);
 
 	<!-- Audio Control Buttons -->
 	x = 0.5;
