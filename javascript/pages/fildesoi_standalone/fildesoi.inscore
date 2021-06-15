@@ -287,7 +287,7 @@
 	/ITL/scene/faust event INIT;
 
 
-		titlePosy = -0.9;
+	titlePosy = -0.9;
 	key1Posy = -0.5;
 	key2Posy = -0.4;
 	key3Posy = -0.3;
@@ -299,8 +299,8 @@
 	/ITL/scene/docLayer/bg penWidth 1;
 	/ITL/scene/docLayer/bg/title set txt "Switch current section with numpad keys";
 	/ITL/scene/docLayer/bg/title fontSize 15;
-	/ITL/scene/docLayer/bg/subtitle set txt "A section will activate DSP parametters";
-	/ITL/scene/docLayer/bg/subtitle fontSize 14;
+	/ITL/scene/docLayer/bg/subtitle set txt "A section will turn on DSP parametters on activation";
+	/ITL/scene/docLayer/bg/subtitle fontSize 12;
 	/ITL/scene/docLayer/bg/subtitle y $titlePosy + 0.1;
 	/ITL/scene/docLayer/bg/title y $titlePosy;
 
@@ -310,29 +310,30 @@
 	/ITL/scene/docLayer/bg/SwitchTitle fontSize 13;
 
 	/ITL/scene/docLayer/bg/numkey1 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey1 color white;
+	/ITL/scene/docLayer/bg/numkey1 color red;
 	/ITL/scene/docLayer/bg/numkey1 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey1/1 set txt "1";
 	/ITL/scene/docLayer/bg/numkey1 y $key1Posy;
 
 	/ITL/scene/docLayer/bg/numkey2 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey2 color white;
+	/ITL/scene/docLayer/bg/numkey2 color blue;
 	/ITL/scene/docLayer/bg/numkey2 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey2/2 set txt "2";
 	/ITL/scene/docLayer/bg/numkey2 y $key2Posy;
 
 	/ITL/scene/docLayer/bg/numkey3 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey3 color white;
+	/ITL/scene/docLayer/bg/numkey3 color green;
 	/ITL/scene/docLayer/bg/numkey3 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey3/3 set txt "3";
 	/ITL/scene/docLayer/bg/numkey3 y $key3Posy;
 
 	/ITL/scene/docLayer/bg/numkey4 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey4 color white;
+	/ITL/scene/docLayer/bg/numkey4 color orange;
 	/ITL/scene/docLayer/bg/numkey4 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey4/4 set txt "4";
 	/ITL/scene/docLayer/bg/numkey4 y $key4Posy;
-
+	
+	/ITL/scene/docLayer/bg/numkey*/* color white;
 	/ITL/scene/docLayer/bg/numkey* x -0.3;
 
 	/ITL/scene/docLayer/bg/keys1 set txt "Section 1";
@@ -344,11 +345,21 @@
 	/ITL/scene/docLayer/bg/keys3 y $key3Posy;
 	/ITL/scene/docLayer/bg/keys4 set txt "Section 4";
 	/ITL/scene/docLayer/bg/keys4 y $key4Posy;
-	/ITL/scene/docLayer/bg/keysSpace set txt "play / pause : Space";
-	/ITL/scene/docLayer/bg/keysSpace y -0.65;
+
+	/ITL/scene/docLayer/bg/keyspace set rect 0.4 0.1;
+	/ITL/scene/docLayer/bg/keyspace/txt set txt "space";
+	/ITL/scene/docLayer/bg/keyspace color white;
+	/ITL/scene/docLayer/bg/keyspace penWidth 1;
+	/ITL/scene/docLayer/bg/keyspace y $key1Posy;
+
+	/ITL/scene/docLayer/bg/playpause set txt "play / pause :";
+	/ITL/scene/docLayer/bg/playpause y -0.65;
+	/ITL/scene/docLayer/bg/playpause x 0.5;
+
 	/ITL/scene/docLayer/bg/keys* fontSize 12;
 	/ITL/scene/docLayer/bg/keys* x -0.7;
-	/ITL/scene/docLayer/bg/keysSpace x 0.5;
+	/ITL/scene/docLayer/bg/keyspace x 0.5;
+
 	/ITL/scene/docLayer show 0;
 	
 	docInit = (
