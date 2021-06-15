@@ -38,16 +38,12 @@ using namespace std;
 #define kKeyOn  	9
 #define kProgramChge  	0xc
 #define kControlChge  	0xb
-//#define NoteOff        0x80
-//#define NoteOn         0x90
-//#define ControlChg     0xb0
-//#define ProgramChg     0xc0
 
 namespace inscore
 {
 
 //--------------------------------------------------------------------------
-TMidiFilter::TMidiValueSelector::operator string () const
+string TMidiFilter::TMidiValueSelector::tostring () const
 {
 	stringstream str;
 	size_t n = literal.size();
@@ -140,9 +136,9 @@ bool TMidiFilter::midivaluesel::accept (int val)
 void TMidiFilter::midikeysel::print (SIMessage msg) const
 {
 	const char* type = keyon ? "keyon" : "keyoff";
-	*msg << type << string(keyval);
+	*msg << type << keyval.tostring();
 	if (vel)
-		*msg << "vel" << string(velval);
+		*msg << "vel" << velval.tostring();
 }
 
 //--------------------------------------------------------------------------
@@ -164,7 +160,7 @@ void TMidiFilter::midiothersel::print (SIMessage msg) const
 	const char* typeStr = (type == kProgramChge) ? "prog" : "ctrl";
 	*msg << typeStr << num;
 	if (type != kProgramChge)
-		*msg << string(val);
+		*msg << val.tostring();
 }
 
 //--------------------------------------------------------------------------

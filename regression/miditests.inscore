@@ -16,6 +16,9 @@
 /ITL/scene/r watch midi ctrl 7 "[100-127]" ( /ITL/log write "ctrl 7 [100-127]" );
 /ITL/scene/r watch midi chan 0 keyon '(60-67)' ( /ITL/log write "chan 0 keyon (60-67)" );
 /ITL/scene/r watch midi chan 0 keyon ')60-67(' ( /ITL/log write "chan 0 keyon )60-67(" );
+/ITL/log write "------------------------";
+/ITL/log write "Check watch midi get";
+/ITL/scene/r get watch;
 /ITL/scene/r watch midi;
 /ITL/log write "------------------------";
 /ITL/log write "Check event midi";

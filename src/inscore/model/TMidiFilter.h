@@ -89,7 +89,7 @@ class TMidiFilter
 		bool operator == (const midivaluesel& v) const	{ return (literal == v.literal) && (range == v.range); }
 		bool operator != (const midivaluesel& v) const	{ return !(*this == v); }
 		bool operator < (const midivaluesel& v) const;
-		operator std::string () const;
+		std::string tostring() const;
 	} TMidiValueSelector;
 
 	typedef struct midikeysel : public msgfilter {
