@@ -69,7 +69,7 @@ class TMidiFilter
 		int low		= 0;			// the low value of the range
 		int high 	= 0;			// the upper value
 		int mode	= kIn;			// denotes if new values must enter or leave the interval
-		int last    = 0;			// the last value checked
+		int last    = -1;			// the last value checked
 		midivaluerange() {}
 		midivaluerange(const midivaluerange& val) { *this = val; }
 		
@@ -153,7 +153,8 @@ class TMidiFilter
 
 		bool operator == (const TMidiFilter& f) const;
 		bool operator != (const TMidiFilter& f) const { return !(*this == f); }
-		bool operator < (const TMidiFilter& v) const;
+		bool operator < (const TMidiFilter& f) const;
+		bool operator > (const TMidiFilter& f) const	{ return !(*this < f) && !(*this == f); }
 };
 
 } // end namespoace
