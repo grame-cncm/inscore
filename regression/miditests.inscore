@@ -1,0 +1,77 @@
+
+/ITL/log show 1;
+/ITL/log clear;
+/ITL/scene/* del;
+/ITL/scene/r set rect 1 1;
+
+/ITL/log write "Check watch midi syntax";
+/ITL/scene/r watch midi "*" ( /ITL/log write "midi *" );
+/ITL/scene/r watch midi chan 0 ( /ITL/log write "chan 0" );
+/ITL/scene/r watch midi keyon 60 ( /ITL/log write "keyon 60" );
+/ITL/scene/r watch midi keyoff 60 ( /ITL/log write "keyoff 60" );
+/ITL/scene/r watch midi chan 0 keyon 60 vel '[100-127]' ( /ITL/log write "chan 0 keyon 60 vel [100-127]" );
+/ITL/scene/r watch midi chan 0 keyon '[60 62 64]' ( /ITL/log write "chan 0 keyon [60 62 64]" );
+/ITL/scene/r watch midi chan 1 keyoff 60 ( /ITL/log write "chan 1 keyoff 60" );
+/ITL/scene/r watch midi prog 10 ( /ITL/log write "prog 10" );
+/ITL/scene/r watch midi ctrl 7 "[100-127]" ( /ITL/log write "ctrl 7 [100-127]" );
+/ITL/scene/r watch midi chan 0 keyon '(60-67)' ( /ITL/log write "chan 0 keyon (60-67)" );
+/ITL/scene/r watch midi chan 0 keyon ')60-67(' ( /ITL/log write "chan 0 keyon )60-67(" );
+/ITL/scene/r watch midi;
+/ITL/log write "------------------------";
+/ITL/log write "Check event midi";
+/ITL/log write "------------------------";
+keyon  = 144;
+
+/ITL/scene watch TEST1 (
+	/ITL/log write "TEST1 - Check range enter (2 messages expected)",
+	/ITL/scene/r watch midi chan 0 keyon '(60-67)' ( /ITL/log write "TEST1 enter range 60-67" ),
+	/ITL/scene/r event midi $keyon 50 100,
+	/ITL/scene/r event midi $keyon 60 100,
+	/ITL/scene/r event midi $keyon 61 100,
+	/ITL/scene/r event midi $keyon 70 100,
+	/ITL/scene/r event midi $keyon 67 100,
+	/ITL/scene/r watch midi
+);
+
+/ITL/scene watch TEST2 (
+	/ITL/log write "TEST2 - Check range leave (2 messages expected)",
+	/ITL/scene/r watch midi chan 0 keyon ')60-67(' ( /ITL/log write "TEST2 leave range 60-67" ),
+	/ITL/scene/r event midi $keyon 60 100,
+	/ITL/scene/r event midi $keyon 72 100,
+	/ITL/scene/r event midi $keyon 65 100,
+	/ITL/scene/r event midi $keyon 59 100,
+	/ITL/scene/r watch midi
+);
+
+/ITL/scene watch TEST3 (
+	/ITL/log write "TEST3 - Check range enter/leave (2 messages expected)",
+	/ITL/scene/r watch midi chan 0 keyon '(60-67)' ( /ITL/log write "TEST3 enter range 60-67" ),
+	/ITL/scene/r watch midi chan 0 keyon ')60-67(' ( /ITL/log write "TEST3 leave range 60-67" ),
+	/ITL/scene/r event midi $keyon 59 100,
+	/ITL/scene/r event midi $keyon 60 100,
+	/ITL/scene/r event midi $keyon 61 100,
+	/ITL/scene/r event midi $keyon 65 100,
+	/ITL/scene/r event midi $keyon 67 100,
+	/ITL/scene/r event midi $keyon 68 100,
+	/ITL/scene/r event midi $keyon 69 100,
+	/ITL/scene/r watch midi
+);
+
+/ITL/scene watch TEST4 (
+	/ITL/log write "TEST4 - Check range list (3 messages expected)",
+	/ITL/scene/r watch midi chan 0 keyon '[60 65 67]' ( /ITL/log write "TEST4 list 60 65 67" ),
+	/ITL/scene/r event midi $keyon 59 100,
+	/ITL/scene/r event midi $keyon 60 100,
+	/ITL/scene/r event midi $keyon 61 100,
+	/ITL/scene/r event midi $keyon 65 100,
+	/ITL/scene/r event midi $keyon 67 100,
+	/ITL/scene/r event midi $keyon 68 100,
+	/ITL/scene/r event midi $keyon 69 100,
+	/ITL/scene/r watch midi
+);
+
+/ITL/scene event TEST1;
+/ITL/scene event TEST2;
+/ITL/scene event TEST3;
+/ITL/scene event TEST4;
+
