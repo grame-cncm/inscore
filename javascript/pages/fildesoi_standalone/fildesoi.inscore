@@ -166,7 +166,7 @@
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	
 	/ITL/scene/audioCtrltxtbtn* xorigin 0;
-	/ITL/scene/audioCtrltxtbtn* fontSize 8;
+	/ITL/scene/audioCtrltxtbtn* fontSize 20;
 	/ITL/scene/audioCtrltxtbtn* x $x;
 	/ITL/scene/audioCtrltxtbtnWavOnly dx -0.006;
 
@@ -191,7 +191,7 @@
 	/ITL/scene/audioCtrlbtnAudioInToDSP penWidth 1;
 
 	/ITL/scene/audioCtrlbtn* xorigin 10;
-	/ITL/scene/audioCtrlbtn* x $x;
+	/ITL/scene/audioCtrlbtn* x $x - 0.1;
 	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
 	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
 	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.95;
