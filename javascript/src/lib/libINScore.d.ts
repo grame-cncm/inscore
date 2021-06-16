@@ -234,6 +234,7 @@ interface INScoreObject {
 	// trigger the event given as parameter
 	event(name: string): void;
 	keyEvent(name: string, key: string): void;
+	midiEvent(status: number, data1: number, data2: number): void;
 
 	// next methods should only be called by guido score, otherwise ignored
 	updateGraphic2TimeMap(name: string, map: string, width: number, height: number): void;

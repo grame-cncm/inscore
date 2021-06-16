@@ -280,6 +280,7 @@ class inscore_export IObjectAdapter
 		void	updateGraphic2TimeMap (std::string name, std::string jsonmap, float width, float height);
 		void	event (std::string ev); // trigger the event 'ev'
 		void	keyEvent (std::string ev, std::string key);
+		void	midiEvent (int status, int data1, int data2);
 		
 		void	setAudioInOut (int inputs, int outputs);
 		void	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
