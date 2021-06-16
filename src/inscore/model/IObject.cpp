@@ -1685,6 +1685,8 @@ void IObject::midiEvent( int status, int data1, int data2)
 		SIMessageList outmsgs = me.eval (msgs, 0, 0, env);
 		if (outmsgs && outmsgs->list().size()) outmsgs->send();	// when not empty, sends the evaluated messages
 	}
+	for (auto elt: elements())									// propagate the midi event to childrens
+		elt->midiEvent(status, data1, data2);
 }
 
 //--------------------------------------------------------------------------

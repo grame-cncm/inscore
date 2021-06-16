@@ -121,6 +121,13 @@ void IObjectAdapter::keyEvent (std::string ev, std::string key)
 }
 
 //--------------------------------------------------------------------------
+void IObjectAdapter::midiEvent (int status, int data1, int data2)
+{
+	if (fObject)
+		fObject->midiEvent (status, data1, data2);
+}
+
+//--------------------------------------------------------------------------
 void IObjectAdapter::updateTime2TimeMap (std::string jsonmap)
 {
 	IGuidoCode* obj = dynamic_cast<IGuidoCode*>((IObject*)fObject);
