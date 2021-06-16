@@ -23,8 +23,8 @@
 <div class="inscore" id="scene">
 	/ITL/scene/wait set txt "Loading..."; 
 	
-	/ITL/scene/faust set faust 'process =  _,_ ;';
-	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
+	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
+	/ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt";
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -195,7 +195,7 @@
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	
 	/ITL/scene/audioCtrltxtbtn* xorigin 0;
-	/ITL/scene/audioCtrltxtbtn* fontSize 8;
+	/ITL/scene/audioCtrltxtbtn* fontSize 15;
 	/ITL/scene/audioCtrltxtbtn* x $x;
 	/ITL/scene/audioCtrltxtbtnWavOnly dx -0.006;
 
@@ -220,7 +220,7 @@
 	/ITL/scene/audioCtrlbtnAudioInToDSP penWidth 1;
 
 	/ITL/scene/audioCtrlbtn* xorigin 10;
-	/ITL/scene/audioCtrlbtn* x $x;
+	/ITL/scene/audioCtrlbtn* x $x - 0.15;
 	/ITL/scene/audioCtrlbtnWavOnly y 0.85;
 	/ITL/scene/audioCtrlbtnWavToDSP y 0.9;
 	/ITL/scene/audioCtrlbtnAudioInToDSP y 0.95;
@@ -505,16 +505,16 @@
 	/ITL/scene/docLayer/bg color white;
 	/ITL/scene/docLayer/bg penWidth 1;
 	/ITL/scene/docLayer/bg/title set txt "Switch current section with numpad keys";
-	/ITL/scene/docLayer/bg/title fontSize 20;
+	/ITL/scene/docLayer/bg/title fontSize 25;
 	/ITL/scene/docLayer/bg/subtitle set txt "A section will turn on DSP parametters on activation";
-	/ITL/scene/docLayer/bg/subtitle fontSize 18;
+	/ITL/scene/docLayer/bg/subtitle fontSize 21;
 	/ITL/scene/docLayer/bg/subtitle y $titlePosy + 0.1;
 	/ITL/scene/docLayer/bg/title y $titlePosy;
 
 	/ITL/scene/docLayer/bg/SwitchTitle set txt "Switch to :";
 	/ITL/scene/docLayer/bg/SwitchTitle y -0.65;
 	/ITL/scene/docLayer/bg/SwitchTitle x -0.5;
-	/ITL/scene/docLayer/bg/SwitchTitle fontSize 15;
+	/ITL/scene/docLayer/bg/SwitchTitle fontSize 20;
 
 	/ITL/scene/docLayer/bg/numkey1 set rect 0.1 0.1;
 	/ITL/scene/docLayer/bg/numkey1 color red;
@@ -562,18 +562,27 @@
 	/ITL/scene/docLayer/bg/playpause set txt "play / pause :";
 	/ITL/scene/docLayer/bg/playpause y -0.65;
 	/ITL/scene/docLayer/bg/playpause x 0.5;
+	/ITL/scene/docLayer/bg/playpause fontSize 20;
 
-	/ITL/scene/docLayer/bg/keys* fontSize 15;
+	/ITL/scene/docLayer/bg/keys* fontSize 20;
 	/ITL/scene/docLayer/bg/keys* x -0.7;
 	/ITL/scene/docLayer/bg/keyspace x 0.5;
 
-	/ITL/scene/docLayer/linkToDoc set txt "Fildesoi";
-	/ITL/scene/docLayer/linkToDoc color blue;
-	/ITL/scene/docLayer/linkToDoc y 0;
-	/ITL/scene/docLayer/linkToDoc fontSize 20;
+	/ITL/scene/docLayer/bg/linkToDoc set txt "Fildesoi WebSite";
+	/ITL/scene/docLayer/bg/linkToDoc color blue;
+	/ITL/scene/docLayer/bg/linkToDoc y 0.8;
+	/ITL/scene/docLayer/bg/linkToDoc fontSize 20;
 	
-	/ITL/scene/docLayer/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
-	
+	/ITL/scene/docLayer/bg/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
+	/ITL/scene/docLayer/bg/description1 set txt "This score contains SECTIONS represented by numbered squares,";
+	/ITL/scene/docLayer/bg/description2 set txt "when the cursor enters theses sections,";
+	/ITL/scene/docLayer/bg/description3 set txt "the faust dsp parametters will trigger";
+	/ITL/scene/docLayer/bg/description4 set txt "changing the audio rendering in real time.";
+	/ITL/scene/docLayer/bg/description1 y 0;
+	/ITL/scene/docLayer/bg/description2 y 0.1;
+	/ITL/scene/docLayer/bg/description3 y 0.2;
+	/ITL/scene/docLayer/bg/description4 y 0.3;
+	/ITL/scene/docLayer/bg/description* fontSize 17;
 	/ITL/scene/docLayer show 0;
 	
 	docInit = (
@@ -586,12 +595,12 @@
 	);
 
 	/ITL/scene/docbtn set txt "Help";
-	/ITL/scene/docbtn color blue;
+	/ITL/scene/docbtn color green;
 
 	/ITL/scene/docbtn xorigin 0;
 	/ITL/scene/docbtn x -$x;
-	/ITL/scene/docbtn y 0.90;
-	/ITL/scene/docbtn fontSize 10;	
+	/ITL/scene/docbtn y 0.9;
+	/ITL/scene/docbtn fontSize 25;	
 
 	/ITL/scene/docbtn watch mouseDown $docInit;
 </div>
