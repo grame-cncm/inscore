@@ -1,26 +1,38 @@
 ///<reference types="@types/webmidi"/>
+///<reference path="lib/libINScore.d.ts"/>
+
 
 class MidiSetup {
-    static midiClients : Array<string>;
+    static midiClients : Array<INScoreObject> = [];
     static accessSetup : WebMidi.MIDIAccess;
     
-    static midiInput(event: WebMidi.MIDIMessageEvent) {
-        var cmd = event.data[0] >> 4;
-        var channel = event.data[0] & 0xf;
-        var pitch = event.data[1];
-        var press = event.data[2];
-        MidiSetup.midiClients.forEach((addr) => {
-
-            let msg = inscore.newMessageM("event");
-            inscore.msgAddStr(msg, "midi");
-            inscore.msgAddStr(msg, "keyDown");
-            inscore.msgAddI(msg, pitch);
-            inscore.postMessage(addr, msg);
-
-            console.log(pitch, press, channel, cmd);
-            console.log("msg", msg);
-            console.log(addr, "event midi", pitch, cmd);
+  
+    static midiTest(status: number, data1: number, data2: number) {
+        MidiSetup.midiClients.forEach((client) => {
+            client.midiEvent (status, data1, data2);
         });
+    }
+
+    static midiInput(event: WebMidi.MIDIMessageEvent) {
+        MidiSetup.midiClients.forEach((client) => {
+            client.midiEvent (event.data[0], event.data[1], event.data[2]);
+        });
+        // var cmd = event.data[0] >> 4;
+        // var channel = event.data[0] & 0xf;
+        // var pitch = event.data[1];
+        // var press = event.data[2];
+        // MidiSetup.midiClients.forEach((addr) => {
+
+        //     let msg = inscore.newMessageM("event");
+        //     inscore.msgAddStr(msg, "midi");
+        //     inscore.msgAddStr(msg, "keyDown");
+        //     inscore.msgAddI(msg, pitch);
+        //     inscore.postMessage(addr, msg);
+
+        //     console.log(pitch, press, channel, cmd);
+        //     console.log("msg", msg);
+        //     console.log(addr, "event midi", pitch, cmd);
+        // });
     }
 
     static onErrorCallback() {
@@ -48,14 +60,11 @@ class MidiSetup {
         }) 
     }
 
-    static addListener(addr : string) {
+    static addListener(obj : INScoreObject) {
+        MidiSetup.midiClients.push(obj);
         if (typeof(navigator.requestMIDIAccess) !== "undefined" && MidiSetup.accessSetup !== null) {
             navigator.requestMIDIAccess({"sysex": true}).then(
                 (access : WebMidi.MIDIAccess) => {
-                    if (!MidiSetup.midiClients) {
-                        MidiSetup.midiClients = [];
-                    }
-                    MidiSetup.midiClients.push(addr);
                     MidiSetup.onConnectionCallback(access);
                 }, this.onErrorCallback
             );

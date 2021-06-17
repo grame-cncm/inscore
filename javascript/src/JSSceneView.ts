@@ -1,5 +1,6 @@
 
 ///<reference path="JSObjectView.ts"/>
+///<reference path="JSMidiClient.ts"/>
 ///<reference path="navigator.ts"/>
 
 interface fsElement extends HTMLElement {
@@ -29,6 +30,7 @@ class JSSceneView extends JSObjectView {
 		div.style.filter = `blur(0px)`;
 		window.addEventListener ("keydown", (event) => { obj.keyEvent ('keyDown', event.key); }, {capture: false});
 		window.addEventListener ("keyup",   (event) => { obj.keyEvent ('keyUp', event.key); }, {capture: false});
+		MidiSetup.addListener (obj);
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
 	toString() : string					{ return "JSSceneView"; }
