@@ -190,15 +190,18 @@
 
 	<!-- Audio Control Buttons -->
 	x = 0.5;
+
 	/ITL/scene/audioCtrltxtbtnWavOnly 		set txt "Playback to audio output";
 	/ITL/scene/audioCtrltxtbtnWavToDSP 		set txt "Playback to DSP";
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	
 	/ITL/scene/audioCtrltxtbtn* xorigin 0;
-	/ITL/scene/audioCtrltxtbtn* fontSize 15;
+	/ITL/scene/audioCtrltxtbtn* fontSize 17;
 	/ITL/scene/audioCtrltxtbtn* x $x;
+	/ITL/scene/audioCtrltxtbtn* scale 0.5;
 	/ITL/scene/audioCtrltxtbtnWavOnly dx -0.006;
 
+	
 	/ITL/scene/audioCtrltxtbtnWavOnly y 0.85;
 	/ITL/scene/audioCtrltxtbtnWavToDSP y 0.9;
 	/ITL/scene/audioCtrltxtbtnAudioInToDSP y 0.95;
@@ -574,16 +577,24 @@
 	/ITL/scene/docLayer/bg/linkToDoc fontSize 20;
 	
 	/ITL/scene/docLayer/bg/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
+
 	/ITL/scene/docLayer/bg/description1 set txt "This score contains SECTIONS represented by numbered squares,";
 	/ITL/scene/docLayer/bg/description2 set txt "when the cursor enters theses sections,";
 	/ITL/scene/docLayer/bg/description3 set txt "the faust dsp parametters will trigger";
 	/ITL/scene/docLayer/bg/description4 set txt "changing the audio rendering in real time.";
+	/ITL/scene/docLayer/bg/description5 set txt "The DSP can be connected to file audio input or microphone input, it can be disconnected";
 	/ITL/scene/docLayer/bg/description1 y 0;
 	/ITL/scene/docLayer/bg/description2 y 0.1;
 	/ITL/scene/docLayer/bg/description3 y 0.2;
 	/ITL/scene/docLayer/bg/description4 y 0.3;
+	/ITL/scene/docLayer/bg/description5 y 0.4;
+	
 	/ITL/scene/docLayer/bg/description* fontSize 17;
+	/ITL/scene/docLayer/bg/description* scale x 0.5;
+	/ITL/scene/docLayer/bg/description* xorigin 0;
 	/ITL/scene/docLayer show 0;
+	
+	/ITL/scene set layer;
 	
 	docInit = (
 		/ITL/scene/$self push,
@@ -600,6 +611,7 @@
 	/ITL/scene/docbtn xorigin 0;
 	/ITL/scene/docbtn x -$x;
 	/ITL/scene/docbtn y 0.9;
+	/ITL/scene/docbtn scale 1;
 	/ITL/scene/docbtn fontSize 25;	
 
 	/ITL/scene/docbtn watch mouseDown $docInit;
