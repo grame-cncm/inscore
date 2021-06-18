@@ -895,17 +895,24 @@ toMT generalGain 0.;
 Evenement 2
 ---------------------------------
 /ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75;
+/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 22;
+
 toMT hWin 22;
 
 Evenement 3
 ---------------------------------
 /ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7;
+/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 24;
+
 toMT hWin 24;
 
 Evenement 4
 ---------------------------------
 /ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8;
 /ITL/scene/faust/FaustDSP/Global_Parameters/hStretch 2.;
+/ITL/scene/faust/FaustDSP/Global_Parameters/hWin  hslider 22;
+/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd113  hslider 0.4;
+
 toMT hWin 22;
 toMT fd13 0.4;
 

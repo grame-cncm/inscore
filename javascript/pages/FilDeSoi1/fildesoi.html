@@ -22,10 +22,6 @@
 <body>
 
 <div class="inscore" id="scene">
-	<!-- dossier score completement independant: Readme, ressouces, fildesoi.inscore sans dsp + index.html (fildesoi.html) package.json avec les dep, reference au librairies ou recopier les nodesmodules -->
-	<!-- TOTO: faire sous forme d'un package indépendant : le sortir de la page web ? contenu de la page html - dsp sous forme .inscore -->
-	<!-- TODO: Stop les images go les rect & polygones -->
-	/ITL/scene/wait set txt "Loading..."; 
 	/ITL/scene/faust set faustf "FilDeSoi1PanStereo.dsp.txt";
 	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
 
@@ -96,15 +92,11 @@
 
 	
 	<!-- Buttons variables -->
-	play  = 'rsrc/play.png';
-	pause = 'rsrc/pause.png';
-	stop  = 'rsrc/stop.png';
 	origin = 1.2;
 	alpha = 120;
 	w = 0.09;
 
 	<!-- Button Play / Pause-->
-
 	/ITL/scene/btnstop set ellipse 1 1;
 	/ITL/scene/btnplay set ellipse 1 1;
 
