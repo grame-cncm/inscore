@@ -23,8 +23,8 @@
 <div class="inscore" id="scene">
 	/ITL/scene/wait set txt "Loading..."; 
 	
-	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
-	/ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt";
+	/ITL/scene/faust set faust 'process =  _,_ ;';
+	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -498,52 +498,51 @@
 
 	<!-- Help -->
 	titlePosy = -0.9;
-	key1Posy = -0.5;
-	key2Posy = -0.4;
-	key3Posy = -0.3;
-	key4Posy = -0.2;
+	key1Posy = -0.3;
+	key2Posy = -0.2;
+	key3Posy = -0.1;
+	key4Posy = 0;
 
 	/ITL/scene/docLayer set layer;
 	/ITL/scene/docLayer/bg set rect 1 1;
 	/ITL/scene/docLayer/bg color white;
 	/ITL/scene/docLayer/bg penWidth 1;
-	/ITL/scene/docLayer/bg/title set txt "Switch current section with numpad keys";
+	/ITL/scene/docLayer/bg/title set txt "Help";
 	/ITL/scene/docLayer/bg/title fontSize 25;
-	/ITL/scene/docLayer/bg/subtitle set txt "A section will turn on DSP parametters on activation";
-	/ITL/scene/docLayer/bg/subtitle fontSize 21;
+	/ITL/scene/docLayer/bg/subtitle set txt "This Score contains an audio DSP that will interact with the microphone and audio of the connected clients";
 	/ITL/scene/docLayer/bg/subtitle y $titlePosy + 0.1;
+	/ITL/scene/docLayer/bg/subtitle2 set txt "Some parameters of this Audio DSP will be changed automatically when passing through SECTION represented by numbered squares";
+	/ITL/scene/docLayer/bg/subtitle2 y $titlePosy + 0.2;
 	/ITL/scene/docLayer/bg/title y $titlePosy;
+	
+	/ITL/scene/docLayer/bg/subtitle* fontSize 21;
 
-	/ITL/scene/docLayer/bg/SwitchTitle set txt "Switch to :";
-	/ITL/scene/docLayer/bg/SwitchTitle y -0.65;
-	/ITL/scene/docLayer/bg/SwitchTitle x -0.5;
+	/ITL/scene/docLayer/bg/SwitchTitle set txt "To trigger theses events manually you can press theses keyboard shortcuts :";
+	/ITL/scene/docLayer/bg/SwitchTitle y -0.6;
+	/ITL/scene/docLayer/bg/SwitchTitle x 0;
 	/ITL/scene/docLayer/bg/SwitchTitle fontSize 20;
 
 	/ITL/scene/docLayer/bg/numkey1 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey1 color red;
 	/ITL/scene/docLayer/bg/numkey1 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey1/1 set txt "1";
 	/ITL/scene/docLayer/bg/numkey1 y $key1Posy;
 
 	/ITL/scene/docLayer/bg/numkey2 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey2 color blue;
 	/ITL/scene/docLayer/bg/numkey2 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey2/2 set txt "2";
 	/ITL/scene/docLayer/bg/numkey2 y $key2Posy;
 
 	/ITL/scene/docLayer/bg/numkey3 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey3 color green;
 	/ITL/scene/docLayer/bg/numkey3 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey3/3 set txt "3";
 	/ITL/scene/docLayer/bg/numkey3 y $key3Posy;
 
 	/ITL/scene/docLayer/bg/numkey4 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey4 color orange;
 	/ITL/scene/docLayer/bg/numkey4 penWidth 1;
 	/ITL/scene/docLayer/bg/numkey4/4 set txt "4";
 	/ITL/scene/docLayer/bg/numkey4 y $key4Posy;
 	
-	/ITL/scene/docLayer/bg/numkey*/* color white;
+	/ITL/scene/docLayer/bg/numkey*/* color black;
 	/ITL/scene/docLayer/bg/numkey* x -0.3;
 
 	/ITL/scene/docLayer/bg/keys1 set txt "Section 1";
@@ -556,7 +555,8 @@
 	/ITL/scene/docLayer/bg/keys4 set txt "Section 4";
 	/ITL/scene/docLayer/bg/keys4 y $key4Posy;
 
-	/ITL/scene/docLayer/bg/keyspace set rect 0.4 0.1;
+	/ITL/scene/docLayer/bg/numkey* color white;
+	<!-- /ITL/scene/docLayer/bg/keyspace set rect 0.4 0.1;
 	/ITL/scene/docLayer/bg/keyspace/txt set txt "space";
 	/ITL/scene/docLayer/bg/keyspace color white;
 	/ITL/scene/docLayer/bg/keyspace penWidth 1;
@@ -565,10 +565,10 @@
 	/ITL/scene/docLayer/bg/playpause set txt "play / pause :";
 	/ITL/scene/docLayer/bg/playpause y -0.65;
 	/ITL/scene/docLayer/bg/playpause x 0.5;
-	/ITL/scene/docLayer/bg/playpause fontSize 20;
+	/ITL/scene/docLayer/bg/playpause fontSize 20; -->
 
 	/ITL/scene/docLayer/bg/keys* fontSize 20;
-	/ITL/scene/docLayer/bg/keys* x -0.7;
+	/ITL/scene/docLayer/bg/keys* x 0;
 	/ITL/scene/docLayer/bg/keyspace x 0.5;
 
 	/ITL/scene/docLayer/bg/linkToDoc set txt "Fildesoi WebSite";
@@ -577,17 +577,6 @@
 	/ITL/scene/docLayer/bg/linkToDoc fontSize 20;
 	
 	/ITL/scene/docLayer/bg/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
-
-	/ITL/scene/docLayer/bg/description1 set txt "This score contains SECTIONS represented by numbered squares,";
-	/ITL/scene/docLayer/bg/description2 set txt "when the cursor enters theses sections,";
-	/ITL/scene/docLayer/bg/description3 set txt "the faust dsp parametters will trigger";
-	/ITL/scene/docLayer/bg/description4 set txt "changing the audio rendering in real time.";
-	/ITL/scene/docLayer/bg/description5 set txt "The DSP can be connected to file audio input or microphone input, it can be disconnected";
-	/ITL/scene/docLayer/bg/description1 y 0;
-	/ITL/scene/docLayer/bg/description2 y 0.1;
-	/ITL/scene/docLayer/bg/description3 y 0.2;
-	/ITL/scene/docLayer/bg/description4 y 0.3;
-	/ITL/scene/docLayer/bg/description5 y 0.4;
 	
 	/ITL/scene/docLayer/bg/description* fontSize 17;
 	/ITL/scene/docLayer/bg/description* scale x 0.5;
@@ -612,7 +601,7 @@
 	/ITL/scene/docbtn x -$x;
 	/ITL/scene/docbtn y 0.9;
 	/ITL/scene/docbtn scale 1;
-	/ITL/scene/docbtn fontSize 25;	
+	/ITL/scene/docbtn fontSize 25;
 
 	/ITL/scene/docbtn watch mouseDown $docInit;
 </div>
