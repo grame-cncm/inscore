@@ -502,98 +502,115 @@
 	key2Posy = -0.2;
 	key3Posy = -0.1;
 	key4Posy = 0;
-
-	/ITL/scene/docLayer set layer;
-	/ITL/scene/docLayer/bg set rect 1 1;
-	/ITL/scene/docLayer/bg color white;
-	/ITL/scene/docLayer/bg penWidth 1;
-	/ITL/scene/docLayer/bg/title set txt "Help";
-	/ITL/scene/docLayer/bg/title fontSize 25;
-	/ITL/scene/docLayer/bg/subtitle set txt "This Score contains an audio DSP that will interact with the microphone and audio of the connected clients";
-	/ITL/scene/docLayer/bg/subtitle y $titlePosy + 0.1;
-	/ITL/scene/docLayer/bg/subtitle2 set txt "Some parameters of this Audio DSP will be changed automatically when passing through SECTION represented by numbered squares";
-	/ITL/scene/docLayer/bg/subtitle2 y $titlePosy + 0.2;
-	/ITL/scene/docLayer/bg/title y $titlePosy;
 	
-	/ITL/scene/docLayer/bg/subtitle* fontSize 21;
-
-	/ITL/scene/docLayer/bg/SwitchTitle set txt "To trigger theses events manually you can press theses keyboard shortcuts :";
-	/ITL/scene/docLayer/bg/SwitchTitle y -0.6;
-	/ITL/scene/docLayer/bg/SwitchTitle x 0;
-	/ITL/scene/docLayer/bg/SwitchTitle fontSize 20;
-
-	/ITL/scene/docLayer/bg/numkey1 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey1 penWidth 1;
-	/ITL/scene/docLayer/bg/numkey1/1 set txt "1";
-	/ITL/scene/docLayer/bg/numkey1 y $key1Posy;
-
-	/ITL/scene/docLayer/bg/numkey2 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey2 penWidth 1;
-	/ITL/scene/docLayer/bg/numkey2/2 set txt "2";
-	/ITL/scene/docLayer/bg/numkey2 y $key2Posy;
-
-	/ITL/scene/docLayer/bg/numkey3 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey3 penWidth 1;
-	/ITL/scene/docLayer/bg/numkey3/3 set txt "3";
-	/ITL/scene/docLayer/bg/numkey3 y $key3Posy;
-
-	/ITL/scene/docLayer/bg/numkey4 set rect 0.1 0.1;
-	/ITL/scene/docLayer/bg/numkey4 penWidth 1;
-	/ITL/scene/docLayer/bg/numkey4/4 set txt "4";
-	/ITL/scene/docLayer/bg/numkey4 y $key4Posy;
 	
-	/ITL/scene/docLayer/bg/numkey*/* color black;
-	/ITL/scene/docLayer/bg/numkey* x -0.3;
+	/ITL/scene/DocBG set rect 1 1;
+	/ITL/scene/DocBG color white;
+	/ITL/scene/DocBG penWidth 1;
+	/ITL/scene/DocBG/title set txt "Help";
+	/ITL/scene/DocBG/title x 0;
+	/ITL/scene/DocBG/title fontSize 20;
+	/ITL/scene/DocBG/description set html "<p>This Score contains an audio DSP </p><p>that will interact with the microphone and audio of the connected clients.</p> <p> Some parameters of this Audio DSP</p> <p>will be changed automatically when passing through SECTION represented by markers (1, 2, 3, 4).</p><p> To trigger theses events manually you can press theses keyboard shortcuts :</p>";
+	<!-- /ITL/scene/DocBG/description y $titlePosy + 0.1; -->
+	/ITL/scene/DocBG/title y $titlePosy;
 
-	/ITL/scene/docLayer/bg/keys1 set txt "Section 1";
-	/ITL/scene/docLayer/bg/keys1 y $key1Posy;
+	/ITL/scene watch BTNCLOSE (
+		/ITL/scene/DocBG/closebutton set rect 1 1,
+		/ITL/scene/DocBG/closebutton alpha 0,
+		/ITL/scene/DocBG/closebutton x 0.99,
+		/ITL/scene/DocBG/closebutton y -0.88,
 
-	/ITL/scene/docLayer/bg/keys2 set txt "Section 2";
-	/ITL/scene/docLayer/bg/keys2 y $key2Posy;
-	/ITL/scene/docLayer/bg/keys3 set txt "Section 3";
-	/ITL/scene/docLayer/bg/keys3 y $key3Posy;
-	/ITL/scene/docLayer/bg/keys4 set txt "Section 4";
-	/ITL/scene/docLayer/bg/keys4 y $key4Posy;
+		/ITL/scene/DocBG/closebutton/mask1 set polygon 0 -1 0 1 1 0,
+		/ITL/scene/DocBG/closebutton/mask1 x -1.55,
+		/ITL/scene/DocBG/closebutton/mask1 y -1,
 
-	/ITL/scene/docLayer/bg/numkey* color white;
-	<!-- /ITL/scene/docLayer/bg/keyspace set rect 0.4 0.1;
-	/ITL/scene/docLayer/bg/keyspace/txt set txt "space";
-	/ITL/scene/docLayer/bg/keyspace color white;
-	/ITL/scene/docLayer/bg/keyspace penWidth 1;
-	/ITL/scene/docLayer/bg/keyspace y $key1Posy;
+		/ITL/scene/DocBG/closebutton/mask2 set polygon 0 -1 0 1 -1 0,
+		/ITL/scene/DocBG/closebutton/mask2 x -0.45,
+		/ITL/scene/DocBG/closebutton/mask2 y -1,
 
-	/ITL/scene/docLayer/bg/playpause set txt "play / pause :";
-	/ITL/scene/docLayer/bg/playpause y -0.65;
-	/ITL/scene/docLayer/bg/playpause x 0.5;
-	/ITL/scene/docLayer/bg/playpause fontSize 20; -->
+		/ITL/scene/DocBG/closebutton/mask3 set polygon 1 0 -1 0 0 -1,
+		/ITL/scene/DocBG/closebutton/mask3 x -1,
+		/ITL/scene/DocBG/closebutton/mask3 y -0.45,
 
-	/ITL/scene/docLayer/bg/keys* fontSize 20;
-	/ITL/scene/docLayer/bg/keys* x 0;
-	/ITL/scene/docLayer/bg/keyspace x 0.5;
-
-	/ITL/scene/docLayer/bg/linkToDoc set txt "Fildesoi WebSite";
-	/ITL/scene/docLayer/bg/linkToDoc color blue;
-	/ITL/scene/docLayer/bg/linkToDoc y 0.8;
-	/ITL/scene/docLayer/bg/linkToDoc fontSize 20;
+		/ITL/scene/DocBG/closebutton/mask4 set polygon -1 0 1 0 0 1,
+		/ITL/scene/DocBG/closebutton/mask4 x -1,
+		/ITL/scene/DocBG/closebutton/mask4 y -1.55,
 	
-	/ITL/scene/docLayer/bg/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
+
+		/ITL/scene/DocBG/closebutton/mask* color red,
+		/ITL/scene/DocBG/closebutton scale 0.1,
+		/ITL/scene/DocBG/closebutton/bg watch mouseEnter (/ITL/scene/DocBG/closebutton alpha 255),
+		/ITL/scene/DocBG/closebutton/bg watch mouseLeave (/ITL/scene/DocBG/closebutton alpha 200)
+	);
+
+	/ITL/scene event BTNCLOSE;
+
+	/ITL/scene/DocBG/numkey1 set rect 0.1 0.1;
+	/ITL/scene/DocBG/numkey1/1 set txt "1";
+	/ITL/scene/DocBG/numkey1 y $key1Posy;
+
+	/ITL/scene/DocBG/numkey2 set rect 0.1 0.1;
+	/ITL/scene/DocBG/numkey2/2 set txt "2";
+	/ITL/scene/DocBG/numkey2 y $key2Posy;
+
+	/ITL/scene/DocBG/numkey3 set rect 0.1 0.1;
+	/ITL/scene/DocBG/numkey3/3 set txt "3";
+	/ITL/scene/DocBG/numkey3 y $key3Posy;
+
+	/ITL/scene/DocBG/numkey4 set rect 0.1 0.1;
+	/ITL/scene/DocBG/numkey4/4 set txt "4";
+	/ITL/scene/DocBG/numkey4 y $key4Posy;
 	
-	/ITL/scene/docLayer/bg/description* fontSize 17;
-	/ITL/scene/docLayer/bg/description* scale x 0.5;
-	/ITL/scene/docLayer/bg/description* xorigin 0;
-	/ITL/scene/docLayer show 0;
+	/ITL/scene/DocBG/numkey* penWidth 1;
+	/ITL/scene/DocBG/numkey*/* color black;
+	/ITL/scene/DocBG/numkey* x -0.3;
+
+	/ITL/scene/DocBG/keys1 set txt "Section 1";
+	/ITL/scene/DocBG/keys1 y $key1Posy;
+
+	/ITL/scene/DocBG/keys2 set txt "Section 2";
+	/ITL/scene/DocBG/keys2 y $key2Posy;
+	/ITL/scene/DocBG/keys3 set txt "Section 3";
+	/ITL/scene/DocBG/keys3 y $key3Posy;
+	/ITL/scene/DocBG/keys4 set txt "Section 4";
+	/ITL/scene/DocBG/keys4 y $key4Posy;
+
+	/ITL/scene/DocBG/numkey* color white;
+	<!-- /ITL/scene/DocBG/keyspace set rect 0.4 0.1;
+	/ITL/scene/DocBG/keyspace/txt set txt "space";
+	/ITL/scene/DocBG/keyspace color white;
+	/ITL/scene/DocBG/keyspace penWidth 1;
+	/ITL/scene/DocBG/keyspace y $key1Posy;
+
+	/ITL/scene/DocBG/playpause set txt "play / pause :";
+	/ITL/scene/DocBG/playpause y -0.65;
+	/ITL/scene/DocBG/playpause x 0.5;
+	/ITL/scene/DocBG/playpause fontSize 20; -->
+
+	/ITL/scene/DocBG/keys* fontSize 20;
+	/ITL/scene/DocBG/keys* x 0;
+	/ITL/scene/DocBG/keyspace x 0.5;
+
+	/ITL/scene/DocBG/linkToDoc set txt "About Fildesoi";
+	/ITL/scene/DocBG/linkToDoc color blue;
+	/ITL/scene/DocBG/linkToDoc y 0.7;
+	/ITL/scene/DocBG/linkToDoc x 0;
+	/ITL/scene/DocBG/linkToDoc fontSize 20;
 	
-	/ITL/scene set layer;
+	/ITL/scene/DocBG/linkToDoc watch mouseDown (/ITL browse "http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi");
+	
+	
+	/ITL/scene/DocBG show 0;
 	
 	docInit = (
 		/ITL/scene/$self push,
-		/ITL/scene/docLayer show 1,
-		/ITL/scene/docbtn watch mouseDown (
-			/ITL/scene/docLayer show 0,
+		/ITL/scene/DocBG show 1,
+		/ITL/scene/DocBG/closebutton watch mouseDown (
+			/ITL/scene/DocBG show 0,
 			/ITL/scene/$self pop
 		)
 	);
-
+	
 	/ITL/scene/docbtn set txt "Help";
 	/ITL/scene/docbtn color green;
 
