@@ -29,10 +29,10 @@ w = 0.5;
 /ITL/scene/r3 watch keyUp "3" 	( /ITL/scene/$self color black );
 
 step = 0.008;
-/ITL/scene/r* watch keyDown "leftArrow" ( /ITL/scene/$self dx $step * -1 );
-/ITL/scene/r* watch keyDown "rightArrow" ( /ITL/scene/$self dx $step );
-/ITL/scene/r* watch keyDown "upArrow" ( /ITL/scene/$self dy $step * -1 );
-/ITL/scene/r* watch keyDown "downArrow" ( /ITL/scene/$self dy $step );
+/ITL/scene/r* watch keyDown ArrowLeft ( /ITL/scene/$self dx $step * -1 );
+/ITL/scene/r* watch keyDown ArrowRight ( /ITL/scene/$self dx $step );
+/ITL/scene/r* watch keyDown ArrowUp ( /ITL/scene/$self dy $step * -1 );
+/ITL/scene/r* watch keyDown ArrowDown ( /ITL/scene/$self dy $step );
 
 /ITL/scene/comment1 set txt "Press '1' '2' or '3' keys";
 /ITL/scene/comment1 y 0.7;

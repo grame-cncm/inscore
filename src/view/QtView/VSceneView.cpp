@@ -121,10 +121,10 @@ void ZoomingGraphicsView::keyPressEvent(QKeyEvent *event)
 	if (fScene) {
 		string key;
 		switch (event->nativeVirtualKey()) {
-			case 123: key = "leftArrow"; break;
-			case 124: key = "rightArrow"; break;
-			case 125: key = "downArrow"; break;
-			case 126: key = "upArrow"; break;
+			case 123: key = "ArrowLeft"; break;
+			case 124: key = "ArrowRight"; break;
+			case 125: key = "ArrowDown"; break;
+			case 126: key = "ArrowUp"; break;
 			default:  key = event->text().toStdString();
 		}
 		fScene->keyPressEvent(key, true);
