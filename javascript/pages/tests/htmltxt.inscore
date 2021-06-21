@@ -1,0 +1,7 @@
+/ITL/scene/* del;
+
+/ITL/scene/DocBG set rect 1 1;
+/ITL/scene/DocBG penWidth 1;
+/ITL/scene/DocBG color white;
+/ITL/scene/DocBG/description set html "<p> This Score contains an audio DSP that will interact with the microphone and audio of the connected clients.</p><p> Some parameters of this Audio DSP will be changed automatically when passing through SECTION </p><p> represented by markers (1, 2, 3, 4). </p><p> To trigger theses events manually you can press theses keyboard shortcuts :</p>";
+/ITL/scene/DocBG/description x 0.5;
