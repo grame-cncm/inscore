@@ -10,12 +10,27 @@
 	<script src="node_modules/@grame/inscorejs/libINScore.js"></script>
 	<script src="node_modules/@grame/inscorejs/INScoreJS.js"></script>
 	<script src="node_modules/@grame/libfaust/libfaust-wasm.js"></script>
-	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>
+	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>	
 	<style>
 	body { margin: 10; background: white; }
 	.inscore { width: 100%; height: 100%; font-size: 1px; }
 
 	</style>
+	<script>
+		var currentSection = 0;
+		function nextSection() {
+			currentSection += 1;
+			if (currentSection > 4) {
+				currentSection = 1;
+			}
+			return("/ITL/scene/faust event SECTION" + currentSection +";");
+		}
+
+		function toSection(section) {
+			currentSection = section;
+			return ("/ITL/scene/faust event SECTION" + currentSection + ";");
+		}
+	</script>
 </head>
 
 <body>
@@ -28,7 +43,8 @@
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
-	/ITL/scene/wait del; 
+	/ITL/scene/wait del;
+	
 
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
 	/ITL/scene/score height 1.8;
@@ -274,31 +290,35 @@
 	
 	<!-- KeyEvents -->
 	/ITL/scene/cursor watch keyDown "1" (
-		/ITL/scene/faust event INIT
+		/ITL/scene/javascript run "toSection(1)"
 	);
 
 	/ITL/scene/cursor watch keyDown "2" (
-		/ITL/scene/faust event SECTION1
+		/ITL/scene/javascript run "toSection(2)"
 	);
 
 	/ITL/scene/cursor watch keyDown "3" (
-		/ITL/scene/faust event SECTION2
+		/ITL/scene/javascript run "toSection(3)"
 	);
 
 	/ITL/scene/cursor watch keyDown "4" (
-		/ITL/scene/faust event SECTION3
+		/ITL/scene/javascript run "toSection(4)"
+	);
+
+	/ITL/scene/cursor watch keyDown "5" (
+		/ITL/scene/javascript run "nextSection()"
 	);
 
 	/ITL/scene/cursor watch timeEnter 9 15 (
-		/ITL/scene/faust event SECTION1
+		/ITL/scene/javascript run "toSection(2)"
 	);
 
 	/ITL/scene/cursor watch timeEnter 15 22 (
-		/ITL/scene/faust event SECTION2
+		/ITL/scene/javascript run "toSection(3)"
 	);
 
 	/ITL/scene/cursor watch timeEnter 22 30 (
-		/ITL/scene/faust event SECTION3
+		/ITL/scene/javascript run "toSection(4)"
 	);
 
 	/ITL/scene/cursor watch timeEnter 30 1000 (
@@ -306,19 +326,19 @@
 	);
 
 	<!-- DSP Sections -->
-	/ITL/scene/faust watch SECTION1 (
+	/ITL/scene/faust watch SECTION2 (
 		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin   22,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.75,
 		/ITL/scene/cursor color blue
 	);
 
-	/ITL/scene/faust watch SECTION2 (
+	/ITL/scene/faust watch SECTION3 (
 		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin   24,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.7,
 		/ITL/scene/cursor color green
 	);
 
-	/ITL/scene/faust watch SECTION3 (
+	/ITL/scene/faust watch SECTION4 (
 		/ITL/scene/faust/FaustDSP/Global_Parameters/hWin   22,
 		/ITL/scene/faust/FaustDSP/Lines/Del_Feedbacks/fd113   0.4,
 		/ITL/scene/faust/FaustDSP/Global_Parameters/dStretch 0.8,
@@ -326,7 +346,7 @@
 		/ITL/scene/cursor color orange
 	);
 
-	/ITL/scene/faust watch INIT (
+	/ITL/scene/faust watch SECTION1 (
 		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_0  300,
 		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_1  425,
 		/ITL/scene/faust/FaustDSP/Lines/Del_Durations/d_2  800,
@@ -497,7 +517,7 @@
 		/ITL/scene/cursor color red
 	);
 
-	/ITL/scene/faust event INIT;
+	/ITL/scene/faust event SECTION1;
 
 	<!-- Help -->
 	titlePosy = -0.9;
@@ -646,7 +666,7 @@
 		/ITL/scene/DocBG show 0,
 		/ITL/scene/docbtn pop
 	);
-</div>
+
 
 </body>
 </html>
