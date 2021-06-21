@@ -38,8 +38,8 @@
 <div class="inscore" id="scene">
 	/ITL/scene/wait set txt "Loading..."; 
 	
-	/ITL/scene/faust set faust 'process =  _,_ ;';
-	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
+	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
+	/ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt";
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -305,6 +305,7 @@
 		/ITL/scene/javascript run "toSection(4)"
 	);
 
+	<!-- TODO: Find a key fit for next section -->
 	/ITL/scene/cursor watch keyDown "5" (
 		/ITL/scene/javascript run "nextSection()"
 	);
@@ -546,7 +547,7 @@
 	/ITL/scene/DocBG/description4 dy 0.5;
 	/ITL/scene/DocBG/description5 dy 0.7;
 	/ITL/scene/DocBG/description6 dy 0.8;
-	/ITL/scene/DocBG/description* fontSize pfontSize;
+	/ITL/scene/DocBG/description* fontSize $pfontSize;
 	/ITL/scene/DocBG/description* xorigin -1;
 	/ITL/scene/DocBG/description* x -0.9;
 
