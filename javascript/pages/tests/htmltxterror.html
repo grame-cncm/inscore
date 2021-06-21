@@ -9,11 +9,10 @@
 	<link href="node_modules/@grame/inscorejs/fonts/fonts.css" rel="stylesheet">
 	<script src="node_modules/@grame/inscorejs/libINScore.js"></script>
 	<script src="node_modules/@grame/inscorejs/INScoreJS.js"></script>
-	<script src="node_modules/@grame/libfaust/libfaust-wasm.js"></script>
-	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>
 	<style>
 	body { margin: 10; background: white; }
 	.inscore { width: 100%; height: 100%; font-size: 1px; }
+	.doc { width: 30%; padding: 5px }
 
 	</style>
 </head>
@@ -26,6 +25,26 @@
 /ITL/scene/DocBG set rect 1 1;
 /ITL/scene/DocBG penWidth 1;
 /ITL/scene/DocBG color white;
-/ITL/scene/DocBG/description set html "<p> This Score contains an audio DSP that will interact with the microphone and audio of the connected clients.</p><p> Some parameters of this Audio DSP will be changed automatically when passing through SECTION </p><p> represented by markers (1, 2, 3, 4). </p><p> To trigger theses events manually you can press theses keyboard shortcuts :</p>";
-/ITL/scene/DocBG/description x 0.5;
+/ITL/scene/DocBG/description set html "&lt;p> This Score contains an audio DSP that will interact with the microphone and audio of the connected clients.&lt;/p>
+&lt;p> Some parameters of this Audio DSP will be changed automatically when passing through SECTION &lt;/p>
+&lt;p> represented by markers (1, 2, 3, 4). &lt;/p>
+&lt;p> To trigger theses events manually you can press theses keyboard shortcuts :&lt;/p>";
+
+
+/ITL/scene/html set html "&lt;p> This Score contains an audio DSP that will interact with the microphone and audio of the connected clients.&lt;/p>
+&lt;p> Some parameters of this Audio DSP will be changed automatically when passing through SECTION &lt;/p>
+&lt;p> represented by markers (1, 2, 3, 4). &lt;/p>
+&lt;p> To trigger theses events manually you can press theses keyboard shortcuts :&lt;/p>";
+
+/ITL/scene/html y 0.8;
+
+/ITL/scene/html2 set html "This Score contains an audio DSP that will interact with the microphone and audio of the connected clients.&lt;br />
+Some parameters of this Audio DSP will be changed automatically when passing through SECTION
+represented by markers (1, 2, 3, 4). &lt;br />
+To trigger theses events manually you can press theses keyboard shortcuts:";
+
+/ITL/scene/html2 y -0.8;
+/ITL/scene/html2 class doc;
+/ITL/scene/html2 penWidth 1;
+
 </div>
