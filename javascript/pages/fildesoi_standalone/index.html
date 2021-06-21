@@ -198,15 +198,18 @@
 	/ITL/scene/controlPanel/audioCtrltxtbtnWavToDSP 		set txt "Playback to DSP";
 	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	
-	/ITL/scene/controlPanel/audioCtrltxtbtn* xorigin 0;
 	/ITL/scene/controlPanel/audioCtrltxtbtn* fontSize 20;
 
 	/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly dx -0.006;
 
 	/ITL/scene/controlPanel/audioCtrltxtbtn* yorigin 0;
+	/ITL/scene/controlPanel/audioCtrltxtbtn* xorigin -1;
+
 	/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly y -0.5;
 	/ITL/scene/controlPanel/audioCtrltxtbtnWavToDSP y 0;
+
 	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP y 0.5;
+	/ITL/scene/controlPanel/audioCtrltxtbtn* x -1;
 
 	/ITL/scene/controlPanel/audioCtrlbtnWavOnly set rect 0.5 0.5;
 	/ITL/scene/controlPanel/audioCtrlbtnWavOnly radius 5 5;
@@ -223,7 +226,7 @@
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP penWidth 1;
 
-	/ITL/scene/controlPanel/audioCtrlbtn* x -2.7;
+	/ITL/scene/controlPanel/audioCtrlbtn* x -2;
 	/ITL/scene/controlPanel/audioCtrlbtnWavOnly y -0.5;
 	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP y 0;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP y 0.5;
@@ -498,7 +501,7 @@
 
 	<!-- Help -->
 	titlePosy = -0.9;
-	key1Posy = 0;
+	SectionPosy = 0;
 	titlefontSize = 20;
 	pfontSize = 15;
 	
@@ -510,19 +513,19 @@
 	/ITL/scene/DocBG/title fontSize $titlefontSize;
 	/ITL/scene/DocBG/title y $titlePosy;
 
-	/ITL/scene/DocBG/description1 set txt "This Score contains an audio DSP";
+	/ITL/scene/DocBG/description1 set txt "This Score contains an audio DSP.";
 	/ITL/scene/DocBG/description2 set txt "It will interact with the microphone and audio of the connected clients.";
-	/ITL/scene/DocBG/description3 set txt "Some parameters of this Audio DSP will change automatically";
-	/ITL/scene/DocBG/description4 set txt "when the cursor enters SECTION represented by numbered markers";
-	/ITL/scene/DocBG/description5 set txt "To trigger theses events manually,";
-	/ITL/scene/DocBG/description6 set txt "You can press theses keyboard shortcuts :";
+	/ITL/scene/DocBG/description3 set txt "Some parameters of this Audio DSP will change automatically when the";
+	/ITL/scene/DocBG/description4 set txt "cursor enters SECTIONS represented by numbered markers. (1, 2, 3, 4)";
+	/ITL/scene/DocBG/description5 set txt "To trigger theses events manually, you can press theses keyboard";
+	/ITL/scene/DocBG/description6 set txt "shortcuts :";
 	/ITL/scene/DocBG/description* y -0.8;
 	/ITL/scene/DocBG/description1 dy 0.1;
-	/ITL/scene/DocBG/description2 dy 0.2;
-	/ITL/scene/DocBG/description3 dy 0.3;
-	/ITL/scene/DocBG/description4 dy 0.4;
-	/ITL/scene/DocBG/description5 dy 0.5;
-	/ITL/scene/DocBG/description6 dy 0.6;
+	/ITL/scene/DocBG/description2 dy 0.3;
+	/ITL/scene/DocBG/description3 dy 0.4;
+	/ITL/scene/DocBG/description4 dy 0.5;
+	/ITL/scene/DocBG/description5 dy 0.7;
+	/ITL/scene/DocBG/description6 dy 0.8;
 	/ITL/scene/DocBG/description* fontSize pfontSize;
 	/ITL/scene/DocBG/description* xorigin -1;
 	/ITL/scene/DocBG/description* x -0.9;
@@ -551,16 +554,17 @@
 	
 
 		/ITL/scene/DocBG/closebutton/mask* color red,
+		/ITL/scene/DocBG/closebutton/mask* alpha 100,
 		/ITL/scene/DocBG/closebutton scale 0.1,
-		/ITL/scene/DocBG/closebutton/bg watch mouseEnter (/ITL/scene/DocBG/closebutton alpha 255),
-		/ITL/scene/DocBG/closebutton/bg watch mouseLeave (/ITL/scene/DocBG/closebutton alpha 200)
+		/ITL/scene/DocBG/closebutton/mask* watch mouseEnter (/ITL/scene/DocBG/closebutton/mask* alpha 255),
+		/ITL/scene/DocBG/closebutton/mask* watch mouseLeave (/ITL/scene/DocBG/closebutton/mask* alpha 100)
 	);
 
 	/ITL/scene event BTNCLOSE;
 
 	/ITL/scene/DocBG/numkey1 set rect 0.1 0.1;
 	/ITL/scene/DocBG/numkey1/1 set txt "1";
-	/ITL/scene/DocBG/numkey1 y $key1Posy;
+	/ITL/scene/DocBG/numkey1 y $SectionPosy;
 
 	/ITL/scene/DocBG/numkey2 set rect 0.1 0.1;
 	/ITL/scene/DocBG/numkey2/2 set txt "2";
@@ -579,7 +583,7 @@
 	/ITL/scene/DocBG/numkey* x -0.5;
 
 	/ITL/scene/DocBG/keys1 set txt "Activate section 1";
-	/ITL/scene/DocBG/keys1 y $key1Posy;
+	/ITL/scene/DocBG/keys1 y $SectionPosy;
 	/ITL/scene/DocBG/keys2 set txt "Activate section 2";
 	/ITL/scene/DocBG/keys2 dy 0.1;
 	/ITL/scene/DocBG/keys3 set txt "Activate section 3";
@@ -592,7 +596,7 @@
 	/ITL/scene/DocBG/keyspace/txt set txt "space";
 	/ITL/scene/DocBG/keyspace color white;
 	/ITL/scene/DocBG/keyspace penWidth 1;
-	/ITL/scene/DocBG/keyspace y $key1Posy;
+	/ITL/scene/DocBG/keyspace y $SectionPosy;
 
 	/ITL/scene/DocBG/playpause set txt "play / pause :";
 	/ITL/scene/DocBG/playpause y -0.65;
@@ -617,21 +621,31 @@
 	docInit = (
 		/ITL/scene/$self push,
 		/ITL/scene/DocBG show 1,
-		/ITL/scene/DocBG/closebutton watch mouseDown (
+		/ITL/scene/docbtn watch mouseDown (
 			/ITL/scene/DocBG show 0,
 			/ITL/scene/$self pop
 		)
 	);
 	
-	/ITL/scene/docbtn set txt "Help";
+	/ITL/scene/docbtn set rect 0.2 0.1;
+	/ITL/scene/docbtn penWidth 1;
+	/ITL/scene/docbtn color white;
+	/ITL/scene/docbtn/txt set txt "Help";
 
 	/ITL/scene/docbtn xorigin 0;
-	/ITL/scene/docbtn x -$x;
+	/ITL/scene/docbtn x -$x + 0.1;
 	/ITL/scene/docbtn y 0.9;
 	/ITL/scene/docbtn scale 1;
-	/ITL/scene/docbtn fontSize 25;
+	/ITL/scene/docbtn/txt fontSize 25;
 
 	/ITL/scene/docbtn watch mouseDown $docInit;
+
+	/ITL/scene/docbtn watch mouseEnter (/ITL/scene/docbtn color grey);
+	/ITL/scene/docbtn watch mouseLeave (/ITL/scene/docbtn color white);
+	/ITL/scene/DocBG/closebutton/mask* watch mouseDown (
+		/ITL/scene/DocBG show 0,
+		/ITL/scene/docbtn pop
+	);
 </div>
 
 </body>
