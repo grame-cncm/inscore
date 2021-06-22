@@ -56,7 +56,7 @@
 <div class="inscore" id="scene">
 	/ITL/scene/wait set txt "Loading..."; 
 	
-	<!-- /ITL connect  "http://localhost:8081"; -->
+	/ITL connect  "http://localhost:8081";
 	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
 	/ITL/scene/faust set faust 'process =  _,_ ;';
 
@@ -247,17 +247,17 @@
 	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP y 0.5;
 	/ITL/scene/controlPanel/audioCtrltxtbtn* x -1;
 
-	/ITL/scene/controlPanel/audioCtrlbtnWavOnly set rect 0.5 0.5;
+	/ITL/scene/controlPanel/audioCtrlbtnWavOnly set rect 0.4 0.4;
 	/ITL/scene/controlPanel/audioCtrlbtnWavOnly radius 5 5;
 	/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green;
 	/ITL/scene/controlPanel/audioCtrlbtnWavOnly penWidth 1;
 	
-	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP set rect 0.5 0.5;
+	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP set rect 0.4 0.4;
 	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP radius 5 5;
 	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color white;
 	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP penWidth 1;
 
-	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP set rect 0.5 0.5;
+	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP set rect 0.4 0.4;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP radius 5 5;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP penWidth 1;
@@ -554,36 +554,20 @@
 		)
 	);
 
-	/ITL/scene watch BTNCLOSE (
-		/ITL/scene/closebutton set rect 1 1,
-		/ITL/scene/closebutton color black,
-		/ITL/scene/closebutton x 0.95,
-		/ITL/scene/closebutton y -0.8,
-		/ITL/scene/closebutton scale 0.07,
-
-		/ITL/scene/closebutton/mask1 set polygon 0 -1 0 1 1 0,
-		/ITL/scene/closebutton/mask1 x -0.6,
-		/ITL/scene/closebutton/mask1 y 0,
-
-		/ITL/scene/closebutton/mask2 set polygon 0 -1 0 1 -1 0,
-		/ITL/scene/closebutton/mask2 x 0.6,
-		/ITL/scene/closebutton/mask2 y 0,
-
-		/ITL/scene/closebutton/mask3 set polygon 1 0 -1 0 0 -1,
-		/ITL/scene/closebutton/mask3 x 0,
-		/ITL/scene/closebutton/mask3 y 0.6,
-
-		/ITL/scene/closebutton/mask4 set polygon -1 0 1 0 0 1,
-		/ITL/scene/closebutton/mask4 x 0,
-		/ITL/scene/closebutton/mask4 y -0.6,
-	
-
-		/ITL/scene/closebutton/mask* color red,
-		/ITL/scene/closebutton/mask* watch mouseDown (/ITL/scene/help show 0, /ITL/scene/closebutton show 0, /ITL/scene/docbtn pop),
-		/ITL/scene/closebutton show 0
+	/ITL/scene/closebutton set rect 1 1;
+	/ITL/scene/closebutton scale 0.07;
+	/ITL/scene/closebutton color red;
+	/ITL/scene/closebutton/txt set txt "X";
+	/ITL/scene/closebutton/txt color white;
+	/ITL/scene/closebutton/txt fontSize 600;
+	/ITL/scene/closebutton/penWidth 2;
+	/ITL/scene/closebutton x 0.95;
+	/ITL/scene/closebutton y -0.8;
+	/ITL/scene/closebutton watch mouseDown (
+		/ITL/scene/help show 0,
+		/ITL/scene/closebutton show 0,
+		/ITL/scene/docbtn pop
 	);
-			
-	/ITL/scene event BTNCLOSE;
 
 	/ITL/scene/docbtn set txt "Help";
 	/ITL/scene/docbtn penWidth 2;
@@ -599,6 +583,7 @@
 	/ITL/scene/docbtn watch mouseEnter (/ITL/scene/docbtn color grey);
 	/ITL/scene/docbtn watch mouseLeave (/ITL/scene/docbtn color black);
 	/ITL/scene/help show 0;
+	/ITL/scene/closebutton show 0;
 
 </body>
 </html>
