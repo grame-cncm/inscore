@@ -19,10 +19,13 @@ class AIOScanner {
     }
 
     static scan (address: string) {
+        AIOScanner.init();
         AIOScanner.fOutput = AIOScanner.fAudioContext.destination;
         AIOScanner.send (address, AIOScanner.kOutputName, AIOScanner.fOutput);
+        // console.log ("navigator.mediaDevices " + navigator.mediaDevices);
+        // try {
         if (navigator.mediaDevices) {
-            navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream: MediaStream) => {
+                navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream: MediaStream) => {
                 AIOScanner.fInput = AIOScanner.fAudioContext.createMediaStreamSource(stream);
                 AIOScanner.send (address, AIOScanner.kInputName, AIOScanner.fInput);
             })
@@ -33,6 +36,9 @@ class AIOScanner {
         } else {
             AIOScanner.send (address, AIOScanner.kInputName, null);
         }
+        // }
+        // catch (error) { AIOScanner.send (address, AIOScanner.kInputName, null); }
+        AIOScanner.send (address, AIOScanner.kInputName, null);
     } // Get All Physical in/out and populate finput & foutput
 
     private static send (address: string, name: string, node: AudioNode) {
@@ -44,8 +50,10 @@ class AIOScanner {
         inscore.postMessage (prefix + "/" + name + "", msg);
     } // can send a set audioio message for each physical input/output
 
-    private static unlockclean ()  { AIOScanner.fUnlockEvents.forEach(e => document.body.removeEventListener(e, this.unlock)); } 
-    private static unlock ()       { AIOScanner.fAudioContext.resume().then(AIOScanner.unlockclean) } 
+    private static unlock ()       { 
+        AIOScanner.fUnlockEvents.forEach(e => document.body.removeEventListener(e, AIOScanner.unlock)); 
+        AIOScanner.fAudioContext.resume();
+    } 
     private static unlockAudioContext(audioCtx: AudioContext) {
         if (audioCtx.state !== "suspended") return;
         AIOScanner.fUnlockEvents.forEach(e => document.body.addEventListener(e, AIOScanner.unlock, false));
