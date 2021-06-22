@@ -363,7 +363,7 @@ SIMessageList EventsAble::getMidiMessages (int status, int data1, int data2)
 bool EventsAble::acceptKey (const std::string& filter, const std::string& key) const
 {
 	if (filter == "*") return true;
-	if ((filter.size() == 1) && (filter == key)) return true;
+	if (filter == key) return true;
 	if (std::regex_match (key, std::regex(filter))) return true;
 	return false;
 }

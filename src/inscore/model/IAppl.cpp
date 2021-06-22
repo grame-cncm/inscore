@@ -101,6 +101,9 @@ static string getFilePath() {
     return path.toStdString();
 }
 
+#elif EMCC
+static string getFilePath() { return ""; }
+
 #else
 static string getFilePath() { return string(getenv("HOME")) + "/"; }
 #endif

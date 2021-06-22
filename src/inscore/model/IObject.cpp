@@ -1638,9 +1638,7 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			else {
 				SIMessageList watchMsg = msg->watchMsg2Msgs (2);
 				if (!watchMsg) return MsgHandler::kBadParameters;
-				size_t n = keys.size();
-				if ((n == 1) || ((n > 2) && (keys[0] == '[') && (keys[n-1] == ']')))
-					eventsHandler()->addKeyMsg( keys, watchMsg, down);
+				eventsHandler()->addKeyMsg( keys, watchMsg, down);
 			}
 		}
 		else return MsgHandler::kBadParameters;

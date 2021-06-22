@@ -192,7 +192,7 @@ bool ScriptsParser::analyseMsg(const SIMessage &msg, AnalyseResult &result, bool
 				return true;
 			}
 
-		}else if(msg->message()=="rootPath"){
+		}else if(msg->message() == krootPath_GetSetMethod){
 			if(msg->size()==1){
 				std::string rootPath;
 				if(msg->param(0,rootPath)){

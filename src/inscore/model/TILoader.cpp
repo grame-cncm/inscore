@@ -147,8 +147,8 @@ MsgHandler::msgStatus TILoader::loadBundle(const std::string& srcfile, const std
 		bundleRootPath += QString("bundle") + QDir::separator() + QString::fromStdString(bundleName);
 		error = a->extract(bundleRootPath, true);
 		if(!error){
-			INScore::postMessage("/ITL", "rootPath", bundleRootPath.toStdString().c_str());
-			INScore::postMessage("/ITL/scene", "rootPath", bundleRootPath.toStdString().c_str());
+			INScore::postMessage("/ITL", krootPath_GetSetMethod, bundleRootPath.toStdString().c_str());
+			INScore::postMessage("/ITL/scene", krootPath_GetSetMethod, bundleRootPath.toStdString().c_str());
 			INScore::postMessage("/ITL", "load", "main.inscore");
 		}
 	}

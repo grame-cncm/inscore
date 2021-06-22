@@ -118,7 +118,17 @@ void ZoomingGraphicsView::stateChange ( bool fullscreen )
 //------------------------------------------------------------------------------------------------------------------------
 void ZoomingGraphicsView::keyPressEvent(QKeyEvent *event)
 {
-	if (fScene) fScene->keyPressEvent(event->text().toStdString(), true);
+	if (fScene) {
+		string key;
+		switch (event->nativeVirtualKey()) {
+			case 123: key = "ArrowLeft"; break;
+			case 124: key = "ArrowRight"; break;
+			case 125: key = "ArrowDown"; break;
+			case 126: key = "ArrowUp"; break;
+			default:  key = event->text().toStdString();
+		}
+		fScene->keyPressEvent(key, true);
+	}
 }
 
 void ZoomingGraphicsView::keyReleaseEvent(QKeyEvent *event)

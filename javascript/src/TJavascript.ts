@@ -25,6 +25,7 @@ class TJavascript {
 	}
 	catch (e) {
 		console.log ("Failed to evaluate Javascript code: " + e + "\n" + script);
+		return 0;
 	}
 	}
 }
