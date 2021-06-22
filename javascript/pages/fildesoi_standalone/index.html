@@ -57,8 +57,8 @@
 	/ITL/scene/wait set txt "Loading..."; 
 	
 	/ITL connect  "http://localhost:8081";
-	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
-	/ITL/scene/faust set faust 'process =  _,_ ;';
+	/ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt";
+	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -150,7 +150,6 @@
 		/ITL/scene/btnplay x -0.05	
 	);
 	
-
 	/ITL/scene watch SETPAUSEIMG (
 		/ITL/scene/btnplay color grey,
 		/ITL/scene/btnplay/fg set rect 1 1,
@@ -191,7 +190,6 @@
 			/ITL/scene/$self pop
 		)
 	);
-
 
 	/ITL/scene/btnplay watch mouseDown $initplay;
 	/ITL/scene/btnplay watch keyDown " " (/ITL/scene/btnplay event mouseDown 0 0);
