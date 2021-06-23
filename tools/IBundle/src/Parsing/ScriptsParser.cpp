@@ -32,6 +32,9 @@
 
 #include "ScriptsParser.h"
 
+// redefined here to avoid dependency to Methods.cpp
+#define krootPath_GetSetMethod "rootPath"
+
 namespace ibundle{
 
 
