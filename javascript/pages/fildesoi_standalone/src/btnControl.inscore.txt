@@ -1,0 +1,83 @@
+w = 0.07;
+buttony = 0.9;
+alpha = 120;
+
+/ITL/scene/btnstop set ellipse 1 1;
+/ITL/scene/btnplay set ellipse 1 1;
+
+/ITL/scene watch SETPLAYIMG (
+    /ITL/scene/btnplay color grey,
+    /ITL/scene/btnplay/fg set polygon 0 0 0 1 0.8 0.5,
+    /ITL/scene/btnplay/fg color white,
+    /ITL/scene/btnplay xorigin 0,
+    /ITL/scene/btn* y $buttony,
+    /ITL/scene/btn* scale $w,
+    /ITL/scene/btn* alpha $alpha,
+    /ITL/scene/btnplay x -0.05	
+);
+
+/ITL/scene watch SETPAUSEIMG (
+    /ITL/scene/btnplay color grey,
+    /ITL/scene/btnplay/fg set rect 1 1,
+    /ITL/scene/btnplay/fg color white,
+    /ITL/scene/btnplay xorigin 0,
+    /ITL/scene/btn* y $buttony,
+    /ITL/scene/btn* scale $w,
+    /ITL/scene/btn* alpha $alpha,
+    /ITL/scene/btnplay/fg/mask set rect 1 2,
+    /ITL/scene/btnplay/fg/mask color grey,
+    /ITL/scene/btnplay/fg/mask alpha $alpha,
+    /ITL/scene/btnplay x -0.05	
+    );
+
+/ITL/scene watch SETSTOPIMG (
+    /ITL/scene/btnstop color grey,
+    /ITL/scene/btnstop/fg set rect 1 1,
+    /ITL/scene/btnstop/fg color white,
+    /ITL/scene/btnstop xorigin 0,
+    /ITL/scene/btn* y $buttony,
+    /ITL/scene/btn* scale $w,
+    /ITL/scene/btn* alpha $alpha,
+    /ITL/scene/btnstop x 0.05
+    
+);
+
+initplay = (	
+    /ITL/scene/$self push,
+    /ITL/scene event SETPAUSEIMG,
+    /ITL/scene/cursor tempo 60,
+    /ITL/scene/audio play 1,
+    /ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP ),
+    /ITL/scene/btnplay watch mouseDown (
+        /ITL/scene event SETPLAYIMG,
+        /ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
+        /ITL/scene/cursor tempo 0,
+        /ITL/scene/audio play 0,
+        /ITL/scene/$self pop
+    )
+);
+
+/ITL/scene/btnplay watch mouseDown $initplay;
+/ITL/scene/btnplay watch keyDown " " (/ITL/scene/btnplay event mouseDown 0 0);
+/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 );
+
+/ITL/scene event SETPLAYIMG;
+/ITL/scene event SETSTOPIMG;
+
+/ITL/scene watch STOP (
+    /ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
+    /ITL/scene event SETPLAYIMG,
+    /ITL/scene/btnplay pop,
+    /ITL/scene/cursor tempo 0,
+    /ITL/scene/audio play 0,
+    /ITL/scene/audio vdate 0,
+    /ITL/scene/cursor date 0
+);
+
+/ITL/scene watch STOP1 (
+    /ITL/scene/audio vdate 0,
+    /ITL/scene/cursor date 0
+);
+
+/ITL/scene/btn* watch mouseEnter (/ITL/scene/$self alpha 255, /ITL/scene/$self/fg/mask alpha 255);
+/ITL/scene/btn* watch mouseLeave (/ITL/scene/$self alpha $alpha, /ITL/scene/$self/fg/mask alpha $alpha);
