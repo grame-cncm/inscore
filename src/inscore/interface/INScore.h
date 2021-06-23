@@ -225,6 +225,8 @@ class inscore_export INScore
 
 	static std::string guidoversion();						///< gives the guido library version number as a string
 	static std::string musicxmlversion();					///< gives the musicxml library version number as a string
+	static std::string faustversion();						///< gives the faust library version number as a string
+
 };
 
 /*! @} */
