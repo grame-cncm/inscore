@@ -25,5 +25,64 @@
     /ITL/scene/closebutton watch mouseDown (/ITL/log "close")
 );
 
-/ITL/scene/* del;
+	/ITL/scene watch BTNCLOSE (
+		/ITL/scene/closebutton set rect 1 1,
+		/ITL/scene/closebutton color black,
+		/ITL/scene/closebutton x 0.95,
+		/ITL/scene/closebutton y -0.8,
+		/ITL/scene/closebutton scale 0.07,
+
+		/ITL/scene/closebutton/mask1 set polygon 0 -1 0 1 1 0,
+		/ITL/scene/closebutton/mask1 x -0.6,
+		/ITL/scene/closebutton/mask1 y 0,
+
+		/ITL/scene/closebutton/mask2 set polygon 0 -1 0 1 -1 0,
+		/ITL/scene/closebutton/mask2 x 0.6,
+		/ITL/scene/closebutton/mask2 y 0,
+
+		/ITL/scene/closebutton/mask3 set polygon 1 0 -1 0 0 -1,
+		/ITL/scene/closebutton/mask3 x 0,
+		/ITL/scene/closebutton/mask3 y 0.6,
+
+		/ITL/scene/closebutton/mask4 set polygon -1 0 1 0 0 1,
+		/ITL/scene/closebutton/mask4 x 0,
+		/ITL/scene/closebutton/mask4 y -0.6,
+	
+
+		/ITL/scene/closebutton/mask* color red,
+		/ITL/scene/closebutton/mask* watch mouseDown (/ITL/scene/help show 0, /ITL/scene/closebutton show 0, /ITL/scene/docbtn pop),
+		/ITL/scene/closebutton show 0
+	);
+
+
 /ITL/scene event BTNCLOSE;
+
+	<!-- /ITL/scene watch BTNCLOSE (
+		/ITL/scene/DocBG/closebutton set rect 1 1,
+		/ITL/scene/DocBG/closebutton alpha 0,
+		/ITL/scene/DocBG/closebutton x 0.99,
+		/ITL/scene/DocBG/closebutton y -0.88,
+
+		/ITL/scene/DocBG/closebutton/mask1 set polygon 0 -1 0 1 1 0,
+		/ITL/scene/DocBG/closebutton/mask1 x -1.55,
+		/ITL/scene/DocBG/closebutton/mask1 y -1,
+
+		/ITL/scene/DocBG/closebutton/mask2 set polygon 0 -1 0 1 -1 0,
+		/ITL/scene/DocBG/closebutton/mask2 x -0.45,
+		/ITL/scene/DocBG/closebutton/mask2 y -1,
+
+		/ITL/scene/DocBG/closebutton/mask3 set polygon 1 0 -1 0 0 -1,
+		/ITL/scene/DocBG/closebutton/mask3 x -1,
+		/ITL/scene/DocBG/closebutton/mask3 y -0.45,
+
+		/ITL/scene/DocBG/closebutton/mask4 set polygon -1 0 1 0 0 1,
+		/ITL/scene/DocBG/closebutton/mask4 x -1,
+		/ITL/scene/DocBG/closebutton/mask4 y -1.55,
+	
+
+		/ITL/scene/DocBG/closebutton/mask* color red,
+		/ITL/scene/DocBG/closebutton/mask* alpha 100,
+		/ITL/scene/DocBG/closebutton scale 0.1,
+		/ITL/scene/DocBG/closebutton/mask* watch mouseEnter (/ITL/scene/DocBG/closebutton/mask* alpha 255),
+		/ITL/scene/DocBG/closebutton/mask* watch mouseLeave (/ITL/scene/DocBG/closebutton/mask* alpha 100)
+	); -->
