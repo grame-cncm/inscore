@@ -272,7 +272,7 @@ class IAppl : public IObject, public TILoader
 		/// \brief application \c 'require' message handler. Provided to check for version number.
 		virtual MsgHandler::msgStatus requireMsg(const IMessage* msg);
 
-		/// \brief application \c 'load' message handler.
+		/// \brief application \c 'preprocess' message handler.
 		virtual MsgHandler::msgStatus preProcessMsg (const IMessage* msg);
 
 		/// \brief application \c 'load' message handler.
