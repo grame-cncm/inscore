@@ -8,7 +8,7 @@ interface Window {
 }
 
 //----------------------------------------------------------------------------
-// the libMusicXML interface
+// the faust interface
 //----------------------------------------------------------------------------
 class faust {
 	private fModule: Faust.FaustModule;

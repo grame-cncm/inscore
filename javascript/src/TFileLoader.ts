@@ -34,9 +34,9 @@ class TFileLoader {
 		return content;
 	}
 
-	static load (div: HTMLElement, file: string) : Promise <string | null>	{ 
+	static load (div: HTMLElement, file: string, mime="text/plain") : Promise <string | null>	{ 
 		let obj = document.createElement('object');
-		obj.type = "text/plain";
+		obj.type = mime;
 		obj.data = file;
 		obj.style.visibility = "hidden";
 		div.appendChild (obj);

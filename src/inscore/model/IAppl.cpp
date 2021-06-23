@@ -32,7 +32,6 @@
 #include <regex>
 #include <sstream>
 
-
 #if ANDROID || INSCORE_IOS
 #include <QDir>
 #include <QStandardPaths>
@@ -65,6 +64,11 @@
 #else
 #include "IMenu.h"
 #endif
+
+#ifdef EMCC
+#include "JSCall.h"
+#endif
+
 
 #include "XMLImporter.h"
 
@@ -685,7 +689,11 @@ MsgHandler::msgStatus IAppl::loadBuffer (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
+#ifdef EMCC
+MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)		{ return jscall::loadMsg (msg) ? MsgHandler::kProcessed : MsgHandler::kBadParameters; }
+#else
 MsgHandler::msgStatus IAppl::loadMsg(const IMessage* msg)		{ return load (msg, this, getRootPath(), getParseVersion()); }
+#endif
 MsgHandler::msgStatus IAppl::preProcessMsg(const IMessage* msg) { return preprocess (msg, this, getRootPath(), getParseVersion()); }
 void IAppl::logMsgs(const SIMessageList& msgs)					{ fApplLog->write (msgs); }
 std::string IAppl::absolutePath( const std::string& path )		{ return TILoader::makeAbsolutePath (getRootPath(), path); }
