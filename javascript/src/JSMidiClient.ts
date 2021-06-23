@@ -17,22 +17,6 @@ class MidiSetup {
         MidiSetup.midiClients.forEach((client) => {
             client.midiEvent (event.data[0], event.data[1], event.data[2]);
         });
-        // var cmd = event.data[0] >> 4;
-        // var channel = event.data[0] & 0xf;
-        // var pitch = event.data[1];
-        // var press = event.data[2];
-        // MidiSetup.midiClients.forEach((addr) => {
-
-        //     let msg = inscore.newMessageM("event");
-        //     inscore.msgAddStr(msg, "midi");
-        //     inscore.msgAddStr(msg, "keyDown");
-        //     inscore.msgAddI(msg, pitch);
-        //     inscore.postMessage(addr, msg);
-
-        //     console.log(pitch, press, channel, cmd);
-        //     console.log("msg", msg);
-        //     console.log(addr, "event midi", pitch, cmd);
-        // });
     }
 
     static onErrorCallback() {
@@ -69,19 +53,14 @@ class MidiSetup {
                 }, this.onErrorCallback
             );
         } else {
-            alert("MIDI input cannot be activated, either your browser still does't have it, or you need to explicitly activate it.");
+            console.log("MIDI input cannot be activated...");
         }
     }
     
-    static removeListener(addr : string) {
-
+    static removeListener(client : INScoreObject) {
+        const index = MidiSetup.midiClients.indexOf(client);
+        if (index > -1) {
+            MidiSetup.midiClients.splice(index, 1);
+        }
     }
 }
-// find a way to store what to filter
-// exemple watch midi 30: post le message seulement si la touche 30 a été pressée
-
-// inscore.postMessageStr ?
-// 
-// MIDIConnectionEvent -> created after succes requestMIDIAccess
-// MIDIPort -> can close the connection
-

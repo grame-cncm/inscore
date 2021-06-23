@@ -22,16 +22,16 @@
 		overflow-y: scroll;
         width: 30vw;
         padding: 1rem;
-		color: white;
+		color: rgba(255, 255, 255, 0.829);
     }
 	th {
 		border: 1px solid white;
 	}
 	table {
-		color:white;
+		color: rgba(255, 255, 255, 0.829);
 		width: 100%;
-		padding-left: 10rem;
-		padding-right: 10rem;
+		padding-left: 1vw;
+		padding-right: 1vw;
 	}
 	</style>
 	<script>
@@ -57,8 +57,8 @@
 	/ITL/scene/wait set txt "Loading..."; 
 	
 	/ITL connect  "http://localhost:8081";
-	/ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt";
-	<!-- /ITL/scene/faust set faust 'process =  _,_ ;'; -->
+	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
+	/ITL/scene/faust set faust 'process =  _,_ ;';
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
@@ -66,7 +66,7 @@
 	
 
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
-	/ITL/scene/score height 1.8;
+	/ITL/scene/score height 2;
 	/ITL/scene/score y -0.12; 
 
 	<!-- Mapping -->
@@ -541,29 +541,44 @@
 	/ITL/scene/help set htmlf "./help.html";
 	/ITL/scene/help class section;
 	
-	docInit = (
-		/ITL/scene/$self push,
-		/ITL/scene/help show 1,
-		/ITL/scene/closebutton show 1,
-		/ITL/scene/docbtn watch mouseDown (
-			/ITL/scene/help show 0,
-			/ITL/scene/closebutton show 0,
-			/ITL/scene/$self pop
-		)
-	);
-
 	/ITL/scene/closebutton set rect 1 1;
+	/ITL/scene/closebutton alpha 120;
 	/ITL/scene/closebutton scale 0.07;
-	/ITL/scene/closebutton color red;
+	/ITL/scene/closebutton penWidth 1;
 	/ITL/scene/closebutton/txt set txt "X";
 	/ITL/scene/closebutton/txt color white;
 	/ITL/scene/closebutton/txt fontSize 600;
 	/ITL/scene/closebutton/penWidth 2;
 	/ITL/scene/closebutton x 0.95;
 	/ITL/scene/closebutton y -0.8;
+
+	/ITL/scene watch OPENHELP (
+		/ITL/scene/docbtn push,
+		/ITL/scene/help show 1,
+		/ITL/scene/closebutton show 1
+	);
+
+	/ITL/scene watch CLOSEHELP (
+		/ITL/scene/help show 0,
+		/ITL/scene/closebutton show 0,
+		/ITL/scene/closebutton/txt color white,
+		/ITL/scene/docbtn pop
+	);
+
+	docInit = (
+		/ITL/scene event OPENHELP, 
+		/ITL/scene/docbtn watch mouseDown (
+			/ITL/scene event CLOSEHELP
+		)
+	);
+
+	
+	/ITL/scene/closebutton watch mouseEnter (/ITL/scene/closebutton/txt color red);
+	/ITL/scene/closebutton watch mouseLeave (/ITL/scene/closebutton/txt color white);
 	/ITL/scene/closebutton watch mouseDown (
 		/ITL/scene/help show 0,
 		/ITL/scene/closebutton show 0,
+		/ITL/scene/closebutton/txt color white,
 		/ITL/scene/docbtn pop
 	);
 

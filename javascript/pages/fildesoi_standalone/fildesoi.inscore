@@ -312,33 +312,53 @@
 
 	/ITL/scene event SECTION1;
 
-	/ITL/scene/help set rect 1 1;
+	/ITL/scene/help set rect 1.5 1;
 	/ITL/scene/help color white;
+	/ITL/scene/help/description0 set txt "This score contains an audio DSP.";
+	/ITL/scene/help/description1 set txt "It will interact with the microphone and audio of the connected clients.";
+	/ITL/scene/help/description2 set txt "Some parameters of this Audio DSP will change automatically";
+	/ITL/scene/help/description3 set txt "when the cursor enters SECTIONS represented by numbered markers.";
+	/ITL/scene/help/description4 set txt "To trigger theses events manually, use shortcuts : 1 2 3 4";
+	/ITL/scene/help/description0 y -0.8;
+	/ITL/scene/help/description1 y -0.6;
+	/ITL/scene/help/description2 y -0.5;
+	/ITL/scene/help/description3 y -0.4;
+	/ITL/scene/help/description4 y -0.3;
+
+	/ITL/scene/help/description* fontSize 15;
+	/ITL/scene/help/description0 fontSize 20;
 	
 	/ITL/scene/closebutton set rect 1 1;
+	/ITL/scene/closebutton alpha 120;
 	/ITL/scene/closebutton scale 0.07;
-	/ITL/scene/closebutton color red;
+	/ITL/scene/closebutton penWidth 1;
 	/ITL/scene/closebutton/txt set txt "X";
 	/ITL/scene/closebutton/txt color white;
 	/ITL/scene/closebutton/txt fontSize 600;
 	/ITL/scene/closebutton/penWidth 2;
 	/ITL/scene/closebutton x 0.95;
 	/ITL/scene/closebutton y -0.8;
+	/ITL/scene/closebutton watch mouseEnter (/ITL/scene/closebutton/txt color red);
+	/ITL/scene/closebutton watch mouseLeave (/ITL/scene/closebutton/txt color white);
+	/ITL/scene/closebutton watch mouseDown (/ITL/scene event CLOSEHELP, /ITL/scene/docbtn pop);
 	
-	/ITL/scene/closebutton watch mouseDown (
+	/ITL/scene watch OPENHELP (
+		/ITL/scene/help show 1,
+		/ITL/scene/closebutton show 1
+	);
+
+	/ITL/scene watch CLOSEHELP (
 		/ITL/scene/help show 0,
 		/ITL/scene/closebutton show 0,
-		/ITL/scene/docbtn pop
+		/ITL/scene/closebutton/txt color white
 	);
-	
+
 	docInit = (
-		/ITL/scene/$self push,
-		/ITL/scene/help show 1,
-		/ITL/scene/closebutton show 1,
+		/ITL/scene/docbtn push,
+		/ITL/scene event OPENHELP, 
 		/ITL/scene/docbtn watch mouseDown (
-			/ITL/scene/help show 0,
-			/ITL/scene/closebutton show 0,
-			/ITL/scene/$self pop
+			/ITL/scene event CLOSEHELP,
+			/ITL/scene/docbtn pop
 		)
 	);
 	
@@ -359,4 +379,4 @@
 	/ITL/scene/closebutton show 0;
 		
 	/ITL forward  "http://localhost:8081";
-	/ITL/filter reject ddate "/ITL/scene/btn*";
+	/ITL/filter reject ddate "/ITL/scene/btn*" "/ITL/scene/help";
