@@ -188,6 +188,9 @@ string INScore::guidoversion()
 //--------------------------------------------------------------------------
 string INScore::musicxmlversion()
 {
+#ifdef EMCC
+	return jscall::getMusicXmlVersion();
+#else
 	if (XMLImporter::musicxmlSupported())
 	{
 		string version = XMLImporter::musicxmlVersion();
@@ -196,6 +199,16 @@ string INScore::musicxmlversion()
 		return version;
 	}
 	return "not available";
+#endif
+}
+
+string INScore::faustversion()
+{
+#ifdef EMCC
+	return jscall::getFaustVersion();
+#else
+	return "not available";
+#endif
 }
 
 

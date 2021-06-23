@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <fstream>
+
 #include "deelx.h"
 
 #include "Events.h"
@@ -47,6 +48,10 @@
 
 #if INCLUDEFileWatcher
 #include "QFileWatcher.h"
+#endif
+
+#ifdef EMCC
+#include "JSCall.h"
 #endif
 
 using namespace std;
@@ -258,10 +263,11 @@ MsgHandler::msgStatus IScene::preProcessMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)
-{
-	return load (msg, this, getRootPath(), getParseVersion());
-}
+#ifdef EMCC
+MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)	{ return jscall::loadMsg (msg) ? MsgHandler::kProcessed : MsgHandler::kBadParameters; }
+#else
+MsgHandler::msgStatus IScene::loadMsg(const IMessage* msg)	{ return load (msg, this, getRootPath(), getParseVersion()); }
+#endif
 
 //--------------------------------------------------------------------------
 void IScene::endPaint () const

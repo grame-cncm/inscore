@@ -8,6 +8,10 @@ class libraries {
 	private fXMLLib : libmusicxml;
 	private fFaust : faust;
 
+	static fGuidoVersion = 0;
+	static fXMLVersion = 0;
+	static fFaustVersion = 0;
+
 	constructor() {
     	this.fGuido  = new GuidoEngine;
 		this.fXMLLib = new libmusicxml;
@@ -24,7 +28,9 @@ class libraries {
 	async guidoinit():Promise<any> { 
 		return new Promise( (success: any, failure: any) => {
 			this.fGuido.initialise().then (
-				() => { console.log("GuidoEngine version " + this.fGuido.getFloatVersion()); success(this); },
+				() => { libraries.fGuidoVersion = this.fGuido.getFloatVersion();
+						console.log("GuidoEngine version " + this.fGuido.getVersionStr() + " '" + this.fGuido.getVersion() + "'"); 
+						success(this); },
 				() => { this.fGuido = null; success(this); });
 		});
 	}
@@ -32,7 +38,9 @@ class libraries {
 	async xmlinit():Promise<any> { 
 		return new Promise( (success: any, failure: any) => {
 			this.fXMLLib.initialise().then (
-				() => { console.log("libMusicXML version " + this.fXMLLib.libVersionStr()); success(this); },
+				() => { libraries.fXMLVersion = this.fXMLLib.libVersion();
+						console.log("libMusicXML version " + this.fXMLLib.libVersionStr()); 
+						success(this); },
 				() => { this.fXMLLib = null; success(this); });
 		});
 	}
@@ -45,9 +53,13 @@ class libraries {
 		});
 	}
 
-	guido()  : GuidoEngine { return this.fGuido; }
-	xmllib() : libmusicxml { return this.fXMLLib; }
-	faust() 			{ return this.fFaust; }
+	guido()  : GuidoEngine  { return this.fGuido; }
+	xmllib() : libmusicxml  { return this.fXMLLib; }
+	faust()  : faust		{ return this.fFaust; }
 }
 
 var inscorelibs = new libraries();
+
+function getGuidoVersion() : number 		{ return libraries.fGuidoVersion; }
+function getMusicXMLVersion() : number 		{ return libraries.fXMLVersion; }
+function getFaustVersion() : number 		{ return libraries.fFaustVersion; }

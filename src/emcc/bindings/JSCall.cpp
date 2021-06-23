@@ -1,7 +1,7 @@
 /*
 
   INScore Library
-  Copyright (C) 2020  Grame
+  Copyright (C) 2021  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -18,21 +18,42 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#pragma once
+#include <emscripten.h>
 
-#include <string>
+#include "IMessage.h"
 
-namespace inscore {
-class IMessage;
-}
+using namespace inscore;
+using namespace std;
 
 namespace jscall
 {
 
-std::string getGuidoVersion();
-std::string getMusicXmlVersion();
-std::string getFaustVersion();
+std::string getGuidoVersion() {
+	float v = EM_ASM_DOUBLE( { return getGuidoVersion(); });
+	return v ? to_string(v) : "not available";
+}
 
-bool loadMsg(const inscore::IMessage* msg);
+std::string getMusicXmlVersion() {
+	float v = EM_ASM_DOUBLE( { return getMusicXMLVersion(); });
+	return v ? to_string(v) : "not available";
+}
+
+std::string getFaustVersion() {
+	float v = EM_ASM_DOUBLE( { return getFaustVersion(); });
+	return v ? to_string(v) : "not available";
+}
+
+bool loadMsg(const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		string srcfile;
+		if (msg->param(0, srcfile)) {
+			EM_ASM( { TAppl.load(Module.UTF8ToString($0)); }, srcfile.c_str());
+			return true;
+		}
+	}
+	return false;
+}
+
 
 }
