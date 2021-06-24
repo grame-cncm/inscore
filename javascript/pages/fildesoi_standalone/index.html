@@ -39,7 +39,7 @@
 		function nextSection() {
 			currentSection += 1;
 			if (currentSection > 4) {
-				currentSection = 1;
+				return 0;
 			}
 			return("/ITL/scene/faust event SECTION" + currentSection +";");
 		}
@@ -56,7 +56,7 @@
 <div class="inscore" id="scene">
 	/ITL/scene/wait set txt "Loading..."; 
 	
-	/ITL connect  "http://localhost:8081";
+	<!-- /ITL connect  "http://localhost:8081"; -->
 
 	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
 	/ITL/scene/faust set faust 'process =  _,_ ;';
@@ -72,7 +72,6 @@
 	
 	/ITL load "src/btnControl.inscore.txt";
 	/ITL load "src/faustSections.inscore.txt";
-	/ITL load "src/help.inscore.txt";
 
 	/ITL/scene/score watch mouseDown (
 		/ITL/scene/cursor date '$date',
@@ -97,6 +96,7 @@
 		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green,
 		/ITL/scene/audio connect audioOutput
 	);
+
 	/ITL/scene watch WAVONLYOFF (
 		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color white,
 		/ITL/scene/audio disconnect audioOutput
@@ -152,7 +152,68 @@
 	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP 		watch mouseDown $toggleWavToDSP;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 	watch mouseDown $toggleAudioInToDSP;
 
+	/ITL/scene/midiControlPanel set rect 0.6 0.2;
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Midi Prog";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Midi Ctrl";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn";
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
+	/ITL load "src/midiControl.inscore.txt";
+
+	/ITL/scene watch PROGON (		
+		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green
+	);
+
+	/ITL/scene watch PROGOFF (
+		/ITL/scene/midiControlPanel/midiCtrlbtnProg color white
+	);
+
+	toggleProg = (
+		/ITL/scene event CTRLOFF,
+		/ITL/scene event PROGON,
+		/ITL/scene event KEYONOFF
+	);
+
+	/ITL/scene watch CTRLON (
+		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green
+	);
+	/ITL/scene watch CTRLOFF (
+		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color white
+	);
+
+	toggleCtrl = (
+		/ITL/scene event CTRLON,
+		/ITL/scene event PROGOFF,
+		/ITL/scene event KEYONOFF
+	);
+
+	/ITL/scene watch KEYONON (
+		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color green,
+		/ITL/scene watch midi keyon [0-128]  (
+			/ITL/scene/javascript run "nextSection()"
+		)
+	);
+
+	/ITL/scene watch KEYONOFF (
+		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color white,
+		/ITL/scene watch midi keyon [0-128]  (
+			/ITL/log write "null"
+		)
+	);
 	
+	toggleKeyOn = (
+		/ITL/scene event CTRLOFF,
+		/ITL/scene event PROGOFF,
+		/ITL/scene event KEYONON
+	);
+
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown $toggleProg;
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown $toggleCtrl;
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown $toggleKeyOn;
+
+	
+
 	<!-- Events -->
 	/ITL/scene/cursor watch keyDown "1" (
 		/ITL/scene/javascript run "toSection(1)"
@@ -189,6 +250,8 @@
 	/ITL/scene/cursor watch timeEnter 30 1000 (
 		/ITL/scene event STOP
 	);
+
+	/ITL load "src/help.inscore.txt";
 </div>
 </body>
 </html>
