@@ -93,35 +93,57 @@
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 		set rect 0.4 0.4;
 	/ITL load "src/controlPanel.inscore.txt";
 
+	/ITL/scene watch WAVONLYON (		
+		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green,
+		/ITL/scene/audio connect audioOutput
+	);
+	/ITL/scene watch WAVONLYOFF (
+		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color white,
+		/ITL/scene/audio disconnect audioOutput
+	);
+
 	toggleWavOnly = (
 		/ITL/scene/controlPanel/$self push,
-		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color white,
-		/ITL/scene/audio disconnect audioOutput,
+		/ITL/scene event WAVONLYOFF,
 		/ITL/scene/controlPanel/audioCtrlbtnWavOnly watch mouseDown (
-			/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green,
-			/ITL/scene/audio connect audioOutput,			
+			/ITL/scene event WAVONLYON,
 			/ITL/scene/controlPanel/$self pop
 		)
+	);
+
+	/ITL/scene watch WAVDSPON (
+		/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color green,
+		/ITL/scene/audio connect faust
+	);
+	/ITL/scene watch WAVDSPOFF (
+		/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color white,
+		/ITL/scene/audio disconnect faust
 	);
 
 	toggleWavToDSP = (
 		/ITL/scene/controlPanel/$self push,
-		/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color green,
-		/ITL/scene/audio connect faust,	
+		/ITL/scene event WAVDSPON,
 		/ITL/scene/controlPanel/audioCtrlbtnWavToDSP watch mouseDown (
-			/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color white,			
-			/ITL/scene/audio disconnect faust,
+			/ITL/scene event WAVDSPOFF,
 			/ITL/scene/controlPanel/$self pop
 		)
 	);
 
+	/ITL/scene watch AINDSPON (
+		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color green,
+		/ITL/scene/audioInput connect faust
+	);
+
+	/ITL/scene watch AINDSPOFF (
+		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white,
+		/ITL/scene/audioInput disconnect faust
+	);
+	
 	toggleAudioInToDSP = (
 		/ITL/scene/controlPanel/$self push,
-		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color green,
-		/ITL/scene/audioInput connect faust,		
+		/ITL/scene event AINDSPON,
 		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP watch mouseDown (
-			/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white,
-			/ITL/scene/audioInput disconnect faust,	
+			/ITL/scene event AINDSPOFF,
 			/ITL/scene/controlPanel/$self pop
 		)
 	);
