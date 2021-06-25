@@ -13,6 +13,7 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.29
+- web version: load message implemented
 - new midi events
 - new keyDown and keyUp events
 - fix non visible mapping for images
