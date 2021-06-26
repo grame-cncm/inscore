@@ -27,13 +27,5 @@ class faust {
 	version () : string			{ return this.fLib.version(); }
 	module () 					{ return this.fModule; }
 	lib () 						{ return this.fLib; }
-
-	async test() {
-		let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-		Faust.compileAudioNode (audioCtx, this.fModule, "process=+;", null, 0, 0).then ( (node => {
-			console.log ("test function: " + node.setParamValue ("/toto", 1))
-		})
-		);
-	}
+	compiler() 					{ return Faust.createCompiler (this.fLib); }
 }
