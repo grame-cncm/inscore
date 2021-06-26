@@ -628,6 +628,7 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 				k.vel   = elt.velocity;
 				infos.keys.push_back (k);
 			}
+			infos.wasmExport = (obj->wasmFlag() ? obj->name() : "");
 			obj->clearChangedValues();
 		}
 	}

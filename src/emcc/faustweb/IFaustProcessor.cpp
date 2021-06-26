@@ -63,6 +63,7 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 	fGetMsgHandlerMap[kplay_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fPlaying);
 	fGetMultiMsgHandlerMap[kui_GetMethod]	= TGetParamMultiMethodHandler<IFaustProcessor, SIMessageList (IFaustProcessor::*)() const>::create(this, &IFaustProcessor::getUI);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &IFaustProcessor::getconnect);
+	fGetMsgHandlerMap[kwasm_GetMethod]		= TGetParamMethodHandler<IFaustProcessor, string (IFaustProcessor::*)()>::create(this, &IFaustProcessor::getWasm);
 	setPending ();
 }
 
@@ -71,6 +72,7 @@ void IFaustProcessor::cleanup ()
 {
 	IObject::cleanup();
 	AudioNode::cleanup(getOutputs());
+	fWasmExport = false;
 }
 
 //--------------------------------------------------------------------------
@@ -84,6 +86,15 @@ void IFaustProcessor::setFaustUI (std::string type, std::string label, std::stri
 {
 	FaustProcessorUIElement elt(type, label, init, min, max, step);
 	fAddressSpace[address] = elt;
+}
+
+//--------------------------------------------------------------------------
+string IFaustProcessor::getWasm ()
+{
+	string msg = "will be exported to " + name() + ".wasm and " + name() + ".json";
+	fWasmExport = true;
+	setModified();
+	return msg;
 }
 
 //--------------------------------------------------------------------------

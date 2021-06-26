@@ -80,6 +80,7 @@ class IFaustProcessor : public IRectShape, public AudioNode
 	std::string	fDspCode;
 	int fVoices = 0;
 	bool fPlaying = false;
+	bool fWasmExport = false;
 
 	typedef std::map<std::string,float> TParamsValues;
 	TParamsValues fParamValues;
@@ -113,8 +114,11 @@ class IFaustProcessor : public IRectShape, public AudioNode
 
 		// overrides message processing for handling faust address space
 		virtual int processMsg (const std::string& address, const std::string& addressTail, const IMessage* msg);
-		virtual SIMessageList getMsgs (const IMessage* msg) const;
-		virtual SIMessageList getAll() const;
+		virtual SIMessageList 	getMsgs (const IMessage* msg) const;
+		virtual SIMessageList 	getAll() const;
+		// export the dsp as a faust module
+		virtual std::string 	getWasm();
+		virtual bool 			wasmFlag() const 	{ return fWasmExport; }
 		
 	protected:
 		std::vector<TFaustParamUpdate> 			fNewValues;
