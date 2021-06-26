@@ -85,10 +85,10 @@ help : node_modules
 ts: $(LIB) $(GLUE)
 
 $(GLUE): $(GLUESRC) $(GLUEDIR)/tsconfig.json 
-	cd $(GLUEDIR) && tsc || rm ../$(GLUE); false
+	cd $(GLUEDIR) && tsc || (rm ../$(GLUE); false)
 
 $(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
-	cd $(TSDIR) && tsc || rm ../$(LIB); false
+	cd $(TSDIR) && tsc || (rm ../$(LIB); false)
 	
 #===============================================================
 # building inscore wasm library
