@@ -2,28 +2,28 @@ Fil de soi1
 
 Finalisation
 -----------------
-- implémenter support Midi:
-	* config MIDI: Next section : radio buttons
-	  - keyon
-	  - prog chge
-	  - controler
+- [] implémenter support Midi:
+	* [] config MIDI: Next section : radio buttons
+	  - [] keyon
+	  - [] prog chge
+	  - [] controler
 
-- étendre support clavier avec:
-	Next section : ?
+- [x] étendre support clavier avec:
+	Next section : touche 5 du clavier (pas de cycling)
 
-- faire le ménage entre Fildesoi standalone et l'autre version (à supprimer)
+- [x] faire le ménage entre Fildesoi standalone et l'autre version (à supprimer)
 
-- finir le fichier .inscore (remote controle)
-- documenter le fonctionnement du remote control (readme - anglais)
-- documenter le support Midi (compatibilité des navigateurs - readme)
+- [x] finir le fichier .inscore (remote controle)
+- [] documenter le fonctionnement du remote control (readme - anglais)
+- [] documenter le support Midi (compatibilité des navigateurs - readme)
 
 
 Interface MIDI
 -----------------
-- mode verbose pour Midi: imprimer dans la console tous les messages reçus
-- filtrer les  messages systèmes (seuls les channels messages sont acceptés par inscore)
-- bien gérer l'absence d'interface MIDI (cas le plus courant)
-- pas d'alerte
+- [x] mode verbose pour Midi: imprimer dans la console tous les messages reçus
+- [] filtrer les  messages systèmes (seuls les channels messages sont acceptés par inscore)
+- [] bien gérer l'absence d'interface MIDI (cas le plus courant)
+- [x] pas d'alerte
 
 
 Optimisation de la compilation faust

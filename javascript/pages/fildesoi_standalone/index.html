@@ -162,11 +162,16 @@
 	/ITL load "src/midiControl.inscore.txt";
 
 	/ITL/scene watch PROGON (		
-		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green
+		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green,
+		/ITL/scene watch midi prog 192 (
+			/ITL/scene/javascript run "nextSection()"
+		)
 	);
 
 	/ITL/scene watch PROGOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnProg color white
+		/ITL/scene/midiControlPanel/midiCtrlbtnProg color white,
+		/ITL/scene watch midi
+
 	);
 
 	toggleProg = (
@@ -176,10 +181,15 @@
 	);
 
 	/ITL/scene watch CTRLON (
-		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green
+		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green,
+		/ITL/scene watch midi ctrl 176 [0-127] (
+			/ITL/scene/javascript run "nextSection()"
+		)
 	);
+	
 	/ITL/scene watch CTRLOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color white
+		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color white,
+		/ITL/scene watch midi
 	);
 
 	toggleCtrl = (
@@ -190,16 +200,14 @@
 
 	/ITL/scene watch KEYONON (
 		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color green,
-		/ITL/scene watch midi keyon [0-128]  (
+		/ITL/scene watch midi keyon [0-127]  (
 			/ITL/scene/javascript run "nextSection()"
 		)
 	);
 
 	/ITL/scene watch KEYONOFF (
 		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color white,
-		/ITL/scene watch midi keyon [0-128]  (
-			/ITL/log write "null"
-		)
+		/ITL/scene watch midi
 	);
 	
 	toggleKeyOn = (
@@ -211,8 +219,6 @@
 	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown $toggleProg;
 	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown $toggleCtrl;
 	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown $toggleKeyOn;
-
-	
 
 	<!-- Events -->
 	/ITL/scene/cursor watch keyDown "1" (
