@@ -8,17 +8,16 @@ class Download {
 	}
 	static wasm (filename : string, data: Uint8Array) : void {
 		let blob = new Blob([data], {type: "octet/stream"});
-		let url = window.URL.createObjectURL(blob);
-		var a = document.createElement('a');
-		a.style.display = 'none';
-		a.href = url;
-		a.download = filename;
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
-		window.URL.revokeObjectURL(url);
-
-		// Download.file (filename, data, "application/octet-stream");
+		Download.file2 (filename, blob);
+		// let url = window.URL.createObjectURL(blob);
+		// var a = document.createElement('a');
+		// a.style.display = 'none';
+		// a.href = url;
+		// a.download = filename;
+		// document.body.appendChild(a);
+		// a.click();
+		// document.body.removeChild(a);
+		// window.URL.revokeObjectURL(url);
 	}
 
 	private static file (filename : string, data: string | Uint8Array, type: string) : void {
@@ -30,5 +29,17 @@ class Download {
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
+	}
+
+	private static file2 (filename : string, data: string | Blob) : void {
+		let url = window.URL.createObjectURL(data);
+		var a = document.createElement('a');
+		a.style.display = 'none';
+		a.href = url;
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		window.URL.revokeObjectURL(url);
 	}
 }
