@@ -5,6 +5,7 @@
 class MidiSetup {
     static midiClients : Array<INScoreObject> = [];
     static accessSetup : WebMidi.MIDIAccess;
+    static verboseMode : boolean;
     
   
     static midiTest(status: number, data1: number, data2: number) {
@@ -15,7 +16,13 @@ class MidiSetup {
 
     static midiInput(event: WebMidi.MIDIMessageEvent) {
         MidiSetup.midiClients.forEach((client) => {
-            client.midiEvent (event.data[0], event.data[1], event.data[2]);
+            // filter msg from 240 to 255 (system msg)
+            if (MidiSetup.verboseMode) {
+                console.log(event.data[0], event.data[1], event.data[2]);
+            } if (event.data[2] === undefined) {
+                client.midiEvent (event.data[0], event.data[1], 0);
+            } else 
+                client.midiEvent (event.data[0], event.data[1], event.data[2]);
         });
     }
 
@@ -42,6 +49,13 @@ class MidiSetup {
             input.onmidimessage = MidiSetup.midiInput;
             console.log(input.name + " is connected");
         }) 
+    }
+
+    static toggleVerboseMode() {
+        if (MidiSetup.verboseMode)
+            MidiSetup.verboseMode = false;
+        else 
+            MidiSetup.verboseMode = true;
     }
 
     static addListener(obj : INScoreObject) {
