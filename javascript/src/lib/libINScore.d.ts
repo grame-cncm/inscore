@@ -184,10 +184,10 @@ interface OAudioNodeInfos {
 }
 
 interface OFaustInfos {
-	playing		: boolean;
 	voices		: number;
 	wasmExport	: string;
 	code		: string;
+	json		: string;
 	values		: FaustParamValuesVector;
 	keys		: FaustKeyValuesVector;
 }
