@@ -4,15 +4,19 @@
 ///<reference path="AIOScanner.ts"/>
 ///<reference path="AudioTools.ts"/>
 ///<reference path="AudioObject.ts"/>
+///<reference path="download.ts"/>
 
 interface FaustSVG extends SVGSVGElement {
     diagram: Faust.SVGDiagrams;
 }
 
 class JSFaustView extends JSSvgBase implements AudioObject {
-    private fFaust : faust;
-    private fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode = null;
-    private fVoices = 0;
+    protected fFaust : faust;
+    protected fFactory: Faust.Factory = null;
+    protected fEffect: Faust.Factory = null;
+    protected fMixer: WebAssembly.Module = null;
+    protected fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode = null;
+    protected fVoices = 0;
     static fCompilerLock = false;
     static readonly kFailed  = 0;
     static readonly kSuccess = 1;
@@ -81,11 +85,6 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         if (this.fAudioNode) {
             AudioTools.updateConnections(obj, this);
             let data = obj.getFaustInfos(true, false);
-            // if (data.playing)
-            //     this.fAudioNode.connect (AIOScanner.fAudioContext.destination);
-            // else
-            //     this.fAudioNode.disconnect();
-            
             let val = data.values;
             let n = val.size();
             for (let i=0; i < n; i++) {
@@ -95,7 +94,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                 if ((v.type == 0) && v.value)   // schedule the button off value
                     setTimeout (() => { this.fAudioNode.setParamValue (v.address, 0); }, 100);
             }
-            if (this.fVoices && data.playing) {
+            if (this.fVoices) {
                 let node = this.fAudioNode as Faust.FaustPolyNode;
                 let keys = data.keys;
                 n = keys.size();
@@ -109,45 +108,135 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                         node.allNotesOff (true);
                 }
             }
+            if (data.wasmExport.length)
+                this.downloadWasm (data.wasmExport);
         }
 		// else console.log ("Faust audio node is not available");
     }
 
-    makeNode (obj: INScoreObject, code: string, voices: number) : number {
-        // prevent building several objects in parallel
-        if (JSFaustView.fCompilerLock) {
-            setTimeout ( () => { this.makeNode (obj, code, voices)}, 50);
-            return JSFaustView.kPending;
-        }
-        JSFaustView.fCompilerLock = true;
-        Faust.compileAudioNode(AIOScanner.fAudioContext, this.fFaust.module(), code, null, voices, 0).then ( node => {
-            JSFaustView.fCompilerLock = false;
-            if (this.fAudioNode) this.fAudioNode.disconnect(); 
-            this.fAudioNode = node;
-            this.fVoices = voices;
-            // let obj = INScore.objects().create(oid);
-            if (!node) {
-                let address = obj.getOSCAddress();
-                this.error (address, "Cannot compile " + address + ".");
-                return JSFaustView.kFailed;
-            }
+    async makeFactory (name: string, code: string, voices: number) : Promise<boolean> {
+        let compiler = this.fFaust.compiler();
+        const args = "-ftz 2";
+        if (voices) this.fFactory = await compiler.createPolyDSPFactory (name, code, args);
+        else        this.fFactory = await compiler.createMonoDSPFactory (name, code, args);
+        return this.fFactory != null;
+    }
 
-            obj.setAudioInOut (node.getNumInputs(), node.getNumOutputs());
-            let ui = node.getDescriptors();
-             ui.forEach ( (elt) => { 
-//  console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
-                if ((elt.type == "button") || (elt.type == "checkbox"))
-                    obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
-                else
-                    obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
-             });
-            this.updateSpecific (obj);
-            let bb = this.fSVG.getBBox();
-            this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
-            obj.ready();
-            // INScore.objects().del (obj);
+    async makeNodeFromFactory (factory: Faust.Factory, name: string, voices: number) 
+        : Promise<Faust.FaustMonoNode | Faust.FaustPolyNode | null> {
+        let sp = typeof (window.AudioWorkletNode) == "undefined";
+        if (voices) {
+            this.fMixer = await Faust.createGenerator().loadDSPMixer("/usr/rsrc/mixer32.wasm");
+            if (!this.fMixer) return null;
+            return Faust.createPolyFactory().createNode(AIOScanner.fAudioContext, name, factory, this.fMixer, voices, sp, null, 1024);
+        }
+        return Faust.createMonoFactory().createNode (AIOScanner.fAudioContext, name, factory, sp);
+    }
+
+    downloadWasm (name: string) : number {
+        if (this.fFactory) {
+            Download.wasm(name + ".wasm", this.fFactory.code);
+            Download.text(name + ".json", this.fFactory.json);
+            if (this.fEffect) Download.wasm(name + "_effect.wasm", this.fEffect.code);
+            // if (this.fMixer) Download.wasm(name + "mixer32.wasm", this.fMixer);
             return JSFaustView.kSuccess;
+        }
+        console.error ("No Faust factory: cannot export wasm module.")
+        return JSFaustView.kFailed;
+    }
+
+//     makeWasm (obj: INScoreObject, code: string, voices: number) : number {
+//         if (JSFaustView.fCompilerLock) {
+//             setTimeout ( () => { this.makeWasm (obj, code, voices)}, 50);
+//             return JSFaustView.kPending;
+//         }
+//         JSFaustView.fCompilerLock = true;
+//         let compiler = this.fFaust.compiler();
+//         if (voices) {
+//             JSFaustView.fCompilerLock = false;
+//         }
+//         else {
+// console.log ("JSFaustView.makeWasm createMonoDSPFactory ");
+//             compiler.createMonoDSPFactory ("faust", code, "-lang wasm").then (factory => {
+//                 JSFaustView.fCompilerLock = false;
+//                 if (factory) {
+//                     let name = obj.getOSCAddress().replace("/ITL/", "").replace("/", "_");
+// console.log ("JSFaustView.makeWasm " + factory.code.length + " json: " + factory.json.length + " name: " + name); 
+//                     Download.wasm(name + ".wasm", factory.code);
+//                     Download.text(name + ".json", factory.json);
+//                     return JSFaustView.kSuccess;
+//                 }
+//                 else {
+//                     return JSFaustView.kFailed;
+//                 }
+//             });
+//         }
+//         return JSFaustView.kSuccess;
+//     }
+
+//     makeNode (obj: INScoreObject, code: string, voices: number) : number {
+//         // prevent building several objects in parallel
+//         if (JSFaustView.fCompilerLock) {
+//             setTimeout ( () => { this.makeNode (obj, code, voices)}, 50);
+//             return JSFaustView.kPending;
+//         }
+//         JSFaustView.fCompilerLock = true;
+//         Faust.compileAudioNode(AIOScanner.fAudioContext, this.fFaust.module(), code, null, voices, false).then ( node => {
+//             // JSFaustView.fCompilerLock = false;
+//             if (this.fAudioNode) this.fAudioNode.disconnect(); 
+//             this.fAudioNode = node;
+//             this.fVoices = voices;
+//             // let obj = INScore.objects().create(oid);
+//             if (!node) {
+//                 let address = obj.getOSCAddress();
+//                 this.error (address, "Cannot compile " + address + ".");
+//                 return JSFaustView.kFailed;
+//             }
+
+//             obj.setAudioInOut (node.getNumInputs(), node.getNumOutputs());
+//             let ui = node.getDescriptors();
+//              ui.forEach ( (elt) => { 
+// //  console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+//                 if ((elt.type == "button") || (elt.type == "checkbox"))
+//                     obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
+//                 else
+//                     obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
+//              });
+//             this.updateSpecific (obj);
+//             let bb = this.fSVG.getBBox();
+//             this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
+//             obj.ready();
+//             // INScore.objects().del (obj);
+//             return JSFaustView.kSuccess;
+//         });
+//         return JSFaustView.kSuccess;
+//     }
+
+    async makeAudioNode (obj: INScoreObject, name: string, voices: number) : Promise<number> {
+        let node = await this.makeNodeFromFactory (this.fFactory, name, voices);
+        if (this.fAudioNode) this.fAudioNode.disconnect(); 
+        this.fAudioNode = node;
+        this.fVoices = voices;
+        if (!node) {
+            let address = obj.getOSCAddress();
+            this.error (address, "Cannot compile " + address + ".");
+            return JSFaustView.kFailed;
+        }
+
+        obj.setAudioInOut (node.getNumInputs(), node.getNumOutputs());
+        let ui = node.getDescriptors();
+        ui.forEach ( (elt) => { 
+//  console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+            if ((elt.type == "button") || (elt.type == "checkbox"))
+                obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
+            else
+                obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
         });
+        this.updateSpecific (obj);
+        let bb = this.fSVG.getBBox();
+        this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
+        obj.ready();
+        // INScore.objects().del (obj);
         return JSFaustView.kSuccess;
     }
     
@@ -155,6 +244,20 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         return new Promise( function (resolve) {
             resolve (code);
         })
+    }
+
+    async buildNode (obj: INScoreObject, code: string, voices: number) : Promise<number> {
+        if (JSFaustView.fCompilerLock) {
+            setTimeout ( () => { this.buildNode (obj, code, voices)}, 50);
+            return JSFaustView.kPending;
+        }
+        JSFaustView.fCompilerLock = true;
+        const name = "inscore";
+        let done = await this.makeFactory (name, code, voices);
+        if (!done) return JSFaustView.kFailed;
+        let result = await this.makeAudioNode (obj, name, voices);
+        JSFaustView.fCompilerLock = false;
+        return result;
     }
 
     updateSpecial(obj: INScoreObject)	: boolean {
@@ -172,9 +275,13 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                 else {
                     // success: display the svg diagram and build the audio node
                     this.fSVG.innerHTML = diagram.svg;
-                    this.makeNode (obj, code, data.voices);
+                    // if (data.voices) this.makeNode (obj, code, data.voices);
+                    // else 
+                    this.buildNode (obj, code, data.voices);
+                    // this.makeNode (obj, code, data.voices);
+                    // this.makeWasm (obj, code, data.voices);
                 }
-                let ret = super.updateSpecial (obj /*, oid*/);
+                let ret = super.updateSpecial (obj);
                 return ret;
             }
             else return false;
