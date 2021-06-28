@@ -43,10 +43,10 @@
 	/ITL/scene/faust2 scale 0.8;
 	/ITL/scene/faust2 connect audioOutput;
 	
+	offsety = 0.09;
 	/ITL/scene/play1 set txt "Start";
-	/ITL/scene/play* x 0.98;
-	/ITL/scene/play* fontSize 24;
-	/ITL/scene/play1 y -0.3;
+	/ITL/scene/play1 fontSize 24;
+	/ITL/scene/play1 y $offsety * -1;
 	/ITL/scene/play* watch mouseEnter ( /ITL/scene/$self color red );
 	/ITL/scene/play* watch mouseLeave ( /ITL/scene/$self color black );
 
@@ -64,9 +64,8 @@
 	);
 
 	/ITL/scene/reverb set txt "Effect";
-	/ITL/scene/reverb x 0.98;
 	/ITL/scene/reverb fontSize 24;
-	/ITL/scene/reverb y 0.3;
+	/ITL/scene/reverb y $offsety;
 	/ITL/scene/reverb watch mouseEnter ( /ITL/scene/$self color red );
 	/ITL/scene/reverb watch mouseLeave ( /ITL/scene/$self color black );
 	/ITL/scene/reverb watch mouseDown (
