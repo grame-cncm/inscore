@@ -40,6 +40,7 @@ namespace inscore
 
 class Updater;
 class IFaustProcessor;
+class IFaustwProcessor;
 typedef class libmapping::SMARTP<IFaustProcessor>	SIFaustProcessor;
 
 
@@ -77,16 +78,13 @@ class TFaustKeysUpdate {
 */
 class IFaustProcessor : public IRectShape, public AudioNode
 {
-	std::string	fDspCode;
-	int fVoices = 0;
-	bool fPlaying = false;
 	bool fWasmExport = false;
 
 	typedef std::map<std::string,float> TParamsValues;
 	TParamsValues fParamValues;
 		
 	std::vector<std::string> oscaddress2faustaddress (const std::string& oscaddress) const;
-	SIMessage	getParamMsg		(const std::string& target, float value ) const;
+	SIMessage						getParamMsg	(const std::string& target, float value ) const;
 	template<typename T> SIMessage	getParamMsg	(const std::string& target, const std::string& type, T value ) const {
 		SIMessage msg = IMessage::create(target);
 		msg->add (type);
@@ -104,7 +102,6 @@ class IFaustProcessor : public IRectShape, public AudioNode
 
 		std::string getCode () const 		{ return fDspCode; }
 		int			getVoices () const		{ return fVoices; }
-		bool		playing() const			{ return fPlaying; }
 		void	 	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
 		void	 	setParamValue (const std::string& address, float val, int type);
 
@@ -118,9 +115,14 @@ class IFaustProcessor : public IRectShape, public AudioNode
 		virtual SIMessageList 	getAll() const;
 		// export the dsp as a faust module
 		virtual std::string 	getWasm();
-		virtual bool 			wasmFlag() const 	{ return fWasmExport; }
+		virtual bool 						wasmFlag() const 	{ return fWasmExport; }
+		virtual const IFaustwProcessor* 	wasmBased() const 	{ return nullptr; }
 		
 	protected:
+		std::string	fDspCode;	// contains the dspCode
+								// used by the wasm based dsp to store the wasm file name
+		int fVoices = 0;
+
 		std::vector<TFaustParamUpdate> 			fNewValues;
 		std::vector<TFaustKeysUpdate> 			fKeyValues;
 		std::map<std::string, FaustProcessorUIElement> 	fAddressSpace;
@@ -128,12 +130,13 @@ class IFaustProcessor : public IRectShape, public AudioNode
 				 IFaustProcessor( const std::string& name, IObject * parent);
 		virtual ~IFaustProcessor();
 
-		void setPlay (bool status) 		{ fPlaying = status; }
 		SIMessageList getPaths() const;
 		SIMessageList getUI() const;
 		/// \brief print the set message
 		virtual void	print (IMessage& out) const;
 		virtual void 	cleanup();
+		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
+		virtual SIMessageList getSetMsg () const;
 
 		/// \brief method handlers
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
