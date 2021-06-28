@@ -166,10 +166,11 @@ struct JSFaustParamValue { std::string address; float value; int type; };
 struct JSFaustKeyValue { int type; int chan; int pitch; int vel; };
 
 struct JSFaustInfos {
-	bool	playing = false;
+//	bool	playing = false;
 	int		voices = 0;
 	std::string wasmExport;
 	std::string code;
+	std::string json;
 	std::vector<JSFaustParamValue> values;
 	std::vector<JSFaustKeyValue> keys;
 };
