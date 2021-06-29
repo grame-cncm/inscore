@@ -129,7 +129,6 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMsgHandlerMap[klock_GetSetMethod]	= TGetParamMethodHandler<IObject, bool(IObject::*)() const>::create(this, &IObject::getLocked);
 	fGetMsgHandlerMap[kcount_GetMethod]		= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getSize);
 	fGetMsgHandlerMap[krcount_GetMethod]	= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getRSize);
-	fGetMsgHandlerMap[kclass_GetSetMethod]	= TGetParamMsgHandler<string>::create(fClassNames);
 	
 	setModified();
 #ifdef EMCC
@@ -299,6 +298,7 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 	fMsgHandlerMap[kdshear_SetMethod]	= TSetMethodMsgHandler<IObject,TFloatSize>::create(this, &IObject::addShear);
 
+	fGetMsgHandlerMap[kclass_GetSetMethod]	= TGetParamMsgHandler<string>::create(fClassNames);
 }
 
 //--------------------------------------------------------------------------
