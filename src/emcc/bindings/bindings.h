@@ -189,9 +189,10 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("vel",  		&JSFaustKeyValue::vel);
 	
 	value_object<JSFaustInfos>("JSFaustInfos")
-		.field("playing",  	&JSFaustInfos::playing)
 		.field("voices",  	&JSFaustInfos::voices)
+		.field("wasmExport", &JSFaustInfos::wasmExport)
 		.field("code",  	&JSFaustInfos::code)
+		.field("json",  	&JSFaustInfos::json)
 		.field("values",  	&JSFaustInfos::values)
 		.field("keys",  	&JSFaustInfos::keys);
 	

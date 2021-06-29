@@ -31,18 +31,18 @@
 
 	/ITL/scene/faust set faust 'import("stdfaust.lib");
 		process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: dm.freeverb_demo;';
-	/ITL/scene/faust scale 0.7;
+	/ITL/scene/faust width 1;
 	/ITL/scene/faust y -0.3;
 
 
 	/ITL/scene/faust2 set faust  8 'import("stdfaust.lib");
-	process = ba.pulsen(1, ba.hz2midikey(freq) * 1000) : pm.marimba(freq, 0, 7000, 0.5, 0.8) * gate * gain with {
+	process = ba.pulsen(1, ba.hz2midikey(freq) * 1000) : pm.marimba(freq, 0, 7000, 0.5, 0.8) * gate * gain <: _,_ with {
 	  freq = hslider("freq", 440, 40, 8000, 1);
 	  gain = hslider("gain", 0.5, 0, 1, 0.01);
 	  gate = button("gate");
 	};
 	effect = dm.freeverb_demo;';
-	/ITL/scene/faust2 scale 0.6;
+	/ITL/scene/faust2 width 1;
 	/ITL/scene/faust2 y 0.4;
 	
 	/ITL/scene/play1 set txt "Start";
@@ -58,10 +58,10 @@
 	/ITL/scene/play1 watch mouseDown (
 		/ITL/scene/$self push,
 		/ITL/scene/$self set txt "Stop",
-		/ITL/scene/faust play 1,
+		/ITL/scene/faust connect audioOutput,
 		/ITL/scene/play1 watch mouseDown (
 			/ITL/scene/$self set txt "Start",
-			/ITL/scene/faust play 0,
+			/ITL/scene/faust disconnect audioOutput,
 			/ITL/scene/$self pop
 		)
 	);
@@ -69,10 +69,10 @@
 	/ITL/scene/play2 watch mouseDown (
 		/ITL/scene/$self push,
 		/ITL/scene/$self set txt "Stop",
-		/ITL/scene/faust2 play 1,
+		/ITL/scene/faust2 connect audioOutput,
 		/ITL/scene/$self watch mouseDown (
 			/ITL/scene/$self set txt "Start",
-			/ITL/scene/faust2 play 0,
+			/ITL/scene/faust2 disconnect audioOutput,
 			/ITL/scene/$self pop
 		)
 	);

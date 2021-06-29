@@ -55,5 +55,10 @@ bool loadMsg(const IMessage* msg)
 	return false;
 }
 
+void save(const char* name, const string& text)
+{
+	EM_ASM( { Download.text(Module.UTF8ToString($0), Module.UTF8ToString($1)); }, name, text.c_str());
+}
+
 
 }

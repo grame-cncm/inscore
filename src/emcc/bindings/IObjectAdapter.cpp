@@ -32,6 +32,7 @@
 #include "ICurve.h"
 #include "IEffect.h"
 #include "IFaustProcessor.h"
+#include "IFaustwProcessor.h"
 #include "IGraphicBasedObject.h"
 #include "IGuidoCode.h"
 #include "IGuidoPianoRoll.h"
@@ -609,9 +610,13 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 	JSFaustInfos infos;
 	IFaustProcessor* obj = dynamic_cast<IFaustProcessor*>((IObject*)fObject);
 	if (obj) {
-		infos.playing = obj->playing();
+//		infos.playing = obj->playing();
 		infos.voices = obj->getVoices();
-		if (getcode) infos.code = obj->getCode();
+		if (getcode) {
+			infos.code = obj->getCode();
+			const IFaustwProcessor* fw = obj->wasmBased();
+			if (fw) infos.json = fw->json();
+		}
 		if (getvalues) {
 			for (auto elt: obj->getChangedValues ()) {
 				JSFaustParamValue pv;
@@ -628,6 +633,7 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 				k.vel   = elt.velocity;
 				infos.keys.push_back (k);
 			}
+			infos.wasmExport = (obj->wasmFlag() ? obj->name() : "");
 			obj->clearChangedValues();
 		}
 	}

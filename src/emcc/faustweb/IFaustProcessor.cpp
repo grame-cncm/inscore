@@ -49,20 +49,17 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 {
 	fTypeString = kFaustProcessorType;
 
-	fMsgHandlerMap[kplay_GetSetMethod]		= TSetMethodMsgHandler<IFaustProcessor,bool>::create(this, &IFaustProcessor::setPlay);
 	fMsgHandlerMap[kkeyon_SetMethod]		= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::keyon);
 	fMsgHandlerMap[kkeyoff_SetMethod]		= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::keyoff);
 	fMsgHandlerMap[kallnotesoff_SetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::allNotesOff);
 	fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::connect);
 	fMsgHandlerMap[kdisconnect_SetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::disconnect);
 
-
-	fGetMsgHandlerMap[""]					= TGetParamMsgHandler<string>::create(fDspCode);
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
-	fGetMsgHandlerMap[kplay_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fPlaying);
-	fGetMultiMsgHandlerMap[kui_GetMethod]	= TGetParamMultiMethodHandler<IFaustProcessor, SIMessageList (IFaustProcessor::*)() const>::create(this, &IFaustProcessor::getUI);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &IFaustProcessor::getconnect);
+	fGetMsgHandlerMap[kwasm_GetMethod]		= TGetParamMethodHandler<IFaustProcessor, string (IFaustProcessor::*)()>::create(this, &IFaustProcessor::getWasm);
+	fGetMultiMsgHandlerMap[kui_GetMethod]	= TGetParamMultiMethodHandler<IFaustProcessor, SIMessageList (IFaustProcessor::*)() const>::create(this, &IFaustProcessor::getUI);
 	setPending ();
 }
 
@@ -71,6 +68,7 @@ void IFaustProcessor::cleanup ()
 {
 	IObject::cleanup();
 	AudioNode::cleanup(getOutputs());
+	fWasmExport = false;
 }
 
 //--------------------------------------------------------------------------
@@ -84,6 +82,15 @@ void IFaustProcessor::setFaustUI (std::string type, std::string label, std::stri
 {
 	FaustProcessorUIElement elt(type, label, init, min, max, step);
 	fAddressSpace[address] = elt;
+}
+
+//--------------------------------------------------------------------------
+string IFaustProcessor::getWasm ()
+{
+	string msg = "will be exported to " + name() + ".wasm and " + name() + ".json";
+	fWasmExport = true;
+	setModified();
+	return msg;
 }
 
 //--------------------------------------------------------------------------
@@ -109,10 +116,21 @@ void IFaustProcessor::accept (Updater* u)
 }
 
 //--------------------------------------------------------------------------
+SIMessageList IFaustProcessor::getSetMsg() const
+{
+	SIMessageList outMsgs = IMessageList::create();
+	SIMessage msg = IMessage::create(getOSCAddress(), kset_SetMethod);
+	print (*msg);
+	outMsgs->list().push_back(msg);
+	return outMsgs;
+}
+
+//--------------------------------------------------------------------------
 void IFaustProcessor::print (IMessage& out) const
 {
-	out.setMessage(kset_SetMethod);
-	out << kFaustProcessorType << fDspCode;
+	out << kFaustProcessorType;
+	if (fVoices) out << fVoices;
+	out << fDspCode;
 }
 
 //--------------------------------------------------------------------------

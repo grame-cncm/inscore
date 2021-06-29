@@ -29,7 +29,7 @@ class libraries {
 		return new Promise( (success: any, failure: any) => {
 			this.fGuido.initialise().then (
 				() => { libraries.fGuidoVersion = this.fGuido.getFloatVersion();
-						console.log("GuidoEngine version " + this.fGuido.getVersionStr() + " '" + this.fGuido.getVersion() + "'"); 
+						console.log("GuidoEngine version " + this.fGuido.getVersionStr()); 
 						success(this); },
 				() => { this.fGuido = null; success(this); });
 		});

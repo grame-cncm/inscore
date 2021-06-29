@@ -16,7 +16,7 @@ GLUEDIR  := glueSrc
 CHECKDIR ?= TSCheck
 
 # collect source files
-GLUESRC  := $(wildcard $(GLUEDIR)/*.ts)
+GLUESRC  := $(wildcard $(GLUEDIR)/*.ts) $(TSDIR)/inscoreglue.ts $(TSDIR)/libraries.ts 
 LIBSRC   := $(wildcard $(TSDIR)/*.ts)
 
 # check target dependendies
@@ -84,11 +84,11 @@ help : node_modules
 #===============================================================
 ts: $(LIB) $(GLUE)
 
-$(GLUE): $(GLUESRC) $(GLUEDIR)/tsconfig.json
-	cd $(GLUEDIR) && tsc
+$(GLUE): $(GLUESRC) $(GLUEDIR)/tsconfig.json 
+	cd $(GLUEDIR) && tsc || (rm ../$(GLUE); false)
 
 $(LIB): $(LIBSRC) $(TSLIB)/libINScore.d.ts $(TSDIR)/tsconfig.json
-	cd $(TSDIR) && tsc
+	cd $(TSDIR) && tsc || (rm ../$(LIB); false)
 	
 #===============================================================
 # building inscore wasm library

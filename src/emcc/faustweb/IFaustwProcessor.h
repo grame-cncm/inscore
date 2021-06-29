@@ -26,11 +26,7 @@
 
 #pragma once
 
-#include <string>
-
-#include "AudioNode.h"
-#include "IObjectVNodes.h"
-#include "IRectShape.h"
+#include "IFaustProcessor.h"
 
 namespace inscore
 {
@@ -40,31 +36,31 @@ namespace inscore
 @{
 */
 
-class Updater;
-class AudioIO;
-typedef class libmapping::SMARTP<AudioIO>	SAudioIO;
+class IFaustwProcessor;
+typedef class libmapping::SMARTP<IFaustwProcessor>	SIFaustwProcessor;
 
 //--------------------------------------------------------------------------
 /*!
-	\brief audio IO handler
+	\brief a Faust processor (that is also a parallel signal)
 */
-class AudioIO : public IRectShape, public AudioNode
+class IFaustwProcessor : public IFaustProcessor
 {
+	std::string fJsonFile;
+	
     public:
-		static const std::string kAudioIOType;
-		static SAudioIO create(const std::string& name, IObject * parent)	{ return new AudioIO(name, parent); }
+		static const std::string kFaustwProcessorfType;
+		static SIFaustwProcessor create(const std::string& name, IObject * parent)	{ return new IFaustwProcessor(name, parent); }
 		virtual void	accept (Updater* u);
-
+		virtual MsgHandler::msgStatus 	set 	(const IMessage* msg);
+		virtual const IFaustwProcessor* wasmBased() const 	{ return this; }
+				const std::string&	json() const 			{ return fJsonFile; }
+		
 	protected:
-				 AudioIO(const std::string& name, IObject * parent);
-		virtual ~AudioIO() {}
+				 IFaustwProcessor( const std::string& name, IObject * parent);
+		virtual ~IFaustwProcessor() {}
 
-		virtual void setHandlers() 				{ timeAble(); }
-		virtual void createVirtualNodes ()  	{ fDebug = IObjectDebug::create(this); add ( fDebug ); }
-
-		std::vector<int> getInOut() const;
-		/// \brief method handlers
-		virtual MsgHandler::msgStatus	set (const IMessage* msg);
+		/// \brief print the set message
+		virtual void	print (IMessage& out) const;
 };
 
 /*! @} */

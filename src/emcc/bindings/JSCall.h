@@ -34,5 +34,6 @@ std::string getMusicXmlVersion();
 std::string getFaustVersion();
 
 bool loadMsg(const inscore::IMessage* msg);
+void save(const char* name, const std::string& text);
 
 }

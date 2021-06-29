@@ -675,7 +675,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		*	\param out the output stream
 		*	\param attributes a list of attributes to be saved, saves all the attributes when the list is empty
 		*/
-		virtual void	save(std::ostream& out, const std::vector<std::string>& attributes) const;
+		virtual bool	save(std::ostream& out, const std::vector<std::string>& attributes) const;
 
 	//--------------------------------------------------------------------------
 	// the message handlers

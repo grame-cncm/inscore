@@ -200,6 +200,7 @@ extern const char* kvideoMap_GetSetMethod;
 extern const char* kvideoMapf_SetMethod;
 extern const char* kvoiceColor_GetSetMethod;
 extern const char* kvolume_GetSetMethod;
+extern const char* kwasm_GetMethod;
 extern const char* kwatch_GetSetMethod;
 extern const char* kwatchplus_SetMethod;
 extern const char* kwidth_GetSetMethod;

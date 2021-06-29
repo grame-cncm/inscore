@@ -62,6 +62,7 @@
 
 #ifdef EMCC
 #include "IObjectAdapter.h"
+#include "JSCall.h"
 #endif
 
 using namespace std;
@@ -128,7 +129,6 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMsgHandlerMap[klock_GetSetMethod]	= TGetParamMethodHandler<IObject, bool(IObject::*)() const>::create(this, &IObject::getLocked);
 	fGetMsgHandlerMap[kcount_GetMethod]		= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getSize);
 	fGetMsgHandlerMap[krcount_GetMethod]	= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getRSize);
-	fGetMsgHandlerMap[kclass_GetSetMethod]	= TGetParamMsgHandler<string>::create(fClassNames);
 	
 	setModified();
 #ifdef EMCC
@@ -298,6 +298,7 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdrotatez_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 	fMsgHandlerMap[kdshear_SetMethod]	= TSetMethodMsgHandler<IObject,TFloatSize>::create(this, &IObject::addShear);
 
+	fGetMsgHandlerMap[kclass_GetSetMethod]	= TGetParamMsgHandler<string>::create(fClassNames);
 }
 
 //--------------------------------------------------------------------------
@@ -1748,13 +1749,16 @@ MsgHandler::msgStatus IObject::evalMsg(const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-void IObject::save(ostream& out, const vector<string>& attributes) const
+bool IObject::save(ostream& out, const vector<string>& attributes) const
 {
 	SIMessageList msgs = attributes.size() ? getAttributes(attributes) : getAll();
 	msgs->list().set("", "\n");
-	if (msgs->list().size())
+	if (msgs->list().size()) {
 		out <<  msgs->list();
-	else cout << "IObject::save : empty msg list" << endl;
+		return true;
+	}
+	cout << "IObject::save : empty msg list" << endl;
+	return false;
 }
 
 //--------------------------------------------------------------------------
@@ -1774,9 +1778,15 @@ MsgHandler::msgStatus IObject::saveMsg (const IMessage* msg) const
 			else attributes.push_back(str);
 		}
 		if (destfile.empty())			return MsgHandler::kBadParameters;	// error: no destination file
+#ifndef EMCC
 		string path = getScene() ? getScene()->absolutePath(destfile) : IAppl::absolutePath(destfile);
 		ofstream out (path.c_str(), mode);
 		save (out, attributes);
+#else
+		stringstream out;
+		if (save (out, attributes))
+			jscall::save (destfile.c_str(), out.str());
+#endif
 		return MsgHandler::kProcessedNoChange;
 	}
 	return MsgHandler::kBadParameters;

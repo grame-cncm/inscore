@@ -23,7 +23,10 @@
 /ITL/log write "------------------------";
 /ITL/log write "Check event midi";
 /ITL/log write "------------------------";
-keyon  = 144;
+
+keyon  	= 144;
+progchge = 192;
+ctrlchge = 176;
 
 /ITL/scene watch TEST1 (
 	/ITL/log write "TEST1 - Check range enter (2 messages expected)",
@@ -73,8 +76,27 @@ keyon  = 144;
 	/ITL/scene/r watch midi
 );
 
+/ITL/scene watch TEST5 (
+	/ITL/log write "TEST5 - Check program change (1 messages expected)",
+	/ITL/scene/r watch midi prog 1 ( /ITL/log write "TEST5 - program change 1" ),
+	/ITL/scene/r event midi $progchge 1 0,
+	/ITL/scene/r event midi $progchge 2 0,
+	/ITL/scene/r watch midi
+);
+
+/ITL/scene watch TEST6 (
+	/ITL/log write "TEST6 - Check control change (2 messages expected)",
+	/ITL/scene/r watch midi ctrl 7 "[100-127]" ( /ITL/log write "TEST6 - control change 7 [100-127]" ),
+	/ITL/scene/r event midi $ctrlchge 7 100,
+	/ITL/scene/r event midi $ctrlchge 7 10,
+	/ITL/scene/r event midi $ctrlchge 7 127,
+	/ITL/scene/r watch midi
+);
+
 /ITL/scene event TEST1;
 /ITL/scene event TEST2;
 /ITL/scene event TEST3;
 /ITL/scene event TEST4;
+/ITL/scene event TEST5;
+/ITL/scene event TEST6;
 

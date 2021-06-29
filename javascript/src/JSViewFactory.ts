@@ -26,6 +26,7 @@
 ///<reference path="JSAudioioView.ts"/>
 ///<reference path="JSFaustView.ts"/>
 ///<reference path="JSFaustfView.ts"/>
+///<reference path="JSFaustwView.ts"/>
 ///<reference path="TSyncManager.ts"/>
 ///<reference path="libraries.ts"/>
 
@@ -68,6 +69,7 @@ class JSViewFactory {
 			case "audio":	  view = new JSAudioView(parent); break;
 			case "faust":	  view = new JSFaustView(parent, inscorelibs.faust()); break;
 			case "faustf":	  view = new JSFaustfView(parent, inscorelibs.faust()); break;
+			case "faustw":	  view = new JSFaustwView(parent, inscorelibs.faust()); break;
 			case "audioio":   view = new JSAudioioView(parent); break;
 
 			case "fileWatcher":

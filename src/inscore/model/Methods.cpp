@@ -203,6 +203,7 @@ const char* kvoiceColor_GetSetMethod = "voiceColor";	// Get Set
 const char* kvdate_GetSetMethod		= "vdate";			// Get Set
 const char* kvduration_GetMethod	= "vduration";		// Get
 const char* kvolume_GetSetMethod	= "volume";			// Get Set
+const char* kwasm_GetMethod			= "wasm";			// Get
 const char* kwatch_GetSetMethod		= "watch";			// Get Set
 const char* kwatchplus_SetMethod	= "watch+";			// Get Set
 const char* kwidth_GetSetMethod		= "width";			// Set
