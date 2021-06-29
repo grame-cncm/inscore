@@ -25,7 +25,6 @@ class JSFaustwView extends JSFaustView {
         AIOScanner.scan (obj.getOSCAddress());
         let data = obj.getFaustInfos (false, true);
         this.buildNodeFromWasm (obj, data.code, data.json, data.voices);
-        obj.ready();
         return true;
     }
 }

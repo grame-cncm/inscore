@@ -152,6 +152,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         if (!node) {
             let address = obj.getOSCAddress();
             this.error (address, "Cannot compile " + address + ".");
+            obj.ready();
             return JSFaustView.kFailed;
         }
 
@@ -167,8 +168,8 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         this.updateSpecific (obj);
         let bb = this.fSVG.getBBox();
         this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
-        obj.ready();
         // INScore.objects().del (obj);
+        obj.ready();
         return JSFaustView.kSuccess;
     }
     
