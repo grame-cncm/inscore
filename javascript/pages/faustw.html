@@ -1,11 +1,10 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-	<title>INScore Scene Test</title>
+	<title>INScore Test</title>
 
 	<link href="../fonts/fonts.css" rel="stylesheet">
 	<script src="../lib/libINScore.js"></script>
-	<script src="../lib/libfaust-wasm.js"></script> 
 	<script src="../lib/FaustLibrary.js"></script>
 	<script src="../inscoreview.js"></script>
 	<script src="../inscoreglue.js"></script>
@@ -20,15 +19,14 @@
 <h1>INScore JS Tests</h1>
 <div class="inscore" id="scene">
 <pre>
-	/ITL/scene/text set html "Faust objects";
-	/ITL/scene/text y -0.7;
+	/ITL/scene/text set html "Faust pre-compiled objects";
 	/ITL/scene/text fontSize 32;
 
 	/ITL/scene/faustw set faustw faust.wasm faust.json;
 
 	/ITL/scene/play1 set txt "Start";
 	/ITL/scene/play* fontSize 24;
-	/ITL/scene/play1 y 0.5;
+	/ITL/scene/play1 y 0.2;
 	/ITL/scene/play* watch mouseEnter ( /ITL/scene/$self color red );
 	/ITL/scene/play* watch mouseLeave ( /ITL/scene/$self color black );
 
