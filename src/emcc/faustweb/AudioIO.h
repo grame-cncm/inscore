@@ -29,6 +29,7 @@
 #include <string>
 
 #include "AudioNode.h"
+#include "IObjectVNodes.h"
 #include "IRectShape.h"
 
 namespace inscore
@@ -57,6 +58,9 @@ class AudioIO : public IRectShape, public AudioNode
 	protected:
 				 AudioIO(const std::string& name, IObject * parent);
 		virtual ~AudioIO() {}
+
+		virtual void setHandlers() 				{ timeAble(); }
+		virtual void createVirtualNodes ()  	{ fDebug = IObjectDebug::create(this); add ( fDebug ); }
 
 		std::vector<int> getInOut() const;
 		/// \brief method handlers
