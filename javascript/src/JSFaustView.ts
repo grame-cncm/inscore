@@ -138,79 +138,11 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             Download.wasm(name + ".wasm", this.fFactory.code);
             Download.text(name + ".json", this.fFactory.json);
             if (this.fEffect) Download.wasm(name + "_effect.wasm", this.fEffect.code);
-            // if (this.fMixer) Download.wasm(name + "mixer32.wasm", this.fMixer);
             return JSFaustView.kSuccess;
         }
         console.error ("No Faust factory: cannot export wasm module.")
         return JSFaustView.kFailed;
     }
-
-//     makeWasm (obj: INScoreObject, code: string, voices: number) : number {
-//         if (JSFaustView.fCompilerLock) {
-//             setTimeout ( () => { this.makeWasm (obj, code, voices)}, 50);
-//             return JSFaustView.kPending;
-//         }
-//         JSFaustView.fCompilerLock = true;
-//         let compiler = this.fFaust.compiler();
-//         if (voices) {
-//             JSFaustView.fCompilerLock = false;
-//         }
-//         else {
-// console.log ("JSFaustView.makeWasm createMonoDSPFactory ");
-//             compiler.createMonoDSPFactory ("faust", code, "-lang wasm").then (factory => {
-//                 JSFaustView.fCompilerLock = false;
-//                 if (factory) {
-//                     let name = obj.getOSCAddress().replace("/ITL/", "").replace("/", "_");
-// console.log ("JSFaustView.makeWasm " + factory.code.length + " json: " + factory.json.length + " name: " + name); 
-//                     Download.wasm(name + ".wasm", factory.code);
-//                     Download.text(name + ".json", factory.json);
-//                     return JSFaustView.kSuccess;
-//                 }
-//                 else {
-//                     return JSFaustView.kFailed;
-//                 }
-//             });
-//         }
-//         return JSFaustView.kSuccess;
-//     }
-
-//     makeNode (obj: INScoreObject, code: string, voices: number) : number {
-//         // prevent building several objects in parallel
-//         if (JSFaustView.fCompilerLock) {
-//             setTimeout ( () => { this.makeNode (obj, code, voices)}, 50);
-//             return JSFaustView.kPending;
-//         }
-//         JSFaustView.fCompilerLock = true;
-//         Faust.compileAudioNode(AIOScanner.fAudioContext, this.fFaust.module(), code, null, voices, false).then ( node => {
-//             // JSFaustView.fCompilerLock = false;
-//             if (this.fAudioNode) this.fAudioNode.disconnect(); 
-//             this.fAudioNode = node;
-//             this.fVoices = voices;
-//             // let obj = INScore.objects().create(oid);
-//             if (!node) {
-//                 let address = obj.getOSCAddress();
-//                 this.error (address, "Cannot compile " + address + ".");
-//                 return JSFaustView.kFailed;
-//             }
-
-//             obj.setAudioInOut (node.getNumInputs(), node.getNumOutputs());
-//             let ui = node.getDescriptors();
-//              ui.forEach ( (elt) => { 
-// //  console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
-//                 if ((elt.type == "button") || (elt.type == "checkbox"))
-//                     obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
-//                 else
-//                     obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
-//              });
-//             this.updateSpecific (obj);
-//             let bb = this.fSVG.getBBox();
-//             this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
-//             obj.ready();
-//             // INScore.objects().del (obj);
-//             return JSFaustView.kSuccess;
-//         });
-//         return JSFaustView.kSuccess;
-//     }
 
     async makeAudioNode (obj: INScoreObject, name: string, voices: number) : Promise<number> {
         let node = await this.makeNodeFromFactory (this.fFactory, name, voices);
@@ -275,11 +207,8 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                 else {
                     // success: display the svg diagram and build the audio node
                     this.fSVG.innerHTML = diagram.svg;
-                    // if (data.voices) this.makeNode (obj, code, data.voices);
-                    // else 
                     this.buildNode (obj, code, data.voices);
                     // this.makeNode (obj, code, data.voices);
-                    // this.makeWasm (obj, code, data.voices);
                 }
                 let ret = super.updateSpecial (obj);
                 return ret;
