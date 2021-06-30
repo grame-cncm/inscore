@@ -5,23 +5,36 @@
 class MidiSetup {
     static midiClients : Array<INScoreObject> = [];
     static accessSetup : WebMidi.MIDIAccess;
-    static verboseMode : boolean;
-    
-  
+    static verboseMode : number;
+
     static midiTest(status: number, data1: number, data2: number) {
         MidiSetup.midiClients.forEach((client) => {
             client.midiEvent (status, data1, data2);
         });
     }
 
+    static printMidiEvent(event: WebMidi.MIDIMessageEvent)
+    {
+        if (MidiSetup.verboseMode === 1) {
+            if (event.data[0] >= 240)
+                return;
+            console.log("type:", event.data[0] >> 4, "chan:", event.data[0] & 0xf, event.data[1], event.data[2]);
+        } else if (MidiSetup.verboseMode === 2) {
+            console.log("type:", event.data[0] >> 4, "chan:", event.data[0] & 0xf, event.data[1], event.data[2]);
+        } else {
+            return;
+        }
+    }
+
     static midiInput(event: WebMidi.MIDIMessageEvent) {
         MidiSetup.midiClients.forEach((client) => {
             // filter msg from 240 to 255 (system msg)
-            if (MidiSetup.verboseMode) {
-                console.log(event.data[0], event.data[1], event.data[2]);
-            } if (event.data[2] === undefined) {
+            MidiSetup.printMidiEvent(event);
+            if (event.data[0] >= 240)
+                return;
+            if (event.data[2] === undefined) {
                 client.midiEvent (event.data[0], event.data[1], 0);
-            } else 
+            } else
                 client.midiEvent (event.data[0], event.data[1], event.data[2]);
         });
     }
@@ -51,11 +64,13 @@ class MidiSetup {
         }) 
     }
 
-    static toggleVerboseMode() {
-        if (MidiSetup.verboseMode)
-            MidiSetup.verboseMode = false;
-        else 
-            MidiSetup.verboseMode = true;
+    static debug(mode: number) {
+        //TODO
+        MidiSetup.verboseMode = mode;
+        // if (MidiSetup.verboseMode)
+        //     MidiSetup.verboseMode = false;
+        // else 
+        //     MidiSetup.verboseMode = true;
     }
 
     static addListener(obj : INScoreObject) {
