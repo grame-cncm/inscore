@@ -29,13 +29,8 @@ npm install
 python -m http.server <port>
 ```
 
-## Inscore Compatibility
-TODO: replace this compatibility with webmidiapi compatibility
-INScoreJS is still in alpha version. The engine has been tested on the following platforms and browsers:
+## Remote control with fildesoi.inscore (native version)
+Fil de soi is packaged with his native version destined to remote control the score.
+The native score forwards messages to clients score acting like a server.
 
-|         | Chrome  | Firefox  | Safari  | Opera | Edge | Internet Explorer |
-|---------|---------|----------|---------|-------|------|-------------------|
-| MacOS   |   OK   |   OK     |    OK   |   OK  |  -   |   -   |
-| Ubuntu  | -      |   OK     |   -     |   -   |  -   |   -   |
-| Windows | OK     |   OK     |   -     |   -   | OK   | unsupported |
-| Android |  OK    |   OK     |   -     |   -   |  -   |   -   |
+Clients have an input field which can be used to connect to a native score allowing it to control the client version (index.html)

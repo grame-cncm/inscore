@@ -11,7 +11,12 @@
 	<script src="node_modules/@grame/inscorejs/libINScore.js"></script>
 	<script src="node_modules/@grame/inscorejs/INScoreJS.js"></script>
 	<script src="node_modules/@grame/libfaust/libfaust-wasm.js"></script>
-	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>	
+	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>
+	<!-- <script src="../../lib/libINScore.js"></script>
+	<script src="../../lib/libfaust-wasm.js"></script>
+	<script src="../../lib/FaustLibrary.js"></script>	
+	<script src="../../inscoreglue.js"></script>
+	<script src="../../inscoreview.js"></script> -->
 	<style>
 	body { margin: 10; background: white; }
 	.inscore { width: 100%; height: 100%; font-size: 1px; }
@@ -54,16 +59,16 @@
 <body>
 
 <div class="inscore" id="scene">
+	<pre>
 	/ITL/scene/wait set txt "Loading..."; 
-	
-	<!-- /ITL connect  "http://localhost:8081"; -->
 
+	/ITL/scene/faust set faustw "faust.wasm" "faust.json";
 	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
-	/ITL/scene/faust set faust 'process =  _,_ ;';
+
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
+	/ITL/scene/faust get ui;
 	/ITL/scene/faust connect audioOutput;
-	
 	/ITL/scene/wait del;
 	
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
@@ -161,66 +166,38 @@
 	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
 	/ITL load "src/midiControl.inscore.txt";
 
-	/ITL/scene watch PROGON (		
+	/ITL/scene watch PROGON (
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+		/ITL/scene watch midi,
 		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green,
-		/ITL/scene watch midi prog 192 (
+		/ITL/scene watch midi prog 1 (
 			/ITL/scene/javascript run "nextSection()"
 		)
 	);
 
-	/ITL/scene watch PROGOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnProg color white,
-		/ITL/scene watch midi
-
-	);
-
-	toggleProg = (
-		/ITL/scene event CTRLOFF,
-		/ITL/scene event PROGON,
-		/ITL/scene event KEYONOFF
-	);
 
 	/ITL/scene watch CTRLON (
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+		/ITL/scene watch midi,
 		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green,
-		/ITL/scene watch midi ctrl 176 [0-127] (
+		/ITL/scene watch midi ctrl 1 [0-127] (
 			/ITL/scene/javascript run "nextSection()"
 		)
 	);
 	
-	/ITL/scene watch CTRLOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color white,
-		/ITL/scene watch midi
-	);
-
-	toggleCtrl = (
-		/ITL/scene event CTRLON,
-		/ITL/scene event PROGOFF,
-		/ITL/scene event KEYONOFF
-	);
-
 	/ITL/scene watch KEYONON (
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+		/ITL/scene watch midi,
 		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color green,
 		/ITL/scene watch midi keyon [0-127]  (
 			/ITL/scene/javascript run "nextSection()"
 		)
 	);
-
-	/ITL/scene watch KEYONOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color white,
-		/ITL/scene watch midi
-	);
 	
-	toggleKeyOn = (
-		/ITL/scene event CTRLOFF,
-		/ITL/scene event PROGOFF,
-		/ITL/scene event KEYONON
-	);
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown (/ITL/scene event PROGON);
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown (/ITL/scene event CTRLON);
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown (/ITL/scene event KEYONON);
 
-	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown $toggleProg;
-	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown $toggleCtrl;
-	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown $toggleKeyOn;
-
-	<!-- Events -->
 	/ITL/scene/cursor watch keyDown "1" (
 		/ITL/scene/javascript run "toSection(1)"
 	);
@@ -257,7 +234,29 @@
 		/ITL/scene event STOP
 	);
 
+	
 	/ITL load "src/help.inscore.txt";
+	</pre>
+</div>
+<div class="connect" id="cnx">
+	<button type="button" id="connect" onclick="connect()">Connect</button>
+	<input type="text" id="dest" name="dest" value="http://localhost:8081" size="30">
 </div>
 </body>
+<script>
+	function connect() {
+		let dest = document.getElementById ("dest");
+		let cnx = document.getElementById ("connect");
+		let addesss = "/ITL";
+		if (cnx.textContent == "Disconnect") {
+			inscore.postMessageStr("/ITL", "connect");	
+			cnx.textContent = "Connect";		
+		}
+		else {
+			console.log ("dest " + dest.value);
+			inscore.postMessageStrStr("/ITL", "connect", dest.value);	
+			cnx.textContent = "Disconnect";
+		}
+	}
+</script>
 </html>
