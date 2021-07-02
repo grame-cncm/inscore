@@ -193,50 +193,24 @@
 	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
 	/ITL load "src/midiControl.inscore";
 
-	/ITL/scene watch PROGON (		
+	/ITL/scene watch PROGON (
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
 		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green
 	);
 
-	/ITL/scene watch PROGOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnProg color white
-	);
-
-	toggleProg = (
-		/ITL/scene event CTRLOFF,
-		/ITL/scene event PROGON,
-		/ITL/scene event KEYONOFF
-	);
-
 	/ITL/scene watch CTRLON (
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
 		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green
 	);
-	/ITL/scene watch CTRLOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color white
-	);
-
-	toggleCtrl = (
-		/ITL/scene event CTRLON,
-		/ITL/scene event PROGOFF,
-		/ITL/scene event KEYONOFF
-	);
-
+	
 	/ITL/scene watch KEYONON (
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
 		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color green
 	);
-
-	/ITL/scene watch KEYONOFF (
-		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color white
-	);
 	
-	toggleKeyOn = (
-		/ITL/scene event CTRLOFF,
-		/ITL/scene event PROGOFF,
-		/ITL/scene event KEYONON
-	);
-
-	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown $toggleProg;
-	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown $toggleCtrl;
-	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown $toggleKeyOn;
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown (/ITL/scene event PROGON);
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown (/ITL/scene event CTRLON);
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown (/ITL/scene event KEYONON);
 
 
 	/ITL/scene/cursor watch keyDown "1" (

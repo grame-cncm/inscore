@@ -175,12 +175,11 @@
 		)
 	);
 
-
 	/ITL/scene watch CTRLON (
 		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
 		/ITL/scene watch midi,
 		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green,
-		/ITL/scene watch midi ctrl 1 [0-127] (
+		/ITL/scene watch midi ctrl 66 [0-127] (
 			/ITL/scene/javascript run "nextSection()"
 		)
 	);
