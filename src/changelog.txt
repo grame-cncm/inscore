@@ -20,6 +20,7 @@ Version 1.29
 - new keyDown and keyUp events
 - fix non visible mapping for images
 - fix incorrect $x et $y variables value for proportional dimension objects
+- fix missing curve rendering
 
 
 ----------------------------------------------------
