@@ -1,3 +1,4 @@
+/ITL/scene/controlPanel scale 0.8;	
 /ITL/scene/controlPanel color white;
 /ITL/scene/controlPanel x 0.4;
 /ITL/scene/controlPanel y 0.9;
@@ -34,5 +35,3 @@
 
 /ITL/scene/controlPanel/audioCtrlbtn* watch mouseEnter (/ITL/scene/controlPanel/$self alpha 120);
 /ITL/scene/controlPanel/audioCtrlbtn* watch mouseLeave (/ITL/scene/controlPanel/$self alpha 255);
-
-/ITL/scene/controlPanel scale 0.8;	

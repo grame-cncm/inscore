@@ -67,7 +67,6 @@
 
 	/ITL/scene/faust scale 0.2;
 	/ITL/scene/faust show 0;
-	/ITL/scene/faust get ui;
 	/ITL/scene/faust connect audioOutput;
 	/ITL/scene/wait del;
 	
@@ -78,24 +77,23 @@
 	/ITL load "src/btnControl.inscore.txt";
 	/ITL load "src/faustSections.inscore.txt";
 
-	/ITL/scene/score watch mouseDown (
-		/ITL/scene/cursor date '$date',
-		/ITL/scene/audio vdate '$date'
-	);
-
-	/ITL/scene/score watch mouseMove (
-		/ITL/scene/cursor date '$date',
-		/ITL/scene/audio vdate '$date'
-	);
-
 	/ITL/scene/controlPanel set rect 0.6 0.2;
-	/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly 		    set txt "Playback to audio output";
-	/ITL/scene/controlPanel/audioCtrltxtbtnWavToDSP 		set txt "Playback to DSP";
-	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	/ITL/scene/controlPanel/audioCtrlbtnWavOnly 			set rect 0.4 0.4;
 	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP 			set rect 0.4 0.4;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 		set rect 0.4 0.4;
+	/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly 		    set txt "Playback to audio output";
+	/ITL/scene/controlPanel/audioCtrltxtbtnWavToDSP 		set txt "Playback to DSP";
+	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	/ITL load "src/controlPanel.inscore.txt";
+
+	/ITL/scene/midiControlPanel set rect 0.6 0.2;
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Midi Prog";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Midi Ctrl";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn";
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
+	/ITL load "src/midiControl.inscore.txt";
 
 	/ITL/scene watch WAVONLYON (		
 		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green,
@@ -143,7 +141,7 @@
 		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white,
 		/ITL/scene/audioInput disconnect faust
 	);
-	
+
 	toggleAudioInToDSP = (
 		/ITL/scene/controlPanel/$self push,
 		/ITL/scene event AINDSPON,
@@ -157,23 +155,14 @@
 	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP 		watch mouseDown $toggleWavToDSP;
 	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 	watch mouseDown $toggleAudioInToDSP;
 
-	/ITL/scene/midiControlPanel set rect 0.6 0.2;
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Midi Prog";
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Midi Ctrl";
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn";
-	/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4;
-	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4;
-	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
-	/ITL load "src/midiControl.inscore.txt";
-
 	/ITL/scene watch PROGON (
-		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
-		/ITL/scene watch midi,
-		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green,
-		/ITL/scene watch midi prog 1 (
-			/ITL/scene/javascript run "nextSection()"
-		)
-	);
+    /ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+    /ITL/scene watch midi,
+    /ITL/scene/midiControlPanel/midiCtrlbtnProg color green,
+    /ITL/scene watch midi prog 1 (
+        /ITL/scene/javascript run "nextSection()"
+    )
+);
 
 	/ITL/scene watch CTRLON (
 		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
@@ -183,7 +172,7 @@
 			/ITL/scene/javascript run "nextSection()"
 		)
 	);
-	
+
 	/ITL/scene watch KEYONON (
 		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
 		/ITL/scene watch midi,
@@ -192,10 +181,20 @@
 			/ITL/scene/javascript run "nextSection()"
 		)
 	);
-	
+
 	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown (/ITL/scene event PROGON);
 	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown (/ITL/scene event CTRLON);
 	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown (/ITL/scene event KEYONON);
+
+	/ITL/scene/score watch mouseDown (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
+
+	/ITL/scene/score watch mouseMove (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
 
 	/ITL/scene/cursor watch keyDown "1" (
 		/ITL/scene/javascript run "toSection(1)"
