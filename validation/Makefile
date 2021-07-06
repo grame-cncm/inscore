@@ -85,7 +85,7 @@ all:
 	@echo "=========================================="
 	make log
 	make save
-	make pdf
+	make png
 #	make filter
 
 pdf:
@@ -153,7 +153,7 @@ saveclean:
 
 help:
 	@echo "Makefile for testing the INScore engine output. Available targets are:"
-	@echo " 'all' 		: generates pdf output files, inscore output files, log files and filter file"
+	@echo " 'all' 		: generates png output files, inscore output files, log files and filter file"
 	@echo " 'pdf' 		: generates pdf files for inscore files recursively enclosed in this folder"
 	@echo " 'png' 		: generates png files for inscore files"
 	@echo " 'validate VERSION=another_version': compares the pdf output with another one"
