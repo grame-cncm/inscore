@@ -221,6 +221,7 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
             setGMN( t );
             status = MsgHandler::kProcessed;
             newData(true);
+            resetWidth();
 			getView()->initView (this);
 		}
 		else status = MsgHandler::kProcessedNoChange;
