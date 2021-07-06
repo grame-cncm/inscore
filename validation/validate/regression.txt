@@ -1,5 +1,12 @@
 ../regression/export-scale.inscore
 ../regression/fontStyles.inscore
+../regression/polygon.inscore
+../regression/S-guidoExpression/GuidoAROperator.inscore
+../regression/arrow-in-rect.inscore
+../regression/curves.inscore
+../regression/miditests.inscore
+../regression/scorewidth.inscore
+
 
 # graphic scripts
 ../regression/lines/line-layer.inscore
