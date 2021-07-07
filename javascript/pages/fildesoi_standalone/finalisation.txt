@@ -2,11 +2,11 @@ Fil de soi1
 
 Finalisation
 -----------------
-- [] implémenter support Midi:
-	* [] config MIDI: Next section : radio buttons
-	  - [] keyon
-	  - [] prog chge
-	  - [] controler
+- [x] implémenter support Midi:
+	- [x] config MIDI: Next section : radio buttons
+	  - [x] keyon
+	  - [x] prog chge
+	  - [x] controler
 
 - [x] étendre support clavier avec:
 	Next section : touche 5 du clavier (pas de cycling)
@@ -20,10 +20,10 @@ Finalisation
 
 Interface MIDI
 -----------------
-- [x] mode verbose pour Midi: imprimer dans la console tous les messages reçus
-- [] filtrer les  messages systèmes (seuls les channels messages sont acceptés par inscore)
-- [] bien gérer l'absence d'interface MIDI (cas le plus courant)
-- [x] pas d'alerte
+- [x] mode verbose pour Midi: imprimer dans la console tous les messages reçus -> can choose btw all, all but system and nothing
+- [x] filtrer les  messages systèmes (seuls les channels messages sont acceptés par inscore) -> all messages above 240 are filtered
+- [x] bien gérer l'absence d'interface MIDI (cas le plus courant) -> console.log 
+- [x] pas d'alerte -> fixed in TMidiSetup (alert changed to console.log)
 
 
 Optimisation de la compilation faust
