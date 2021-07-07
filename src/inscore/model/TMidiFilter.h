@@ -112,9 +112,9 @@ class TMidiFilter
 
 		void print (SIMessage msg) const override;
 		bool accept (char status, char data1, char data2) override;
-		bool operator == (const midiothersel& v) const 	{ return (type == v.type) && (val == v.val); }
+		bool operator == (const midiothersel& v) const 	{ return (type == v.type) && (val == v.val) && (num == v.num); }
 		bool operator != (const midiothersel& v) const	{ return !(*this == v); }
-		bool operator < (const midiothersel& v) const 	{ return (type < v.type) || (val < v.val); }
+		bool operator < (const midiothersel& v) const 	{ return (type < v.type) || (num < v.num) || (val < v.val); }
 	} TMidiCtrlSelector;
 	
 	// conversion utilities, used to build the filter from strings
