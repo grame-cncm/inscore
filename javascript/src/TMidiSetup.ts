@@ -15,12 +15,22 @@ class MidiSetup {
 
     static printMidiEvent(event: WebMidi.MIDIMessageEvent)
     {
+        const midiMsg = new Map();
+        midiMsg.set(14, 'Pitch Bend Change');
+        midiMsg.set(13, 'Channel Aftertouch');
+        midiMsg.set(12, 'Program Change');
+        midiMsg.set(11, 'Control Change');
+        midiMsg.set(10, 'Polyphonic AfterTouch');
+        midiMsg.set(9, 'Note On');
+        midiMsg.set(8, 'Note Off');
         if (MidiSetup.verboseMode === 1) {
-            if (event.data[0] >= 240)
+            if (event.data[0] >= 240) {
+                console.log("System exclusive message - filtered by inscore");
                 return;
-            console.log("type:", event.data[0] >> 4, "chan:", event.data[0] & 0xf, event.data[1], event.data[2]);
+            }
+            console.log("type:", midiMsg.get(event.data[0] >> 4), "chan:", event.data[0] & 0xf, "note:", event.data[1], "strength:", event.data[2]);
         } else if (MidiSetup.verboseMode === 2) {
-            console.log("type:", event.data[0] >> 4, "chan:", event.data[0] & 0xf, event.data[1], event.data[2]);
+            console.log("type:", midiMsg.get(event.data[0] >> 4), "chan:", event.data[0] & 0xf, "note:", event.data[1], "strength:", event.data[2]);
         } else {
             return;
         }
