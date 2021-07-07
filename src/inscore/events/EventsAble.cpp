@@ -58,7 +58,6 @@ const char* kTimeLeaveEvent			= "timeLeave";
 const char* kDurEnterEvent			= "durEnter";
 const char* kDurLeaveEvent			= "durLeave";
 const char* kExportEvent			= "export";
-//const char* kDeleteEvent			= "del";		'del' is now part of the common set of accepted events
 const char* kNewDataEvent			= "newData";
 
 // gesture specific events
