@@ -36,7 +36,6 @@ Once the native score is loaded all clients can connect to the host, from this m
 
 ![](./rsrc/remoteConnection.png)
 
-
 ## Details
 - `index.html` : Score Client web, a faust DSP is embeded.
 - `fildesoi.inscore` : Native Score, it'll controls clients by sending message to them.
@@ -63,4 +62,4 @@ The INScoreJS library allows to embed the [INScore](https://inscore.grame.fr) en
 ## Faust
 [Faust](https://faust.grame.fr/) (Functional Audio Stream) is a functional programming language for sound synthesis and audio processing with a strong focus on the design of synthesizers, musical instruments, audio effects, etc. Faust targets high-performance signal processing applications and audio plug-ins for a variety of platforms and standards.
 
-With INScore we can embeded a Faust DSP allowing real time signal processing inside the augmented score.
+Thanks to INScore, we can embeded a Faust DSP allowing real time signal processing inside the augmented score.
