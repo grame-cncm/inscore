@@ -1,6 +1,6 @@
 
 ///<reference path="JSObjectView.ts"/>
-///<reference path="JSMidiClient.ts"/>
+///<reference path="TMidiSetup.ts"/>
 ///<reference path="navigator.ts"/>
 
 interface fsElement extends HTMLElement {
@@ -31,7 +31,7 @@ class JSSceneView extends JSObjectView {
 		window.addEventListener ("keydown", (event) => { obj.keyEvent ('keyDown', event.key); }, {capture: false});
 		window.addEventListener ("keyup",   (event) => { obj.keyEvent ('keyUp', event.key); }, {capture: false});
 		MidiSetup.addListener (obj);
-		MidiSetup.toggleVerboseMode();
+		MidiSetup.debug(2);
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
 	toString() : string					{ return "JSSceneView"; }

@@ -126,9 +126,9 @@
 	/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly 		set txt "Playback to audio output";
 	/ITL/scene/controlPanel/audioCtrltxtbtnWavToDSP 	set txt "Playback to DSP";
 	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP set txt "Audio input to DSP";
-	/ITL/scene/controlPanel/audioCtrlbtnWavOnly 		set rect 0.5 0.5;
-	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP 		set rect 0.5 0.5;
-	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 	set rect 0.5 0.5;
+	/ITL/scene/controlPanel/audioCtrlbtnWavOnly 		set rect 0.4 0.4;
+	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP 		set rect 0.4 0.4;
+	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 	set rect 0.4 0.4;
 	/ITL load "src/controlPanel.inscore";
 
 	/ITL/scene watch WAVONLYON (		
