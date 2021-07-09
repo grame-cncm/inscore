@@ -55,7 +55,7 @@
 		}
 		function nextMidiNumber() {
 			currentMidiNum += 1;
-			if (currentMidiNum > 128) {
+			if (currentMidiNum > 127) {
 				currentMidiNum = 0;
 			}
 			if (currentMidiProg === "prog")
@@ -67,7 +67,7 @@
 		function prevMidiNumber() {
 			currentMidiNum -= 1;
 			if (currentMidiNum < 0) {
-				currentMidiNum = 128;
+				currentMidiNum = 127;
 			}
 			if (currentMidiProg === "prog")
 				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event PROGON;";
@@ -217,7 +217,6 @@
 		/ITL/scene watch midi,
 		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green,
 		/ITL/scene/javascript run 'getMidiNumber("prog")'
-		
 	);
 
 	/ITL/scene watch CTRLON (
@@ -226,7 +225,6 @@
 		/ITL/scene watch midi,
 		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green,
 		/ITL/scene/javascript run 'getMidiNumber("ctrl")'
-
 	);
 
 	/ITL/scene watch KEYONON (

@@ -14,6 +14,19 @@ In any case the DSP is connected to audio Output.
 ![](./rsrc/audioControl.png) 
 
 ## Midi Support
+Midi is supported only on browser that supports web midi Api 
+
+Computer :
+- Edge
+- Chrome
+- Opera
+
+Phone :
+- Webview Android
+- Chrome Android
+- Opera Android
+- Samsung Internet
+
 This score supports midi inputs.
 In the bottom left corner the user will find a control panel allowing him to choose which midi event type will be watched :
 - KeyOn
