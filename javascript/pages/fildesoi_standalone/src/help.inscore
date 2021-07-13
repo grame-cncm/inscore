@@ -2,6 +2,7 @@ buttony = 0.9;
 
 /ITL/scene/help set htmlf "./help.html";
 /ITL/scene/help class section;
+/ITL/scene/help scale 1;
 
 /ITL/scene/closebutton set rect 1 1;
 /ITL/scene/closebutton alpha 120;

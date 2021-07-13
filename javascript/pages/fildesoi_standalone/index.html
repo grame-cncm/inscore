@@ -29,14 +29,27 @@
         padding: 1rem;
 		color: rgba(255, 255, 255, 0.829);
     }
-	th {
+	th, td {
 		border: 1px solid white;
+		text-align: center;
 	}
 	table {
 		color: rgba(255, 255, 255, 0.829);
 		width: 100%;
 		padding-left: 1vw;
 		padding-right: 1vw;
+	}
+	@media screen and (max-width: 992px) {
+		.section {
+			width: 100%;
+			transform: scale(1) !important;
+		}
+	}
+	@media screen and (max-width: 600px) {
+		.section {	
+			width: 100%;
+			transform: scale(1) !important;
+		}
 	}
 	</style>
 	<script>
