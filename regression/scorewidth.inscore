@@ -1,0 +1,5 @@
+
+/ITL/scene/* del;
+/ITL/scene/gmn set gmn '[a b c]';
+/ITL/scene/gmn set gmn '[a b c d e ]';
+/ITL/scene/gmn set gmn '[a b c a g f g a ]';
