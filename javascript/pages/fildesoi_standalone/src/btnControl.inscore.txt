@@ -1,5 +1,5 @@
 w = 0.07;
-buttony = 0.9;
+buttony = 0.85;
 alpha = 120;
 
 /ITL/scene/btnstop set ellipse 1 1;

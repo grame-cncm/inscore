@@ -9,10 +9,10 @@
 /ITL/scene/midiControlPanel/midiCtrltxtbtn* yorigin 0;
 /ITL/scene/midiControlPanel/midiCtrltxtbtn* xorigin -1;
 
-/ITL/scene/midiControlPanel/midiCtrltxtbtnProg y -0.5;
+/ITL/scene/midiControlPanel/midiCtrltxtbtnProg y -0.8;
 /ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl y 0;
 
-/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn y 0.5;
+/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn y 0.8;
 /ITL/scene/midiControlPanel/midiCtrltxtbtn* x -1;
 
 /ITL/scene/midiControlPanel/midiCtrlbtnProg radius 5 5;
@@ -28,9 +28,9 @@
 /ITL/scene/midiControlPanel/midiCtrlbtnKeyOn penWidth 1;
 
 /ITL/scene/midiControlPanel/midiCtrlbtn* x -2;
-/ITL/scene/midiControlPanel/midiCtrlbtnProg y -0.5;
+/ITL/scene/midiControlPanel/midiCtrlbtnProg y -0.8;
 /ITL/scene/midiControlPanel/midiCtrlbtnCtrl y 0;
-/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn y 0.5;
+/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn y 0.8;
 
 /ITL/scene/midiControlPanel/midiCtrlbtn* watch mouseEnter (/ITL/scene/midiControlPanel/$self alpha 120);
 /ITL/scene/midiControlPanel/midiCtrlbtn* watch mouseLeave (/ITL/scene/midiControlPanel/$self alpha 255);

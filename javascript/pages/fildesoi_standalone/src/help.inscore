@@ -50,7 +50,7 @@ docInit = (
 
 /ITL/scene/docbtn xorigin 0;
 /ITL/scene/docbtn x 0;
-/ITL/scene/docbtn y $buttony + 0.09;
+/ITL/scene/docbtn y $buttony + 0.1;
 /ITL/scene/docbtn scale 0.5;
 /ITL/scene/docbtn fontSize 20;
 

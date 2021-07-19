@@ -42,13 +42,13 @@
 	@media screen and (max-width: 992px) {
 		.section {
 			width: 100%;
-			transform: scale(1) !important;
+			transform: scale(2) !important;
 		}
 	}
 	@media screen and (max-width: 600px) {
 		.section {	
 			width: 100%;
-			transform: scale(1) !important;
+			transform: scale(2) !important;
 		}
 	}
 	</style>
@@ -137,16 +137,8 @@
 	/ITL load "src/controlPanel.inscore.txt";
 
 	/ITL/scene/midiControlPanel set rect 0.6 0.2;
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Midi Prog";
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Midi Ctrl";
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn";
-	/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4;
-	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4;
-	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
-	/ITL load "src/midiControl.inscore.txt";
-
 	/ITL/scene/midiControlPanel/selector set rect 0.6 1.5;
-	/ITL/scene/midiControlPanel/selector x 1.7;
+	/ITL/scene/midiControlPanel/selector x -3;
 	/ITL/scene/midiControlPanel/selector color white;
 	/ITL/scene/midiControlPanel/selector/up set polygon 1 0 -1 0 0 -1;
 	/ITL/scene/midiControlPanel/selector/up y -1.5;
@@ -155,6 +147,15 @@
 	/ITL/scene/midiControlPanel/selector/txt set txt "0";
 	/ITL/scene/midiControlPanel/selector/txt fontSize 15;
 	/ITL/scene/midiControlPanel/selector/txt y 0;
+
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Program Change";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Control Change";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn";
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
+	/ITL load "src/midiControl.inscore.txt";
+	
 	/ITL/scene/midiControlPanel/selector/up watch mouseDown (
 		/ITL/scene/javascript run "nextMidiNumber()"
 		
