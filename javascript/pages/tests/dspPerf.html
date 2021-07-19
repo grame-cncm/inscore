@@ -24,11 +24,15 @@
 <div class="inscore" id="scene">
 /ITL/scene/wait set txt "Loading..."; 
 
-/ITL/scene/faust set faustw "faust.wasm" "faust.json";
+/ITL/scene/faust  set faustw "faust.wasm" "faust.json";
+/ITL/scene/faust1 set faustw "faust.wasm" "faust.json";
+/ITL/scene/faust2 set faustw "faust.wasm" "faust.json";
+<!-- /ITL/scene/faust3 set faustw "faust.wasm" "faust.json"; -->
 
-/ITL/scene/faust scale 0.2;
-/ITL/scene/faust show 0;
-/ITL/scene/faust connect audioOutput;
+/ITL/scene/faust* scale 0.2;
+/ITL/scene/faust* show 0;
+<!-- /ITL/scene/faust3 connect audioOutput; -->
+
 /ITL/scene/wait del;
 /ITL/scene/audio set audio "./FilDeSoi1_guitare_1_2_3_4.wav";
 
@@ -88,11 +92,18 @@ toggleWavOnly = (
 
 /ITL/scene watch WAVDSPON (
     /ITL/scene/controlPanel/audioCtrlbtnWavToDSP color green,
-    /ITL/scene/audio connect faust
+    /ITL/scene/audio connect faust,
+    /ITL/scene/faust connect faust1,
+    /ITL/scene/faust1 connect faust2,
+    /ITL/scene/faust2 connect audioOutput
+
 );
 /ITL/scene watch WAVDSPOFF (
     /ITL/scene/controlPanel/audioCtrlbtnWavToDSP color white,
-    /ITL/scene/audio disconnect faust
+    /ITL/scene/audio disconnect faust,
+    /ITL/scene/faust disconnect faust1,
+    /ITL/scene/faust1 disconnect faust2,
+    /ITL/scene/faust2 disconnect audioOut
 );
 
 toggleWavToDSP = (
