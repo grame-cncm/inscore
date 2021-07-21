@@ -49,10 +49,10 @@ body { margin: 10; background: white; }
         /ITL/scene/faust/Audio_Capture/leveldb 1.0;
 
         /ITL/scene/faust get ui;
-
+        
         /ITL/scene watch CAPTUREON (
-            /ITL/scene/audio play 1,
             /ITL/scene/capture color green,
+            /ITL/log write "pressed",
             /ITL/scene/faust/Audio_Capture/Capture 1.0
         );
 
@@ -62,14 +62,13 @@ body { margin: 10; background: white; }
         );
 
         /ITL/scene/capture watch mouseDown (
-            /ITL/scene/$self push,
-            /ITL/scene event CAPTUREON,
-            /ITL/scene/capture watch mouseDown (
-                /ITL/scene event CAPTUREOFF,
-                /ITL/scene/$self pop
-            )
+            /ITL/scene event CAPTUREON
         );
-
+        
+        /ITL/scene/capture watch mouseUp (
+            /ITL/scene event CAPTUREOFF
+        );
+        
         /ITL/scene watch MICON (
             /ITL/scene/mic color green,
             /ITL/scene/audioInput connect faust
