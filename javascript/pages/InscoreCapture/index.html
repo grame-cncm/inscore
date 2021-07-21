@@ -1,0 +1,95 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
+	<meta http-equiv="Pragma" content="no-cache" /> 
+	<meta http-equiv="Expires" content="0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>INScore Capture</title>
+
+    <link href="node_modules/@grame/inscorejs/fonts/fonts.css" rel="stylesheet">
+	<script src="node_modules/@grame/inscorejs/libINScore.js"></script>
+	<script src="node_modules/@grame/inscorejs/INScoreJS.js"></script>
+	<script src="node_modules/@grame/libfaust/libfaust-wasm.js"></script>
+	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>
+</head>
+<style>
+body { margin: 10; background: white; }
+.inscore { width: 100%; height: 100%; font-size: 1px; }
+</style>
+<body>
+<div class="inscore" id="scene">
+    <pre>
+
+        /ITL/scene/wait set txt "Loading...";
+
+        /ITL/scene/faust set faustf "./capture.dsp.txt";
+        /ITL/scene/faust scale 1;
+        /ITL/scene/faust show 0;
+        /ITL/scene/faust connect audioOutput;
+
+        /ITL/scene/capturetxt set txt "Capture";
+        /ITL/scene/capturetxt y 0.5;
+        /ITL/scene/capturetxt dx -0.4;
+
+        /ITL/scene/capture set rect 0.2 0.2;
+        /ITL/scene/capture y 0.5;
+        /ITL/scene/capture color white;
+        /ITL/scene/capture penWidth 2;
+
+        /ITL/scene/mictxt set txt "Microphone ON / OFF";
+        /ITL/scene/mictxt dx -0.4;
+
+        /ITL/scene/mic set rect 0.2 0.2;
+        /ITL/scene/mic color white;
+        /ITL/scene/mic penWidth 2;
+
+        /ITL/scene/wait del;
+
+        /ITL/scene/faust/Audio_Capture/leveldb 1.0;
+
+        /ITL/scene/faust get ui;
+
+        /ITL/scene watch CAPTUREON (
+            /ITL/scene/audio play 1,
+            /ITL/scene/capture color green,
+            /ITL/scene/faust/Audio_Capture/Capture 1.0
+        );
+
+        /ITL/scene watch CAPTUREOFF (
+            /ITL/scene/capture color white,
+            /ITL/scene/faust/Audio_Capture/Capture 0.0
+        );
+
+        /ITL/scene/capture watch mouseDown (
+            /ITL/scene/$self push,
+            /ITL/scene event CAPTUREON,
+            /ITL/scene/capture watch mouseDown (
+                /ITL/scene event CAPTUREOFF,
+                /ITL/scene/$self pop
+            )
+        );
+
+        /ITL/scene watch MICON (
+            /ITL/scene/mic color green,
+            /ITL/scene/audioInput connect faust
+        );
+
+        /ITL/scene watch MICOFF (
+            /ITL/scene/mic color white,
+            /ITL/scene/audioInput disconnect faust
+        );
+
+        /ITL/scene/mic watch mouseDown (
+            /ITL/scene/$self push,
+            /ITL/scene event MICON,
+            /ITL/scene/mic watch mouseDown (
+                /ITL/scene event MICOFF,
+    			/ITL/scene/$self pop
+            )
+        );
+
+    </pre>
+</div>
+</body>
+</html>
