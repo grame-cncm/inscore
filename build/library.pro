@@ -52,8 +52,8 @@ SOURCES +=  $$files($$OSC/osc/*.cpp)						# oscpack files
 SOURCES +=  $$files($$OSCIP/*.cpp)							# oscpack files
 SOURCES +=  $$files($$QRENCODE/*.c)							# qrencode files
 SOURCES +=  $$files($$JSON/*.cpp)
-SOURCES +=  $$files($$QTIMPL/*.cpp)
-SOURCES +=  $$files($$QTIMPL/sensors/*.cpp)
+SOURCES +=  $$files($$QTIMPL/*.cpp, true)
+#SOURCES +=  $$files($$QTIMPL/sensors/*.cpp)
 SOURCES +=  $$files($$GUIDOAR_PATH/src/guido/*.cpp, true)
 SOURCES +=  $$files($$GUIDOAR_PATH/src/interface/*.cpp)
 SOURCES +=  $$files($$GUIDOAR_PATH/src/lib/*.cpp)
@@ -204,14 +204,42 @@ unix:!macx:!ios:!android {
 ############################## 
 
 android {
-	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
-	message ("Target android platform is $$ARCH")
+	GUIDOANDROID = $$GUIDO_PATH/platforms/android/guido-engine-android/libs/
+#	DESTDIR = $$PWD/lib
+    equals(ANDROID_TARGET_ARCH, armeabi-v7a) { 
+		message ("Includes armeabi-v7a")
+        GUIDOLINKPATH = $$GUIDOANDROID/armeabi-v7a
+		OBJECTS_DIR = tmp_armeabi-v7a
+		MOC_DIR = tmp_armeabi-v7a
+    }
+    equals(ANDROID_TARGET_ARCH, arm64-v8a) {
+		message ("Includes arm64-v8a")
+        GUIDOLINKPATH = $$GUIDOANDROID/arm64-v8a
+		OBJECTS_DIR = tmp_arm64-v8a
+		MOC_DIR = tmp_arm64-v8a
+    }
+    equals(ANDROID_TARGET_ARCH, x86)  {
+		message ("Includes x86")
+        GUIDOLINKPATH = $$GUIDOANDROID/x86
+		OBJECTS_DIR = tmp_x86
+		MOC_DIR = tmp_x86
+    }
+    equals(ANDROID_TARGET_ARCH, x86_64)  {
+		message ("Includes x86_64")
+        GUIDOLINKPATH = $$GUIDOANDROID/x86_64
+		OBJECTS_DIR = tmp_x86_64
+		MOC_DIR = tmp_x86_64
+    }
+#	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
+#	message ("Target android platform is $$ARCH")
+#	message ("Sources $$SOURCES")
+#	ANDROID_ABI = armeabi-v7a
+    ANDROID_API_VERSION = 26
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
-    LIBS += -L$$GUIDO_PATH/build/lib/ -lGUIDOEngine.$${ARCH}
-    ANDROID_API_VERSION = 26
+    LIBS += -L$$GUIDOLINKPATH -lGUIDOEngine
     QT += androidextras
 	QT += quick quickwidgets 
 }
