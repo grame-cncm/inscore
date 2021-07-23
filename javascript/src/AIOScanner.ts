@@ -14,7 +14,12 @@ class AIOScanner {
     {
         if (!AIOScanner.fAudioContext) {
             AIOScanner.fAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-            AIOScanner.unlockAudioContext(AIOScanner.fAudioContext);
+            document.onreadystatechange = function() {
+                if (document.readyState === 'interactive') {
+                    AIOScanner.unlockAudioContext(AIOScanner.fAudioContext); 
+                }
+            }
+            // AIOScanner.unlockAudioContext(AIOScanner.fAudioContext);
         }
     }
 
