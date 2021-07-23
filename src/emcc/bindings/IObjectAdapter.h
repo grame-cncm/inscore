@@ -166,7 +166,6 @@ struct JSFaustParamValue { std::string address; float value; int type; };
 struct JSFaustKeyValue { int type; int chan; int pitch; int vel; };
 
 struct JSFaustInfos {
-//	bool	playing = false;
 	int		voices = 0;
 	std::string wasmExport;
 	std::string code;
@@ -175,9 +174,15 @@ struct JSFaustInfos {
 	std::vector<JSFaustKeyValue> keys;
 };
 
+struct JSAudioNodeCnx {
+	int objid;
+	int from;
+	int to;
+};
+
 struct JSAudioNodeInfos {
-	std::vector<int> connect;
-	std::vector<int> disconnect;
+	std::vector<JSAudioNodeCnx> connect;
+	std::vector<JSAudioNodeCnx> disconnect;
 };
 
 struct JSGMNStreamInfos {

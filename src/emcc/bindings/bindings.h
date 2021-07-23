@@ -196,6 +196,11 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 		.field("values",  	&JSFaustInfos::values)
 		.field("keys",  	&JSFaustInfos::keys);
 	
+	value_object<JSAudioNodeCnx>("JSAudioNodeInfos")
+		.field("objid",  	&JSAudioNodeCnx::objid)
+		.field("from",		&JSAudioNodeCnx::from)
+		.field("to",		&JSAudioNodeCnx::to);
+	
 	value_object<JSAudioNodeInfos>("JSAudioNodeInfos")
 		.field("connect",  	&JSAudioNodeInfos::connect)
 		.field("disconnect",&JSAudioNodeInfos::disconnect);

@@ -61,11 +61,14 @@ interface RectVector	{ size(): number; get(i: number) : number; }
 interface FloatVector	{ size(): number; get(i: number) : number; }
 interface StringVector	{ size(): number; get(i: number) : string; }
 interface IntVector 	{ size(): number; get(i: number) : number; }
+interface AudioCnxVector { size(): number; get(i: number) : OAudioCnxInfo; }
 interface MastersVector { size(): number; get(i: number) : OMasterInfo; }
 interface FaustParamValue 	{ address: string; value : number; type: number }
 interface FaustParamValuesVector 	{ size(): number; get(i: number) : FaustParamValue; }
 interface FaustKeyValue 	{ type : number; chan: number; pitch: number; vel: number; }
 interface FaustKeyValuesVector 	{ size(): number; get(i: number) : FaustKeyValue; }
+
+interface OAudioCnxInfo { objid: number; from: number; to: number }
 
 interface OMasterInfo { viewid: number; vstretch: boolean }
 
@@ -179,8 +182,8 @@ interface OGMNStreamInfos {
 }
 
 interface OAudioNodeInfos {
-	connect		: IntVector;
-	disconnect	: IntVector;
+	connect		: AudioCnxVector;
+	disconnect	: AudioCnxVector;
 }
 
 interface OFaustInfos {

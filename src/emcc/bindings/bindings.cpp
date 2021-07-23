@@ -104,6 +104,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 	register_vector<JSMaster>	("vector<JSMaster>");
 	register_vector<JSFaustParamValue> ("vector<JSFaustParamValue>");
 	register_vector<JSFaustKeyValue>   ("vector<JSFaustKeyValue>");
+	register_vector<JSAudioNodeCnx>    ("vector<JSAudioNodeCnx>");
 
 
 	// Binding C++ class adapter for INScore

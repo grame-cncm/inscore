@@ -48,7 +48,21 @@ class IMessage;
 class AudioNode
 {
     public:
-		typedef std::vector<IObject*>	AudioNodeList;
+		typedef struct AudioConnection {
+			int from = 0;
+			int to = 0;
+			IObject* obj = nullptr;
+			AudioConnection (IObject* o, int v1, int v2) : from(v1), to(v2), obj(o) {}
+			bool operator == (const AudioConnection& v) const 	{ return (from == v.from) && (to == v.to) && (obj == v.obj); }
+			bool operator != (const AudioConnection& v) const	{ return !(*this == v); }
+//			bool operator < (const AudioConnection& v) const 	{ return (from < v.from) || (to < v.to) || (obj < v.obj); }
+		} AudioConnection;
+		typedef struct _AudioConnection {
+			int from = 0;
+			int to = 0;
+			std::string name;
+		} _AudioConnection;
+		typedef std::vector<AudioConnection>	AudioNodeCnxList;
 		
 				 AudioNode() {}
 		virtual ~AudioNode() {}
@@ -56,14 +70,14 @@ class AudioNode
 		void	setIONums (int inputs, int outputs) { fNumInputs = inputs; fNumOutputs = outputs; }
 		int		getInputs () const  				{ return fNumInputs; }
 		int		getOutputs () const  				{ return fNumOutputs; }
-		const AudioNodeList& newConnections() const { return fNotifyNew; }
-		const AudioNodeList& delConnections() const { return fNotifyDel; }
+		const AudioNodeCnxList& newConnections() const { return fNotifyNew; }
+		const AudioNodeCnxList& delConnections() const { return fNotifyDel; }
 		void	resetNotifications() 				{ fNotifyDel.clear(); fNotifyNew.clear(); }
 	
 	protected:
-		AudioNodeList fOutputs;
-		AudioNodeList fNotifyNew;
-		AudioNodeList fNotifyDel;
+		AudioNodeCnxList fOutputs;
+		AudioNodeCnxList fNotifyNew;
+		AudioNodeCnxList fNotifyDel;
 	
 		int fNumInputs = 0;
 		int fNumOutputs = 0;
@@ -72,13 +86,13 @@ class AudioNode
 		virtual std::vector<std::string> 	getconnect () const;
 		virtual MsgHandler::msgStatus		disconnect (const IMessage* msg);
 
-//		void 			addOutput (AudioNode* node) { fOutputs.push_back(node); }
-		AudioNodeList&	getOutputs () 				{ return fOutputs; }
-		void 			cleanup(AudioNodeList& list);
+		AudioNodeCnxList&	getOutputs () 				{ return fOutputs; }
+		void 				cleanup(AudioNodeCnxList& list);
 
 	private:
-		MsgHandler::msgStatus 	getAudioNodes(const IMessage* msg, AudioNodeList& list);
-		bool 					remove(const IObject* node, AudioNodeList& list);
+		MsgHandler::msgStatus 	getAudioNodes(const IMessage* msg, AudioNodeCnxList& list);
+		_AudioConnection		getAudioConnection (std::string desc) const;
+		bool 					remove(const AudioConnection& elt, AudioNodeCnxList& list);
 };
 
 /*! @} */
