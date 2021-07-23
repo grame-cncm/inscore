@@ -1,0 +1,32 @@
+Fil de soi1
+
+Finalisation
+-----------------
+- [x] implémenter support Midi:
+	- [x] config MIDI: Next section : radio buttons
+	  - [x] keyon
+	  - [x] prog chge
+	  - [x] controler
+
+- [x] étendre support clavier avec:
+	Next section : touche 5 du clavier (pas de cycling)
+
+- [x] faire le ménage entre Fildesoi standalone et l'autre version (à supprimer)
+
+- [x] finir le fichier .inscore (remote controle)
+- [] documenter le fonctionnement du remote control (readme - anglais)
+- [] documenter le support Midi (compatibilité des navigateurs - readme)
+
+
+Interface MIDI
+-----------------
+- [x] mode verbose pour Midi: imprimer dans la console tous les messages reçus -> can choose btw all, all but system and nothing
+- [x] filtrer les  messages systèmes (seuls les channels messages sont acceptés par inscore) -> all messages above 240 are filtered
+- [x] bien gérer l'absence d'interface MIDI (cas le plus courant) -> console.log 
+- [x] pas d'alerte -> fixed in TMidiSetup (alert changed to console.log)
+
+
+Optimisation de la compilation faust
+-----------------
+- générer le svg uniquement s'il y a besoin de l'afficher (JSFaustView.ts)
+

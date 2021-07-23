@@ -1,0 +1,35 @@
+/ITL/scene/* del;
+# Long score
+/ITL/scene/score set gmnf './bachexample.guido';
+# TODO: find a way to scale the object with pagecount or something to place it correctly
+/ITL/scene/score scale 0.4;
+/ITL/scene/score y 0;
+/ITL/scene/score x 1;
+/ITL/scene/buttondown set rect 0.1 0.1;
+/ITL/scene/buttonup set rect 0.1 0.1;
+/ITL/scene/buttonup y 1;
+/ITL/scene/buttonup color blue;
+/ITL/scene/buttondown y -1;
+
+/ITL/scene/buttonup watch "mouseDown"(
+    /ITL/scene/score dx -2,
+    /ITL/scene/score get pageCount
+);
+
+/ITL/scene/buttondown watch "mouseDown"(
+    /ITL/scene/score dx 2
+);
+
+#/ITL/scene/score watch midi chan 0 (
+#
+#    TODO: turn page
+#);
+
+/ITL/log show 1;
+/ITL/log level 2;
+/ITL/scene/score get;
+/ITL/scene/score get y;
+
+# questions
+# how does pages system work with inscore ?
+# is it relevant to use it in this case

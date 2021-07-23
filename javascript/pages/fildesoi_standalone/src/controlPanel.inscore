@@ -1,0 +1,37 @@
+/ITL/scene/controlPanel scale 0.8;	
+/ITL/scene/controlPanel color white;
+/ITL/scene/controlPanel x 0.4;
+/ITL/scene/controlPanel y 0.9;
+
+/ITL/scene/controlPanel/audioCtrltxtbtn* fontSize 20;
+
+/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly dx -0.006;
+
+/ITL/scene/controlPanel/audioCtrltxtbtn* yorigin 0;
+/ITL/scene/controlPanel/audioCtrltxtbtn* xorigin -1;
+
+/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly y -0.8;
+/ITL/scene/controlPanel/audioCtrltxtbtnWavToDSP y 0;
+
+/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP y 0.8;
+/ITL/scene/controlPanel/audioCtrltxtbtn* x -1;
+
+/ITL/scene/controlPanel/audioCtrlbtnWavOnly radius 5 5;
+/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green;
+/ITL/scene/controlPanel/audioCtrlbtnWavOnly penWidth 1;
+
+/ITL/scene/controlPanel/audioCtrlbtnWavToDSP radius 5 5;
+/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color white;
+/ITL/scene/controlPanel/audioCtrlbtnWavToDSP penWidth 1;
+
+/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP radius 5 5;
+/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white;
+/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP penWidth 1;
+
+/ITL/scene/controlPanel/audioCtrlbtn* x -2;
+/ITL/scene/controlPanel/audioCtrlbtnWavOnly y -0.8;
+/ITL/scene/controlPanel/audioCtrlbtnWavToDSP y 0;
+/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP y 0.8;
+
+/ITL/scene/controlPanel/audioCtrlbtn* watch mouseEnter (/ITL/scene/controlPanel/$self alpha 120);
+/ITL/scene/controlPanel/audioCtrlbtn* watch mouseLeave (/ITL/scene/controlPanel/$self alpha 255);

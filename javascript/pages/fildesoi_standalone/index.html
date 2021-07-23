@@ -1,0 +1,330 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
+	<meta http-equiv="Pragma" content="no-cache" /> 
+	<meta http-equiv="Expires" content="0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Fil De Soi 1</title>
+
+	<link href="node_modules/@grame/inscorejs/fonts/fonts.css" rel="stylesheet">
+	<script src="node_modules/@grame/inscorejs/libINScore.js"></script>
+	<script src="node_modules/@grame/inscorejs/INScoreJS.js"></script>
+	<script src="node_modules/@grame/libfaust/libfaust-wasm.js"></script>
+	<script src="node_modules/@grame/libfaust/FaustLibrary.js"></script>
+	<!-- <script src="../../lib/libINScore.js"></script>
+	<script src="../../lib/libfaust-wasm.js"></script>
+	<script src="../../lib/FaustLibrary.js"></script>	
+	<script src="../../inscoreglue.js"></script>
+	<script src="../../inscoreview.js"></script> -->
+	<style>
+	body { margin: 10; background: white; }
+	.inscore { width: 100%; height: 100%; font-size: 1px; }
+	.section {
+        display: flex;
+        flex-flow: column;
+        background-color: rgba(0, 0, 0, 0.7);
+		overflow-y: scroll;
+        width: 30vw;
+        padding: 1rem;
+		color: rgba(255, 255, 255, 0.829);
+    }
+	th, td {
+		border: 1px solid white;
+		text-align: center;
+	}
+	table {
+		color: rgba(255, 255, 255, 0.829);
+		width: 100%;
+		padding-left: 1vw;
+		padding-right: 1vw;
+	}
+	@media screen and (max-width: 992px) {
+		.section {
+			width: 100%;
+			transform: scale(2) !important;
+		}
+	}
+	@media screen and (max-width: 600px) {
+		.section {	
+			width: 100%;
+			transform: scale(2) !important;
+		}
+	}
+	</style>
+	<script>
+		var currentMidiNum = 0;
+		var currentSection = 0;
+		var currentMidiProg = "prog";
+		function nextSection() {
+			currentSection += 1;
+			if (currentSection > 4) {
+				return 0;
+			}
+			return("/ITL/scene/faust event SECTION" + currentSection + ";");
+		}
+		function setCurrentMidiProgram(midiProg) {
+			currentMidiProg = midiProg;
+		}
+		function nextMidiNumber() {
+			currentMidiNum += 1;
+			if (currentMidiNum > 127) {
+				currentMidiNum = 0;
+			}
+			if (currentMidiProg === "prog")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event PROGON;";
+			else if (currentMidiProg === "ctrl")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event CTRLON;";
+			return 0;
+		}
+		function prevMidiNumber() {
+			currentMidiNum -= 1;
+			if (currentMidiNum < 0) {
+				currentMidiNum = 127;
+			}
+			if (currentMidiProg === "prog")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event PROGON;";
+			else if (currentMidiProg === "ctrl")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event CTRLON;";
+			return 0;
+		}
+		function getMidiNumber(msg) {
+			if (msg === "ctrl") {
+				currentMidiProg = "ctrl";
+				return ("/ITL/scene watch midi ctrl " + currentMidiNum + " [0-127] (/ITL/scene/javascript run 'nextSection()');");
+			} else if (msg === "prog") {
+				currentMidiProg = "prog";
+				return ("/ITL/scene watch midi prog " + currentMidiNum + " (/ITL/scene/javascript run 'nextSection()');");
+			}
+			currentMidiProg = "keyon";
+			return 0;
+		}
+		function toSection(section) {
+			currentSection = section;
+			return ("/ITL/scene/faust event SECTION" + currentSection + ";");
+		}
+	</script>
+</head>
+
+<body>
+
+<div class="inscore" id="scene">
+	<pre>
+	/ITL/scene/wait set txt "Loading..."; 
+
+	/ITL/scene/faust set faustw "faust.wasm" "faust.json";
+	<!-- /ITL/scene/faust set faustf "./rsrc/FilDeSoi1PanStereo.dsp.txt"; -->
+
+	/ITL/scene/faust scale 0.2;
+	/ITL/scene/faust show 0;
+	/ITL/scene/faust connect audioOutput;
+	/ITL/scene/wait del;
+	
+	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
+	/ITL/scene/cursor set rect 0.01 0.1;
+	/ITL load "src/score.inscore.txt";
+	
+	/ITL load "src/btnControl.inscore.txt";
+	/ITL load "src/faustSections.inscore.txt";
+
+	/ITL/scene/controlPanel set rect 0.6 0.2;
+	/ITL/scene/controlPanel/audioCtrlbtnWavOnly 			set rect 0.4 0.4;
+	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP 			set rect 0.4 0.4;
+	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 		set rect 0.4 0.4;
+	/ITL/scene/controlPanel/audioCtrltxtbtnWavOnly 		    set txt "Playback to audio output";
+	/ITL/scene/controlPanel/audioCtrltxtbtnWavToDSP 		set txt "Playback to DSP";
+	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
+	/ITL load "src/controlPanel.inscore.txt";
+
+	/ITL/scene/midiControlPanel set rect 0.6 0.2;
+	/ITL/scene/midiControlPanel/selector set rect 0.6 1.5;
+	/ITL/scene/midiControlPanel/selector x -3;
+	/ITL/scene/midiControlPanel/selector color white;
+	/ITL/scene/midiControlPanel/selector/up set polygon 1 0 -1 0 0 -1;
+	/ITL/scene/midiControlPanel/selector/up y -1.5;
+	/ITL/scene/midiControlPanel/selector/down set polygon -1 0 1 0 0 1;
+	/ITL/scene/midiControlPanel/selector/down y 1.5;
+	/ITL/scene/midiControlPanel/selector/txt set txt "0";
+	/ITL/scene/midiControlPanel/selector/txt fontSize 15;
+	/ITL/scene/midiControlPanel/selector/txt y 0;
+
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Program Change";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Control Change";
+	/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn";
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4;
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
+	/ITL load "src/midiControl.inscore.txt";
+	
+	/ITL/scene/midiControlPanel/selector/up watch mouseDown (
+		/ITL/scene/javascript run "nextMidiNumber()"
+		
+	);
+	/ITL/scene/midiControlPanel/selector/down watch mouseDown (
+		/ITL/scene/javascript run "prevMidiNumber()"
+
+	);
+
+	/ITL/scene watch WAVONLYON (		
+		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green,
+		/ITL/scene/audio connect audioOutput
+	);
+
+	/ITL/scene watch WAVONLYOFF (
+		/ITL/scene/controlPanel/audioCtrlbtnWavOnly color white,
+		/ITL/scene/audio disconnect audioOutput
+	);
+
+	toggleWavOnly = (
+		/ITL/scene/controlPanel/$self push,
+		/ITL/scene event WAVONLYOFF,
+		/ITL/scene/controlPanel/audioCtrlbtnWavOnly watch mouseDown (
+			/ITL/scene event WAVONLYON,
+			/ITL/scene/controlPanel/$self pop
+		)
+	);
+
+	/ITL/scene watch WAVDSPON (
+		/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color green,
+		/ITL/scene/audio connect faust
+	);
+	/ITL/scene watch WAVDSPOFF (
+		/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color white,
+		/ITL/scene/audio disconnect faust
+	);
+
+	toggleWavToDSP = (
+		/ITL/scene/controlPanel/$self push,
+		/ITL/scene event WAVDSPON,
+		/ITL/scene/controlPanel/audioCtrlbtnWavToDSP watch mouseDown (
+			/ITL/scene event WAVDSPOFF,
+			/ITL/scene/controlPanel/$self pop
+		)
+	);
+
+	/ITL/scene watch AINDSPON (
+		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color green,
+		/ITL/scene/audioInput connect faust
+	);
+
+	/ITL/scene watch AINDSPOFF (
+		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white,
+		/ITL/scene/audioInput disconnect faust
+	);
+
+	toggleAudioInToDSP = (
+		/ITL/scene/controlPanel/$self push,
+		/ITL/scene event AINDSPON,
+		/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP watch mouseDown (
+			/ITL/scene event AINDSPOFF,
+			/ITL/scene/controlPanel/$self pop
+		)
+	);
+
+	/ITL/scene/controlPanel/audioCtrlbtnWavOnly 		watch mouseDown $toggleWavOnly;
+	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP 		watch mouseDown $toggleWavToDSP;
+	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP 	watch mouseDown $toggleAudioInToDSP;
+
+	/ITL/scene watch PROGON (
+		/ITL/scene/midiControlPanel/selector show 1,
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+		/ITL/scene watch midi,
+		/ITL/scene/midiControlPanel/midiCtrlbtnProg color green,
+		/ITL/scene/javascript run 'getMidiNumber("prog")'
+	);
+
+	/ITL/scene watch CTRLON (
+		/ITL/scene/midiControlPanel/selector show 1,
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+		/ITL/scene watch midi,
+		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green,
+		/ITL/scene/javascript run 'getMidiNumber("ctrl")'
+	);
+
+	/ITL/scene watch KEYONON (
+		/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+		/ITL/scene watch midi,
+		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color green,
+		/ITL/scene watch midi keyon [0-127]  (
+			/ITL/scene/javascript run "nextSection()"
+		),
+		/ITL/scene/javascript run 'getMidiNumber("keyon")',
+		/ITL/scene/midiControlPanel/selector show 0
+	);
+
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg 	watch mouseDown (/ITL/scene event PROGON);
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 	watch mouseDown (/ITL/scene event CTRLON);
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 	watch mouseDown (/ITL/scene event KEYONON);
+
+	/ITL/scene/score watch mouseDown (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
+
+	/ITL/scene/score watch mouseMove (
+		/ITL/scene/cursor date '$date',
+		/ITL/scene/audio vdate '$date'
+	);
+
+	/ITL/scene/cursor watch keyDown "1" (
+		/ITL/scene/javascript run "toSection(1)"
+	);
+
+	/ITL/scene/cursor watch keyDown "2" (
+		/ITL/scene/javascript run "toSection(2)"
+	);
+
+	/ITL/scene/cursor watch keyDown "3" (
+		/ITL/scene/javascript run "toSection(3)"
+	);
+
+	/ITL/scene/cursor watch keyDown "4" (
+		/ITL/scene/javascript run "toSection(4)"
+	);
+
+	/ITL/scene/cursor watch keyDown "5" (
+		/ITL/scene/javascript run "nextSection()"
+	);
+
+	/ITL/scene/cursor watch timeEnter 9 15 (
+		/ITL/scene/javascript run "toSection(2)"
+	);
+
+	/ITL/scene/cursor watch timeEnter 15 22 (
+		/ITL/scene/javascript run "toSection(3)"
+	);
+
+	/ITL/scene/cursor watch timeEnter 22 30 (
+		/ITL/scene/javascript run "toSection(4)"
+	);
+
+	/ITL/scene/cursor watch timeEnter 30 1000 (
+		/ITL/scene event STOP
+	);
+
+	
+	/ITL load "src/help.inscore.txt";
+	</pre>
+</div>
+<div class="connect" id="cnx">
+	<button type="button" id="connect" onclick="connect()">Connect</button>
+	<input type="text" id="dest" name="dest" value="http://localhost:8081" size="30">
+</div>
+</body>
+<script>
+	function connect() {
+		let dest = document.getElementById ("dest");
+		let cnx = document.getElementById ("connect");
+		let addesss = "/ITL";
+		if (cnx.textContent == "Disconnect") {
+			inscore.postMessageStr("/ITL", "connect");	
+			cnx.textContent = "Connect";		
+		}
+		else {
+			console.log ("dest " + dest.value);
+			inscore.postMessageStrStr("/ITL", "connect", dest.value);	
+			cnx.textContent = "Disconnect";
+		}
+	}
+</script>
+</html>

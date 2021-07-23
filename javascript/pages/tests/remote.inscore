@@ -1,0 +1,5 @@
+/ITL forward  "http://localhost:8081";
+/ITL/scene/round set rect 1 1;
+/ITL/filter reject ddate;
+
+/ITL/log show 1;
