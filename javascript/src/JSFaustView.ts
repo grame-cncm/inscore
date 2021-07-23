@@ -25,7 +25,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
     constructor(parent: JSObjectView, compiler: faust) {
         super(parent);
         this.fFaust = compiler;
-        this.getElement().className = "inscore-svg";
+        // this.getElement().className = "inscore-svg";
     }
 
     toAudioObject() : AudioObject { return this; }
@@ -185,7 +185,8 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             return JSFaustView.kPending;
         }
         JSFaustView.fCompilerLock = true;
-        const name = "inscore";
+//        const name = "inscore";
+        const name = obj.getOSCAddress();
         let done = await this.makeFactory (name, code, voices);
         if (!done) return JSFaustView.kFailed;
         let result = await this.makeAudioNode (obj, name, voices);
