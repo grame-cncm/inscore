@@ -22,6 +22,8 @@ body { margin: 10; background: white; }
     <pre>
 
         /ITL/scene/wait set txt "Loading...";
+        /ITL/scene/score set txt "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet , gravida varius risus. Nulla facilisi. Ut mattis diam interdum purus ullamcorper imperdiet.";
+        /ITL/scene/score y -0.8;
 
         /ITL/scene/faust set faustf "./capture.dsp.txt";
         /ITL/scene/faust scale 1;
@@ -48,16 +50,29 @@ body { margin: 10; background: white; }
 
         /ITL/scene/faust/Audio_Capture/leveldb 1.0;
 
-        /ITL/scene/faust get ui;
-        
+        /ITL/scene/score map "([250,  0 [ [1000, 0[) ([0:00:00, 0:8:0[)";
+
+        /ITL/scene/cursor set rect 0.02 0.1;
+        /ITL/scene/cursor color red;
+        /ITL/scene/sync cursor score v;
+
+        /ITL/scene/score watch mouseDown (
+            /ITL/scene/cursor date '$date'
+	    );
+
+    	/ITL/scene/score watch mouseMove (
+            /ITL/scene/cursor date '$date'
+	    );
+
         /ITL/scene watch CAPTUREON (
             /ITL/scene/capture color green,
-            /ITL/log write "pressed",
+            /ITL/scene/cursor tempo 60,
             /ITL/scene/faust/Audio_Capture/Capture 1.0
         );
 
         /ITL/scene watch CAPTUREOFF (
             /ITL/scene/capture color white,
+            /ITL/scene/cursor tempo 0,
             /ITL/scene/faust/Audio_Capture/Capture 0.0
         );
 
