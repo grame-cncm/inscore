@@ -24,7 +24,6 @@ body { margin: 10; background: white; }
         /ITL/scene/wait set txt "Loading...";
         /ITL/scene/score set img "./blank-staff2.jpg";
         /ITL/scene/score y -0.6;
-        /ITL/scene/score  1;
 
         /ITL/scene/cursor set rect 0.02 0.1;
         /ITL/scene/cursor color red;
@@ -55,7 +54,7 @@ body { margin: 10; background: white; }
 
         /ITL/scene/faust/Audio_Capture/leveldb 1.0;
 
-        /ITL/scene/score map "([40, 950[ [40, 90[) ([0:00:00, 0:8:0[)";
+        /ITL/scene/score map "([40, 950[ [47, 90[) ([0:00:00, 0:8:0[)";
 
         /ITL/scene/cursor set rect 0.02 0.1;
         /ITL/scene/cursor color red;
@@ -77,7 +76,8 @@ body { margin: 10; background: white; }
 
         /ITL/scene watch CAPTUREOFF (
             /ITL/scene/capture color white,
-            /ITL/scene/cursor tempo 0,
+            /ITL/scene/cursor tempo 60,
+            /ITL/scene/cursor date 0,
             /ITL/scene/faust/Audio_Capture/Capture 0.0
         );
 
@@ -86,12 +86,12 @@ body { margin: 10; background: white; }
             /ITL/scene/cursor tempo 60
         );
         
-        /ITL/scene/cursor watch timeEnter 0.1 7.9 (
+        /ITL/scene/cursor watch timeEnter 0.1 2 (
             /ITL/log write "timeEnter captureON",
             /ITL/scene event CAPTUREON
 	    );
     
-        /ITL/scene/cursor watch timeLeave 0.1 7.9 (
+        /ITL/scene/cursor watch timeLeave 0.1 2 (
             /ITL/log write "timeEnter captureOFF",
             /ITL/scene event CAPTUREOFF
 	    );
