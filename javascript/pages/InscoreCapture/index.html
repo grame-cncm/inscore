@@ -35,6 +35,7 @@ body { margin: 10; background: white; }
 
     function captureIntervalStart() {
         currentIntervalRecord += 1;
+        console.log(currentIntervalRecord);
         if (currentIntervalRecord % 2 === 0) {
             return;
         } else {
@@ -45,8 +46,12 @@ body { margin: 10; background: white; }
     function captureIntervalEnd(newDate, end) {
         
         if (currentIntervalRecord % 2 === 0 && end) {
+            currentIntervalRecord = 0;
+            captureOffDate = "0 1";
             return("/ITL/scene event RESET;");
-        } else { 
+        } else {
+            console.log("date saved : " + newDate);
+            console.log("date used :" + captureOffDate);
             const date = captureOffDate.split(' ');
             const dateNum = Number(date[0]) === 0 ? 0 : (parseInt(date[0])/2).toFixedSpecial(0);
             captureOffDate = newDate;
@@ -142,8 +147,7 @@ body { margin: 10; background: white; }
 	    );
 
         /ITL/scene watch RESET (
-            /ITL/scene/cursor date 0,
-            /ITL/scene/cursor tempo 0
+            /ITL/scene/cursor date 0
         );
 
         /ITL/scene watch MICON (
