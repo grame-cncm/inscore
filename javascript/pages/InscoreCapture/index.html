@@ -19,10 +19,22 @@ body { margin: 10; background: white; }
 </style>
 <script>
     var currentIntervalRecord = 0;
+    var captureOffDate = "0 1";
 
-    function captureIntervalON() {
+    Number.prototype.toFixedSpecial = function(n) {
+        var str = this.toFixed(n);
+        if (str.indexOf('e+') === -1)
+            return str;
+        str = str.replace('.', '').split('e+').reduce(function(b, p) {
+            return b + Array(p - b.length + 2).join(0);
+        });
+        if (n > 0)
+            str += '.' + Array(n + 1).join(0);
+        return str;
+    };
+
+    function captureIntervalStart() {
         currentIntervalRecord += 1;
-        console.log(currentIntervalRecord);
         if (currentIntervalRecord % 2 === 0) {
             return;
         } else {
@@ -30,11 +42,15 @@ body { margin: 10; background: white; }
         }
     }
 
-    function captureIntervalOFF() {
-        if (currentIntervalRecord % 2 === 0) {
-            return;
-        } else {
-            return("/ITL/scene event CAPTUREOFF;");
+    function captureIntervalEnd(newDate, end) {
+        
+        if (currentIntervalRecord % 2 === 0 && end) {
+            return("/ITL/scene event RESET;");
+        } else { 
+            const date = captureOffDate.split(' ');
+            const dateNum = Number(date[0]) === 0 ? 0 : (parseInt(date[0])/2).toFixedSpecial(0);
+            captureOffDate = newDate;
+            return("/ITL/scene event CAPTUREOFF; /ITL/scene/cursor date " + dateNum + " " + date[1] + ";");
         }
     }
 </script>
@@ -101,7 +117,6 @@ body { margin: 10; background: white; }
             /ITL/log write "captureoff",
             /ITL/scene/capture color white,
             /ITL/scene/cursor tempo 60,
-            /ITL/scene/cursor date 0,
             /ITL/scene/faust/Audio_Capture/Capture 0.0
         );
 
@@ -110,13 +125,26 @@ body { margin: 10; background: white; }
             /ITL/scene/cursor tempo 60
         );
         
-        /ITL/scene/cursor watch timeEnter 0.1 2 (
-            /ITL/scene/javascript run "captureIntervalON()"
+        /ITL/scene/cursor watch timeEnter 0.01 2 (
+            /ITL/scene/javascript run "captureIntervalStart()"
 	    );
     
-        /ITL/scene/cursor watch timeLeave 0.1 2 (
-            /ITL/scene/javascript run "captureIntervalOFF()"
+        /ITL/scene/cursor watch timeLeave 0.01 2 (
+            /ITL/scene/javascript run "captureIntervalEnd('$date', false)"
 	    );
+
+        /ITL/scene/cursor watch timeLeave 2.01 4 (
+            /ITL/scene/javascript run "captureIntervalEnd('$date', true)"
+	    );
+
+        /ITL/scene/cursor watch timeEnter 2.01 4 (
+            /ITL/scene/javascript run "captureIntervalStart()"
+	    );
+
+        /ITL/scene watch RESET (
+            /ITL/scene/cursor date 0,
+            /ITL/scene/cursor tempo 0
+        );
 
         /ITL/scene watch MICON (
             /ITL/scene/mic color green,
