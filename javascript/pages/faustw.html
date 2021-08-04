@@ -33,6 +33,7 @@
 	/ITL/scene/play1 watch mouseDown (
 		/ITL/scene/$self push,
 		/ITL/scene/$self set txt "Stop",
+		/ITL/scene/faustw get ui,
 		/ITL/scene/faustw connect audioOutput,
 		/ITL/scene/play1 watch mouseDown (
 			/ITL/scene/$self set txt "Start",
@@ -40,6 +41,7 @@
 			/ITL/scene/$self pop
 		)
 	);
+	/ITL/log write "charged";
 </pre>
 </div>
 
