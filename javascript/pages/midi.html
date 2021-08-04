@@ -91,6 +91,9 @@
 <div class="inscore box" id="scene">
 
 /ITL/scene/* del;
+/ITL/scene watch keyDown "1" (
+	/ITL/log "aze"
+);
 
 /ITL/scene/javascript run "activateMIDIInput()";
 
@@ -111,11 +114,9 @@
 	/ITL/scene/score get pageCount
 );
 
+
 /ITL/scene/buttondown watch "mouseDown"(
 	/ITL/scene/score dx 2
-);
-
-/ITL/scene/score watch keyDown "1" (/ITL/scene/score get pageCount
 );
 
 /ITL/log show 1;

@@ -1,0 +1,60 @@
+/ITL/scene/* del;
+
+/ITL/scene/score set gmn '[ \meter<"4/4"> c d e f g a b c2 c b1 a g f e d c ]';
+/ITL/scene/score map staff1;
+/ITL/scene/score width 2;
+
+/ITL/scene/cursor set rect 0.01 0.1;
+/ITL/scene/cursor color red;
+/ITL/scene/sync cursor score v;
+
+/ITL/scene watch RECORD (
+	/ITL/log write Record
+);
+/ITL/scene watch PLAY (
+	/ITL/log write Play
+);
+
+/ITL/scene watch START (
+	/ITL/scene/cursor date 0,
+	/ITL/scene/cursor tempo 80,
+	/ITL/scene event RECORD,
+	/ITL/scene/cursor watch timeEnter 2 4 (
+		/ITL/scene/cursor date 0,
+		/ITL/scene event PLAY,
+		/ITL/scene/cursor watch timeEnter 2 4 (
+			/ITL/scene event RECORD,
+			/ITL/scene/cursor watch timeEnter 4 5 (
+				/ITL/scene/cursor watch timeEnter 2 4,
+				/ITL/scene/cursor date 2,
+				/ITL/scene event PLAY,
+				/ITL/scene/cursor watch timeEnter 4 5 (
+					/ITL/scene/cursor watch timeEnter 4 5,
+					/ITL/scene event START
+				)
+			)
+		)
+	)
+);
+
+/ITL/scene watch STOP (
+	/ITL/scene/cursor tempo 0,
+	/ITL/scene/cursor date 0
+);
+
+/ITL/scene/ctrl set txt "Start";
+/ITL/scene/ctrl fontSize 18;
+/ITL/scene/ctrl y 0.3;
+/ITL/scene/ctrl watch mouseEnter (/ITL/scene/ctrl scale 1.1);
+/ITL/scene/ctrl watch mouseLeave (/ITL/scene/ctrl scale 1);
+/ITL/scene/ctrl watch mouseDown (
+	/ITL/scene/ctrl push,
+	/ITL/scene event START,
+	/ITL/scene/ctrl set txt Stop,
+	/ITL/scene/ctrl watch mouseDown (
+		/ITL/scene event STOP,
+		/ITL/scene/ctrl set txt Start,
+		/ITL/scene/ctrl pop
+	)
+);
+

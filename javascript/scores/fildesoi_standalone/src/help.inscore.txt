@@ -1,0 +1,62 @@
+buttony = 0.9;
+
+/ITL/scene/help set htmlf "./help.html";
+/ITL/scene/help class section;
+/ITL/scene/help scale 0.8;
+
+/ITL/scene/closebutton set rect 1 1;
+/ITL/scene/closebutton alpha 120;
+/ITL/scene/closebutton scale 0.07;
+/ITL/scene/closebutton penWidth 1;
+/ITL/scene/closebutton/txt set txt "X";
+/ITL/scene/closebutton/txt color white;
+/ITL/scene/closebutton/txt fontSize 600;
+/ITL/scene/closebutton/penWidth 2;
+/ITL/scene/closebutton x 0.95;
+/ITL/scene/closebutton y -0.8;
+
+/ITL/scene watch OPENHELP (
+    /ITL/scene/help show 1,
+    /ITL/scene/closebutton show 1
+);
+
+/ITL/scene watch CLOSEHELP (
+    /ITL/scene/help show 0,
+    /ITL/scene/closebutton show 0,
+    /ITL/scene/closebutton/txt color white
+);
+
+docInit = (
+    /ITL/scene/docbtn push,
+    /ITL/scene event OPENHELP, 
+    /ITL/scene/docbtn watch mouseDown (
+        /ITL/scene event CLOSEHELP,
+        /ITL/scene/docbtn pop
+    )
+);
+
+
+/ITL/scene/closebutton watch mouseEnter (/ITL/scene/closebutton/txt color red);
+/ITL/scene/closebutton watch mouseLeave (/ITL/scene/closebutton/txt color white);
+/ITL/scene/closebutton watch mouseDown (
+    /ITL/scene/help show 0,
+    /ITL/scene/closebutton show 0,
+    /ITL/scene/closebutton/txt color white,
+    /ITL/scene/docbtn pop
+);
+
+/ITL/scene/docbtn set txt "Help";
+/ITL/scene/docbtn penWidth 2;
+
+/ITL/scene/docbtn xorigin 0;
+/ITL/scene/docbtn x 0;
+/ITL/scene/docbtn y $buttony + 0.1;
+/ITL/scene/docbtn scale 0.5;
+/ITL/scene/docbtn fontSize 20;
+
+/ITL/scene/docbtn watch mouseDown $docInit;
+
+/ITL/scene/docbtn watch mouseEnter (/ITL/scene/docbtn color grey);
+/ITL/scene/docbtn watch mouseLeave (/ITL/scene/docbtn color black);
+/ITL/scene/help show 0;
+/ITL/scene/closebutton show 0;
