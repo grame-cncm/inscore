@@ -39,11 +39,8 @@ body { margin: 10; background: white; }
                                 ([60, 1530[ [432, 355[) ([0:8:00, 0:16:0[)";
 
         /ITL/scene/cursor0 set rect 0.02 0.1;
-        /ITL/scene/cursor1 set rect 0.02 0.1;
-        /ITL/scene/cursor1 color blue;
         /ITL/scene/cursor0 color red;
         /ITL/scene/sync cursor0 score v;
-        /ITL/scene/sync cursor1 score v;
 
         /ITL/scene/faust set faustf "./capture.dsp.txt";
         /ITL/scene/faust scale 1;
@@ -84,55 +81,36 @@ body { margin: 10; background: white; }
             /ITL/scene/faust/Audio_Capture/Capture 0.0
         );
 
+        /ITL/scene watch STOP (
+            /ITL/log write "STOP",
+            /ITL/scene/cursor0 tempo 0,
+            /ITL/scene/cursor0 date 0
+        );
+
+
         /ITL/scene/capture watch mouseDown (
             /ITL/scene/$self push,
             /ITL/scene/cursor0 tempo 60,
             /ITL/scene/audioInput connect faust,
-            /ITL/scene event RECORD
+            /ITL/scene event RECORD,
+            /ITL/scene/cursor0 watch timeEnter 2 4 (
+                /ITL/scene/cursor0 date 0,
+                /ITL/scene event PLAY,
+                /ITL/scene/cursor0 watch timeEnter 2 4 (
+                    /ITL/scene event RECORD,
+                    /ITL/scene/cursor0 watch timeEnter 4 5 (
+                        /ITL/scene/cursor0 watch timeEnter 2 4,
+                        /ITL/scene/cursor0 date 2,
+                        /ITL/scene event PLAY,
+                        /ITL/scene/cursor0 watch timeEnter 4 5 (
+                            /ITL/scene/cursor0 watch timeEnter 4 5,
+                            /ITL/scene event STOP
+                        )
+                    )
+                )
+            )
         );
         
-        /ITL/scene/cursor0 watch timeEnter 2.01 3.99 (
-            /ITL/scene/audioInput connect faust,
-            /ITL/log write "RECORD24",
-            /ITL/scene event RECORD
-	    );
-    
-        /ITL/scene/cursor0 watch timeLeave 0.01 1.99 (
-            /ITL/log write "TimeLeave 0.01, 1.99 cursor0 (red)",
-            /ITL/scene event PLAY,
-            /ITL/scene/cursor0 tempo 0,
-            /ITL/scene/cursor1 tempo 60,
-            /ITL/scene/cursor1 show 1,
-            /ITL/scene/cursor0 show 0
-        );
-
-        /ITL/scene/cursor1 watch timeLeave 0.01 1.99 (
-            /ITL/log write "TimeLeave 0.01, 1.99 cursor1 (blue)",
-            /ITL/scene/cursor0 tempo 60,
-            /ITL/scene/cursor1 show 0,
-            /ITL/scene/cursor0 show 1,
-            /ITL/scene/cursor1 tempo 0
-        );
-    
-        /ITL/scene/cursor0 watch timeLeave 2.01 3.99 (
-            /ITL/scene event PLAY,
-            /ITL/scene/cursor1 tempo 60,
-            /ITL/scene/cursor0 show 0,
-            /ITL/scene/cursor1 show 1,
-            /ITL/scene/cursor0 tempo 0
-	    );
-
-       /ITL/scene/cursor1 watch timeLeave 2.01 3.99 (
-            /ITL/scene event STOP
-        );
-
-        /ITL/scene watch STOP (
-            /ITL/log write "STOP",
-            /ITL/scene/cursor0 tempo 0,
-            /ITL/scene/cursor1 tempo 0,
-            /ITL/scene/cursor0 date 0,
-            /ITL/scene/cursor1 date 0
-        );
 
 
     </pre>
