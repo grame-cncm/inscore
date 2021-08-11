@@ -33,10 +33,17 @@ body { margin: 10; background: white; }
 
         /ITL/scene/wait set txt "Loading...";
         
-        /ITL/scene/score set img blank-staff2.jpg;
-        /ITL/scene/score width 2;
-        /ITL/scene/score map "([60, 1530[ [140, 40[) ([0:00:0, 0:8:00[)
-                                ([60, 1530[ [432, 355[) ([0:8:00, 0:16:0[)";
+        /ITL/scene/score set img blank-staff6.jpg;
+        /ITL/scene/score width 1.5;
+#        /ITL/scene/score map "([60, 1530[ [140, 40[) ([0:00:0, 0:8:00[)
+#                                ([60, 1530[ [432, 355[) ([0:8:00, 0:16:0[)";
+
+         /ITL/scene/score map "([60, 1530[ [140, 40[) ([0:00:0, 0:8:00[)
+                                ([60, 1530[ [432, 355[) ([0:8:00, 0:16:0[)
+                                ([60, 1530[ [675, 600[) ([0:16:00, 0:24:0[)
+                                ([60, 1530[ [897, 970[) ([0:24:00, 0:32:0[)
+                                ([60, 1530[ [1158, 1236[) ([0:32:00, 0:40:0[)
+                                ([60, 1530[ [1449, 1527[) ([0:40:00, 0:48:0[)";
 
         /ITL/scene/cursor0 set rect 0.02 0.1;
         /ITL/scene/cursor0 color red;
@@ -48,11 +55,11 @@ body { margin: 10; background: white; }
         /ITL/scene/faust connect audioOutput;
 
         /ITL/scene/capturetxt set txt "Capture";
-        /ITL/scene/capturetxt y 0.5;
+        /ITL/scene/capturetxt y 0.9;
         /ITL/scene/capturetxt dx -0.4;
 
         /ITL/scene/capture set rect 0.2 0.2;
-        /ITL/scene/capture y 0.5;
+        /ITL/scene/capture y 0.9;
         /ITL/scene/capture color white;
         /ITL/scene/capture penWidth 2;
         
@@ -98,13 +105,44 @@ body { margin: 10; background: white; }
                 /ITL/scene event PLAY,
                 /ITL/scene/cursor0 watch timeEnter 2 4 (
                     /ITL/scene event RECORD,
-                    /ITL/scene/cursor0 watch timeEnter 4 5 (
+                    /ITL/scene/cursor0 watch timeEnter 4 6 (
                         /ITL/scene/cursor0 watch timeEnter 2 4,
                         /ITL/scene/cursor0 date 2,
                         /ITL/scene event PLAY,
-                        /ITL/scene/cursor0 watch timeEnter 4 5 (
-                            /ITL/scene/cursor0 watch timeEnter 4 5,
-                            /ITL/scene event STOP
+                        /ITL/scene/cursor0 watch timeEnter 4 6 (
+                            /ITL/scene event RECORD,
+                            /ITL/scene/cursor0 watch timeEnter 6 8  (
+                                /ITL/scene/cursor0 watch timeEnter 4 6,
+                                /ITL/scene/cursor0 date 4,
+                                /ITL/scene event PLAY,
+                                /ITL/scene/cursor0 watch timeEnter 6 8 (
+                                    /ITL/scene event RECORD,
+                                    /ITL/scene/cursor0 watch timeEnter 8 10  (
+                                        /ITL/scene/cursor0 watch timeEnter 6 8,
+                                        /ITL/scene/cursor0 date 6,
+                                        /ITL/scene event PLAY,
+                                        /ITL/scene/cursor0 watch timeEnter 8 10 (
+                                            /ITL/scene event RECORD,
+                                            /ITL/scene/cursor0 watch timeEnter 10 12  (
+                                                /ITL/scene/cursor0 watch timeEnter 8 10,
+                                                /ITL/scene/cursor0 date 8,
+                                                /ITL/scene event PLAY,
+                                                /ITL/scene/cursor0 watch timeEnter 10 12 (
+                                                    /ITL/scene event RECORD,
+                                                    /ITL/scene/cursor0 watch timeEnter 12 14  (
+                                                        /ITL/scene/cursor0 watch timeEnter 10 12,
+                                                        /ITL/scene/cursor0 date 10,
+                                                        /ITL/scene event PLAY,
+                                                        /ITL/scene/cursor0 watch timeEnter 12 14 (
+                                                            /ITL/scene event STOP
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                         )
                     )
                 )
