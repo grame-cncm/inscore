@@ -263,6 +263,33 @@ class IApplSsl : public IVNode
 };
 #endif
 
+#if HASMIDISupport
+class IApplMIDI;
+typedef class libmapping::SMARTP<IApplMIDI>		SIApplMIDI;
+//--------------------------------------------------------------------------
+/*!
+	\brief a virtual node for ssl certificates management
+*/
+class IApplMIDI : public IVNode
+{
+	bool	fVerbose = false;
+	
+	public:
+		/// \brief creates a new IApplMIDI
+		static SIApplMIDI create(IObject * parent)		{ return new IApplMIDI(parent); }
+		
+	protected:
+				 IApplMIDI(IObject * parent);
+		virtual ~IApplMIDI() {}
+
+		virtual MsgHandler::msgStatus init (const IMessage* msg);
+		virtual MsgHandler::msgStatus verbose (const IMessage* msg);
+
+		virtual void init ();
+		virtual void verbose (bool status);
+};
+#endif
+
 /*! @} */
 
 } // end namespoace

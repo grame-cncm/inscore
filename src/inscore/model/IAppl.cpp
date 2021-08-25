@@ -353,6 +353,10 @@ void IAppl::createVirtualNodes()
 	fSsl = IApplSsl::create (this);
 	add (fSsl);
 #endif
+#if HASMIDISupport
+	fMidi = IApplMIDI::create(this);
+	add (fMidi);
+#endif
 	fForwarder.setFilter(fFilterForward);
 	fForwarder.setLog(fApplLog);
 	fJavascript = new TJSEngine (fApplLog);

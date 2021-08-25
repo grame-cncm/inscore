@@ -245,4 +245,8 @@ const char* kcert_GetSetMethod			= "cert";				// Get Set
 const char* kcacert_GetSetMethod		= "cacert";				// Get Set
 const char* kkey_GetSetMethod			= "key";				// Get Set
 
+// MIDI methods
+const char* kinit_SetMethod				= "init";				// Set
+const char* kverbose_GetSetMethod		= "verbose";			// Get Set
+
 } //namespace

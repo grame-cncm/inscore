@@ -62,6 +62,7 @@
 #if 1
 # define HASWSSupport			true
 # define HASHTTPSupport			true
+# define HASMIDISupport			true
 #else
 # define HASWSSupport			false
 # define HASHTTPSupport			false

@@ -554,6 +554,13 @@ bool EventsAble::isMidiEvent(size_t type)
 }
 
 //----------------------------------------------------------------------
+bool EventsAble::isReadyEvent(size_t type)
+{
+	return	(type == fHash(kReadyEvent)) ||
+			(type == fHash(kErrorEvent));
+}
+
+//----------------------------------------------------------------------
 bool EventsAble::checkMouseSensibility() const
 {
 	for(auto it = fMsgMap.begin(); it != fMsgMap.end(); it++){

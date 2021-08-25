@@ -241,6 +241,10 @@ extern const char* kcert_GetSetMethod;
 extern const char* kcacert_GetSetMethod;
 extern const char* kkey_GetSetMethod;
 
+// MIDI methods
+extern const char* kinit_SetMethod;
+extern const char* kverbose_GetSetMethod;
+
 
 } //namespace
 
