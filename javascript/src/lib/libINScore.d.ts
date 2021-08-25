@@ -187,6 +187,7 @@ interface OAudioNodeInfos {
 }
 
 interface OFaustInfos {
+	compute		: boolean;
 	voices		: number;
 	wasmExport	: string;
 	code		: string;

@@ -17,6 +17,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
     protected fMixer: WebAssembly.Module = null;
     protected fAudioNode : Faust.FaustMonoNode | Faust.FaustPolyNode = null;
     protected fVoices = 0;
+    protected fCompute = false;
     static fCompilerLock = false;
     static readonly kFailed  = 0;
     static readonly kSuccess = 1;
@@ -85,6 +86,13 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         if (this.fAudioNode) {
             AudioTools.updateConnections(obj, this);
             let data = obj.getFaustInfos(true, false);
+            let compute = data.compute;
+            if (compute != this.fCompute) {
+                this.fCompute = compute;
+                // if (compute) this.fAudioNode.start();
+                // else this.fAudioNode.stop();
+                console.log ("JSFaustView.updateSpecific compute " + compute);
+            }
             let val = data.values;
             let n = val.size();
             for (let i=0; i < n; i++) {
