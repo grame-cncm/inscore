@@ -78,6 +78,7 @@ typedef QGraphicsItem*		VObjectContext;
 # define HASFileDownloader	false
 # define HASWSSupport		false
 # define HASHTTPSupport		false
+# define HASMIDISupport		true
 class SVGObjectView;
 typedef SVGObjectView*		ViewContext;
 typedef SVGObjectView*		VObjectContext;

@@ -58,7 +58,7 @@ IApplMIDI::IApplMIDI(IObject * parent) : IVNode("midi", parent)
 	fMsgHandlerMap[kinit_SetMethod]			= TMethodMsgHandler<IApplMIDI>::create(this, &IApplMIDI::init);
 	fMsgHandlerMap[kverbose_GetSetMethod]	= TMethodMsgHandler<IApplMIDI>::create(this, &IApplMIDI::verbose);
 
-	fGetMsgHandlerMap[kverbose_GetSetMethod]= TGetParamMsgHandler<bool>::create(fVerbose);
+	fGetMsgHandlerMap[kverbose_GetSetMethod]= TGetParamMsgHandler<int>::create(fVerbose);
 	fGetMsgHandlerMap[kmap_GetSetMethod]	= SGetParamMsgHandler(0);
 	fGetMsgHandlerMap[kname_GetSetMethod]	= SGetParamMsgHandler(0);
 }
@@ -75,7 +75,7 @@ MsgHandler::msgStatus IApplMIDI::verbose (const IMessage* msg)
 {
 	int verb = 0;
 	if ((msg->size() == 1) && msg->param(0,verb)) {
-		verbose (verb != 0);
+		verbose (verb);
 		return MsgHandler::kProcessedNoChange;
 	}
 	return MsgHandler::kBadParameters;
@@ -87,10 +87,7 @@ void IApplMIDI::init ()
 	ITLErr << "MIDI support is not available" << ITLEndl;
 }
 
-void IApplMIDI::verbose (bool status)
-{
-	fVerbose = status;
-}
+void IApplMIDI::verbose (int mode)	{ fVerbose = mode; }
 
 #endif
 

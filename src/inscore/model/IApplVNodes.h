@@ -272,7 +272,7 @@ typedef class libmapping::SMARTP<IApplMIDI>		SIApplMIDI;
 */
 class IApplMIDI : public IVNode
 {
-	bool	fVerbose = false;
+	int	fVerbose = 0;
 	
 	public:
 		/// \brief creates a new IApplMIDI
@@ -286,7 +286,7 @@ class IApplMIDI : public IVNode
 		virtual MsgHandler::msgStatus verbose (const IMessage* msg);
 
 		virtual void init ();
-		virtual void verbose (bool status);
+		virtual void verbose (int mode);
 };
 #endif
 
