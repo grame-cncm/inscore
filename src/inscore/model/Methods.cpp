@@ -52,6 +52,7 @@ const char* kclose_GetSetMethod		= "close";			// Get Set
 const char* kcolor_GetSetMethod		= "color";			// Get Set
 const char* kcolumns_GetSetMethod	= "columns";		// Get Set
 const char* kcompatibility_GetSetMethod	= "compatibility";	// Get Set
+const char* kcompute_GetSetMethod	= "compute";		// Get Set
 const char* kcount_GetMethod		= "count";			// Get
 const char* kconnect_GetSetMethod	= "connect";		// Get Set
 const char* kdalpha_SetMethod		= "dalpha";			// Set

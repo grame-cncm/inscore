@@ -166,6 +166,7 @@ struct JSFaustParamValue { std::string address; float value; int type; };
 struct JSFaustKeyValue { int type; int chan; int pitch; int vel; };
 
 struct JSFaustInfos {
+	bool	compute;
 	int		voices = 0;
 	std::string wasmExport;
 	std::string code;

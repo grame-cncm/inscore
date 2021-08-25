@@ -79,6 +79,7 @@ class TFaustKeysUpdate {
 class IFaustProcessor : public IRectShape, public AudioNode
 {
 	bool fWasmExport = false;
+	bool fCompute = true;
 
 	typedef std::map<std::string,float> TParamsValues;
 	TParamsValues fParamValues;
@@ -115,6 +116,7 @@ class IFaustProcessor : public IRectShape, public AudioNode
 		virtual SIMessageList 	getAll() const;
 		// export the dsp as a faust module
 		virtual std::string 	getWasm();
+		virtual bool 						compute() const 	{ return fCompute; }
 		virtual bool 						wasmFlag() const 	{ return fWasmExport; }
 		virtual const IFaustwProcessor* 	wasmBased() const 	{ return nullptr; }
 		
@@ -139,6 +141,7 @@ class IFaustProcessor : public IRectShape, public AudioNode
 		virtual SIMessageList getSetMsg () const;
 
 		/// \brief method handlers
+		virtual MsgHandler::msgStatus	compute (const IMessage* msg);
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyon (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyoff (const IMessage* msg);

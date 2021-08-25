@@ -55,6 +55,7 @@ extern const char* kclose_GetSetMethod;
 extern const char* kcolor_GetSetMethod;
 extern const char* kcolumns_GetSetMethod;
 extern const char* kcompatibility_GetSetMethod;
+extern const char* kcompute_GetSetMethod;
 extern const char* kconnect_GetSetMethod;
 extern const char* kcount_GetMethod;
 extern const char* kdalpha_SetMethod;

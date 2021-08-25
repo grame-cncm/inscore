@@ -625,6 +625,7 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 	JSFaustInfos infos;
 	IFaustProcessor* obj = dynamic_cast<IFaustProcessor*>((IObject*)fObject);
 	if (obj) {
+		infos.compute = obj->compute();
 		infos.voices = obj->getVoices();
 		if (getcode) {
 			infos.code = obj->getCode();
