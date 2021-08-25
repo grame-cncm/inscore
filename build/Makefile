@@ -2,7 +2,7 @@
 #              INScore project Makefile
 #########################################################
 
-.PHONY : modules
+.PHONY : modules android
 
 QMAKE ?= qmake
 CMAKE ?= cmake
@@ -179,7 +179,8 @@ ANDROID_API ?= 26
 ANDROID_ARCH ?= armeabi-v7a
  
 android : 
-	make _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
+	$(MAKE) -f Makefile.android
+#	make _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
 
 _android : $(ANDROIDDIR) $(ANDROIDDIR)/Makefile
 	cp -rf ../rsrc/ tmp-rsc
@@ -195,7 +196,7 @@ _android : $(ANDROIDDIR) $(ANDROIDDIR)/Makefile
 
 $(ANDROIDDIR)/Makefile: library.pro viewer.pro INScore.pro
 	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
-	cd $(ANDROIDDIR) && $(QMAKE) -spec android-clang ../INScore.pro
+	cd $(ANDROIDDIR) && $(QMAKE) -spec android-clang ANDROID_ABI=armeabi-v7a ../INScore.pro
 
 akey: ../rsrc/inscore.keystore
 ../rsrc/inscore.keystore :

@@ -23,9 +23,13 @@
 
 <body>
 
-<h1>INScore Tests</h1>
 <div class="inscore" id="scene">
-	/ITL/scene/text set txtf "test.dsp.txt";
+<pre>
+#	/ITL load "keyevents.inscore.txt";
+/ITL/scene/faust0 set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
+/ITL/scene/audio set audio "levinas/audio1.mp3";
+
+</pre>
 </div>
 
 </body>

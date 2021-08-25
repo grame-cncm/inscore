@@ -3,43 +3,57 @@
 
 
 class MidiSetup {
-    static midiClients : Array<INScoreObject> = [];
-    static accessSetup : WebMidi.MIDIAccess;
-    static verboseMode : number;
+    static fClients : Array<INScoreObject> = [];
+    static fMIDIAccess : WebMidi.MIDIAccess;
+    static fVerbose : number;
+    static fMidiStatus : Map<number, string>;
 
-    static midiTest(status: number, data1: number, data2: number) {
-        MidiSetup.midiClients.forEach((client) => {
-            client.midiEvent (status, data1, data2);
-        });
-    }
+    // static midiTest(status: number, data1: number, data2: number) {
+    //     MidiSetup.fClients.forEach((client) => {
+    //         client.midiEvent (status, data1, data2);
+    //     });
+    // }
 
-    static printMidiEvent(event: WebMidi.MIDIMessageEvent)
+    static initmap()
     {
-        const midiMsg = new Map();
-        midiMsg.set(14, 'Pitch Bend Change');
-        midiMsg.set(13, 'Channel Aftertouch');
-        midiMsg.set(12, 'Program Change');
-        midiMsg.set(11, 'Control Change');
-        midiMsg.set(10, 'Polyphonic AfterTouch');
-        midiMsg.set(9, 'Note On');
-        midiMsg.set(8, 'Note Off');
-        if (MidiSetup.verboseMode === 1) {
-            if (event.data[0] >= 240) {
-                console.log("System exclusive message - filtered by inscore");
-                return;
-            }
-            console.log("type:", midiMsg.get(event.data[0] >> 4), "chan:", event.data[0] & 0xf, "note:", event.data[1], "strength:", event.data[2]);
-        } else if (MidiSetup.verboseMode === 2) {
-            console.log("type:", midiMsg.get(event.data[0] >> 4), "chan:", event.data[0] & 0xf, "note:", event.data[1], "strength:", event.data[2]);
-        } else {
-            return;
-        }
+        MidiSetup.fMidiStatus = new Map();
+        MidiSetup.fMidiStatus.set(0x80, 'Note Off');
+        MidiSetup.fMidiStatus.set(0x90, 'Note On');
+        MidiSetup.fMidiStatus.set(0xa0, 'Polyphonic AfterTouch');
+        MidiSetup.fMidiStatus.set(0xb0, 'Control Change');
+        MidiSetup.fMidiStatus.set(0xc0, 'Program Change');
+        MidiSetup.fMidiStatus.set(0xd0, 'Channel Aftertouch');
+        MidiSetup.fMidiStatus.set(0xe0, 'Pitch Bend');
+
+        MidiSetup.fMidiStatus.set(0xf0, "SysRealTime");
+        MidiSetup.fMidiStatus.set(0xf0, "SysEx");
+        MidiSetup.fMidiStatus.set(0xf1, "QFrame");
+        MidiSetup.fMidiStatus.set(0xf2, "SongPos");
+        MidiSetup.fMidiStatus.set(0xf3, "SongSel");
+        MidiSetup.fMidiStatus.set(0xf6, "Tune");
+        MidiSetup.fMidiStatus.set(0xf7, "EndSysX");
+        MidiSetup.fMidiStatus.set(0xf8, "Clock");
+        MidiSetup.fMidiStatus.set(0xfa, "Start");
+        MidiSetup.fMidiStatus.set(0xfb, "Continue");
+        MidiSetup.fMidiStatus.set(0xfc, "Stop");
+        MidiSetup.fMidiStatus.set(0xfe, "Active Sensing");
+        MidiSetup.fMidiStatus.set(0xff, "Reset");
+    }
+ 
+    static print (event: WebMidi.MIDIMessageEvent)
+    {
+        let status = event.data[0];
+        if ((MidiSetup.fVerbose === 1) && (status >= 0xf0)) return;
+        if (status >= 0xf0)     // system events: displays only the status
+            console.log (MidiSetup.fMidiStatus.get(status >> 4));
+        else
+            console.log("Chan ", status & 0xf, MidiSetup.fMidiStatus.get(status >> 4), event.data[1], event.data[2] ? event.data[2] : "");
     }
 
     static midiInput(event: WebMidi.MIDIMessageEvent) {
-        MidiSetup.midiClients.forEach((client) => {
+        if (MidiSetup.fVerbose) MidiSetup.print (event);
+        MidiSetup.fClients.forEach((client) => {
             // filter msg from 240 to 255 (system msg)
-            MidiSetup.printMidiEvent(event);
             if (event.data[0] >= 240)
                 return;
             if (event.data[2] === undefined) {
@@ -50,56 +64,52 @@ class MidiSetup {
     }
 
     static onErrorCallback() {
-        console.log("connection error");
+        console.log("Failed to initialise MIDI input...");
+        MidiSetup.event ("error");
     }
 
     static onConnectionCallback(access : WebMidi.MIDIAccess) {
-        MidiSetup.accessSetup = access;
-        console.log("in callback");
+        MidiSetup.fMIDIAccess = access;
         access.onstatechange = function(e: WebMidi.MIDIConnectionEvent) {
             if (e.port.type === "input") {
                 let port = e.port as WebMidi.MIDIInput;
                 if (e.port.state === "connected") {
-                    console.log(e.port.name + " is connected");
                     port.onmidimessage = MidiSetup.midiInput;
                 } else if (e.port.state  === "disconnected") {
-                    console.log(e.port.name + " is disconnected");
                     port.onmidimessage = null;
                 }
             }
         }
+        MidiSetup.event ("ready");
         access.inputs.forEach((input: WebMidi.MIDIInput) => {
             input.onmidimessage = MidiSetup.midiInput;
-            console.log(input.name + " is connected");
         }) 
     }
 
-    static debug(mode: number) {
-        //TODO
-        MidiSetup.verboseMode = mode;
-        // if (MidiSetup.verboseMode)
-        //     MidiSetup.verboseMode = false;
-        // else 
-        //     MidiSetup.verboseMode = true;
-    }
+    static verbose (mode: number)           { MidiSetup.fVerbose = mode; }
+    static event( type: string)             { inscore.postMessageStrStr ("/ITL/midi", "event", type); }
 
-    static addListener(obj : INScoreObject) {
-        MidiSetup.midiClients.push(obj);
-        if (typeof(navigator.requestMIDIAccess) !== "undefined" && MidiSetup.accessSetup !== null) {
-            navigator.requestMIDIAccess({"sysex": true}).then(
-                (access : WebMidi.MIDIAccess) => {
-                    MidiSetup.onConnectionCallback(access);
+    static init() {
+        MidiSetup.initmap();
+        if (typeof(navigator.requestMIDIAccess) !== "undefined" && MidiSetup.fMIDIAccess !== null) {
+            navigator.requestMIDIAccess({"sysex": true}).then( (access : WebMidi.MIDIAccess) => {
+                    MidiSetup.onConnectionCallback (access);
                 }, this.onErrorCallback
             );
         } else {
-            console.log("MIDI input cannot be activated...");
+            console.log("Failed to initialise MIDI input...");
+            MidiSetup.event ("error");
         }
+    }
+
+    static addListener(obj : INScoreObject) {
+        MidiSetup.fClients.push(obj);
     }
     
     static removeListener(client : INScoreObject) {
-        const index = MidiSetup.midiClients.indexOf(client);
+        const index = MidiSetup.fClients.indexOf(client);
         if (index > -1) {
-            MidiSetup.midiClients.splice(index, 1);
+            MidiSetup.fClients.splice(index, 1);
         }
     }
 }

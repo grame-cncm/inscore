@@ -1539,6 +1539,7 @@ bool IObject::checkUserEvent(EventsAble::eventype t) const
 bool IObject::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	if (EventsAble::isMouseEvent(t)) return true;
+	if (EventsAble::isReadyEvent(t)) return true;
 	if (string(t) == kNewDataEvent)	 return true;
 
 	// look if there is a handler for the message

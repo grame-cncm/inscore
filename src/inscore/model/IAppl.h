@@ -109,6 +109,9 @@ class IAppl : public IObject, public TILoader
 #if HASHTTPSupport
 		SIApplSsl	fSsl;						// ssl certificates
 #endif
+#if HASMIDISupport
+		SIApplMIDI	fMidi;						// MIDI support
+#endif
 		SIFilterForward fFilterForward;			// A virtual node to manage filter for message forwarding
 		Forwarder	fForwarder;					// A forwarder class to manage message forwarding
 		Connect		fConnecter;					// A connect class to manage host connections
@@ -161,6 +164,9 @@ class IAppl : public IObject, public TILoader
 		IApplLog*			getLogWindow()				{ return fApplLog; }
 #if HASHTTPSupport
 		const IApplSsl*		getSsl() const				{ return fSsl; }
+#endif
+#if HASMIDISupport
+		const IApplMIDI*	getMIDI() const 			{ return fMidi; }
 #endif
 		INScoreApplicationGlue* getApplicatonGlue() 	{ return fAppl; }
 	

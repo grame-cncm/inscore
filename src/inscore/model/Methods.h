@@ -55,6 +55,7 @@ extern const char* kclose_GetSetMethod;
 extern const char* kcolor_GetSetMethod;
 extern const char* kcolumns_GetSetMethod;
 extern const char* kcompatibility_GetSetMethod;
+extern const char* kcompute_GetSetMethod;
 extern const char* kconnect_GetSetMethod;
 extern const char* kcount_GetMethod;
 extern const char* kdalpha_SetMethod;
@@ -240,6 +241,10 @@ extern const char* krefresh_SetMethod;
 extern const char* kcert_GetSetMethod;
 extern const char* kcacert_GetSetMethod;
 extern const char* kkey_GetSetMethod;
+
+// MIDI methods
+extern const char* kinit_SetMethod;
+extern const char* kverbose_GetSetMethod;
 
 
 } //namespace

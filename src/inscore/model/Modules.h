@@ -58,9 +58,15 @@
 # define INCLUDEFaustWeb		false
 # define HASQGuidoImporter		true
 # define HASFileDownloader		true
+//#ifndef ANDROID
+#if 1
 # define HASWSSupport			true
 # define HASHTTPSupport			true
-
+# define HASMIDISupport			true
+#else
+# define HASWSSupport			false
+# define HASHTTPSupport			false
+#endif
 class QGraphicsScene;
 typedef QGraphicsScene*		ViewContext;
 class QGraphicsItem;
@@ -72,6 +78,7 @@ typedef QGraphicsItem*		VObjectContext;
 # define HASFileDownloader	false
 # define HASWSSupport		false
 # define HASHTTPSupport		false
+# define HASMIDISupport		true
 class SVGObjectView;
 typedef SVGObjectView*		ViewContext;
 typedef SVGObjectView*		VObjectContext;

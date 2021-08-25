@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include <regex>
 
 #include "AudioNode.h"
 #include "IMessage.h"
@@ -36,12 +37,12 @@ namespace inscore
 {
 
 //--------------------------------------------------------------------------
-void AudioNode::cleanup (AudioNodeList& list)
+void AudioNode::cleanup (AudioNodeCnxList& list)
 {
 //cerr << "AudioNode::cleanup list " << list.size() << endl;
-	AudioNodeList::iterator i = list.begin();
+	AudioNodeCnxList::iterator i = list.begin();
 	while (i != list.end()) {
-		if ((*i)->getDeleted())
+		if (i->obj->getDeleted())
 			i = list.erase (i);
 		else i++;
 	}
@@ -52,16 +53,27 @@ void AudioNode::cleanup (AudioNodeList& list)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus AudioNode::connect (const IMessage* msg)
 {
-	AudioNodeList list;
+	AudioNodeCnxList list;
 	MsgHandler::msgStatus status = getAudioNodes(msg, list);
 //cerr << "AudioNode::connect " << list.size() << " " << fNotifyNew.size() << " " << msg << endl;
 	if (status == MsgHandler::kProcessed) {
 		for (auto elt: list) {
-			AudioNode * anode = dynamic_cast<AudioNode*>((IObject*)elt);
-			if (fNumOutputs != anode->getInputs()) {
+			AudioNode * anode = dynamic_cast<AudioNode*>((IObject*)elt.obj);
+			if (!elt.to && (fNumOutputs != anode->getInputs())) {
 				ITLErr << "cannot connect a " << fNumOutputs << " outputs object to " << anode->getInputs() << " inputs" << ITLEndl;
 				return MsgHandler::kBadParameters;
 			}
+			else if (elt.to) {
+				if (elt.to > anode->getInputs()) {
+					ITLErr << "cannot connect to input #" << elt.to << ": " << elt.obj->name() << " has only " << anode->getInputs() << " inputs " << ITLEndl;
+					return MsgHandler::kBadParameters;
+				}
+				if (elt.from > fNumOutputs) {
+					ITLErr << "cannot connect to output #" << elt.from << ": " << " object has only " << fNumOutputs << " outputs " << ITLEndl;
+					return MsgHandler::kBadParameters;
+				}
+			}
+				
 			if (find (fOutputs.begin(), fOutputs.end(), elt) == fOutputs.end()) {
 				fOutputs.push_back(elt);
 				fNotifyNew.push_back(elt);
@@ -78,7 +90,11 @@ vector<string> AudioNode::getconnect () const
 	const IObject* obj = dynamic_cast<const IObject*>(this);
 	vector<string> out;
 	for (auto elt: fOutputs) {
-		out.push_back (elt->name());
+		stringstream str;
+		if (elt.from && elt.to)
+			str << elt.from << ":" << elt.obj->name() << ":" << elt.to;
+		else str << elt.obj->name();
+		out.push_back (str.str());
 	}
 	return out;
 }
@@ -86,7 +102,7 @@ vector<string> AudioNode::getconnect () const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus AudioNode::disconnect (const IMessage* msg)
 {
-	AudioNodeList list;
+	AudioNodeCnxList list;
 	MsgHandler::msgStatus status = getAudioNodes(msg, list);
 //cerr << "AudioNode::disconnect " << list.size() << " " << fNotifyDel.size() << " "  << msg << endl;
 	if (status == MsgHandler::kProcessed) {
@@ -100,9 +116,9 @@ MsgHandler::msgStatus AudioNode::disconnect (const IMessage* msg)
 }
 
 //--------------------------------------------------------------------------
-bool AudioNode::remove(const IObject* node, AudioNodeList& list)
+bool AudioNode::remove(const AudioConnection& elt, AudioNodeCnxList& list)
 {
-	AudioNodeList::iterator i = find (list.begin(), list.end(), node);
+	AudioNodeCnxList::iterator i = find (list.begin(), list.end(), elt);
 	if (i != list.end()) {
 		list.erase(i);
 		return true;
@@ -111,26 +127,48 @@ bool AudioNode::remove(const IObject* node, AudioNodeList& list)
 }
 
 //--------------------------------------------------------------------------
-MsgHandler::msgStatus AudioNode::getAudioNodes(const IMessage* msg, AudioNodeList& list)
+AudioNode::_AudioConnection	AudioNode::getAudioConnection (std::string desc) const
+{
+	std::regex e ("([0-9]+):([^:]+):([0-9]+)");
+	smatch m;
+
+	_AudioConnection cnx;
+	if (regex_search (desc, m, e)) {
+		cnx.name = m[2];
+		cnx.from = std::stoi(m[1]);
+		cnx.to 	 = std::stoi(m[3]);
+	}
+	else {
+		cnx.name = desc;
+		cnx.from = cnx.to = 0;
+	}
+	return cnx;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus AudioNode::getAudioNodes(const IMessage* msg, AudioNodeCnxList& list)
 {
 	int n = msg->size();
 	if (!n) return MsgHandler::kBadParameters;
 
 	IObject* obj = dynamic_cast<IObject*>(this);
 	for (int i=0; i<n; i++) {
-		string address;
+		string dest;
 		IObject::subnodes objlist;
-		if (!msg->param(i, address))
+		if (!msg->param(i, dest))
 			return MsgHandler::kBadParameters;
-		if (!obj->getParent()->find(address, objlist)) {
-			ITLErr << address << " no such object" << ITLEndl;
+
+		_AudioConnection cnx = getAudioConnection (dest);
+		
+		if (!obj->getParent()->find(cnx.name, objlist)) {
+			ITLErr << cnx.name << " no such object" << ITLEndl;
 			return MsgHandler::kBadParameters;
 		}
 		for (auto elt: objlist) {
 			AudioNode * anode = dynamic_cast<AudioNode*>((IObject*)elt);
-			if (anode) list.push_back (elt);
+			if (anode) list.push_back (AudioConnection(elt, cnx.from, cnx.to));
 			else {
-				ITLErr << address << " is not an audio node" << ITLEndl;
+				ITLErr << cnx.name << " is not an audio node" << ITLEndl;
 				return MsgHandler::kBadParameters;
 			}
 		}

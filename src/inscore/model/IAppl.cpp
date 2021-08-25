@@ -66,6 +66,8 @@
 #endif
 
 #ifdef EMCC
+#include <emscripten.h>
+#include "WebMidi.h"
 #include "JSCall.h"
 #endif
 
@@ -352,6 +354,14 @@ void IAppl::createVirtualNodes()
 #if HASHTTPSupport
 	fSsl = IApplSsl::create (this);
 	add (fSsl);
+#endif
+#if HASMIDISupport
+#ifdef EMCC
+	fMidi = WebMidi::create(this);
+#else
+	fMidi = IApplMIDI::create(this);
+#endif
+	add (fMidi);
 #endif
 	fForwarder.setFilter(fFilterForward);
 	fForwarder.setLog(fApplLog);

@@ -579,12 +579,26 @@ std::string IObjectAdapter::getSVGInfos () const
 }
 
 //--------------------------------------------------------------------------
-static void putID (const IObject* obj, vector<int>& dest)
+static int getID (const IObject* obj)
 {
 	const VObjectView* view = obj->getView();
 	const HTMLObjectView * htmlview = dynamic_cast<const HTMLObjectView*>(view);
-	if (htmlview)
-		dest.push_back (htmlview->getID());
+	return htmlview ? htmlview->getID() : 0;
+}
+
+//--------------------------------------------------------------------------
+static void putCnx (const AudioNode::AudioConnection& cnx, vector<JSAudioNodeCnx>& dest)
+{
+	const VObjectView* view = cnx.obj->getView();
+	const HTMLObjectView * htmlview = dynamic_cast<const HTMLObjectView*>(view);
+	if (htmlview) {
+		JSAudioNodeCnx jcnx;
+		jcnx.objid 	= htmlview->getID();
+		jcnx.from 	= cnx.from;
+		jcnx.to 	= cnx.to;
+		dest.push_back (jcnx);
+	}
+	else cerr << "unexpected cnx to object with new view" << endl;
 }
 
 //--------------------------------------------------------------------------
@@ -593,14 +607,15 @@ JSAudioNodeInfos IObjectAdapter::getAudioInfos () const
 	JSAudioNodeInfos infos;
 	AudioNode* obj = dynamic_cast<AudioNode*>((IObject*)fObject);
 	if (obj) {
-		for (auto elt: obj->newConnections())
-			putID (elt, infos.connect);
-		for (auto elt: obj->delConnections())
-			putID (elt, infos.disconnect);
+		for (auto elt: obj->newConnections()) {
+			putCnx (elt, infos.connect);
+		}
+		for (auto elt: obj->delConnections()) {
+			putCnx (elt, infos.disconnect);
+		}
 		obj->resetNotifications();
 	}
-	else
-		cerr << "IObjectAdapter::getAudioInfos: unexpected null object!" << endl;
+	else cerr << "IObjectAdapter::getAudioInfos: unexpected null object!" << endl;
 	return infos;
 }
 
@@ -610,7 +625,7 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 	JSFaustInfos infos;
 	IFaustProcessor* obj = dynamic_cast<IFaustProcessor*>((IObject*)fObject);
 	if (obj) {
-//		infos.playing = obj->playing();
+		infos.compute = obj->compute();
 		infos.voices = obj->getVoices();
 		if (getcode) {
 			infos.code = obj->getCode();

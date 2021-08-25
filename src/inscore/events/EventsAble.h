@@ -116,6 +116,8 @@ class EventsAble
 		static bool		isKeyEvent(eventype t)					{ return isKeyEvent (fHash(t)); }
 		static bool 	isMidiEvent(size_t type);
 		static bool		isMidiEvent(eventype t)					{ return isMidiEvent (fHash(t)); }
+		static bool 	isReadyEvent(size_t t);
+		static bool 	isReadyEvent(eventype t)				{ return isReadyEvent(fHash(t)); }
 		static bool		isTimeEvent(size_t hashtype);
 		static bool		isTimeEvent(eventype t)					{ return isTimeEvent(fHash(t)); }
 		static bool		isDurEvent(size_t hashtype);
