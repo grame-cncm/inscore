@@ -32,7 +32,8 @@ class JSHtmlView extends JSAutoSize {
 	setFont	(font : OTextInfo) : boolean {
 		let elt = this.getElement();
 		let prev = elt.style.fontSize;
-        elt.style.fontSize 		= (font.size / 9) +"vw";
+        // elt.style.fontSize 		= font.size + "px";
+		elt.style.fontSize 		= (font.size / 14) +"vw";
         elt.style.fontFamily 	= font.family;
         elt.style.fontStyle 	= font.style;
 		elt.style.fontWeight 	= JSHtmlView.fontWeight2Num(font.weight);
