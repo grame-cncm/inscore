@@ -17,6 +17,7 @@ Version 1.30
   works only with the web version
 - web version: 
   - new 'compute' message supported by faust objects
+  - font size unit changed to 'vw' (relative to viewport width)
 
 
 ----------------------------------------------------

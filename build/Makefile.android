@@ -1,0 +1,98 @@
+#########################################################
+#              INScore project Makefile
+#########################################################
+
+.PHONY : modules
+
+QMAKE ?= qmake-android
+MAKE  ?= make
+ANDROIDDIR  ?= androiddir
+MOBILESCRIPTS  := ../scripts/mobile
+
+
+all : 
+	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
+	make -f Makefile.android QMAKE=qmake-android library
+	make -f Makefile.android QMAKE=qmake-android viewer
+	make -f Makefile.android apk
+
+
+help :
+	@echo "========== INScore project Makefile =========="
+	@echo "Android specific makefile: to be used with QT5.15"
+	@echo "  all (default) : call the library, viewer and apk targets"
+	@echo "  library       : build inscore library for android (armeabi-v7a)"
+	@echo "  viewer        : build viewer library for android (armeabi-v7a)"
+	@echo "  apk           : make inscore viewer apk"
+	@echo "  installAndroid DEVICE=XXX : to install application on Android device"
+	@echo "       with XXX the device serial number (can be retrieved using 'make devandroid')"
+	@echo "       DEVICE is optional when only one Android device is connected"
+	@echo "  devandroid : to get the serial number of the connected device"
+
+#===============================================================
+# building INScore for Android
+#===============================================================
+SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
+ANDROID_API ?= 26
+ANDROID_ARCH ?= armeabi-v7a
+QMAKEOPTIONS := -spec android-clang ANDROID_ABI=armeabi-v7a
+
+library: $(ANDROIDDIR)/library $(ANDROIDDIR)/library/Makefile
+	$(MAKE) -C $(ANDROIDDIR)/library -f Makefile.Armeabi-v7a
+
+viewer: $(ANDROIDDIR)/viewer $(ANDROIDDIR)/viewer/Makefile
+	$(MAKE) -C $(ANDROIDDIR)/viewer  -f Makefile.Armeabi-v7a
+
+$(ANDROIDDIR)/library/Makefile: library.pro
+	cd $(ANDROIDDIR)/library && $(QMAKE) $(QMAKEOPTIONS) ../../library.pro
+
+$(ANDROIDDIR)/viewer/Makefile: viewer.pro
+	cd $(ANDROIDDIR)/viewer && $(QMAKE) $(QMAKEOPTIONS) ../../viewer.pro
+
+$(ANDROIDDIR)/library:
+	mkdir -p $(ANDROIDDIR)/library
+$(ANDROIDDIR)/viewer:
+	mkdir -p $(ANDROIDDIR)/viewer
+
+apk :
+	cp -rf ../rsrc/ tmp-rsc
+	$(MAKE) -C $(MOBILESCRIPTS)
+	$(MAKE) -C $(ANDROIDDIR)/viewer apk
+
+deploy:
+	$(MAKE) -C $(ANDROIDDIR)/viewer INSTALL_ROOT=android-build install
+	cp lib/libINScore_armeabi-v7a.so $(ANDROIDDIR)/viewer/android-build/libs/armeabi-v7a
+	cd $(ANDROIDDIR)/viewer && androiddeployqt --android-platform android-$(ANDROID_API) --release --input android-INScoreViewer-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+	
+# 	[ -d $(ANDROIDDIR)/android-build ] || mkdir $(ANDROIDDIR)/android-build
+# 	$(MAKE) -C $(ANDROIDDIR) INSTALL_ROOT=android-build install
+# 	cd $(ANDROIDDIR)/viewer && androiddeployqt --android-platform android-$(ANDROID_API) --release --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+# 	cp $(ANDROIDDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(ANDROIDDIR)/../bin/INScoreViewer.apk
+
+akey: ../rsrc/inscore.keystore
+../rsrc/inscore.keystore :
+	keytool -genkey -v -keystore ../inscore.keystore -alias grame-inscore -keyalg RSA -keysize 2048 -validity 10000
+
+devandroid:
+	adb get-serialno
+
+# To install INScore on your android device add DEVICE variable with device serial number. It can be retreived with 'adb get-serialno'
+installAndroid :
+	adb -s $(shell adb get-serialno) install -r $(shell find $(ANDROIDDIR) -name android-build-release-signed.apk) 
+
+uninstallAndroid :
+	adb uninstall fr.grame.inscore
+	
+BT350:
+	make android ANDROIDDIR=androidx86-BT350 
+
+installBT350:
+	make installAndroid ANDROIDDIR=androidx86-BT350
+
+#===============================================================
+# building the library with mobileUI
+#===============================================================
+mobileUI: 
+	cp -rf ../rsrc/ tmp-rsc
+	$(MAKE) QMAKE="$(QMAKE) CONFIG+=mobile_ui" ANDROIDDIR="mobileUI"
+

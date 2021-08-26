@@ -115,39 +115,34 @@ unix:!android:!macx:!ios {
 # android support
 ############################## 
 android {
+	LIBS +=  -L$$PWD/androiddir/library
 	GUIDOANDROID = $$GUIDO_PATH/platforms/android/guido-engine-android/libs/
-# 	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
-# 	ANDROID_ABI = armeabi-v7a
     equals(ANDROID_TARGET_ARCH, armeabi-v7a) { 
 		message ("Includes armeabi-v7a")
-        LIBS +=  -L. -lINScore_armeabi-v7a -L$$GUIDOANDROID/armeabi-v7a -lGUIDOEngine
+        LIBS +=  -lINScore_armeabi-v7a -L$$GUIDOANDROID/armeabi-v7a -lGUIDOEngine
 		OBJECTS_DIR = tmp_armeabi-v7a
 		MOC_DIR = tmp_armeabi-v7a
     }
     equals(ANDROID_TARGET_ARCH, arm64-v8a) {
 		message ("Includes arm64-v8a")
-        LIBS +=  -L. -lINScore_arm64-v8a -L$$GUIDOANDROID/arm64-v8a -lGUIDOEngine
+        LIBS +=  -lINScore_arm64-v8a -L$$GUIDOANDROID/arm64-v8a -lGUIDOEngine
 		OBJECTS_DIR = tmpv_arm64-v8a
 		MOC_DIR = tmpv_arm64-v8a
     }
     equals(ANDROID_TARGET_ARCH, x86)  {
 		message ("Includes x86")
-       	LIBS +=  -L. -lINScore_x86 -L$$GUIDOANDROID/x86 -lGUIDOEngine
+       	LIBS +=  -lINScore_x86 -L$$GUIDOANDROID/x86 -lGUIDOEngine
 		OBJECTS_DIR = tmpv_x86
 		MOC_DIR = tmpv_x86
     }
     equals(ANDROID_TARGET_ARCH, x86_64)  {
 		message ("Includes x86_64")
-       	LIBS +=  -L. -lINScore_x86_64 -L$$GUIDOANDROID/x86_64 -lGUIDOEngine
+       	LIBS +=  -lINScore_x86_64 -L$$GUIDOANDROID/x86_64 -lGUIDOEngine
         GUIDOLINKPATH = $$GUIDOANDROID/x86_64
 		OBJECTS_DIR = tmpv_x86_64
 		MOC_DIR = tmpv_x86_64
     }
     ANDROID_API_VERSION = 26
-# 	LIBS += -L. -lINScore_$$ARCH
-#     LIBS += -L$$GUIDO_PATH/build/lib/ -lGUIDOEngine.$${ARCH} -L $$PWD/lib -lINScore_armeabi-v7a
-#	ANDROID_EXTRA_LIBS = $$GUIDO_PATH/build/lib/libGUIDOEngine.$$ARCH.so
-#	ANDROID_EXTRA_LIBS +=  -L $$PWD/lib libINScore_armeabi-v7a.so
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
 	QT += androidextras
