@@ -1,7 +1,3 @@
-/ITL/scene/midiControlPanel color white;
-/ITL/scene/midiControlPanel x -0.4;
-/ITL/scene/midiControlPanel y 0.9;
-
 /ITL/scene/midiControlPanel/midiCtrltxtbtn* fontSize 20;
 
 /ITL/scene/midiControlPanel/midiCtrltxtbtnProg dx -0.006;
