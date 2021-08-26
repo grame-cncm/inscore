@@ -18,10 +18,10 @@ class AudioTools {
         if (src && dest) {
             try {
                 // if (srcchan) {
-console.log ("AudioTools:connectSrcDest src: " + src.numberOfInputs + " " + src.numberOfOutputs + ":" + src.channelCount  + " mode: " + src.channelCountMode + " - dest: " + dest.numberOfInputs + " " + dest.numberOfOutputs + ":" + dest.channelCount + " mode: " + dest.channelCountMode);
-console.log( "src.connect " + dest + "  " + srcchan + ", " + destchan);
-console.log(dest);
-console.log(src);
+// console.log ("AudioTools:connectSrcDest src: " + src.numberOfInputs + " " + src.numberOfOutputs + ":" + src.channelCount  + " mode: " + src.channelCountMode + " - dest: " + dest.numberOfInputs + " " + dest.numberOfOutputs + " chans: " + dest.channelCount + " mode: " + dest.channelCountMode);
+// console.log( "src.connect " + dest + "  " + srcchan + ", " + destchan);
+// console.log(dest);
+// console.log(src);
                     src.connect(dest, srcchan, destchan);
 
                 // }
