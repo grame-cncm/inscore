@@ -47,7 +47,6 @@ class MidiSetup {
         if (status >= 0xf0)     // system events: displays only the status
             console.log (MidiSetup.fMidiStatus.get(status));
         else {
-            console.log("status & 0xf0 : ", status & 0xf0)
             console.log("Chan ", status & 0xf, MidiSetup.fMidiStatus.get(status & 0xf0), event.data[1], event.data[2] ? event.data[2] : "");
         }
     }
@@ -67,6 +66,7 @@ class MidiSetup {
 
     static onErrorCallback() {
         console.log("Failed to initialise MIDI input...");
+        console.log("You MIDI interface has not been recognized.");
         MidiSetup.event ("error");
     }
 
@@ -100,6 +100,8 @@ class MidiSetup {
             );
         } else {
             console.log("Failed to initialise MIDI input...");
+            console.log("Your browser do not support the Web MIDI API.");
+            console.log("Try using another one.");
             MidiSetup.event ("error");
         }
     }
