@@ -79,6 +79,7 @@ ypanel = 0.85;
 /ITL/scene watch STOP (
 	/ITL/scene/cursor tempo 0,
 	/ITL/scene/audio play 0,
+	/ITL/scene/audio vdate 0,
 	/ITL/scene/cursor date 0
 );
 
