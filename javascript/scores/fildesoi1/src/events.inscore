@@ -1,2 +1,6 @@
-/ITL/scene watch PLAYBACK ( /ITL/log write PLAYBACK '$1' '$2' );
-/ITL/scene watch AUDIOIN ( /ITL/log write AUDIO  '$1' '$2' );
+/ITL/scene watch PLAYBACK 	( /ITL/log write PLAYBACK '$1' '$2' );
+/ITL/scene watch AUDIOIN 	( /ITL/log write AUDIO  '$1' '$2' );
+
+/ITL/scene watch MIDIWATCH 		( /ITL/log write MIDIWATCH  '$1' );
+/ITL/scene watch MIDIPANELREADY ( /ITL/log write MIDIPANELREADY );
+/ITL/scene watch MIDINOWATCH 	( /ITL/log write MIDINOWATCH );
