@@ -1,0 +1,76 @@
+#/ITL/scene/* del;
+
+on = green;
+off = white;
+btnw = 0.4;
+gap = 0.65;
+fontsize = 18;
+
+/ITL/scene/midiPanel set rect 0.3 0.2;
+/ITL/scene/midiPanel scale 0.8;	
+/ITL/scene/midiPanel color $off;
+
+/ITL/scene/midiPanel/1txtProg 		set txt "Midi Prog";
+/ITL/scene/midiPanel/2txtCtrl 		set txt "Midi Ctrl";
+/ITL/scene/midiPanel/3txtKeyOn 		set txt "Midi KeyOn";
+/ITL/scene/midiPanel/1btnProg 			set rect $btnw $btnw;
+/ITL/scene/midiPanel/2btnCtrl 			set rect $btnw $btnw;
+/ITL/scene/midiPanel/3btnKeyOn 			set rect $btnw $btnw;
+
+/ITL/scene/midiPanel/?txt* fontSize $fontsize;
+
+/ITL/scene/midiPanel/?btn* radius 5 5;
+/ITL/scene/midiPanel/?btn* penWidth 1;
+/ITL/scene/midiPanel/?btn* color white;
+
+/ITL/scene/midiPanel/?txt* yorigin -0.2;
+/ITL/scene/midiPanel/?txt* xorigin -1.1;
+/ITL/scene/midiPanel/?btn* xorigin 1.1;
+/ITL/scene/midiPanel/1* y -$gap;
+/ITL/scene/midiPanel/3* y $gap;
+/ITL/scene/midiPanel/* dx -1.0;
+
+/ITL/scene/midiPanel/?btn* watch mouseEnter (/ITL/scene/midiPanel/$self penWidth 2);
+/ITL/scene/midiPanel/?btn* watch mouseLeave (/ITL/scene/midiPanel/$self penWidth 1);
+
+/ITL/scene/midiPanel/1btnProg watch mouseDown (
+	/ITL/scene/midiPanel/1btnProg push,
+	/ITL/scene/midiPanel/?btn* color $off,
+	/ITL/scene/midiPanel/1btnProg color $on,
+	/ITL/scene event MIDIWATCH prog,
+	/ITL/scene/midiPanel/1btnProg watch mouseDown (
+		/ITL/scene/midiPanel/1btnProg color $off,
+		/ITL/scene event MIDIWATCH none,
+		/ITL/scene/midiPanel/1btnProg pop
+	)
+);
+
+/ITL/scene/midiPanel/2btnCtrl watch mouseDown (
+	/ITL/scene/midiPanel/2btnCtrl push,
+	/ITL/scene/midiPanel/?btn* color $off,
+	/ITL/scene/midiPanel/2btnCtrl color $on,
+	/ITL/scene event MIDIWATCH ctrl,
+	/ITL/scene/midiPanel/2btnCtrl watch mouseDown (
+		/ITL/scene/midiPanel/2btnCtrl color $off,
+		/ITL/scene event MIDIWATCH none,
+		/ITL/scene/midiPanel/2btnCtrl pop
+	)
+);
+
+/ITL/scene/midiPanel/3btnKeyOn watch mouseDown (
+	/ITL/scene/midiPanel/3btnKeyOn push,
+	/ITL/scene/midiPanel/?btn* color $off,
+	/ITL/scene/midiPanel/3btnKeyOn color $on,
+	/ITL/scene event MIDIWATCH keyon,
+	/ITL/scene/midiPanel/3btnKeyOn watch mouseDown (
+		/ITL/scene/midiPanel/3btnKeyOn color $off,
+		/ITL/scene event MIDIWATCH none,
+		/ITL/scene/midiPanel/3btnKeyOn pop
+	)
+);
+
+/ITL/scene event MIDIPANELREADY;
+
+__END__
+
+/ITL/scene/midiPanel penWidth 1;
