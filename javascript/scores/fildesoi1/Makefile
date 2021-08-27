@@ -4,7 +4,7 @@ WEBTXT := $(WEBSRC:%=src/%.txt)
 
 JS     := lib/libINScore.js lib/libINScore.wasm lib/FaustLibrary.js inscoreview.js inscoreglue.js
 LIBS   := $(JS:%=../../%)
-NAME   := FileDeSoi1
+NAME   := FilDeSoi1
 
 
 help:
