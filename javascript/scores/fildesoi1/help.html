@@ -9,6 +9,8 @@
             h6 { font-size: .75em; }
             body {height: 100%;}
             section {
+                margin-bottom: 1rem;
+                margin-top: 1rem;
                 display: flex;
                 flex-flow: column;
                 /* width: 100%; */
@@ -36,23 +38,39 @@
                 padding-left: 1vw;
                 padding-right: 1vw;
             }
-            @media screen and (max-width: 992px) {
-            body {
-                width: 100%;
-                transform: scale(2) !important;
-                }
-            }
-            @media screen and (max-width: 600px) {
-            body {	
-                width: 100%;
-                transform: scale(2) !important;
-                }
-            }
+            a { color: inherit; } 
     	</style>
     </head>
     <body>
         <section>
             <h1>FilDeSoi 1 - INScore</h1>
+            <article>
+            <h2> FilDeSoi </h2>
+            <p>Fil de soi is a mixed piece for acoustic and electronic guitar in real time. Composed by Alain Bonardi and performed by Amèlia Mazarico.
+            Created the 17th september 2016.
+
+            Inscore allow this score to embed the audio DSP of the composition and connect the different inputs to this DSP.
+            </p>
+            <h3> Audio connections configuration </h3>
+            <p>In The bottom right corner, the user can configure which input is connected to what output. The Three modes can be activated together:
+            <ul>
+                <li>Wav audio to audio Output will connect the wav audio to the Output.</li>
+                <li>Wav audio to DSP will connect the wav audio to the DSP.</li>
+                <li>Audio In to DSP will record the microphone of the user (asked permission at the start of the page) and inject it to the DSP.</li>
+            </ul>
+            In any case the DSP is connected to audio Output.</p>
+            </article>
+            <article>
+                <h2>InscoreWeb</h2>
+                <p>
+                    The INScoreJS library allows to embed the <a href="https://inscore.grame.fr">INScore</a> engine services in a web page and to design augmented, dynamic and interactive musical scores that can be published on the Internet.
+                </p>
+                <h2>Faust</h2>
+                    <p><a href="https://faust.grame.fr/">Faust</a> (Functional Audio Stream) is a functional programming language for sound synthesis and audio processing with a strong focus on the design of synthesizers, musical instruments, audio effects, etc. Faust targets high-performance signal processing applications and audio plug-ins for a variety of platforms and standards.
+                    Thanks to INScore, we can embeded a Faust DSP allowing real time signal processing inside the augmented score.
+                </p>
+            </article>
+
             <article>
                 <h2>Contains an audio DSP</h2>
                 <p>
@@ -103,9 +121,9 @@
                 </p>
             </article>
             <article>
-                <h1>
+                <h2>
                     INScore remote control
-                </h1>
+                </h2>
                 <p>
                     Clients can connect to a fildesoi.inscore native score launched in standalone.
                     To connect to a native score, the connection form is at the end of the client page.
