@@ -1,0 +1,4 @@
+/ITL/scene watch SECTION1 ( /ITL/log write SECTION1, /ITL/scene/cursor color red  );
+/ITL/scene watch SECTION2 ( /ITL/log write SECTION2, /ITL/scene/cursor color blue );
+/ITL/scene watch SECTION3 ( /ITL/log write SECTION3, /ITL/scene/cursor color green );
+/ITL/scene watch SECTION4 ( /ITL/log write SECTION4, /ITL/scene/cursor color orange );

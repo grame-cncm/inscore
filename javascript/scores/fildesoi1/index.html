@@ -1,0 +1,153 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
+	<meta http-equiv="Pragma" content="no-cache" /> 
+	<meta http-equiv="Expires" content="0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Fil De Soi 1</title>
+
+	<link href="../../fonts/fonts.css" rel="stylesheet">
+	<script src="../../lib/libINScore.js"></script>
+	<script src="../../lib/FaustLibrary.js"></script>
+	<script src="../../inscoreview.js"></script>
+	<script src="../../inscoreglue.js"></script>
+	<style>
+	body { margin: 10; background: white; }
+	.inscore { width: 100%; height: 95%; font-size: 1px; }
+	</style>
+	<script>
+		var currentMidiNum = 0;
+		var currentSection = 0;
+		var currentMidiProg = "prog";
+		function nextSection() {
+			currentSection += 1;
+			if (currentSection > 4) {
+				return 0;
+			}
+			return("/ITL/scene/faust event SECTION" + currentSection + ";");
+		}
+		function setCurrentMidiProgram(midiProg) {
+			currentMidiProg = midiProg;
+		}
+		function nextMidiNumber() {
+			currentMidiNum += 1;
+			if (currentMidiNum > 127) {
+				currentMidiNum = 0;
+			}
+			if (currentMidiProg === "prog")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event PROGON;";
+			else if (currentMidiProg === "ctrl")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event CTRLON;";
+			return 0;
+		}
+		function prevMidiNumber() {
+			currentMidiNum -= 1;
+			if (currentMidiNum < 0) {
+				currentMidiNum = 127;
+			}
+			if (currentMidiProg === "prog")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event PROGON;";
+			else if (currentMidiProg === "ctrl")
+				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event CTRLON;";
+			return 0;
+		}
+		function getMidiNumber(msg) {
+			if (msg === "ctrl") {
+				currentMidiProg = "ctrl";
+				return ("/ITL/scene watch midi ctrl " + currentMidiNum + " [0-127] (/ITL/scene/javascript run 'nextSection()');");
+			} else if (msg === "prog") {
+				currentMidiProg = "prog";
+				return ("/ITL/scene watch midi prog " + currentMidiNum + " (/ITL/scene/javascript run 'nextSection()');");
+			}
+			currentMidiProg = "keyon";
+			return 0;
+		}
+		function toSection(section) {
+			currentSection = section;
+			return ("/ITL/scene/faust event SECTION" + currentSection + ";");
+		}
+	</script>
+</head>
+
+<body>
+
+<div class="inscore" id="scene">
+	<pre>
+
+	/ITL/scene/faust set faustw "faust.wasm" "faust.json";
+	/ITL/scene/audio set audio "./rsrc/FilDeSoi1_guitare_1_2_3_4.wav";
+	/ITL/scene/audio show 0;
+	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
+	
+	ypanel = 0.85;	
+	/ITL/scene watch SCOREREADY ( /ITL/log write Score is ready );
+	/ITL/scene watch CTRLPANELREADY (
+		/ITL/scene/controlPanel x 0.45, 
+		/ITL/scene/controlPanel y $ypanel
+	);
+	/ITL/scene watch MIDIPANELREADY (
+		 /ITL/scene/midiPanel x -0.45, 
+		/ITL/scene/midiPanel y $ypanel
+	);
+	/ITL/scene watch PLAYPANELREADY ( /ITL/scene/playPanel y $ypanel );
+	
+	/ITL/scene watch PLAY ( 	
+		/ITL/scene/faust connect audioOutput,
+		/ITL/scene/cursor tempo 60,
+		/ITL/scene/audio play 1
+	);
+	
+	/ITL/scene watch STOP (
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0,
+		/ITL/scene/audio vdate 0,
+		/ITL/scene/cursor date 0
+	);
+	
+	/ITL/scene watch PAUSE (
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0
+	);
+	
+	/ITL/scene watch MOVETO (
+		/ITL/scene/cursor date '$1',
+		/ITL/scene/audio vdate '$1'
+	);
+	
+	/ITL/midi watch ready ( /ITL load "src/midiPanel.inscore" );
+	/ITL/midi watch error ( /ITL load "src/midiOff.inscore" );
+	/ITL/midi init;
+
+	/ITL load "src/faustSections.inscore";
+	/ITL load "src/webevents.inscore";
+	/ITL load "src/score.inscore";
+	/ITL load "src/controlPanel.inscore";
+	/ITL load "src/playControl.inscore";
+	/ITL load "src/help.inscore";
+	/ITL load "src/keyboard.inscore";
+
+</pre>
+</div>
+<div class="connect" id="cnx">
+	<button type="button" id="connect" onclick="connect()">Connect</button>
+	<input type="text" id="dest" name="dest" value="http://inscorejs.grame.fr:7200" size="25">
+</div>
+</body>
+<script>
+	function connect() {
+		let dest = document.getElementById ("dest");
+		let cnx = document.getElementById ("connect");
+		let addesss = "/ITL";
+		if (cnx.textContent == "Disconnect") {
+			inscore.postMessageStr("/ITL", "connect");	
+			cnx.textContent = "Connect";		
+		}
+		else {
+			console.log ("dest " + dest.value);
+			inscore.postMessageStrStr("/ITL", "connect", dest.value);	
+			cnx.textContent = "Disconnect";
+		}
+	}
+</script>
+</html>

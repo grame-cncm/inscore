@@ -1,0 +1,27 @@
+
+alpha = 120;
+
+/ITL/scene/forward set txt Forward;
+/ITL/scene/forward fontSize 20;
+/ITL/scene/forward alpha $alpha;
+/ITL/scene/forward x -0.8;
+/ITL/scene/forward y -0.88;
+/ITL/scene/forward watch mouseEnter (/ITL/scene/forward alpha 255);
+/ITL/scene/forward watch mouseLeave (/ITL/scene/forward alpha $alpha);
+/ITL/scene/forward watch mouseDown (
+	/ITL/scene/forward push,
+	/ITL/log show 1,
+	/ITL forward  "https://localhost:7200",
+	/ITL/scene/forward set txt 'Stop forwarding',
+	/ITL/scene/forward watch mouseDown (
+		/ITL/scene/forward set txt Forward,
+		/ITL forward,
+		/ITL/scene/forward pop
+	)
+);
+
+
+/ITL/ssl cert 	"inscorejs.grame.fr/certificate.crt";
+/ITL/ssl key 	"inscorejs.grame.fr/private.key";
+/ITL/ssl cacert "inscorejs.grame.fr/ca_bundle.crt";
+/ITL/filter reject "/ITL" "/ITL/log"  load ddate quit;

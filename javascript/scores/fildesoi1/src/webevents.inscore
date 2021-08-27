@@ -1,0 +1,13 @@
+/ITL/scene watch PLAYBACK ( 
+	/ITL/scene/audio '$1' '$2' 
+);
+
+/ITL/scene watch AUDIOIN ( 
+	/ITL/scene/audioInput  '$1' '$2' 
+);
+
+__END__
+
+/ITL/scene/audio get connect;
+/ITL/scene/faust get connect;
+

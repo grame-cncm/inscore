@@ -1,0 +1,22 @@
+#/ITL/scene/* del;
+
+fontsize = 18;
+gap = 0.2;
+
+/ITL/scene/midiPanel set rect 0.3 0.2;
+/ITL/scene/midiPanel scale 0.8;	
+/ITL/scene/midiPanel color white;
+
+/ITL/scene/midiPanel/msg1 	set txt "MIDI control is not available";
+/ITL/scene/midiPanel/msg2 	set txt "See the console for more details";
+/ITL/scene/midiPanel/msg* 	fontSize $fontsize;
+/ITL/scene/midiPanel/msg* 	color grey;
+/ITL/scene/midiPanel/msg1 	y -$gap;
+/ITL/scene/midiPanel/msg2 	y $gap;
+
+
+/ITL/scene event MIDIPANELREADY;
+
+__END__
+
+/ITL/scene/midiPanel penWidth 1;
