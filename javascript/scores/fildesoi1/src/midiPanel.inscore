@@ -35,36 +35,39 @@ fontsize = 18;
 
 /ITL/scene/midiPanel/1btnProg watch mouseDown (
 	/ITL/scene/midiPanel/1btnProg push,
-	/ITL/scene/midiPanel/?btn* color $off,
+	/ITL/scene/midiPanel/[23]btn* color $off,
+	/ITL/scene/midiPanel/[23]btn* pop,
 	/ITL/scene/midiPanel/1btnProg color $on,
 	/ITL/scene event MIDIWATCH prog,
 	/ITL/scene/midiPanel/1btnProg watch mouseDown (
 		/ITL/scene/midiPanel/1btnProg color $off,
-		/ITL/scene event MIDIWATCH none,
+		/ITL/scene event MIDINOWATCH,
 		/ITL/scene/midiPanel/1btnProg pop
 	)
 );
 
 /ITL/scene/midiPanel/2btnCtrl watch mouseDown (
 	/ITL/scene/midiPanel/2btnCtrl push,
-	/ITL/scene/midiPanel/?btn* color $off,
+	/ITL/scene/midiPanel/[13]btn* color $off,
+	/ITL/scene/midiPanel/[13]btn* pop,
 	/ITL/scene/midiPanel/2btnCtrl color $on,
 	/ITL/scene event MIDIWATCH ctrl,
 	/ITL/scene/midiPanel/2btnCtrl watch mouseDown (
 		/ITL/scene/midiPanel/2btnCtrl color $off,
-		/ITL/scene event MIDIWATCH none,
+		/ITL/scene event MIDINOWATCH,
 		/ITL/scene/midiPanel/2btnCtrl pop
 	)
 );
 
 /ITL/scene/midiPanel/3btnKeyOn watch mouseDown (
 	/ITL/scene/midiPanel/3btnKeyOn push,
-	/ITL/scene/midiPanel/?btn* color $off,
+	/ITL/scene/midiPanel/[12]btn* color $off,
+	/ITL/scene/midiPanel/[12]btn* pop,
 	/ITL/scene/midiPanel/3btnKeyOn color $on,
 	/ITL/scene event MIDIWATCH keyon,
 	/ITL/scene/midiPanel/3btnKeyOn watch mouseDown (
 		/ITL/scene/midiPanel/3btnKeyOn color $off,
-		/ITL/scene event MIDIWATCH none,
+		/ITL/scene event MIDINOWATCH,
 		/ITL/scene/midiPanel/3btnKeyOn pop
 	)
 );
