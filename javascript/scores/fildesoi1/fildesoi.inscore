@@ -14,7 +14,7 @@ ypanel = 0.85;
 	/ITL/scene/controlPanel y $ypanel
 );
 /ITL/scene watch MIDIPANELREADY (
- 	/ITL/scene/midiPanel x -0.45, 
+ 	/ITL/scene/midiPanel x -0.41, 
 	/ITL/scene/midiPanel y $ypanel
 );
 /ITL/scene watch PLAYPANELREADY ( /ITL/scene/playPanel y $ypanel );
@@ -43,6 +43,7 @@ ypanel = 0.85;
 
 
 /ITL load "src/score.inscore";
+/ITL load "src/sectionflag.inscore";
 /ITL load "src/controlPanel.inscore";
 /ITL load "src/midiPanel.inscore";
 /ITL load "src/playControl.inscore";
@@ -54,6 +55,7 @@ ypanel = 0.85;
 
 
 __END__
+ 	/ITL/scene/midiPanel x -0.41;
 
 alpha = 120;
 w = 0.09;

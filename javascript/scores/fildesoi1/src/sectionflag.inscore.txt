@@ -1,0 +1,6 @@
+
+w = 0.06;
+/ITL/scene/flag set ellipse $w $w;
+/ITL/scene/flag color red;
+/ITL/scene/flag x -0.56;
+/ITL/scene/flag y -0.685;

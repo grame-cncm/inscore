@@ -1,5 +1,5 @@
 
-WEBSRC := score.inscore controlPanel.inscore playControl.inscore help.inscore keyboard.inscore midiPanel.inscore
+WEBSRC := score.inscore controlPanel.inscore playControl.inscore help.inscore keyboard.inscore midiPanel.inscore sectionflag.inscore
 WEBTXT := $(WEBSRC:%=src/%.txt)
 
 JS     := lib/libINScore.js lib/libINScore.wasm lib/FaustLibrary.js inscoreview.js inscoreglue.js

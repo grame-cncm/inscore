@@ -1,7 +1,14 @@
+
+SEC1COLOR = red;
+SEC2COLOR = blue;
+SEC3COLOR = green;
+SEC4COLOR = orange;
+
 /ITL/scene watch SECTION2 (
     /ITL/scene/faust/inscore/Global_Parameters/hWin   22,
     /ITL/scene/faust/inscore/Global_Parameters/dStretch 0.75, 
-    /ITL/scene/cursor color blue,
+	/ITL/scene/cursor color $SEC2COLOR,
+	/ITL/scene/flag color $SEC2COLOR, 
 	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION3 ),
 	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION1 )
 );
@@ -9,7 +16,8 @@
 /ITL/scene watch SECTION3 (
     /ITL/scene/faust/inscore/Global_Parameters/hWin   24,
     /ITL/scene/faust/inscore/Global_Parameters/dStretch 0.7, 
-    /ITL/scene/cursor color green,
+	/ITL/scene/cursor color $SEC3COLOR,
+	/ITL/scene/flag color $SEC3COLOR, 
 	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION4 ),
 	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION2 )
 );
@@ -19,7 +27,8 @@
     /ITL/scene/faust/inscore/Lines/Del_Feedbacks/fd113   0.4,
     /ITL/scene/faust/inscore/Global_Parameters/dStretch 0.8,
     /ITL/scene/faust/inscore/Global_Parameters/hStretch 2.0, 
-    /ITL/scene/cursor color orange,
+	/ITL/scene/cursor color $SEC4COLOR,
+	/ITL/scene/flag color $SEC4COLOR,
 	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION4 ),
 	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION3 )
 );
@@ -192,7 +201,8 @@
     /ITL/scene/faust/inscore/RandomEnv/renv_freq  nentry 13.,
     /ITL/scene/faust/inscore/RandomEnv/renv_short   0.5,
     /ITL/scene/faust/inscore/Global_Parameters/generalGain   0., 
-    /ITL/scene/cursor color red,
+	/ITL/scene/cursor color $SEC1COLOR,
+	/ITL/scene/flag color $SEC1COLOR,
 	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION2 ),
 	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION1 )
 );

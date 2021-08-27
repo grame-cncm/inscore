@@ -38,7 +38,7 @@
 		/ITL/scene/controlPanel y $ypanel
 	);
 	/ITL/scene watch MIDIPANELREADY (
-		 /ITL/scene/midiPanel x -0.45, 
+		 /ITL/scene/midiPanel x -0.41, 
 		/ITL/scene/midiPanel y $ypanel
 	);
 	/ITL/scene watch PLAYPANELREADY ( /ITL/scene/playPanel y $ypanel );
@@ -71,6 +71,7 @@
 	/ITL/midi init;
 
 	/ITL load "src/score.inscore.txt";
+	/ITL load "src/sectionflag.inscore.txt";
 	/ITL load "src/webevents.inscore.txt";
 	/ITL load "src/controlPanel.inscore.txt";
 	/ITL load "src/playControl.inscore.txt";
