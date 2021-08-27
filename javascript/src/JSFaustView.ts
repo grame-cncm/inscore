@@ -91,7 +91,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                 this.fCompute = compute;
                 // if (compute) this.fAudioNode.start();
                 // else this.fAudioNode.stop();
-                console.log ("JSFaustView.updateSpecific compute " + compute);
+                // console.log ("JSFaustView.updateSpecific compute " + compute);
             }
             let val = data.values;
             let n = val.size();
