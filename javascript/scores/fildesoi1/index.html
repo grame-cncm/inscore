@@ -13,61 +13,9 @@
 	<script src="../../inscoreview.js"></script>
 	<script src="../../inscoreglue.js"></script>
 	<style>
-	body { margin: 10; background: white; }
-	.inscore { width: 100%; height: 95%; font-size: 1px; }
+		body { margin: 10; background: white; }
+		.inscore { width: 100%; height: 95%; font-size: 1px; }
 	</style>
-	<script>
-		var currentMidiNum = 0;
-		var currentSection = 0;
-		var currentMidiProg = "prog";
-		function nextSection() {
-			currentSection += 1;
-			if (currentSection > 4) {
-				return 0;
-			}
-			return("/ITL/scene/faust event SECTION" + currentSection + ";");
-		}
-		function setCurrentMidiProgram(midiProg) {
-			currentMidiProg = midiProg;
-		}
-		function nextMidiNumber() {
-			currentMidiNum += 1;
-			if (currentMidiNum > 127) {
-				currentMidiNum = 0;
-			}
-			if (currentMidiProg === "prog")
-				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event PROGON;";
-			else if (currentMidiProg === "ctrl")
-				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event CTRLON;";
-			return 0;
-		}
-		function prevMidiNumber() {
-			currentMidiNum -= 1;
-			if (currentMidiNum < 0) {
-				currentMidiNum = 127;
-			}
-			if (currentMidiProg === "prog")
-				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event PROGON;";
-			else if (currentMidiProg === "ctrl")
-				return "/ITL/scene/midiControlPanel/selector/txt set txt " + currentMidiNum + "; /ITL/scene event CTRLON;";
-			return 0;
-		}
-		function getMidiNumber(msg) {
-			if (msg === "ctrl") {
-				currentMidiProg = "ctrl";
-				return ("/ITL/scene watch midi ctrl " + currentMidiNum + " [0-127] (/ITL/scene/javascript run 'nextSection()');");
-			} else if (msg === "prog") {
-				currentMidiProg = "prog";
-				return ("/ITL/scene watch midi prog " + currentMidiNum + " (/ITL/scene/javascript run 'nextSection()');");
-			}
-			currentMidiProg = "keyon";
-			return 0;
-		}
-		function toSection(section) {
-			currentSection = section;
-			return ("/ITL/scene/faust event SECTION" + currentSection + ";");
-		}
-	</script>
 </head>
 
 <body>
@@ -81,7 +29,10 @@
 	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
 	
 	ypanel = 0.85;	
-	/ITL/scene watch SCOREREADY ( /ITL/log write Score is ready );
+	/ITL/scene watch SCOREREADY ( 
+		/ITL load "src/faustSections.inscore.txt",
+		/ITL/log write Score is ready
+	);
 	/ITL/scene watch CTRLPANELREADY (
 		/ITL/scene/controlPanel x 0.45, 
 		/ITL/scene/controlPanel y $ypanel
@@ -119,9 +70,8 @@
 	/ITL/midi watch error ( /ITL load "src/midiOff.inscore.txt" );
 	/ITL/midi init;
 
-	/ITL load "src/faustSections.inscore.txt";
-	/ITL load "src/webevents.inscore.txt";
 	/ITL load "src/score.inscore.txt";
+	/ITL load "src/webevents.inscore.txt";
 	/ITL load "src/controlPanel.inscore.txt";
 	/ITL load "src/playControl.inscore.txt";
 	/ITL load "src/help.inscore.txt";
