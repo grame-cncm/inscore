@@ -1,60 +1,116 @@
 <html>
+    <head>
+        <style>
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.17em; }
+            h4 { font-size: 1.12em; }
+            h5 { font-size: .83em; }
+            h6 { font-size: .75em; }
+            body {height: 100%;}
+            section {
+                display: flex;
+                flex-flow: column;
+                /* width: 100%; */
+                /* height: 100%; */
+                background-color: rgba(0, 0, 0, 0.7);
+                /* overflow-y: scroll; */
+                margin-left: 10rem;
+                margin-right: 10rem;
+                /* width: 30vw; */
+                padding: 1rem;
+                color: rgba(220, 220, 220, 1);
+            }
+            article {
+                display:flex;
+                flex-flow: column
+            }
+            th, td {
+                border: 1px solid rgba(220, 220, 220, 1);
+                text-align: center;
+            }
+            table {
+                align-self: center;
+                color: rgba(220, 220, 220, 1);
+                width: 50%;
+                padding-left: 1vw;
+                padding-right: 1vw;
+            }
+            @media screen and (max-width: 992px) {
+            body {
+                width: 100%;
+                transform: scale(2) !important;
+                }
+            }
+            @media screen and (max-width: 600px) {
+            body {	
+                width: 100%;
+                transform: scale(2) !important;
+                }
+            }
+    	</style>
+    </head>
     <body>
-        <article>
-            <h1>
-                This score contains an audio DSP.
-            </h1>
-            <p>
-                It will interact with the microphone and audio of the connected clients. 
-                Some parameters of this Audio DSP will change automatically when the cursor enters SECTIONS represented by numbered markers. (1, 2, 3, 4)
-                Clicks on the score can change the cursor of section making the activated parametter change.
-                To trigger theses events manually, you can press theses keyboard shortcuts:
-            </p>
-            <table>
-                <tr>
-                    <th>Action</th>
-                    <th>Key</th>
-                </tr>
-                <tr>
-                    <td> Activate section 1 </td>
-                    <td> 1 </td>                    
-                </tr><tr>
-                    <td> Activate section 2 </td>
-                    <td> 2 </td>
-                </tr><tr>
-                    <td> Activate section 3 </td>
-                    <td> 3 </td>
-                </tr><tr>
-                    <td> Activate section 4 </td>
-                    <td> 4 </td>
-                </tr><tr>
-                    <td> Next section </td>
-                    <td> 5 </td>
-                </tr>
-            </table>
-        </article>
-        <article>
-            <h1>
-                This score supports Midi inputs
-            </h1>
-            <p>
-                You can use Midi Inputs to cycle through Sections. You can define which type of Midi input will trigger the cycling.
-                It can be :
-                    <ul>
-                        <li>Any KeyOn</li>
-                        <li>Program change</li>
-                        <li>Control change</li>
-                    </ul>
-            </p>
-        </article>
-        <article>
-            <h1>
-                INScore remote control
-            </h1>
-            <p>
-                Clients can connect to a fildesoi.inscore native score launched in standalone.
-                To connect to a native score, use the connection form at the end of the client page.
-            </p>
-        </article>
+        <section>
+            <h1>FilDeSoi 1 - INScore</h1>
+            <article>
+                <h2>Contains an audio DSP</h2>
+                <p>
+                    The Audio DSP will interact with the microphone and the audio of the connected clients. 
+                    Some parameters of this Audio DSP will change automatically when the cursor enters SECTIONS represented by numbered markers. (1, 2, 3, 4)
+                    Clicks on the score can move the cursor thus changing the current section changing the active parametters.
+                    To trigger theses events manually, User can press keyboard keys that match with the section number.
+                </p>
+                <table>
+                    <tr>
+                        <th>Action</th>
+                        <th>Key</th>
+                    </tr>
+                    <tr>
+                        <td> Activate section 1 </td>
+                        <td> 1 </td>                    
+                    </tr><tr>
+                        <td> Activate section 2 </td>
+                        <td> 2 </td>
+                    </tr><tr>
+                        <td> Activate section 3 </td>
+                        <td> 3 </td>
+                    </tr><tr>
+                        <td> Activate section 4 </td>
+                        <td> 4 </td>
+                    </tr><tr>
+                        <td> Next section </td>
+                        <td> &rarr; </td>
+                    </tr>
+                    </tr><tr>
+                        <td> Previous section </td>
+                        <td> &larr; </td>
+                    </tr>
+                </table>
+                <p>The user can use MIDI inputs, if the browser supports it.</p>
+            </article>
+            <article>
+                <h2>
+                    MIDI inputs
+                </h2>
+                <p>
+                    MIDI Inputs can be used to change sections manually. User can define which type of MIDI input will trigger the change.
+                        <ul>
+                            <li>Any KeyOn</li>
+                            <li>Program change</li>
+                            <li>Control change</li>
+                        </ul>
+                </p>
+            </article>
+            <article>
+                <h1>
+                    INScore remote control
+                </h1>
+                <p>
+                    Clients can connect to a fildesoi.inscore native score launched in standalone.
+                    To connect to a native score, the connection form is at the end of the client page.
+                </p>
+            </article>
+        </section>
     </body>
 </html>
