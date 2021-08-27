@@ -45,9 +45,11 @@ class MidiSetup {
         let status = event.data[0];
         if ((MidiSetup.fVerbose === 1) && (status >= 0xf0)) return;
         if (status >= 0xf0)     // system events: displays only the status
-            console.log (MidiSetup.fMidiStatus.get(status >> 4));
-        else
-            console.log("Chan ", status & 0xf, MidiSetup.fMidiStatus.get(status >> 4), event.data[1], event.data[2] ? event.data[2] : "");
+            console.log (MidiSetup.fMidiStatus.get(status));
+        else {
+            console.log("status & 0xf0 : ", status & 0xf0)
+            console.log("Chan ", status & 0xf, MidiSetup.fMidiStatus.get(status & 0xf0), event.data[1], event.data[2] ? event.data[2] : "");
+        }
     }
 
     static midiInput(event: WebMidi.MIDIMessageEvent) {
