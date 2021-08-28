@@ -45,9 +45,10 @@ class MidiSetup {
         let status = event.data[0];
         if ((MidiSetup.fVerbose === 1) && (status >= 0xf0)) return;
         if (status >= 0xf0)     // system events: displays only the status
-            console.log (MidiSetup.fMidiStatus.get(status >> 4));
-        else
-            console.log("Chan ", status & 0xf, MidiSetup.fMidiStatus.get(status >> 4), event.data[1], event.data[2] ? event.data[2] : "");
+            console.log (MidiSetup.fMidiStatus.get(status));
+        else {
+            console.log("Chan ", status & 0xf, MidiSetup.fMidiStatus.get(status & 0xf0), event.data[1], event.data[2] ? event.data[2] : "");
+        }
     }
 
     static midiInput(event: WebMidi.MIDIMessageEvent) {
@@ -65,6 +66,7 @@ class MidiSetup {
 
     static onErrorCallback() {
         console.log("Failed to initialise MIDI input...");
+        console.log("You MIDI interface has not been recognized.");
         MidiSetup.event ("error");
     }
 
@@ -98,6 +100,8 @@ class MidiSetup {
             );
         } else {
             console.log("Failed to initialise MIDI input...");
+            console.log("Your browser do not support the Web MIDI API.");
+            console.log("Try using another one.");
             MidiSetup.event ("error");
         }
     }

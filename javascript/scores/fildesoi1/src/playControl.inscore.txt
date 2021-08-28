@@ -1,0 +1,49 @@
+#/ITL/scene/* del;
+
+origin = 1.2;
+alpha = 120;
+rsrc  = 'rsrc/';
+play  = $rsrc + 'play.png';
+pause = $rsrc + 'pause.png';
+stop  = $rsrc + 'stop.png';
+
+/ITL/scene/playPanel set rect 0.3 0.2;
+/ITL/scene/playPanel scale 0.7;	
+/ITL/scene/playPanel color white;
+
+/ITL/scene/playPanel/play set img $play;
+/ITL/scene/playPanel/stop set img $stop;
+/ITL/scene/playPanel/play xorigin $origin;
+/ITL/scene/playPanel/stop xorigin -$origin;
+/ITL/scene/playPanel/* width 1;
+/ITL/scene/playPanel/* alpha $alpha;
+
+/ITL/scene/playPanel watch STOP (
+	/ITL/scene event STOP,
+	/ITL/scene/playPanel/play set img $play,
+	/ITL/scene/playPanel/play pop
+);
+
+/ITL/scene/playPanel/* watch mouseEnter (/ITL/scene/playPanel/$self alpha 256);
+/ITL/scene/playPanel/* watch mouseLeave (/ITL/scene/playPanel/$self alpha $alpha);
+/ITL/scene/playPanel/stop watch mouseDown ( /ITL/scene/playPanel event STOP );
+
+/ITL/scene/playPanel/play watch mouseDown (
+	/ITL/scene/playPanel/play push,
+	/ITL/scene/playPanel/play set img $pause,
+	/ITL/scene event PLAY,
+	/ITL/scene/playPanel/play watch mouseDown (
+		/ITL/scene/playPanel/play set img $play,
+		/ITL/scene event PAUSE,
+		/ITL/scene/playPanel/play pop
+	)
+);
+
+/ITL/scene/playPanel watch keyDown " " (/ITL/scene/playPanel/play event mouseDown 0 0);
+
+/ITL/scene event PLAYPANELREADY;
+
+
+__END__
+
+/ITL/scene get rootPath;

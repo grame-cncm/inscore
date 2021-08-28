@@ -1,0 +1,42 @@
+
+
+/ITL/scene/* del;
+
+/ITL/scene/title set txt "Keyboard events";
+/ITL/scene/title y -0.7;
+/ITL/scene/title fontSize 48;
+
+w = 0.5;
+/ITL/scene/r1 set rect $w $w;
+/ITL/scene/r2 set rect $w $w;
+/ITL/scene/r3 set rect $w $w;
+
+/ITL/scene/r1 x $w * -1.1;
+/ITL/scene/r3 x $w * 1.1;
+
+/ITL/scene/r1/text set txt "1";
+/ITL/scene/r2/text set txt "2";
+/ITL/scene/r3/text set txt "3";
+/ITL/scene/r*/text color white;
+/ITL/scene/r*/text fontSize 32;
+
+/ITL/scene/r1 watch keyDown "1" ( /ITL/scene/$self color red );
+/ITL/scene/r1 watch keyUp "1" 	( /ITL/scene/$self color black );
+
+/ITL/scene/r2 watch keyDown "2" ( /ITL/scene/$self color green );
+/ITL/scene/r2 watch keyUp "2" 	( /ITL/scene/$self color black );
+
+/ITL/scene/r3 watch keyDown "3" ( /ITL/scene/$self color blue );
+/ITL/scene/r3 watch keyUp "3" 	( /ITL/scene/$self color black );
+
+step = 0.008;
+/ITL/scene/r* watch keyDown ArrowLeft ( /ITL/scene/$self dx $step * -1 );
+/ITL/scene/r* watch keyDown ArrowRight ( /ITL/scene/$self dx $step );
+/ITL/scene/r* watch keyDown ArrowUp ( /ITL/scene/$self dy $step * -1 );
+/ITL/scene/r* watch keyDown ArrowDown ( /ITL/scene/$self dy $step );
+
+/ITL/scene/comment1 set txt "Press '1' '2' or '3' keys";
+/ITL/scene/comment1 y 0.7;
+/ITL/scene/comment2 set txt "Use the arrows to move the objects";
+/ITL/scene/comment2 y 0.78;
+/ITL/scene/comment* fontSize 18;

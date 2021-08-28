@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Fil De Soi 1 - Help</title>
+            <style>
+            h1 { font-size: 3em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.17em; margin-left: 2vw;}
+            body {
+                margin: 5vw; 
+                background-color: white;
+                font-family: Arial, Helvetica;
+            }
+            section {
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                display: flex;
+                flex-flow: column;
+            }
+            a, a:hover, a:focus {
+                color: #157AB5;
+                text-decoration: none;
+            }
+            img { display: inline-block; max-width: 880px; }
+            p, li { margin-left: 5vw;}
+            hr { border: 1px solid grey; margin-left: 20%; margin-right: 20%; margin-bottom: 1em;}
+            .grame { width: 130px; 	display: block; margin: auto; }
+            .uc { float: right; width: 180px; margin-left: 5vw; margin-top: 0.5em;}
+            .intro { font-style: italic; font-size: 105%; }
+    	</style>
+    </head>
+    <body>
+        <h1>Fil De Soi 1</h1>
+        <section class=intro>
+        <p>
+        <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> and 2 are two mixed pieces for guitar and live electronics composed by <a href=https://alainbonardi.net/>Alain Bonardi</a> and performed by Amèlia Mazarico. <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> was premiered on 17 September 2016. 
+        <br/>
+        More <a href=http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi>information</a> about the piece...
+        </p>
+        <p>
+        "Fil de soi 1" can be performed using the musical score <a href=https://berio.grame.fr/FilDeSoi1>available online</a>, including all the live electronics.
+        The musical score is interactive. It has been designed using <a href=https://inscore.grame.fr>INScore</a>, it embeds the live electronics using the <a href=https://faust.grame.fr>Faust</a> library.
+        <br/>
+        <a href=https://inscore.grame.fr>INScore</a> and <a href=https://faust.grame.fr>Faust</a> are both projects developped by the <a href=https://www.grame.fr>GRAME-CNCM</a> research laboratory.
+        </p>
+        </section>
+
+        <section>
+        <h2>How to use the musical score</h2>
+            <p>
+                The score provides a lot of control over the way to perform the piece. It includes a recording of the piece by Amèlia Mazarico that you can play with or without the electronics.
+                <br/>
+                The piece consists of four sections, indicated on the score by the markers 1 to 4. For each section, different parameters are applied to the electronics. These parameters are automatically applied in 'play' mode when the cursor, which indicates the current position, arrives in a section or when you move the current position by clicking on the score. However, you arbitrary move to any section parameters using the keyboard or using a MIDI controler.
+            </p>
+            <p>
+                The figure below summarizes the various controls available to play the piece. In addition (and not part of the figure), you can also use the keyboard to control the score.
+            </p>
+            <img src=rsrc/help.png alt="Annotated score">
+            </p>
+            <h3>Keyboard control</h3>
+            <p>
+                You can press keyboard keys to control the score:
+                <li>'space bar' : start or stop the player</li>
+                <li>'1' to '4' : activates the parameters of the corresponding section</li>
+                <li>'right arrow' : switch to next section parameters</li>
+                <li>'left arrow' : switch to previous section parameters</li>
+            </p>
+
+            <h3>MIDI control</h3>
+            <p>
+                MIDI control is available if your browser supports the Web MIDI API and if a MIDI controler is connected to your computer. MIDI events can only be used to switch to the next section parameters. You can select the type of event between:
+                <li>'Program Change' : any Program Change message will trigger the next section. </li>
+                <li>'Key On' : any Key On message will trigger the next section.</li>
+            </p>
+
+            <h3>Audio routing</h3>
+            <p>
+                It's the user responsibility to decide how the different audio streams (the recording of the piece and the audio input) are handled. The bottom right control panel is provided in this intend (where 'Playback' refers to the embedded recording of the piece):
+                <li>'Playback to audio output' : when ON, sends the recording to the speakers. </li>
+                <li>'Playback to DSP' : when ON, sends the recording to the electronics.</li>
+                <li>'Audio input to DSP' : when ON, sends the audio input (your microphone if any) to the electronics.</li>
+            </p>
+            <p>
+                    Note that you can use any arbitrary combination of selectors.
+            </p>
+
+        <h2>Use cases</h2>
+
+        <h3>Listening the recording with the electronics</h3>
+        <li>select 'Playback to audio output'. </li>
+        <li>select 'Playback to DSP'.</li>
+        <img src=rsrc/UC1.png alt="Audio routing" class=uc>
+
+        <h3>Playing with automatic sections changes</h3>
+        <li>switch 'Playback to audio output' to OFF. </li>
+        <li>switch 'Playback to DSP' to OFF.</li>
+        <li>select 'Audio input to DSP'.</li>
+        <img src=rsrc/UC23.png alt="Audio routing" class=uc>
+        <p> and start the player...
+            <br/>
+            Note that you are constraigned to the tempo of the recording.
+        </p>
+
+        <h3>Playing with manual sections changes</h3>
+        <li>switch 'Playback to audio output' to OFF. </li>
+        <li>switch 'Playback to DSP' to OFF.</li>
+        <li>select 'Audio input to DSP'.</li>
+        <img src=rsrc/UC23.png alt="Audio routing" class=uc>
+        <p>    don't start the player but play your instrument...
+            <br/>
+            Note that your tempo is free, but you have to switch manually to the next section using the keyboard or a MIDI controler.
+        </p>
+
+    </section>
+    <hr />
+    <a href=https://www.grame.fr><img class=grame src=rsrc/grame.png alt='Grame-CNCM'></a>
+    </body>
+</html>

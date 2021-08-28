@@ -1,0 +1,46 @@
+/ITL/scene watch PLAYBACK ( 
+	/ITL/scene/audio '$1' '$2' 
+);
+
+/ITL/scene watch AUDIOIN ( 
+	/ITL/scene/audioInput  '$1' '$2' 
+);
+
+next = (/ITL/scene event NEXTSECTION);
+
+/ITL/scene watch MIDIKEY ( 
+	/ITL/scene watch midi,
+	/ITL/scene watch midi keyon [0-127] $next
+);
+
+/ITL/scene watch MIDIPROG (
+	/ITL/scene watch midi,
+	/ITL/scene watch midi prog 0 $next,	
+	/ITL/scene watch midi prog 1 $next,	
+	/ITL/scene watch midi prog 2 $next,	
+	/ITL/scene watch midi prog 3 $next,	
+	/ITL/scene watch midi prog 4 $next,	
+	/ITL/scene watch midi prog 5 $next,	
+	/ITL/scene watch midi prog 6 $next,	
+	/ITL/scene watch midi prog 7 $next,	
+	/ITL/scene watch midi prog 8 $next,	
+	/ITL/scene watch midi prog 9 $next,	
+	/ITL/scene watch midi prog 10 $next
+);
+
+/ITL/scene watch MIDIOFF 	( /ITL/scene watch midi );
+
+
+
+__END__
+
+/ITL/scene/audio get connect;
+/ITL/scene/faust get connect;
+
+/ITL/scene event MIDIPROG;
+progchge = 192;
+/ITL/scene event midi $progchge 1 0; 
+
+/ITL/scene event MIDIKEY;
+keyon  	= 144;
+/ITL/scene event midi $keyon 60 100;

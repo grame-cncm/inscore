@@ -133,26 +133,40 @@
 	/ITL/scene/controlPanel/audioCtrltxtbtnAudioInToDSP 	set txt "Audio input to DSP";
 	/ITL load "src/controlPanel.inscore.txt";
 
+	/ITL/midi init;
 	/ITL/scene/midiControlPanel set rect 0.6 0.2;
-	/ITL/scene/midiControlPanel/selector set rect 0.6 1.5;
-	/ITL/scene/midiControlPanel/selector x -3;
-	/ITL/scene/midiControlPanel/selector color white;
-	/ITL/scene/midiControlPanel/selector/up set polygon 1 0 -1 0 0 -1;
-	/ITL/scene/midiControlPanel/selector/up y -1.5;
-	/ITL/scene/midiControlPanel/selector/down set polygon -1 0 1 0 0 1;
-	/ITL/scene/midiControlPanel/selector/down y 1.5;
-	/ITL/scene/midiControlPanel/selector/txt set txt "0";
-	/ITL/scene/midiControlPanel/selector/txt fontSize 15;
-	/ITL/scene/midiControlPanel/selector/txt y 0;
-
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Program Change";
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Control Change";
-	/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn";
-	/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4;
-	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4;
-	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4;
-	/ITL load "src/midiControl.inscore.txt";
+	/ITL/scene/midiControlPanel color white;
+	/ITL/scene/midiControlPanel x -0.4;
+	/ITL/scene/midiControlPanel y 0.9;
 	
+	/ITL/midi watch ready (
+		/ITL/scene/midiControlPanel/selector x -3,
+		/ITL/scene/midiControlPanel/selector color white,
+		/ITL/scene/midiControlPanel/selector/up set polygon 1 0 -1 0 0 -1,
+		/ITL/scene/midiControlPanel/selector/up y -1.5,
+		/ITL/scene/midiControlPanel/selector/down set polygon -1 0 1 0 0 1,
+		/ITL/scene/midiControlPanel/selector/down y 1.5,
+		/ITL/scene/midiControlPanel/selector/txt set txt "0",
+		/ITL/scene/midiControlPanel/selector/txt fontSize 15,
+		/ITL/scene/midiControlPanel/selector/txt y 0,
+
+		/ITL/scene/midiControlPanel/midiCtrltxtbtnProg 		    set txt "Program Change",
+		/ITL/scene/midiControlPanel/midiCtrltxtbtnCtrl 			set txt "Control Change",
+		/ITL/scene/midiControlPanel/midiCtrltxtbtnKeyOn 		set txt "Midi KeyOn",
+		/ITL/scene/midiControlPanel/midiCtrlbtnProg 			set rect 0.4 0.4,
+		/ITL/scene/midiControlPanel/midiCtrlbtnCtrl 			set rect 0.4 0.4,
+		/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn 			set rect 0.4 0.4,
+		/ITL load "src/midiControl.inscore.txt"
+	);
+
+	/ITL/midi watch error (
+		/ITL/scene/midiControlPanel/txt1 set txt "Try another browser...",
+		/ITL/scene/midiControlPanel/txt1 y -0.2,
+		/ITL/scene/midiControlPanel/txt2 set txt "This one is not supporting MIDI",
+		/ITL/scene/midiControlPanel/txt2 y 0.2
+
+	);
+
 	/ITL/scene/midiControlPanel/selector/up watch mouseDown (
 		/ITL/scene/javascript run "nextMidiNumber()"
 		

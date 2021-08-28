@@ -1,0 +1,64 @@
+#/ITL/scene/* del;
+
+on = green;
+off = white;
+btnw = 0.4;
+gap = 0.3;
+fontsize = 18;
+
+/ITL/scene/midiPanel set rect 0.4 0.2;
+/ITL/scene/midiPanel scale 0.8;	
+/ITL/scene/midiPanel color $off;
+
+/ITL/scene/midiPanel/1txtProg 		set txt "Midi Prog  [0-10]";
+/ITL/scene/midiPanel/2txtKeyOn 		set txt "Midi KeyOn [any]";
+/ITL/scene/midiPanel/1btnProg 		set rect $btnw $btnw;
+/ITL/scene/midiPanel/2btnKeyOn 		set rect $btnw $btnw;
+
+/ITL/scene/midiPanel/?txt* fontSize $fontsize;
+
+/ITL/scene/midiPanel/?btn* radius 5 5;
+/ITL/scene/midiPanel/?btn* penWidth 1;
+/ITL/scene/midiPanel/?btn* color white;
+
+/ITL/scene/midiPanel/?txt* yorigin -0.2;
+/ITL/scene/midiPanel/?txt* xorigin -1.1;
+/ITL/scene/midiPanel/?btn* xorigin 1.1;
+/ITL/scene/midiPanel/1* y -$gap;
+/ITL/scene/midiPanel/2* y $gap;
+/ITL/scene/midiPanel/* dx -1.3;
+
+/ITL/scene/midiPanel/?btn* watch mouseEnter (/ITL/scene/midiPanel/$self penWidth 2);
+/ITL/scene/midiPanel/?btn* watch mouseLeave (/ITL/scene/midiPanel/$self penWidth 1);
+
+/ITL/scene/midiPanel/1btnProg watch mouseDown (
+	/ITL/scene/midiPanel/1btnProg push,
+	/ITL/scene/midiPanel/2btnKeyOn color $off,
+	/ITL/scene/midiPanel/2btnKeyOn pop,
+	/ITL/scene/midiPanel/1btnProg color $on,
+	/ITL/scene event MIDIPROG,
+	/ITL/scene/midiPanel/1btnProg watch mouseDown (
+		/ITL/scene/midiPanel/1btnProg color $off,
+		/ITL/scene event MIDIOFF,
+		/ITL/scene/midiPanel/1btnProg pop
+	)
+);
+
+/ITL/scene/midiPanel/2btnKeyOn watch mouseDown (
+	/ITL/scene/midiPanel/2btnKeyOn push,
+	/ITL/scene/midiPanel/1btn* color $off,
+	/ITL/scene/midiPanel/1btn* pop,
+	/ITL/scene/midiPanel/2btnKeyOn color $on,
+	/ITL/scene event MIDIKEY,
+	/ITL/scene/midiPanel/2btnKeyOn watch mouseDown (
+		/ITL/scene/midiPanel/2btnKeyOn color $off,
+		/ITL/scene event MIDIOFF,
+		/ITL/scene/midiPanel/2btnKeyOn pop
+	)
+);
+
+/ITL/scene event MIDIPANELREADY;
+
+__END__
+
+/ITL/scene/midiPanel penWidth 1;

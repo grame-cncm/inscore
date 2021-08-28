@@ -1,0 +1,303 @@
+
+/ITL/scene/* del;
+/ITL/log show 1;
+
+/ITL/scene/audio set audio "./rsrc/FilDeSoi1_guitare_1_2_3_4.wav";
+/ITL/scene/audio show 0;
+/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
+
+ypanel = 0.85;
+
+/ITL/scene watch SCOREREADY ( /ITL/log write Score is ready );
+/ITL/scene watch CTRLPANELREADY (
+	/ITL/scene/controlPanel x 0.45, 
+	/ITL/scene/controlPanel y $ypanel
+);
+/ITL/scene watch MIDIPANELREADY (
+ 	/ITL/scene/midiPanel x -0.41, 
+	/ITL/scene/midiPanel y $ypanel
+);
+/ITL/scene watch PLAYPANELREADY ( /ITL/scene/playPanel y $ypanel );
+
+/ITL/scene watch PLAY ( 	
+	/ITL/scene/cursor tempo 60,
+	/ITL/scene/audio play 1
+);
+
+/ITL/scene watch STOP (
+	/ITL/scene/cursor tempo 0,
+	/ITL/scene/audio play 0,
+	/ITL/scene/audio vdate 0,
+	/ITL/scene/cursor date 0
+);
+
+/ITL/scene watch PAUSE (
+	/ITL/scene/cursor tempo 0,
+	/ITL/scene/audio play 0
+);
+
+/ITL/scene watch MOVETO (
+	/ITL/scene/cursor date '$1',
+	/ITL/scene/audio vdate '$1'
+);
+
+/ITL/scene watch END ( /ITL/scene/playPanel/stop event mouseDown 0 0 );
+
+
+/ITL load "src/score.inscore";
+/ITL load "src/sectionflag.inscore";
+/ITL load "src/controlPanel.inscore";
+/ITL load "src/midiPanel.inscore";
+/ITL load "src/playControl.inscore";
+/ITL load "src/help.inscore";
+/ITL load "src/sections.inscore";
+/ITL load "src/events.inscore";
+/ITL load "src/forward.inscore";
+/ITL load "src/keyboard.inscore";
+
+
+__END__
+ 	/ITL/scene/midiPanel x -0.41;
+
+alpha = 120;
+w = 0.09;
+
+/ITL/scene/btnstop set ellipse 1 1;
+/ITL/scene/btnplay set ellipse 1 1;
+
+/ITL/scene watch SETPLAYIMG (
+	/ITL/scene/btnplay color grey,
+	/ITL/scene/btnplay/fg set polygon 0 0 0 1 0.8 0.5,
+	/ITL/scene/btnplay/fg color white,
+	/ITL/scene/btnplay xorigin 0,
+	/ITL/scene/btnplay/fg x -1,
+	/ITL/scene/btnplay/fg y -1,
+	/ITL/scene/btn* y 0.9,
+	/ITL/scene/btn* scale $w,
+	/ITL/scene/btn* alpha $alpha,
+	/ITL/scene/btnplay/fg/mask set rect 0 0,
+	/ITL/scene/btnplay x -0.05	
+);
+
+/ITL/scene watch SETPAUSEIMG (
+	/ITL/scene/btnplay color grey,
+	/ITL/scene/btnplay/fg set rect 1 1,
+	/ITL/scene/btnplay/fg x 0,
+	/ITL/scene/btnplay/fg y 0,
+	/ITL/scene/btnplay/fg color white,
+	/ITL/scene/btnplay xorigin 0,
+	/ITL/scene/btn* y 0.9,
+	/ITL/scene/btn* scale $w,
+	/ITL/scene/btn* alpha $alpha,
+	/ITL/scene/btnplay/fg/mask set rect 1 2,
+	/ITL/scene/btnplay/fg/mask color grey,
+	/ITL/scene/btnplay/fg/mask alpha $alpha,
+	/ITL/scene/btnplay x -0.05	
+	);
+
+/ITL/scene watch SETSTOPIMG (
+	/ITL/scene/btnstop color grey,
+	/ITL/scene/btnstop/fg set rect 1 1,
+	/ITL/scene/btnstop/fg color white,
+	/ITL/scene/btnstop xorigin 0,
+	/ITL/scene/btn* y 0.9,
+	/ITL/scene/btn* scale $w,
+	/ITL/scene/btn* alpha $alpha,
+	/ITL/scene/btnstop/fg/mask set rect 0 0,
+	/ITL/scene/btnstop x 0.05
+	
+);
+
+initplay = (	
+	/ITL/scene/$self push,
+	/ITL/scene event SETPAUSEIMG,
+	/ITL/scene/cursor tempo 60,
+	/ITL/scene/audio play 1,
+	/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP ),
+	/ITL/scene/btnplay watch mouseDown (
+		/ITL/scene event SETPLAYIMG,
+		/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0,
+		/ITL/scene/$self pop
+	)
+);
+
+/ITL/scene/btnplay watch mouseDown $initplay;
+/ITL/scene/btnplay watch keyDown " " (/ITL/scene/btnplay event mouseDown 0 0);
+/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 );
+
+/ITL/scene event SETPLAYIMG;
+/ITL/scene event SETSTOPIMG;
+
+/ITL/scene watch STOP (
+	/ITL/scene/btnstop watch mouseDown ( /ITL/scene event STOP1 ),
+	/ITL/scene event SETPLAYIMG,
+	/ITL/scene/btnplay pop,
+	/ITL/scene/cursor tempo 0,
+	/ITL/scene/audio play 0,
+	/ITL/scene/audio vdate 0,
+	/ITL/scene/cursor date 0
+);
+/ITL/scene watch STOP1 (
+	/ITL/scene/audio vdate 0,
+	/ITL/scene/cursor date 0
+);
+
+
+/ITL/scene watch WAVONLYON (		
+	/ITL/scene/controlPanel/audioCtrlbtnWavOnly color green
+);
+/ITL/scene watch WAVONLYOFF (
+	/ITL/scene/controlPanel/audioCtrlbtnWavOnly color white
+);
+
+toggleWavOnly = (
+	/ITL/scene/controlPanel/$self push,
+	/ITL/scene event WAVONLYOFF,
+	/ITL/scene/controlPanel/audioCtrlbtnWavOnly watch mouseDown (
+		/ITL/scene event WAVONLYON,
+		/ITL/scene/controlPanel/$self pop
+	)
+);
+
+/ITL/scene watch WAVDSPON (
+	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color green
+);
+/ITL/scene watch WAVDSPOFF (
+	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP color white
+);
+
+toggleWavToDSP = (
+	/ITL/scene/controlPanel/$self push,
+	/ITL/scene event WAVDSPON,
+	/ITL/scene/controlPanel/audioCtrlbtnWavToDSP watch mouseDown (
+		/ITL/scene event WAVDSPOFF,
+		/ITL/scene/controlPanel/$self pop
+	)
+);
+
+/ITL/scene watch AINDSPON (
+	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color green
+);
+
+/ITL/scene watch AINDSPOFF (
+	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP color white
+);
+
+toggleAudioInToDSP = (
+	/ITL/scene/controlPanel/$self push,
+	/ITL/scene event AINDSPON,
+	/ITL/scene/controlPanel/audioCtrlbtnAudioInToDSP watch mouseDown (
+		/ITL/scene event AINDSPOFF,
+		/ITL/scene/controlPanel/$self pop
+	)
+);
+
+/ITL/scene watch PROGON (
+	/ITL/scene/midiControlPanel/selector show 1,
+	/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+	/ITL/scene/midiControlPanel/midiCtrlbtnProg color green,
+	/ITL/scene/javascript run 'getMidiNumber("prog")'
+);
+
+/ITL/scene watch CTRLON (
+	/ITL/scene/midiControlPanel/selector show 1,
+	/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+	/ITL/scene/midiControlPanel/midiCtrlbtnCtrl color green,
+	/ITL/scene/javascript run 'getMidiNumber("ctrl")'
+);
+
+/ITL/scene watch KEYONON (
+	/ITL/scene/midiControlPanel/midiCtrlbtn* color white,
+	/ITL/scene/midiControlPanel/midiCtrlbtnKeyOn color green,
+	/ITL/scene/midiControlPanel/selector show 0
+);
+
+/ITL/scene/cursor watch keyDown "1" ( /ITL/scene/javascript run "toSection(1)" );
+/ITL/scene/cursor watch keyDown "2" ( /ITL/scene/javascript run "toSection(2)" );
+/ITL/scene/cursor watch keyDown "3" ( /ITL/scene/javascript run "toSection(3)" );
+/ITL/scene/cursor watch keyDown "4" ( /ITL/scene/javascript run "toSection(4)" );
+/ITL/scene/cursor watch keyDown "5" ( /ITL/scene/javascript run "nextSection()");
+
+/ITL/scene/cursor watch timeEnter 9 15  ( /ITL/scene/javascript run "toSection(2)" );
+/ITL/scene/cursor watch timeEnter 15 22 ( /ITL/scene/javascript run "toSection(3)" );
+/ITL/scene/cursor watch timeEnter 22 30 ( /ITL/scene/javascript run "toSection(4)" );
+
+/ITL/scene/cursor watch timeEnter 30 1000 ( /ITL/scene event STOP );
+
+/ITL/scene watch SECTION1 ( /ITL/scene/cursor color red );
+/ITL/scene watch SECTION2 ( /ITL/scene/cursor color blue );
+/ITL/scene watch SECTION3 ( /ITL/scene/cursor color green );
+/ITL/scene watch SECTION4 ( /ITL/scene/cursor color orange );
+
+/ITL/scene event SECTION1;
+
+/ITL/scene/help set rect 1.5 1;
+/ITL/scene/help color white;
+/ITL/scene/help/description0 set txt "This score contains an audio DSP.";
+/ITL/scene/help/description1 set txt "It will interact with the microphone and audio of the connected clients.";
+/ITL/scene/help/description2 set txt "Some parameters of this Audio DSP will change automatically";
+/ITL/scene/help/description3 set txt "when the cursor enters SECTIONS represented by numbered markers.";
+/ITL/scene/help/description4 set txt "To trigger theses events manually, use shortcuts : 1 2 3 4";
+/ITL/scene/help/description0 y -0.8;
+/ITL/scene/help/description1 y -0.6;
+/ITL/scene/help/description2 y -0.5;
+/ITL/scene/help/description3 y -0.4;
+/ITL/scene/help/description4 y -0.3;
+
+/ITL/scene/help/description* fontSize 15;
+/ITL/scene/help/description0 fontSize 20;
+
+/ITL/scene/closebutton set rect 1 1;
+/ITL/scene/closebutton alpha 120;
+/ITL/scene/closebutton scale 0.07;
+/ITL/scene/closebutton penWidth 1;
+/ITL/scene/closebutton/txt set txt "X";
+/ITL/scene/closebutton/txt color white;
+/ITL/scene/closebutton/txt fontSize 600;
+/ITL/scene/closebutton penWidth 2;
+/ITL/scene/closebutton x 0.95;
+/ITL/scene/closebutton y -0.8;
+/ITL/scene/closebutton watch mouseEnter (/ITL/scene/closebutton/txt color red);
+/ITL/scene/closebutton watch mouseLeave (/ITL/scene/closebutton/txt color white);
+/ITL/scene/closebutton watch mouseDown (/ITL/scene event CLOSEHELP, /ITL/scene/docbtn pop);
+
+/ITL/scene watch OPENHELP (
+	/ITL/scene/help show 1,
+	/ITL/scene/closebutton show 1
+);
+
+/ITL/scene watch CLOSEHELP (
+	/ITL/scene/help show 0,
+	/ITL/scene/closebutton show 0,
+	/ITL/scene/closebutton/txt color white
+);
+
+docInit = (
+	/ITL/scene/docbtn push,
+	/ITL/scene event OPENHELP, 
+	/ITL/scene/docbtn watch mouseDown (
+		/ITL/scene event CLOSEHELP,
+		/ITL/scene/docbtn pop
+	)
+);
+
+/ITL/scene/docbtn set txt "Help";
+/ITL/scene/docbtn penWidth 2;
+
+/ITL/scene/docbtn xorigin 0;
+/ITL/scene/docbtn x 0;
+/ITL/scene/docbtn y 0.99;
+/ITL/scene/docbtn scale 0.5;
+/ITL/scene/docbtn fontSize 20;
+
+/ITL/scene/docbtn watch mouseDown $docInit;
+
+/ITL/scene/docbtn watch mouseEnter (/ITL/scene/docbtn color grey);
+/ITL/scene/docbtn watch mouseLeave (/ITL/scene/docbtn color black);
+/ITL/scene/help show 0;
+/ITL/scene/closebutton show 0;
+	
+/ITL forward  "http://localhost:8081";
+/ITL/filter reject ddate "/ITL/scene/btn*" "/ITL/scene/help" "/ITL/scene/controlPanel/*" "/ITL/scene/midiControlPanel/*";

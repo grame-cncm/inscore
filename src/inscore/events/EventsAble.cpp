@@ -298,7 +298,7 @@ bool EventsAble::popWatch ()
 		fMouseSensible = checkMouseSensibility();
 		return true;
 	}
-	reset();
+//	reset();
 	return false;
 }
 

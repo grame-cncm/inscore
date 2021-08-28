@@ -1,0 +1,8 @@
+
+/ITL/scene watch keyDown "1" ( /ITL/scene event SECTION1 );
+/ITL/scene watch keyDown "2" ( /ITL/scene event SECTION2 );
+/ITL/scene watch keyDown "3" ( /ITL/scene event SECTION3 );
+/ITL/scene watch keyDown "4" ( /ITL/scene event SECTION4 );
+
+/ITL/scene watch keyDown ArrowLeft  ( /ITL/scene event PREVSECTION );
+/ITL/scene watch keyDown ArrowRight ( /ITL/scene event NEXTSECTION );

@@ -1,0 +1,10 @@
+#/ITL/scene/* del;
+
+/ITL/scene/helpButton set txt "Help";
+/ITL/scene/helpButton fontSize 18;
+/ITL/scene/helpButton watch mouseEnter (/ITL/scene/helpButton color green);
+/ITL/scene/helpButton watch mouseLeave (/ITL/scene/helpButton color black);
+/ITL/scene/helpButton watch mouseDown (
+	/ITL browse "https://berio.grame.fr/FilDeSoi1/help.html"
+);
+/ITL/scene/helpButton y 0.94;

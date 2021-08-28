@@ -1,0 +1,77 @@
+#/ITL/scene/* del;
+
+on = green;
+off = white;
+btnw = 0.4;
+gap = 0.65;
+fontsize = 18;
+
+/ITL/scene/controlPanel set rect 0.6 0.2;
+/ITL/scene/controlPanel scale 0.8;	
+/ITL/scene/controlPanel color $off;
+
+/ITL/scene/controlPanel/1txtWavOnly 		set txt "Playback to audio output";
+/ITL/scene/controlPanel/2txtWavToDSP 		set txt "Playback to DSP";
+/ITL/scene/controlPanel/3txtAudioInToDSP 	set txt "Audio input to DSP";
+/ITL/scene/controlPanel/1btnWavOnly 		set rect $btnw $btnw;
+/ITL/scene/controlPanel/2btnWavToDSP 		set rect $btnw $btnw;
+/ITL/scene/controlPanel/3btnAudioInToDSP 	set rect $btnw $btnw;
+
+/ITL/scene/controlPanel/?btn* radius 5 5;
+/ITL/scene/controlPanel/?btn* penWidth 1;
+/ITL/scene/controlPanel/?btn* color white;
+
+/ITL/scene/controlPanel/?txt* fontSize $fontsize;
+/ITL/scene/controlPanel/?txt* xorigin -1.1;
+/ITL/scene/controlPanel/?txt* yorigin -0.2;
+/ITL/scene/controlPanel/?btn* xorigin 1.1;
+
+/ITL/scene/controlPanel/1* y -$gap;
+/ITL/scene/controlPanel/3* y $gap;
+/ITL/scene/controlPanel/* dx -2.3;
+/ITL/scene/controlPanel/1txtWavOnly dx -0.05;
+
+/ITL/scene/controlPanel/?btn* watch mouseEnter (/ITL/scene/controlPanel/$self penWidth 2);
+/ITL/scene/controlPanel/?btn* watch mouseLeave (/ITL/scene/controlPanel/$self penWidth 1);
+
+/ITL/scene/controlPanel/1btnWavOnly watch mouseDown (
+	/ITL/scene/controlPanel/1btnWavOnly push,
+	/ITL/scene/controlPanel/1btnWavOnly color $on,
+	/ITL/scene event PLAYBACK connect audioOutput,
+	/ITL/scene/controlPanel/1btnWavOnly watch mouseDown (
+		/ITL/scene/controlPanel/1btnWavOnly color $off,
+		/ITL/scene event PLAYBACK disconnect audioOutput,
+		/ITL/scene/controlPanel/1btnWavOnly pop
+	)
+);
+
+/ITL/scene/controlPanel/2btnWavToDSP watch mouseDown (
+	/ITL/scene/controlPanel/2btnWavToDSP push,
+	/ITL/scene/controlPanel/2btnWavToDSP color $on,
+	/ITL/scene event PLAYBACK connect faust,
+	/ITL/scene/controlPanel/2btnWavToDSP watch mouseDown (
+		/ITL/scene/controlPanel/2btnWavToDSP color $off,
+		/ITL/scene event PLAYBACK disconnect faust,
+		/ITL/scene/controlPanel/2btnWavToDSP pop
+	)
+);
+
+/ITL/scene/controlPanel/3btnAudioInToDSP watch mouseDown (
+	/ITL/scene/controlPanel/3btnAudioInToDSP push,
+	/ITL/scene/controlPanel/3btnAudioInToDSP color $on,
+	/ITL/scene event AUDIOIN connect faust,
+	/ITL/scene/controlPanel/3btnAudioInToDSP watch mouseDown (
+		/ITL/scene/controlPanel/3btnAudioInToDSP color $off,
+		/ITL/scene event AUDIOIN disconnect faust,
+		/ITL/scene/controlPanel/3btnAudioInToDSP pop
+	)
+);
+
+/ITL/scene/controlPanel/1btnWavOnly event mouseDown 0 0;
+/ITL/scene event CTRLPANELREADY;
+
+
+__END__
+
+/ITL/scene/controlPanel penWidth 1;
+

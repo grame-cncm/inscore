@@ -1,0 +1,33 @@
+
+SEC1COLOR = red;
+SEC2COLOR = blue;
+SEC3COLOR = green;
+SEC4COLOR = orange;
+
+/ITL/scene watch SECTION1 ( 
+	/ITL/scene/cursor color $SEC1COLOR,
+	/ITL/scene/flag color $SEC1COLOR,
+	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION2 ),
+	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION1 )
+);
+
+/ITL/scene watch SECTION2 ( 
+	/ITL/scene/cursor color $SEC2COLOR,
+	/ITL/scene/flag color $SEC2COLOR, 
+	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION3 ),
+	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION1 )
+);
+
+/ITL/scene watch SECTION3 ( 
+	/ITL/scene/cursor color $SEC3COLOR,
+	/ITL/scene/flag color $SEC3COLOR, 
+	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION4 ),
+	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION2 )
+);
+
+/ITL/scene watch SECTION4 ( 
+	/ITL/scene/cursor color $SEC4COLOR,
+	/ITL/scene/flag color $SEC4COLOR,
+	/ITL/scene watch NEXTSECTION ( /ITL/scene event SECTION4 ),
+	/ITL/scene watch PREVSECTION ( /ITL/scene event SECTION3 )
+);

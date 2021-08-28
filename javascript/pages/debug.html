@@ -1,0 +1,42 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<title>Perspectives - J. Bell</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3">
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libfaust-wasm.js"></script>
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../lib/libINScore.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoreglue.js"></script>
+	<style>
+	body { position: fixed; width: 100%; height: 100%; margin: 0; background: white; height: 100%; }
+	.connect { margin-left: 20px; }
+	.box { width: 100%; height: 95%; background: white; border-radius: 0px; font-size: 1px; }
+	</style>
+</head>
+
+<body>
+<div class="inscore box" id="scene">
+
+/ITL/scene/* del;
+<!-- /ITL/scene/effect set faust 'import("stdfaust.lib"); process =  ef.echo1s, ef.echo1s;';
+/ITL/scene/effect/echo__1000/feedback 70;
+/ITL/scene/effect/echo__1000/millisecond 280;
+/ITL/scene/effect scale 0.40;
+/ITL/scene/effect y 0.45;
+/ITL/scene/effect connect audioOutput; -->
+
+/ITL/scene/audio set audio 'perspectives2/rsrc/perspectives.mp3';
+/ITL/scene/audio watch ready (
+	/ITL/log write ready,
+	<!-- /ITL/scene/audio connect audioOutput, -->
+	/ITL/scene/audio play 1
+);
+
+</div>
+</body>
+	
+</html>

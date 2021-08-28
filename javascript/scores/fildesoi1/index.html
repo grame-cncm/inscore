@@ -1,0 +1,106 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
+	<meta http-equiv="Pragma" content="no-cache" /> 
+	<meta http-equiv="Expires" content="0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Fil De Soi 1</title>
+
+	<link href="../../fonts/fonts.css" rel="stylesheet">
+	<script src="../../lib/libINScore.js"></script>
+	<script src="../../lib/FaustLibrary.js"></script>
+	<script src="../../inscoreview.js"></script>
+	<script src="../../inscoreglue.js"></script>
+	<style>
+		body { margin: 10; background: white; }
+		.inscore { width: 100%; height: 95%; font-size: 1px; }
+	</style>
+</head>
+
+<body>
+
+<div class="inscore" id="scene">
+	<pre>
+
+	/ITL/scene/faust set faustw "faust.wasm" "faust.json";
+	/ITL/scene/audio set audio "./rsrc/FilDeSoi1_guitare_1_2_3_4.wav";
+	/ITL/scene/audio show 0;
+	/ITL/scene/score set img "./rsrc/FilDeSoi1.png";
+	
+	ypanel = 0.85;	
+	/ITL/scene watch SCOREREADY ( 
+		/ITL load "src/faustSections.inscore.txt",
+		/ITL/log write Score is ready
+	);
+	/ITL/scene watch CTRLPANELREADY (
+		/ITL/scene/controlPanel x 0.45, 
+		/ITL/scene/controlPanel y $ypanel
+	);
+	/ITL/scene watch MIDIPANELREADY (
+		 /ITL/scene/midiPanel x -0.41, 
+		/ITL/scene/midiPanel y $ypanel
+	);
+	/ITL/scene watch PLAYPANELREADY ( /ITL/scene/playPanel y $ypanel );
+	
+	/ITL/scene watch PLAY ( 	
+		/ITL/scene/faust connect audioOutput,
+		/ITL/scene/cursor tempo 60,
+		/ITL/scene/audio play 1
+	);
+	
+	/ITL/scene watch STOP (
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0,
+		/ITL/scene/audio vdate 0,
+		/ITL/scene/cursor date 0
+	);
+	
+	/ITL/scene watch PAUSE (
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/audio play 0
+	);
+	
+	/ITL/scene watch MOVETO (
+		/ITL/scene/cursor date '$1',
+		/ITL/scene/audio vdate '$1'
+	);
+
+	/ITL/scene watch END ( /ITL/scene/playPanel/stop event mouseDown 0 0 );
+	
+	/ITL/midi watch ready ( /ITL load "src/midiPanel.inscore.txt" );
+	/ITL/midi watch error ( /ITL load "src/midiOff.inscore.txt" );
+	/ITL/midi init;
+
+	/ITL load "src/score.inscore.txt";
+	/ITL load "src/sectionflag.inscore.txt";
+	/ITL load "src/webevents.inscore.txt";
+	/ITL load "src/controlPanel.inscore.txt";
+	/ITL load "src/playControl.inscore.txt";
+	/ITL load "src/help.inscore.txt";
+	/ITL load "src/keyboard.inscore.txt";
+
+</pre>
+</div>
+<div class="connect" id="cnx">
+	<button type="button" id="connect" onclick="connect()">Connect</button>
+	<input type="text" id="dest" name="dest" value="http://inscorejs.grame.fr:7200" size="25">
+</div>
+</body>
+<script>
+	function connect() {
+		let dest = document.getElementById ("dest");
+		let cnx = document.getElementById ("connect");
+		let addesss = "/ITL";
+		if (cnx.textContent == "Disconnect") {
+			inscore.postMessageStr("/ITL", "connect");	
+			cnx.textContent = "Connect";		
+		}
+		else {
+			console.log ("dest " + dest.value);
+			inscore.postMessageStrStr("/ITL", "connect", dest.value);	
+			cnx.textContent = "Disconnect";
+		}
+	}
+</script>
+</html>
