@@ -23,25 +23,30 @@
                 text-decoration: none;
             }
             img { display: inline-block; max-width: 880px; }
-            .grame { width: 130px; }
             p, li { margin-left: 5vw;}
+            hr { border: 1px solid grey; margin-left: 20%; margin-right: 20%; margin-bottom: 1em;}
+            .grame { width: 130px; 	display: block; margin: auto; }
+            .uc { float: right; width: 180px; margin-left: 5vw; margin-top: 0.5em;}
+            .intro { font-style: italic; font-size: 105%; }
     	</style>
     </head>
     <body>
-        <section>
         <h1>Fil De Soi 1</h1>
-            <p>
-            <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> and 2 are two mixed pieces for guitar and live electronics composed by <a href=https://alainbonardi.net/>Alain Bonardi</a> and performed by Amèlia Mazarico. <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> was premiered on 17 September 2016. 
-            <br/>
-            More <a href=http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi>information</a>...
-            </p>
-            <p>
-            "Fil de soi 1" can be performed using the musical score available online, including all the live electronics.
-            The musical score is interactive. It has been designed using <a href=https://inscore.grame.fr>INScore</a>, it embeds the live electronics using the <a href=https://faust.grame.fr>Faust</a> library.
-            <br/>
-            <a href=https://inscore.grame.fr>INScore</a> and <a href=https://faust.grame.fr>Faust</a> are both projects developped by the <a href=https://www.grame.fr>GRAME-CNCM</a> research laboratory.
-            </p>
+        <section class=intro>
+        <p>
+        <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> and 2 are two mixed pieces for guitar and live electronics composed by <a href=https://alainbonardi.net/>Alain Bonardi</a> and performed by Amèlia Mazarico. <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> was premiered on 17 September 2016. 
+        <br/>
+        More <a href=http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi>information</a> about the piece...
+        </p>
+        <p>
+        "Fil de soi 1" can be performed using the musical score <a href=https://berio.grame.fr/FilDeSoi1>available online</a>, including all the live electronics.
+        The musical score is interactive. It has been designed using <a href=https://inscore.grame.fr>INScore</a>, it embeds the live electronics using the <a href=https://faust.grame.fr>Faust</a> library.
+        <br/>
+        <a href=https://inscore.grame.fr>INScore</a> and <a href=https://faust.grame.fr>Faust</a> are both projects developped by the <a href=https://www.grame.fr>GRAME-CNCM</a> research laboratory.
+        </p>
+        </section>
 
+        <section>
         <h2>How to use the musical score</h2>
             <p>
                 The score provides a lot of control over the way to perform the piece. It includes a recording of the piece by Amèlia Mazarico that you can play with or without the electronics.
@@ -49,7 +54,7 @@
                 The piece consists of four sections, indicated on the score by the markers 1 to 4. For each section, different parameters are applied to the electronics. These parameters are automatically applied in 'play' mode when the cursor, which indicates the current position, arrives in a section or when you move the current position by clicking on the score. However, you arbitrary move to any section parameters using the keyboard or using a MIDI controler.
             </p>
             <p>
-                The figure below summarizes the various controls available to play the piece. In addition (and not part of the figure), you can also the the keyboard to control the score.
+                The figure below summarizes the various controls available to play the piece. In addition (and not part of the figure), you can also use the keyboard to control the score.
             </p>
             <img src=rsrc/help.png alt="Annotated score">
             </p>
@@ -85,11 +90,13 @@
         <h3>Listening the recording with the electronics</h3>
         <li>select 'Playback to audio output'. </li>
         <li>select 'Playback to DSP'.</li>
+        <img src=rsrc/UC1.png alt="Audio routing" class=uc>
 
         <h3>Playing with automatic sections changes</h3>
         <li>switch 'Playback to audio output' to OFF. </li>
         <li>switch 'Playback to DSP' to OFF.</li>
         <li>select 'Audio input to DSP'.</li>
+        <img src=rsrc/UC23.png alt="Audio routing" class=uc>
         <p> and start the player...
             <br/>
             Note that you are constraigned to the tempo of the recording.
@@ -99,14 +106,14 @@
         <li>switch 'Playback to audio output' to OFF. </li>
         <li>switch 'Playback to DSP' to OFF.</li>
         <li>select 'Audio input to DSP'.</li>
+        <img src=rsrc/UC23.png alt="Audio routing" class=uc>
         <p>    don't start the player but play your instrument...
             <br/>
-            Note that your tempo is free, but you have to switch manually to the next section using the keyboard of a MIDI controler.
+            Note that your tempo is free, but you have to switch manually to the next section using the keyboard or a MIDI controler.
         </p>
 
-       <hr />
-        <img class=grame src=rsrc/grame.png alt='Grame-CNCM'>
-        <br/>
-        </section>
+    </section>
+    <hr />
+    <a href=https://www.grame.fr><img class=grame src=rsrc/grame.png alt='Grame-CNCM'></a>
     </body>
 </html>
