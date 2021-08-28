@@ -29,7 +29,7 @@ fontsize = 18;
 /ITL/scene/controlPanel/1* y -$gap;
 /ITL/scene/controlPanel/3* y $gap;
 /ITL/scene/controlPanel/* dx -2.3;
-/ITL/scene/controlPanel/1txtWavOnly dx -0.1;
+/ITL/scene/controlPanel/1txtWavOnly dx -0.05;
 
 /ITL/scene/controlPanel/?btn* watch mouseEnter (/ITL/scene/controlPanel/$self penWidth 2);
 /ITL/scene/controlPanel/?btn* watch mouseLeave (/ITL/scene/controlPanel/$self penWidth 1);
