@@ -59,7 +59,7 @@
 /ITL/scene/cursor watch timeEnter 9 15  ( /ITL/scene event SECTION2 );
 /ITL/scene/cursor watch timeEnter 15 22 ( /ITL/scene event SECTION3 );
 /ITL/scene/cursor watch timeEnter 22 30 ( /ITL/scene event SECTION4 );
-/ITL/scene/cursor watch timeEnter 30 1000 ( /ITL/scene event STOP );
+/ITL/scene/cursor watch timeEnter 30 1000 ( /ITL/scene event END );
 
 
 __END__

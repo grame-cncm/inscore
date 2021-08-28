@@ -41,6 +41,8 @@ ypanel = 0.85;
 	/ITL/scene/audio vdate '$1'
 );
 
+/ITL/scene watch END ( /ITL/scene/playPanel/stop event mouseDown 0 0 );
+
 
 /ITL load "src/score.inscore";
 /ITL load "src/sectionflag.inscore";

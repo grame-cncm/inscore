@@ -65,6 +65,8 @@
 		/ITL/scene/cursor date '$1',
 		/ITL/scene/audio vdate '$1'
 	);
+
+	/ITL/scene watch END ( /ITL/scene/playPanel/stop event mouseDown 0 0 );
 	
 	/ITL/midi watch ready ( /ITL load "src/midiPanel.inscore.txt" );
 	/ITL/midi watch error ( /ITL load "src/midiOff.inscore.txt" );
