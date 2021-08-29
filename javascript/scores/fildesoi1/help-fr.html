@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="help.css" />
+        <title>Fil De Soi 1 - Help</title>
+    </head>
+    <body>
+        <a href=help.html class=lang>English version</a>
+        <h1>Fil De Soi 1</h1> 
+        <section class=intro>
+        <p>
+            <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> et 2 sont deux pièces mixtes pour guitare et électronique temps réel composées par <a href=https://alainbonardi.net/>Alain Bonardi</a> et interprétées par Amèlia Mazarico. <a href=http://alainbonardi.net/pagesCreations/fildesoi/fildesoi1/fildesoi1.htm>Fil de soi 1</a> a été créé le 17 septembre 2016. 
+        <br/>
+            <a href=http://archiverlepresent.org/fiche-de-la-collection/fil-de-soi>A propos</a> de l'oeuvre...
+        </p>
+        <p>
+            "Fil de soi 1" peut être interprété en utilisant la partition musicale <a href=https://berio.grame.fr/FilDeSoi1>disponible en ligne</a>, qui inclut toute l'électronique temps réel.
+            La partition est interactive. Elle est conçue avec <a href=https://inscore.grame.fr>INScore</a>, et embarque l'électronique temps réel grâce à  <a href=https://faust.grame.fr>Faust</a>.
+            <br/>
+            <a href=https://inscore.grame.fr>INScore</a> et <a href=https://faust.grame.fr>Faust</a> sont deux projets développés par le laboratoire de recherche de <a href=https://www.grame.fr>GRAME-CNCM</a>.
+        </p>
+        </section>
+
+        <section>
+        <h2>Comment utiliser la partition.</h2>
+            <p>
+                La partition offre un grand contrôle sur la façon de jouer la pièce. Elle inclut un enregistrement de la pièce par Amèlia Mazarico que vous pouvez jouer avec ou sans l'électronique.
+                <br/>
+                La pièce se compose de quatre sections, indiquées sur la partition par les marqueurs 1 à 4. Pour chaque section, différents paramètres sont appliqués à l'électronique. Ces paramètres sont automatiquement appliqués en mode 'play' lorsque le curseur, qui indique la position courante, entre dans une section ou lorsque vous déplacez cette position en cliquant sur la partition. Cependant, vous pouvez vous assigner arbitrairement les paramètres de n'importe quelle section en utilisant le clavier ou un contrôleur MIDI (indépendamment de la position du curseur).
+            </p>
+            <p>
+                La figure ci-dessous résume les différentes commandes disponibles pour jouer la pièce. En outre (et cela ne fait pas partie de la figure), vous pouvez également utiliser le clavier de l'ordinateur pour contrôler la partition.
+            </p>
+            <img src=rsrc/help-fr.png alt="Annotated score">
+            </p>
+            <h3>Utilisation du clavier</h3>
+            <p>
+                Vous pouvez appuyer sur les touches du clavier de l'ordinateur pour contrôler la partition :
+                <li>'barre d'espace' : lance ou arrête le player</li>
+                <li>'1' à '4' : active les paramètres de la section correspondante</li>
+                <li>'flèche droite' : passe aux paramètres de la section suivante</li>
+                <li>'flèche gauche' : passe aux paramètres de la section précédente</li>
+            </p>
+
+            <h3>Contrôle MIDI</h3>
+            <p>
+                Le contrôle MIDI est disponible si votre navigateur prend en charge l'API Web MIDI et si un contrôleur MIDI est connecté à votre ordinateur. Les événements MIDI ne peuvent être utilisés que pour passer aux paramètres de la section suivante. Vous pouvez sélectionner le type d'événement entre :
+                <li>'Program Change' : tout message de Program Change (entre 0 et 10) déclenchera la section suivante. </li>
+                <li>'Key On' : tout message Key On déclenchera la section suivante.</li>
+            </p>
+
+            <h3>Routage audio</h3>
+            <p>
+                C'est à l'utilisateur de décider comment les différents flux audio (l'enregistrement du morceau et l'entrée audio) sont traités. Le panneau de contrôle en bas à droite est fourni dans cette intention (où 'Playback' fait référence à l'enregistrement intégré du morceau) :
+                <li>'Playback to audio output' : lorsqu'il est actif, envoie l'enregistrement vers les haut-parleurs. </li>
+                <li>'Playback to DSP' : lorsqu'il est actif, envoie l'enregistrement à l'électronique.</li>
+                <li>'Audio input to DSP' : lorsqu'il est actif, envoie l'entrée audio (votre microphone s'il y en a un) à l'électronique.</li>
+            </p>
+            <p>
+                    Notez que vous pouvez utiliser n'importe quelle combinaison de sélecteurs.
+            </p>
+
+        <h2>Cas d'utilisation</h2>
+
+        <h3>Ecouter l'enregistrement avec les traitements temps réel</h3>
+        <li>séléctionner 'Playback to audio output'. </li>
+        <li>séléctionner 'Playback to DSP'.</li>
+        <img src=rsrc/UC1.png alt="Audio routing" class=uc>
+
+        <h3>Jouer avec changement automatique de section</h3>
+        <li>désélectionner 'Playback to audio output'. </li>
+        <li>désélectionner 'Playback to DSP'.</li>
+        <li>séléctionner 'Audio input to DSP'.</li>
+        <img src=rsrc/UC23.png alt="Audio routing" class=uc>
+        <p> et démarrer le player...
+            <br/>
+            Notez que dans cette configuration, vous êtes contraint par le tempo de l'enregistrement.
+        </p>
+
+        <h3>Jouer avec changement manuel de section</h3>
+        <li>désélectionner 'Playback to audio output'. </li>
+        <li>désélectionner 'Playback to DSP'.</li>
+        <li>séléctionner 'Audio input to DSP'.</li>
+        <img src=rsrc/UC23.png alt="Audio routing" class=uc>
+        <p>    ne démarrez pas le player jouez de votre instrument...
+            <br/>
+            Notez que dans ce cas le tempo est libre, mais vous devez passer manuellement à la section suivante en utilisant le clavier ou un contrôleur MIDI.
+        </p>
+
+    </section>
+    <hr />
+    <a href=https://www.grame.fr><img class=grame src=rsrc/grame.png alt='Grame-CNCM'></a>
+    </body>
+</html>

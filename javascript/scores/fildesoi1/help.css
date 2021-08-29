@@ -1,0 +1,61 @@
+
+h1 { font-size: 3em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; margin-left: 2vw;}
+
+body {
+    margin: 5vw; 
+    background-color: white;
+    font-family: Arial, Helvetica;
+}
+
+section {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-flow: column;
+}
+
+a, a:hover, a:focus {
+    color: #157AB5;
+    text-decoration: none;
+}
+
+img { 
+    display: inline-block; 
+    max-width: 880px; 
+}
+
+p, li { margin-left: 5vw;}
+
+hr { 
+    border: 1px solid grey; 
+    margin-left: 20%; 
+    margin-right: 20%; 
+    margin-bottom: 1em;
+}
+
+.grame { 
+    width: 130px; 	
+    display: block; 
+    margin: auto; 
+}
+
+.uc { 
+    float: right; 
+    width: 180px; 
+    margin-left: 5vw; 
+    margin-top: 0.5em;
+}
+
+.intro { 
+    font-style: italic; 
+    font-size: 105%; 
+}
+
+.lang { 
+    float: right; 
+    font-size: 90%; 
+    margin-right: 2em; 
+    color: grey
+}
