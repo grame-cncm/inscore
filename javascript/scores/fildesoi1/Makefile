@@ -17,7 +17,7 @@ help:
 standalone: $(NAME)/lib $(NAME)/fonts $(NAME)/index.html
 	cp $(LIBS) $(NAME)/lib
 	cp -r rsrc src $(NAME)
-	cp faust.* help.html fildesoi.inscore $(NAME)
+	cp faust.* help*.* fildesoi.inscore $(NAME)
 	tar czf $(NAME).tgz $(NAME)
 	
 $(NAME)/lib:
