@@ -98,6 +98,8 @@ class IText : public IGraphicBasedObject
 	protected:
 				 IText( const std::string& name, IObject * parent );
 		virtual ~IText() {}
+		
+		virtual void positionAble();
 
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
