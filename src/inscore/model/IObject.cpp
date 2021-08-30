@@ -1634,8 +1634,12 @@ MsgHandler::msgStatus IObject::_watchMsg(const IMessage* msg, bool add)
 			else return MsgHandler::kBadParameters;
 		}
 		else if (msg->size() >= 2) {
-			string keys;
-			if (!msg->param (1, keys)) return MsgHandler::kBadParameters;
+			string keys; int num;
+			if (!msg->param (1, keys)) {
+				if ((!msg->param (1, num) || (num < 0) || (num > 10)))
+					return MsgHandler::kBadParameters;
+				keys = std::to_string (num);
+			}
 			if (msg->size() == 2) eventsHandler()->delKeyMsg(keys, down); 		// remove a specific key handler
 			else {
 				SIMessageList watchMsg = msg->watchMsg2Msgs (2);
