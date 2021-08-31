@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Web Workers basic example</title>
+    <style>
+      section {
+        display: flex;
+        flex-flow: column;
+        padding: 2rem;
+      }
+      h1 {
+        text-align: center;
+      }
+      button {
+        width: 50vw;
+        align-self: center;
+      }
+      label {
+        align-self: center;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Web Workers basic example</h1>
+      <button onclick="getCpusAsync().then ((result) => { showCpus(result)})">Get CPU</button>
+      <button onclick="getCpusWithMain().then ((result) => { showCpus(result)})">Get CPU with main</button>
+    </section>
+    <script src="cpu.js"></script>
+  </body>
+</html>
