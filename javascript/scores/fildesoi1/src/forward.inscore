@@ -2,12 +2,16 @@
 alpha = 120;
 
 /ITL/scene/forward set txt Forward;
-/ITL/scene/forward fontSize 20;
-/ITL/scene/forward alpha $alpha;
-/ITL/scene/forward x -0.8;
+/ITL/scene/forwardC set txt Clients;
+/ITL/scene/forward* fontSize 20;
+/ITL/scene/forward* alpha $alpha;
+/ITL/scene/forward* x -0.8;
 /ITL/scene/forward y -0.88;
-/ITL/scene/forward watch mouseEnter (/ITL/scene/forward alpha 255);
-/ITL/scene/forward watch mouseLeave (/ITL/scene/forward alpha $alpha);
+/ITL/scene/forwardC y -0.80;
+/ITL/scene/forward* watch mouseEnter (/ITL/scene/$self alpha 255);
+/ITL/scene/forward* watch mouseLeave (/ITL/scene/$self alpha $alpha);
+/ITL/scene/forwardC watch mouseDown ( /ITL get clients );
+
 /ITL/scene/forward watch mouseDown (
 	/ITL/scene/forward push,
 	/ITL/log show 1,
