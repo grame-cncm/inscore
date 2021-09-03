@@ -1,3 +1,4 @@
+///<reference path="inscore.d.ts"/>
 
 declare var INScoreModule : any;
         
