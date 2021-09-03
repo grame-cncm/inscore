@@ -6,15 +6,20 @@
 
 class JSAudioioView extends JSObjectView implements AudioObject {
     fAudioNode : AudioNode = null;
+    protected fRouter : AudioRouting = null;
 
     constructor(parent: JSObjectView) {
 		super(document.createElement('div'), parent); 
     }
 
+	toString() { return "JSAudioioView"; }
 	toAudioObject() : AudioObject { return this; }
-    getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.channelCount : 0; } 
-    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.channelCount : 0; }
+    getNumInputs() : number     { return this.fAudioNode ? this.fAudioNode.numberOfInputs : 0; } 
+    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.numberOfOutputs : 0; }
+    getNumChans() : number      { return this.fAudioNode ? this.fAudioNode.channelCount : 0; }
     getAudioNode() : AudioNode  { return this.fAudioNode; }
+    getSplitter() : AudioNode   { return this.fRouter.getSplitter(); }
+    getMerger() : AudioNode     { return this.fRouter.getMerger(); }
 
     clone (parent: JSObjectView) : JSObjectView {
         return new JSAudioioView(parent);
@@ -29,16 +34,11 @@ class JSAudioioView extends JSObjectView implements AudioObject {
         if (infos.inputs && infos.outputs) {
             console.log ("Warning: JSAudioioView created with " + infos.inputs + " inputs and " + infos.outputs + " outputs."  );
         }
-        if (infos.inputs ) {
+        if (infos.inputs )
             this.fAudioNode = AIOScanner.fOutput;
-            if (this.getNumInputs() != infos.inputs )
-                console.log ("JSAudioioView Warning: device has not the requested number of inputs: " + this.getNumInputs() + " instead of "  + infos.inputs);
-            }
-        else if (infos.outputs) {
+        else if (infos.outputs)
             this.fAudioNode = AIOScanner.fInput;
-            if (this.getNumOutputs() != infos.outputs )
-                console.log ("JSAudioioView Warning: device has not the requested number of outputs: " + this.getNumOutputs() + " instead of "  + infos.outputs);
-        }
+        if (this.fAudioNode) this.fRouter  = new AudioRouting (this.fAudioNode, this.fAudioNode.channelCount, this.toString());
         return true;    
     }
     

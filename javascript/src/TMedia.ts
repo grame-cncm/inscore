@@ -8,11 +8,13 @@ abstract class TMedia extends JSAutoSize implements AudioObject {
 	private fReady : boolean = false;
 	private fListen : boolean = false;
 	private fAudioNode : AudioNode = null;
+    protected fRouter : AudioRouting = null;
 
 	constructor(elt: HTMLMediaElement, parent: JSObjectView) {
         super(elt, parent);
 		this.fAudioNode = AIOScanner.fAudioContext.createMediaElementSource(elt);
 		this.fAudioNode.connect (AIOScanner.fAudioContext.destination);
+		this.fRouter  = new AudioRouting (this.fAudioNode, this.fAudioNode.channelCount, this.toString());
 	}
 
 	abstract clone (parent: JSObjectView) : JSObjectView;
@@ -30,7 +32,7 @@ abstract class TMedia extends JSAutoSize implements AudioObject {
 	ready ( obj: INScoreObject, elt: HTMLMediaElement)	: void {
 		if (!this.fReady) {
 			obj.updateDuration (elt.duration * 1000);
-			obj.setAudioInOut (this.getNumInputs(), this.getNumOutputs());
+			obj.setAudioInOut (this.getNumInputs(), this.getNumChans());
 			obj.ready();
 			// the connect message is intended to sync the model with the existing connection
 			inscore.postMessageStrStr (obj.getOSCAddress(), "connect", AIOScanner.kOutputName);
@@ -47,6 +49,9 @@ abstract class TMedia extends JSAutoSize implements AudioObject {
 
 	toAudioObject() : AudioObject { return this; }
 	getNumInputs() : number     { return 0; } 
-    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.channelCount : 0; }
+    getNumOutputs() : number    { return this.fAudioNode ? this.fAudioNode.numberOfOutputs : 0; }
+    getNumChans() : number      { return this.fAudioNode ? this.fAudioNode.channelCount : 0; }
     getAudioNode() : AudioNode  { return this.fAudioNode; }
+    getSplitter() : AudioNode   { return this.fRouter.getSplitter(); }
+    getMerger() : AudioNode     { return this.fRouter.getMerger(); }
 }
