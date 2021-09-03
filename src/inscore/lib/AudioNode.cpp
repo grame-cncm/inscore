@@ -59,19 +59,9 @@ MsgHandler::msgStatus AudioNode::connect (const IMessage* msg)
 	if (status == MsgHandler::kProcessed) {
 		for (auto elt: list) {
 			AudioNode * anode = dynamic_cast<AudioNode*>((IObject*)elt.obj);
-			if (!elt.to && (fNumOutputs != anode->getInputs())) {
+			if (!fNumOutputs || !anode->getInputs()) {
 				ITLErr << "cannot connect a " << fNumOutputs << " outputs object to " << anode->getInputs() << " inputs" << ITLEndl;
 				return MsgHandler::kBadParameters;
-			}
-			else if (elt.to) {
-				if (elt.to > anode->getInputs()) {
-					ITLErr << "cannot connect to input #" << elt.to << ": " << elt.obj->name() << " has only " << anode->getInputs() << " inputs " << ITLEndl;
-					return MsgHandler::kBadParameters;
-				}
-				if (elt.from > fNumOutputs) {
-					ITLErr << "cannot connect to output #" << elt.from << ": " << " object has only " << fNumOutputs << " outputs " << ITLEndl;
-					return MsgHandler::kBadParameters;
-				}
 			}
 				
 			if (find (fOutputs.begin(), fOutputs.end(), elt) == fOutputs.end()) {
@@ -127,6 +117,8 @@ bool AudioNode::remove(const AudioConnection& elt, AudioNodeCnxList& list)
 }
 
 //--------------------------------------------------------------------------
+// scan for channel specification i.e. name in the form n:nodeName:m
+// where 'n' and 'm' are channel indexes
 AudioNode::_AudioConnection	AudioNode::getAudioConnection (std::string desc) const
 {
 	std::regex e ("([0-9]+):([^:]+):([0-9]+)");
