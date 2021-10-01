@@ -26,6 +26,6 @@
     "@grame/libmusicxml": "^3.19.1",
     "@types/node": "^13.13.51",
     "@types/webmidi": "^2.0.4",
-    "webmidi": "^2.5.2"
+    "webmidi": "^2.5.3"
   }
 }
