@@ -177,6 +177,7 @@ class IAppl : public IObject, public TILoader
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fConnecter.getCnxList(); }
 		SIMessageList getClients() const						 { return fForwarder.getClients(); }
+		virtual void		forwardMsg (const IMessage* msg)	 { fForwarder.forward(msg); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 		virtual void		cleanup ();

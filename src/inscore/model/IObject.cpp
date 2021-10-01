@@ -1841,6 +1841,8 @@ rational IObject::point2date (float x, float y) const
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus IObject::eventMsg (const IMessage* msg)
 {
+	IAppl* appl = getAppl();
+	appl->forwardMsg(msg);
 	int n = msg->size();
 	if (n >= 1) {
 		string event;
