@@ -19,16 +19,14 @@ TODO
 - implement get frame
 - interface pour récupérer le mapping d'un objet
 
-# voir également user events pas forwardé (?)
-
 - revoir scripts/M-signalConnection/Process-activity (pb javascript)
 
 - system bloqué avec manyscenes.inscore (linux) ou rafraichissement auto rapide (windows)
-
-- ajouter un événement keyboard
 - gérer le message rate du côté javascript
 
 - support pdf https://doc.qt.io/qt-5/qpdfdocument.html
 
 voir édition de mappings
 traiter changement d'entrées/sorties vs connections
+
+- fix quantification des dates

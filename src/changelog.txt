@@ -18,6 +18,8 @@ Version 1.30
 - web version: 
   - new 'compute' message supported by faust objects
   - font size unit changed to 'vw' (relative to viewport width)
+- fix 'event' messages forwarding
+- fix $date%f detection in javascript run method
 
 
 ----------------------------------------------------
