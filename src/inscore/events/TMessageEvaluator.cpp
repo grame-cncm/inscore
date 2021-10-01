@@ -321,14 +321,11 @@ static string strip (const char* ptr)
 //----------------------------------------------------------------------
 string TMessageEvaluator::getVar (const char* ptr) const
 {
-#ifndef WIN32
-#warning ("TODO: fix the TMessageEvaluator::getVar method");
-#endif
 	string datef = strip (ptr);
 	if (datef == "$date%f") return datef;
 	string str; bool scaling = false; bool inMsg = false;
 	while (*ptr) {
-		if ((*ptr == '$') || ((*ptr >= 'a') && (*ptr <= 'z')))
+		if ((*ptr == '$') || ((*ptr >= 'a') && (*ptr <= 'z')) || (*ptr == '%'))
 			str += *ptr;
 		else if (!scaling && *ptr == '[') {
 			scaling = true;
@@ -604,7 +601,7 @@ SIMessageList TMessageEvaluator::eval (const IMessageList* msgs, float x, float 
 		const IMessage* msg = msgs->list()[i];
 
 		std::string mapname;
-		if (hasDateVar (msg, mapname))
+		if (hasDateVar (msg, mapname) || (msg->message() == krun_SetMethod))
 			// resolves the date in a normalized x and y coordinate space [-1 1]
 			env.date = point2date (env.object, x * 2 - 1, y * 2 - 1, mapname, 0);
 
