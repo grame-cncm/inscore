@@ -128,7 +128,8 @@ bool TouchEventFilter::eventFilter(QObject *obj, QEvent *event)
 			fGraphicsView->resetViewZoomTranslate();
 			updateModel();
 		}else{
-#ifdef QTFUNCTOR
+//#ifdef QTFUNCTOR
+#if 1
 			fDoubleTap = true;
 			QTimer::singleShot(400, [this]{fDoubleTap = false;});
 #else
