@@ -218,7 +218,7 @@ bool TMessageEvaluator::messageVariable (const string& var)
 }
 
 //----------------------------------------------------------------------
-void TMessageEvaluator::parseDateVariable (const std::string& var, libmapping::rational quant, bool& floatval) const
+void TMessageEvaluator::parseDateVariable (const std::string& var, libmapping::rational& quant, bool& floatval) const
 {
 	string quantstr = parseQuant(var);
 	int num, denum;
@@ -239,9 +239,9 @@ IMessage::argslist TMessageEvaluator::evalDate (const string& var, const EventCo
 	parseDateVariable (var, quant, floatrequired);
 	rational date = env.date;
 	if (env.object && !relative) date += env.object->getDate();
-	if (quant.getNumerator()) {									// date quantification required
-		date *= quant;
+	if (quant.getNumerator() && quant.getDenominator()) {			// date quantification required
 		date /= quant;
+		date = quant * long(date);
 	}
 	if (floatrequired)											// float value required
 		outval.push_back ( new IMsgParam<float>(float(date)));	// push the float date value

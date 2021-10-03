@@ -114,7 +114,7 @@ class TMessageEvaluator
 			\param floatval on output, a boolean to indicate float values requests
 			\param relative on output, a boolean to request a date relative to the object current time position
 		*/
-		void		parseDateVariable (const std::string& var, libmapping::rational quant, bool& floatval) const;
+		void		parseDateVariable (const std::string& var, libmapping::rational& quant, bool& floatval) const;
 
 
 		/**
