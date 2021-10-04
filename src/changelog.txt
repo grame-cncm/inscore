@@ -12,6 +12,10 @@ It has been supported by the ANR
 ====================================================
 
 ----------------------------------------------------
+Version 1.31
+- fix $date quantification
+
+----------------------------------------------------
 Version 1.30
 - add midi node at application level, supported by the native app for compatibility reasons
   works only with the web version
