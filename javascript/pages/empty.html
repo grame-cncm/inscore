@@ -17,7 +17,7 @@
 	<script src="../inscoreglue.js"></script>
 	<style>
 	body { margin: 50; background: gainsboro; height: 90%; }
-	.inscore { width: 100%; height: 80%; border-radius: 10px; font-size: 1px; background: white }
+	.inscore { width: 90%; height: 90%; border-radius: 10px; font-size: 1px; background: white }
 	</style>
 </head>
 
@@ -26,8 +26,11 @@
 <div class="inscore" id="scene">
 <pre>
 #	/ITL load "keyevents.inscore.txt";
-/ITL/scene/faust0 set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
-/ITL/scene/audio set audio "levinas/audio1.mp3";
+/ITL/scene/faust set faust 'import("stdfaust.lib"); random  = +(12345)~*(1103515245); noise = random/2147483647.0; process = os.osc(400) * 0.4 , noise * 0.1;';
+#/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
+/ITL/scene/audio set audio "stereo.wav";
+/ITL/scene/faust watch ready (/ITL/log write "faust ready");
+/ITL/scene/audio watch ready ( /ITL/log write "audio ready", /ITL/scene/audio disconnect audioOutput);
 
 </pre>
 </div>
