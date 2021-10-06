@@ -35,9 +35,10 @@ static const char* kFontName = "Helvetica";
 static int kFontSize  = 9;
 
 //_______________________________________________________________________
-INScoreAbout::INScoreAbout (const QPixmap & pixmap) : QSplashScreen (pixmap)
+INScoreAbout::INScoreAbout (const QPixmap & image) : QSplashScreen (image)
 {
-    setMask (pixmap.mask());
+	setMask (image.mask());
+//	setAttribute(Qt::WA_TranslucentBackground);
 
 #ifdef linux
 	kFontName = "FreeSans";

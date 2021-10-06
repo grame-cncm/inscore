@@ -24,11 +24,13 @@
 */
 
 #include <QVariantList>
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 
+#include "Modules.h"
 #include "CustomScripts.h"
 #include "OSCStream.h"
 #include "IAppl.h"
@@ -129,6 +131,20 @@ void CustomScripts::print(const QVariantList &args)
 #endif
 }
 
+#if Qt6
+# define VType(a)	(a).metaType().id()
+# define VString	QMetaType::QString
+# define VInt		QMetaType::Int
+# define VUInt		QMetaType::UInt
+# define VDouble	QMetaType::Double
+#else
+# define VType(a)	(a).type()
+# define VString	QVariant::String
+# define VInt		QVariant::Int
+# define VUInt		QVariant::UInt
+# define VDouble	QVariant::Double
+#endif
+
 void CustomScripts::post(const QVariantList &args)
 {
 	INScore::MessagePtr msg = INScore::newMessage ();
@@ -137,7 +153,7 @@ void CustomScripts::post(const QVariantList &args)
 	const char* adrErr = "v8::PostMsg: incorrect OSC address";
 	for (int i = 0; i < args.size(); i++) {
 		if (i==0) {
-			if (args[i].type() == QVariant::String) {
+			if (VType(args[i]) == VString) {
 				address = args[i].toString().toStdString();
 			}
 			else {
@@ -149,16 +165,16 @@ void CustomScripts::post(const QVariantList &args)
 			}
 		}
 		else {
-			if (args[i].type() == QVariant::String) {
+			if (VType(args[i]) == VString) {
 				INScore::add(msg,  args[i].toString().toStdString().c_str());
 			}
-			else if (args[i].type() == QVariant::Int) {
+			else if (VType(args[i]) == VInt) {
 				INScore::add(msg, args[i].toInt());
 			}
-			else if (args[i].type() == QVariant::UInt) {
+			else if (VType(args[i]) == VUInt) {
 				INScore::add(msg, args[i].toInt());
 			}
-			else if (args[i].type() == QVariant::Double) {
+			else if (VType(args[i]) == VDouble) {
 				INScore::add(msg, args[i].toFloat());
 			}
 			else {

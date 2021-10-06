@@ -11,8 +11,13 @@ set (IBUNDLEDIR  ${ROOT}/tools/IBundle)
 
 #######################################
 # Qt settings
-find_package(Qt5 COMPONENTS Core REQUIRED)
-set (IBUNDLE_LIBRARIES Qt5::Core)
+if (QT6)
+	find_package(Qt6 COMPONENTS Core REQUIRED)
+	set (IBUNDLE_LIBRARIES Qt6::Core)
+else()
+	find_package(Qt5 COMPONENTS Core REQUIRED)
+	set (IBUNDLE_LIBRARIES Qt5::Core)
+endif()
 
 file (GLOB IBUNDLE_SRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
 	${IBUNDLEDIR}/src/*.cpp 

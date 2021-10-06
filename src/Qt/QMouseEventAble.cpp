@@ -42,9 +42,14 @@ namespace inscore
 //----------------------------------------------------------------------
 TFloatPoint _MouseEventAble::touchPos	( QTouchEvent* event )	{
 			QList<QTouchEvent::TouchPoint> touchPoints = event->touchPoints();
-			if (touchPoints.count())
-//				return touchPoints[0].pos();
-				return TFloatPoint (touchPoints[0].pos().x(), touchPoints[0].pos().y());
+			if (touchPoints.count()) {
+#if Qt6
+				QPointF pos = touchPoints[0].position();
+#else
+				QPointF pos = touchPoints[0].pos();
+#endif
+				return TFloatPoint (pos.x(), pos.y());
+			}
 			return TFloatPoint (0., 0.);
 		}
 

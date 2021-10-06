@@ -24,13 +24,17 @@
 */
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QScreen>
 
+#include "Modules.h"
 #include "WindowEventFilter.h"
 #include "VSceneView.h"
 #include "Methods.h"
 #include "INScore.h"
+
+#if !Qt6
+#include <QDesktopWidget>
+#endif
 
 namespace inscore
 {

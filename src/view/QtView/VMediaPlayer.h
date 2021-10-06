@@ -50,7 +50,7 @@ class VMediaPlayer: public QObject
 {
     Q_OBJECT
 	public :
-				 VMediaPlayer();
+				 VMediaPlayer(); 
 		virtual ~VMediaPlayer() { fMediaPlayer.stop(); }
 
 	protected:
@@ -70,14 +70,22 @@ class VMediaPlayer: public QObject
 	protected slots:
 		void	error (QMediaPlayer::Error error);
 		void	mediaStatusChanged (QMediaPlayer::MediaStatus status);
-		void	stateChanged (QMediaPlayer::State state);
 		void	seekableChanged(bool seekable);
 		void	nativeSizeChanged(const QSizeF & size);
 		void	durationChanged(qint64 duration);
 		void	positionChanged(qint64 position);
+		void	hasAudioChanged(bool available);
+		void	hasVideoChanged(bool available);
 
 	protected:
+		IMedia* fMedia;
+#if Qt6
+		bool 	fAudioAvailable = false;
+		bool 	fVideoAvailable = false;
+		bool 	ready();
+#else
 		int							fReady = 0;
+#endif
 
 	private:
 		QMediaPlayer				fMediaPlayer;

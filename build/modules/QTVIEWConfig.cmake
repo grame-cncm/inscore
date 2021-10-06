@@ -12,13 +12,14 @@ set (CMAKE_AUTOMOC ON)
 
 #######################################
 # Qt settings
+# Core must be the first module, don't move it, it's used at packaging level to fix incorrect qr deployement
+set (QTMODULES Core Gui Widgets Svg PrintSupport Multimedia MultimediaWidgets WebSockets Sensors Qml OpenGL)
 if (QT6)
 	set (QTVERS Qt6)
+	set (QTMODULES ${QTMODULES} OpenGLWidgets)
 else()
 	set (QTVERS Qt5)
 endif()
-# Core must be the first module, don't move it, it's used at packaging level to fix incorrect qr deployement
-set (QTMODULES Core Gui Widgets Svg PrintSupport Multimedia MultimediaWidgets WebSockets Sensors Qml OpenGL)
 if (IOS)
 	set (QTMODULES ${QTMODULES} Quick QuickWidgets)
 else()
@@ -31,7 +32,7 @@ set (QT_INCLUDE_DIRS  ${Qt6Core_INCLUDE_DIRS}
 				${Qt6Gui_INCLUDE_DIRS} ${Qt6Widget_INCLUDE_DIRS} ${Qt6Svg_INCLUDE_DIRS} 
 				${Qt6PrintSupport_INCLUDE_DIRS} ${Qt6Multimedia_INCLUDE_DIRS} 
 				${Qt6MultimediaWidgets_INCLUDE_DIRS} ${Qt6WebSockets_INCLUDE_DIRS} 
-				${Qt6Sensors_INCLUDE_DIRS} ${Qt6Qml_INCLUDE_DIRS})
+				${Qt6Sensors_INCLUDE_DIRS} ${Qt6Qml_INCLUDE_DIRS} ${Qt6OpenGLWidgets_INCLUDE_DIRS})
 if (IOS)
 	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt6Quick_INCLUDE_DIRS} ${Qt6QuickWidgets_INCLUDE_DIRS})
 else()

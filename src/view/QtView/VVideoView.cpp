@@ -44,7 +44,6 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 {
 	fVideoItem = (IQGraphicsVideoItem*)(fItem);
     connect(fVideoItem, SIGNAL(nativeSizeChanged(const QSizeF &)), this, SLOT(nativeSizeChanged(const QSizeF &)));
-//    connectVideo (fVideoItem);
 	player()->setVideoOutput (fVideoItem);
 }
 

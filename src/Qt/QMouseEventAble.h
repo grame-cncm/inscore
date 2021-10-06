@@ -29,6 +29,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QTouchEvent>
 
+#include "Modules.h"
 #include "EventsAble.h"
 #include "Events.h"
 #include "TIRect.h"
@@ -44,8 +45,6 @@ struct EventContext;
 
 class _MouseEventAble
 {
-//	static SIMessageList eval (const IMessageList* msgs, float x, float y, EventContext& env);
-
 	public:
 		
 		static void handleEvent (const IObject * obj, float x, float y,  EventsAble::eventype type);
@@ -67,25 +66,40 @@ template <typename T> class QMouseEventAble : public T
 		void handleEvent (float x, float y,  EventsAble::eventype type) const	{_MouseEventAble::handleEvent(fEventsHandler, x, y, type); }
 		void handleEvent (TFloatPoint p,  EventsAble::eventype type) 	const	{_MouseEventAble::handleEvent(fEventsHandler, p.x(), p.y(), type); }
 
-		bool sceneEvent			(QEvent * event){
-			if(event->type()==QEvent::TouchBegin || event->type() == QEvent::TouchUpdate || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel){
+		bool sceneEvent	(QEvent * event){
+			if(event->type()==QEvent::TouchBegin || event->type() == QEvent::TouchUpdate || event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
 				QTouchEvent* e = static_cast<QTouchEvent*>(event);
-				if(e->type() == QEvent::TouchBegin){
-					if(!e->touchPoints().size() || e->touchPoints().size()>1)
+#if Qt6
+				auto points = e->points();
+#else
+				auto points = e->touchPoints();
+#endif
+				if (e->type() == QEvent::TouchBegin){
+					if(!points.size() || points.size() > 1)
 						return false;
-					fTouchID = e->touchPoints().first().id();
-					handleEvent (e->touchPoints().first().pos().x(), e->touchPoints().first().pos().y(), kTouchBeginEvent);
+					fTouchID = points.first().id();
+#if Qt6
+					QPointF pos = points.first().position();
+#else
+					QPointF pos = points.first().pos();
+#endif
+					handleEvent (pos.x(), pos.y(), kTouchBeginEvent);
 				}else if(e->type() == QEvent::TouchEnd || e->type() == QEvent::TouchCancel){
 					fTouchID = -1;
 					touchEnd(e);
 				}else{
-					for(int i=0; i<e->touchPoints().size(); i++){
-						const QTouchEvent::TouchPoint& p = e->touchPoints().at(i);
+					for(int i=0; i < points.size(); i++){
+						const QTouchEvent::TouchPoint& p = points.at(i);
+#if Qt6
+						QPointF pos = p.position();
+#else
+						QPointF pos = p.pos();
+#endif
 						if(p.id() == fTouchID){
 							if(p.state() == Qt::TouchPointMoved)
-								handleEvent(p.pos().x(), p.pos().y(), kTouchUpdateEvent);
+								handleEvent(pos.x(), pos.y(), kTouchUpdateEvent);
 							else if(p.state() == Qt::TouchPointReleased){
-								handleEvent(p.pos().x(), p.pos().y(), kTouchEndEvent);
+								handleEvent(pos.x(), pos.y(), kTouchEndEvent);
 								fTouchID = -1;
 							}
 							break;
@@ -95,7 +109,6 @@ template <typename T> class QMouseEventAble : public T
 				event->accept();
 				return true;
 			}
-
 			return T::sceneEvent(event);
 		}
 

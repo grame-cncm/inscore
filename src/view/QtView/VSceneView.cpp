@@ -26,7 +26,6 @@
 #include <QApplication>
 #include <QBuffer>
 #include <QDebug>
-#include <QDesktopWidget>
 #include <QGestureEvent>
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
@@ -35,9 +34,6 @@
 #include <QPinchGesture>
 #include <QResizeEvent>
 #include <QScreen>
-#ifndef __MOBILE__
-#include <QGLWidget>
-#endif
 
 #ifdef WIN32
 #include <windows.h>
@@ -52,11 +48,21 @@
 #include "VMobileQtInit.h"
 #endif
 
+#include "Modules.h"
 #include "IScene.h"
 #include "IColor.h"
 #include "VExport.h"
 #include "INScore.h"
 #include "WindowEventFilter.h"
+
+#if !Qt6
+# include <QDesktopWidget>
+# ifndef __MOBILE__
+# include <QGLWidget>
+# endif
+#else
+# include <QOpenGLWidget>
+#endif
 
 using namespace std;
 
@@ -306,7 +312,11 @@ void VSceneView::initializeView(const std::string& address, QGraphicsScene * sce
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = createGraphicsView(scene, address.c_str());
+#if Qt6
+		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+#else
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+#endif
 		fGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);
@@ -349,7 +359,11 @@ void VSceneView::swapViewPort(bool opengl)
 {
 #ifndef __MOBILE__
 	if (opengl) {
+#if Qt6
+		QOpenGLWidget* glw = new QOpenGLWidget();
+#else
 		QGLWidget* glw = new QGLWidget(QGLFormat(QGL::SampleBuffers));
+#endif
 		fGraphicsView->setViewport(glw);
 		fOpenGlRendering = true;
 	}

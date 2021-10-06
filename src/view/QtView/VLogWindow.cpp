@@ -26,7 +26,7 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QPlainTextEdit>

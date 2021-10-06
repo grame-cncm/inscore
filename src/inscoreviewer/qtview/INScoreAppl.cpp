@@ -36,6 +36,13 @@
 #include <QString>
 #include <QTimer>
 #include <QUrl>
+#include <QtGlobal>
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#define Qt6 true
+#else
+#define Qt6 false
+#endif
 
 #include <stdlib.h>
 #include <iostream>
@@ -306,8 +313,12 @@ void INScoreAppl::start (int udpinport, int udpoutport)
 		cerr << "Cannot load application font " << applfont << endl;
 	}
 	else {
+#if Qt6
+		QFont f = QFontDatabase::font(kDefaultFontName, "Regular", 12);
+#else
 		QFontDatabase dbf;
 		QFont f = dbf.font(kDefaultFontName, "Regular", 12);
+#endif
 		setFont (f);
 	}
 
