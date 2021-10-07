@@ -105,5 +105,8 @@ set (QTVIEW_INCLUDE_DIRS ${QTVIEW_INCLUDE_DIRS}
 	"${INSCOREDIR}/web" 
 	"${IBUNDLE}"
 ) 
-
-message (STATUS "Includes Qt View and Qt version ${Qt5Core_VERSION}")
+if (QT6)
+ message (STATUS "Includes Qt View and Qt version ${Qt6Core_VERSION}")
+else()
+ message (STATUS "Includes Qt View and Qt version ${Qt5Core_VERSION}")
+endif()

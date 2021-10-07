@@ -92,13 +92,15 @@ template <typename T> class QMouseEventAble : public T
 						const QTouchEvent::TouchPoint& p = points.at(i);
 #if Qt6
 						QPointF pos = p.position();
+						auto state = e->touchPointStates();
 #else
 						QPointF pos = p.pos();
+						QEventPoint::State state = p.state();
 #endif
 						if(p.id() == fTouchID){
-							if(p.state() == Qt::TouchPointMoved)
+							if(state == Qt::TouchPointMoved)
 								handleEvent(pos.x(), pos.y(), kTouchUpdateEvent);
-							else if(p.state() == Qt::TouchPointReleased){
+							else if(state == Qt::TouchPointReleased){
 								handleEvent(pos.x(), pos.y(), kTouchEndEvent);
 								fTouchID = -1;
 							}

@@ -32,6 +32,13 @@
 #include "TRefinedRelation.h"
 
 #include "rational.h"
+#include "Modules.h"
+
+#if Qt6
+	#define touchPoints points
+#else
+	#define position pos
+#endif
 
 using namespace libmapping;
 using namespace std;
@@ -43,11 +50,7 @@ namespace inscore
 TFloatPoint _MouseEventAble::touchPos	( QTouchEvent* event )	{
 			QList<QTouchEvent::TouchPoint> touchPoints = event->touchPoints();
 			if (touchPoints.count()) {
-#if Qt6
 				QPointF pos = touchPoints[0].position();
-#else
-				QPointF pos = touchPoints[0].pos();
-#endif
 				return TFloatPoint (pos.x(), pos.y());
 			}
 			return TFloatPoint (0., 0.);

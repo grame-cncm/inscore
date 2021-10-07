@@ -2,7 +2,7 @@
 #              INScore project Makefile
 #########################################################
 
-.PHONY : modules android
+.PHONY : modules android QT6
 
 QMAKE ?= qmake
 CMAKE ?= cmake
@@ -79,6 +79,10 @@ $(INSCOREDIR):
 
 $(INSCOREDIR)/$(MAKEFILE) : CMakeLists.txt $(MODULESCONFIGS)
 	cd $(INSCOREDIR) && $(CMAKE) .. $(CMAKEOPTS) $(GENERATOR)
+
+QT6: 
+	$(MAKE) inscore CMAKEOPTS='-DQT6=on'
+
 
 #===============================================================
 # building inscore wasm library
