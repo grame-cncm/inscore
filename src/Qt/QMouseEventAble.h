@@ -95,7 +95,7 @@ template <typename T> class QMouseEventAble : public T
 						auto state = e->touchPointStates();
 #else
 						QPointF pos = p.pos();
-						QEventPoint::State state = p.state();
+						auto state = p.state();
 #endif
 						if(p.id() == fTouchID){
 							if(state == Qt::TouchPointMoved)
