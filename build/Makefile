@@ -181,10 +181,14 @@ package:
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 ANDROID_API ?= 26
 ANDROID_ARCH ?= armeabi-v7a
- 
+ANDROIDDEPLOYQT ?= /Users/Shared/Qt6/6.2.0/macos/bin/androiddeployqt
+#ANDROIDSETTINGS := android-libINScoreViewer.so-deployment-settings.json
+ANDROIDSETTINGS := android-INScoreViewer-deployment-settings.json
+
+
 android : 
-	$(MAKE) -f Makefile.android
-#	make _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
+	make _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
+#	$(MAKE) -f Makefile.android
 
 _android : $(ANDROIDDIR) $(ANDROIDDIR)/Makefile
 	cp -rf ../rsrc/ tmp-rsc
@@ -192,7 +196,7 @@ _android : $(ANDROIDDIR) $(ANDROIDDIR)/Makefile
 	$(MAKE) -C $(INSCOREDIR)
 	[ -d $(INSCOREDIR)/android-build ] || mkdir $(INSCOREDIR)/android-build
 	$(MAKE) -C $(INSCOREDIR) INSTALL_ROOT=android-build install
-	cd $(INSCOREDIR) && androiddeployqt --android-platform android-$(ANDROID_API) --release --input android-libINScoreViewer.so-deployment-settings.json --output android-build --deployment bundled --gradle $(SIGN)
+	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) --android-platform android-$(ANDROID_API) --release --input $(ANDROIDSETTINGS) --output android-build --deployment bundled --gradle $(SIGN) 
 	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(INSCOREDIR)/../bin/INScoreViewer.apk
 
 # $(ANDROIDDIR) :

@@ -31,11 +31,11 @@ win32 { VERSION = 1.26 }
 else  { VERSION = $$system(cat $$ROOT/version.txt) }
 
 QT += core gui widgets svg printsupport multimedia multimediawidgets websockets sensors
-QT += qml # quick quickwidgets 
+QT += network qml # quick quickwidgets 
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
 DEFINES += QTJSENGINE	# use the Qt Javascript engine
-DEFINES += QTVIEW		# use the Qt Javascript engine
+DEFINES += QTVIEW		# use the Qt View
 DEFINES += JSON_ONLY    # json library doesn't use osc stream.
 DEFINES += GUIDOAR_EXPORTS
 greaterThan(QT_MINOR_VERSION, 3) { DEFINES += QTFUNCTOR } else { DEFINES += QT_LESS_55}
@@ -233,15 +233,15 @@ android {
 #	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
 #	message ("Target android platform is $$ARCH")
 #	message ("Sources $$SOURCES")
-#	ANDROID_ABI = armeabi-v7a
+	ANDROID_ABI = armeabi-v7a
     ANDROID_API_VERSION = 26
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
     LIBS += -L$$GUIDOLINKPATH -lGUIDOEngine
-    QT += androidextras
-	QT += quick quickwidgets 
+#    QT += androidextras
+	QT += quick quickwidgets openglwidgets
 }
 
 ##############################

@@ -115,7 +115,8 @@ unix:!android:!macx:!ios {
 # android support
 ############################## 
 android {
-	LIBS +=  -L$$PWD/androiddir/library
+#	LIBS +=  -L$$PWD/androiddir/library
+	LIBS +=  -L$$PWD/androiddir
 	GUIDOANDROID = $$GUIDO_PATH/platforms/android/guido-engine-android/libs/
     equals(ANDROID_TARGET_ARCH, armeabi-v7a) { 
 		message ("Includes armeabi-v7a")
@@ -145,7 +146,7 @@ android {
     ANDROID_API_VERSION = 26
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
-	QT += androidextras
+#	QT += androidextras
 	QT += quick quickwidgets
 	DEFINES += ANDROID __MOBILE__
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
