@@ -34,7 +34,7 @@
 #ifdef __MOBILE__
 #include "VMobileQtInit.h"
 #endif
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QFile>
@@ -91,7 +91,7 @@ void IApplMIDI::verbose (int mode)	{ fVerbose = mode; }
 
 #endif
 
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 //--------------------------------------------------------------------------
 // ssl certificates management
 //--------------------------------------------------------------------------

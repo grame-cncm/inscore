@@ -60,7 +60,7 @@ typedef class libmapping::SMARTP<IApplLog>		SIApplLog;
 class IFilterForward;
 typedef class libmapping::SMARTP<IFilterForward> SIFilterForward;
 
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 class IApplSsl;
 typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
 #endif
@@ -106,7 +106,7 @@ class IAppl : public IObject, public TILoader
 		SIApplDebug	fApplDebug;					// debug flags
 		SIApplStat	fApplStat;					// statistics
 		SIApplLog	fApplLog;					// log window
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 		SIApplSsl	fSsl;						// ssl certificates
 #endif
 #if HASMIDISupport
@@ -162,7 +162,7 @@ class IAppl : public IObject, public TILoader
 	
 		void				logMsgs(const SIMessageList& msgs);
 		IApplLog*			getLogWindow()				{ return fApplLog; }
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 		const IApplSsl*		getSsl() const				{ return fSsl; }
 #endif
 #if HASMIDISupport

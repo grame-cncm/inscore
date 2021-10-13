@@ -28,6 +28,7 @@
 #include "INScore.h"
 
 #include "SwipePanel.h"
+#include "Modules.h"
 
 namespace inscore{
 
@@ -93,7 +94,11 @@ void SwipePanel::addScene(QString name, QWidget *panel)
 	QWidget* frame = new QWidget(this);
 	QHBoxLayout* l = new QHBoxLayout(frame);
 	l->addWidget(panel);
+#if Qt6
+	l->setContentsMargins(0,0,0,0);
+#else
 	l->setMargin(0);
+#endif
 	frame->setLayout(l);
 	frame->setParent(this);
 	frame->hide();
@@ -413,12 +418,18 @@ bool SwipePanel::event(QEvent *e)
 	return QWidget::event(e);
 }
 
+#if Qt6
+# define touchPoints points
+# define pos position
+#endif
+
 //---------------------------------------------------
 //___________________________________________________
 bool SwipeEventFilter::eventFilter(QObject *o, QEvent *event)
 {
 	if(event->type() == QEvent::TouchBegin){
 		QTouchEvent* e = static_cast<QTouchEvent*>(event);
+		
 		if(e->touchPoints().size()!=1 || swipePossible){
 			//More than one touch point can't be a swipe
 			int x = e->touchPoints().at(0).pos().x();
@@ -453,8 +464,9 @@ bool SwipeEventFilter::eventFilter(QObject *o, QEvent *event)
 					emit swipeRight();
 				else
 					emit swipeLeft();
-
+#if !Qt6
 				QApplication::sendEvent(o, new QTouchEvent(QEvent::TouchCancel, e->device(), e->modifiers(), e->touchPointStates(), e->touchPoints()) );
+#endif
 				return true;
 			}
 			swipePossible = false;

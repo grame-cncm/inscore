@@ -22,13 +22,13 @@
   research@grame.fr
 
 */
-#include "VMobileQtInit.h"
 
+#include "Modules.h"
+#include "VMobileQtInit.h"
 #include "mainwindow.h"
 
-#ifdef ANDROID
+#if defined(ANDROID) && !Qt6
 #include <QtAndroidExtras>
-
 #endif
 
 namespace inscore

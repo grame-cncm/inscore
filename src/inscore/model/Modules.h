@@ -63,6 +63,12 @@
 # define HASWSSupport			true
 # define HASHTTPSupport			true
 # define HASMIDISupport			true
+# include <QtNetwork>
+# ifndef QT_NO_SSL
+# define HASSSLSUPPORT			true
+# else
+# define HASSSLSUPPORT			false
+# endif
 #else
 # define HASWSSupport			false
 # define HASHTTPSupport			false

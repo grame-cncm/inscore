@@ -26,6 +26,7 @@
 #include <QFrame>
 #include <QVBoxLayout>
 
+#include "Modules.h"
 #include "mainwindow.h"
 #include "INScore.h"
 
@@ -41,7 +42,11 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	l->setSizeConstraint(QLayout::SetFixedSize);
 	l->addWidget(fHeader);
 	l->addWidget(fPanel);
+#if Qt6
+	l->setContentsMargins(0,0,0,0);
+#else
 	l->setMargin(0);
+#endif
 	l->setSpacing(0);
 	setLayout(l);
 

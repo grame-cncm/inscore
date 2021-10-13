@@ -26,34 +26,28 @@
 #include <string>
 
 #include "Modules.h"
-#include "IAppl.h"
 
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslConfiguration>
 #include <QSslSocket>
-
-#include "HttpsForwarder.h"
 #endif
+
+#include "IAppl.h"
+#include "HttpsForwarder.h"
 
 using namespace std;
 
 namespace inscore
 {
 
-#if HASHTTPSupport
-
+#if HASSSLSUPPORT
 //----------------------------------------------------------------------------
 HTTPSForwarder::HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl)
-	: HTTPForwarder(url, appl->getLogWindow()) //, fServerSocket (this)
+	: HTTPForwarder(url, appl->getLogWindow())
 {
 	initialize(appl);
-}
-
-//----------------------------------------------------------------------------
-HTTPSForwarder::~HTTPSForwarder ()
-{
 }
 
 //----------------------------------------------------------------------------
@@ -104,6 +98,15 @@ void HTTPSForwarder::incomingConnection(qintptr socketDescriptor)
 	QSslSocket* socket = newConnection(socketDescriptor);
 	if (!socket) return;
 	addPendingConnection(socket);
+}
+
+#else
+
+//----------------------------------------------------------------------------
+HTTPSForwarder::HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl)
+	: HTTPForwarder(url, appl->getLogWindow())
+{
+	ITLErr << "HTTPS server failed to start: no SSL support." << ITLEndl;
 }
 
 #endif

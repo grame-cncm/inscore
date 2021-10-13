@@ -351,7 +351,7 @@ void IAppl::createVirtualNodes()
 	add ( fApplLog );
 	add ( IApplPlugin::create(this) );
 	add (fFilterForward);
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 	fSsl = IApplSsl::create (this);
 	add (fSsl);
 #endif

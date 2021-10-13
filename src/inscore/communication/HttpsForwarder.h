@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "Modules.h"
 #include "HttpForwarder.h"
 
 class QSslSocket;
@@ -33,10 +34,12 @@ namespace inscore
 {
 
 class IAppl;
+
+#if HASSSLSUPPORT
 //--------------------------------------------------------------------------
 class HTTPSForwarder : public HTTPForwarder
 {
-	Q_OBJECT
+//	Q_OBJECT
 
 	QSslSocket* newConnection (qintptr socketDescriptor);
 
@@ -47,10 +50,21 @@ class HTTPSForwarder : public HTTPForwarder
 
 	public:
 				 HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl);
-		virtual ~HTTPSForwarder ();
+		virtual ~HTTPSForwarder () {}
 
 	private:
 		IApplSsl::Ssl		fSsl;
 };
 
-} //
+#else
+
+//--------------------------------------------------------------------------
+class HTTPSForwarder : public HTTPForwarder
+{
+	public:
+				 HTTPSForwarder (const IMessage::TUrl& url, IAppl* appl);
+		virtual ~HTTPSForwarder () {}
+};
+#endif
+
+}

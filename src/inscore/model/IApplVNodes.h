@@ -30,7 +30,7 @@
 
 #include "Modules.h"
 
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 #include <QByteArray>
 class QSslCertificate;
 class QSslCertificate;
@@ -213,7 +213,7 @@ class IApplPlugin : public IVNode
 		virtual MsgHandler::msgStatus reset (const IMessage* msg) const;
 };
 
-#if HASHTTPSupport
+#if HASSSLSUPPORT
 class IApplSsl;
 typedef class libmapping::SMARTP<IApplSsl>		SIApplSsl;
 //--------------------------------------------------------------------------
