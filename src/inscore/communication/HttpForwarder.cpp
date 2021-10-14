@@ -27,10 +27,13 @@
 
 #include "Modules.h"
 
-#if HASHTTPSupport
 #include "HttpForwarder.h"
 #include "IAppl.h"
 #include "IApplVNodes.h"
+
+#if HASHTTPSupport
+#include <QTcpServer>
+#include <QTcpSocket>
 
 using namespace std;
 
@@ -97,4 +100,16 @@ void HTTPForwarder::send (const IMessage * imsg) {
 }
 
 }
+
+#else
+
+namespace inscore
+{
+
+HTTPForwarder::HTTPForwarder (const IMessage::TUrl& url, IApplLog* log) : ForwardEndPoint(url, log)
+{
+	ITLErr << "HTTP forwarding is not available." << ITLEndl;
+}
+}
+
 #endif
