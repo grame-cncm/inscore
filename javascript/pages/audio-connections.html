@@ -1,0 +1,64 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
+	<meta http-equiv="Pragma" content="no-cache" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<title>INScore Tests</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../lib/libmusicxml.js"></script>
+	<script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoreglue.js"></script>
+	<style>
+	body { margin: 50; background: gainsboro; height: 90%; }
+	.inscore { width: 90%; height: 90%; font-size: 1px; background: white }
+	</style>
+</head>
+
+<body>
+
+<div class="inscore" id="scene">
+<pre>
+/ITL/scene/faust set faust 'import("stdfaust.lib"); random  = +(12345)~*(1103515245); noise = random/2147483647.0; process = os.osc(400) * 0.4 , noise * 0.1;';
+/ITL/scene/faust scale 0.8;
+/ITL/scene/echo set faust 'import("stdfaust.lib"); process = ef.echo1s;';
+/ITL/scene/echo show 0;
+/ITL/scene/echo/echo__1000/feedback 60;
+/ITL/scene/echo/echo__1000/millisecond 100;
+/ITL/scene/audio set audio "rsrc/stereo.wav";
+/ITL/scene/audio watch ready ( /ITL/scene/audio disconnect audioOutput);
+
+/ITL/scene watch PLAY ( /ITL/scene/audio play 1 );
+/ITL/scene watch STOP ( /ITL/scene/audio play 0, /ITL/scene/audio vdate 0 );
+/ITL/scene watch PAUSE ( /ITL/scene/audio play 0 );
+gap = 1.5;
+dx = 0.8;
+/ITL/scene watch UIREADY ( 
+	/ITL/scene/playPanel y 0.7,
+	/ITL/scene/faustRoute x $dx,
+	/ITL/scene/playerRoute yorigin $gap,
+	/ITL/scene/echoRoute yorigin $gap * -1,
+	/ITL/scene/playerRoute x $dx * -1,
+	/ITL/scene/echoRoute x $dx * -1,
+	/ITL/log write "Ready to play"
+);
+
+/ITL/scene watch FAUST  ( /ITL/scene/faust '$1' '$2' );
+/ITL/scene watch PLAYER ( /ITL/scene/audio '$1' '$2' );
+/ITL/scene watch ECHO   ( /ITL/scene/echo '$1' '$2' );
+
+/ITL load "rsrc/audio-connections-ui.inscore.txt";
+
+
+</pre>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+# without channel spec
+/ITL/scene/audio connect 	audioOutput;
+/ITL/scene/audio disconnect audioOutput;
+
+# jeu normal - équivalent à connect audioOutput
+/ITL/scene/audio connect 	'1:audioOutput:1' '2:audioOutput:2';
+/ITL/scene/audio disconnect '1:audioOutput:1' '2:audioOutput:2';
+
+# canaux inversé
+/ITL/scene/audio connect 	'1:audioOutput:2' '2:audioOutput:1';
+/ITL/scene/audio disconnect '1:audioOutput:2' '2:audioOutput:1';
+
+# canaux mixés sur une voix en sortie
+/ITL/scene/audio connect 	'0:audioOutput:1';
+/ITL/scene/audio disconnect '0:audioOutput:1';
+
+# canaux mixés sur la seconde voix en sortie
+/ITL/scene/audio connect 	'0:audioOutput:2';
+/ITL/scene/audio disconnect '0:audioOutput:2';
+
+# 1 canal sur 1 voix en sortie (1)
+/ITL/scene/audio connect 	'1:audioOutput:1';
+/ITL/scene/audio disconnect '1:audioOutput:1';
+
+# 1 canal sur 1 voix en sortie (2)
+/ITL/scene/audio connect 	'1:audioOutput:2';
+/ITL/scene/audio disconnect '1:audioOutput:2';
+
+# 1 canal sur 2 voix en sortie
+/ITL/scene/audio connect 	'1:audioOutput:0';
+/ITL/scene/audio disconnect '1:audioOutput:0';
+
+# second canal sur 2 voix en sortie
+/ITL/scene/audio connect 	'2:audioOutput:0';
+/ITL/scene/audio disconnect '2:audioOutput:0';
+
+/ITL/scene/audio play 1;
+/ITL/scene/audio play 0;
+/ITL/scene/audio vdate 0;
+
+/ITL/scene/audio get connect;
+
+##################################
+# avec un objet faust
+# without channel spec
+/ITL/scene/faust connect 	audioOutput;
+/ITL/scene/faust disconnect audioOutput;
+
+# jeu normal - équivalent à connect audioOutput
+/ITL/scene/faust connect 	'1:audioOutput:1' '2:audioOutput:2';
+/ITL/scene/faust disconnect '1:audioOutput:1' '2:audioOutput:2';
+
+# canaux inversé
+/ITL/scene/faust connect 	'1:audioOutput:2' '2:audioOutput:1';
+/ITL/scene/faust disconnect '1:audioOutput:2' '2:audioOutput:1';
+
+# canaux mixés sur une voix en sortie
+/ITL/scene/faust connect 	'0:audioOutput:1';
+/ITL/scene/faust disconnect '0:audioOutput:1';
+
+# canaux mixés sur la seconde voix en sortie
+/ITL/scene/faust connect 	'0:audioOutput:2';
+/ITL/scene/faust disconnect '0:audioOutput:2';
+
+# 1 canal sur 1 voix en sortie (1)
+/ITL/scene/faust connect 	'2:audioOutput:1';
+/ITL/scene/faust disconnect '2:audioOutput:1';
+
+# 1 canal sur 1 voix en sortie (2)
+/ITL/scene/faust connect 	'1:audioOutput:2';
+/ITL/scene/faust disconnect '1:audioOutput:2';
+
+# 1 canal sur 2 voix en sortie
+/ITL/scene/faust connect 	'1:audioOutput:0';
+/ITL/scene/faust disconnect '1:audioOutput:0';
+
+# second canal sur 2 voix en sortie
+/ITL/scene/faust connect 	'2:audioOutput:0';
+/ITL/scene/faust disconnect '2:audioOutput:0';
+
+/ITL/scene/faust get connect;

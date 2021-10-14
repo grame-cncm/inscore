@@ -1,0 +1,353 @@
+
+########################################
+# player control
+origin = 1.2;
+alpha = 120;
+rsrc  = 'rsrc/';
+play  = $rsrc + 'play.png';
+pause = $rsrc + 'pause.png';
+stop  = $rsrc + 'stop.png';
+
+/ITL/scene/playPanel set rect 0.3 0.2;
+/ITL/scene/playPanel scale 0.7;	
+/ITL/scene/playPanel color white;
+
+/ITL/scene/playPanel/play set img $play;
+/ITL/scene/playPanel/stop set img $stop;
+/ITL/scene/playPanel/play xorigin $origin;
+/ITL/scene/playPanel/stop xorigin -$origin;
+/ITL/scene/playPanel/* width 1;
+/ITL/scene/playPanel/* alpha $alpha;
+
+/ITL/scene/playPanel watch STOP (
+	/ITL/scene event STOP,
+	/ITL/scene/playPanel/play set img $play,
+	/ITL/scene/playPanel/play pop
+);
+
+/ITL/scene/playPanel/* watch mouseEnter (/ITL/scene/playPanel/$self alpha 256);
+/ITL/scene/playPanel/* watch mouseLeave (/ITL/scene/playPanel/$self alpha $alpha);
+/ITL/scene/playPanel/stop watch mouseDown ( /ITL/scene/playPanel event STOP );
+
+/ITL/scene/playPanel/play watch mouseDown (
+	/ITL/scene/playPanel/play push,
+	/ITL/scene/playPanel/play set img $pause,
+	/ITL/scene event PLAY,
+	/ITL/scene/playPanel/play watch mouseDown (
+		/ITL/scene/playPanel/play set img $play,
+		/ITL/scene event PAUSE,
+		/ITL/scene/playPanel/play pop
+	)
+);
+
+/ITL/scene/playPanel watch keyDown " " (/ITL/scene/playPanel/play event mouseDown 0 0);
+
+
+########################################
+# faust audio control
+# /ITL/scene/* del;
+on = green;
+off = white;
+btnw = 0.4;
+gap = 0.65;
+fontsize = 16;
+
+L2L = "Left -> Left";
+L2R = "Left -> Right";
+L2B = "Left -> both";
+R2R = "Right -> Right";
+R2L = "Right -> Left";
+R2B = "Right -> both";
+
+/ITL/scene/faustRoute set rect 0.6 0.3;
+/ITL/scene/playerRoute set rect 0.6 0.3;
+/ITL/scene/echoRoute set rect 0.6 0.3;
+/ITL/scene/*Route scale 0.8;	
+/ITL/scene/*Route color $off;
+
+/ITL/scene/faustRoute/title 	set txt "Faust";
+/ITL/scene/playerRoute/title 	set txt "Player";
+/ITL/scene/echoRoute/title 		set txt "Echo";
+/ITL/scene/*Route/title 		fontSize 18;
+/ITL/scene/*Route/title 		y $gap * -2;
+
+/ITL/scene/faustRoute/1txtLeft 		set txt $L2L;
+/ITL/scene/faustRoute/2txtLeft 		set txt $L2R;
+/ITL/scene/faustRoute/3txtLeft  	set txt $L2B;
+/ITL/scene/faustRoute/1txtRight 	set txt $R2R;
+/ITL/scene/faustRoute/2txtRight 	set txt $R2L;
+/ITL/scene/faustRoute/3txtRight 	set txt $R2B;
+
+/ITL/scene/faustRoute/1btnLeft 		set rect $btnw $btnw;
+/ITL/scene/faustRoute/2btnLeft 		set rect $btnw $btnw;
+/ITL/scene/faustRoute/3btnLeft 		set rect $btnw $btnw;
+/ITL/scene/faustRoute/1btnRight 	set rect $btnw $btnw;
+/ITL/scene/faustRoute/2btnRight 	set rect $btnw $btnw;
+/ITL/scene/faustRoute/3btnRight 	set rect $btnw $btnw;
+
+/ITL/scene/playerRoute/1txtLeft 	set txt $L2L;
+/ITL/scene/playerRoute/2txtLeft 	set txt $L2R;
+/ITL/scene/playerRoute/3txtLeft  	set txt $L2B;
+/ITL/scene/playerRoute/1txtRight 	set txt $R2R;
+/ITL/scene/playerRoute/2txtRight 	set txt $R2L;
+/ITL/scene/playerRoute/3txtRight 	set txt $R2B;
+
+/ITL/scene/playerRoute/1btnLeft 	set rect $btnw $btnw;
+/ITL/scene/playerRoute/2btnLeft 	set rect $btnw $btnw;
+/ITL/scene/playerRoute/3btnLeft 	set rect $btnw $btnw;
+/ITL/scene/playerRoute/1btnRight 	set rect $btnw $btnw;
+/ITL/scene/playerRoute/2btnRight 	set rect $btnw $btnw;
+/ITL/scene/playerRoute/3btnRight 	set rect $btnw $btnw;
+
+/ITL/scene/echoRoute/1txtLeft 	set txt "Left -> echo";
+/ITL/scene/echoRoute/2txtLeft 	set txt "Right -> echo";
+/ITL/scene/echoRoute/3txtLeft  	set txt "Both -> echo";
+/ITL/scene/echoRoute/1txtRight 	set txt "echo -> Left";
+/ITL/scene/echoRoute/2txtRight 	set txt "echo -> Right";
+/ITL/scene/echoRoute/3txtRight  set txt "echo -> both";
+/ITL/scene/echoRoute/1btnLeft 	set rect $btnw $btnw;
+/ITL/scene/echoRoute/2btnLeft 	set rect $btnw $btnw;
+/ITL/scene/echoRoute/3btnLeft 	set rect $btnw $btnw;
+/ITL/scene/echoRoute/1btnRight 	set rect $btnw $btnw;
+/ITL/scene/echoRoute/2btnRight 	set rect $btnw $btnw;
+/ITL/scene/echoRoute/3btnRight 	set rect $btnw $btnw;
+
+/ITL/scene/*Route/?btn* radius 5 5;
+/ITL/scene/*Route/?btn* penWidth 1;
+/ITL/scene/*Route/?btn* color white;
+
+/ITL/scene/*Route/?txt* fontSize $fontsize;
+/ITL/scene/*Route/?txtLeft  xorigin 1.1;
+/ITL/scene/*Route/?txtRight xorigin -1.1;
+/ITL/scene/*Route/?txt* 	yorigin -0.2;
+/ITL/scene/*Route/?btnLeft 	xorigin -1.1;
+/ITL/scene/*Route/?btnRight xorigin 1.1;
+
+/ITL/scene/*Route/1* y -$gap;
+/ITL/scene/*Route/3* y $gap;
+
+/ITL/scene/*Route/*Left  x -0.48;
+/ITL/scene/*Route/*Right x 0.48;
+
+/ITL/scene/faustRoute/?btn*  watch mouseEnter (/ITL/scene/faustRoute/$self penWidth 2);
+/ITL/scene/faustRoute/?btn*  watch mouseLeave (/ITL/scene/faustRoute/$self penWidth 1);
+/ITL/scene/playerRoute/?btn* watch mouseEnter (/ITL/scene/playerRoute/$self penWidth 2);
+/ITL/scene/playerRoute/?btn* watch mouseLeave (/ITL/scene/playerRoute/$self penWidth 1);
+/ITL/scene/echoRoute/?btn* watch mouseEnter (/ITL/scene/echoRoute/$self penWidth 2);
+/ITL/scene/echoRoute/?btn* watch mouseLeave (/ITL/scene/echoRoute/$self penWidth 1);
+
+/ITL/scene/faustRoute/1btnLeft watch mouseDown (
+	/ITL/scene/faustRoute/1btnLeft push,
+	/ITL/scene event FAUST connect "1:audioOutput:1",
+	/ITL/scene/faustRoute/1btnLeft color $on,
+	/ITL/scene/faustRoute/1btnLeft watch mouseDown (
+		/ITL/scene/faustRoute/1btnLeft color $off,
+		/ITL/scene event FAUST disconnect "1:audioOutput:1",
+		/ITL/scene/faustRoute/1btnLeft pop
+	)
+);
+
+/ITL/scene/faustRoute/2btnLeft watch mouseDown (
+	/ITL/scene/faustRoute/2btnLeft push,
+	/ITL/scene event FAUST connect "1:audioOutput:2",
+	/ITL/scene/faustRoute/2btnLeft color $on,
+	/ITL/scene/faustRoute/2btnLeft watch mouseDown (
+		/ITL/scene/faustRoute/2btnLeft color $off,
+		/ITL/scene event FAUST disconnect "1:audioOutput:2",
+		/ITL/scene/faustRoute/2btnLeft pop
+	)
+);
+
+/ITL/scene/faustRoute/3btnLeft watch mouseDown (
+	/ITL/scene/faustRoute/3btnLeft push,
+	/ITL/scene event FAUST  connect "1:audioOutput:0",
+	/ITL/scene/faustRoute/3btnLeft color $on,
+	/ITL/scene/faustRoute/3btnLeft watch mouseDown (
+		/ITL/scene/faustRoute/3btnLeft color $off,
+		/ITL/scene event FAUST disconnect "1:audioOutput:0",
+		/ITL/scene/faustRoute/3btnLeft pop
+	)
+);
+
+/ITL/scene/faustRoute/1btnRight watch mouseDown (
+	/ITL/scene/faustRoute/1btnRight push,
+	/ITL/scene event FAUST connect "2:audioOutput:2",
+	/ITL/scene/faustRoute/1btnRight color $on,
+	/ITL/scene/faustRoute/1btnRight watch mouseDown (
+		/ITL/scene/faustRoute/1btnRight color $off,
+		/ITL/scene event FAUST disconnect "2:audioOutput:2",
+		/ITL/scene/faustRoute/1btnRight pop
+	)
+);
+
+/ITL/scene/faustRoute/2btnRight watch mouseDown (
+	/ITL/scene/faustRoute/2btnRight push,
+	/ITL/scene event FAUST connect "2:audioOutput:1",
+	/ITL/scene/faustRoute/2btnRight color $on,
+	/ITL/scene/faustRoute/2btnRight watch mouseDown (
+		/ITL/scene/faustRoute/2btnRight color $off,
+		/ITL/scene event FAUST disconnect "2:audioOutput:1",
+		/ITL/scene/faustRoute/2btnRight pop
+	)
+);
+
+/ITL/scene/faustRoute/3btnRight watch mouseDown (
+	/ITL/scene/faustRoute/3btnRight push,
+	/ITL/scene event FAUST  connect "2:audioOutput:0",
+	/ITL/scene/faustRoute/3btnRight color $on,
+	/ITL/scene/faustRoute/3btnRight watch mouseDown (
+		/ITL/scene/faustRoute/3btnRight color $off,
+		/ITL/scene event FAUST disconnect "2:audioOutput:0",
+		/ITL/scene/faustRoute/3btnRight pop
+	)
+);
+
+####################
+/ITL/scene/playerRoute/1btnLeft watch mouseDown (
+	/ITL/scene/playerRoute/1btnLeft push,
+	/ITL/scene event PLAYER connect "1:audioOutput:1",
+	/ITL/scene/playerRoute/1btnLeft color $on,
+	/ITL/scene/playerRoute/1btnLeft watch mouseDown (
+		/ITL/scene/playerRoute/1btnLeft color $off,
+		/ITL/scene event PLAYER disconnect "1:audioOutput:1",
+		/ITL/scene/playerRoute/1btnLeft pop
+	)
+);
+
+/ITL/scene/playerRoute/2btnLeft watch mouseDown (
+	/ITL/scene/playerRoute/2btnLeft push,
+	/ITL/scene event PLAYER connect "1:audioOutput:2",
+	/ITL/scene/playerRoute/2btnLeft color $on,
+	/ITL/scene/playerRoute/2btnLeft watch mouseDown (
+		/ITL/scene/playerRoute/2btnLeft color $off,
+		/ITL/scene event PLAYER disconnect "1:audioOutput:2",
+		/ITL/scene/playerRoute/2btnLeft pop
+	)
+);
+
+/ITL/scene/playerRoute/3btnLeft watch mouseDown (
+	/ITL/scene/playerRoute/3btnLeft push,
+	/ITL/scene event PLAYER  connect "1:audioOutput:0",
+	/ITL/scene/playerRoute/3btnLeft color $on,
+	/ITL/scene/playerRoute/3btnLeft watch mouseDown (
+		/ITL/scene/playerRoute/3btnLeft color $off,
+		/ITL/scene event PLAYER disconnect "1:audioOutput:0",
+		/ITL/scene/playerRoute/3btnLeft pop
+	)
+);
+
+/ITL/scene/playerRoute/1btnRight watch mouseDown (
+	/ITL/scene/playerRoute/1btnRight push,
+	/ITL/scene event PLAYER connect "2:audioOutput:2",
+	/ITL/scene/playerRoute/1btnRight color $on,
+	/ITL/scene/playerRoute/1btnRight watch mouseDown (
+		/ITL/scene/playerRoute/1btnRight color $off,
+		/ITL/scene event PLAYER disconnect "2:audioOutput:2",
+		/ITL/scene/playerRoute/1btnRight pop
+	)
+);
+
+/ITL/scene/playerRoute/2btnRight watch mouseDown (
+	/ITL/scene/playerRoute/2btnRight push,
+	/ITL/scene event PLAYER connect "2:audioOutput:1",
+	/ITL/scene/playerRoute/2btnRight color $on,
+	/ITL/scene/playerRoute/2btnRight watch mouseDown (
+		/ITL/scene/playerRoute/2btnRight color $off,
+		/ITL/scene event PLAYER disconnect "2:audioOutput:1",
+		/ITL/scene/playerRoute/2btnRight pop
+	)
+);
+
+/ITL/scene/playerRoute/3btnRight watch mouseDown (
+	/ITL/scene/playerRoute/3btnRight push,
+	/ITL/scene event PLAYER  connect "2:audioOutput:0",
+	/ITL/scene/playerRoute/3btnRight color $on,
+	/ITL/scene/playerRoute/3btnRight watch mouseDown (
+		/ITL/scene/playerRoute/3btnRight color $off,
+		/ITL/scene event PLAYER disconnect "2:audioOutput:0",
+		/ITL/scene/playerRoute/3btnRight pop
+	)
+);
+
+####################
+/ITL/scene/echoRoute/1btnLeft watch mouseDown (
+	/ITL/scene/echoRoute/1btnLeft push,
+	/ITL/scene event PLAYER connect "1:echo:0",
+	/ITL/scene/echoRoute/1btnLeft color $on,
+	/ITL/scene/echoRoute/1btnLeft watch mouseDown (
+		/ITL/scene/echoRoute/1btnLeft color $off,
+		/ITL/scene event PLAYER disconnect "1:echo:0",
+		/ITL/scene/echoRoute/1btnLeft pop
+	)
+);
+
+/ITL/scene/echoRoute/2btnLeft watch mouseDown (
+	/ITL/scene/echoRoute/2btnLeft push,
+	/ITL/scene event PLAYER connect "2:echo:0",
+	/ITL/scene/echoRoute/2btnLeft color $on,
+	/ITL/scene/echoRoute/2btnLeft watch mouseDown (
+		/ITL/scene/echoRoute/2btnLeft color $off,
+		/ITL/scene event PLAYER disconnect "2:echo:0",
+		/ITL/scene/echoRoute/2btnLeft pop
+	)
+);
+
+/ITL/scene/echoRoute/3btnLeft watch mouseDown (
+	/ITL/scene/echoRoute/3btnLeft push,
+	/ITL/scene event PLAYER  connect "echo",
+	/ITL/scene/echoRoute/3btnLeft color $on,
+	/ITL/scene/echoRoute/3btnLeft watch mouseDown (
+		/ITL/scene/echoRoute/3btnLeft color $off,
+		/ITL/scene event PLAYER disconnect "echo",
+		/ITL/scene/echoRoute/3btnLeft pop
+	)
+);
+
+/ITL/scene/echoRoute/1btnRight watch mouseDown (
+	/ITL/scene/echoRoute/1btnRight push,
+	/ITL/scene event ECHO connect "0:audioOutput:1",
+	/ITL/scene/echoRoute/1btnRight color $on,
+	/ITL/scene/echoRoute/1btnRight watch mouseDown (
+		/ITL/scene/echoRoute/1btnRight color $off,
+		/ITL/scene event ECHO disconnect "0:audioOutput:1",
+		/ITL/scene/echoRoute/1btnRight pop
+	)
+);
+
+/ITL/scene/echoRoute/2btnRight watch mouseDown (
+	/ITL/scene/echoRoute/2btnRight push,
+	/ITL/scene event ECHO connect "0:audioOutput:2",
+	/ITL/scene/echoRoute/2btnRight color $on,
+	/ITL/scene/echoRoute/2btnRight watch mouseDown (
+		/ITL/scene/echoRoute/2btnRight color $off,
+		/ITL/scene event ECHO disconnect "0:audioOutput:2",
+		/ITL/scene/echoRoute/2btnRight pop
+	)
+);
+
+/ITL/scene/echoRoute/3btnRight watch mouseDown (
+	/ITL/scene/echoRoute/3btnRight push,
+	/ITL/scene event ECHO  connect "audioOutput",
+	/ITL/scene/echoRoute/3btnRight color $on,
+	/ITL/scene/echoRoute/3btnRight watch mouseDown (
+		/ITL/scene/echoRoute/3btnRight color $off,
+		/ITL/scene event ECHO disconnect "audioOutput",
+		/ITL/scene/echoRoute/3btnRight pop
+	)
+);
+
+/ITL/scene event UIREADY;
+
+
+__END__
+
+gap = 1.5;
+dx = 0.8;
+/ITL/scene/playPanel y 0.7;
+/ITL/scene/playPanel y 0.7;
+/ITL/scene/faustRoute x $dx;
+/ITL/scene/playerRoute yorigin $gap;
+/ITL/scene/echoRoute yorigin $gap * -1;
+/ITL/scene/playerRoute x $dx * -1;
+/ITL/scene/echoRoute x $dx * -1;
+
