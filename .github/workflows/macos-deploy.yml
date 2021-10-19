@@ -42,10 +42,5 @@ jobs:
 
       - name: Build test package
         run: |
-        	git config --global user.name 'INScore deploy'
-            git config --global user.email 'fober@grame.fr'
             make package ID=$GITHUB_RUN_ID
-            git checkout Julien
-            git add inscore-$GITHUB_RUN_ID.txt
-	        git commit -am "Automated report"
-	        git push
+            make publish ID=$GITHUB_RUN_ID BRANCH=Julien
