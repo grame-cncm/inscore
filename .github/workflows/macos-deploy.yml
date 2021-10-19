@@ -42,8 +42,7 @@ jobs:
 
       - name: Build test package
         run: |
+            git status -sb
             make package ID=$GITHUB_RUN_ID
-            ls inscore-*
-            cat inscore-*.txt
             make publish ID=$GITHUB_RUN_ID BRANCH=Julien
             
