@@ -43,6 +43,7 @@ jobs:
       - name: Build test package
         run: |
             git status -sb
+            git remote -v
             make package ID=$GITHUB_RUN_ID
             make publish ID=$GITHUB_RUN_ID BRANCH=Julien
             
