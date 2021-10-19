@@ -43,4 +43,7 @@ jobs:
       - name: Build test package
         run: |
             make package ID=$GITHUB_RUN_ID
+            ls inscore-*
+            cat inscore-*.txt
             make publish ID=$GITHUB_RUN_ID BRANCH=Julien
+            
