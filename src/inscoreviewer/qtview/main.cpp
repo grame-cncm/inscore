@@ -22,8 +22,6 @@
 
 */
 
-#include <QProcess>
-
 #ifdef WIN32
 #include <windows.h>
 #define sleep(n)	Sleep(n*1000)
@@ -31,9 +29,16 @@
 #include <unistd.h>
 #endif
 
+#include <QProcess>
+
 #include "INScore.h"
 #include "INScoreAppl.h"
 #include "INScoreAbout.h"
+#include "Modules.h"
+
+#ifdef NO_OPENGL
+# include <QQuickWindow>
+#endif
 
 using namespace inscore;
 using namespace std;
@@ -46,7 +51,7 @@ INScoreAbout* gAbout;
 //_______________________________________________________________________
 static void disableAppNap ()
 {
-	#if __APPLE__ && !defined(IOS)
+	#if __APPLE__ && !defined(INSCORE_IOS)
 	QProcess process;
 	QStringList args;
 	process.start("defaults write fr.grame.INScore NSAppSleepDisabled -bool YES", args);
@@ -99,7 +104,9 @@ int main( int argc, char **argv )
 #endif
 
 	INScoreAppl appl(argc, argv);	// must be called before building a QPixmap
-
+#ifdef NO_OPENGL
+	QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
+#endif
     QPixmap pixmap(":/INScoreViewer.png");
     gAbout = new INScoreAbout(pixmap);
     gAbout->show();
