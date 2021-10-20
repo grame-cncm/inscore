@@ -99,8 +99,25 @@ $(WASMDIR)/Makefile : CMakeLists.txt modules/WASMConfig.cmake
 #===============================================================
 # building for iOS
 #===============================================================
-ios: 
-	$(MAKE) inscore INSCOREDIR=$(IOSDIR) CMAKEOPTS='-DIOS=on'
+# ios: 
+# 	$(MAKE) inscore INSCOREDIR=$(IOSDIR) CMAKEOPTS='-DIOS=on -DQT6=on' GENERATOR='-G Xcode'
+
+ios :
+	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir
+
+_ios : $(INSCOREDIR) $(INSCOREDIR)/INScore.xcodeproj $(INSCOREDIR)/INScoreViewer.xcodeproj
+	@which $(QMAKE) > /dev/null || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
+	cp -rf ../rsrc/ tmp-rsc
+	$(MAKE) -C $(MOBILESCRIPTS)
+	xcodebuild -project $(INSCOREDIR)/INScore.xcodeproj  -configuration Release
+	xcodebuild -project $(INSCOREDIR)/INScoreViewer.xcodeproj -configuration Release -allowProvisioningUpdates
+
+$(INSCOREDIR)/INScore.xcodeproj: library.pro
+	cd $(INSCOREDIR) && $(QMAKE) ../library.pro
+
+$(INSCOREDIR)/INScoreViewer.xcodeproj: viewer.pro
+	cd $(INSCOREDIR) && $(QMAKE) ../viewer.pro
+
 
 #===============================================================
 # building inscore model library
@@ -129,7 +146,7 @@ cmake: $(INSCOREDIR)
 modules:
 	$(MAKE) -C ../modules
 	[ -d lib ] || mkdir lib
-	cp -af ../modules/guidolib/build/lib/*GUIDOEngine.[^f]* lib
+	cp -af ../modules/guidolib/build/lib/*GUIDOEngine[._][^f]* lib
 	cp -af ../modules/libmusicxml/build/lib/*musicxml2.[^f]* lib
 
 install_modules:
@@ -182,25 +199,36 @@ SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 ANDROID_API ?= 26
 ANDROID_ARCH ?= armeabi-v7a
 ANDROIDDEPLOYQT ?= /Users/Shared/Qt6/6.2.0/macos/bin/androiddeployqt
-#ANDROIDSETTINGS := android-libINScoreViewer.so-deployment-settings.json
 ANDROIDSETTINGS := android-INScoreViewer-deployment-settings.json
-
+ANDROIDBUILDDIR := $(INSCOREDIR)/android-build
+ANDROIDGUIDOLIB := ../modules/guidolib/build/lib
+ANDROIDQTLIBS   := $(shell qmake-android --version | grep Qt | sed -e 's/^..*in //')
 
 android : 
 	make _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
 #	$(MAKE) -f Makefile.android
 
-_android : $(ANDROIDDIR) $(ANDROIDDIR)/Makefile
+_android : $(ANDROIDBUILDDIR) $(ANDROIDDIR)/Makefile # $(ANDROIDDIR)/libGUIDOEngine_armeabi-v7a.so
 	cp -rf ../rsrc/ tmp-rsc
 	$(MAKE) -C $(MOBILESCRIPTS)
 	$(MAKE) -C $(INSCOREDIR)
-	[ -d $(INSCOREDIR)/android-build ] || mkdir $(INSCOREDIR)/android-build
+	[ -d $(ANDROIDBUILDDIR) ] || mkdir $(ANDROIDBUILDDIR)
 	$(MAKE) -C $(INSCOREDIR) INSTALL_ROOT=android-build install
-	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) --android-platform android-$(ANDROID_API) --release --input $(ANDROIDSETTINGS) --output android-build --deployment bundled --gradle $(SIGN) 
-	cp $(INSCOREDIR)/android-build/build/outputs/apk/release/android-build-release-signed.apk $(INSCOREDIR)/../bin/INScoreViewer.apk
+# 	$(QMAKE) -install qinstall $(ANDROIDQTLIBS)/libQt6OpenGLWidgets_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libQt6OpenGLWidgets_armeabi-v7a.so
+# 	$(QMAKE) -install qinstall $(ANDROIDQTLIBS)/libQt6MultimediaQuick_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libQt6MultimediaQuick_armeabi-v7a.so
+# 	$(QMAKE) -install qinstall $(ANDROIDGUIDOLIB)/libGUIDOEngine_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libGUIDOEngine.so
+# 	$(QMAKE) -install qinstall $(ANDROIDGUIDOLIB)/libGUIDOEngine_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libGUIDOEngine_armeabi-v7a.so
+# 	$(QMAKE) -install qinstall $(INSCOREDIR)/libINScore_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libINScore_armeabi-v7a.so
+# 	$(QMAKE) -install qinstall -exe $(INSCOREDIR)/libINScoreViewer_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libINScoreViewer_armeabi-v7a.so
+	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) --android-platform android-$(ANDROID_API) --release --input $(ANDROIDSETTINGS) --output android-build --deployment bundled --gradle $(SIGN)
+#	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) --input $(ANDROIDSETTINGS) --output /Users/fober/src/INScore/inscore/build/androiddir/android-build --apk /Users/fober/src/INScore/inscore/build/bin/INScoreViewer-$(VERSION).apk
+	cp $(ANDROIDBUILDDIR)/build/outputs/apk/release/android-build-release-signed.apk bin/INScoreViewer-$(VERSION).apk
 
-# $(ANDROIDDIR) :
-# 	mkdir $(ANDROIDDIR)
+$(ANDROIDBUILDDIR) :
+	mkdir -p $(ANDROIDBUILDDIR)
+
+# $(ANDROIDDIR)/libGUIDOEngine_armeabi-v7a.so : ../modules/guidolib/build/lib/libGUIDOEngine.armeabi-v7a.so
+# 	cp $< $@
 
 $(ANDROIDDIR)/Makefile: library.pro viewer.pro INScore.pro
 	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
@@ -226,14 +254,6 @@ BT350:
 installBT350:
 	make installAndroid ANDROIDDIR=androidx86-BT350
 
-#===============================================================
-# install target
-#===============================================================
-# install:
-# 	make -C ../package
-# 
-# uninstall:
-# 	make -C ../package uninstall
 
 #===============================================================
 # building the library with mobileUI
