@@ -27,26 +27,27 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a set of commands using the runners shell
-     - name: Install Qt
-       uses: jurplel/install-qt-action@v2
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
 
-     - name: Install packages
-       run: |
-         bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-         brew install libmicrohttpd
+      - name: Install packages
+        run: |
+            bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            brew install libmicrohttpd
 
-     - name: Build submodules
-       run: make -C build modules
+      - name: Build submodules
+        run: make -C build modules
 
-     - name: Build inscore
-       run: make -C build inscore
+      - name: Build inscore
+        run: make -C build inscore
 
-     - name: Build & push package
-       run: |
-            git status -sb
-            git remote -v
+      - name: Build inscore package
+        run: make -C build package
+
+      - name: Push package
+        run: |
+            git fetch
             echo PAT: $PAT
             cat version.txt
-            make package ID=$GITHUB_RUN_ID
             make push ID=$GITHUB_RUN_ID BRANCH=library VERSION=$(cat version.txt)
             
