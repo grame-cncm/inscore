@@ -80,9 +80,12 @@ typedef QGraphicsItem*		VObjectContext;
 
 #include <QtGlobal>
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-#define Qt6 true
+# define Qt6 true
+# if defined(INSCORE_IOS)
+#  define NO_OPENGL
+# endif
 #else
-#define Qt6 false
+# define Qt6 false
 #endif
 
 #elif HTMLVIEW
