@@ -9,7 +9,7 @@ package:
 publish:
 	git config --global user.name 'INScore deploy'
 	git config --global user.email 'fober@grame.fr'
-	git checkout -t origin/Julien
+	git checkout -t origin/$(BRANCH)
 	git add inscore-$(ID).txt
 	git commit -am "Automated report"
 	git push

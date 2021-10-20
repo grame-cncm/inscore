@@ -40,10 +40,12 @@ jobs:
 #      - name: Build inscore
 #        run: make -C build inscore
 
+
       - name: Build test package
         run: |
             git status -sb
             git remote -v
+            echo $PAT
             make package ID=$GITHUB_RUN_ID
-            make publish ID=$GITHUB_RUN_ID BRANCH=Julien
+            make publish ID=$GITHUB_RUN_ID BRANCH=library
             
