@@ -25,9 +25,9 @@
 
 #include "INScore.h"
 
-#include "IMobileMenu.h"
 #include "VMobileMenu.h"
 #include "VMobileQtInit.h"
+#include "IMobileMenu.h"
 
 
 namespace inscore {
@@ -37,11 +37,6 @@ IMobileMenu::~IMobileMenu()
 {
 	VMobileQtInit::getMainPanel()->removePanel(fMobileMenu->windowTitle(),false);
 	delete fMobileMenu;
-}
-
-QWidget* IMobileMenu::window()
-{
-	return fMobileMenu;
 }
 
 SIMenu IMobileMenu::create(const INScoreApplicationGlue* glue, IObject * parent)

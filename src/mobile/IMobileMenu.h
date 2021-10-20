@@ -55,7 +55,8 @@ class IMobileMenu : public IMenu
 		 * \brief window get the view of the class
 		 * \return a VMobileMenu pointer
 		 */
-		QWidget* window();
+		QWidget* window() 			{ return fMobileMenu; }
+
 
 	protected:
 		IMobileMenu(IObject * parent) : IMenu(parent) {}
