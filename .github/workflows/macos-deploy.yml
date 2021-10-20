@@ -46,7 +46,7 @@ jobs:
 
       - name: Push package
         run: |
-            git fetch
+            git fetch origin library  --depth 1 --no-recurse-submodules
             echo PAT: $PAT
             cat version.txt
             make push ID=$GITHUB_RUN_ID BRANCH=library VERSION=$(cat version.txt)
