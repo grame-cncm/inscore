@@ -23,12 +23,12 @@
 
 */
 
-#include "SlideMenu.h"
-
 #include <QStandardPaths>
+#include <QtDebug>
 
 #include "INScore.h"
 #include "IAppl.h"
+#include "SlideMenu.h"
 
 namespace inscore {
 
@@ -48,12 +48,10 @@ void MsgSender::postMessage (const QString& address, const QString& msg, float v
 	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val); }
 
 void MsgSender::postMessage (const QString& address, const QString& msg, const QString& val)
-{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val.toStdString().c_str()); }
+	{ INScore::postMessage(address.toStdString().c_str(), msg.toStdString().c_str(), val.toStdString().c_str()); }
 
 QString MsgSender::rootPath()
-{
-	return QString::fromStdString(IAppl::getRootPath());
-}
+	{ return QString::fromStdString(IAppl::getRootPath()); }
 
 
 //--------------------------------------------------------------------------
@@ -62,11 +60,19 @@ SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 	setAttribute(Qt::WA_AcceptTouchEvents);
 
 	fMenu = new QQuickWidget(this);
-	fMenu->rootContext()->setContextProperty("contextObject", this);
-	fMenu->rootContext()->setContextProperty("inscore", &fSender);
-	fMenu->rootContext()->setContextProperty("downloadPath", QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last()+"/bundles");
+	
+	QQmlContext * context = fMenu->rootContext();
+	if (context) {
+		context->setContextProperty("contextObject", this);
+		context->setContextProperty("inscore", &fSender);
+		context->setContextProperty("downloadPath", QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).last()+"/bundles");
+	}
+	else qDebug() << "INSCORE ERROR - SlideMenu::SlideMenu: rootContext is null";
 	fMenu->setSource(QUrl("qrc:///qml/slideMenu.qml"));
-	fMenu->rootObject()->setProperty("version", QVariant::fromValue( QString::fromStdString(INScore::versionStr()) ));
+
+	QQuickItem * root = fMenu->rootObject();
+	if (!root) qDebug() << "INSCORE ERROR - SlideMenu::SlideMenu error: rootObject is null";
+	else root->setProperty("version", QVariant::fromValue( QString::fromStdString(INScore::versionStr()) ));
 	fMenu->setAttribute(Qt::WA_AcceptTouchEvents);
 
 	fMenu->setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -103,36 +109,18 @@ SlideMenu::SlideMenu(QWidget *parent) : QFrame(parent)
 }
 
 //_________________________________________________
-QStringList SlideMenu::sceneList() const
-{
-	return fSceneList;
-}
-
-QStringList SlideMenu::panelList() const
-{
-	return fPanelList;
-}
-
-bool SlideMenu::isMenuVisible() const
-{
-	return isVisible() && fAnimOut.state()!=QAbstractAnimation::Running;
-}
-
-void SlideMenu::handleBackButton()
-{
-	emit back();
-}
+QStringList SlideMenu::sceneList() const	{ return fSceneList; }
+QStringList SlideMenu::panelList() const	{ return fPanelList; }
+bool SlideMenu::isMenuVisible() const		{ return isVisible() && fAnimOut.state()!=QAbstractAnimation::Running; }
+void SlideMenu::handleBackButton()			{ emit back(); }
 
 //_________________________________________________
 void SlideMenu::resizeEvent(QResizeEvent *)
 {
 	int menuWidth = width()*WIDTH;
-
 	fMenu->resize(menuWidth, height());
-
 	if(!isVisible())
 		fMenu->move(-menuWidth, 0);
-
 	fPosOut->setEndValue(QPoint(-menuWidth,0));
 }
 
@@ -156,12 +144,9 @@ void SlideMenu::setOpacity(float alpha)
 {
 	if(qAbs(alpha-fOpacity) < 0.05)
 		return;
-
 	if(alpha<0 && alpha>1)
 		return;
-
 	fOpacity = alpha;
-
 	setPalette(QColor(0,0,0,255*fOpacity));
 }
 
@@ -191,7 +176,6 @@ void SlideMenu::addDownloadedFile(QString fileName)
 
 	QString data = "/ITL rootPath \"" + fileName.left(fileName.lastIndexOf('/'))+"\";\n";
 	data+= "/ITL load \""+fileName.mid(fileName.lastIndexOf('/')+1)+"\";";
-
 	f.write(data.toUtf8());
 	f.close();
 }
@@ -201,8 +185,13 @@ bool SlideMenu::event(QEvent *e)
 {
 	if(e->type()==QEvent::TouchBegin){
 		QTouchEvent *event = static_cast<QTouchEvent*>(e);
+#if Qt6
+		foreach(QTouchEvent::TouchPoint p, event->points()){
+			if(p.position().x() > width()*WIDTH){
+#else
 		foreach(QTouchEvent::TouchPoint p, event->touchPoints()){
 			if(p.pos().x() > width()*WIDTH){
+#endif
 				e->accept();
 				hideMenu();
 			}
@@ -215,7 +204,6 @@ bool SlideMenu::event(QEvent *e)
 			hideMenu();
 		}
 	}
-
 	return QFrame::event(e);
 }
 

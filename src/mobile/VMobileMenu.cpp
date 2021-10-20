@@ -23,9 +23,9 @@
 
 */
 
-
 #include <QSettings>
 #include <QtQuick>
+#include <QtDebug>
 
 #include "IAppl.h"
 #include "INScore.h"
@@ -41,13 +41,15 @@ VMobileMenu::VMobileMenu(const char * name, const char* qtversion, const char* i
 	setResizeMode(QQuickWidget::SizeViewToRootObject);
 	setSource(QUrl("qrc:///qml/about.qml"));
 
-
 	setWindowTitle( tr(name) );
 	QQuickItem *root = rootObject();
-	root->setProperty("version", QVariant(INScore::versionStr().c_str()));
-	root->setProperty("qtversion", QVariant(qtversion));
-	root->setProperty("guidoversion", QVariant(INScore::guidoversion().c_str()));
-	root->setProperty("ip", QVariant(ipnum));
+	if (root) {
+		root->setProperty("version", QVariant(INScore::versionStr().c_str()));
+		root->setProperty("qtversion", QVariant(qtversion));
+		root->setProperty("guidoversion", QVariant(INScore::guidoversion().c_str()));
+		root->setProperty("ip", QVariant(ipnum));
+	}
+	else qDebug() << "INSCORE ERROR - VMobileMenu::VMobileMenu: rootObject is null";
 
 	QSettings settings("Grame", "INScore");
 	settings.beginGroup("Mobile");
@@ -56,7 +58,6 @@ VMobileMenu::VMobileMenu(const char * name, const char* qtversion, const char* i
 		INScore::postMessage("/ITL", "load", "qrc:/scripts/Welcome.inscore");
 		settings.setValue("loadWelcome", QVariant::fromValue(false));
 	}
-
 }
 
 } // end namespoace

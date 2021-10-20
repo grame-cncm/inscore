@@ -23,8 +23,7 @@
 
 */
 
-#ifndef HEADER_H
-#define HEADER_H
+#pragma once
 
 #include <QQuickWidget>
 
@@ -42,15 +41,7 @@ signals:
 public slots:
 	void headerNameChanged(QString newTitle, bool isFirst, bool isLast);
 	void panelNameListChanged(QStringList nameList);
-
-protected:
-
-	///Workaround a QQmlWidget bug where the qml item is resize with a wrong height
-	///when showing the header without triggering a resizeEvent() (for exemple when exiting fullscreen mode)
-	///This subclass of showEvent can be removed if the qt bug is fixed...
-//	void showEvent(QShowEvent *e);
 };
 
-}//end namespace
+} //end namespace
 
-#endif // HEADER_H

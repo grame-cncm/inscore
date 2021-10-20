@@ -28,8 +28,6 @@
 
 #include "IVNode.h"
 
-class QWidget;
-
 namespace inscore {
 
 /*!
@@ -48,7 +46,7 @@ class IMenu : public IVNode
 {
     public:
 		/// \brief creates a new IMenu
-		static SIMenu create(IObject * parent)		{ return new IMenu(parent); }
+		static SIMenu create(IObject * parent)	{ return new IMenu(parent); }
 
 		/*!
 		 * \brief window get the view of the class

@@ -26,7 +26,6 @@
 #include <QtQuickWidgets>
 
 #include "INScore.h"
-
 #include "SwipePanel.h"
 #include "Modules.h"
 

@@ -23,10 +23,11 @@
 
 */
 
-#include "Header.h"
 #include <QtQuick>
 #include <QtQml>
 #include <QtCore>
+
+#include "Header.h"
 
 namespace inscore {
 
@@ -52,22 +53,6 @@ void Header::panelNameListChanged(QStringList nameList)
 {
 	rootObject()->setProperty("titles", QVariant::fromValue(nameList));
 }
-
-//void Header::showEvent(QShowEvent *e)
-//{
-//	QQuickWidget::showEvent(e);
-//
-//	///Workaround a QQmlWidget bug where the qml item is resize with a wrong height
-//	///when showing the header without triggering a resizeEvent() (for exemple when exiting fullscreen mode)
-//	///This subclass of showEvent can be removed if the qt bug is fixed...
-//	if(isVisible()){
-//		QTimer::singleShot(10, [this](){
-//			int h = height();
-//			setFixedHeight(h+1);
-//			setFixedHeight(h);
-//		});
-//	}
-//}
 
 }//end namespace
 

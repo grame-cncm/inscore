@@ -31,7 +31,6 @@
 #include "IScene.h"
 #include "VSceneView.h"
 
-#include <QWidget>
 
 namespace inscore {
 

@@ -47,12 +47,9 @@
 
 */
 
-#ifndef VMOBILEMENUWIDGET_H
-#define VMOBILEMENUWIDGET_H
+#pragma once
 
-//#include <QWidget>
 #include <QQuickWidget>
-#include <string>
 
 class QCheckBox;
 class QLineEdit;
@@ -72,12 +69,11 @@ namespace inscore
  */
 class VMobileMenu : public QQuickWidget
 {
-		Q_OBJECT
+	Q_OBJECT
 	public:
 		VMobileMenu(const char * name, const char* qtversion, const char* ipnum, QWidget *parent = 0);
+
 };
 /*! @} */
 
 } // end namespoace
-
-#endif // VMOBILEMENUWIDGET_H
