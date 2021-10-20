@@ -7,4 +7,4 @@ CONFIG += ordered c++11
 SUBDIRS = library.pro viewer.pro
 
 
-#viewer.depends = library
+viewer.depends = library

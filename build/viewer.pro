@@ -33,7 +33,7 @@ else  { OSCIP = $$OSC/ip/posix }
 win32 { VERSION = 1.30 }
 else  { VERSION = $$system(cat $$ROOT/version.txt) }
 
-CONFIG += c++11
+CONFIG += c++17
 
 ############################## 
 # source and headers
@@ -77,9 +77,10 @@ macx {
 # ios support
 ##############################
 ios {
-    QMAKE_IOS_DEPLOYMENT_TARGET = 11.0
-	QMAKE_LFLAGS += -L Release-iphoneos
-	LIBS += -lINScore $$GUIDO_PATH/build/lib/libGUIDOEngine.a 
+	message ("Generates project for iOS")
+    QMAKE_IOS_DEPLOYMENT_TARGET = 13.0
+	QMAKE_LFLAGS += $$PWD/lib/libGUIDOEngine.a -L Release-iphoneos  
+	LIBS += -lINScore $$PWD/lib/libGUIDOEngine.a
 	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
 	ios_icon.files = $$files($$ROOT/rsrc/ios-icons/*.png)
 	QMAKE_BUNDLE_DATA += ios_icon
@@ -117,36 +118,34 @@ unix:!android:!macx:!ios {
 android {
 #	LIBS +=  -L$$PWD/androiddir/library
 	LIBS +=  -L$$PWD/androiddir
-	GUIDOANDROID = $$GUIDO_PATH/platforms/android/guido-engine-android/libs/
+	GUIDOANDROID = $$PWD/lib
     equals(ANDROID_TARGET_ARCH, armeabi-v7a) { 
 		message ("Includes armeabi-v7a")
-        LIBS +=  -lINScore_armeabi-v7a -L$$GUIDOANDROID/armeabi-v7a -lGUIDOEngine
+        LIBS +=  -lINScore_armeabi-v7a -L$$GUIDOANDROID -lGUIDOEngine_armeabi-v7a 
 		OBJECTS_DIR = tmp_armeabi-v7a
 		MOC_DIR = tmp_armeabi-v7a
     }
     equals(ANDROID_TARGET_ARCH, arm64-v8a) {
 		message ("Includes arm64-v8a")
-        LIBS +=  -lINScore_arm64-v8a -L$$GUIDOANDROID/arm64-v8a -lGUIDOEngine
+        LIBS +=  -lINScore_arm64-v8a -L$$GUIDOANDROID -lGUIDOEngine_arm64-v8a
 		OBJECTS_DIR = tmpv_arm64-v8a
 		MOC_DIR = tmpv_arm64-v8a
     }
     equals(ANDROID_TARGET_ARCH, x86)  {
 		message ("Includes x86")
-       	LIBS +=  -lINScore_x86 -L$$GUIDOANDROID/x86 -lGUIDOEngine
+       	LIBS +=  -lINScore_x86 -L$$GUIDOANDROID -lGUIDOEngine_x86
 		OBJECTS_DIR = tmpv_x86
 		MOC_DIR = tmpv_x86
     }
     equals(ANDROID_TARGET_ARCH, x86_64)  {
 		message ("Includes x86_64")
-       	LIBS +=  -lINScore_x86_64 -L$$GUIDOANDROID/x86_64 -lGUIDOEngine
-        GUIDOLINKPATH = $$GUIDOANDROID/x86_64
+       	LIBS +=  -lINScore_x86_64 -L$$GUIDOANDROID -lGUIDOEngine_x86_64
 		OBJECTS_DIR = tmpv_x86_64
 		MOC_DIR = tmpv_x86_64
     }
     ANDROID_API_VERSION = 26
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
-#	QT += androidextras
 	QT += quick quickwidgets
 	DEFINES += ANDROID __MOBILE__
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc

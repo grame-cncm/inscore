@@ -6,7 +6,7 @@ TARGET = INScore
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-CONFIG += c++11
+CONFIG += c++17
 CONFIG += warn_off
 
 ############################## 
@@ -178,15 +178,15 @@ macx {
 # ios x support
 ############################## 
 ios {
-#    QMAKE_IOS_DEPLOYMENT_TARGET = 11.0
+    QMAKE_IOS_DEPLOYMENT_TARGET = 13.0
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
-    DEFINES += INSCORE_IOS __MOBILE__
+    DEFINES += INSCORE_IOS __MOBILE__ 
     CONFIG += arm64 armv8
     CONFIG += staticlib
-    LIBS += $$ROOT/lib/GuidoEngine/ios/libGUIDOEngine.a
-	QT += quick quickwidgets 
+    LIBS += $$PWD/lib/libGUIDOEngine.a
+	QT += openglwidgets quick quickwidgets 
 }
 
 ############################## 
@@ -204,43 +204,37 @@ unix:!macx:!ios:!android {
 ############################## 
 
 android {
-	GUIDOANDROID = $$GUIDO_PATH/platforms/android/guido-engine-android/libs/
-#	DESTDIR = $$PWD/lib
+	LIBS += -L$$PWD/lib
     equals(ANDROID_TARGET_ARCH, armeabi-v7a) { 
 		message ("Includes armeabi-v7a")
-        GUIDOLINKPATH = $$GUIDOANDROID/armeabi-v7a
+	    LIBS += -lGUIDOEngine_armeabi-v7a
 		OBJECTS_DIR = tmp_armeabi-v7a
 		MOC_DIR = tmp_armeabi-v7a
     }
     equals(ANDROID_TARGET_ARCH, arm64-v8a) {
 		message ("Includes arm64-v8a")
-        GUIDOLINKPATH = $$GUIDOANDROID/arm64-v8a
+	    LIBS += -lGUIDOEngine_arm64-v8a
 		OBJECTS_DIR = tmp_arm64-v8a
 		MOC_DIR = tmp_arm64-v8a
     }
     equals(ANDROID_TARGET_ARCH, x86)  {
 		message ("Includes x86")
-        GUIDOLINKPATH = $$GUIDOANDROID/x86
+	    LIBS += -lGUIDOEngine_x86
 		OBJECTS_DIR = tmp_x86
 		MOC_DIR = tmp_x86
     }
     equals(ANDROID_TARGET_ARCH, x86_64)  {
 		message ("Includes x86_64")
-        GUIDOLINKPATH = $$GUIDOANDROID/x86_64
+	    LIBS += -lGUIDOEngine_x86_64
 		OBJECTS_DIR = tmp_x86_64
 		MOC_DIR = tmp_x86_64
     }
-#	isEmpty(ARCH) 	{ ARCH = armeabi-v7a }
-#	message ("Target android platform is $$ARCH")
-#	message ("Sources $$SOURCES")
 	ANDROID_ABI = armeabi-v7a
     ANDROID_API_VERSION = 26
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
-    LIBS += -L$$GUIDOLINKPATH -lGUIDOEngine
-#    QT += androidextras
 	QT += quick quickwidgets openglwidgets
 }
 
