@@ -1,7 +1,8 @@
-import QtQuick 2.0
-import QtGraphicalEffects 1.0
+import QtQuick 2.2
+//import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.0
 import QtQuick.Window 2.2
 
 Item {
@@ -34,7 +35,7 @@ Item {
 				horizontalOffset: 5
 				verticalOffset: 5
 				radius: 16.0
-				samples: 16
+// 				samples: 16
 				color: "#80000000"
 				source: icon
 			}
@@ -66,7 +67,7 @@ Item {
 				horizontalOffset: 3
 				verticalOffset: 3
 				radius: 8.0
-				samples: 16
+//				samples: 16
 				color: "#80000000"
 				source: desc
 			}
