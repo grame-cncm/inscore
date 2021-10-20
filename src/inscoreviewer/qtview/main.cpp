@@ -30,15 +30,14 @@
 #endif
 
 #include <QProcess>
+#ifdef NO_OPENGL
+#include <QQuickWindow>
+#endif
 
 #include "INScore.h"
 #include "INScoreAppl.h"
 #include "INScoreAbout.h"
-#include "Modules.h"
 
-#ifdef NO_OPENGL
-# include <QQuickWindow>
-#endif
 
 using namespace inscore;
 using namespace std;

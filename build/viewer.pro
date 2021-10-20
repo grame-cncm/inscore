@@ -88,7 +88,7 @@ ios {
 	INCLUDEPATH += $$SRC/mobile/ios
 	HEADERS += $$files($$SRC/mobile/ios/*.h)
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobileios.qrc
-	DEFINES += INSCORE_IOS __MOBILE__
+	DEFINES += INSCORE_IOS __MOBILE__ NO_OPENGL
     QT += quick quickwidgets
 }
 
