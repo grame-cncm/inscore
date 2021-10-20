@@ -9,6 +9,8 @@ push:
 	git config --global user.email 'fober@grame.fr'
 	git checkout -t origin/$(BRANCH)
 	mv $(PACK) $(VPACK)
+	git lfs track "*.dmg"
+	git add .gitattributes
 	git add $(VPACK)
 	git commit -am "Automated report"
 	git push
