@@ -1,4 +1,4 @@
-import QtQuick 2.2
+import QtQuick
 
 Item {
     id: root;
@@ -12,7 +12,10 @@ Item {
         maximumTouchPoints: 1;
         minimumTouchPoints: 1;
         mouseEnabled: true;
-
+        touchPoints: [
+            TouchPoint { id: pos }
+        ]
+        
         property bool pressing: false;
 
         Timer{
@@ -30,17 +33,17 @@ Item {
 
         onPressed: {
             pressing = true;
-            root.pressed(touchPoints[0].x,touchPoints[0].y);
+            root.pressed(pos.x, pos.y);
             unPress.restart();
         }
         onReleased: {
-            root.released(touchPoints[0].x,touchPoints[0].y);
+            root.released(pos.x, pos.y);
             if(pressing)
                 root.clicked();
             pressing = false;
         }
         onUpdated:{
-                root.mouseMove(touchPoints[0].x,touchPoints[0].y);
+                root.mouseMove(pos.x, pos.y);
                 unPress.restart();
         }
 
