@@ -1,5 +1,5 @@
-import QtQuick 2.2
-import QtQuick.Window 2.0
+import QtQuick
+import QtQuick.Window
 import "global.js" as Size
 
 

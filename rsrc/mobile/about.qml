@@ -1,9 +1,8 @@
-import QtQuick 2.2
-//import QtGraphicalEffects 1.0
+import QtQuick
 import Qt5Compat.GraphicalEffects
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-import QtQuick.Window 2.2
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQuick.Window
 
 Item {
     id: root
