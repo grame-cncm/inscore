@@ -378,12 +378,13 @@ else()
 	set (INSTALL_BIN 		${CMAKE_INSTALL_PREFIX}/bin)
 	set (INSTALL_LIB 		${CMAKE_INSTALL_PREFIX}/lib)
 	set (INSTALL_INC 		${CMAKE_INSTALL_PREFIX}/include/inscore)
-	set (INSTALL_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/examples)
-	set (INSTALL_GMN_SAMPLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/GMN-Examples)
-	set (INSTALL_BUNDLES 	${CMAKE_INSTALL_PREFIX}/share/inscore/bundles)
-	set (INSTALL_TOOLS 		${CMAKE_INSTALL_PREFIX}/share/inscore/tools)
-	set (INSTALL_INTERFACES 	${CMAKE_INSTALL_PREFIX}/share/inscore)
-	set (INSTALL_DOC 		${CMAKE_INSTALL_PREFIX}/share/inscore/doc)
+	set (INSTALL_SHARED 	${CMAKE_INSTALL_PREFIX}/share)
+	set (INSTALL_SAMPLES 	${INSTALL_SHARED}/inscore/examples)
+	set (INSTALL_GMN_SAMPLES 	${INSTALL_SHARED}/inscore/GMN-Examples)
+	set (INSTALL_BUNDLES 	${INSTALL_SHARED}/inscore/bundles)
+	set (INSTALL_TOOLS 		${INSTALL_SHARED}/inscore/tools)
+	set (INSTALL_INTERFACES ${INSTALL_SHARED}/inscore)
+	set (INSTALL_DOC 		${INSTALL_SHARED}/inscore/doc)
 endif()
 set (installtargets 	${viewer} ${ibundle} ${libtarget})
 
@@ -542,6 +543,14 @@ install (
 	PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 )
 
+####################################
+# install linux specific files
+if (UNIX AND NOT APPLE)
+	set (URSRC ${ROOT}/package/rsrc/share)
+	install ( FILES   ${URSRC}/applications/inscore.desktop DESTINATION ${INSTALL_SHARED}/applications PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ )
+	install ( FILES   ${URSRC}/icons/hicolor/128x128/apps/inscore.png DESTINATION ${INSTALL_SHARED}/icons/hicolor/128x128/apps PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ )
+	install ( FILES   ${URSRC}/icons/hicolor/48x48/apps/inscore.png DESTINATION ${INSTALL_SHARED}/icons/hicolor/48x48/apps PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ )
+endif()
 
 ####################################
 # cpack section
