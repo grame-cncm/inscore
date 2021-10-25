@@ -355,6 +355,7 @@ void IObject::setdyMsgHandler (Master* m)
 //--------------------------------------------------------------------------
 void IObject::timeAble()
 {
+	fAltGetMsgHandlerMap["date%f"]				= TGetParamMethodHandler<IObject, float (IObject::*)() const>::create(this, &IObject::getDatef);
 	fGetMsgHandlerMap[kdate_GetSetMethod]		= TGetParamMsgHandler<rational>::create(fDate);
 	fGetMsgHandlerMap[kduration_GetSetMethod]	= TGetParamMsgHandler<rational>::create(fDuration);
 	fGetMsgHandlerMap[ktempo_GetSetMethod]		= TGetParamMsgHandler<float>::create(fTempo);
@@ -367,7 +368,7 @@ void IObject::timeAble()
 	fMsgHandlerMap[kdtempo_SetMethod]		= TSetMethodMsgHandler<IObject,int>::create(this, &IObject::addTempo);
 	
 	fMsgHandlerMap[kclock_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::clock);
-	fMsgHandlerMap[kdurClock_SetMethod]	= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
+	fMsgHandlerMap[kdurClock_SetMethod]		= TMethodMsgHandler<IObject, void (IObject::*)(void)>::create(this, &IObject::durclock);
 
 	fSigHandlerMap[kdate_GetSetMethod]		= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::setDate);
 	fSigHandlerMap[kduration_GetSetMethod]	= TSetMethodSigHandler<IObject,rational>::create(this, &IObject::setDuration);
