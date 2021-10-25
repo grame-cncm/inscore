@@ -68,7 +68,13 @@ QSslSocket* HTTPSForwarder::newConnection (qintptr socketDescriptor)
 	if (fSsl.cert || fSsl.key || fSsl.cacert) {
 		QSslSocket* socket = new QSslSocket(this);
 		QSslConfiguration config = socket->sslConfiguration();
+#if Qt6 || QT515
 		config.addCaCertificate (*fSsl.cacert);
+#else
+		 QList<QSslCertificate> list;
+		 list.append(*fSsl.cacert);
+		 config.setCaCertificates (list); 
+#endif
 		config.setLocalCertificate (*fSsl.cert);
 		config.setPrivateKey(*fSsl.key);
 		config.setPeerVerifyMode(QSslSocket::VerifyNone);

@@ -86,6 +86,11 @@ typedef QGraphicsItem*		VObjectContext;
 # endif
 #else
 # define Qt6 false
+# if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+#  define QT515 true
+# else
+#  define QT515 false
+# endif
 #endif
 
 #elif HTMLVIEW
