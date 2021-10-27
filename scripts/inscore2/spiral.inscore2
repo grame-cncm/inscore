@@ -1,3 +1,4 @@
+click = (? (< $OSId, 3), touchBegin, mouseDown);
 
 pi		= 3.141592653589793;
 pi_2	= (/ $pi, 2);
@@ -77,11 +78,11 @@ speed = 0.2;
 # adds a simple button to control play/pause
 /ITL/scene/control  (set img "rsrc/play.png"),
 					(scale 0.12);
-/ITL/scene/control watch mouseDown 	(
+/ITL/scene/control watch $click 	(
 	(/ITL/scene/control push),
 	(/ITL/scene/box tempo 60),
 	(/ITL/scene/control set img "rsrc/pause.png"),
-	(/ITL/scene/control watch mouseDown 	(
+	(/ITL/scene/control watch $click 	(
 		(/ITL/scene/box tempo 0),
 		(/ITL/scene/control set img "rsrc/play.png"),
 		(/ITL/scene/control pop)
@@ -98,10 +99,10 @@ pos = 0.95;
 /ITL/scene/ctr_*				(watch mouseEnter (/ITL/scene/$self dalpha 50)),
 								(watch mouseLeave (/ITL/scene/$self dalpha -50));
 
-/ITL/scene/ctr_ab		watch mouseDown ( /ITL/scene/speed angle $speed);
-/ITL/scene/ctr_bb		watch mouseDown ( /ITL/scene/speed angle (- 0, $speed));
-/ITL/scene/ctr_aa		watch mouseDown ( /ITL/scene/speed angle (/ $speed, 2));
-/ITL/scene/ctr_ba		watch mouseDown ( /ITL/scene/speed angle (* $speed, 5));
+/ITL/scene/ctr_ab		watch $click ( /ITL/scene/speed angle $speed);
+/ITL/scene/ctr_bb		watch $click ( /ITL/scene/speed angle (- 0, $speed));
+/ITL/scene/ctr_aa		watch $click ( /ITL/scene/speed angle (/ $speed, 2));
+/ITL/scene/ctr_ba		watch $click ( /ITL/scene/speed angle (* $speed, 5));
 
 __END__
 

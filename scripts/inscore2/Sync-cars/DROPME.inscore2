@@ -3,6 +3,7 @@
 /ITL/scene/* del ;
 
 tempo = 60;
+click = (? (< $OSId, 3), touchBegin, mouseDown);
 
 /ITL/scene (width 1.0), (height 1.3);
 
@@ -23,11 +24,11 @@ yloc = 1.2;
 /ITL/scene/control  (set img "rsrc/play.png"),
 					(scale 0.15),
 					(y $yloc);
-/ITL/scene/control watch mouseDown 	(
+/ITL/scene/control watch $click 	(
 	(/ITL/scene/control push),
 	(/ITL/scene/car* tempo $tempo),
 	(/ITL/scene/control set img "rsrc/pause.png"),
-	(/ITL/scene/control watch mouseDown 	(
+	(/ITL/scene/control watch $click 	(
 		(/ITL/scene/car* tempo 0),
 		(/ITL/scene/control set img "rsrc/play.png"),
 		(/ITL/scene/control pop)
@@ -36,17 +37,17 @@ yloc = 1.2;
 
 w = 0.04;
 radius = 30;
-onoff = (watch mouseDown (
+onoff = (watch $click (
 			(/ITL/scene/$name push),
 			(/ITL/scene/$name color SpringGreen),
 			($msgOn),
-			(/ITL/scene/$name watch mouseDown (
+			(/ITL/scene/$name watch $click (
 				(/ITL/scene/$name color SeaShell ),
 				($msgOff),
 				(/ITL/scene/$name pop)
 			))));
 
-push = (watch mouseDown (
+push = (watch $click (
 			(/ITL/scene/$name color SpringGreen),
 			($msgOn)));
 
@@ -84,7 +85,7 @@ $button{name=ctrMapd, addr=captMapd, caption=Whole, x=0.6,
 		behavior=$push,
 		msgOn=((/ITL/scene/car* duration 1 1), (/ITL/scene/ctrMap[123] color SeaShell) ) };
 
-/ITL/scene/ctrMap2 event mouseDown 0 0;
+/ITL/scene/ctrMap2 event $click 0 0;
 
 
 __END__

@@ -1,3 +1,6 @@
+
+click = (? (< $OSId, 3), touchBegin, mouseDown);
+
 # variables declaration 
 pi    = 3.141592653589793;
 
@@ -54,11 +57,11 @@ control = /ITL/scene/$addr  (set img "rsrc/play.png"),
 					(scale 0.12),
 					(x $x),
 					(y $y),
-					(watch mouseDown 	(
+					(watch $click 	(
 						(/ITL/scene/$self push),
 						($msgon),
 						(/ITL/scene/$self set img "rsrc/pause.png"),
-						(/ITL/scene/$self watch mouseDown 	(
+						(/ITL/scene/$self watch $click 	(
 							($msgoff),
 							(/ITL/scene/$self set img "rsrc/play.png"),
 							(/ITL/scene/$self pop)

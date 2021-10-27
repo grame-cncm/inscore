@@ -1,5 +1,5 @@
 
-
+click = (? (< $OSId, 3), touchBegin, mouseDown);
 
 
 op1 = ((scale 3), (color 100,100,100));
@@ -12,10 +12,10 @@ op2 = ((scale 5), (color 10,10,200));
 /ITL/scene/text 
 	(set txt "Hello world !"), $op1;
 
-/ITL/scene/text watch mouseDown (
+/ITL/scene/text watch $click (
 	(/ITL/scene/text push),
 	(/ITL/scene/text 	(set txt "Hi guy"), $op2),
-	(/ITL/scene/text watch mouseDown (
+	(/ITL/scene/text watch $click (
 		(/ITL/scene/text (set txt "Hello world !"), $op1),
 		(/ITL/scene/text pop)
 	))
