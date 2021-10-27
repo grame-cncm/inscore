@@ -102,12 +102,19 @@ $(WASMDIR)/Makefile : CMakeLists.txt modules/WASMConfig.cmake
 # ios: 
 # 	$(MAKE) inscore INSCOREDIR=$(IOSDIR) CMAKEOPTS='-DIOS=on -DQT6=on' GENERATOR='-G Xcode'
 
-ios :
+GUIDOMODULE ?= ../modules/guidolib/build
+ios : lib/libGUIDOEngine.a
+	cp -rf ../rsrc/ tmp-rsc
 	make _ios QMAKE=qmake-ios INSCOREDIR=iosdir
+
+lib/libGUIDOEngine.a : $(GUIDOMODULE)/lib/libGUIDOEngine.a
+	cp $< $@
+
+$(GUIDOMODULE)/lib/libGUIDOEngine.a:
+	$(MAKE) -C $(GUIDOMODULE) ios
 
 _ios : $(INSCOREDIR) $(INSCOREDIR)/INScore.xcodeproj $(INSCOREDIR)/INScoreViewer.xcodeproj
 	@which $(QMAKE) > /dev/null || (echo "### you must create an alias named '$(QMAKE)' that point to qmake inside your qt/ios distribution and that is available from your PATH."; false;)
-	cp -rf ../rsrc/ tmp-rsc
 	$(MAKE) -C $(MOBILESCRIPTS)
 	xcodebuild -project $(INSCOREDIR)/INScore.xcodeproj  -configuration Release
 	xcodebuild -project $(INSCOREDIR)/INScoreViewer.xcodeproj -configuration Release -allowProvisioningUpdates
@@ -186,11 +193,6 @@ package:
 # 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(LIBPROJ)  -target INScore -configuration Release
 # 	xcodebuild -jobs $(J) -project $(INSCOREDIR)/$(VIEWPROJ) -target INScoreViewer -configuration Release -allowProvisioningUpdates
 
-# windows : $(INSCOREDIR)/$(LIBPROJ) $(INSCOREDIR)/$(VIEWPROJ)
-# 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScore.vcxproj $(WINOPTS)"
-# 	cmd /c "\"$(MSVC)\VC\vcvarsall.bat\" && msbuild $(INSCOREDIR)/INScoreViewer.vcxproj $(WINOPTS)"
-#	$(MAKE) -C ../tools/IBundle/build
-
 
 #===============================================================
 # building INScore for Android
@@ -198,7 +200,8 @@ package:
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
 ANDROID_API ?= 26
 ANDROID_ARCH ?= armeabi-v7a
-ANDROIDDEPLOYQT ?= /Users/Shared/Qt6/6.2.0/macos/bin/androiddeployqt
+#ANDROIDDEPLOYQT ?= /Users/Shared/Qt6/6.2.0/macos/bin/androiddeployqt
+ANDROIDDEPLOYQT ?= androiddeployqt
 ANDROIDSETTINGS := android-INScoreViewer-deployment-settings.json
 ANDROIDBUILDDIR := $(INSCOREDIR)/android-build
 ANDROIDGUIDOLIB := ../modules/guidolib/build/lib
@@ -214,14 +217,11 @@ _android : $(ANDROIDBUILDDIR) $(ANDROIDDIR)/Makefile # $(ANDROIDDIR)/libGUIDOEng
 	$(MAKE) -C $(INSCOREDIR)
 	[ -d $(ANDROIDBUILDDIR) ] || mkdir $(ANDROIDBUILDDIR)
 	$(MAKE) -C $(INSCOREDIR) INSTALL_ROOT=android-build install
-# 	$(QMAKE) -install qinstall $(ANDROIDQTLIBS)/libQt6OpenGLWidgets_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libQt6OpenGLWidgets_armeabi-v7a.so
-# 	$(QMAKE) -install qinstall $(ANDROIDQTLIBS)/libQt6MultimediaQuick_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libQt6MultimediaQuick_armeabi-v7a.so
-# 	$(QMAKE) -install qinstall $(ANDROIDGUIDOLIB)/libGUIDOEngine_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libGUIDOEngine.so
-# 	$(QMAKE) -install qinstall $(ANDROIDGUIDOLIB)/libGUIDOEngine_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libGUIDOEngine_armeabi-v7a.so
-# 	$(QMAKE) -install qinstall $(INSCOREDIR)/libINScore_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libINScore_armeabi-v7a.so
-# 	$(QMAKE) -install qinstall -exe $(INSCOREDIR)/libINScoreViewer_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libINScoreViewer_armeabi-v7a.so
+	$(QMAKE) -install qinstall lib/libGUIDOEngine_armeabi-v7a.so $(ANDROIDBUILDDIR)/libs/armeabi-v7a/libGUIDOEngine.so
+	$(QMAKE) -install qinstall lib/libGUIDOEngine_arm64-v8a.so $(ANDROIDBUILDDIR)/libs/arm64-v8a/libGUIDOEngine.so
+	$(QMAKE) -install qinstall lib/libGUIDOEngine_x86_64.so $(ANDROIDBUILDDIR)/libs/x86_64/libGUIDOEngine.so
+	$(QMAKE) -install qinstall lib/libGUIDOEngine_x86.so $(ANDROIDBUILDDIR)/libs/x86/libGUIDOEngine.so
 	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) --android-platform android-$(ANDROID_API) --release --input $(ANDROIDSETTINGS) --output android-build --deployment bundled --gradle $(SIGN)
-#	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) --input $(ANDROIDSETTINGS) --output /Users/fober/src/INScore/inscore/build/androiddir/android-build --apk /Users/fober/src/INScore/inscore/build/bin/INScoreViewer-$(VERSION).apk
 	cp $(ANDROIDBUILDDIR)/build/outputs/apk/release/android-build-release-signed.apk bin/INScoreViewer-$(VERSION).apk
 
 $(ANDROIDBUILDDIR) :
