@@ -45,16 +45,12 @@ class IParser {
 	NList	fNodes;
 
 	TINode 	set (TINode n) const 	{ n->setLC(fLine, fColumn); n->setEnv(fVars); return n; }
+	void 	addEnv (const std::string& name, const std::string& val);
+	void 	addEnv (const std::string& name, int val);
 
 	public:
-				 IParser(std::istream* stream) : fStream(stream), fLine(1), fColumn(1) {
-					setlocale(LC_NUMERIC, "C");
-					initScanner();
-				 }
-		virtual ~IParser() {
-					setlocale(LC_NUMERIC, 0);
-					destroyScanner();
-				 }
+				 IParser(std::istream* stream);
+		virtual ~IParser();
 
 		bool 	parse();			// implemented in .y file
 		void 	error (int line, int col, const char* msg) const;	

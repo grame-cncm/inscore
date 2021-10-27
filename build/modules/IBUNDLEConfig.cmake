@@ -25,10 +25,11 @@ file (GLOB IBUNDLE_SRC 		RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 	${QARCHIVE}/*.cpp
 
 	${INSCOREDIR}/lib/TWallClock.cpp
+	${INSCOREDIR}/lib/Tools.cpp
+	${INSCOREDIR}/lib/systemvars.cpp
 	${INSCOREDIR}/controller/IMessage.cpp
 	${INSCOREDIR}/scripting/TScripting.cpp 
 	${INSCOREDIR}/scripting/TMaths.cpp 
-	${INSCOREDIR}/lib/Tools.cpp
 	${INSCOREDIR}/ITLParser/*.cpp 
 	${INSCOREDIR}/expression/parser/*.cpp
 	${INSCOREDIR}/expression/IExpression.cpp

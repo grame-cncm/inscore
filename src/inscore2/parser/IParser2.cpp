@@ -27,6 +27,7 @@
 
 #include "IParser2.h"
 #include "parseEval.h"
+#include "systemvars.h"
 
 #ifndef TESTV2
 #include "ITLError.h"
@@ -38,6 +39,26 @@ using namespace std;
 
 namespace inscore2
 {
+
+
+//------------------------------------------------------------
+IParser::IParser(std::istream* stream) : fStream(stream), fLine(1), fColumn(1)
+{
+	setlocale(LC_NUMERIC, "C");
+	initScanner();
+	addEnv (inscore::kOSNameVar, inscore::kOSName);
+	addEnv (inscore::kOSIDVar, inscore::kOSID);
+}
+//------------------------------------------------------------
+IParser::~IParser() {
+	setlocale(LC_NUMERIC, 0);
+	destroyScanner();
+ }
+
+//------------------------------------------------------------
+void IParser::addEnv (const std::string& name, const std::string& val) 	{ fVars.put(name, INode::create (val) ); }
+void IParser::addEnv (const std::string& name, int val) 				{ fVars.put(name, INode::create (val) ); }
+
 
 //------------------------------------------------------------
 void IParser::declare(const std::string& name, TINode n)  {
