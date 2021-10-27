@@ -30,9 +30,15 @@
 #endif
 
 #include <QProcess>
-#ifdef NO_OPENGL
-#include <QQuickWindow>
+#include <QtDebug>
+#include <QtGlobal>
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+# if defined(INSCORE_IOS)
+#  define _NO_OPENGL
+# include <QQuickWindow>
+# endif
 #endif
+
 
 #include "INScore.h"
 #include "INScoreAppl.h"
@@ -103,7 +109,7 @@ int main( int argc, char **argv )
 #endif
 
 	INScoreAppl appl(argc, argv);	// must be called before building a QPixmap
-#ifdef NO_OPENGL
+#ifdef _NO_OPENGL
 	QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
 #endif
     QPixmap pixmap(":/INScoreViewer.png");
