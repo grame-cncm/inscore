@@ -27,7 +27,9 @@
 #include "IAppl.h"
 
 #include <QStyleOptionGraphicsItem>
+#ifndef __MOBILE__
 #include <QPrinter>
+#endif
 #include <QFileInfo>
 #include <QDebug>
 #include <QPdfWriter>
