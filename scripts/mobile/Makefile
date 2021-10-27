@@ -1,6 +1,6 @@
 
 BUNDLES = Score.ibundle Welcome.ibundle Clock.ibundle Mixed-Resources.ibundle metro.ibundle
-IBUNDLE = ../../tools/IBundle/IBundle
+IBUNDLE = ../../build/bin/IBundle
 
 all: $(BUNDLES)
 
