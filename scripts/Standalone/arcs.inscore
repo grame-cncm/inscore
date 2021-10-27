@@ -34,12 +34,13 @@ g = 220;
 /ITL/scene/c watch timeEnter 1 2 (/ITL/scene/c date 0);
 /ITL/scene/c tempo 60;
 
+y = 0.65;
 /ITL/scene/control1 set txt "Close";
 /ITL/scene/control2 set txt "Fill";
 /ITL/scene/control3 set txt "Play";
-/ITL/scene/control1 y 0.65;
-/ITL/scene/control2 y $(/ITL/scene/control1 get y) +  $(/ITL/scene/control1 get height) + $gap;
-/ITL/scene/control3 y $(/ITL/scene/control2 get y) +  $(/ITL/scene/control2 get height) + $gap ;
+/ITL/scene/control1 y $y;
+/ITL/scene/control2 y $y + $gap;
+/ITL/scene/control3 y $y + $gap + $gap ;
 /ITL/scene/control* fontSize $ctrlSize;
 /ITL/scene/control* watch mouseEnter (/ITL/scene/$self red 240);
 /ITL/scene/control* watch mouseLeave (/ITL/scene/$self red 0);
