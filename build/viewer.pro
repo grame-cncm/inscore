@@ -9,7 +9,7 @@ OBJECTS_DIR = tmp
 MOC_DIR		= tmp
 RCC_DIR		= tmp
 
-QT += core gui widgets svg printsupport multimedia multimediawidgets websockets
+QT += core gui widgets svg multimedia multimediawidgets websockets # printsupport
 QT += qml sensors
 
 ############################## 
@@ -146,7 +146,7 @@ android {
     ANDROID_API_VERSION = 26
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
-	QT += quick quickwidgets
+	QT += quick quickwidgets androidextras 3dextras
 	DEFINES += ANDROID __MOBILE__
 	RESOURCES += $$PWD/tmp-rsc/inscoremobile.qrc $$ROOT/rsrc/inscorescriptmobile.qrc
 }

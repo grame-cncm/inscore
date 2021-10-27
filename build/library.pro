@@ -30,7 +30,7 @@ else  { OSCIP = $$OSC/ip/posix }
 win32 { VERSION = 1.26 }
 else  { VERSION = $$system(cat $$ROOT/version.txt) }
 
-QT += core gui widgets svg printsupport multimedia multimediawidgets websockets sensors
+QT += core gui widgets svg multimedia multimediawidgets websockets sensors # printsupport
 QT += network qml # quick quickwidgets 
 DEFINES += INScore_EXPORTS
 DEFINES += HAVE_CONFIG_H  # defined for the qrencode library
@@ -186,7 +186,7 @@ ios {
     CONFIG += arm64 armv8
     CONFIG += staticlib
     LIBS += $$PWD/lib/libGUIDOEngine.a
-	QT += openglwidgets quick quickwidgets 
+	QT += quick quickwidgets # openglwidgets
 }
 
 ############################## 
@@ -235,7 +235,7 @@ android {
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
-	QT += quick quickwidgets openglwidgets
+	QT += quick quickwidgets  androidextras # openglwidgets
 }
 
 ##############################
