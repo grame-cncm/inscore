@@ -1,8 +1,5 @@
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls
-import QtQuick.Window
-import Qt.labs.folderlistmodel
+import QtQuick 2.2
+import Qt.labs.folderlistmodel 2.15
 import "global.js" as Size;
 
 Item {
@@ -74,14 +71,6 @@ Item {
                             contextObject.deleteDownloadedFile(file);
                     }
                 }
-
-//                UrlBar{
-//                    id: urlField
-//                    visible: false;
-//                    anchors.left: parent.left;
-//                    anchors.right: parent.right;
-//                    anchors.bottom: parent.bottom;
-//                }
 
                 //Shadow:
                 Image{

@@ -1,6 +1,5 @@
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Window
+import QtQuick 2.2
+import QtQuick.Window 2.15
 
 Item {
 
@@ -10,7 +9,6 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     height: Screen.pixelDensity * 4
-//    height: Screen.pixelDensity * 5
 
     Rectangle{
         id: line1
@@ -29,8 +27,6 @@ Item {
         verticalAlignment: Text.AlignVCenter
         font.letterSpacing: 1
         font.pointSize: 15
-//        font.pointSize: 16
-//        font.letterSpacing: Screen.pixelDensity/2
         font.capitalization: Font.SmallCaps
         font.bold: true;
         color: "#474646"

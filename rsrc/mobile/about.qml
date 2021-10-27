@@ -1,8 +1,6 @@
-import QtQuick
-import Qt5Compat.GraphicalEffects
-import QtQuick.Layouts
-import QtQuick.Controls
-import QtQuick.Window
+import QtQuick 2.2
+import QtGraphicalEffects 1.15
+import QtQuick.Window 2.15
 
 Item {
     id: root
@@ -10,9 +8,8 @@ Item {
     property string version: ""
     property string qtversion: ""
     property string guidoversion: ""
-    property string src: "../"
     property string ip: ""
-//    property string src: "qrc:///"
+    property string src: "qrc:///"
     property int vsize: 14
 
     width: Screen.desktopAvailableWidth

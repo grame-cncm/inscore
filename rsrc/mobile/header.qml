@@ -1,6 +1,5 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Window
+import QtQuick 2.2
+import QtQuick.Window 2.15
 import "global.js" as Size
 
 Item{

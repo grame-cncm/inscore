@@ -1,6 +1,5 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.2
+import QtQuick.Layouts 1.15
 
 Item {
     ColumnLayout{

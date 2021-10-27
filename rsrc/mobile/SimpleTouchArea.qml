@@ -1,4 +1,4 @@
-import QtQuick
+import QtQuick 2.2
 
 Item {
     id: root;

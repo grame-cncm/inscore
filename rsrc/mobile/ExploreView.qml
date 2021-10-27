@@ -1,8 +1,6 @@
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Window
-import QtQuick.Controls
-import Qt.labs.folderlistmodel
+import QtQuick 2.2
+import QtQuick.Layouts 1.15
+import Qt.labs.folderlistmodel 2.15
 import "global.js" as Size
 
 Item {

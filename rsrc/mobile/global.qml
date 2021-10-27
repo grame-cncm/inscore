@@ -1,5 +1,5 @@
-import QtQuick
-import QtQuick.Window
+import QtQuick 2.2
+import QtQuick.Window 2.15
 
 QtObject {
     property real pixelDensity :   Screen.pixelDensity;
