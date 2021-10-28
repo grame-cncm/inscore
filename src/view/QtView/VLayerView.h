@@ -54,6 +54,7 @@ namespace inscore
         VLayerView(QGraphicsScene* scene, const ILayer* h);
 		virtual ~VLayerView() {}
         
+		virtual bool 	initView  ( IObject* obj);
 		virtual void	updateView( ILayer * rect );
 		virtual void	updateObjectSize( IObject * ) {}
     };

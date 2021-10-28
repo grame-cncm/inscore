@@ -26,6 +26,7 @@
 #include "ILayer.h"
 #include "IMessage.h"
 #include "Updater.h"
+#include "VObjectView.h"
 
 using namespace std;
 
@@ -56,6 +57,7 @@ namespace inscore
     {
         MsgHandler::msgStatus status = IObject::set(msg);
         if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status;
+		getView()->initView (this);
 
         return MsgHandler::kProcessedNoChange;
      }

@@ -38,11 +38,19 @@ namespace inscore
 //----------------------------------------------------------------------
 VLayerView::VLayerView(QGraphicsScene* scene, const ILayer* layer): VMappedShapeView( scene , new MouseEventAble<QGraphicsRectItem>(layer) )
 {}
-    
+
+//----------------------------------------------------------------------
+bool VLayerView::initView ( IObject* obj)
+{
+	const ILayer * layer = static_cast<const ILayer*>(obj);
+    QRectF r( 0,0,  relative2SceneWidth(layer->getWidth()), relative2SceneHeight(layer->getHeight()) );
+	item()->setRect( r );
+}
+
 //----------------------------------------------------------------------
 void VLayerView::updateView( ILayer * layer  )
 {
-layer->cleanupSync();
+	layer->cleanupSync();
     QRectF newRect( 0,0,  relative2SceneWidth(layer->getWidth()), relative2SceneHeight(layer->getHeight()) );
     if ( newRect != item()->rect() )
     {
