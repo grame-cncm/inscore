@@ -32,35 +32,6 @@ using namespace std;
 namespace inscore 
 {
 
-//
-//static const char * kOSNameVar	= "OSName";
-//static const char * kOSIDVar	= "OSId";
-//
-//enum { kAndroid=1, kiOS, kLinux, kMacOS, kWindows, kWeb };
-//
-//#ifdef EMCC
-//const char *	kOSName	= "Web";
-//const int		kOSID	= kWeb;
-//#elif MACOS
-//const char *	kOSName	= "MacOS";
-//const int		kOSID	= kMacOS;
-//#elif defined WINDOWS
-//const char *	kOSName	= "Windows";
-//const int		kOSID	= kWindows;
-//#elif defined INSCORE_IOS
-//const char *	kOSName	= "iOS";
-//const int		kOSID	= kiOS;
-//#elif defined ANDROID
-//const char *	kOSName	= "Android";
-//const int		kOSID	= kAndroid;
-//#elif defined __LINUX__
-//const char *	kOSName	= "Linux";
-//const int		kOSID	= kLinux;
-//#else
-//#error "undefined operating system"
-//#endif
-
-
 //--------------------------------------------------------------------------
 ITLparser::ITLparser(std::istream* stream, int line, IAppl* root, bool execute)
 	: fReader(root, execute), fStream(stream), fLine(line), fColumn(1)
