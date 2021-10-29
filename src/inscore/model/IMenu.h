@@ -52,7 +52,11 @@ class IMenu : public IVNode
 		 * \brief window get the view of the class
 		 * \return a VMobileMenu pointer
 		 */
+#ifdef EMCC
+		virtual void* window()					{ return 0; }
+#else
 		virtual QWidget* window()				{ return 0; }
+#endif
 		void accept (Updater* u);
 
     protected:
