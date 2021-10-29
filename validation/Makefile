@@ -21,6 +21,8 @@
 #
 ###################################################################################
 
+.PHONY: tools
+
 version	?= $(shell cat version.txt)
 pwd	  = $(shell pwd)
 TOOL = ./INScoreNOView
