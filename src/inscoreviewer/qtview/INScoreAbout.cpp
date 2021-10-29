@@ -58,16 +58,19 @@ INScoreAbout::INScoreAbout (const QPixmap & image) : QSplashScreen (image)
 	QLabel* text = new QLabel(version, this);
 	text->setFont(font);
 	text->move(27, h - 45);
+	text->setStyleSheet("color: rgb(0,0,0)");
 
 	QString qt("Using Qt v.");
 	qt += qVersion();
 	text = new QLabel(qt, this);
 	text->setFont(font);
 	text->move(22, h - 33);
+	text->setStyleSheet("color: rgb(0,0,0)");
 
 	QString guido("Using Guido Engine v.");
 	guido += INScore::guidoversion().c_str();
 	text = new QLabel(guido, this);
 	text->setFont(font);
 	text->move(17, h - 21);
+	text->setStyleSheet("color: rgb(0,0,0)");
 }
