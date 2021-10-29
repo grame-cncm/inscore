@@ -50,11 +50,13 @@ $notes{ addr=n_[i:1...9], count=9, radius=0.75 };
 	);
 
 /ITL/scene/line watch ddate (/ITL/scene/line dangle 0.15);
-	
+
+
+scale = (? (< $OSId, 3), 0.24, 0.12);
 
 # adds a simple button to control play/pause
 control = /ITL/scene/$addr  (set img "rsrc/play.png"),
-					(scale 0.12),
+					(scale $scale),
 					(x $x),
 					(y $y),
 					(watch $click 	(
