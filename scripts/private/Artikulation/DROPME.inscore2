@@ -3,6 +3,9 @@
 /ITL/scene height 1;
 /ITL/scene width 1.4;
 
+click = (? (< $OSId, 3), touchBegin, mouseDown);
+clickmove  = (? (< $OSId, 3), touchUpdate, mouseMove);
+
 # title and credits
 /ITL/scene/title1 	(set img "rsrc/title1.png"),
 					(x -1.1);
@@ -57,11 +60,11 @@ move = ((/ITL/scene/cursor* date "$date"),
 
 /ITL/scene/page*	(scale 0.6),
 					(show 0),
-					(watch mouseDown ( $move)),
-					(watch mouseMove ( $move));
+					(watch $click ( $move)),
+					(watch $clickmove ( $move));
 
-/ITL/scene/navbar	(watch mouseDown ( $move)),
-					(watch mouseMove ( $move));
+/ITL/scene/navbar	(watch $click ( $move)),
+					(watch $clickmove ( $move));
 
 /ITL/scene/artikulation (set audio "artikulation.wav"),
 						(show 0);
@@ -72,7 +75,7 @@ move = ((/ITL/scene/cursor* date "$date"),
 /ITL/scene/cursor* date 0 1;
 
 
-/ITL/scene/cursor watch timeEnter 1820 32 1830 32 ((/ITL/scene/control event mouseDown 0 0), (/ITL/scene/stop event mouseDown 0 0));
+/ITL/scene/cursor watch timeEnter 1820 32 1830 32 ((/ITL/scene/control event $click 0 0), (/ITL/scene/stop event $click 0 0));
 
 # adds a simple button to control play/pause
 /ITL/scene/control  (set img "rsrc/play.png"),
@@ -84,7 +87,7 @@ move = ((/ITL/scene/cursor* date "$date"),
 					(scale 0.15),
 					(x 0.05),
 					(y 0.85),
-					(watch mouseDown (
+					(watch $click (
 						(/ITL/scene/cursor* tempo 0),
 						(/ITL/scene/cursor* date 0),
 						(/ITL/scene/artikulation play 0),
@@ -92,12 +95,12 @@ move = ((/ITL/scene/cursor* date "$date"),
 						(/ITL/scene/control set img "rsrc/play.png")
 					));
 
-/ITL/scene/control watch mouseDown 	(
+/ITL/scene/control watch $click 	(
 	(/ITL/scene/control push),
 	(/ITL/scene/cursor* tempo 60 ),
 	(/ITL/scene/artikulation play 1),
 	(/ITL/scene/control set img "rsrc/pause.png"),
-	(/ITL/scene/control watch mouseDown 	(
+	(/ITL/scene/control watch $click 	(
 		(/ITL/scene/cursor* tempo 0),
 		(/ITL/scene/artikulation play 0),
 		(/ITL/scene/control set img "rsrc/play.png"),
