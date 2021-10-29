@@ -23,9 +23,6 @@
  
  */
 
-#include <QPainter>
-#include <algorithm>
-
 #include "VLayerView.h"
 #include "ILayer.h"
 
@@ -44,7 +41,8 @@ bool VLayerView::initView ( IObject* obj)
 {
 	const ILayer * layer = static_cast<const ILayer*>(obj);
     QRectF r( 0,0,  relative2SceneWidth(layer->getWidth()), relative2SceneHeight(layer->getHeight()) );
-	item()->setRect( r );
+	if (item()) item()->setRect( r );
+	return true;
 }
 
 //----------------------------------------------------------------------
