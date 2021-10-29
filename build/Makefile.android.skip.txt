@@ -1,6 +1,0 @@
-all:
-	@echo skip
-
-install:
-	@echo skip
-		
