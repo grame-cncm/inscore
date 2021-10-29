@@ -70,19 +70,19 @@ class VVideoView: public VGraphicsItemView, public VMediaPlayer
 		// overrides default: a video must be visible to trigger the size change signal, which makes the object ready
         virtual bool getVisible (const IObject* o) const	{ return o->getPending() ? true : o->getVisible(); }
 
-	virtual void mediaReady();
-	virtual void mediaEnd();
-	virtual void posChanged(qint64 pos);
-	virtual void sizeChanged(const QSizeF & size);
-	virtual void error(QString msg);
+		virtual void mediaReady();
+		virtual void mediaEnd();
+		virtual void posChanged(qint64 pos);
+		virtual void sizeChanged(const QSizeF & size);
+		virtual void error(QString msg);
 
+	protected:
+		virtual bool ready() const;
 
 	private:
 	typedef MouseEventAble<QGraphicsVideoItem> IQGraphicsVideoItem;
 	QGraphicsVideoItem*		fVideoItem;
 	IVideo *				fVideo;
-
-	void initFile( IVideo * video, const QString&  videoFile );
 };
 
 

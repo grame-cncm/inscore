@@ -56,8 +56,6 @@ class VMediaPlayer: public QObject
 	protected:
 			QMediaPlayer* player()		{ return &fMediaPlayer; }
 
-	virtual void connectVideo(QGraphicsVideoItem* v);		// used for native size change notifications
-
 	virtual void mediaReady()			{}		// method called when the media is ready
 	virtual void mediaEnd()				{}		// method called when the player reaches the end of the media
 	virtual void posChanged(qint64 pos)	{}		// method called when the player position changes
@@ -70,22 +68,15 @@ class VMediaPlayer: public QObject
 	protected slots:
 		void	error (QMediaPlayer::Error error);
 		void	mediaStatusChanged (QMediaPlayer::MediaStatus status);
-		void	seekableChanged(bool seekable);
 		void	nativeSizeChanged(const QSizeF & size);
 		void	durationChanged(qint64 duration);
 		void	positionChanged(qint64 position);
-		void	hasAudioChanged(bool available);
-		void	hasVideoChanged(bool available);
 
 	protected:
 		IMedia* fMedia;
-#if Qt6
-		bool 	fAudioAvailable = false;
-		bool 	fVideoAvailable = false;
-		bool 	ready();
-#else
-		int							fReady = 0;
-#endif
+		const QMediaPlayer& player() const	{ return fMediaPlayer; }
+		
+		virtual bool ready() const = 0;
 
 	private:
 		QMediaPlayer				fMediaPlayer;

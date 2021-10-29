@@ -87,6 +87,9 @@ float TAudioReader::getValue (int index, int size)
 
 
 //----------------------------------------------------------------------
+bool VAudioView::ready() const	{ return player().isAudioAvailable(); }
+
+//----------------------------------------------------------------------
 //
 //----------------------------------------------------------------------
 VAudioView::VAudioView(QGraphicsScene * scene, const IAudio* audio)

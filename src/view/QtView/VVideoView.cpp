@@ -47,13 +47,14 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 	player()->setVideoOutput (fVideoItem);
 }
 
+//----------------------------------------------------------------------
+bool VVideoView::ready() const	{ return player().isAudioAvailable() && player().isVideoAvailable(); }
 
 //----------------------------------------------------------------------
 void VVideoView::mediaReady()
 {
 	fVideo->setMediaDuration(player()->duration());
 	fVideo->mediaReady();
-//qDebug() << "VVideoView : mediaReady size" << fVideoItem->nativeSize();
 }
 
 //----------------------------------------------------------------------
@@ -70,19 +71,11 @@ void VVideoView::error(QString msg)
 void VVideoView::sizeChanged(const QSizeF & size)
 {
 //qDebug() << "VVideoView : VMediaPlayer::sizeChanged" << size ;
-//	fVideoItem->setSize (size);
 	if (!fVideo->userWidth()) {
 		fVideo->setSize ( scene2RelativeWidth(size.width()), scene2RelativeHeight(size.height()) );
 //std::cerr << "VVideoView::sizeChanged w/h " << size.width() << "/" << size.height() << " " << fVideo->getWidth() << "/" << fVideo->getHeight() << std::endl;
 		fVideo->ready();
 	}
-}
-
-//----------------------------------------------------------------------
-void VVideoView::initFile( IVideo * video, const QString&  videoFile )
-{
-	setFile(videoFile);
-//	fVideoItem->setAspectRatioMode(Qt::IgnoreAspectRatio);
 }
 
 //----------------------------------------------------------------------
@@ -100,7 +93,7 @@ bool VVideoView::initialize( IVideo * video  )
 	fVideo = video;
 	QString file = VApplView::toQString( video->getPath().c_str() );
 	if ( QFile::exists(  file  ) ) {
-		initFile (video, file);
+		setFile (file);
 		return true;
 	}
 	return false;

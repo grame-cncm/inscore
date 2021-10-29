@@ -103,6 +103,9 @@ class VAudioView: public VMediaPlayer, public VMappedShapeView
 		virtual void error(QString msg);
 		virtual void updateObjectSize( IObject * )		{}
 
+	protected:
+		virtual bool ready() const;
+
 	protected slots:
 		void	durationChanged(qint64 duration);
 
