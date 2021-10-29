@@ -20,8 +20,6 @@ Item {
         if(rootPath.charAt(rootPath.length-1)==="/")
             rootPath = rootPath.substr(0, rootPath.length-1);
 
-//inscore.postMessage("192.168.1.21:7001/ITL/setRootPath", rootPath)
-
         folderView.currentView.folderModel.rootFolder = rootPath;
         folderView.hiddenView.folderModel.rootFolder = rootPath;
         folderView.currentView.folderModel.folder = rootPath;
@@ -37,7 +35,6 @@ Item {
     function open(folderName, folderPath){
         path.append({"name": folderName});
         if(folderView.currentView.visible){
-//inscore.postMessage("192.168.1.21:7001/ITL/open", folderPath)
             folderView.hiddenView.folderModel.folder = folderPath;
             folderView.state = "open";
         }
@@ -50,6 +47,7 @@ Item {
             folderView.state = "back";
         }
     }
+    
     function repeatBack(repeat){
         if(path.count-repeat>0 && repeat>0){
             folderView.hiddenView.folderModel.folder = folderView.currentView.folderModel.folder;
@@ -60,11 +58,10 @@ Item {
             }
             folderView.state = "back";
         }
-
     }
 
 
-    ListView{
+    ListView {
         id: pathView
         orientation: Qt.Horizontal
         anchors.top: parent.top;
@@ -91,7 +88,7 @@ Item {
                     font.bold: true;
                     font.capitalization: Font.SmallCaps
                 }
-                SimpleTouchArea{
+                SimpleTouchArea {
                     anchors.fill: parent
                     onClicked:{
                         root.repeatBack(path.count-index-1);
@@ -127,6 +124,7 @@ Item {
 
         Component{
             id: folderViewComponent
+
             Rectangle{
                 width:  folderView.width;
                 height: folderView.height;
@@ -135,13 +133,14 @@ Item {
                 id: folderView_scrollView
                 anchors.fill: parent;
                 contentHeight: folderView_Layout.height
+
                 Column{
                     id: folderView_Layout
                     width: parent.width
 
                     SlideMenuItem{
                         text: ".."
-                        icon: "qrc:///images/folderUp.png"
+                       icon: "qrc:///images/folderUp.png"
                         visible: folderModel.folder!=folderModel.rootFolder;
                         onClicked: root.back();
                         first: true;
@@ -154,7 +153,7 @@ Item {
                         SlideMenuItem{
                             //text: fileIsDir?fileName:fileName.slice(0, fileName.lastIndexOf("."));
                             text: fileName;
-                            icon: fileIsDir?"qrc:///images/folder.png":"qrc:///INScoreViewer.png";
+                            icon: fileIsDir ? "qrc:///images/folder.png" : "qrc:///INScoreViewer.png";
                             first: true;
                             anchors.left: folderView_Layout.left
                             anchors.right: folderView_Layout.right
@@ -177,14 +176,13 @@ Item {
                     }
 
                 }
-
             }
             }
         }
 
         Loader{
             id: list1;
-            property FolderListModel folderModel: FolderListModel{nameFilters: ["*.inscore","*.inscore2","*.ibundle"]; showDirsFirst: true;}
+            property FolderListModel folderModel: FolderListModel {nameFilters: ["*.inscore","*.inscore2","*.ibundle"]; showDirsFirst: true; }
             property bool enable;
             sourceComponent: folderViewComponent;
             x: 0;
