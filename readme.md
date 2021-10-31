@@ -24,6 +24,7 @@ funded by the French National Research Agency \[ANR-08-CORD-010\].
 
 I would like to thank all the people who have been contributing to INScore design and development, and especially:
 
+ Julien Aldon, 
  Kevin Bardotti, 
  Christophe Daudin, 
  Sarah Denoux, 

@@ -54,7 +54,7 @@ NPMDEV  := $(NPMDIR)/dev
 #===============================================================
 # default target: build everything (including wasm library)
 #===============================================================
-all :
+all : node_modules
 	$(MAKE) ts
 	$(MAKE) wasm
 	$(MAKE) pages
@@ -123,6 +123,7 @@ npm: $(NPMDIR)/$(NPMLIB) $(NPMDEV)/src
 	cp $(LIB) $(GLUE) $(NPMDEV)
 	cp glueSrc/*.ts $(NPMDEV)/src
 	cp -r fonts $(NPMDIR)
+	cp ../src/changelog.txt $(NPMDIR)
 
 $(NPMDEV)/src: 
 	mkdir -p $(NPMDEV)/src
