@@ -16,6 +16,10 @@ Version 1.31
 - add support for get 'date%f' query
 - fix $date quantification
 
+Known issues:
+- video objects on Android platforms are not visible (the audio is correct)
+
+
 ----------------------------------------------------
 Version 1.30
 - add midi node at application level, supported by the native app for compatibility reasons
