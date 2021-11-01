@@ -143,7 +143,7 @@ android {
 		OBJECTS_DIR = tmpv_x86_64
 		MOC_DIR = tmpv_x86_64
     }
-    ANDROID_API_VERSION = 26
+    ANDROID_API_VERSION = 29
 	DISTFILES +=  $$ROOT/rsrc/android/AndroidManifest.xml
 	ANDROID_PACKAGE_SOURCE_DIR = $$ROOT/rsrc/android
 	QT += quick quickwidgets androidextras 3dextras

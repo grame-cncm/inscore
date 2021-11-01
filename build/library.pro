@@ -230,7 +230,7 @@ android {
 		MOC_DIR = tmp_x86_64
     }
 	ANDROID_ABI = armeabi-v7a
-    ANDROID_API_VERSION = 26
+    ANDROID_API_VERSION = 29
     SOURCES  +=  $$files($$SRC/mobile/*.cpp)
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)

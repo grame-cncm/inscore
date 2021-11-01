@@ -198,7 +198,7 @@ package:
 # building INScore for Android
 #===============================================================
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
-ANDROID_API ?= 26
+ANDROID_API ?= 29
 ANDROID_ARCH ?= armeabi-v7a
 #ANDROIDDEPLOYQT ?= /Users/Shared/Qt6/6.2.0/macos/bin/androiddeployqt
 ANDROIDDEPLOYQT ?= androiddeployqt
@@ -208,10 +208,10 @@ ANDROIDGUIDOLIB := ../modules/guidolib/build/lib
 ANDROIDQTLIBS   := $(shell qmake-android --version | grep Qt | sed -e 's/^..*in //')
 
 android : 
-	make _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
+	$(MAKE) _android INSCOREDIR?=$(ANDROIDDIR) QMAKE=qmake-android
 #	$(MAKE) -f Makefile.android
 
-_android : $(ANDROIDBUILDDIR) $(ANDROIDDIR)/Makefile # $(ANDROIDDIR)/libGUIDOEngine_armeabi-v7a.so
+_android : $(ANDROIDBUILDDIR) $(ANDROIDDIR)/Makefile
 	cp -rf ../rsrc/ tmp-rsc
 	$(MAKE) -C $(MOBILESCRIPTS)
 	$(MAKE) -C $(INSCOREDIR)
@@ -221,14 +221,11 @@ _android : $(ANDROIDBUILDDIR) $(ANDROIDDIR)/Makefile # $(ANDROIDDIR)/libGUIDOEng
 	$(QMAKE) -install qinstall lib/libGUIDOEngine_arm64-v8a.so $(ANDROIDBUILDDIR)/libs/arm64-v8a/libGUIDOEngine.so
 	$(QMAKE) -install qinstall lib/libGUIDOEngine_x86_64.so $(ANDROIDBUILDDIR)/libs/x86_64/libGUIDOEngine.so
 	$(QMAKE) -install qinstall lib/libGUIDOEngine_x86.so $(ANDROIDBUILDDIR)/libs/x86/libGUIDOEngine.so
-	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) --android-platform android-$(ANDROID_API) --release --input $(ANDROIDSETTINGS) --output android-build --deployment bundled --gradle $(SIGN)
+	cd $(INSCOREDIR) && $(ANDROIDDEPLOYQT) $(VERBOSE) --release --input $(ANDROIDSETTINGS) --output android-build  --android-platform android-$(ANDROID_API) --deployment bundled --gradle $(SIGN)
 	cp $(ANDROIDBUILDDIR)/build/outputs/apk/release/android-build-release-signed.apk bin/INScoreViewer-$(VERSION).apk
 
 $(ANDROIDBUILDDIR) :
 	mkdir -p $(ANDROIDBUILDDIR)
-
-# $(ANDROIDDIR)/libGUIDOEngine_armeabi-v7a.so : ../modules/guidolib/build/lib/libGUIDOEngine.armeabi-v7a.so
-# 	cp $< $@
 
 $(ANDROIDDIR)/Makefile: library.pro viewer.pro INScore.pro
 	@which qmake-android > /dev/null  || (echo "### you must create an alias named 'qmake-android' that point to qmake inside your qt/android distribution and that is available from your PATH."; false;)
@@ -249,10 +246,10 @@ uninstallAndroid :
 	adb uninstall fr.grame.inscore
 	
 BT350:
-	make android ANDROIDDIR=androidx86-BT350 
+	$(MAKE) android ANDROIDDIR=androidx86-BT350 
 
 installBT350:
-	make installAndroid ANDROIDDIR=androidx86-BT350
+	$(MAKE) installAndroid ANDROIDDIR=androidx86-BT350
 
 
 #===============================================================
