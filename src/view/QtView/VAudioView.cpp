@@ -87,7 +87,11 @@ float TAudioReader::getValue (int index, int size)
 
 
 //----------------------------------------------------------------------
+#if Qt6
+bool VAudioView::ready() const	{ return player().isAvailable(); }
+#else
 bool VAudioView::ready() const	{ return player().isAudioAvailable(); }
+#endif
 
 //----------------------------------------------------------------------
 //

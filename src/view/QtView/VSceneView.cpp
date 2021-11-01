@@ -312,11 +312,8 @@ void VSceneView::initializeView(const std::string& address, QGraphicsScene * sce
 	if (scene) {
 		fScene = scene;
 		fGraphicsView = createGraphicsView(scene, address.c_str());
-#if Qt6
 		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-#else
-		fGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
-#endif
+
 		fGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Default to Qt::ScrollBarAsNeeded
 		fGraphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);

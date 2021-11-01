@@ -48,7 +48,11 @@ VVideoView::VVideoView(QGraphicsScene * scene, const IVideo* video)
 }
 
 //----------------------------------------------------------------------
+#if Qt6
+bool VVideoView::ready() const	{ return player().isAvailable(); }
+#else
 bool VVideoView::ready() const	{ return player().isAudioAvailable() && player().isVideoAvailable(); }
+#endif
 
 //----------------------------------------------------------------------
 void VVideoView::mediaReady()
