@@ -24,7 +24,7 @@
 */
 
 #import <UIKit/UIKit.h>
-#import <QtAppDelegate-C-Interface.h>
+#import "QtAppDelegate-C-Interface.h"
 
 // Declare application delegate
 @interface QtAppDelegate : UIResponder <UIApplicationDelegate>
