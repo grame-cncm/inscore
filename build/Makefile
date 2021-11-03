@@ -31,8 +31,9 @@ all :
 	$(MAKE) modules
 	$(MAKE) inscore
 
+test: PATH := /Users/Shared/Qt/5.15.2/5.15.2/ios/bin:$(PATH)
 test:
-	echo PKGDIR $(PKGDIR)
+	qmake --version
 
 help :
 	@echo "========== INScore project Makefile =========="
