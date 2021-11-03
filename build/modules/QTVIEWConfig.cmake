@@ -28,28 +28,28 @@ endif()
 find_package(${QTVERS} COMPONENTS ${QTMODULES} REQUIRED)
 
 if (QT6)
-set (QT_INCLUDE_DIRS  ${Qt6Core_INCLUDE_DIRS}  
+	set (QT_INCLUDE_DIRS  ${Qt6Core_INCLUDE_DIRS}  
 				${Qt6Gui_INCLUDE_DIRS} ${Qt6Widget_INCLUDE_DIRS} ${Qt6Svg_INCLUDE_DIRS} 
 				${Qt6PrintSupport_INCLUDE_DIRS} ${Qt6Multimedia_INCLUDE_DIRS} 
 				${Qt6MultimediaWidgets_INCLUDE_DIRS} ${Qt6WebSockets_INCLUDE_DIRS} 
 				${Qt6Sensors_INCLUDE_DIRS} ${Qt6Qml_INCLUDE_DIRS} ${Qt6OpenGLWidgets_INCLUDE_DIRS})
-if (IOS)
-	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt6Quick_INCLUDE_DIRS} ${Qt6QuickWidgets_INCLUDE_DIRS})
-else()
-	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt6OpenGL_INCLUDE_DIRS})
-endif()
+	if (IOS)
+		set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt6Quick_INCLUDE_DIRS} ${Qt6QuickWidgets_INCLUDE_DIRS})
+	else()
+		set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt6OpenGL_INCLUDE_DIRS})
+	endif()
 
 else(QT6)
-set (QT_INCLUDE_DIRS  ${Qt5Core_INCLUDE_DIRS}  
+	set (QT_INCLUDE_DIRS  ${Qt5Core_INCLUDE_DIRS}  
 				${Qt5Gui_INCLUDE_DIRS} ${Qt5Widget_INCLUDE_DIRS} ${Qt5Svg_INCLUDE_DIRS} 
 				${Qt5PrintSupport_INCLUDE_DIRS} ${Qt5Multimedia_INCLUDE_DIRS} 
 				${Qt5MultimediaWidgets_INCLUDE_DIRS} ${Qt5WebSockets_INCLUDE_DIRS} 
 				${Qt5Sensors_INCLUDE_DIRS} ${Qt5Qml_INCLUDE_DIRS})
-if (IOS)
-	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5Quick_INCLUDE_DIRS} ${Qt5QuickWidgets_INCLUDE_DIRS})
-else()
-	set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS})
-endif()
+	if (IOS)
+		set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5Quick_INCLUDE_DIRS} ${Qt5QuickWidgets_INCLUDE_DIRS})
+	else()
+		set (QT_INCLUDE_DIRS ${QT_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS})
+	endif()
 endif()
 
 foreach (QTLIB ${QTMODULES})
