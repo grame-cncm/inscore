@@ -42,7 +42,10 @@
     font-size: 85%; 
     margin-top: 5px; 
     margin-left: 20px; 
+    margin-right: 45px;
     padding-left: 20px;
+    padding-right: 5px;
+    text-align: justify;
 }
 
 .pub_bibtex { 
@@ -53,4 +56,5 @@
     background-color: #efefef;
     margin-left: 20px;
     margin-top: 5px;
+    margin-right: 45px;
 }

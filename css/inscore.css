@@ -14,7 +14,8 @@
 
 section.download {
     color: #fff;
-    background: #2853d3;
+    /* background: #2853d3; */
+    background: midnightblue;
 }
 
 section.download a,

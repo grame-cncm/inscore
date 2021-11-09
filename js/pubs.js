@@ -51,7 +51,7 @@ function displayPaper(paper, index) {
 
     let url = paper["files_s"];
     let link = "";
-    if (url && url.length) link = makeLink (url[0], "/img/pdficon.gif", 35);
+    if (url && url.length) link = makeLink (url[0], "img/pdficon.gif", 35);
     else link = makeLink (paper["uri_s"], "/img/HAL.png", 28);
 
     let titles = paper["title_s"];
