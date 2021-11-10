@@ -1,9 +1,5 @@
-win32  { TEMPLATE = vcapp }
-else   { TEMPLATE = app }
-
-
-unix:!macx:!ios:!android:TARGET = inscoreviewer
-else   { TARGET = INScoreViewer }
+TEMPLATE = app
+TARGET = INScoreViewer
 
 OBJECTS_DIR = tmp
 MOC_DIR		= tmp
@@ -29,10 +25,7 @@ OSC    = $$LOCALLIB/oscpack
 win32 { OSCIP = $$OSC/ip/win32 }
 else  { OSCIP = $$OSC/ip/posix }
 
-#win32 { VERSION = $$system(type $$PWD\..\version.txt) }
-win32 { VERSION = 1.30 }
-else  { VERSION = $$system(cat $$ROOT/version.txt) }
-
+VERSION = $$system(cat $$ROOT/version.txt)
 CONFIG += c++17
 
 ############################## 
@@ -54,33 +47,13 @@ INCLUDEPATH += $$GUIDO_PATH/environments/Qt/libs/GuidoQt/include
 RESOURCES += $$ROOT/rsrc/inscore.qrc
 ICON = $$ROOT/rsrc/INScoreViewer.icns
 
-############################## 
-# macos x support
-############################## 
-macx {
-	!NOVIEW { DESTDIR = $$PWD/bin }
-	QMAKE_LFLAGS += -FRelease
-	LIBS += -F$$PWD/bin -framework INScore
-	LIBS += -F$$GUIDO_PATH/build/lib -framework GUIDOEngine
-	QMAKE_INFO_PLIST = $$PWD/Info.plist
-	RSRC.files 	= $$ROOT/rsrc/INScoreViewer.icns
-	RSRC.path 	= Contents/Resources
-#	PLUG.files 	= $$LXML_PATH/build/lib/libmusicxml2.dylib
-	PLUG.files += $$ROOT/lib/GestureFollower/macosx/libGFLib.dylib
-	PLUG.files += $$ROOT/lib/faust/macosx/libfaust.dylib
-	PLUG.path 	= Contents/PlugIns
-	QMAKE_BUNDLE_DATA += PLUG RSRC
-	ICON 		= $$ROOT/rsrc/INScoreViewer.icns
-}
-
 ##############################
 # ios support
 ##############################
 ios {
 	message ("Generates project for iOS")
     QMAKE_IOS_DEPLOYMENT_TARGET = 13.0
-	QMAKE_LFLAGS += $$PWD/lib/libGUIDOEngine.a -L Release-iphoneos  
-	LIBS += -lINScore $$PWD/lib/libGUIDOEngine.a
+	QMAKE_LFLAGS += $$PWD/lib/libGUIDOEngine.a -LRelease-iphoneos -lINScore
 	QMAKE_INFO_PLIST = $$PWD/Info-ios.plist
 	ios_icon.files = $$files($$ROOT/rsrc/ios-icons/*.png)
 	QMAKE_BUNDLE_DATA += ios_icon
@@ -92,25 +65,6 @@ ios {
     QT += quick quickwidgets
 }
 
-############################## 
-# windows support
-# assumes environment is MSVC
-############################## 
-win32 {
-	DESTDIR = $$PWD/bin
-	VERSION = ""
-	CONFIG(debug,debug|release) { LIBS   += $$DESTDIR/INScore.lib }
-	else { LIBS   += $$DESTDIR/INScore.lib }
-	RC_FILE = $$ROOT/win32/Viewer/INScoreViewer.rc
-}
-
-############################## 
-# linux support
-############################## 
-unix:!android:!macx:!ios {
-	DESTDIR = $$PWD/bin
-	LIBS += -L. -L$$DESTDIR -lINScore -lGUIDOEngine -lmicrohttpd
-}
 
 ############################## 
 # android support
