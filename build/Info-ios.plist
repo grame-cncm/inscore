@@ -12,6 +12,7 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>inscore</string>
+				<string>inscore2</string>
 				<string>ibundle</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
@@ -26,14 +27,20 @@
 			<string>Viewer</string>
 			<key>LSIsAppleDefaultForType</key>
 			<true/>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
 		</dict>
 	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 	<key>CFBundleExecutable</key>
 	<string>INScoreViewer</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIcons</key>
 	<dict>
+		<key>CFBundleIconName</key>
+		<string>Icon</string>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
 			<key>CFBundleIconFiles</key>
@@ -73,7 +80,7 @@
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>fr.grame.iGrame.INScore</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
@@ -83,11 +90,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.31</string>
+	<string>1.317</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.31</string>
+	<string>1.317</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -97,7 +104,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>No access to the photo library.</string>
 	<key>UIFileSharingEnabled</key>
-	<true/>
+	<false/>
 	<key>UILaunchImages~ipad</key>
 	<array>
 		<dict>
