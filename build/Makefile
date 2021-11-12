@@ -172,16 +172,27 @@ modules_android:
 
 
 #===============================================================
-# installation and packaging
+# installation
 #===============================================================
 install:
 	$(CMAKE) --build $(INSCOREDIR) --config Release --target install
 
+#===============================================================
+# packaging (Mac OS only)
+#===============================================================
 package:
 	$(MAKE) cmake CMAKEOPTS="-DPREFIX=$(PKGDIR)"
 	$(CMAKE) --build $(INSCOREDIR) --config Release --target install
+	$(MAKE) sign
 	hdiutil create INScore-$(VERSION).dmg -fs HFS+ -srcfolder $(PKGDIR) -format UDBZ -ov
 	@echo "Warning: install location has moved to $(PKGDIR)"
+
+# the certificate below must be installed in the keychain with the associated private key
+CERT='Apple Distribution: GRAME (XN9RP996NW)'
+sign:
+	codesign -s $(CERT) $(PKGDIR)/IBundle
+	codesign -s $(CERT) --deep $(PKGDIR)/INScoreViewer.app
+
 
 
 # ios :
