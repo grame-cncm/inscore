@@ -39,6 +39,7 @@ using namespace std;
 namespace inscore
 {
 
+const string kButtonAutoOffMethod = "autoOff";
 
 //--------------------------------------------------------------------------
 const string IFaustProcessor::kFaustProcessorType("faust");
@@ -55,8 +56,10 @@ IFaustProcessor::IFaustProcessor( const std::string& name, IObject * parent ) :
 	fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::connect);
 	fMsgHandlerMap[kdisconnect_SetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::disconnect);
 	fMsgHandlerMap[kcompute_GetSetMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::compute);
+	fMsgHandlerMap[kButtonAutoOffMethod]	= TMethodMsgHandler<IFaustProcessor>::create(this, &IFaustProcessor::buttonAuto);
 
 	fGetMsgHandlerMap[kcompute_GetSetMethod]= TGetParamMsgHandler<bool>::create(fCompute);
+	fGetMsgHandlerMap[kButtonAutoOffMethod] = TGetParamMsgHandler<bool>::create(fButtonAutoOff);
 	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
 	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &IFaustProcessor::getconnect);
@@ -141,6 +144,17 @@ MsgHandler::msgStatus IFaustProcessor::compute(const IMessage* msg)
 	int state = 0;
 	if ((msg->size() == 1) && msg->param(0,state)) {
 		fCompute = (state != 0);
+		return MsgHandler::kProcessed;
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IFaustProcessor::buttonAuto(const IMessage* msg)
+{
+	int state = 0;
+	if ((msg->size() == 1) && msg->param(0,state)) {
+		fButtonAutoOff = (state != 0);
 		return MsgHandler::kProcessed;
 	}
 	return MsgHandler::kBadParameters;

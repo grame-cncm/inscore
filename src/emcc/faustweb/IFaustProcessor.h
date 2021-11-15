@@ -80,6 +80,7 @@ class IFaustProcessor : public IRectShape, public AudioNode
 {
 	bool fWasmExport = false;
 	bool fCompute = true;
+	bool fButtonAutoOff = false;
 
 	typedef std::map<std::string,float> TParamsValues;
 	TParamsValues fParamValues;
@@ -116,9 +117,10 @@ class IFaustProcessor : public IRectShape, public AudioNode
 		virtual SIMessageList 	getAll() const;
 		// export the dsp as a faust module
 		virtual std::string 	getWasm();
-		virtual bool 						compute() const 	{ return fCompute; }
-		virtual bool 						wasmFlag() const 	{ return fWasmExport; }
-		virtual const IFaustwProcessor* 	wasmBased() const 	{ return nullptr; }
+		virtual bool 						compute() const 		{ return fCompute; }
+		virtual bool 						buttonAutoOff() const 	{ return fButtonAutoOff; }
+		virtual bool 						wasmFlag() const 		{ return fWasmExport; }
+		virtual const IFaustwProcessor* 	wasmBased() const 		{ return nullptr; }
 		
 	protected:
 		std::string	fDspCode;	// contains the dspCode
@@ -142,6 +144,7 @@ class IFaustProcessor : public IRectShape, public AudioNode
 
 		/// \brief method handlers
 		virtual MsgHandler::msgStatus	compute (const IMessage* msg);
+		virtual MsgHandler::msgStatus	buttonAuto (const IMessage* msg);
 		virtual MsgHandler::msgStatus	set (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyon (const IMessage* msg);
 		virtual MsgHandler::msgStatus	keyoff (const IMessage* msg);
