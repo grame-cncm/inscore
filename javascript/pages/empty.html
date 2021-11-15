@@ -26,9 +26,9 @@
 <div class="inscore" id="scene">
 <pre>
 #	/ITL load "keyevents.inscore.txt";
-/ITL/scene/faust set faust 'import("stdfaust.lib"); random  = +(12345)~*(1103515245); noise = random/2147483647.0; process = os.osc(400) * 0.4 , noise * 0.1;';
-#/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
-/ITL/scene/audio set audio "stereo.wav";
+#/ITL/scene/faust set faust 'import("stdfaust.lib"); random  = +(12345)~*(1103515245); noise = random/2147483647.0; process = os.osc(400) * 0.4 , noise * 0.1;';
+/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
+/ITL/scene/audio set audio "rsrc/stereo.wav";
 /ITL/scene/faust watch ready (/ITL/log write "faust ready");
 /ITL/scene/audio watch ready ( /ITL/log write "audio ready", /ITL/scene/audio disconnect audioOutput);
 
