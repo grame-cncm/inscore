@@ -93,18 +93,22 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             let compute = data.compute;
             if (compute != this.fCompute) {
                 this.fCompute = compute;
-                // if (compute) this.fAudioNode.start();
-                // else this.fAudioNode.stop();
+                if (compute) this.fAudioNode.start();
+                else this.fAudioNode.stop();
                 // console.log ("JSFaustView.updateSpecific compute " + compute);
             }
+            let prefix = "/" + obj.getName();
             let val = data.values;
             let n = val.size();
             for (let i=0; i < n; i++) {
                 let v = val.get(i);
-// console.log ("JSFaustView.updateSpecific setParamValue " + v.address + " " +v.value);
-                this.fAudioNode.setParamValue (v.address, v.value);
-//                if ((v.type == 0) && v.value)   // schedule the button off value
-//                    setTimeout (() => { this.fAudioNode.setParamValue (v.address, 0); }, 100);
+// console.log ("JSFaustView.updateSpecific setParamValue ", prefix + v.address, v.value);
+                this.fAudioNode.setParamValue (prefix + v.address, v.value);
+                if (data.autoOff && (v.type == 0) && v.value) {  // schedule the button off value
+                    let msg = inscore.newMessage();
+                    inscore.msgAddF (msg, 0);
+                    inscore.delayMessage (obj.getOSCAddress() + v.address, msg);
+                }
             }
             if (this.fVoices) {
                 let node = this.fAudioNode as Faust.FaustPolyNode;
@@ -173,16 +177,19 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         obj.setAudioInOut (node.numberOfInputs ? node.channelCount : 0, node.numberOfOutputs ? node.channelCount : 0);
         let ui = node.getDescriptors();
         ui.forEach ( (elt) => { 
-//  console.log ("JSFaustView.makeNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+// console.log ("JSFaustView.makeAudioNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
+            let n = elt.address.indexOf("/", 1);
+            // by design, the first part of the faust address is the object name
+            // it is stripped from address space and restored when used (in updateSpecific)
+            let stripped = (n) ?  elt.address.substr (n) : elt.address;
             if ((elt.type == "button") || (elt.type == "checkbox"))
-                obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
+                obj.setFaustUI (elt.type, elt.label, stripped, 0, 0, 1, 1)
             else
-                obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
+                obj.setFaustUI (elt.type, elt.label, stripped, elt.init, elt.min, elt.max, elt.step) 
         });
         this.updateSpecific (obj);
         let bb = this.fSVG.getBBox();
         this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
-        // INScore.objects().del (obj);
         obj.ready();
         return JSFaustView.kSuccess;
     }
