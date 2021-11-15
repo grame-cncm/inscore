@@ -189,6 +189,7 @@ interface OAudioNodeInfos {
 
 interface OFaustInfos {
 	compute		: boolean;
+	autoOff		: boolean;
 	voices		: number;
 	wasmExport	: string;
 	code		: string;
@@ -211,6 +212,7 @@ interface INScoreObject {
 	ready():	       void;
     getMasters():      MastersVector;
     getOSCAddress():   string;
+    getName():   	   string;
     getUpdateInfos(masterId: number):  OUpdateInfos;
     getTextInfos():    OTextInfo;
 	getLineInfos():    OLineInfo;
