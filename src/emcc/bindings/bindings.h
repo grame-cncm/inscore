@@ -190,6 +190,7 @@ EMSCRIPTEN_BINDINGS(CStruct) {
 	
 	value_object<JSFaustInfos>("JSFaustInfos")
 		.field("compute",  	&JSFaustInfos::compute)
+		.field("autoOff",  	&JSFaustInfos::autoOff)
 		.field("voices",  	&JSFaustInfos::voices)
 		.field("wasmExport", &JSFaustInfos::wasmExport)
 		.field("code",  	&JSFaustInfos::code)

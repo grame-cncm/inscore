@@ -167,6 +167,7 @@ struct JSFaustKeyValue { int type; int chan; int pitch; int vel; };
 
 struct JSFaustInfos {
 	bool	compute;
+	bool	autoOff;
 	int		voices = 0;
 	std::string wasmExport;
 	std::string code;
@@ -280,6 +281,7 @@ class inscore_export IObjectAdapter
 		libmapping::rational getDuration () const	{ return fObject->getDuration(); }
 
 		std::string	getOSCAddress() const		{ return fObject->getOSCAddress(); }
+		std::string	getName() const				{ return fObject->name(); }
 		void	updateWidth(float w)			{ _updateWidth (fObject, w); }
 		void	updateHeight(float h)			{ _updateHeight(fObject, h); }
 		void	updateViewBoundingRect(float x, float y, float w, float h);

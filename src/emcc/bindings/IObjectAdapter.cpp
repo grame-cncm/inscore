@@ -627,6 +627,7 @@ JSFaustInfos IObjectAdapter::getFaustInfos (bool getvalues, bool getcode) const
 	if (obj) {
 		infos.compute = obj->compute();
 		infos.voices = obj->getVoices();
+		infos.autoOff = obj->buttonAutoOff();
 		if (getcode) {
 			infos.code = obj->getCode();
 			const IFaustwProcessor* fw = obj->wasmBased();

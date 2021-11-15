@@ -77,6 +77,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 		.function("getMasters",  	&IObjectAdapter::getMasters, allow_raw_pointers())
 		.function("getOSCAddress",  &IObjectAdapter::getOSCAddress, allow_raw_pointers())
+		.function("getName",  		&IObjectAdapter::getName, allow_raw_pointers())
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
 		.function("getTextInfos",   &IObjectAdapter::getTextInfos, allow_raw_pointers())
 		.function("getLineInfos",   &IObjectAdapter::getLineInfos, allow_raw_pointers())
@@ -113,8 +114,6 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 
 			.function("start", 				&INScoreAdapter::start, allow_raw_pointers())
 			.function("stop", 				&INScoreAdapter::stop, allow_raw_pointers())
-//			.function("restartNetwork", 	&INScoreAdapter::restartNetwork )
-//			.function("stopNetwork", 		&INScoreAdapter::stopNetwork )
 
 			.function("postMessage", 		select_overload<void( const std::string&, MessagePtr)> 					(&INScoreAdapter::postMessage), allow_raw_pointers())
 			.function("postMessageStr", 	select_overload<void( const std::string&, const std::string&)>			(&INScoreAdapter::postMessage), allow_raw_pointers())
