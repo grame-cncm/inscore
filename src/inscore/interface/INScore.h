@@ -155,7 +155,7 @@ class inscore_export INScore
 
 		\param address the OSC destination address of the message
 		\param msg a message string
-		\param int a value
+		\param val a value
 	*/
 	static void postMessage	(const char* address, const char* msg, int val);
 
@@ -163,7 +163,7 @@ class inscore_export INScore
 
 		\param address the OSC destination address of the message
 		\param msg a message string
-		\param int a value
+		\param val a value
 	*/
 	static void postMessage	(const char* address, const char* msg, float val);
 
@@ -171,7 +171,7 @@ class inscore_export INScore
 
 		\param address the OSC destination address of the message
 		\param msg a message string
-		\param int a value
+		\param val a value
 	*/
 	static void postMessage	(const char* address, const char* msg, const char* val);
 
