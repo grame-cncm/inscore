@@ -1,7 +1,8 @@
 # Welcome to INScoreJS
 
 
-The INScoreJS library allows to embed the [INScore](https://inscore.grame.fr) engine services in a web page and to design augmented, dynamic and interactive musical scores that can be published on the Internet.
+The INScoreJS library allows to embed the [INScore](https://inscore.grame.fr) engine services in a web page and to design augmented, dynamic and interactive musical scores that can be published on the Internet.  
+INScore engine version is **1.3.2**
 
 ## Content of the package
 
@@ -47,23 +48,23 @@ INScoreJS do not support all the messages of the native version and provides spe
 ### Important notes
 
 INScoreJS is still a project under development. The compatibility of the graphic rendering is not yet guaranteed for future versions.
-In particular, improvements should be made for a rendering closer to the native version.
 If you develop your own pages, it is therefore recommended to save the libraries used for preservation reasons.
 
-Note also that the content of an inscore div is interpreted by browsers as html code. Thus avoid using `<` (opening tag character) and replace it with the textual form `&lt;`. Comments should also be expressed using the html form `<!-- commented section -->` and not using inscore comments (#). This is valid for inline code only and does not apply to inscore files that you could drop on an inscore div.
+Note also that the content of an inscore div is interpreted by browsers as html code. Thus avoid using `<` (opening tag character) and replace it with the textual form `&lt;`. Unless the inscore div content is framed with a \<pre> tag, comments should be expressed using the html form `<!-- commented section -->` and not using inscore comments (#). This is valid for inline code only and does not apply to inscore files that you could drop on an inscore div.
 
 
 
 ## Compatibility
 
-INScoreJS is still in alpha version. The engine has been tested on the following platforms and browsers:
+The engine has been tested on the following platforms and browsers:
 
 |         | Chrome  | Firefox  | Safari  | Opera | Edge | Internet Explorer |
 |---------|---------|----------|---------|-------|------|-------------------|
 | MacOS   |   OK   |   OK     |    OK   |   OK  |  -   |   -   |
 | Ubuntu  | -      |   OK     |   -     |   -   |  -   |   -   |
-| Windows | OK     |   OK     |   -     |   -   | OK   | unsupported |
+| Windows |  OK    |   OK     |   -     |   -   | OK   | unsupported |
 | Android |  OK    |   OK     |   -     |   -   |  -   |   -   |
+
 
 
 ----

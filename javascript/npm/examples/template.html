@@ -8,7 +8,7 @@
 	<script src="../INScoreJS.js"></script>
 	<style>
 	body { margin: 50; background-color: black; color: white}
-	.inscore { background-color: white; border-color: grey; width: 100%; height: 90%; }
+	.inscore { background-color: white; width: 100%; height: 90%; }
 	</style>
 </head>
 
@@ -17,8 +17,19 @@
 <h1>INScoreJS Template</h1>
 <div class="inscore" id="scene">
 <!-- put you inscore code inside this div -->
+<pre>
+	# using a 'pre' tag, is recommended
+	# it allows you to use inscore comments
+	# but above all and in case of syntax error, 
+	# you get an error line number, relative to inscore div
+	#
+	# note that even in a 'pre' section, use the '<' character with caution
+	# the html form &lt; should be preferred.
+
 	/ITL/scene/title set txt "Welcome to INScore";
 	/ITL/scene/title fontSize 32;
+
+</pre>
 </div>
 
 </body>
