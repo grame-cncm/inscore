@@ -8,11 +8,11 @@
 <script src="../inscoreglue.js"></script>
 <script src="../lib/libfaust-wasm.js"></script>
 <script src="../lib/FaustLibrary.js"></script>
-	<style>.inscore { background-color: white; width: 100%; height: 100%; }</style>
+	<style>.inscore { background-color: white; width: 100%; height: 100%; font-size: 1px;}</style>
 </head>
 <body>
 <div class="inscore" id="scene">
-
+<pre>
 
 	/ITL/scene/* del;
 
@@ -123,44 +123,6 @@
 	freq3 = 312;
 	freq4 = 546;
 
-&lt;? javascript
-
-	var mem = new Array;
-	var index = 0;
-	function activate (index) {
-		let msg = "/ITL/scene/cpINDEXm/cp penWidth 2;"
-		msg += "/ITL/scene/cpINDEXm/cp watch mouseDown (";
-		msg += "/ITL/scene/javascript run 'recall(INDEX, $(/ITL/scene/cp1m/cp get x), $(/ITL/scene/cp1m/cp get y), $(/ITL/scene/cp2m/cp get x), $(/ITL/scene/cp2m/cp get y), $(/ITL/scene/cp3m/cp get x), $(/ITL/scene/cp3m/cp get y), $(/ITL/scene/cp4m/cp get x), $(/ITL/scene/cp4m/cp get y))');"
-		return msg.replace(/INDEX/g, index);
-	}
-
-	<!-- function recall (index, x1, y1, x2, y2, x3, y3, x4, y4) {
-		let msg = "/ITL/scene/cpINDEXm/cp x XPOS;\n /ITL/scene/cpINDEXm/cp y YPOS;\n \
-		/ITL/scene/faustINDEX/FaustDSP/karplus/params/freq FREQ; \n \
-		/ITL/scene/pINDEX tempo TEMPO;"
-
-		let out = "";
-		for (let i=0; i&lt;4; i++) {
-			let x =  mem[index-1][i*2];
-			let y =  mem[index-1][i*2 + 1];
-			let freq =  1320 - (y + 1)/2 * (1320 - 110);
-			let tempo = 5 + (x+1)/2 * 315;
-			out += msg.replace (/INDEX/g, i+1)
-				.replace("XPOS", x)
-				.replace("YPOS", y)
-				.replace("FREQ", freq)
-				.replace("TEMPO", tempo);
-		}
-		return out;
-	} -->
-
-	function store (x1, y1, x2, y2, x3, y3, x4, y4) {
-		mem[index++] = [x1, y1, x2, y2, x3, y3, x4, y4];
-		<!-- let msg = activate (index); -->
-		if (index > 3) index = 0;
-		<!-- return msg; -->
-	}
-?>
 	/ITL/scene watch RESET (
 		/ITL/scene/cp1m/cp x -0.9048,
 		/ITL/scene/cp1m/cp y 0.34351,
@@ -173,10 +135,10 @@
 	);
 
 	/ITL/scene/cpreset watch mouseDown ( 
-		/ITL/scene/faust1/FaustDSP/karplus/params/freq $freq1,
-		/ITL/scene/faust2/FaustDSP/karplus/params/freq $freq2,
-		/ITL/scene/faust3/FaustDSP/karplus/params/freq $freq3,
-		/ITL/scene/faust4/FaustDSP/karplus/params/freq $freq4,
+		/ITL/scene/faust1/karplus/params/freq $freq1,
+		/ITL/scene/faust2/karplus/params/freq $freq2,
+		/ITL/scene/faust3/karplus/params/freq $freq3,
+		/ITL/scene/faust4/karplus/params/freq $freq4,
 		/ITL/scene/p1 tempo $tempo1,
 		/ITL/scene/p2 tempo $tempo2,
 		/ITL/scene/p3 tempo $tempo3,
@@ -193,26 +155,26 @@
 	ctrl1 =	( 
 		/ITL/scene/$self/cp x "$x[-1.,1.]",
 		/ITL/scene/$self/cp y "$y[-1.,1.]",
-		/ITL/scene/faust1/FaustDSP/karplus/params/freq "$y[1320,110]",
-		/ITL/scene/p1 tempo "$x[5,320]"
+		/ITL/scene/faust1/karplus/params/freq "$y[1320,110]",
+		/ITL/scene/p1 tempo "$x[5,200]"
 	);
 	ctrl2 =	( 
 		/ITL/scene/$self/cp x "$x[-1.,1.]",
 		/ITL/scene/$self/cp y "$y[-1.,1.]",
-		/ITL/scene/faust2/FaustDSP/karplus/params/freq "$y[1320,110]",
-		/ITL/scene/p2 tempo "$x[5,320]"
+		/ITL/scene/faust2/karplus/params/freq "$y[1320,110]",
+		/ITL/scene/p2 tempo "$x[5,200]"
 	);
 	ctrl3 =	( 
 		/ITL/scene/$self/cp x "$x[-1.,1.]",
 		/ITL/scene/$self/cp y "$y[-1.,1.]",
-		/ITL/scene/faust3/FaustDSP/karplus/params/freq "$y[1320,110]",
-		/ITL/scene/p3 tempo "$x[5,320]"
+		/ITL/scene/faust3/karplus/params/freq "$y[1320,110]",
+		/ITL/scene/p3 tempo "$x[5,200]"
 	);
 	ctrl4 =	( 
 		/ITL/scene/$self/cp x "$x[-1.,1.]",
 		/ITL/scene/$self/cp y "$y[-1.,1.]",
-		/ITL/scene/faust4/FaustDSP/karplus/params/freq "$y[1320,110]",
-		/ITL/scene/p4 tempo "$x[5,320]"
+		/ITL/scene/faust4/karplus/params/freq "$y[1320,110]",
+		/ITL/scene/p4 tempo "$x[5,200]"
 	);
 
 	/ITL/scene/cp1m watch mouseDown $ctrl1;
@@ -262,44 +224,97 @@
 		)
 	);
 
-	dsp = 'import("stdfaust.lib"); process = pm.ks_ui_MIDI &lt;: dm.freeverb_demo;';
+	dsp = 'import("stdfaust.lib"); process = pm.ks_ui_MIDI <: dm.freeverb_demo;';
 	/ITL/scene/faust1 set faust $dsp;
 	/ITL/scene/faust2 set faust $dsp;
 	/ITL/scene/faust3 set faust $dsp;
 	/ITL/scene/faust4 set faust $dsp;
 	/ITL/scene/faust* show 0;
-	/ITL/scene/faust* play 1;
+	/ITL/scene/faust* connect audioOutput;
 
-	/ITL/scene/faust1/FaustDSP/karplus/params/freq $freq1;
-	/ITL/scene/faust2/FaustDSP/karplus/params/freq $freq2;
-	/ITL/scene/faust3/FaustDSP/karplus/params/freq $freq3;
-	/ITL/scene/faust4/FaustDSP/karplus/params/freq $freq4;
-	/ITL/scene/faust*/FaustDSP/karplus/params/damping 0.01;
-	/ITL/scene/faust2/FaustDSP/karplus/params/damping 0.001;
-	/ITL/scene/faust2/FaustDSP/Freeverb/Wet 0.1;
-	/ITL/scene/faust3/FaustDSP/Freeverb/Wet 0.01;
-	/ITL/scene/faust3/FaustDSP/Freeverb/0x00/RoomSize 0.9;
-	/ITL/scene/faust[23]/FaustDSP/karplus/params/gain 0.5;
+	/ITL/scene/faust1/karplus/params/freq $freq1;
+	/ITL/scene/faust2/karplus/params/freq $freq2;
+	/ITL/scene/faust3/karplus/params/freq $freq3;
+	/ITL/scene/faust4/karplus/params/freq $freq4;
+	/ITL/scene/faust*/karplus/params/damping 0.01;
+#	/ITL/scene/faust2/karplus/params/damping 0.001;
+	/ITL/scene/faust2/Freeverb/Wet 0.1;
+#	/ITL/scene/faust3/Freeverb/Wet 0.01;
+	/ITL/scene/faust*/Freeverb/0x00/RoomSize 0.5;
+	/ITL/scene/faust[23]/karplus/params/gain 0.5;
+	/ITL/scene/faust* autoOff 1;
 
-	/ITL/scene/p1 watch timeEnter 0.185 0.40 ( /ITL/scene/faust1/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p1 watch timeEnter 0.41 0.70  ( /ITL/scene/faust1/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p1 watch timeEnter 0.71 0.80  ( /ITL/scene/faust1/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p1 watch timeEnter 0.90 1. 	 ( /ITL/scene/faust1/FaustDSP/karplus/gate 1 );
+
+	/ITL/scene/p1 watch timeEnter 0.185 0.20 ( /ITL/scene/faust1/karplus/gate 1 );
+	/ITL/scene/p1 watch timeEnter 0.41 0.43  ( /ITL/scene/faust1/karplus/gate 1 );
+	/ITL/scene/p1 watch timeEnter 0.71 0.73  ( /ITL/scene/faust1/karplus/gate 1 );
+	/ITL/scene/p1 watch timeEnter 0.90 0.92	 ( /ITL/scene/faust1/karplus/gate 1 );
 	
-	/ITL/scene/p2 watch timeEnter 0.139 0.17 ( /ITL/scene/faust2/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p2 watch timeEnter 0.27 0.3 	 ( /ITL/scene/faust2/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p2 watch timeEnter 0.685 0.75 ( /ITL/scene/faust2/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p2 watch timeEnter 0.822 0.88 ( /ITL/scene/faust2/FaustDSP/karplus/gate 1 );
+	/ITL/scene/p2 watch timeEnter 0.139 0.17 ( /ITL/scene/faust2/karplus/gate 1 );
+	/ITL/scene/p2 watch timeEnter 0.27 0.3 	 ( /ITL/scene/faust2/karplus/gate 1 );
+	/ITL/scene/p2 watch timeEnter 0.685 0.70 ( /ITL/scene/faust2/karplus/gate 1 );
+	/ITL/scene/p2 watch timeEnter 0.822 0.84 ( /ITL/scene/faust2/karplus/gate 1 );
 	
-	/ITL/scene/p3 watch timeEnter 0.185 0.2  ( /ITL/scene/faust3/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p3 watch timeEnter 0.32 0.38  ( /ITL/scene/faust3/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p3 watch timeEnter 0.69 0.7   ( /ITL/scene/faust3/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p3 watch timeEnter 0.82 0.88  ( /ITL/scene/faust3/FaustDSP/karplus/gate 1 );
+	/ITL/scene/p3 watch timeEnter 0.185 0.2  ( /ITL/scene/faust3/karplus/gate 1 );
+	/ITL/scene/p3 watch timeEnter 0.32 0.38  ( /ITL/scene/faust3/karplus/gate 1 );
+	/ITL/scene/p3 watch timeEnter 0.69 0.7   ( /ITL/scene/faust3/karplus/gate 1 );
+	/ITL/scene/p3 watch timeEnter 0.82 0.88  ( /ITL/scene/faust3/karplus/gate 1 );
 	
-	/ITL/scene/p4 watch timeEnter 0.16 0.2   ( /ITL/scene/faust4/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p4 watch timeEnter 0.26 0.3   ( /ITL/scene/faust4/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p4 watch timeEnter 0.653 0.7  ( /ITL/scene/faust4/FaustDSP/karplus/gate 1 );
-	/ITL/scene/p4 watch timeEnter 0.762 0.81 ( /ITL/scene/faust4/FaustDSP/karplus/gate 1 );
+	/ITL/scene/p4 watch timeEnter 0.16 0.2   ( /ITL/scene/faust4/karplus/gate 1 );
+	/ITL/scene/p4 watch timeEnter 0.26 0.3   ( /ITL/scene/faust4/karplus/gate 1 );
+	/ITL/scene/p4 watch timeEnter 0.653 0.7  ( /ITL/scene/faust4/karplus/gate 1 );
+	/ITL/scene/p4 watch timeEnter 0.762 0.81 ( /ITL/scene/faust4/karplus/gate 1 );
+
+
+	/ITL/scene watch keyDown " " ( /ITL/scene/control event mouseDown 0 0);
+	/ITL/scene watch keyDown "0" ( /ITL/scene/cpreset event mouseDown 0 0);
+	/ITL/scene watch keyDown "1" ( /ITL/scene/cp1m/cp event mouseDown 0 0);
+	/ITL/scene watch keyDown "2" ( /ITL/scene/cp2m/cp event mouseDown 0 0);
+	/ITL/scene watch keyDown "3" ( /ITL/scene/cp3m/cp event mouseDown 0 0);
+	/ITL/scene watch keyDown "4" ( /ITL/scene/cp4m/cp event mouseDown 0 0);
+
+&lt;? javascript
+	var mem = new Array;
+	var index = 0;
+	function activate (index) {
+		let msg = "/ITL/scene/cpINDEXm/cp penWidth 2;"
+		msg += "/ITL/scene/cpINDEXm/cp watch mouseDown (";
+		msg += "/ITL/scene/javascript run 'recall(INDEX, $(/ITL/scene/cp1m/cp get x), $(/ITL/scene/cp1m/cp get y), $(/ITL/scene/cp2m/cp get x), $(/ITL/scene/cp2m/cp get y), $(/ITL/scene/cp3m/cp get x), $(/ITL/scene/cp3m/cp get y), $(/ITL/scene/cp4m/cp get x), $(/ITL/scene/cp4m/cp get y))');"
+		return msg.replace(/INDEX/g, index);
+	}
+	
+	function recall (index, x1, y1, x2, y2, x3, y3, x4, y4) {
+		let msg = "/ITL/scene/cpINDEXm/cp x XPOS;\n /ITL/scene/cpINDEXm/cp y YPOS;\n \
+		/ITL/scene/faustINDEX/karplus/params/freq FREQ; \n \
+		/ITL/scene/pINDEX tempo TEMPO;"
+	
+		let out = "";
+		for (let i=0; i&lt;4; i++) {
+			let x =  mem[index-1][i*2];
+			let y =  mem[index-1][i*2 + 1];
+			let freq =  1320 - (y + 1)/2 * (1320 - 110);
+			let tempo = 5 + (x+1)/2 * 315;
+			out += msg.replace (/INDEX/g, i+1)
+				.replace("XPOS", x)
+				.replace("YPOS", y)
+				.replace("FREQ", freq)
+				.replace("TEMPO", tempo);
+		}
+		return out;
+	}
+	
+	function store (x1, y1, x2, y2, x3, y3, x4, y4) {
+		mem[index++] = [x1, y1, x2, y2, x3, y3, x4, y4];
+		let msg = activate (index);
+		if (index > 3) index = 0;
+		return msg;
+	}
+?>	
+</pre>
 </div>
 </body>
+<script>
+
+
+</script>
 </html>
