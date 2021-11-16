@@ -81,9 +81,5 @@ w = 0.09;
 	)
 );
 
+/ITL/scene watch keyDown " " ( /ITL/scene/control event mouseDown 0 0);
 
-__END__
-
-/ITL/scene refresh;
-/ITL/log show 1;
-/ITL/log level 2;

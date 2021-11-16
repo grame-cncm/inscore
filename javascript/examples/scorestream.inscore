@@ -1,7 +1,7 @@
 
 /ITL/scene/* del;
 
-gmn = '[ \clef<"g"> \meter<"4/4">';
+gmn = '[ \clef<"g"> \meter<"4/4">  \pageFormat<w=23cm, h=26cm>';
 frag1 = 'g/4 b f';
 frag2 = 'e/8 d f/4';
 frag3 = 'g/16 f e/8 d/4';

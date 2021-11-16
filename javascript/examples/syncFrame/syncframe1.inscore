@@ -58,3 +58,5 @@ grey = 180;
 		/ITL/scene/$self pop
 	)
 );
+
+/ITL/scene watch keyDown " " ( /ITL/scene/control event mouseDown 0 0);
