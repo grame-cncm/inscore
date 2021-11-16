@@ -95,15 +95,13 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                 this.fCompute = compute;
                 if (compute) this.fAudioNode.start();
                 else this.fAudioNode.stop();
-                // console.log ("JSFaustView.updateSpecific compute " + compute);
             }
-            let prefix = "/" + obj.getName();
             let val = data.values;
             let n = val.size();
             for (let i=0; i < n; i++) {
                 let v = val.get(i);
-// console.log ("JSFaustView.updateSpecific setParamValue ", prefix + v.address, v.value);
-                this.fAudioNode.setParamValue (prefix + v.address, v.value);
+// console.log ("JSFaustView.updateSpecific setParamValue ", v.address, v.value);
+                this.fAudioNode.setParamValue (v.address, v.value);
                 if (data.autoOff && (v.type == 0) && v.value) {  // schedule the button off value
                     let msg = inscore.newMessage();
                     inscore.msgAddF (msg, 0);
@@ -178,14 +176,10 @@ class JSFaustView extends JSSvgBase implements AudioObject {
         let ui = node.getDescriptors();
         ui.forEach ( (elt) => { 
 // console.log ("JSFaustView.makeAudioNode elt " + elt.type + " " + elt.label + " " + elt.address + " " + elt.init + " " + elt.min + " " + elt.max + " " + elt.step );
-            let n = elt.address.indexOf("/", 1);
-            // by design, the first part of the faust address is the object name
-            // it is stripped from address space and restored when used (in updateSpecific)
-            let stripped = (n) ?  elt.address.substr (n) : elt.address;
             if ((elt.type == "button") || (elt.type == "checkbox"))
-                obj.setFaustUI (elt.type, elt.label, stripped, 0, 0, 1, 1)
+                obj.setFaustUI (elt.type, elt.label, elt.address, 0, 0, 1, 1)
             else
-                obj.setFaustUI (elt.type, elt.label, stripped, elt.init, elt.min, elt.max, elt.step) 
+                obj.setFaustUI (elt.type, elt.label, elt.address, elt.init, elt.min, elt.max, elt.step) 
         });
         this.updateSpecific (obj);
         let bb = this.fSVG.getBBox();
@@ -206,7 +200,6 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             return JSFaustView.kPending;
         }
         JSFaustView.fCompilerLock = true;
-//        const name = "inscore";
         const name = obj.getOSCAddress();
         let done = await this.makeFactory (name, code, voices);
         if (!done) return JSFaustView.kFailed;
