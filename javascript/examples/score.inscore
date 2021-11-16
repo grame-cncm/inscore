@@ -4,10 +4,10 @@
 #url = "https://inscoreweb.grame.fr/";
 url = "../";
 /ITL/scene/score set gmnf $url + "gmn/mozart.gmn.txt";
-/ITL/scene/score scale 0.25;
-/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date');
+/ITL/scene/score height 1.8;
+/ITL/scene/score watch mouseDown (/ITL/scene/cursor* date '$date:system');
 
-w = 0.1;
+w = 0.05;
 /ITL/scene/cursor1 set ellipse $w $w;
 /ITL/scene/cursor2 set ellipse $w $w;
 /ITL/scene/cursor3 set ellipse $w $w;
@@ -25,6 +25,7 @@ w = 0.1;
 /ITL/scene/score map staff3;
 /ITL/scene/score map staff4;
 /ITL/scene/score map staff5;
+/ITL/scene/score map system;
 
 /ITL/scene/sync cursor1 "score:staff1";
 /ITL/scene/sync cursor2 "score:staff2";
@@ -55,6 +56,14 @@ g = 150;
 grey = $g $g $g;
 /ITL/scene/ctrl watch mouseEnter ( /ITL/scene/$self scale 0.13 );
 /ITL/scene/ctrl watch mouseLeave ( /ITL/scene/$self scale 0.12 );
+
+/ITL/scene watch keyDown " " ( /ITL/scene/ctrl event mouseDown 0 0 );
+/ITL/scene watch keyDown "0" ( /ITL/scene/cursor* date 0 );
+
+/ITL/scene watch keyDown ArrowLeft ( /ITL/scene/cursor* ddate -0.25 );
+/ITL/scene watch keyDown ArrowRight ( /ITL/scene/cursor* ddate 0.25 );
+/ITL/scene watch keyDown ArrowUp ( /ITL/scene/cursor* dtempo 2 );
+/ITL/scene watch keyDown ArrowDown ( /ITL/scene/cursor* dtempo -2 );
 
 
 __END__

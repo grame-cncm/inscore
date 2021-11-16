@@ -88,3 +88,6 @@ rotate = ( 	/ITL/scene/m* rotatez '$x[0,180]',
 		/ITL/scene/$self pop
 	)
 );
+
+/ITL/scene watch keyDown " " ( /ITL/scene/ctrlplay event mouseDown 0 0 );
+

@@ -1,7 +1,7 @@
 
 /ITL/scene/* del;
 
-url = "imgs/";
+url = "../imgs/";
 
 /ITL/scene/score set img $url + "Applebaum.jpg";
 /ITL/scene/score scale 0.4;
@@ -37,6 +37,15 @@ grey = $g $g $g;
 /ITL/scene/ctrl* watch mouseEnter ( /ITL/scene/$self scale 0.13 );
 /ITL/scene/ctrl* watch mouseLeave ( /ITL/scene/$self scale 0.12 );
 
+/ITL/scene/sync score cursor ;
+/ITL/scene/cursor date 0;
+
+/ITL/scene watch keyDown " " ( /ITL/scene/ctrlpause event mouseDown 0 0 );
+/ITL/scene watch keyDown "0" ( /ITL/scene/cursor date 0 );
+
+/ITL/scene watch keyDown ArrowLeft  ( /ITL/scene/ctrlrev event mouseDown 0 0 );
+/ITL/scene watch keyDown ArrowRight ( /ITL/scene/ctrlplay event mouseDown 0 0 );
+
 __END__
 
 /ITL/scene/trace set line wa 2 0;
@@ -46,7 +55,6 @@ __END__
 /ITL/scene/sync score cursor;
 /ITL/scene/sync score;
 
-/ITL/scene/sync cursor score ;
 /ITL/scene/cursor tempo 60;
 /ITL/scene/cursor tempo 0;
 

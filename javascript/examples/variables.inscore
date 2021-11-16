@@ -29,12 +29,12 @@ url = "https://inscoreweb.grame.fr/";
 /ITL/scene/tapos  set  txt "Absolute position ($absx, $absy): ";
 /ITL/scene/tspos  set  txt "Scene position ($sx, $sy): ";
 /ITL/scene/tdate  set  txt "Date ($date): ";
-/ITL/scene/*{pos,date}  xorigin  1.0;
+/ITL/scene/*{pos,date}  xorigin  1.05;
 /ITL/scene/vpos  set  txt " ";
 /ITL/scene/vapos  set  txt " ";
 /ITL/scene/vspos  set  txt " ";
 /ITL/scene/vdate  set  txt " ";
-/ITL/scene/v*{pos,date}  xorigin  -1.0;
+/ITL/scene/v*{pos,date}  xorigin  -1.05;
 /ITL/scene/v*{pos,date}  color  0 0 255;
 
 /ITL/scene/*{pos,date}  scale  1.4;
