@@ -21,7 +21,7 @@
   },
   "homepage": "https://inscore.grame.fr",
   "dependencies": {
-    "@grame/guidolib": "^1.7.1",
+    "@grame/guidolib": "^1.7.12",
     "@grame/libfaust": "^1.2.0",
     "@grame/libmusicxml": "^3.19.1",
     "@types/node": "^16.11.7",
