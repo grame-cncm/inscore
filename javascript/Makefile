@@ -28,7 +28,7 @@ TSLIB    := $(TSDIR)/lib
 MODULES     := node_modules/@grame
 
 GUIDO       := $(MODULES)/guidolib
-GUIDOLIB    := $(TSLIB)/libGUIDOEngine.d.ts lib/libGUIDOEngine.js lib/libGUIDOEngine.wasm $(TSLIB)/guidoengine.ts
+GUIDOLIB    := lib/libGUIDOEngine.js lib/libGUIDOEngine.wasm
 GUIDOMODULE := $(GUIDOLIB:lib/%=$(GUIDO)/%)
 
 MXML        := $(MODULES)/libmusicxml
@@ -147,10 +147,6 @@ publish:
 #===============================================================
 modules: $(GUIDOLIB) $(XMLLIB) $(FAUSTLIB) $(INSCOREWASM)
 
-$(TSLIB)/libGUIDOEngine.d.ts : $(GUIDO)/libGUIDOEngine.d.ts
-	cp $< $@
-$(TSLIB)/guidoengine.ts   	 :  $(GUIDO)/guidoengine.ts
-	cp $< $@
 $(TSLIB)/libmusicxml.ts   	 : $(MXML)/libmusicxml.ts
 	cp $< $@
 $(TSLIB)/libmusicxml.d.ts	 : $(MXML)/libmusicxml.d.ts

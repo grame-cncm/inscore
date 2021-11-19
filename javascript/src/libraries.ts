@@ -1,5 +1,6 @@
-///<reference path="lib/guidoengine.ts"/>
+
 ///<reference path="lib/libmusicxml.ts"/>
+///<reference path="guidoengine.ts"/>
 ///<reference path="faust.ts"/>
 
 //----------------------------------------------------------------------------

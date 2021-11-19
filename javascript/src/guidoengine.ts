@@ -1,4 +1,5 @@
-///<reference path="libGUIDOEngine.d.ts"/>
+
+///<reference types="@grame/guidolib"/>
 
 
 //----------------------------------------------------------------------------
@@ -10,27 +11,24 @@ class GuidoEngine {
     private	fPianoRoll :   GUIDOPianoRollAdapter;
     private	fScoreMap  :   GUIDOScoreMap;
     private	fFactory   :   GUIDOFactoryAdapter;
+    private	fSPR       :   GUIDOReducedProportionalAdapter;
+
+    constructor () {}
 
     async initialise():Promise<any> { 
-        var module = GuidoModule();
         return new Promise( (success: any, failure: any) => {
-            module['onRuntimeInitialized'] = () => {
-                this.moduleInit (module);
+            GuidoModule().then ( (module: any) => {
+                this.fEngine 		= new module.GuidoEngineAdapter();
+                this.fScoreMap      = new module.GUIDOScoreMap();
+                this.fPianoRoll		= new module.GUIDOPianoRollAdapter();
+                this.fFactory		= new module.GUIDOFactoryAdapter();
+                this.fSPR           = new module.GUIDOReducedProportionalAdapter();
+                this.fEngine.init();   
                 success ( this ); 
-                }
-        });
-    }
-            
-    //------------------------------------------------------------------------
-    // async initialization
-    moduleInit ( module : any ) : void {
-        this.fEngine 		= new module.GuidoEngineAdapter();
-        this.fScoreMap      = new module.GUIDOScoreMap();
-        this.fPianoRoll		= new module.GUIDOPianoRollAdapter();
-        this.fFactory		= new module.GUIDOFactoryAdapter();
-        this.fEngine.init();
-    }
-        
+            });
+		});
+	}
+
     //------------------------------------------------------------------------
     // Guido Engine interface
     start () : void                 { this.fEngine.init(); }
@@ -101,9 +99,9 @@ class GuidoEngine {
     writeStream  (s: GuidoStream, str: string): GuidoErrCode        { return this.fEngine.writeStream ( s, str ); }
 	resetStream  (s: GuidoStream): GuidoErrCode      { return this.fEngine.resetStream ( s ); }
                        
-    getParsingTime  (): number              { return this.fEngine.getParsingTime(); }
-    getAR2GRTime    (): number              { return this.fEngine.getAR2GRTime(); }
-    getOnDrawTime   (): number              { return this.fEngine.getOnDrawTime(); }
+    getParsingTime  (ar: ARHandler): number              { return this.fEngine.getParsingTime(ar); }
+    getAR2GRTime    (gr: GRHandler): number              { return this.fEngine.getAR2GRTime(gr); }
+    getOnDrawTime   (gr: GRHandler): number              { return this.fEngine.getOnDrawTime(gr); }
 
     //------------------------------------------------------------------------
     // Guido mappings interface
@@ -118,6 +116,8 @@ class GuidoEngine {
 
     //------------------------------------------------------------------------
     // Guido piano roll interface
+    pianoRoll() : GUIDOPianoRollAdapter { return this.fPianoRoll; }
+
     ar2PianoRoll        ( type: PianoRollType, ar: ARHandler): PianoRoll        { return this.fPianoRoll.ar2PianoRoll ( type, ar ); }
     destroyPianoRoll    ( pr: PianoRoll ): GuidoErrCode                         { return this.fPianoRoll.destroyPianoRoll ( pr ); }
     prSetLimits           ( pr: PianoRoll, limits: LimitParams ): GuidoErrCode    { return this.fPianoRoll.setLimits ( pr, limits ); }
@@ -132,10 +132,15 @@ class GuidoEngine {
     prSetPitchLinesDisplayMode (pr: PianoRoll, mode: number): GuidoErrCode        { return this.fPianoRoll.setPitchLinesDisplayMode ( pr, mode ); }
     
     proll2svg ( pr: PianoRoll, w: number, h: number )                           { return this.fPianoRoll.svgExport ( pr, w, h  ); }
-    prGetMap  (pr: PianoRoll, width: number, height: number): string    { return this.fPianoRoll.getMap ( pr, width, height  ); }
+    prGetMap  (pr: PianoRoll, width: number, height: number): string            { return this.fPianoRoll.getMap ( pr, width, height  ); }
 
-	prSvgExport       (pr: PianoRoll, width: number, height: number): string   { return this.fPianoRoll.svgExport ( pr, width, height  ); }
-    prJsExport(pr: PianoRoll, width: number, height: number): GuidoErrCode     { return this.fPianoRoll.javascriptExport ( pr, width, height  ); }
+	prSvgExport(pr: PianoRoll, width: number, height: number): string           { return this.fPianoRoll.svgExport ( pr, width, height  ); }
+    prJsExport (pr: PianoRoll, width: number, height: number): GuidoErrCode     { return this.fPianoRoll.javascriptExport ( pr, width, height  ); }
+
+    //------------------------------------------------------------------------
+    // Reduced Proportional representation
+    // no relay for the interface
+    reducedProp() : GUIDOReducedProportionalAdapter { return this.fSPR; }
 
 
     //------------------------------------------------------------------------
