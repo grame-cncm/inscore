@@ -132,10 +132,12 @@ $(NPMDIR)/$(NPMLIB): $(GLUESRC) $(LIBSRC)
 	tsc -p npmconfig.json
 	mv $(NPMLIB) $(NPMDIR)
 
-publish: VERSION := $(shell grep version $(NPMDIR)/package.json | cut -d: -f 2 | sed -e 's/[^0-9.]*//g')
+publish: VERSION := $(shell grep '"version"' $(NPMDIR)/package.json | sed -e 's/[^0-9.]*//g')
+publish: IVERSION := $(shell grep '"inscore-version"' $(NPMDIR)/package.json | sed -e 's/[^0-9.]*//g')
 publish: 
 	$(MAKE) npm
 	@echo "You are about to publish the INScoreJS package v.$(VERSION) on npm."
+	@echo "INScore version $(IVERSION)"
 	@echo "Make sure you are logged in (npm login)"
 	@read -p "Continue [y|n]: " answer && [ $$answer == "y" ]
 	cd $(NPMDIR) && npm publish --access public
