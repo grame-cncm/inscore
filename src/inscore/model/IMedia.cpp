@@ -86,17 +86,29 @@ void IMedia::cleanup ()
 }
 
 //--------------------------------------------------------------------------
+// method introduced to fix end media event with javascript
+bool IMedia::checkEvent (EventsAble::eventype event)
+{
+	string end(event);
+	if (end == kEndEvent) {
+		mediaEnd();
+		return true;
+	}
+	return IObject::checkEvent(event);
+}
+
+//--------------------------------------------------------------------------
 void IMedia::mediaReady ()
 {
 	fPlaying = false;
-	checkEvent (kReadyEvent, rational(0,1), this);
+	IObject::checkEvent (kReadyEvent, rational(0,1), this);
 }
 
 //--------------------------------------------------------------------------
 void IMedia::mediaEnd ()
 {
 	fPlaying = false;
-	checkEvent (kEndEvent, rational(0,1), this);
+	IObject::checkEvent (kEndEvent, rational(0,1), this);
 }
 
 

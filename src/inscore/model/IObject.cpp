@@ -783,6 +783,13 @@ bool IObject::date2FramePoint(const libmapping::rational& date, TFloatPoint& p) 
 //--------------------------------------------------------------------------
 // events processing
 //--------------------------------------------------------------------------
+bool IObject::checkEvent (EventsAble::eventype event)
+{
+	EventContext context (this);
+	return checkEvent (event, context);
+}
+
+//--------------------------------------------------------------------------
 bool IObject::checkEvent (EventsAble::eventype event, EventContext& context) const
 {
 	const IMessageList*	msgs = getMessages(event);

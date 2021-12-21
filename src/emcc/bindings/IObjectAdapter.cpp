@@ -107,8 +107,7 @@ void IObjectAdapter::updateDuration(float duration) {
 //--------------------------------------------------------------------------
 void IObjectAdapter::event(string event) {
 	if (fObject) {
-		EventContext context (fObject);
-		fObject->checkEvent (event.c_str(), context);
+		fObject->checkEvent (event.c_str());
 	}
 }
 

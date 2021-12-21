@@ -16,6 +16,7 @@ It has been supported by the ANR
 Version 1.32
 - web version: 
 	- add 'autoOff' message for faust objects to automatically set ui buttons to 0 after a 1 value.
+	- fix media end event.
 
 ----------------------------------------------------
 Version 1.31

@@ -70,6 +70,8 @@ class IMedia : public IRectShape, public TFile, public AudioNode
 		virtual void	mediaReady ();			// called from view when the media data are available
 
 	protected:
+		virtual bool 	checkEvent (EventsAble::eventype event);
+
 		bool  fPlaying;			// the audio playing state
 		float fVolume;			// the media sound volume. Range: 0-1
 		float fRate;			// the media playing rate. Nominal rate is 1.0
