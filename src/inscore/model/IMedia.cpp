@@ -90,10 +90,8 @@ void IMedia::cleanup ()
 bool IMedia::checkEvent (EventsAble::eventype event)
 {
 	string end(event);
-	if (end == kEndEvent) {
-		mediaEnd();
-		return true;
-	}
+	if (end == kEndEvent)
+		fPlaying = false;
 	return IObject::checkEvent(event);
 }
 
