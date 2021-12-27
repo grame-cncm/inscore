@@ -2,7 +2,6 @@
 ///<reference path="inscore.ts"/>
 ///<reference path="libraries.ts"/>
 ///<reference path="navigator.ts"/>
-///<reference path="AIOScanner.ts"/>
 
 //----------------------------------------------------------------------------
 class INScoreGlue {
@@ -17,7 +16,6 @@ class INScoreGlue {
     //------------------------------------------------------------------------
 	// initialization
 	async start():Promise<any> {
-		AIOScanner.init();
 		return new Promise( (success: any, failure: any) => {
 			this.fInscore.initialise ().then 
 			(() => { 
