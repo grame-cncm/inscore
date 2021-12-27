@@ -64,7 +64,8 @@ class AudioIO : public IRectShape, public AudioNode
 
 		std::vector<int> getInOut() const;
 		/// \brief method handlers
-		virtual MsgHandler::msgStatus	set (const IMessage* msg);
+		virtual MsgHandler::msgStatus	set  (const IMessage* msg);
+		virtual MsgHandler::msgStatus	init (const IMessage* msg);
 };
 
 /*! @} */

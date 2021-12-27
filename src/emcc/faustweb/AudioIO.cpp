@@ -23,9 +23,11 @@
 
 */
 
+#include <emscripten.h>
+
 #include "AudioIO.h"
 #include "Updater.h"
-#include "VObjectView.h"
+#include "HTMLObjectView.h"
 
 using namespace std;
 
@@ -44,6 +46,7 @@ AudioIO::AudioIO (const std::string& name, IObject * parent) : IRectShape(name, 
 	fGetMsgHandlerMap[kout_GetMethod]	= TGetParamMsgHandler<int>::create(fNumOutputs);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &AudioIO::getconnect);
 
+	fMsgHandlerMap[kinit_SetMethod]			= TMethodMsgHandler<AudioIO>::create(this, &AudioIO::init);
 	fMsgHandlerMap[kconnect_GetSetMethod]	= TMethodMsgHandler<AudioIO>::create(this, &AudioIO::connect);
 	fMsgHandlerMap[kdisconnect_SetMethod]	= TMethodMsgHandler<AudioIO>::create(this, &AudioIO::disconnect);
 }
@@ -61,6 +64,14 @@ vector<int> AudioIO::getInOut() const
 	out.push_back (fNumInputs);
 	out.push_back (fNumOutputs);
 	return out;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus AudioIO::init (const IMessage* msg)
+{
+	const HTMLObjectView* view = static_cast<const HTMLObjectView*>(getView());
+	EM_ASM( { JSAudioioView.init($0); }, view->getID() );
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
