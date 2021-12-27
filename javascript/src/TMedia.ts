@@ -12,6 +12,7 @@ abstract class TMedia extends JSAutoSize implements AudioObject {
 
 	constructor(elt: HTMLMediaElement, parent: JSObjectView) {
         super(elt, parent);
+		AIOScanner.init();
 		this.fAudioNode = AIOScanner.fAudioContext.createMediaElementSource(elt);
 		this.fAudioNode.connect (AIOScanner.fAudioContext.destination);
 		this.fRouter  = new AudioRouting (this.fAudioNode, this.fAudioNode.channelCount, this.toString());
