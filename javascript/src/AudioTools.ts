@@ -7,11 +7,9 @@ interface cnxFunction { (src: AudioObject, dest: AudioObject, srcchan: number, d
 
 class AudioTools {
 
-    static updateConnections(obj: INScoreObject, view: JSObjectView) {
-        let cnx = obj.getAudioInfos();
-// console.log ("AudioTools: updateConnections connect: " + obj.getOSCAddress() + " " + cnx.connect.size() + " disconnect: " + cnx.disconnect.size())
-        AudioTools.doit(view, obj, cnx.connect, AudioTools.connectSrcDest, "connect");
-        AudioTools.doit(view, obj, cnx.disconnect, AudioTools.disconnectSrcDest, "disconnect");
+    static updateConnections(cnx: OAudioNodeInfos, view: JSObjectView) {
+        AudioTools.doit(view, cnx.connect, AudioTools.connectSrcDest, "connect");
+        AudioTools.doit(view, cnx.disconnect, AudioTools.disconnectSrcDest, "disconnect");
     }
 
     static connectSrcDest(src: AudioObject, dest: AudioObject, srcchan: number, destchan: number) : boolean {
@@ -36,6 +34,7 @@ class AudioTools {
         console.log ("AudioTools error: trying to connect null AudioNode (" + src + " " + dest + ")");
         return false;
     }
+    
     static disconnectSrcDest(src: AudioObject, dest: AudioObject, srcchan: number, destchan: number) : boolean {
         if (src && dest) {
             try {
@@ -59,7 +58,7 @@ class AudioTools {
         return false;
     }
 
-    static doit (view: JSObjectView, obj: INScoreObject, list: AudioCnxVector, cnx: cnxFunction, op: string) {
+    static doit (view: JSObjectView, list: AudioCnxVector, cnx: cnxFunction, op: string) {
         let n = list.size();
         for (let i = 0; i < n; i++) {
             let cdesc = list.get(i);

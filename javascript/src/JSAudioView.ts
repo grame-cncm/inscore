@@ -30,7 +30,7 @@ class JSAudioView extends TMedia {
 	}
 
 	updateSpecific(obj: INScoreObject)	: void {
-		AudioTools.updateConnections (obj, this);
+		AudioTools.updateConnections (obj.getAudioInfos(), this);
 		let media = obj.getMediaInfos();
 		if (media.playing) this.fAudio.play();
 		else this.fAudio.pause();

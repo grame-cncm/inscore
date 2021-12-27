@@ -88,7 +88,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
 
     updateSpecific(obj: INScoreObject)	: void {
         if (this.fAudioNode) {
-            AudioTools.updateConnections(obj, this);
+            AudioTools.updateConnections(obj.getAudioInfos(), this);
             let data = obj.getFaustInfos(true, false);
             let compute = data.compute;
             if (compute != this.fCompute) {
