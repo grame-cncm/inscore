@@ -26,7 +26,36 @@ class JSAudioioView extends JSObjectView implements AudioObject {
     }
 
     updateSpecific(obj: INScoreObject)	: void {
-        AudioTools.updateConnections(obj, this);
+        if (this.fAudioNode) {
+            let cnx = obj.getAudioInfos();
+            AudioTools.updateConnections(cnx, this);
+        }
+    }
+
+    static init (id: number ) {
+        let input = <JSAudioioView>JSObjectView.getObjectView(id);
+        let obj = INScore.objects().adapter(input.getIObject());
+        input.initInput (obj);
+    }
+
+    initInput (obj: INScoreObject) {
+        if (obj.getName() != AIOScanner.kInputName) return;
+
+        if (navigator.mediaDevices) {
+            navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream: MediaStream) => {
+                this.fAudioNode = AIOScanner.fAudioContext.createMediaStreamSource(stream);
+                this.fRouter  = new AudioRouting (this.fAudioNode, this.fAudioNode.channelCount, this.toString());
+                AIOScanner.send(obj.getOSCAddress(), 0, this.fAudioNode.channelCount);
+                inscore.postMessageStrStr (obj.getOSCAddress(), "event", "ready");
+            })
+            .catch(function(err) {
+                console.log("Can't get audio input device: " + err);
+                obj.event ("error");
+            });
+        } else {
+            console.log("Can't get audio input device: navigator.mediaDevices not supported");
+            obj.event ("error");
+        }
     }
 
     initView (obj: INScoreObject) : boolean {
@@ -36,8 +65,6 @@ class JSAudioioView extends JSObjectView implements AudioObject {
         }
         if (infos.inputs )
             this.fAudioNode = AIOScanner.fOutput;
-        else if (infos.outputs)
-            this.fAudioNode = AIOScanner.fInput;
         if (this.fAudioNode) this.fRouter  = new AudioRouting (this.fAudioNode, this.fAudioNode.channelCount, this.toString());
         return true;    
     }
