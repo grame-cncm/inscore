@@ -35,7 +35,7 @@ class JSAudioioView extends JSObjectView implements AudioObject {
     static init (id: number ) {
         let input = <JSAudioioView>JSObjectView.getObjectView(id);
         let obj = INScore.objects().adapter(input.getIObject());
-        input.initInput (obj);
+        input.initInput (obj); 
     }
 
     initInput (obj: INScoreObject) {
@@ -53,7 +53,7 @@ class JSAudioioView extends JSObjectView implements AudioObject {
                 obj.event ("error");
             });
         } else {
-            console.log("Can't get audio input device: navigator.mediaDevices not supported");
+            console.log("Can't get audio input device: navigator.mediaDevices is not supported");
             obj.event ("error");
         }
     }
