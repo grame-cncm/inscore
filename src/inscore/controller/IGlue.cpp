@@ -205,18 +205,19 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	oscinit (fModel, fUDP);
 	if (!fMsgStack || !fController || !fModel) // || !fNetThread)
 		throw("Memory allocation failed!");
+	string inscore = "INScore v.";
 #if HASOSCStream
 	oscerr.setLogWindow (fModel->getLogWindow());
-	oscerr << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << OSCEnd();
-	cout << "INScore v. " << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
+	oscerr << inscore << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << OSCEnd();
+	cout << inscore << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 #ifdef ANDROID
-	qDebug() << "INSCORE v. " << INScore::versionStr().c_str() << " listening OSC on port " <<  fUDP.fInPort;
+	qDebug() << inscore << INScore::versionStr().c_str() << " listening OSC on port " <<  fUDP.fInPort;
 #endif
 #elif defined(EMCC)
-	string version ("INScore JS v. ");
+	string version ("INScore JS v.");
 	fModel->getLogWindow()->write (version + INScore::versionStr());
 #else
-	cout << "INScore v. " << INScore::versionStr() << " compiled without OSC support" << endl;
+	cout << inscore << INScore::versionStr() << " compiled without OSC support" << endl;
 #endif
 	fModel->setRootPath ();
 
