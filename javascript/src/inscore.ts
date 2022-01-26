@@ -37,8 +37,21 @@ class INScore {
     start() : void	                { this.fInscoreGlue = this.fInscore.start (0, 0, 0); }
 	stop()  : void			        { this.fInscore.stop ( this.fInscoreGlue ); }
 
-	loadInscore	 (script: string, autoparse = false)	        { return this.fInscore.loadInscore (script, autoparse); }
-	loadInscore2 (script: string)				                { return this.fInscore.loadInscore2 (script); }
+	loadInscore	 (script: string, autoparse = false) { 
+        try {  return this.fInscore.loadInscore (script, autoparse); }
+        catch (err) {
+            console.log ("Failed to load script: might be a math exception");
+            return false;
+        }
+    }
+	loadInscore2 (script: string) { 
+        try { return this.fInscore.loadInscore2 (script); }
+        catch (err) {
+            console.log ("Failed to load script: might be a math exception", err);
+            return false;
+        }
+    }
+        
 
 	postMessage	(adr: string, msg: TMessage)	: void          { this.fInscore.postMessage (adr, msg); }
 	postMessageStr (adr: string, meth: string)	: void          { this.fInscore.postMessageStr (adr, meth); }

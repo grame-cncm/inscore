@@ -113,10 +113,8 @@ class INScoreBase {
 	}
 
 	loadInscore(content: string, v2: boolean) : void {
-		if (v2)
-			inscore.loadInscore2 (content);
-		else
-			inscore.loadInscore (content, true);
+		if (v2) inscore.loadInscore2 (content);
+		else 	inscore.loadInscore (content, true);
 	}
 
 
