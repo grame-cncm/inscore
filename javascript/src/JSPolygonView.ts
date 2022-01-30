@@ -8,7 +8,6 @@ class JSPolygonView extends JSSvgBase {
     constructor(parent: JSObjectView) {
 		super(parent);
         this.fPolygon = document.createElementNS('http://www.w3.org/2000/svg','polygon'); 
-    	this.getElement().className = "inscore-polygon";
     	this.fSVG.appendChild(this.fPolygon)
     }
     clone (parent: JSObjectView) : JSObjectView { return new JSPolygonView(parent); }
@@ -34,6 +33,7 @@ class JSPolygonView extends JSSvgBase {
             strPoints += x + ',' + y + ' ';
         }          
         this.fPolygon.setAttribute('points', strPoints);        
+		this.setID (obj);
         return true;
     }        
 }

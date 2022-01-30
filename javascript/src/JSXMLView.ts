@@ -8,7 +8,6 @@ class JSXMLView extends JSGMNView {
 
 	constructor(parent: JSObjectView, xmllib: libmusicxml, guido: GuidoEngine) {
 		super(parent, guido);
-		this.getElement().className = "inscore-gmn";
 		this.fXMLLib = xmllib;
 	}
 	clone (parent: JSObjectView) : JSObjectView { return new JSXMLView(parent, this.fXMLLib, this.guido()); }

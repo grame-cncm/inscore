@@ -8,7 +8,6 @@ class JSLineView extends JSSvgBase {
 	constructor(parent: JSObjectView) {
 		super(parent);
         this.fLine = document.createElementNS('http://www.w3.org/2000/svg','line'); 
-        this.getElement().className = "inscore-line";
     	this.fSVG.appendChild(this.fLine)
     }    
 	clone (parent: JSObjectView) : JSObjectView { return new JSLineView(parent); }
@@ -34,6 +33,7 @@ class JSLineView extends JSSvgBase {
 		this.fLine.setAttribute('x2', x2.toString());
 		this.fLine.setAttribute('y1', y1.toString());
 		this.fLine.setAttribute('y2', y2.toString());
+		this.setID (obj);
 		return true;
 	}
 

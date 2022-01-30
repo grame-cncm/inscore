@@ -5,7 +5,6 @@ class JSHtmlView extends JSAutoSize {
 
     constructor(parent: JSObjectView) {
 		super( document.createElement('div'), parent); 
-		this.getElement().className = "inscore-html";
     }
 	clone (parent: JSObjectView) : JSObjectView { 
 		let obj = new JSHtmlView(parent); 
@@ -14,6 +13,7 @@ class JSHtmlView extends JSAutoSize {
 	}
 
 	toString() : string					{ return "JSHtmlView"; }
+	setID (obj: INScoreObject)			{ this.getElement().id = obj.getID(); }
 
 	// CSS weight are numbers
 	static fontWeight2Num	( weight: string) : string {
@@ -77,6 +77,7 @@ class JSHtmlView extends JSAutoSize {
 	updateSpecial ( obj: INScoreObject)	: boolean {		
 		let infos = obj.getTextInfos();
 		this.setHtml (obj, this.getText(infos.text));
+		this.setID (obj);
 		return true;
 	}
 }

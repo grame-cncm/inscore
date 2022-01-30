@@ -6,13 +6,13 @@
 
 class JSAudioView extends TMedia { 
     fAudio: HTMLAudioElement;
-	fFile : string;
+	// fFile : string;
     
     constructor(parent: JSObjectView) {
 		let audio = document.createElement('audio');
         super(audio, parent); 
         this.fAudio = audio;
-		this.fFile = "";
+		// this.fFile = "";
     }     
 	clone (parent: JSObjectView) : JSObjectView { return new JSAudioView(parent); }
 	toString() : string			{ return "JSAudioView"; }

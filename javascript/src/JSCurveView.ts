@@ -9,7 +9,6 @@ class JSCurveView extends JSSvgBase {
     constructor(parent: JSObjectView) {
 		super(parent);
         this.fCurve = document.createElementNS('http://www.w3.org/2000/svg','path'); 
-        this.getElement().className = "inscore-curve";
     	this.fSVG.appendChild(this.fCurve)
     }
 	clone (parent: JSObjectView) : JSObjectView { return new JSCurveView(parent); }
@@ -29,6 +28,7 @@ class JSCurveView extends JSSvgBase {
 			let bb = this.fSVG.getBBox();
 -			this.updateObjectSize (obj, bb.width, bb.height);
 		}
+		this.setID (obj);
 		return true;
 	}
 

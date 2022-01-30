@@ -9,7 +9,6 @@ class JSEllipseView extends JSSvgBase {
     constructor(parent: JSObjectView) {
 		super(parent);
         this.fEllipse = document.createElementNS('http://www.w3.org/2000/svg','ellipse'); 
-        this.getElement().className = "inscore-ellipse";
         this.fSVG.appendChild(this.fEllipse);
     }    
     
@@ -18,6 +17,11 @@ class JSEllipseView extends JSSvgBase {
     getSVGTarget() : SVGShape  { return this.fEllipse; }
 	toString() : string		   { return "JSEllipseView"; }
     getScale(scale: number) : number {  return scale; }
+
+	updateSpecial ( obj: INScoreObject)	: boolean {		
+		this.setID (obj);
+		return true;
+	}
 
     updateSVGDimensions(w: number, h: number) : void {
         let rx = w / 2;

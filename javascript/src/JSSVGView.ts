@@ -5,7 +5,6 @@ class JSSVGView extends JSSvgBase {
 
 	constructor(parent: JSObjectView) {
 		super(parent);
-		this.getElement().className = "inscore-svg";
 	}
 	clone (parent: JSObjectView) : JSObjectView { return new JSSVGView(parent); }
 
@@ -25,6 +24,7 @@ class JSSVGView extends JSSvgBase {
 		this.fSVG.innerHTML = content;
 		let bb = this.fSVG.getBBox();
 		this.updateObjectSize (obj, bb.width + bb.x, bb.height + bb.y);
+		this.setID (obj);
 		obj.ready();
 		return true;
 	}

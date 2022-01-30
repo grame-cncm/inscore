@@ -35,6 +35,7 @@ abstract class TMedia extends JSAutoSize implements AudioObject {
 			obj.updateDuration (elt.duration * 1000);
 			obj.setAudioInOut (this.getNumInputs(), this.getNumChans());
 			obj.ready();
+			elt.id = obj.getID();
 			// the connect message is intended to sync the model with the existing connection
 			inscore.postMessageStrStr (obj.getOSCAddress(), "connect", AIOScanner.kOutputName);
 			inscore.postMessageStrStr (obj.getOSCAddress(), "event", "ready");

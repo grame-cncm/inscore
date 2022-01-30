@@ -39,7 +39,8 @@ abstract class JSSvgBase extends JSObjectView {
 	abstract updateSVGDimensions(w: number, h: number) : void;
 
 	// basic svg objects are scaled to parent dimension by design
-	parentScale() : number { return 1; }
+	parentScale() : number 		{ return 1; }
+	setID(obj: INScoreObject) 	{ this.fSVG.id = obj.getID(); }
 
 	updateDimensions(pos: OPosition) : void {
 		let w = Math.max(1, this.relative2SceneWidth(pos.width));

@@ -8,7 +8,6 @@ class JSArcView extends JSSvgBase
     constructor(parent: JSObjectView) {
         super(parent);
         this.fArc = document.createElementNS('http://www.w3.org/2000/svg','path');
-        this.getElement().className = "inscore-arc";
         this.fSVG.appendChild(this.fArc);
     }
     clone (parent: JSObjectView) : JSObjectView { return new JSArcView(parent); }
@@ -30,6 +29,7 @@ class JSArcView extends JSSvgBase
         let endPoint    = JSArcView.getPoint(r1, r2, endAngle);
         let path        = JSArcView.getPath(range, startPoint, endPoint, r1, r2, arc.closed);
         this.fArc.setAttribute('d', path);
+		this.setID (obj);
         return true;
     }
 

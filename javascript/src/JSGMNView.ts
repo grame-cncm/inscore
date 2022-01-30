@@ -28,7 +28,6 @@ class JSGMNView extends JSSvgBase {
 
 	constructor(parent: JSObjectView, guido: GuidoEngine) {
 		super(parent);
-		this.getElement().className = "inscore-gmn";
 		this.fGuido = guido;
 		this.fGR = null;
 		this.fAR = null;
@@ -87,6 +86,7 @@ class JSGMNView extends JSSvgBase {
 			ret = true;
 		}
 		else console.error (obj.getOSCAddress() + " failed to parse gmn code.")
+		this.setID (obj);
 		obj.ready();
 		return ret;
 	}

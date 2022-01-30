@@ -7,7 +7,6 @@ class JSRectView extends JSSvgBase {
     constructor(parent: JSObjectView) {
 		super(parent);
         this.fRect = document.createElementNS('http://www.w3.org/2000/svg','rect'); 
-        this.getElement().className = "inscore-rect";
     	this.fSVG.appendChild(this.fRect)
     }    
     clone (parent: JSObjectView) : JSObjectView { return new JSRectView(parent); }
@@ -25,5 +24,6 @@ class JSRectView extends JSSvgBase {
         let radius = obj.getRadius();
         this.fRect.setAttribute('rx', radius.x.toString());
         this.fRect.setAttribute('ry', radius.y.toString());
+		this.setID (obj);
     }
 }
