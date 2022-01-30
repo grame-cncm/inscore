@@ -70,6 +70,9 @@ class IMedia : public IRectShape, public TFile, public AudioNode
 		virtual void	mediaReady ();			// called from view when the media data are available
 
 	protected:
+#ifdef EMCC
+		virtual int 	getVDate() const;
+#endif
 		virtual bool 	checkEvent (EventsAble::eventype event);
 
 		bool  fPlaying;			// the audio playing state

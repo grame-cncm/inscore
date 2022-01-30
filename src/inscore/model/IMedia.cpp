@@ -24,6 +24,9 @@
 */
 
 #include <fstream>
+#ifdef EMCC
+#include <emscripten.h>
+#endif
 
 #include "IMedia.h"
 #include "IMessage.h"
@@ -60,8 +63,11 @@ IMedia::IMedia( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IMedia>::create(this, &IMedia::connect);
 	fMsgHandlerMap[kdisconnect_SetMethod]		= TMethodMsgHandler<IMedia>::create(this, &IMedia::disconnect);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<AudioNode, vector<string> (AudioNode::*)() const>::create(this, &IMedia::getconnect);
-	fGetMsgHandlerMap[kin_GetMethod]		= TGetParamMsgHandler<int>::create(fNumInputs);
-	fGetMsgHandlerMap[kout_GetMethod]		= TGetParamMsgHandler<int>::create(fNumOutputs);
+	fGetMsgHandlerMap[kin_GetMethod]			= TGetParamMsgHandler<int>::create(fNumInputs);
+	fGetMsgHandlerMap[kout_GetMethod]			= TGetParamMsgHandler<int>::create(fNumOutputs);
+	fGetMsgHandlerMap[kvdate_GetSetMethod]		= TGetParamMethodHandler<IMedia, int (IMedia::*)() const>::create(this, &IMedia::getVDate);
+#else
+	fGetMsgHandlerMap[kvdate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fCDate);
 #endif
 	fPlaying = false;
 	fVolume = 1.f;						// QMediaPlayer max value
@@ -84,6 +90,15 @@ void IMedia::cleanup ()
 	fRateModified = fDateModified = false;
 	IObject::cleanup();
 }
+
+//--------------------------------------------------------------------------
+// method introduced to fix end media event with javascript
+#ifdef EMCC
+int IMedia::getVDate () const
+{
+	return EM_ASM_INT( { return document.getElementById(Module.UTF8ToString($0)).currentTime * 1000; }, id().c_str() );
+}
+#endif
 
 //--------------------------------------------------------------------------
 // method introduced to fix end media event with javascript
