@@ -131,6 +131,7 @@ IObject::IObject(const std::string& name, IObject* parent) : IDate(this),
 	fGetMsgHandlerMap[krcount_GetMethod]	= TGetParamMethodHandler<IObject, int (IObject::*)() const>::create(this, &IObject::getRSize);
 	
 	setModified();
+	fID = getID();
 #ifdef EMCC
 	fAdapter = new IObjectAdapter (this);
 #endif
@@ -171,6 +172,13 @@ void IObject::_del(bool delsigcnx)
 	// cleanup signal connections
 	if (delsigcnx)
 		getParent()->signalsNode()->cleanupTarget(this);
+}
+
+//--------------------------------------------------------------------------
+string	IObject::getID () const
+{
+	string strip = "/ITL/";
+	return fParent ? getOSCAddress().substr (strip.size()) : "ITL";
 }
 
 //--------------------------------------------------------------------------

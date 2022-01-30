@@ -78,6 +78,7 @@ EMSCRIPTEN_BINDINGS(EngineAdapter) {
 		.function("getMasters",  	&IObjectAdapter::getMasters, allow_raw_pointers())
 		.function("getOSCAddress",  &IObjectAdapter::getOSCAddress, allow_raw_pointers())
 		.function("getName",  		&IObjectAdapter::getName, allow_raw_pointers())
+		.function("getID",  		&IObjectAdapter::getID, allow_raw_pointers())
 		.function("getUpdateInfos", &IObjectAdapter::getUpdateInfos, allow_raw_pointers())
 		.function("getTextInfos",   &IObjectAdapter::getTextInfos, allow_raw_pointers())
 		.function("getLineInfos",   &IObjectAdapter::getLineInfos, allow_raw_pointers())

@@ -102,7 +102,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		typedef std::vector<nodePtr>	subnodes;	///< the node sub elements container type
 
 	private:
-		std::string		fName;			///< the object name, used as identifier
+		std::string		fName;			///< the object name
+		std::string		fID;			///< the object javascript id
 		subnodes		fSubNodes;		///< child objects list
 		std::string		fClassNames;	///< the object CSS classes (used by the web version, usunsed by the native version)
 		bool			fClassChanged = false;
@@ -140,6 +141,9 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief propagates modification state up to parents
 		virtual void	propagateSubModified (bool toparents = true);
+
+		/// \brief build the objectjavascript id
+		virtual std::string	getID () const;
 
 
 	protected:
@@ -190,6 +194,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 		const	subnodes& elements() const			{ return fSubNodes; }
 		/// \brief returns the object name
 		const	std::string& name() const			{ return fName; }
+		/// \brief returns a unique id - intended to javasccript dom id
+		const	std::string& id() const				{ return fID; }
 		/// \brief sets the object name
 		virtual void setName(const std::string& name)	{ fName = name; }
 		/// \brief returns the \e deleted state object

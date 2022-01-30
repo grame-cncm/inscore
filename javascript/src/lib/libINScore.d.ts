@@ -213,6 +213,7 @@ interface INScoreObject {
     getMasters():      MastersVector;
     getOSCAddress():   string;
     getName():   	   string;
+    getID():   	       string;
     getUpdateInfos(masterId: number):  OUpdateInfos;
     getTextInfos():    OTextInfo;
 	getLineInfos():    OLineInfo;

@@ -282,6 +282,7 @@ class inscore_export IObjectAdapter
 
 		std::string	getOSCAddress() const		{ return fObject->getOSCAddress(); }
 		std::string	getName() const				{ return fObject->name(); }
+		std::string	getID() const				{ return fObject->id(); }
 		void	updateWidth(float w)			{ _updateWidth (fObject, w); }
 		void	updateHeight(float h)			{ _updateHeight(fObject, h); }
 		void	updateViewBoundingRect(float x, float y, float w, float h);
