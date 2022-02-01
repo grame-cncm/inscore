@@ -30,6 +30,7 @@ class JSSceneView extends JSObjectView {
 		div.style.filter = `blur(0px)`;
 		window.addEventListener ("keydown", (event) => { obj.keyEvent ('keyDown', event.key); }, {capture: false});
 		window.addEventListener ("keyup",   (event) => { obj.keyEvent ('keyUp', event.key); }, {capture: false});
+		screen.orientation.addEventListener('change', function(e) { inscore.postMessageStr ("/ITL/" + id, "refresh"); });
 		MidiSetup.addListener (obj);
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
