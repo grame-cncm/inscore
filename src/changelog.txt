@@ -18,6 +18,9 @@ Version 1.32
 	- new 'init' message for audioInput objects, must be called before using the audio input
 	- add 'autoOff' message for faust objects to automatically set ui buttons to 0 after a 1 value.
 	- fix media end event.
+	- add event handler for screen orientation change (refresh)
+	- prevent default keydown event on window (avoid scrolling)
+
 
 ----------------------------------------------------
 Version 1.31
