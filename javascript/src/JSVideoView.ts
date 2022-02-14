@@ -7,13 +7,12 @@
 
 class JSVideoView extends TMedia {
     fVideo: HTMLVideoElement;
-	fFile : string;
     
     constructor(parent: JSObjectView) {
 		let video = document.createElement('video');
         super(video, parent); 
         this.fVideo = video;
-		this.fFile = "";
+		this.fVideo.preload = "auto";
     }     
 	clone (parent: JSObjectView) : JSObjectView { return new JSVideoView(parent); }
 	toString() : string			{ return "JSVideoView"; }
