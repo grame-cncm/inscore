@@ -40,15 +40,17 @@ class INScore {
 	loadInscore	 (script: string, autoparse = false) { 
         try {  return this.fInscore.loadInscore (script, autoparse); }
         catch (err) {
-            console.log ("Failed to load script: might be a math exception");
+            console.log ("Failed to load script:");
+            console.log (script);
             return false;
         }
     }
 	loadInscore2 (script: string) { 
         try { return this.fInscore.loadInscore2 (script); }
         catch (err) {
-            console.log ("Failed to load script: might be a math exception", err);
-            return false;
+            console.log ("Failed to load script:");
+            console.log (script);
+           return false;
         }
     }
         
