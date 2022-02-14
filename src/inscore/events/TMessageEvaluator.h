@@ -102,6 +102,8 @@ class TMessageEvaluator
 
 		/// \brief check if a variable is a position variable
 		bool		posVariable (const std::string& param, const char* var) const;
+		/// \brief check if a variable is a argument variable ($1...$n)
+		bool		argVariable (const char* var) const;
 		/// \brief check if a variable is a gesture variable
 		bool		gestVariable (const std::string& param, const char* var) const;
 		/// \brief extract a variable from a string. The string should start with a '$'
@@ -140,7 +142,7 @@ class TMessageEvaluator
 			\param env the context of the event
 			\return a list or arguments to be used as parameters in place of the variable
 		*/
-		IMessage::argslist evalVariable (const std::string& var, const EventContext& env) const;
+		IMessage::argslist evalVariable (const std::string& var, const EventContext& env, const IMessage::argslist& args) const;
 
 		/**
 		*	\brief evaluates a variable in user defined context
@@ -149,7 +151,7 @@ class TMessageEvaluator
 			\param args the arguments of the event
 			\return a list or arguments to be used as parameters in place of the variable
 		*/
-		IMessage::argslist evalVariable (const std::string& var, const EventContext& env, const IMessage::argslist& args) const;
+		IMessage::argslist evalArgsVariable (const std::string& var, const EventContext& env, const IMessage::argslist& args) const;
 
 		/**
 		*	\brief evaluates a string that may contain a variable
@@ -157,7 +159,7 @@ class TMessageEvaluator
 			\param env the context of the event
 			\return a list or arguments to be used as parameters in place of the string
 		*/
-		IMessage::argslist evalVariableString (const std::string& str, const EventContext& env) const;
+		IMessage::argslist evalVariableString (const std::string& str, const EventContext& env, const IMessage::argslist& args) const;
 
 		/**
 		*	\brief convert a location into a date

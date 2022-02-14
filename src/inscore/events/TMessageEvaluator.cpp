@@ -28,6 +28,7 @@
 #endif
 
 #include <stdlib.h>
+#include <cstdlib>
 #include <sstream>
 
 #include "TMessageEvaluator.h"
@@ -325,7 +326,7 @@ string TMessageEvaluator::getVar (const char* ptr) const
 	if (datef == "$date%f") return datef;
 	string str; bool scaling = false; bool inMsg = false;
 	while (*ptr) {
-		if ((*ptr == '$') || ((*ptr >= 'a') && (*ptr <= 'z')) || (*ptr == '%'))
+		if ((*ptr == '$') || ((*ptr >= 'a') && (*ptr <= 'z')) || ((*ptr >= '1') && (*ptr <= '9')) || (*ptr == '%'))
 			str += *ptr;
 		else if (!scaling && *ptr == '[') {
 			scaling = true;
@@ -350,7 +351,7 @@ string TMessageEvaluator::getVar (const char* ptr) const
 }
 
 //----------------------------------------------------------------------
-IMessage::argslist TMessageEvaluator::evalVariableString (const string& var, const EventContext& env) const
+IMessage::argslist TMessageEvaluator::evalVariableString (const string& var, const EventContext& env, const IMessage::argslist& argslist) const
 {
 	IMessage::argslist outval;
 
@@ -360,7 +361,7 @@ IMessage::argslist TMessageEvaluator::evalVariableString (const string& var, con
 		n = var.find('$', n);
 		if (n != string::npos) {							// there is a variable inside the parameter
 			string s = getVar(&var.c_str()[n]);				// get the variable
-			IMessage::argslist args = evalVariable(s, env);	// evaluate this variable
+			IMessage::argslist args = evalVariable(s, env, argslist);	// evaluate this variable
 			stringstream stream;
 			string sep;
 			for (unsigned int i=0; i < args.size(); i++) {	// and convert the results into a string
@@ -412,9 +413,10 @@ static int var2index (const char* var)
 }
 
 //----------------------------------------------------------------------
-IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env, const IMessage::argslist& args) const
+IMessage::argslist TMessageEvaluator::evalArgsVariable (const string& var, const EventContext& env, const IMessage::argslist& args) const
 {
 	IMessage::argslist outval;
+	if (args.empty()) return evalVariable (var, env, args);
 	
 	// check first for indexed variables ($1, $2, etc...)
 	size_t n = args.size();
@@ -423,11 +425,22 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 		outval.push_back (args[index-1]);
 		return outval;
 	}
-	return evalVariable (var, env);
+	return evalVariable (var, env, args);
 }
 
 //----------------------------------------------------------------------
-IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env) const
+bool TMessageEvaluator::argVariable (const char* var) const
+{
+	char c = *var++;
+	while (c) {
+		if ((c < '0') || (c > '9')) return false;
+		c = *var++;
+	}
+	return true;
+}
+
+//----------------------------------------------------------------------
+IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const EventContext& env, const IMessage::argslist& args) const
 {
 	IMessage::argslist outval;
 	if (var.empty()) return outval;
@@ -464,10 +477,16 @@ IMessage::argslist TMessageEvaluator::evalVariable (const string& var, const Eve
 			if (n == string::npos) msg += ';';
 			outval.push_back ( evalMessage (msg, env) );
 		}
+		else if (argVariable (&var[1])) {
+			int i = std::atoi (&var[1]);
+			if ((i > 0) && (i <= args.size()))
+				outval.push_back ( args[i-1] );
+			else outval.push_back ( new IMsgParam<string>(var) );
+		}
 		else outval.push_back ( new IMsgParam<string>(var) );	// default for unknown variable: push the variable name
 		return outval;
 	}
-	return evalVariableString (var, env);		// not a direct variable, try to decode variables inside strings (for javascript run method)
+	return evalVariableString (var, env, args);		// not a direct variable, try to decode variables inside strings (for javascript run method)
 }
 
 //----------------------------------------------------------------------
@@ -499,7 +518,8 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 	outmsg->setDelay ( msg->delay() );
 
 	// evaluate the message string
-	IMessage::argslist methodlist = evalVariable(msg->message(), env);
+	IMessage::argslist args; // an empty args list
+	IMessage::argslist methodlist = evalVariable(msg->message(), env, args);
 	if (methodlist.size()) {
 		string method = methodlist[0]->value<string>("");
 		if (method.size()) outmsg->setMessage (method);
@@ -512,7 +532,7 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env)
 	for (int i=0; i < msg->size(); i++) {
 		string str;
 		if (msg->param( i, str)) {
-			IMessage::argslist values = evalVariable(str, env);
+			IMessage::argslist values = evalVariable(str, env, args);
 			if (!values.size()) return 0;		// variables are expected to give at least one value
 			outmsg->add( values );
 		}
@@ -532,7 +552,7 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env,
 	outmsg->setDelay ( msg->delay() );
 
 	// evaluate the message string
-	IMessage::argslist methodlist = evalVariable(msg->message(), env, args);
+	IMessage::argslist methodlist = evalArgsVariable(msg->message(), env, args);
 	if (methodlist.size()) {
 		string method = methodlist[0]->value<string>("");
 		if (method.size()) outmsg->setMessage (method);
@@ -545,7 +565,7 @@ SIMessage TMessageEvaluator::eval (const IMessage *msg, const EventContext& env,
 	for (int i=0; i < msg->size(); i++) {
 		string str;
 		if (msg->param( i, str)) {
-			IMessage::argslist values = evalVariable(str, env, args);
+			IMessage::argslist values = evalArgsVariable(str, env, args);
 			if (!values.size()) return 0;		// variables are expected to give at least one value
 			outmsg->add( values );
 		}
