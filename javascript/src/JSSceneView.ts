@@ -28,9 +28,9 @@ class JSSceneView extends JSObjectView {
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)
 		div.style.filter = `blur(0px)`;
-		window.addEventListener ("keydown", (event) => { event.preventDefault(); obj.keyEvent ('keyDown', event.key); }, {capture: false});
-		window.addEventListener ("keyup",   (event) => { event.preventDefault(); obj.keyEvent ('keyUp', event.key); }, {capture: false});
-		screen.orientation.addEventListener('change', function(e) { inscore.postMessageStr ("/ITL/" + id, "refresh"); });
+		window.addEventListener ("keydown", (event) => { if (event.key === ' ') event.preventDefault(); obj.keyEvent ('keyDown', event.key); }, {capture: false});
+		if (screen.orientation)
+			screen.orientation.addEventListener('change', function(e) { inscore.postMessageStr ("/ITL/" + id, "refresh"); });
 		MidiSetup.addListener (obj);
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
