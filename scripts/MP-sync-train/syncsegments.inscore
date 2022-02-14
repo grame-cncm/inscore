@@ -9,5 +9,4 @@
 /ITL/scene/tgv scale 0.60 ;
 /ITL/scene/tgv z -1.0 ;
 /ITL/scene/tgv mapf "tgv.map" ;
-/ITL/scene/tgv date -16 4 ;
 /ITL/scene/sync tgv myGuidoFile hv ;
