@@ -226,6 +226,7 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fAltGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::mstime);
 	fAltGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
 
+	fAltGetMsgHandlerMap[kIP_GetMethod]				= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::getIP);
 	fAltGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
 	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
