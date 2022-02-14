@@ -105,7 +105,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
                 if (data.autoOff && (v.type == 0) && v.value) {  // schedule the button off value
                     let msg = inscore.newMessage();
                     inscore.msgAddF (msg, 0);
-                    inscore.delayMessage (obj.getOSCAddress() + v.address, msg);
+                    setTimeout(() => { inscore.postMessage (obj.getOSCAddress() + v.address, msg);}, 50);
                 }
             }
             if (this.fVoices) {
@@ -200,7 +200,7 @@ class JSFaustView extends JSSvgBase implements AudioObject {
             return JSFaustView.kPending;
         }
         JSFaustView.fCompilerLock = true;
-        const name = obj.getOSCAddress();
+        const name = obj.getID();
         let done = await this.makeFactory (name, code, voices);
         if (!done) return JSFaustView.kFailed;
         let result = await this.makeAudioNode (obj, name, voices);
