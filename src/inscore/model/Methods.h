@@ -61,6 +61,8 @@ extern const char* kcount_GetMethod;
 extern const char* kdalpha_SetMethod;
 extern const char* kdangle_SetMethod;
 extern const char* kdate_GetSetMethod;
+extern const char* kdatef_GetMethod;
+extern const char* kdatea_GetMethod;
 extern const char* kdblue_SetMethod;
 extern const char* kdbrightness_SetMethod;
 extern const char* kdcolor_SetMethod;

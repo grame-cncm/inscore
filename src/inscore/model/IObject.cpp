@@ -363,7 +363,8 @@ void IObject::setdyMsgHandler (Master* m)
 //--------------------------------------------------------------------------
 void IObject::timeAble()
 {
-	fAltGetMsgHandlerMap["date%f"]				= TGetParamMethodHandler<IObject, float (IObject::*)() const>::create(this, &IObject::getDatef);
+	fAltGetMsgHandlerMap[kdatef_GetMethod]		= TGetParamMethodHandler<IObject, float (IObject::*)() const>::create(this, &IObject::getDatef);
+	fAltGetMsgHandlerMap[kdatea_GetMethod]		= TGetParamMethodHandler<IObject, float (IObject::*)() const>::create(this, &IObject::getDatea);
 	fGetMsgHandlerMap[kdate_GetSetMethod]		= TGetParamMsgHandler<rational>::create(fDate);
 	fGetMsgHandlerMap[kduration_GetSetMethod]	= TGetParamMsgHandler<rational>::create(fDuration);
 	fGetMsgHandlerMap[ktempo_GetSetMethod]		= TGetParamMsgHandler<float>::create(fTempo);

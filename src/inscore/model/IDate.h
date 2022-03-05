@@ -63,8 +63,10 @@ class IDate : public TimeEventAble
 	public:	
 		/// \brief returns the object date
 		virtual libmapping::rational getDate () const;
-		/// \brief returns the object date
+		/// \brief returns the object date as a floating point value
 		virtual float 				getDatef () const			{ return float(fDate); }
+		/// \brief returns the object absolute date in seconds  (assuming a tempo is 60 bpm)
+		virtual float 				getDatea () const			{ return float(fDate) * 4; }
 		/// \brief returns the object duration
 		virtual libmapping::rational getDuration () const		{ return fDuration; }
 

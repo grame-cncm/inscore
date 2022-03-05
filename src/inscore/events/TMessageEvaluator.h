@@ -116,7 +116,7 @@ class TMessageEvaluator
 			\param floatval on output, a boolean to indicate float values requests
 			\param relative on output, a boolean to request a date relative to the object current time position
 		*/
-		void		parseDateVariable (const std::string& var, libmapping::rational& quant, bool& floatval) const;
+		void		parseDateVariable (const std::string& var, libmapping::rational& quant, bool& floatval, bool& abstime) const;
 
 
 		/**
@@ -252,7 +252,7 @@ class TMessageEvaluator
 	/// \brief gives the quantification of a date variable or an empty string when no quantification is specified
 	static std::string	parseQuant (const std::string& var);
 	/// \brief check if a date variable requests a float value 
-	static bool			floatRequested (const std::string& var);
+	static bool			floatRequested (const std::string& var, bool& abstime);
 };
 
 } // end namespoace

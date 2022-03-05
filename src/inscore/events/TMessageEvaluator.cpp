@@ -192,10 +192,13 @@ string TMessageEvaluator::parseQuant (const string& var)
 }
 
 //----------------------------------------------------------------------
-bool TMessageEvaluator::floatRequested (const string& var)
+bool TMessageEvaluator::floatRequested (const string& var, bool& abstime)
 {
-	if (var.size() > 2)
-		return var.substr (var.size()-2, 2) == "%f";
+	if (var.size() > 2) {
+		const string sub = var.substr (var.size()-2, 2);
+		abstime = (sub == "%a");
+		return abstime ? true : (sub == "%f");
+	}
 	return false;
 }
 
@@ -219,7 +222,7 @@ bool TMessageEvaluator::messageVariable (const string& var)
 }
 
 //----------------------------------------------------------------------
-void TMessageEvaluator::parseDateVariable (const std::string& var, libmapping::rational& quant, bool& floatval) const
+void TMessageEvaluator::parseDateVariable (const std::string& var, libmapping::rational& quant, bool& floatval, bool& abstime) const
 {
 	string quantstr = parseQuant(var);
 	int num, denum;
@@ -228,16 +231,16 @@ void TMessageEvaluator::parseDateVariable (const std::string& var, libmapping::r
 		if (n != 2) quant = rational (0,1);
 		else quant = rational (num, denum);
 	}
-	floatval = floatRequested(var);
+	floatval = floatRequested(var, abstime);
 }
 
 //----------------------------------------------------------------------
 IMessage::argslist TMessageEvaluator::evalDate (const string& var, const EventContext& env, bool relative) const
 {
 	IMessage::argslist outval;
-	rational quant; bool floatrequired;
+	rational quant; bool floatrequired; bool absolutetime;
 
-	parseDateVariable (var, quant, floatrequired);
+	parseDateVariable (var, quant, floatrequired, absolutetime);
 	rational date = env.date;
 	if (env.object && !relative) date += env.object->getDate();
 	if (quant.getNumerator() && quant.getDenominator()) {			// date quantification required
@@ -245,7 +248,7 @@ IMessage::argslist TMessageEvaluator::evalDate (const string& var, const EventCo
 		date = quant * long(date);
 	}
 	if (floatrequired)											// float value required
-		outval.push_back ( new IMsgParam<float>(float(date)));	// push the float date value
+		outval.push_back ( new IMsgParam<float>(float(date) * (absolutetime ? 4 : 1)));	// push the float date value
 	else {
 		outval.push_back ( new IMsgParam<int>(date.getNumerator()));
 		outval.push_back ( new IMsgParam<int>(date.getDenominator()));

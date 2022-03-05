@@ -13,6 +13,12 @@ It has been supported by the ANR
 
 
 ----------------------------------------------------
+Version 1.33
+- add 'date%a' query to get the absolute date in seconds (assumes the tempo is 60 bpm)
+- web version: 
+	- fix concurrent 'faustw' objects creation
+
+----------------------------------------------------
 Version 1.32
 - add 'IP' query at application level (/ITL)
 - add 'text' query to txt objects
@@ -24,6 +30,7 @@ Version 1.32
 	- fix media end event.
 	- add event handler for screen orientation change (refresh)
 	- prevent default keydown event on window (avoid scrolling)
+	- fix concurrent 'faustw' objects creation
 
 
 ----------------------------------------------------
