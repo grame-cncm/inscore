@@ -190,8 +190,8 @@ package:
 # the certificate below must be installed in the keychain with the associated private key
 CERT='Apple Distribution: GRAME (XN9RP996NW)'
 sign:
-	codesign -s $(CERT) $(PKGDIR)/IBundle
-	codesign -s $(CERT) --deep $(PKGDIR)/INScoreViewer.app
+	-codesign -s $(CERT) $(PKGDIR)/IBundle
+	-codesign -s $(CERT) --deep $(PKGDIR)/INScoreViewer.app
 
 
 
