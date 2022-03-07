@@ -1,8 +1,8 @@
 {
   "name": "@grame/inscorejs",
   "author": "GRAME-CNCM",
-  "version": "1.1.1",
-  "inscore-version": "1.3.2",
+  "version": "1.2.0",
+  "inscore-version": "1.3.3",
   "description": "The INScore engine, that provides augmented, dynamic, interactive musical scores.",
   "main": "INScoreJS.js",
   "directories": {
