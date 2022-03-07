@@ -1,0 +1,142 @@
+
+/ITL/scene/* del;
+
+tempo = 60;
+grey = 200 200 200 100;
+
+duration = 1200 / 4;		# 20 mn x 60 secs
+mark2  = 300 / 4;		# 5 mn x 60 secs
+mark3  = 600 / 4;		# 10 mn x 60 secs
+mark4  = 900 / 4;		# 15 mn x 60 secs
+mark5  = 1080 / 4;		# 18 mn x 60 secs
+markshape = line wa 0.4 90;
+#markshape = rect 0.1 0.4;
+
+
+#######################################
+# javascript section to display the current time
+<? javascript
+	var date = 0; // current date in seconds
+	function dispdate (time) {
+		var msg = "/ITL/scene/text set txt ";
+		var secs = Math.floor(time*4);
+		var min = Math.floor(secs/60);
+		secs = secs % 60;
+		msg = msg + "'" + min + ":";
+		if (secs < 10) msg = msg + "0";
+		return msg + secs + "'" + ";";
+	}
+	function reset () {
+		date = 0;
+	}
+?>
+
+#######################################
+# sound files
+/ITL/scene/sounds set layer;
+/ITL/scene/sounds/bell1 set audio bell1n.wav;
+/ITL/scene/sounds/bell2 set audio bell2n.wav;
+#/ITL/scene/sounds/bell3 set audio bell3.wav;
+#/ITL/scene/sounds/bell4 set audio bell4.wav;
+/ITL/scene/sounds/applause 	set audio applause.wav;
+/ITL/scene/sounds/next 		set audio next-speaker1.wav;
+/ITL/scene/sounds show 0;
+
+#######################################
+# time line and scene size
+/ITL/scene width 1.0;
+/ITL/scene height 0.3;
+/ITL/scene/back set rect 4 0.2;
+/ITL/scene/back duration $duration;	
+/ITL/scene/back color 240 240 240;	
+/ITL/scene/time set line wa 4 0;
+/ITL/scene/time duration $duration + 0.001;	
+/ITL/scene/time penWidth 2;
+
+#######################################
+# time marks
+h = 0.5;
+/ITL/scene/mark1 set $markshape;
+/ITL/scene/mark2 set $markshape;
+/ITL/scene/mark3 set $markshape;
+/ITL/scene/mark4 set $markshape;
+/ITL/scene/mark5 set $markshape;
+/ITL/scene/mark6 set $markshape;
+/ITL/scene/mark1 date 0;
+/ITL/scene/mark2 date $mark2;
+/ITL/scene/mark3 date $mark3;
+/ITL/scene/mark4 date $mark4;
+/ITL/scene/mark5 date $mark5;
+/ITL/scene/mark6 date $duration;
+
+#######################################
+# time text
+/ITL/scene/text set txt "0";
+/ITL/scene/text fontSize 92;
+/ITL/scene/text y -0.7;
+
+w = 0.1;
+/ITL/scene/cursor set ellipse $w $w;
+/ITL/scene/cursor color 250 0 0 ;
+
+/ITL/scene/sync mark* time;
+/ITL/scene/sync cursor time;
+
+/ITL/scene/back watch mouseDown ( /ITL/scene/cursor date '$date');
+
+
+/ITL/scene/cursor watch ddate ( /ITL/scene/javascript run "dispdate ( $date%f )" );
+/ITL/scene/cursor watch date ( /ITL/scene/javascript run "dispdate ( $date%f )" );
+/ITL/scene/cursor watch timeEnter $duration 555555  ( /ITL/scene/cursor date 0 );
+/ITL/scene/cursor watch timeEnter $mark2 $mark2 + 1 ( /ITL/scene/sounds/bell1 play 1 );
+/ITL/scene/cursor watch timeEnter $mark3 $mark3 + 1 ( /ITL/scene/sounds/bell2 play 1 );
+/ITL/scene/cursor watch timeEnter $mark4 $mark4 + 1 ( /ITL/scene/sounds/applause play 1 );
+/ITL/scene/cursor watch timeEnter $mark5 $mark5 + 1 ( /ITL/scene/sounds/next play 1 );
+
+#---------------------------------------------
+# a simple controls (play / stop) and Next 
+#---------------------------------------------
+/ITL/scene/control set txt "Start";
+/ITL/scene/control y 0.7;
+
+/ITL/scene/control fontSize 60;
+/ITL/scene/control watch mouseEnter (/ITL/scene/$self red 240);
+/ITL/scene/control watch mouseLeave (/ITL/scene/$self red 0);
+
+/ITL/scene/control watch mouseDown (
+	/ITL/scene/control push,
+	/ITL/scene/cursor tempo $tempo,
+#	/ITL/scene/sounds/bell1 play 1,
+	/ITL/scene/control set txt "Pause",
+	/ITL/scene/control watch mouseDown (
+		/ITL/scene/cursor tempo 0,
+		/ITL/scene/control set txt "Continue",
+		/ITL/scene/control pop
+	)
+);
+
+/ITL/scene/control watch doubleClick (
+	/ITL/scene/cursor date 0,
+	/ITL/scene/cursor tempo $tempo,
+	/ITL/scene/sounds/bell1 play 1,
+	/ITL/scene/control set txt "Pause"
+);
+
+#---------------------------------------------
+# sound sample 
+#---------------------------------------------
+/ITL/scene/sound set img sound.png;
+/ITL/scene/sound x -2.7;
+/ITL/scene/sound scale 0.8;
+/ITL/scene/sound watch mouseDown ( /ITL/scene/sounds/bell1 play 1 );
+/ITL/scene/sound watch mouseEnter ( /ITL/scene/sound penWidth 1 );
+/ITL/scene/sound watch mouseLeave ( /ITL/scene/sound penWidth 0 );
+
+
+__END__
+
+/ITL/scene/cursor tempo 5000;
+
+/ITL/log show 1;
+/ITL/log level 2;
+
