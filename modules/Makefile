@@ -8,6 +8,10 @@ all:
 	$(MAKE) -C guidolib/build CMAKEOPT="-DMIN=on -DMAKEFRAMEWORK=off" GENERATOR=""
 	$(MAKE) -C libmusicxml/build minimal
 
+guido:
+	git submodule update --init --recursive
+	$(MAKE) -C guidolib/build CMAKEOPT="-DMIN=on -DMAKEFRAMEWORK=off" GENERATOR=""
+
 install:
 	$(MAKE) -C guidolib/build install
 	$(MAKE) -C libmusicxml/build install
