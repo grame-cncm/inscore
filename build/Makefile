@@ -157,6 +157,11 @@ modules:
 	cp -af ../modules/guidolib/build/lib/*GUIDOEngine[._][^f]* lib
 	cp -af ../modules/libmusicxml/build/lib/*musicxml2[._][^f]* lib
 
+guido:
+	$(MAKE) -C ../modules guido
+	[ -d lib ] || mkdir lib
+	cp -af ../modules/guidolib/build/lib/*GUIDOEngine[._][^f]* lib
+
 install_modules:
 	$(MAKE) -C ../modules install
 

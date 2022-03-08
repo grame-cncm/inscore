@@ -33,7 +33,7 @@ jobs:
         uses: lukka/get-cmake@latest
 
       - name: Build submodules
-        run: make -C modules/guidolib/build CMAKEOPT="-DMIN=on -DMAKEFRAMEWORK=off" GENERATOR=""
+        run: make -C build guido
 
       - name: Build inscore
         run: make -C build inscore
