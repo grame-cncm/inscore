@@ -294,7 +294,8 @@ void IScene::setState (state s)
 bool IScene::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	string ev(t);
-	if ( (ev == kNewElementEvent) || (ev == kEndPaintEvent)) return true;
+	if ( (ev == kNewElementEvent) || (ev == kEndPaintEvent)
+		|| (ev == kPortrait) || (ev == kLandscape)) return true;
 	return IObject::acceptSimpleEvent(t);
 }
 

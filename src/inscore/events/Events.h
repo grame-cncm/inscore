@@ -69,7 +69,11 @@ extern const char* kPageCountEvent;
 extern const char* kEndEvent;
 extern const char* kReadyEvent;
 
-} // end namespoace
+// screen events (scene)
+extern const char* kPortrait;
+extern const char* kLandscape;
+
+} // end namespace
 
 #endif
 

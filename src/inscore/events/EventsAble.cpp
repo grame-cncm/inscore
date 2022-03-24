@@ -91,6 +91,10 @@ const char* kMidiVel				= "vel";
 const char* kMidiProg				= "prog";
 const char* kMidiCtrl				= "ctrl";
 
+// screen orientation
+const char* kPortrait				= "portrait";
+const char* kLandscape				= "landscape";
+
 
 map<size_t, std::string>	EventsAble::fHashCodes;
 std::hash<string>			EventsAble::fHash;

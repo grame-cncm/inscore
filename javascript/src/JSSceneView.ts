@@ -30,7 +30,9 @@ class JSSceneView extends JSObjectView {
 		div.style.filter = `blur(0px)`;
 		window.addEventListener ("keydown", (event) => { if (event.key === ' ') event.preventDefault(); obj.keyEvent ('keyDown', event.key); }, {capture: false});
 		if (screen.orientation)
-			screen.orientation.addEventListener('change', function(e) { inscore.postMessageStr ("/ITL/" + id, "refresh"); });
+			screen.orientation.addEventListener('change', function(e) { 
+				inscore.postMessageStrStr ("/ITL/" + id, "event", (screen.orientation.type.startsWith("portrait") ? "portrait" : "landscape"));
+				inscore.postMessageStr ("/ITL/" + id, "refresh"); });
 		MidiSetup.addListener (obj);
 	}
 	clone (parent: JSObjectView) : JSObjectView { return null; }
