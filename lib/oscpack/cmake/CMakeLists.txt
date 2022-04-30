@@ -1,6 +1,6 @@
 # CMAKE oscpack
 project(oscpack)
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.0)
 
 #######################################
 # cmake build types configuration
