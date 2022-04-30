@@ -23,7 +23,7 @@
 
 */
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QScreen>
 
 #include "Modules.h"
