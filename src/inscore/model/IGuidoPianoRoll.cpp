@@ -77,12 +77,10 @@ IGuidoPianoRoll::IGuidoPianoRoll( const std::string& name, IObject * parent )
 	init.denom = 0;
 	fLimits.startDate = init;
 	fLimits.endDate = init;
-	setWidth(1);
-	setHeight(0.5);
+	setWidth(1, false, false);
+	setHeight(0.5, false, false);
 	setColor(IColor(0,0,0,255));
 
-	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
-	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
 	fMsgHandlerMap[kcliptime_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipTime);
 	fMsgHandlerMap[kclippitch_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipPitch);
 	fMsgHandlerMap[kclippitch_GetSetMethod]	= TMethodMsgHandler<IGuidoPianoRoll>::create(this, &IGuidoPianoRoll::setClipPitch);
@@ -105,6 +103,11 @@ IGuidoPianoRoll::~IGuidoPianoRoll()
 {
     GuidoDestroyPianoRoll(fPianoRoll);
 	GuidoFreeAR(fArHandler);
+}
+
+//--------------------------------------------------------------------------
+void IGuidoPianoRoll::positionAble () {
+	IObject::positionAble();
 }
 
 //--------------------------------------------------------------------------

@@ -157,6 +157,7 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 
 		/// \brief updates the Piano Roll representation according to the AR Representation
 		virtual void updatePianoRoll();
+		virtual void positionAble ();
 
 		/*!
 		 * \brief updatePianoRoll Update or create a piano roll from a midi file
@@ -167,8 +168,8 @@ class IGuidoPianoRoll : public virtual IGuidoCode
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 
-		virtual void	setWidth(float width)	{ IObject::setWidth(width); }
-		virtual void	setHeight(float height)	{ IObject::setHeight(height); }
+		virtual void	setWidth(float width, bool scenewidth, bool sceneheight)	{ IObject::setWidth(width, scenewidth, sceneheight); }
+		virtual void	setHeight(float height, bool scenewidth, bool sceneheight)	{ IObject::setHeight(height, scenewidth, sceneheight); }
 	
 		ARHandler fArHandler;
 		PianoRoll * fPianoRoll;
