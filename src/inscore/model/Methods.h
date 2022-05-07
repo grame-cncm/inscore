@@ -250,6 +250,8 @@ extern const char* kkey_GetSetMethod;
 extern const char* kinit_SetMethod;
 extern const char* kverbose_GetSetMethod;
 
+extern const char* ksceneHeight_GetMethod;
+extern const char* ksceneWidth_GetMethod;
 
 } //namespace
 

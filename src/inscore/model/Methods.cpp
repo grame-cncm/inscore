@@ -224,6 +224,9 @@ const char* kyborder_GetSetMethod	= "yborder";		// Get Set
 const char* kyorigin_GetSetMethod	= "yorigin";		// Get Set
 const char* kz_GetSetMethod			= "z";				// Get Set
 
+const char* ksceneHeight_GetMethod   = "sheight";		// Get Set
+const char* ksceneWidth_GetMethod    = "swidth";		// Get Set
+
 // gesture follower methods
 const char* klearn_SetMethod				= "learn";					// Set
 const char* kfollow_SetMethod				= "follow";					// Set
