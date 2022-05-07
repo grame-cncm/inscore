@@ -44,22 +44,6 @@ namespace inscore
 */
 
 //----------------------------------------------------------------------
-//class TAudioReader : public QAudioProbe
-//{
-//	Q_OBJECT
-//
-//	QAudioProbe * fAudioProbe;
-//	public:
-//				 TAudioReader();
-//		virtual ~TAudioReader() { delete fAudioProbe; }
-//
-//		void	setSource (QMediaPlayer* player);
-//
-//	protected slots:
-//		void processBuffer (const QAudioBuffer &buffer);
-//};
-
-//----------------------------------------------------------------------
 class TAudioReader
 {
 	QByteArray fData;
@@ -95,7 +79,6 @@ class VAudioView: public VMediaPlayer, public VMappedShapeView
 		virtual void initialize (IObject* obj)					{ initialize(static_cast<IAudio*>(obj)); }
 		virtual void updateView ( IAudio * video );
 		virtual void updateLocalMapping (IShapeMap* shapeMap)	{ VMappedShapeView::updateGraphic2GraphicMapping(shapeMap); }
-//		virtual QRectF getBoundingRect (IObject * o) const;
 
 		virtual void mediaReady();
 		virtual void mediaEnd();
