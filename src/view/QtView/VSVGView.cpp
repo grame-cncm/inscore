@@ -160,7 +160,6 @@ void VSVGView::updateLocalMapping (ISVGFile* svg)
 	}
 	QRectF r = item()->boundingRect();
 	svg->setBoundingRect (long(r.x()), long(r.y()), long(r.width()), long(r.height()));
-	svg->setRealDims (scene2RelativeWidth(r.width()), scene2RelativeHeight(r.height()));
 	svg->updateLocalMapping();
 }
 

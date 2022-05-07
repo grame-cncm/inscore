@@ -303,11 +303,10 @@ void VGraphicsItemView::drawBoundingBox(IObject* o, QGraphicsItem* item)
 //------------------------------------------------------------------------------------------------------------
 void VGraphicsItemView::updateObjectSize(IObject* o)
 {	
-	if (!o->getWidth()) {
-		o->setWidth( getIObjectWidth() );
-		o->setHeight( getIObjectHeight() );
+//	if (!o->getWidth()) {
+		o->setSize(getIObjectWidth(), getIObjectHeight());
 		o->ready();
-	}
+//	}
 }
 
 //------------------------------------------------------------------------------------------------------------

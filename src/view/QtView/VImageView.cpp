@@ -74,18 +74,8 @@ bool VImageView::initView (IObject* obj)
 //----------------------------------------------------------------------
 void VImageView::updateLocalMapping (IImage* img)
 {
-	// 1. Update image
-//	QString file = VApplView::toQString( img->getPath().c_str() );
-//	if ( QFile::exists( file ) ) {
-//		if ( !QImageReader( file ).canRead() ) { 	// Invalid/Unsupported file format
-//			ITLErr << "invalid image file :" << img->getFile() << ITLEndl;
-//		}
-//		else setImage( file );
-//	}
 	QRectF r = fImageItem->boundingRect();
-//	updateObjectSize (img);
 	img->setBoundingRect (long(r.x()), long(r.y()), long(r.width()), long(r.height()));
-	img->setRealDims (scene2RelativeWidth(r.width()), scene2RelativeHeight(r.height()));
 	img->updateLocalMapping();
 }
 
