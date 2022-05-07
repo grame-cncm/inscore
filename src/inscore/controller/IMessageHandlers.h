@@ -347,16 +347,29 @@ template <typename T> class TGetParamMsgHandler : public GetParamMsgHandler {
 };
 
 //--------------------------------------------------------------------------
-///! \brief a get object parameter method handler 
+///! \brief a get object parameter method handler
 //--------------------------------------------------------------------------
 template <typename C, typename T> class TGetParamMethodHandler : public GetParamMsgHandler {
 	protected:
 		C* fObject;
 		T fMethod;
 		TGetParamMethodHandler(C* obj, T method) : fObject(obj), fMethod(method) {}
-	public: 
+	public:
 		static SGetParamMsgHandler create(C* obj, T method) { return new TGetParamMethodHandler<C,T> (obj, method); }
 		virtual SIMessage&  print(SIMessage& out) const	{ *out << (fObject->*fMethod)(); return out; }
+};
+
+//--------------------------------------------------------------------------
+///! \brief a get object dimension method handler
+//--------------------------------------------------------------------------
+template <typename C, typename T> class TGetDimensionMethodHandler : public GetParamMsgHandler {
+	protected:
+		C* fObject;
+		T fMethod;
+		TGetDimensionMethodHandler(C* obj, T method) : fObject(obj), fMethod(method) {}
+	public:
+		static SGetParamMsgHandler create(C* obj, T method) { return new TGetDimensionMethodHandler<C,T> (obj, method); }
+		virtual SIMessage&  print(SIMessage& out) const	{ (fObject->*fMethod)(out); return out; }
 };
 
 //--------------------------------------------------------------------------
