@@ -28,7 +28,6 @@
 #define __IGraphicBasedObject__
 
 #include "IObject.h"
-#include "IProportionalAsyncDims.h"
 #include "maptypes.h"
 #include "TLocalMapping.h"
 #include "TMapMsgHandler.h"
@@ -48,11 +47,13 @@ typedef class libmapping::SMARTP<IGraphicBasedObject>	SIGraphicBasedObject;
 /*!
 	\brief the base class for objects that supports "2-dimensions long int" segmentations
 */
-class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
+class IGraphicBasedObject : public IObject
 {
 		typedef libmapping::SMARTP<TLocalMapping<long,2> >	SLocalMapping;
 		SLocalMapping	fLocalMappings;
-		TLongRect 	fBoundingRect;
+		TLongRect 		fBoundingRect;
+		float fRealWidth = 0.f;
+		float fRealHeight = 0.f;
 
 		/// \brief get an object maps
 		virtual SIMessageList __getMaps () const	{ return TMapMsgHandler<long,2>::getMapMsgs( localMappings() , this ); }
@@ -68,11 +69,7 @@ class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
 
 		virtual void		accept (Updater*);
 
-		/// \brief Sets the width with height adjustment
-		virtual void	setPWidth(float width);
-		/// \brief Sets the height with width adjustment
-		virtual void	setPHeight(float height);
-		/// \brief clear the pending state of an object
+		virtual void positionAble ();			///< \brief set the position message handlers
 		virtual void	ready();
 		/// \brief Returns the real width
 		virtual float	getRealWidth() const		{ return fRealWidth; }
@@ -83,6 +80,7 @@ class IGraphicBasedObject : public IObject, public IProportionalAsyncDims
 				 IGraphicBasedObject( const std::string& name, IObject * parent );
 		virtual ~IGraphicBasedObject() {}
 
+		virtual void 	setSize(float w, float h);
 		bool 		getGraphicSegment( const IntPointSegment& segment, GraphicSegment& outSegment ) const;
 		TFloatPoint view2ItemPoint(const TLongPoint& point) const;
 

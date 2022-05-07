@@ -53,16 +53,13 @@ const string IGuidoCode::kGuidoCodeType("gmn");
 
 //--------------------------------------------------------------------------
 IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
-	IObject (name, parent) , fGRHandler(0), fCurrentPagesCount(1), fPage(1), fPageFormat( 21.0f, 29.7f ),
+	IGraphicBasedObject (name, parent) , fGRHandler(0), fCurrentPagesCount(1), fPage(1), fPageFormat( 21.0f, 29.7f ),
 	fNbOfPageColumns(2), fNbOfPageRows(1), fExprHandler(this)
 {
 
 	fLocalMappings = TLocalMapping<rational,1>::create();
 
 	fTypeString = kGuidoCodeType;
-
-	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setPWidth);
-	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IGuidoCode, float>::create(this, &IGuidoCode::setPHeight);
 
 	fMsgHandlerMap[kexpression_GetMethod]		= TMethodMsgHandler<IGuidoCode>::create(this, &IGuidoCode::exprMsg);
 
@@ -88,15 +85,8 @@ IGuidoCode::IGuidoCode( const std::string& name, IObject * parent ) :
 //-------------------------------------------------------------------------
 void IGuidoCode::resetWidth()
 {
-	if (!userDims()) {
-		setWidth(0);
-		setHeight(0);
-	}
+	IPosition::setSize(0.f, 0.f);
 }
-
-//-------------------------------------------------------------------------
-void IGuidoCode::setPWidth(float width)		{ setPropWidth(this, width); }
-void IGuidoCode::setPHeight(float height)	{ setPropHeight(this, height); }
 
 //--------------------------------------------------------------------------
 void IGuidoCode::ready()
@@ -221,7 +211,7 @@ MsgHandler::msgStatus IGuidoCode::set ( const IMessage* msg )
             setGMN( t );
             status = MsgHandler::kProcessed;
             newData(true);
-            resetWidth();
+            setCalled();
 			getView()->initView (this);
 		}
 		else status = MsgHandler::kProcessedNoChange;

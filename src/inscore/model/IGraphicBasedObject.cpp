@@ -41,10 +41,6 @@ IGraphicBasedObject::IGraphicBasedObject( const std::string& name, IObject * par
 	: IObject(name, parent) 
 { 
 	fLocalMappings = TLocalMapping<long,2>::create();
-
-	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IGraphicBasedObject, float>::create(this, &IGraphicBasedObject::setPWidth);
-	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IGraphicBasedObject, float>::create(this, &IGraphicBasedObject::setPHeight);
-
 	fMsgHandlerMap[kmap_GetSetMethod]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapMsg);
 	fMsgHandlerMap[kmapplus_SetMethod]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapAddMsg);
 	fMsgHandlerMap[kmapf_SetMethod]			= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::mapFileMsg);
@@ -77,34 +73,59 @@ MsgHandler::msgStatus IGraphicBasedObject::mapMsg (const IMessage* msg )
 //-------------------------------------------------------------------------
 void IGraphicBasedObject::setBoundingRect(long x, long y, long w, long h)
 {
-	if (!userDims()) {
+//	if (!userDims()) {
 		fBoundingRect.setX(x);
 		fBoundingRect.setY(y);
 		fBoundingRect.setWidth(w);
 		fBoundingRect.setHeight(h);
 		updateLocalMapping();
-	}
+//	}
+}
+
+//-------------------------------------------------------------------------
+void IGraphicBasedObject::setSize(float w, float h) {
+	if (!_getWidth() && !_getHeight())
+		IPosition::setSize(w, h);
+	fRealWidth = w;
+	fRealHeight = h;
 }
 
 //-------------------------------------------------------------------------
 void IGraphicBasedObject::setCalled ()
 {
-	if (!userDims()) {
-		setWidth(0);
-		setHeight(0);
-	}
+	IPosition::setSize (0.f, 0.f);
+//
+//	if (!userDims()) {
+//		_setWidth(0);
+//		_setHeight(0);
+//	}
 }
 
 //-------------------------------------------------------------------------
 void IGraphicBasedObject::ready()
 {
-	checkPending (this);
+//	checkPending (this);
 	IObject::ready();
 }
 
 //-------------------------------------------------------------------------
-void IGraphicBasedObject::setPWidth(float width)	{ setPropWidth (this, width); }
-void IGraphicBasedObject::setPHeight(float height)	{ setPropHeight (this, height); }
+void IGraphicBasedObject::positionAble () {
+	IObject::positionAble();
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::proportionalWidthMsg);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TMethodMsgHandler<IGraphicBasedObject>::create(this, &IGraphicBasedObject::proportionalHeightMsg);
+}
+
+//-------------------------------------------------------------------------
+//void IGraphicBasedObject::setWidth(float width, bool scenewidth, bool sceneheight) {
+//	setPropWidth (this, width, scenewidth, sceneheight);
+//}
+//void IGraphicBasedObject::setHeight(float height, bool scenewidth, bool sceneheight) {
+//	setPropHeight (this, height, scenewidth, sceneheight);
+//}
+
+//-------------------------------------------------------------------------
+//void IGraphicBasedObject::setPWidth(float width)	{ setPropWidth (this, width); }
+//void IGraphicBasedObject::setPHeight(float height)	{ setPropHeight (this, height); }
 
 //------------------------------------------------------------------------------------------------------------
 TFloatPoint IGraphicBasedObject::view2ItemPoint(const TLongPoint& point) const

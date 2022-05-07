@@ -35,7 +35,7 @@
 #include "GUIDOEngine.h"
 #include "TLocalMapping.h"
 #include "IExpressionHandler.h"
-#include "IProportionalAsyncDims.h"
+#include "IGraphicBasedObject.h"
 #include "GmnEvaluator.h"
 
 struct NodeGR;
@@ -57,7 +57,7 @@ typedef class libmapping::SMARTP<IGuidoCode>	SIGuidoCode;
 /*!
 	\brief a textual guido music notation object.
 */
-class IGuidoCode : public IObject, public IProportionalAsyncDims
+class IGuidoCode : public IGraphicBasedObject
 {
 	protected:
 		typedef libmapping::SMARTP<TLocalMapping<libmapping::rational,1> >	SLocalMapping;
@@ -121,11 +121,6 @@ class IGuidoCode : public IObject, public IProportionalAsyncDims
 		/// \brief gives the systems count as a list of count ordered by page number
 		virtual std::vector<int> getSystemsCount() const;
 
-		/// \brief Returns the real width
-		virtual float	getRealWidth() const		{ return fRealWidth; }
-		/// \brief Returns the real height
-		virtual float	getRealHeight() const		{ return fRealHeight; }
-
 		void	setPageCount(int count);
 		void 	updateScoreMapping ();
 		virtual void	ready();
@@ -153,11 +148,6 @@ class IGuidoCode : public IObject, public IProportionalAsyncDims
 		SIMessageList getMsgs(const IMessage* msg) const;
 
 		MsgHandler::msgStatus exprMsg(const IMessage* msg);
-
-		/// \brief Sets the width with height adjustment
-		virtual void	setPWidth(float width);
-		/// \brief Sets the height with width adjustment
-		virtual void	setPHeight(float height);
 };
 
 /*! @} */

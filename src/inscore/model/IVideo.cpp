@@ -57,7 +57,7 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 	fMsgHandlerMap[kvideoMap_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapMsg);
 	fMsgHandlerMap[kvideoMapf_SetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::videoMapFileMsg);	
 	fGetMsgHandlerMap[kvideoMap_GetSetMethod]	= GetVideoMapMsgHandler::create(this);
-	
+
 	fTempo = 60.0f;
 	fStartSecond = 0.0f;
 	fConverter = Date2SecondTempoConverter::create( fTempo , fStartSecond );
@@ -65,10 +65,10 @@ IVideo::IVideo( const std::string& name, IObject * parent )
 }
 
 //-------------------------------------------------------------------------
-void IVideo::setSize (float w, float h)
-{
-	IObject::setWidth(w);
-	IObject::setHeight(h);
+void IVideo::positionAble () {
+	IObject::positionAble();
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TMethodMsgHandler<IVideo>::create(this, &IVideo::proportionalWidthMsg);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TMethodMsgHandler<IVideo>::create(this, &IVideo::proportionalHeightMsg);
 }
 
 //-------------------------------------------------------------------------
@@ -76,33 +76,10 @@ MsgHandler::msgStatus IVideo::set (const IMessage* msg )
 {
 	MsgHandler::msgStatus ret = IMedia::set (msg);
 	if (ret == MsgHandler::kProcessed) {
+		setSize (0.f, 0.f);
 		getView()->initView(this);
 	}
 	return ret;
-}
-
-//-------------------------------------------------------------------------
-void IVideo::setWidth(float width)
-{
-	if (!width) return;
-	float ratio = getWidth() ? width / getWidth() : 0;
-	if (ratio) {
-		IObject::setWidth(width);
-		IObject::setHeight(getHeight() * ratio);
-		fUserWidth = true;
-	}
-}
-
-//-------------------------------------------------------------------------
-void IVideo::setHeight(float height)
-{
-	if (!height) return;
-	float ratio = getHeight() ? height / getHeight() : 0;
-	if (ratio) {
-		IObject::setHeight(height);
-		IObject::setWidth(getWidth() * ratio);
-		fUserWidth = true;
-	}
 }
 
 //--------------------------------------------------------------------------
