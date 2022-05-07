@@ -36,6 +36,5 @@
 #../scripts/Standalone/memImg.inscore
 
 ../scripts/MP-Turenas/turenas.inscore
+../scripts/Standalone/scenewh.inscore
 
-#../scripts/Standalone/GuidoExpression/guidoEchoes.inscore
-#../scripts/Standalone/GuidoExpression/permutation.inscore

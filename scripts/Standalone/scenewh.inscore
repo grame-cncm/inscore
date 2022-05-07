@@ -1,0 +1,19 @@
+# this script illustrates the difference between the scene width/height and swidth/sheight
+
+/ITL/log show 1;
+/ITL/scene/* del;
+
+
+/ITL/scene width 1.8;
+/ITL/scene height 1.2;
+
+/ITL/scene get swidth sheight;
+/ITL/scene get width height;
+/ITL/scene/r1 set rect $(/ITL/scene get swidth) $(/ITL/scene get sheight);
+/ITL/scene/r1 color black;
+/ITL/scene/r2 set rect $(/ITL/scene get width) $(/ITL/scene get height);
+/ITL/scene/r2 color orange;
+
+/ITL/scene/comment set txt "This script illustrates the difference between the scene width/height and swidth/sheight";
+
+
