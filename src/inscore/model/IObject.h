@@ -496,6 +496,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief object \c 'get' message handler.
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
+		virtual void 	  getWidthMsg(SIMessage& out) const;
+		virtual void 	  getHeightMsg(SIMessage& out) const;
 		
 		/// \brief sets the message handlers.
 		virtual void setHandlers ();
@@ -634,6 +636,7 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief object \c 'get' without parameter form: gives the corresponding 'set' message list
 		virtual SIMessageList getSetMsg () const;
+		virtual SIMessage	  getSetMsg (const std::string& address) const;
 
 		/// \brief get an object parameters
 		virtual SIMessageList getParams() const;
@@ -759,6 +762,17 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief object \c 'save' message handler.
 		virtual MsgHandler::msgStatus saveMsg (const IMessage* msg) const;
+
+		bool getDimParameter (const IMessage * msg, int index, bool& scenerelativew, bool& scenerelativeh);
+		bool getDimParameter (const IMessage * msg, int index, float& val, bool& scenerelativew, bool& scenerelativeh);
+		/// \brief object \c 'width' message handler
+		virtual MsgHandler::msgStatus widthMsg (const IMessage* msg);
+		/// \brief object \c 'height' message handler
+		virtual MsgHandler::msgStatus heightMsg (const IMessage* msg);
+		/// \brief object \c 'width' message handler for objects with proportional dimensions
+		virtual MsgHandler::msgStatus proportionalWidthMsg (const IMessage* msg);
+		/// \brief object \c 'height' message handler for objects with proportional dimensions
+		virtual MsgHandler::msgStatus proportionalHeightMsg (const IMessage* msg);
 
 		/// \brief object \c 'event' message handler (provided for events simulation).
 		virtual MsgHandler::msgStatus eventMsg (const IMessage* msg);

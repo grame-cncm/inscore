@@ -252,8 +252,8 @@ void IObject::positionAble()
 	fAltGetMsgHandlerMap[kangle_GetSetMethod]	= TGetParamMsgHandler<float>::create(fZAngle);
 	fGetMsgHandlerMap[kscale_GetSetMethod]	= TGetParamMsgHandler<float>::create(fScale);
 	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
-	fGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fWidth);
-	fGetMsgHandlerMap[kheight_GetSetMethod] = TGetParamMsgHandler<float>::create(fHeight);
+	fGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetDimensionMethodHandler<IObject, void (IObject::*)(SIMessage&) const>::create(this, &IObject::getWidthMsg);
+	fGetMsgHandlerMap[kheight_GetSetMethod]	= TGetDimensionMethodHandler<IObject, void (IObject::*)(SIMessage&) const>::create(this, &IObject::getHeightMsg);
 	fGetMsgHandlerMap[kshear_GetSetMethod]	= TGetParamMsgHandler<TFloatSize>::create(fShear);
 	fGetMsgHandlerMap[krotatex_GetSetMethod]= TGetParamMsgHandler<float>::create(fXAngle);
 	fGetMsgHandlerMap[krotatey_GetSetMethod]= TGetParamMsgHandler<float>::create(fYAngle);
@@ -264,6 +264,8 @@ void IObject::positionAble()
 	fMsgHandlerMap[kx_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
 	fMsgHandlerMap[ky_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
 	fMsgHandlerMap[kxorigin_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXOrigin);
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::widthMsg);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::heightMsg);
 	fMsgHandlerMap[kyorigin_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYOrigin);
 	fMsgHandlerMap[kz_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setZOrder);
 	fMsgHandlerMap[kangle_GetSetMethod]		= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setRotateZ);
@@ -1049,19 +1051,36 @@ SIMessageList IObject::getAll() const
 
 //--------------------------------------------------------------------------
 // the 'get' form without parameter
+SIMessage IObject::getSetMsg(const std::string& address) const
+{
+	SGetParamMsgHandler handler = getMessageHandler("");
+	// check first if there is an existing message handler
+	if (handler) {
+		SIMessage msg = IMessage::create(address, kset_SetMethod);
+		*msg << getTypeString();
+		handler->print(msg);
+		return msg;
+	}
+	return nullptr;
+}
+
+//--------------------------------------------------------------------------
+// the 'get' form without parameter
 SIMessageList IObject::getSetMsg() const
 {
 	SIMessageList outMsgs = IMessageList::create();
 	string address = getOSCAddress();
 	
+	SIMessage msg = getSetMsg(address);
+	if (msg) outMsgs->list().push_back (msg);
 	// check first if there is an existing message handler
-	SGetParamMsgHandler handler = getMessageHandler("");
-	if (handler) {
-		SIMessage msg = IMessage::create(address, kset_SetMethod);
-		*msg << getTypeString();
-		handler->print(msg);
-		outMsgs->list().push_back (msg);
-	}
+//	SGetParamMsgHandler handler = getMessageHandler("");
+//	if (handler) {
+//		SIMessage msg = IMessage::create(address, kset_SetMethod);
+//		*msg << getTypeString();
+//		handler->print(msg);
+//		outMsgs->list().push_back (msg);
+//	}
 
 	// always distributes the message to subnodes (new with version 1.03)
     address += "/";
@@ -1084,8 +1103,38 @@ SIMessage IObject::getParam(const string& what, const SGetParamMsgHandler& h) co
 }
 
 //--------------------------------------------------------------------------
+void IObject::getWidthMsg(SIMessage& msg) const
+{
+	stringstream s;
+	if (widthRelative2SceneW()) {
+		s << _getWidth() << "sw";
+		*msg << s.str();
+	}
+	else if (widthRelative2SceneH()) {
+		s << _getWidth() << "sh";
+		*msg << s.str();
+	}
+	else *msg << (_getWidth() ? _getWidth() : getWidth());
+}
+
+//--------------------------------------------------------------------------
+void IObject::getHeightMsg(SIMessage& msg) const
+{
+	stringstream s;
+	if (heightRelative2SceneW()) {
+		s << _getHeight() << "sw";
+		*msg << s.str();
+	}
+	else if (heightRelative2SceneH()) {
+		s << _getHeight() << "sh";
+		*msg << s.str();
+	}
+	else *msg << (_getHeight() ? _getHeight() : getHeight());
+}
+
+//--------------------------------------------------------------------------
 SIMessageList IObject::getMsgs(const IMessage* msg) const
-{ 
+{
 	SIMessageList outMsgs = IMessageList::create();
 
 	if (msg->size() == 0) {
@@ -1853,6 +1902,94 @@ rational IObject::point2date (float x, float y) const
 	}
 	// don't try default mapping when there are named mappings
 	return hasNamed ? rational(0,0) : point2date (x, y, "",  0);
+}
+
+//--------------------------------------------------------------------------
+bool IObject::getDimParameter (const IMessage * msg, int index, float & val, bool& scenerelativew, bool& scenerelativeh) {
+	scenerelativew = scenerelativeh = false;
+	int n = msg->size();
+	if (msg->cast_param(index, val)) return true;
+	string str;
+	if (msg->param(index, str)) {
+		string head = str.substr (0, str.length() - 2);
+		string tail = str.substr (str.length() - 2);
+		if ( tail == "sw" )
+			scenerelativew = true;
+		else if ( tail == "sh")
+			scenerelativeh = true;
+		else return false;
+		try {
+			val = stof(head);
+			return true;
+		}
+		catch (exception& e) { return false; }
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+bool IObject::getDimParameter (const IMessage * msg, int index, bool& scenerelativew, bool& scenerelativeh) {
+	scenerelativew = scenerelativeh = false;
+	string str;
+	if (msg->param(index, str)) {
+		if ( str == "sw" )
+			scenerelativew = true;
+		else if ( str == "sh")
+			scenerelativeh = true;
+		else return false;
+	}
+	else return false;
+	return true;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::proportionalWidthMsg (const IMessage* msg)
+{
+	fSceneRelativeDims = IPosition::kNone;
+	MsgHandler::msgStatus status = widthMsg (msg);
+	if (status == MsgHandler::kProcessed)
+		_setHeight(0.f);	// height is computed from the width and the ratio
+//cerr << "IObject::proportionalWidthMsg " << fWHRatio << " - " << _getWidth() << "/" << _getHeight() << " -> " << getWidth() << "/" << getHeight() << " " << fSceneRelativeDims << endl;
+	return status;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::proportionalHeightMsg (const IMessage* msg)
+{
+	fSceneRelativeDims = IPosition::kNone;
+	MsgHandler::msgStatus status = heightMsg (msg);
+	if (status == MsgHandler::kProcessed)
+		_setWidth(0.f);		// width is computed from the height and the ratio
+//cerr << "IObject::proportionalHeightMsg " << fWHRatio << " - " << _getWidth() << "/" << _getHeight() << " -> " << getWidth() << "/" << getHeight() << " " << fSceneRelativeDims << endl;
+	return status;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::widthMsg (const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		float val;
+		bool scenewidth, sceneheight;
+		if (getDimParameter(msg, 0, val, scenewidth, sceneheight)) {
+			setWidth (val, scenewidth, sceneheight);
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::heightMsg (const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		float val;
+		bool scenewidth, sceneheight;
+		if (getDimParameter(msg, 0, val, scenewidth, sceneheight)) {
+			setHeight (val, scenewidth, sceneheight);
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------

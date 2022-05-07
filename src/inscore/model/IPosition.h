@@ -56,12 +56,15 @@ typedef class libmapping::SMARTP<IObject>	SIObject;
 */
 class IPosition
 {
+	private:
+		float	fWidth, fHeight;		///< the object dimensions
+
 	protected:	
+		float	fWHRatio = 0.f;			///< used by objects with proportional dimensions
 		float	fXPos, fYPos;			///< the object coordinates
 		float	fXOrigin, fYOrigin;		///< the origin coordinates (range [-1,1] where 0,0 is the object center)
-		float	fWidth, fHeight;		///< the object dimensions
+		int		fSceneRelativeDims = 0; ///< a set of flags to indicate scene relative dimensions
 		float	fZOrder;				///< the object Z-order
-//		float	fAngle;					///< the object angle
 		bool	fVisible;				///< the object visibility
 		float	fScale;					///< the object scaling factor
 		bool	fModified;				///< the modification state
@@ -76,6 +79,9 @@ class IPosition
 
 		TFloatSize fShear;				///< the shear attributes
 
+		// this constants indicates the relation between the object dimensions and the scene dimensions
+		enum { kNone, kWidth2Width=1, kWidth2Height=2, kHeight2Height=4, kHeight2Width=8 };
+
 	public:
 				 IPosition();
 		virtual ~IPosition() {}
@@ -83,6 +89,8 @@ class IPosition
 		enum {	kDefaultX=0, kDefaultY=0 };
 
 		virtual void setPos(const IPosition& p);
+
+		virtual void 	setSize(float w, float h);
 
 		/// \brief returns the object modification state
 		virtual bool	modified () const			{ return fModified; }
@@ -115,17 +123,22 @@ class IPosition
 		virtual float	getRotateZ() const			{ return fZAngle; }
 
 		/// \brief Returns the width
-		virtual float	getWidth() const			{ return fWidth; }
+		virtual float	getWidth() const;
 		/// \brief Returns the height
-		virtual float	getHeight() const			{ return fHeight; }
+		virtual float	getHeight() const;
 		/// \brief Returns the width
-		virtual float	getRealWidth() const		{ return fWidth; }
+		virtual float	getRealWidth() const;
 		/// \brief Returns the height
-		virtual float	getRealHeight() const		{ return fHeight; }
+		virtual float	getRealHeight() const;
 		/// \brief Returns the dimension
-		virtual TFloatSize getDimension() const		{ return TFloatSize( fWidth , fHeight ); }
+		virtual TFloatSize getDimension() const;
 		/// \brief Returns the shear attributes
 		virtual TFloatSize getShear() const			{ return fShear; }
+
+		bool	widthRelative2SceneW () const 		{ return fSceneRelativeDims & kWidth2Width; }
+		bool	widthRelative2SceneH () const 		{ return fSceneRelativeDims & kWidth2Height; }
+		bool	heightRelative2SceneW () const 		{ return fSceneRelativeDims & kHeight2Width; }
+		bool	heightRelative2SceneH () const 		{ return fSceneRelativeDims & kHeight2Height; }
 
 		/// \brief returns the object visibility
 		virtual bool	getVisible () const			{ return fVisible; }
@@ -134,16 +147,21 @@ class IPosition
 		virtual void	print(std::ostream& out) const;
 
 		/// \brief Sets the width
-		virtual void	setWidth(float width);
+		virtual void	setWidth(float width, bool scenewidth, bool sceneheight);
 		/// \brief Sets the height
-		virtual void	setHeight(float height);
+		virtual void	setHeight(float height, bool scenewidth, bool sceneheight);
 		/// \brief Sets the width without modifying the status
 		virtual void	_setWidth(float width)		{ fWidth = width; }
+				float	_getWidth() const			{ return fWidth; }
 		/// \brief Sets the height without modifying the status
 		virtual void	_setHeight(float height)	{ fHeight = height; }
+				float	_getHeight() const			{ return fHeight; }
+		/// \brief Sets flags for scene relative dimensions
+		virtual void	setSceneRelativeWidth(bool scenewidth, bool sceneheight);
+		virtual void	setSceneRelativeHeight(bool scenewidth, bool sceneheight);
 
 		/*!
-			\brief sets an object \c x position in its scene			
+			\brief sets an object \c x position in its scene
 			A scene coordinates system is between [-1, 1] for the \c x and \c y axis.
 			[0,0] is the center of the scene, -1 is the leftmost position on the \c axis
 			and 1 is the topmost position on the \c y axis.

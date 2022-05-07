@@ -30,6 +30,7 @@
 #include "IMessage.h"
 #include "IObject.h"
 #include "IPosition.h"
+#include "IScene.h"
 #include "OSCAddress.h"
 
 using namespace std;
@@ -54,24 +55,85 @@ void IPosition::setPos(const IPosition& p)
 	setRotateX(p.getRotateX() );
 	setRotateY( p.getRotateY() );
 	setRotateZ( p.getRotateZ() );
-	setWidth( p.getWidth() );
-	setHeight( p.getHeight() );
+	_setWidth( p.getWidth());
+	_setHeight( p.getHeight() );
+	fSceneRelativeDims = p.fSceneRelativeDims;
 	setVisible( p.getVisible() );
 }
 
 //--------------------------------------------------------------------------
-void IPosition::setWidth(float width) {
+void IPosition::setSceneRelativeWidth(bool scenewidth, bool sceneheight) {
+	// proportional objects can't have both width and height relative to the scene dimension
+	if (fWHRatio && (scenewidth || sceneheight)) fSceneRelativeDims = IPosition::kNone;
+	if (scenewidth) fSceneRelativeDims |= kWidth2Width;
+	else fSceneRelativeDims &= ~kWidth2Width;
+	if (sceneheight) fSceneRelativeDims |= kWidth2Height;
+	else fSceneRelativeDims &= ~kWidth2Height;
+}
+
+//--------------------------------------------------------------------------
+void IPosition::setSceneRelativeHeight(bool scenewidth, bool sceneheight) {
+	// proportional objects can't have both width and height relative to the scene dimension
+	if (fWHRatio && (scenewidth || sceneheight)) fSceneRelativeDims = IPosition::kNone;
+	if (scenewidth) fSceneRelativeDims |= kHeight2Width;
+	else fSceneRelativeDims &= ~kHeight2Width;
+	if (sceneheight) fSceneRelativeDims |= kHeight2Height;
+	else fSceneRelativeDims &= ~kHeight2Height;
+}
+
+//--------------------------------------------------------------------------
+void IPosition::setWidth(float width, bool scenewidth, bool sceneheight) {
+	setSceneRelativeWidth (scenewidth, sceneheight);
 	fWidth = width; fModified = true;
 	IObject* obj = static_cast<IObject*>(this);
 	obj->propagateModified();
 }
 
 //--------------------------------------------------------------------------
-void IPosition::setHeight(float height) {
+void IPosition::setHeight(float height, bool scenewidth, bool sceneheight) {
+	setSceneRelativeHeight(scenewidth, sceneheight);
 	fHeight = height; fModified = true;
 	IObject* obj = static_cast<IObject*>(this);
 	obj->propagateModified();
 }
+
+//--------------------------------------------------------------------------
+float IPosition::getWidth() const {
+	float width = fWidth ? fWidth : fHeight ? getHeight() * fWHRatio : 0;
+	if (fSceneRelativeDims == kNone) return width;
+	const IScene* scene = static_cast<const IObject*>(this)->getScene();
+	return width * (fSceneRelativeDims & kWidth2Width ? scene->getSceneWidth() :
+				 (fSceneRelativeDims & kWidth2Height ? scene->getSceneHeight() : 1));
+}
+
+//--------------------------------------------------------------------------
+float IPosition::getHeight() const	{
+	float height = fHeight ? fHeight : fWidth ? getWidth() / (fWHRatio ? fWHRatio : 1.0) : 0;
+	if (fSceneRelativeDims == kNone) return height;
+	const IScene* scene = static_cast<const IObject*>(this)->getScene();
+	return height * (fSceneRelativeDims & kHeight2Height ? scene->getSceneHeight() :
+				 (fSceneRelativeDims & kHeight2Width ? scene->getSceneWidth() : 1));
+}
+
+//--------------------------------------------------------------------------
+void IPosition::setSize(float w, float h)	{
+	fWHRatio = h ? w / h : 0;
+	if (fSceneRelativeDims) return;
+	if (fHeight) fHeight = h;
+	else fWidth = w;
+
+//cerr << "IPosition::setSize " << w << " " << h << " " << fWHRatio << " - " << fWidth << "/" << fHeight << " -> " << getWidth() << "/" << getHeight() << endl;
+}
+
+//--------------------------------------------------------------------------
+float IPosition::getRealWidth() const {
+	return getWidth();
+}
+float IPosition::getRealHeight() const {
+	return getHeight();
+}
+TFloatSize IPosition::getDimension() const	{ return TFloatSize( getWidth() , getHeight() ); }
+
 
 //--------------------------------------------------------------------------
 // geometry 
