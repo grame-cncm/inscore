@@ -209,6 +209,13 @@ EOL		[\x0a\x0d]
 ("/"|(".""."?"/")*)({FILECHAR}+"/"?)+"."[a-zA-Z]+		yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;	/*file path without space*/
 
  /* ----------------------------------------- */
+ /*	scene relative dimensions */
+ /* ----------------------------------------- */
+
+{DIGIT}+"s"[hw]						yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;
+{DIGIT}+"."{DIGIT}+"s"[hw]			yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;
+
+ /* ----------------------------------------- */
  /*	javascript section */
  /* ----------------------------------------- */
 "<?"{SPACE}*"javascript"	BEGIN JSECTION;
