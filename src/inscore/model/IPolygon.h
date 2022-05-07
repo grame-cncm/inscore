@@ -72,6 +72,8 @@ class IPolygon : public IShapeMap
 
 		void	setPoints(const PolygonData& points);
 
+		virtual void positionAble ();			///< \brief set the position message handlers
+
 		/// \brief the \c 'set' message handler
 		virtual MsgHandler::msgStatus set (const IMessage* msg);
 

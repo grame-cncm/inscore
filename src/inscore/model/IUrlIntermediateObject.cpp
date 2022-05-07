@@ -53,9 +53,8 @@ IUrlIntermediateObject::IUrlIntermediateObject( const std::string& name, IObject
     
     fType = "";
     fTypeString = kUrlIntermediateType;
-    fWidth = 1.0;
-    fHeight = 1.0;
-//	setColor( IColor(220,220,220) );
+    _setWidth(1.0);
+    _setHeight(1.0);
 }
 
 //--------------------------------------------------------------------------

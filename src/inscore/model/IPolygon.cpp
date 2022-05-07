@@ -139,13 +139,23 @@ void IPolygon::setPoints(const PolygonData& points)
 		if (points[i].fY < ymin)	ymin = points[i].fY;
 		if (points[i].fY > ymax)	ymax = points[i].fY;
 	}
-	setWidth (xmax - xmin);
-	setHeight(ymax - ymin);
+	_setWidth (xmax - xmin);
+	_setHeight(ymax - ymin);
 	fXMin = -xmin;
 	fYMin = -ymin;
 	fPoints = points;
 	getMetrics();
 }
+
+//-------------------------------------------------------------------------
+void IPolygon::positionAble () {
+	IObject::positionAble();
+	fMsgHandlerMap[kwidth_GetSetMethod]		= nullptr;
+	fMsgHandlerMap[kheight_GetSetMethod]	= nullptr;
+	fGetMsgHandlerMap[kwidth_GetSetMethod]	= nullptr;
+	fGetMsgHandlerMap[kheight_GetSetMethod]	= nullptr;
+}
+
 
 
 //--------------------------------------------------------------------------

@@ -42,8 +42,8 @@ IHttpd::IHttpd(const string& name, IObject * parent ) : IRectShape (name, parent
 	fTypeString = kIHttpdType;
 	fHttpdServer = 0;
 	fHttpPort = -1;
-	setWidth(0.5);
-	setHeight(0.5);
+	_setWidth(0.5);
+	_setHeight(0.5);
 
 	fGetMsgHandlerMap[kstatus_GetMethod]	= TGetParamMethodHandler<IHttpd, string (IHttpd::*)() const>::create(this, &IHttpd::status);
 }

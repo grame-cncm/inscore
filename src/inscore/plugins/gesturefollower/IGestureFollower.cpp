@@ -43,8 +43,8 @@ IGestureFollower::IGestureFollower( const std::string& name, IObject* parent ) :
 	fTypeString = kGestureFollowerType;
 	
 	setColor (IColor(255,255,255));
-	setWidth (0.5);
-	setHeight (0.5);
+	setWidth (0.5, false, false);
+	setHeight (0.5, false, false);
 	setA(100);
 
 	fMsgHandlerMap["*"]								= TMethodMsgHandler<IGestureFollower>::create(this, &IGestureFollower::data);

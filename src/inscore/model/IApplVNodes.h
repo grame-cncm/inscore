@@ -160,8 +160,8 @@ class IApplLog : public IVNode
 
 		void	setX		(float x)	{ fXPos = x; }
 		void	setY		(float y)	{ fYPos = y; }
-		void	setW		(float x)	{ fWidth = x; }
-		void	setH		(float y)	{ fHeight = y; }
+		void	setW		(float w)	{ _setWidth(w); }
+		void	setH		(float h)	{ _setHeight(h); }
 		void	setWrap		(bool state);
 		void	setZoom		(float zoom);
 		float	getZoom		() const 	{ return fZoom; }

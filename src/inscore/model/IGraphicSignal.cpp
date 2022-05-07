@@ -60,9 +60,8 @@ IGraphicSignal::IGraphicSignal( const std::string& name, IObject* parent ) : IOb
 {
 	fLocalMappings = TLocalMapping<long,1>::create();
 	fTypeString = kGraphicType;
-	setWidth(1.0f);
-	setHeight(1.0f);
-//	setHandlers();
+	setWidth(1.0f, false, false);
+	setHeight(1.0f, false, false);
 }
 
 //--------------------------------------------------------------------------
@@ -72,11 +71,6 @@ void IGraphicSignal::setHandlers ()
 	fGetMsgHandlerMap[""]					= TGetParamMsgHandler<SISignal>::create(fSignal);
 	fGetMsgHandlerMap[kdimension_GetMethod]	= getDimParamMsgHandler::create(this);
 	
-	// 'width' param is writable for IGraphicSignal
-	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
-	// 'height' param is writable for IGraphicSignal
-	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
-
 	fMsgHandlerMap[kmap_GetSetMethod]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapMsg);
 	fMsgHandlerMap[kmapplus_SetMethod]		= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapAddMsg);
 	fMsgHandlerMap[kmapf_SetMethod]			= TMethodMsgHandler<IGraphicSignal>::create(this, &IGraphicSignal::mapFileMsg);

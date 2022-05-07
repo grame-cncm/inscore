@@ -42,8 +42,8 @@ namespace inscore
          fTypeString = kLayerType;
 
          setBrushStyle(kNoBrushStyle);
-         setHeight(2);
-         setWidth(2);
+         _setHeight(2);
+         _setWidth(2);
      }
     
     //--------------------------------------------------------------------------

@@ -77,8 +77,8 @@ MsgHandler::msgStatus IGrid::set (const IMessage* msg)
 		int cols, rows;
 		if (msg->param(1, cols) && msg->param(2, rows)) {
 			if ( ( cols != getColumns() ) || ( rows != getRows()) )  {
-				if (!getWidth())	setWidth( 1. );
-				if (!getHeight())	setHeight( 1. );
+				if (!getWidth())	setWidth( 1., false, false );
+				if (!getHeight())	setHeight( 1., false, false );
 				setColumns(cols);
 				setRows(rows);
 				newData(true);

@@ -326,8 +326,6 @@ IApplLog::IApplLog(IObject * parent) : IVNode("log", parent)
 
 	fGetMsgHandlerMap[kx_GetSetMethod]		= TGetParamMsgHandler<float>::create(fXPos);
 	fGetMsgHandlerMap[ky_GetSetMethod]		= TGetParamMsgHandler<float>::create(fYPos);
-	fGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetParamMsgHandler<float>::create(fWidth);
-	fGetMsgHandlerMap[kheight_GetSetMethod] = TGetParamMsgHandler<float>::create(fHeight);
 	fGetMsgHandlerMap[kshow_GetSetMethod]	= TGetParamMsgHandler<bool>::create(fVisible);
 	fGetMsgHandlerMap[klevel_GetSetMethod]	= TGetParamMsgHandler<int>::create(fLogLevel);
 	fGetMsgHandlerMap[kscale_GetSetMethod]	= TGetParamMsgHandler<int>::create(fZoom);
@@ -426,8 +424,8 @@ void IApplLog::setXPos (float x)			{ fXPos = x;  fWindow->imove(fXPos, fYPos); }
 void IApplLog::setYPos (float y)			{ fYPos = y;  fWindow->imove(fXPos, fYPos); }
 
 //--------------------------------------------------------------------------
-void IApplLog::setWidth (float x)			{ fWidth = x;  fWindow->istretch(fWidth, fHeight); }
-void IApplLog::setHeight (float y)			{ fHeight = y; fWindow->istretch(fWidth, fHeight); }
+void IApplLog::setWidth (float w)			{ _setWidth(w);  fWindow->istretch(w, getHeight()); }
+void IApplLog::setHeight (float h)			{ _setHeight(h); fWindow->istretch(getWidth(), h); }
 void IApplLog::setZoom (float zoom)			{ fZoom = zoom; fWindow->izoom(zoom); }
 
 //--------------------------------------------------------------------------

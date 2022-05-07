@@ -196,8 +196,8 @@ MsgHandler::msgStatus IArc::set (const IMessage* msg)
 		if ( ( width != getWidth() ) || ( height != getHeight() )
 			|| ( startangle != getStartAngle() ) || ( range != getAngularRange() ) )
 		{
-			setWidth( width );
-			setHeight( height );
+			_setWidth( width );
+			_setHeight( height );
 			setStartAngle( startangle );
 			setAngularRange( range );
 			fArcLen = arcLength();
