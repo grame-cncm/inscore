@@ -42,11 +42,6 @@ IRectShape::IRectShape( const std::string& name, IObject* parent ) : IShapeMap(n
 { 
 	fTypeString = kRectShapeType;
 	fGetMsgHandlerMap[""]					= TGetParamMethodHandler<IRectShape, TFloatSize (IRectShape::*)() const>::create(this, &IRectShape::getDimension);
-	fMsgHandlerMap[kwidth_GetSetMethod]		= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setWidth);
-	fMsgHandlerMap[kheight_GetSetMethod]	= TSetMethodMsgHandler<IObject, float>::create(this, &IObject::setHeight);
-    
-	fSigHandlerMap[kwidth_GetSetMethod]		= TSetMethodSigHandler<IObject, float>::create(this, &IObject::setWidth);
-	fSigHandlerMap[kheight_GetSetMethod]	= TSetMethodSigHandler<IObject, float>::create(this, &IObject::setHeight);
 }
 
 //--------------------------------------------------------------------------
@@ -61,23 +56,52 @@ MsgHandler::msgStatus IRectShape::set (const IMessage* msg)
 	MsgHandler::msgStatus status = IObject::set(msg);
 	if (status & (MsgHandler::kProcessed + MsgHandler::kProcessedNoChange)) return status; 
 	
-	if (msg->size() == 3) {
+	int n = msg->size();
+	if (n == 3) {
 		float width, height;
-		if (!msg->cast_param(1, width) || !msg->cast_param(2, height))
-			return MsgHandler::kBadParameters;
-
-		if ( ( width != getWidth() ) || ( height != getHeight() ) )
-		{
-			setWidth( width );
-			setHeight( height );
-			newData(true);
-			status = MsgHandler::kProcessed;
-			getView()->initView (this);
-		}
-		else status = MsgHandler::kProcessedNoChange;
+		bool wscenewidth, wsceneheight;
+		bool hscenewidth, hsceneheight;
+		if (!getDimParameter (msg, 1, width, wscenewidth, wsceneheight)) return MsgHandler::kBadParameters;
+		if (!getDimParameter (msg, 2, height, hscenewidth, hsceneheight)) return MsgHandler::kBadParameters;
+		setWidth (width, wscenewidth, wsceneheight);
+		setHeight (height, hscenewidth, hsceneheight);
 	}
-	else status = MsgHandler::kBadParameters;
-	return status;
+	else return MsgHandler::kBadParameters;
+	getView()->initView (this);
+	return MsgHandler::kProcessed;
 }
-		
+
+//--------------------------------------------------------------------------
+SIMessage IRectShape::getSetMsg(const std::string& address) const
+{
+	SIMessage msg = IMessage::create(address, kset_SetMethod);
+	*msg << getTypeString();
+	if (fSceneRelativeDims != IPosition::kNone) {
+		stringstream s;
+		if (widthRelative2SceneW()) {
+			s << _getWidth() << "sw";
+			*msg << s.str();
+		}
+		else if (widthRelative2SceneH()) {
+			s << _getWidth() << "sh";
+			*msg << s.str();
+		}
+		else *msg << _getWidth();
+
+		s.str(std::string());
+		if (heightRelative2SceneW()) {
+			s << _getHeight() << "sw";
+			*msg << s.str();
+		}
+		else if (heightRelative2SceneH()) {
+			s << _getHeight() << "sh";
+			*msg << s.str();
+		}
+		else *msg << _getHeight();
+	}
+	else *msg << _getWidth() << _getHeight();
+	return msg;
+}
+
+
 }

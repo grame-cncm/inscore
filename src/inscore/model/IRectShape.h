@@ -60,8 +60,9 @@ class IRectShape : public IShapeMap
 		virtual ~IRectShape() {}
 
 		/// \brief the \c 'set' message handler
-		virtual MsgHandler::msgStatus set (const IMessage* msg);
-		
+		virtual MsgHandler::msgStatus 	set (const IMessage* msg);
+		virtual SIMessage	  			getSetMsg (const std::string& address) const;
+	
 };
 
 /*! @} */
