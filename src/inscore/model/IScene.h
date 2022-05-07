@@ -158,12 +158,18 @@ class IScene : public IRectShape, public TILoader
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fConnecter.getCnxList(); }
 
+		float getSceneWidth() const;
+		float getSceneHeight() const;
+
 	protected:
 				 IScene(const std::string& name, IObject * parent);
 		virtual ~IScene();
 
 		/// \brief override IObject method
 		virtual bool acceptSimpleEvent(EventsAble::eventype t) const;
+		virtual MsgHandler::msgStatus widthMsg (const IMessage* msg);
+		virtual MsgHandler::msgStatus heightMsg (const IMessage* msg);
+		virtual SIMessage getSetMsg (const std::string& address) const { return nullptr; }
 
 		void		setRootPath(const std::string& s);
 		MsgHandler::msgStatus setRootPath(const IMessage* msg);

@@ -75,7 +75,10 @@ IScene::IScene(const std::string& name, IObject * parent)
 {
 	fTypeString = kSceneType;
 	setColor( IColor(255,255,255,255) );
-	fWidth = fHeight = 1.0f;
+	_setWidth (1.0f);
+	_setHeight(1.0f);
+	fSceneRelativeDims = IPosition::kNone;
+
 //	setWidth(1.0f);
 //	setHeight(1.0f);
 	
@@ -102,12 +105,28 @@ IScene::IScene(const std::string& name, IObject * parent)
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getForwardList);
 	fGetMsgHandlerMap[kparse_GetSetMethod]		= TGetParamMethodHandler<IScene, const std::string& (IScene::*)() const>::create(this, &IScene::parseVersion);
 
-
+	fAltGetMsgHandlerMap[ksceneWidth_GetMethod] = TGetParamMethodHandler<IScene, float (IScene::*)() const>::create(this, &IScene::getSceneWidth);
+	fAltGetMsgHandlerMap[ksceneHeight_GetMethod] = TGetParamMethodHandler<IScene, float (IScene::*)() const>::create(this, &IScene::getSceneHeight);
 #ifdef EMCC
 	fMsgHandlerMap[kconnect_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::connect);
 	fGetMsgHandlerMap[kconnect_GetSetMethod]	= TGetParamMethodHandler<IScene, const vector<IMessage::TUrl> (IScene::*)() const>::create(this, &IScene::getCnxList);
 #endif
 
+}
+
+//--------------------------------------------------------------------------
+float IScene::getSceneWidth() const
+{
+	float w = _getWidth();
+	float h = _getHeight();
+	return w < h ? 2 : 2 * (w / h);
+}
+
+float IScene::getSceneHeight() const
+{
+	float w = _getWidth();
+	float h = _getHeight();
+	return h < w ? 2 : 2 * (h / w);
 }
 
 //--------------------------------------------------------------------------
@@ -121,8 +140,44 @@ void IScene::setHandlers ()
 	colorAble();
 	positionAble();
 	fGetMsgHandlerMap[""]			= (void*)0;	// force standard propagation of the get message
-	fMsgHandlerMap[keffect_GetSetMethod]		= (void*)0;	// no effects at scene level
-	fGetMsgHandlerMap[keffect_GetSetMethod]		= (void*)0;	// no effects at scene level
+	fMsgHandlerMap[keffect_GetSetMethod]	= (void*)0;	// no effects at scene level
+	fGetMsgHandlerMap[keffect_GetSetMethod]	= (void*)0;	// no effects at scene level
+	fMsgHandlerMap[kwidth_GetSetMethod]		= TMethodMsgHandler<IScene>::create(this, &IScene::widthMsg);
+	fMsgHandlerMap[kheight_GetSetMethod]	= TMethodMsgHandler<IScene>::create(this, &IScene::heightMsg);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::widthMsg (const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		float val;
+		if (msg->cast_param(0, val)) {
+			_setWidth (val);
+			for (auto elt: elements()) {
+				if (elt->widthRelative2SceneW() || elt->heightRelative2SceneW())
+					elt->setModified();
+			}
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IScene::heightMsg (const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		float val;
+		if (msg->cast_param(0, val)) {
+			_setHeight (val);
+			for (auto elt: elements()) {
+				if (elt->widthRelative2SceneH() || elt->heightRelative2SceneH())
+					elt->setModified();
+			}
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
 }
 
 //--------------------------------------------------------------------------
@@ -153,14 +208,15 @@ VSceneView*	IScene::getSceneView() const		{ return static_cast<VSceneView *>(fVi
 //--------------------------------------------------------------------------
 void IScene::reset ()
 {
+	EventsAble::reset();
 	setColor( IColor(255,255,255,255) );
 	setXPos(0.f);
 	setYPos(0.f);
 	setScale(1.0f);
 	setXOrigin(0.0f);
 	setYOrigin(0.0f);
-	setWidth(1.0f);
-	setHeight(1.0f);
+	_setWidth(1.0f);
+	_setHeight(1.0f);
 	signalsNode()->delsubnodes();
 	delsubnodes();
 	fRootPath.clear();
