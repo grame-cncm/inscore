@@ -1073,14 +1073,6 @@ SIMessageList IObject::getSetMsg() const
 	
 	SIMessage msg = getSetMsg(address);
 	if (msg) outMsgs->list().push_back (msg);
-	// check first if there is an existing message handler
-//	SGetParamMsgHandler handler = getMessageHandler("");
-//	if (handler) {
-//		SIMessage msg = IMessage::create(address, kset_SetMethod);
-//		*msg << getTypeString();
-//		handler->print(msg);
-//		outMsgs->list().push_back (msg);
-//	}
 
 	// always distributes the message to subnodes (new with version 1.03)
     address += "/";
@@ -1267,7 +1259,7 @@ SSigHandler IObject::signalHandler(const string& method, bool match) const
 SGetParamMsgHandler IObject::getMessageHandler(const std::string& param) const
 {
 	map<string, SGetParamMsgHandler>::const_iterator h = fGetMsgHandlerMap.find(param);
-	if ( h == fGetMsgHandlerMap.end()) {
+	if ( h == fGetMsgHandlerMap.end() || !h->second) {
 		h = fAltGetMsgHandlerMap.find(param);
 		return h == fAltGetMsgHandlerMap.end() ? 0 : h->second;
 	}
