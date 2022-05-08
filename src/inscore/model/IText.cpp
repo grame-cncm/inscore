@@ -92,12 +92,14 @@ IText::IText( const std::string& name, IObject * parent ) : IGraphicBasedObject(
 
 //--------------------------------------------------------------------------
 void IText::positionAble() {
-	IObject::positionAble();
+	IGraphicBasedObject::positionAble();
 	// disable width and height methods for text. Use fontSize instead.
 	fMsgHandlerMap[kwidth_GetSetMethod]		= nullptr;
 	fMsgHandlerMap[kheight_GetSetMethod]	= nullptr;
 	fGetMsgHandlerMap[kwidth_GetSetMethod]	= nullptr;
 	fGetMsgHandlerMap[kheight_GetSetMethod]	= nullptr;
+	fAltGetMsgHandlerMap[kwidth_GetSetMethod]	= TGetParamMethodHandler<IText, float (IText::*)() const>::create(this, &IText::_getWidth);
+	fAltGetMsgHandlerMap[kheight_GetSetMethod]	= TGetParamMethodHandler<IText, float (IText::*)() const>::create(this, &IText::_getHeight);
 }
 
 //--------------------------------------------------------------------------

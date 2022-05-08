@@ -1,0 +1,28 @@
+
+/ITL/scene/* del;
+
+/ITL/scene width 1.5;
+/ITL/scene/score set img "Applebaum-Metaphysics_of_Notation.jpg";
+/ITL/scene/score width 0.9sw;
+
+/ITL/scene/comment1 set txt "This script illustrates scene relative dimensions.";
+/ITL/scene/comment2 set txt "Click the image to change its width then resize the window.";
+
+/ITL/scene/comment1 yorigin 1.1;
+/ITL/scene/comment2 yorigin -1.1;
+/ITL/scene/comment* y -0.5;
+
+/ITL/scene/comment3 set txt "Current width:" $(/ITL/scene/score get width);
+/ITL/scene/comment3 y 0.5;
+
+/ITL/scene/score watch mouseDown (
+	/ITL/scene/score push,
+	/ITL/scene/score width 1.8,
+	/ITL/scene/comment3 set txt "Current width: 1.8",
+	/ITL/scene/score watch mouseDown (
+		/ITL/scene/score width 0.9sw,
+		/ITL/scene/comment3 set txt "Current width: 0.9sw",
+		/ITL/scene/score pop
+	)
+);
+
