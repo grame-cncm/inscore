@@ -81,8 +81,8 @@ bool VTextView::initView (IObject* obj)
 		updateLocalMapping (html);
 	else if (text)
 		updateLocalMapping (text);
-//	obj->setWidth( getIObjectWidth() );
-//	obj->setHeight( getIObjectHeight() );
+	obj->_setWidth( getIObjectWidth() );
+	obj->_setHeight( getIObjectHeight() );
 	return true;
 }
 
