@@ -135,8 +135,8 @@ class IScene : public IRectShape, public TILoader
 		QGraphicsScene *	getGraphicScene () const;
 #endif
 #ifdef EMCC
-	virtual void	setWidth(float width)		{ IRectShape::setWidth(width); refresh(); }
-	virtual void	setHeight(float height)		{ IRectShape::setHeight(height); refresh(); }
+	virtual void	setWidth(float width)		{ IRectShape::_setWidth(width); refresh(); }
+	virtual void	setHeight(float height)		{ IRectShape::_setHeight(height); refresh(); }
 #endif
 		virtual VSceneView*	getSceneView() const;
 

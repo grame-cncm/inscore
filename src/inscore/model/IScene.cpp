@@ -25,6 +25,10 @@
 
 #include <iostream>
 #include <fstream>
+#ifdef EMCC
+#include <emscripten.h>
+#include "HTMLObjectView.h"
+#endif
 
 #include "deelx.h"
 
@@ -114,16 +118,26 @@ IScene::IScene(const std::string& name, IObject * parent)
 //--------------------------------------------------------------------------
 float IScene::getSceneWidth() const
 {
+#ifdef EMCC
+	HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(getView());
+	return EM_ASM_DOUBLE( { return JSSceneView.getWidth($0);}, view->getID());;
+#else
 	float w = _getWidth();
 	float h = _getHeight();
 	return w < h ? 2 : 2 * (w / h);
+#endif
 }
 
 float IScene::getSceneHeight() const
 {
+#ifdef EMCC
+	HTMLObjectView* view = dynamic_cast<HTMLObjectView*>(getView());
+	return EM_ASM_DOUBLE( { return JSSceneView.getHeight($0);}, view->getID());
+#else
 	float w = _getWidth();
 	float h = _getHeight();
 	return h < w ? 2 : 2 * (h / w);
+#endif
 }
 
 //--------------------------------------------------------------------------
