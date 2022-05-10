@@ -234,6 +234,7 @@ interface INScoreObject {
 	getIOInfos():      OIOInfos;
 	getMaps():     	   RectVector;
 
+	setSize (w: number, h: number):  void;
 	updateWidth (w: number):  void;
 	updateHeight(h: number):  void;
 	updateViewBoundingRect(x: number, y: number, w: number, h: number): void;

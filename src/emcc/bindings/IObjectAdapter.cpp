@@ -78,15 +78,20 @@ string IObjectAdapter::color2RGBAColor (const IColor& color) {
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateWidth (IPosition* pos, float w) {
 	const IGraphicBasedObject* gobj = dynamic_cast<const IGraphicBasedObject*>(pos);
-	if (gobj && gobj->userDims()) return;
+//	if (gobj && gobj->userDims()) return;
 	pos->_setWidth (w);
 }
 	
 //--------------------------------------------------------------------------
 void IObjectAdapter::_updateHeight (IPosition* pos, float h) {
 	const IGraphicBasedObject* gobj = dynamic_cast<const IGraphicBasedObject*>(pos);
-	if (gobj && gobj->userDims()) return;
+//	if (gobj && gobj->userDims()) return;
 	pos->_setHeight (h);
+}
+
+//--------------------------------------------------------------------------
+void IObjectAdapter::setSize (float width, float height) {
+	fObject->setSize (width, height);
 }
 
 //--------------------------------------------------------------------------
@@ -263,8 +268,8 @@ bool IObjectAdapter::_getLine (ILine* obj, JSLineInfos& infos)
 		}
 		float w = std::abs(x - xo);
 		float h = std::abs(y - yo);
-		obj->setWidth (w);
-		obj->setHeight(h);
+		obj->_setWidth (w);
+		obj->_setHeight(h);
 		
 		infos.x = p.x();
 		infos.y = p.y();

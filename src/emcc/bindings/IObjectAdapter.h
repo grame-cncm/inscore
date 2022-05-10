@@ -295,6 +295,7 @@ class inscore_export IObjectAdapter
 		
 		void	setAudioInOut (int inputs, int outputs);
 		void	setFaustUI (std::string type, std::string label, std::string address, float init, float min, float max, float step);
+		void	setSize (float width, float height);
 
 	IObjectAdapter* adapter(int id) 				{ return (IObjectAdapter*)id; }
 //	IObjectAdapter* create(int id) 				{ return new IObjectAdapter((IObject*)id); }
