@@ -25,10 +25,14 @@ class JSSceneView extends JSObjectView {
 		this.fAbsolutePos = absolute;
 		let obj = INScore.objects().adapter(objid);
 		this.updateObjectSize (obj, div.clientWidth, div.clientHeight);
+
 		// for a yet unknown reason, removing the next line result in incorrect
 		// children positionning (like if position becomes relative to the window)
 		div.style.filter = `blur(0px)`;
 		window.addEventListener ("keydown", (event) => { if (event.key === ' ') event.preventDefault(); obj.keyEvent ('keyDown', event.key); }, {capture: false});
+		// window.addEventListener ("resize", (e: UIEvent): void => { 
+		// 	this.updateObjectSize (obj, div.clientWidth, div.clientHeight);
+		// });
 		if (screen.orientation)
 			screen.orientation.addEventListener('change', function(e) { 
 				inscore.postMessageStrStr ("/ITL/" + id, "event", (screen.orientation.type.startsWith("portrait") ? "portrait" : "landscape"));
@@ -59,6 +63,25 @@ class JSSceneView extends JSObjectView {
 
 	parentWidth() : number			{ return this.getElement().parentElement.offsetWidth; }
 	parentHeight() : number			{ return this.getElement().parentElement.offsetHeight; }
+
+	// this method is called by the model to get the real scene width and height
+	static getWidth (id: number) : number {
+		let scene = <JSSceneView>JSObjectView.getObjectView(id);
+		return scene ? scene.sceneWidth() : 2;
+	}
+	static getHeight (id: number) : number {
+		let scene = <JSSceneView>JSObjectView.getObjectView(id);
+    	return scene ? scene.sceneHeight() : 2;
+	}
+
+	private sceneWidth() : number {
+		let div = this.getElement();
+		return (div.clientWidth <= div.clientHeight) ?  2 : 2 * (div.clientWidth / div.clientHeight);
+	}
+	private sceneHeight() : number {
+		let div = this.getElement();
+		return (div.clientHeight <= div.clientWidth) ? 2 : 2 * (div.clientHeight / div.clientWidth);
+	}
 
 	private exitFullscreen() {
 		let elt = document as fsDocument;
