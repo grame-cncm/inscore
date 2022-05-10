@@ -3,9 +3,13 @@
 
 abstract class JSAutoSize extends JSObjectView 
 {
+    private fSetSize = true;    // a flag to control automatic size setting
+
     constructor(elt: HTMLElement, parent: JSObjectView) 	{ 
         super (elt, parent);
     }
+
+    sizePending() : void  { this.fSetSize = true; }
 
     getAutoSize() : Point {
         let elt = this.getElement();
@@ -13,9 +17,11 @@ abstract class JSAutoSize extends JSObjectView
     }
 
     updateSizeSync (obj: INScoreObject) : boolean {
+        if (!this.fSetSize) return true;
         let p = this.getAutoSize();
         this.updateObjectSize (obj, p.x, p.y);
         obj.ready();
+        this.fSetSize = false;
         return true;
     }
 

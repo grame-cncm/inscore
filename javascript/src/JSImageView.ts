@@ -30,6 +30,7 @@ class JSImageView extends JSAutoSize
 	updateSpecial ( obj: INScoreObject)	: boolean {
         this.fImage.src  = obj.getFile();
         this.fImage.id = obj.getID();
+        this.sizePending();
         return this.updateSizeASync (obj);
 	}
     

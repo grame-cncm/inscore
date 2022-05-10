@@ -21,6 +21,7 @@ class JSVideoView extends TMedia {
         AIOScanner.scan (obj.getOSCAddress());
 		this.addHandlers( this.fVideo, obj);
         this.fVideo.src  = obj.getFile();
+		this.sizePending();
 		return this.updateSizeASync (obj );
 	}
  
