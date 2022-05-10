@@ -1,0 +1,65 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> 
+	<meta http-equiv="Pragma" content="no-cache" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<title>INScore Tests</title>
+
+	<link href="../fonts/fonts.css" rel="stylesheet">
+	<script src="../lib/libINScore.js"></script>
+	<script src="../lib/libGUIDOEngine.js"></script>
+	<script src="../inscoreview.js"></script>
+	<script src="../inscoreglue.js"></script>
+	<style>
+	body { margin: 10; background: gainsboro; height: 90%; }
+	.inscore { width: 100%; height: 100%; border-radius: 10px; font-size: 1px; background: white }
+	</style>
+</head>
+
+<body>
+
+<div class="inscore" id="scene">
+<pre>
+	/ITL/scene get swidth sheight;
+	
+	/ITL/scene/r1 set rect 0.9sw 1;
+	/ITL/scene/r1 color black;
+	/ITL/scene/r2 set rect 1 0.9sh;
+	/ITL/scene/r2 color orange;	
+
+	/ITL/scene/img set img "../imgs/Applebaum.jpg";
+	/ITL/scene/img width 0.88sw;
+
+	/ITL/scene/comment set txt "This script illustrates scene relative dimensions.";
+	/ITL/scene/click set txt "Click me to change the objects dimensions";
+	
+	/ITL/scene/comment yorigin 1.1;
+	/ITL/scene/click yorigin -1.1;
+	/ITL/scene/c* y 0.5;
+	/ITL/scene/click watch mouseEnter (/ITL/scene/click color blue);
+	/ITL/scene/click watch mouseLeave (/ITL/scene/click color black);
+
+	/ITL/scene/comment2 set txt "...and change the window size.";
+	/ITL/scene/comment2 y 0.65;
+
+	/ITL/scene/click watch mouseDown (
+		/ITL/scene/click push,
+		/ITL/scene/r1 width 1.5,
+		/ITL/scene/r2 height 1.5,
+		/ITL/scene/img width 1,
+		/ITL/scene/click watch mouseDown (
+			/ITL/scene/r1 width 0.9sw,
+			/ITL/scene/r2 height 0.9sh,
+			/ITL/scene/img width 0.88sw,
+			/ITL/scene/click pop
+		)
+	);
+	
+</pre>
+</div>
+
+</body>
+
+</html>
