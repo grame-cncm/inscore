@@ -321,8 +321,9 @@ abstract class JSObjectView {
 	// }
 
 	updateObjectSize (obj: INScoreObject, w: number, h: number) : void {
-		obj.updateWidth  (this.scene2RelativeWidth  (w)); 
-		obj.updateHeight (this.scene2RelativeHeight (h)); 
+		// obj.updateWidth  (this.scene2RelativeWidth  (w)); 
+		// obj.updateHeight (this.scene2RelativeHeight (h)); 
+		obj.setSize (this.scene2RelativeWidth(w), this.scene2RelativeHeight(h));
 		let div = this.getElement();
 		obj.updateViewBoundingRect (div.clientLeft, div.clientTop, w, h);
 	}
