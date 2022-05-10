@@ -9,15 +9,15 @@
 
 	<link href="../fonts/fonts.css" rel="stylesheet">
 	<script src="../lib/libINScore.js"></script>
-	<!-- <script src="../lib/libGUIDOEngine.js"></script> -->
+	<script src="../lib/libGUIDOEngine.js"></script>
 	<!-- <script src="../lib/libmusicxml.js"></script> -->
-	<script src="../lib/libfaust-wasm.js"></script> 
-	<script src="../lib/FaustLibrary.js"></script>
+	<!-- <script src="../lib/libfaust-wasm.js"></script> 
+	<script src="../lib/FaustLibrary.js"></script> -->
 	<script src="../inscoreview.js"></script>
 	<script src="../inscoreglue.js"></script>
 	<style>
-	body { margin: 50; background: gainsboro; height: 90%; }
-	.inscore { width: 90%; height: 90%; border-radius: 10px; font-size: 1px; background: white }
+	body { margin: 10; background: gainsboro; height: 90%; }
+	.inscore { width: 100%; height: 100%; border-radius: 10px; font-size: 1px; background: white }
 	</style>
 </head>
 
@@ -25,20 +25,35 @@
 
 <div class="inscore" id="scene">
 <pre>
-/ITL/scene/faust set faust 'import("stdfaust.lib"); process = ba.pulsen(1, 10000) : pm.djembe(60, 0.3, 0.4, 1) &lt;: _,_ ;';
-/ITL/scene/audio set audio "rsrc/stereo.wav";
-/ITL/scene/faust watch ready (/ITL/log write "faust ready");
-/ITL/scene/audio watch ready ( /ITL/log write "audio ready", /ITL/scene/audio disconnect audioOutput);
+	/ITL/scene get swidth sheight;
+	
+	/ITL/scene/r1 set rect 0.9sw 1;
+	/ITL/scene/r1 color black;
+	/ITL/scene/r2 set rect 1 0.9sh;
+	/ITL/scene/r2 color orange;	
 
-/ITL/scene/layer set layer;
-/ITL/scene/layer/audio set audio "rsrc/stereo.wav";
+	/ITL/scene/img set img "../imgs/Applebaum.jpg";
+	/ITL/scene/img width 0.88sw;
 
-
-/ITL/scene/audioInput watch ready ( /ITL/log write "audio input ready", /ITL/scene/audioInput get );
-/ITL/scene/audioInput watch error ( /ITL/log write "cannot initialize audio input");
-/ITL/scene/audioInput init;
-
-
+	/ITL/scene/comment set txt "This script illustrates scene relative dimensions.";
+	/ITL/scene/click set txt "Click me to change the objects dimensions";
+	
+	/ITL/scene/comment yorigin 1.1;
+	/ITL/scene/click yorigin -1.1;
+	
+	/ITL/scene/r2 watch mouseDown (
+		/ITL/scene/r2 push,
+		/ITL/scene/r1 width 1.5,
+		/ITL/scene/r2 height 1.5,
+		/ITL/scene/img width 1,
+		/ITL/scene/r2 watch mouseDown (
+			/ITL/scene/r1 width 0.9sw,
+			/ITL/scene/r2 height 0.9sh,
+			/ITL/scene/img width 0.88sh,
+			/ITL/scene/r2 pop
+		)
+	);
+	
 </pre>
 </div>
 
