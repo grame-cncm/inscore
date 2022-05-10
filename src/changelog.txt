@@ -15,6 +15,7 @@ It has been supported by the ANR
 ----------------------------------------------------
 Version 1.33
 - add 'date%a' query to get the absolute date in seconds (assumes the tempo is 60 bpm)
+- supports dynamic scene relative dimensions
 - web version: 
 	- fix concurrent 'faustw' objects creation
 
