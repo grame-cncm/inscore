@@ -106,9 +106,9 @@ VLogWindow::TButton * VLogWindow::createToolButton(const QString &toolTip, const
     return button;
 }
 
-const char*	VLogWindow::getText () const
+const std::string VLogWindow::getText () const
 {
-	return fLogArea->toPlainText().toUtf8().constData();
+	return fLogArea->toPlainText().toStdString();
 }
 
 int VLogWindow::local2screen (float v) const { return v * fScreenDim / 2; }

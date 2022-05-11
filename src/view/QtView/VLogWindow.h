@@ -26,6 +26,8 @@
 #ifndef __VLogWindow__
 #define __VLogWindow__
 
+#include <string>
+
 #include <QEvent>
 #include <QWidget>
 
@@ -48,7 +50,7 @@ public:
 			VLogWindow(const char* name, IApplLog * logwindow);
 	
 	void			append (const char* text);
-	const char*		getText () const;
+	const std::string getText () const;
 	virtual void	setVisible	(bool visible);
 	virtual void	imove		(float x, float y);
 	virtual void	izoom		(float zoom);
