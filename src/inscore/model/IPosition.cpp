@@ -48,8 +48,9 @@ IPosition::IPosition():
 
 void IPosition::setPos(const IPosition& p)
 {
-	setXPos( p.getXPos() );
-	setYPos( p.getYPos() );
+	_setXPos( p.getXPos() );
+	_setYPos( p.getYPos() );
+	fSceneRelativeXY = p.fSceneRelativeXY;
 	setZOrder( p.getZOrder() );
 	setScale( p.getScale() );
 	setRotateX(p.getRotateX() );
@@ -59,6 +60,21 @@ void IPosition::setPos(const IPosition& p)
 	_setHeight( p.getHeight() );
 	fSceneRelativeDims = p.fSceneRelativeDims;
 	setVisible( p.getVisible() );
+}
+//--------------------------------------------------------------------------
+void IPosition::setSceneRelativeX(bool scenewidth, bool sceneheight) {
+	if (scenewidth) fSceneRelativeXY |= kX2Width;
+	else fSceneRelativeXY &= ~kX2Width;
+	if (sceneheight) fSceneRelativeXY |= kX2Height;
+	else fSceneRelativeXY &= ~kX2Height;
+}
+
+//--------------------------------------------------------------------------
+void IPosition::setSceneRelativeY(bool scenewidth, bool sceneheight) {
+	if (scenewidth) fSceneRelativeXY |= kY2Width;
+	else fSceneRelativeXY &= ~kY2Width;
+	if (sceneheight) fSceneRelativeXY |= kY2Height;
+	else fSceneRelativeXY &= ~kY2Height;
 }
 
 //--------------------------------------------------------------------------
@@ -98,6 +114,22 @@ void IPosition::setHeight(float height, bool scenewidth, bool sceneheight) {
 }
 
 //--------------------------------------------------------------------------
+float IPosition::getXPos () const {
+	if (fSceneRelativeXY == kNone) return fXPos;
+	const IScene* scene = static_cast<const IObject*>(this)->getScene();
+	return fXPos * (fSceneRelativeXY & kX2Width ? (scene->getSceneWidth() / 2) :
+				 (fSceneRelativeXY & kX2Height ? scene->getSceneHeight() / 2 : 1));
+}
+
+//--------------------------------------------------------------------------
+float IPosition::getYPos () const {
+	if (fSceneRelativeXY == kNone) return fYPos;
+	const IScene* scene = static_cast<const IObject*>(this)->getScene();
+	return fYPos * (fSceneRelativeXY & kY2Width ? (scene->getSceneWidth() / 2) :
+				 (fSceneRelativeXY & kY2Height ? scene->getSceneHeight() / 2 : 1));
+}
+
+//--------------------------------------------------------------------------
 float IPosition::getWidth() const {
 	float width = fWidth ? fWidth : fHeight ? getHeight() * fWHRatio : 0;
 	if (fSceneRelativeDims == kNone) return width;
@@ -114,6 +146,18 @@ float IPosition::getHeight() const	{
 	return height * (fSceneRelativeDims & kHeight2Height ? scene->getSceneHeight() :
 				 (fSceneRelativeDims & kHeight2Width ? scene->getSceneWidth() : 1));
 }
+
+//--------------------------------------------------------------------------
+void IPosition::setXPos (float x, bool scenewidth, bool sceneheight) {
+	fXPos = x; fModified = true;
+	setSceneRelativeX(scenewidth, sceneheight);
+}
+
+void IPosition::setYPos (float y, bool scenewidth, bool sceneheight) {
+	fYPos = y; fModified = true;
+	setSceneRelativeY(scenewidth, sceneheight);
+}
+
 
 //--------------------------------------------------------------------------
 void IPosition::setSize(float w, float h)	{

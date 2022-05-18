@@ -58,12 +58,13 @@ class IPosition
 {
 	private:
 		float	fWidth, fHeight;		///< the object dimensions
+		float	fXPos, fYPos;			///< the object coordinates
 
 	protected:	
 		float	fWHRatio = 0.f;			///< used by objects with proportional dimensions
-		float	fXPos, fYPos;			///< the object coordinates
 		float	fXOrigin, fYOrigin;		///< the origin coordinates (range [-1,1] where 0,0 is the object center)
 		int		fSceneRelativeDims = 0; ///< a set of flags to indicate scene relative dimensions
+		int		fSceneRelativeXY = 0; 	///< a set of flags to indicate scene relative positions
 		float	fZOrder;				///< the object Z-order
 		bool	fVisible;				///< the object visibility
 		float	fScale;					///< the object scaling factor
@@ -81,6 +82,7 @@ class IPosition
 
 		// this constants indicates the relation between the object dimensions and the scene dimensions
 		enum { kNone, kWidth2Width=1, kWidth2Height=2, kHeight2Height=4, kHeight2Width=8 };
+		enum { kX2Width=1, kX2Height=2, kY2Height=4, kY2Width=8 };
 
 	public:
 				 IPosition();
@@ -100,12 +102,16 @@ class IPosition
 		virtual void	cleanup ()					{ fModified = false; }
 
 		/// \brief returns the \c x position of the object
-		virtual float	getXPos () const			{ return fXPos; }
+		virtual float	getXPos () const;
+				float	_getXPos () const			{ return fXPos; }
+
 		/// \brief returns the \c y position of the object
-		virtual float	getYPos () const			{ return fYPos; }
-		/// \brief returns the \c x position of the object
+		virtual float	getYPos () const;
+				float	_getYPos () const			{ return fYPos; }
+
+		/// \brief returns the \c x origin of the object
 		virtual float	getXOrigin () const			{ return fXOrigin; }
-		/// \brief returns the \c y position of the object
+		/// \brief returns the \c y origin of the object
 		virtual float	getYOrigin () const			{ return fYOrigin; }
 		/// \brief returns the object z order
 		virtual float	getZOrder() const			{ return fZOrder; }
@@ -140,6 +146,11 @@ class IPosition
 		bool	heightRelative2SceneW () const 		{ return fSceneRelativeDims & kHeight2Width; }
 		bool	heightRelative2SceneH () const 		{ return fSceneRelativeDims & kHeight2Height; }
 
+		bool	xRelative2SceneW () const 		{ return fSceneRelativeXY & kX2Width; }
+		bool	xRelative2SceneH () const 		{ return fSceneRelativeXY & kX2Height; }
+		bool	yRelative2SceneW () const 		{ return fSceneRelativeXY & kY2Width; }
+		bool	yRelative2SceneH () const 		{ return fSceneRelativeXY & kY2Height; }
+
 		/// \brief returns the object visibility
 		virtual bool	getVisible () const			{ return fVisible; }
 
@@ -159,6 +170,8 @@ class IPosition
 		/// \brief Sets flags for scene relative dimensions
 		virtual void	setSceneRelativeWidth(bool scenewidth, bool sceneheight);
 		virtual void	setSceneRelativeHeight(bool scenewidth, bool sceneheight);
+		virtual void	setSceneRelativeX(bool scenewidth, bool sceneheight);
+		virtual void	setSceneRelativeY(bool scenewidth, bool sceneheight);
 
 		/*!
 			\brief sets an object \c x position in its scene
@@ -167,8 +180,9 @@ class IPosition
 			and 1 is the topmost position on the \c y axis.
 			\param x the x position
 		*/
-		virtual void	setXPos (float x)			{ fXPos = x; fModified = true; }
-		virtual void	addXPos (float x)			{ setXPos (fXPos + x); }
+		virtual void	setXPos (float x, bool scenewidth, bool sceneheight); //			{ fXPos = x; fModified = true; }
+		virtual void	_setXPos (float x)			{ fXPos = x; fModified = true; }
+		virtual void	addXPos (float x)			{ _setXPos (fXPos + x); }
 
 		/*!
 			\brief sets an object \c x origin
@@ -191,8 +205,9 @@ class IPosition
 			and 1 is the topmost position on the \c y axis.
 			\param y the y position
 		*/
-		virtual void	setYPos (float y)			{ fYPos = y; fModified = true; }
-		virtual void	addYPos (float y)			{ setYPos (fYPos + y); }
+		virtual void	setYPos (float y, bool scenewidth, bool sceneheight); //			{ fYPos = y; fModified = true; }
+		virtual void	_setYPos (float y)			{ fYPos = y; fModified = true; }
+		virtual void	addYPos (float y)			{ _setYPos (fYPos + y); }
 
 		/*!
 			\brief sets an object scaling factor

@@ -72,7 +72,7 @@ void I1DSensor::readData ()
 		*(signal(0)) << sigvalue(val);
 	}
 	if (val != getXPos())	{
-		setXPos(val);
+		_setXPos(val);
 		if (!fIsSignal) newData (true);
 	}
 	setModified();
@@ -84,7 +84,7 @@ bool I1DSensor::activate(bool val)
 	// the sensor starts, set the value to a default value
 	// this default value should be overriden by derived class
 	// the idea is to force the newData event at activation time.
-	if (val) setXPos(fDefaultValue);
+	if (val) _setXPos(fDefaultValue);
 	return true;
 }
 
@@ -93,7 +93,8 @@ void I1DSensor::setHandlers()
 {
 	ISensor::setHandlers();
 	// x is used to store the sensor values
-	fAltGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
+//	fAltGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
+	fAltGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMethodHandler<I1DSensor, float (I1DSensor::*)() const>::create(this, &I1DSensor::_getXPos);
 }
 
 } // end namespace

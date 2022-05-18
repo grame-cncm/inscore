@@ -21,6 +21,11 @@
 /ITL/scene/comment2 set txt "...and change the window size.";
 /ITL/scene/comment2 y 0.65;
 
+/ITL/scene/comment3 set txt "This text position is relative to the scene height.";
+/ITL/scene/comment3 yorigin -1.4;
+/ITL/scene/comment3 y -1.sh;
+/ITL/scene/comment3 fontSize 18;
+
 /ITL/scene/click watch mouseDown (
 	/ITL/scene/click push,
 	/ITL/scene/r1 width 1.5,

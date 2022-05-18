@@ -165,7 +165,7 @@ MsgHandler::msgStatus IScene::widthMsg (const IMessage* msg)
 		if (msg->cast_param(0, val)) {
 			_setWidth (val);
 			for (auto elt: elements()) {
-				if (elt->widthRelative2SceneW() || elt->heightRelative2SceneW())
+				if (elt->widthRelative2SceneW() || elt->heightRelative2SceneW() || elt->xRelative2SceneW() || elt->yRelative2SceneW())
 					elt->setModified();
 			}
 			return MsgHandler::kProcessed;
@@ -182,7 +182,7 @@ MsgHandler::msgStatus IScene::heightMsg (const IMessage* msg)
 		if (msg->cast_param(0, val)) {
 			_setHeight (val);
 			for (auto elt: elements()) {
-				if (elt->widthRelative2SceneH() || elt->heightRelative2SceneH())
+				if (elt->widthRelative2SceneH() || elt->heightRelative2SceneH() || elt->xRelative2SceneH() || elt->yRelative2SceneH())
 					elt->setModified();
 			}
 			return MsgHandler::kProcessed;
@@ -221,8 +221,8 @@ void IScene::reset ()
 {
 	EventsAble::reset();
 	setColor( IColor(255,255,255,255) );
-	setXPos(0.f);
-	setYPos(0.f);
+	_setXPos(0.f);
+	_setYPos(0.f);
 	setScale(1.0f);
 	setXOrigin(0.0f);
 	setYOrigin(0.0f);

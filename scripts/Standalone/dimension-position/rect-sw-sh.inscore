@@ -6,11 +6,16 @@
 /ITL/scene/r2 set rect 1 0.9sh;
 /ITL/scene/r2 color orange;
 
-/ITL/scene/comment set txt "This script illustrates scene relative dimensions.";
-/ITL/scene/click set txt "Click the rectangle to change the scene dimension";
+/ITL/scene/comment set txt "This script illustrates scene relative dimensions and positions.";
+/ITL/scene/comment2 set txt "This text position is relative to the scene height.";
+/ITL/scene/click set txt "Click me to change the scene dimension";
 
 /ITL/scene/comment yorigin 1.1;
 /ITL/scene/click yorigin -1.1;
+
+/ITL/scene/comment2 yorigin -1.4;
+/ITL/scene/comment2 fontSize 18;
+/ITL/scene/comment2 y -1sh;
 
 /ITL/scene/r2 watch mouseDown (
 	/ITL/scene/r2 push,

@@ -158,8 +158,8 @@ class IApplLog : public IVNode
 		VLogWindow* window()				{ return fWindow; }
 		void		print(const char*);
 
-		void	setX		(float x)	{ fXPos = x; }
-		void	setY		(float y)	{ fYPos = y; }
+		void	setX		(float x)	{ _setXPos (x); }
+		void	setY		(float y)	{ _setYPos (y); }
 		void	setW		(float w)	{ _setWidth(w); }
 		void	setH		(float h)	{ _setHeight(h); }
 		void	setWrap		(bool state);

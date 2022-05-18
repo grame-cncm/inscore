@@ -496,6 +496,8 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		/// \brief object \c 'get' message handler.
 		virtual SIMessageList getMsgs (const IMessage* msg) const;
+		virtual void 	  getXMsg(SIMessage& out) const;
+		virtual void 	  getYMsg(SIMessage& out) const;
 		virtual void 	  getWidthMsg(SIMessage& out) const;
 		virtual void 	  getHeightMsg(SIMessage& out) const;
 		
@@ -765,6 +767,12 @@ class IObject : public IPosition, public IShape, public IDate, public IColor, pu
 
 		bool getDimParameter (const IMessage * msg, int index, bool& scenerelativew, bool& scenerelativeh);
 		bool getDimParameter (const IMessage * msg, int index, float& val, bool& scenerelativew, bool& scenerelativeh);
+
+		/// \brief object \c 'x' message handler
+		virtual MsgHandler::msgStatus xMsg (const IMessage* msg);
+		/// \brief object \c 'y' message handler
+		virtual MsgHandler::msgStatus yMsg (const IMessage* msg);
+
 		/// \brief object \c 'width' message handler
 		virtual MsgHandler::msgStatus widthMsg (const IMessage* msg);
 		/// \brief object \c 'height' message handler

@@ -244,8 +244,8 @@ void IObject::colorAble()
 //--------------------------------------------------------------------------
 void IObject::positionAble()
 {
-	fGetMsgHandlerMap[kx_GetSetMethod]		= TGetParamMsgHandler<float>::create(fXPos);
-	fGetMsgHandlerMap[ky_GetSetMethod]		= TGetParamMsgHandler<float>::create(fYPos);
+	fGetMsgHandlerMap[kx_GetSetMethod]		= TGetDimensionMethodHandler<IObject, void (IObject::*)(SIMessage&) const>::create(this, &IObject::getXMsg);
+	fGetMsgHandlerMap[ky_GetSetMethod]		= TGetDimensionMethodHandler<IObject, void (IObject::*)(SIMessage&) const>::create(this, &IObject::getYMsg);
 	fGetMsgHandlerMap[kxorigin_GetSetMethod]= TGetParamMsgHandler<float>::create(fXOrigin);
 	fGetMsgHandlerMap[kyorigin_GetSetMethod]= TGetParamMsgHandler<float>::create(fYOrigin);
 	fGetMsgHandlerMap[kz_GetSetMethod]		= TGetParamMsgHandler<float>::create(fZOrder);
@@ -261,8 +261,6 @@ void IObject::positionAble()
 	fGetMsgHandlerMap[keffect_GetSetMethod]	= TGetParamMethodHandler<IObject, const IEffect* (IObject::*)() const>::create(this, &IObject::getEffect);
 	fGetMsgHandlerMap[kframe_GetMethod]		= TGetParamMethodHandler<IObject, vector<float> (IObject::*)() const>::create(this, &IObject::getFrame);
 
-	fMsgHandlerMap[kx_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXPos);
-	fMsgHandlerMap[ky_GetSetMethod]			= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setYPos);
 	fMsgHandlerMap[kxorigin_GetSetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::setXOrigin);
 	fMsgHandlerMap[kwidth_GetSetMethod]		= TMethodMsgHandler<IObject>::create(this, &IObject::widthMsg);
 	fMsgHandlerMap[kheight_GetSetMethod]	= TMethodMsgHandler<IObject>::create(this, &IObject::heightMsg);
@@ -285,8 +283,8 @@ void IObject::positionAble()
 	fMsgHandlerMap[kdangle_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::addAngle);
 	fMsgHandlerMap[kdscale_SetMethod]	= TSetMethodMsgHandler<IObject,float>::create(this, &IObject::multScale);
 
-	fSigHandlerMap[kx_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXPos);
-	fSigHandlerMap[ky_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setYPos);
+	fMsgHandlerMap[kx_GetSetMethod]			= TMethodMsgHandler<IObject>::create(this, &IObject::xMsg);
+	fMsgHandlerMap[ky_GetSetMethod]			= TMethodMsgHandler<IObject>::create(this, &IObject::yMsg);
 	fSigHandlerMap[kxorigin_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setXOrigin);
 	fSigHandlerMap[kyorigin_GetSetMethod]	= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setYOrigin);
 	fSigHandlerMap[kz_GetSetMethod]			= TSetMethodSigHandler<IObject,float>::create(this, &IObject::setZOrder);
@@ -1094,6 +1092,37 @@ SIMessage IObject::getParam(const string& what, const SGetParamMsgHandler& h) co
 	return msg;
 }
 
+
+//--------------------------------------------------------------------------
+void IObject::getXMsg(SIMessage& msg) const
+{
+	stringstream s;
+	if (xRelative2SceneW()) {
+		s << _getXPos() << "sw";
+		*msg << s.str();
+	}
+	else if (xRelative2SceneH()) {
+		s << _getXPos() << "sh";
+		*msg << s.str();
+	}
+	else *msg << _getXPos();
+}
+
+//--------------------------------------------------------------------------
+void IObject::getYMsg(SIMessage& msg) const
+{
+	stringstream s;
+	if (yRelative2SceneW()) {
+		s << _getYPos() << "sw";
+		*msg << s.str();
+	}
+	else if (yRelative2SceneH()) {
+		s << _getYPos() << "sh";
+		*msg << s.str();
+	}
+	else *msg << _getYPos();
+}
+
 //--------------------------------------------------------------------------
 void IObject::getWidthMsg(SIMessage& msg) const
 {
@@ -1293,8 +1322,8 @@ MsgHandler::msgStatus IObject::popMsg(const IMessage* msg)
 void IObject::transferAttributes(SIObject dest)
 {
     //transfer of the attributes of the current object to another object
-    dest->setXPos (getXPos());
-    dest->setYPos (getYPos());
+    dest->setXPos (getXPos(), xRelative2SceneW(), xRelative2SceneH());
+    dest->setYPos (getYPos(), yRelative2SceneW(), yRelative2SceneH());
     dest->setXOrigin (getXOrigin());
     dest->setYOrigin (getYOrigin());
     dest->setScale (getScale());
@@ -1978,6 +2007,34 @@ MsgHandler::msgStatus IObject::heightMsg (const IMessage* msg)
 		bool scenewidth, sceneheight;
 		if (getDimParameter(msg, 0, val, scenewidth, sceneheight)) {
 			setHeight (val, scenewidth, sceneheight);
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::xMsg (const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		float val;
+		bool scenewidth, sceneheight;
+		if (getDimParameter(msg, 0, val, scenewidth, sceneheight)) {
+			setXPos(val, scenewidth, sceneheight);
+			return MsgHandler::kProcessed;
+		}
+	}
+	return MsgHandler::kBadParameters;
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IObject::yMsg (const IMessage* msg)
+{
+	if (msg->size() == 1) {
+		float val;
+		bool scenewidth, sceneheight;
+		if (getDimParameter(msg, 0, val, scenewidth, sceneheight)) {
+			setYPos (val, scenewidth, sceneheight);
 			return MsgHandler::kProcessed;
 		}
 	}

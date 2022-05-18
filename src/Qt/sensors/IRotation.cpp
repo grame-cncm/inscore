@@ -70,8 +70,8 @@ void IRotation::readData ()
 {
 	float x, y, z;
 	if (read(x, y, z)) {
-		setXPos		( smooth (x * getScale(), getXPos()) );
-		setYPos		( smooth (y * getScale(), getYPos()) );
+		_setXPos		( smooth (x * getScale(), getXPos()) );
+		_setYPos		( smooth (y * getScale(), getYPos()) );
 		setZOrder	( smooth (z * getScale(), getZOrder()) );
 		if (fIsSignal) {
 			*fXSig << sigvalue( getXPos() * 2);

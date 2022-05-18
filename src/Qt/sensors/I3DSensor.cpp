@@ -115,8 +115,8 @@ void I3DSensor::readData ()
 			}
 		}
 
-		setXPos		( smooth (x * getScale(), getXPos()) );
-		setYPos		( smooth (y * getScale(), getYPos()) );
+		_setXPos		( smooth (x * getScale(), getXPos()) );
+		_setYPos		( smooth (y * getScale(), getYPos()) );
 		setZOrder	( smooth (z * getScale(), getZOrder()) );
 		if (fIsSignal) {
 //INScore::postMessage("192.168.1.21:7001/I3DSensor", "x", sigvalue(getXPos()));
@@ -139,8 +139,10 @@ void I3DSensor::setHandlers()
 	ISensor::setHandlers();
 	// x, y and z attributes of 3D sensors are used to store the sensor values
 	// and are available to 'get' messages
-	fAltGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMsgHandler<float>::create(fXPos);
-	fAltGetMsgHandlerMap[ky_GetSetMethod]	= TGetParamMsgHandler<float>::create(fYPos);
+
+	fAltGetMsgHandlerMap[kx_GetSetMethod]	= TGetParamMethodHandler<I3DSensor, float (I3DSensor::*)() const>::create(this, &I3DSensor::_getXPos);
+	fAltGetMsgHandlerMap[ky_GetSetMethod]	= TGetParamMethodHandler<I3DSensor, float (I3DSensor::*)() const>::create(this, &I3DSensor::_getYPos);
+
 	fAltGetMsgHandlerMap[kz_GetSetMethod]	= TGetParamMsgHandler<float>::create(fZOrder);
 }
 
