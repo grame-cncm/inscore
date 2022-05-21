@@ -10,9 +10,9 @@
   },
   "scripts": {},
   "dependencies": {
-    "@grame/guidolib": "^1.7.12",
-    "@grame/libfaust": "^1.2.0",
-    "@grame/libmusicxml": "^3.19.1"
+    "@grame/guidolib": "^1.7.4",
+    "@grame/libfaust": "^1.3.1",
+    "@grame/libmusicxml": "^3.21.0"
   },
   "types": "inscore.d.ts",
   "homepage": "https://inscore.grame.fr",
