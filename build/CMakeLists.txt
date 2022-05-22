@@ -556,6 +556,12 @@ install (
 )
 
 ####################################
+# install VS redistributables
+if (MSVC)
+  include (InstallRequiredSystemLibraries)
+endif()
+
+####################################
 # install linux specific files
 if (UNIX AND NOT APPLE)
 	set (URSRC ${ROOT}/package/rsrc/share)
