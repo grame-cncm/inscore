@@ -44,7 +44,7 @@ ITilt::ITilt(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kTiltType;
-	if (isSignal()) fDefaultScale = 1 / 90.;
+	if (isSignal()) fDefaultScale = 1 / 90.f;
 	setScale ( fDefaultScale );
 }
 ITilt::~ITilt() {}

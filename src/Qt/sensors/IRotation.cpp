@@ -46,7 +46,7 @@ IRotation::IRotation(const std::string& name, IObject * parent)
 	fHasZ = sensor()->hasZ();
 	fCX = fCY = fCZ = 0;
 	fSetFromEuler = false;
-	if (isSignal()) fDefaultScale = 1 / 180.;
+	if (isSignal()) fDefaultScale = 1 / 180.f;
 	setScale ( fDefaultScale );
 }
 IRotation::~IRotation()	{}
