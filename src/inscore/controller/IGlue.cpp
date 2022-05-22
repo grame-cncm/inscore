@@ -211,7 +211,7 @@ void IGlue::initialize (bool offscreen, INScoreApplicationGlue* ag)
 	oscerr << inscore << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << OSCEnd();
 	cout << inscore << INScore::versionStr() << " listening OSC on port " <<  fUDP.fInPort << endl;
 #ifdef ANDROID
-	qDebug() << inscore << INScore::versionStr().c_str() << " listening OSC on port " <<  fUDP.fInPort;
+	qDebug() << inscore.c_str() << INScore::versionStr().c_str() << " listening OSC on port " <<  fUDP.fInPort;
 #endif
 #elif defined(EMCC)
 	string version ("INScore JS v.");
