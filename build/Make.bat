@@ -1,8 +1,8 @@
 
 @echo off
 
-set MSVC="Visual Studio 15 2017 Win64"
-set VERSION="1.2.8"
+set MSVC="Visual Studio 16 2019"
+set VERSION="1.3.3"
 
 IF [%1]==[]     GOTO USAGE
 IF %1==modules (
@@ -95,7 +95,7 @@ EXIT /B
 		mkdir inscoredir
 	)
 	cd inscoredir
-	cmake .. -G %MSVC%
+	cmake .. -G %MSVC% -DQT6=on
 	cmake --build . --config Release
 	cd ..
 EXIT /B

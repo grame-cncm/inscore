@@ -6,7 +6,7 @@ echo Compiles guidolib
 CALL :SUBCOMPILE guidolib GUIDOEngine64 "-DMIN=on"
 
 echo Compiles libmusicxml
-CALL :SUBCOMPILE libmusicxml musicxml2 "-DGENTOOLS=off -DLILY=off -DGENSTATIC=off"
+CALL :SUBCOMPILE libmusicxml musicxml2 "-DGENTOOLS=off -DGENSTATIC=off"
 GOTO :DONE
 
 :SUBCOMPILE
@@ -16,8 +16,8 @@ GOTO :DONE
 		mkdir win64
 	)
 	cd win64
-	cmake .. -G "Visual Studio 15 2017 Win64" %~3
-	cmake --build . --config Release --target %~2
+	cmake .. -G "Visual Studio 16 2019" %~3
+	cmake --build . --config Release 
 	cd ../../..
 EXIT /B
 
