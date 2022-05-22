@@ -75,7 +75,7 @@ template<typename T> class TAXBFunction : public TVFunction {
 
 		/// equality operator : actually check for coefficients equality
 		virtual bool  operator == (const TAXBFunction& f) const { return (fA==f.fA) && (fB==f.fB); }
-		virtual bool  near (const TAXBFunction& f) const		{ return near::check(fA, f.fA) && near::check(fB, f.fB); }
+		virtual bool  near (const TAXBFunction& f) const		{ return _near::check(fA, f.fA) && _near::check(fB, f.fB); }
     
 };
 

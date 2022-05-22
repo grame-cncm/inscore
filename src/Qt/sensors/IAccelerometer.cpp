@@ -49,7 +49,7 @@ IAccelerometer::IAccelerometer(const std::string& name, IObject * parent)
 	: IQSensor (name, parent)
 {
 	fTypeString = kAccelerometerType;
-	if (isSignal()) fDefaultScale =  1 / gForce;
+	if (isSignal()) fDefaultScale =  float(1 / gForce);
 	setScale ( fDefaultScale );
 }
 IAccelerometer::~IAccelerometer()	{}

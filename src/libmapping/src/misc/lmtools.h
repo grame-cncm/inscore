@@ -43,7 +43,7 @@ namespace libmapping
 /*!
 \brief relaxed equality support for rational and float values
 */
-class near {
+class _near {
 	public:
 		template <typename T> static bool check (T a, T b, T precision=0 )
 					{ return ((a > b) ? (a - b) : (b - a)) <= precision; }
