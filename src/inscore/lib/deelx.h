@@ -1,4 +1,3 @@
-// deelx.h
 //
 // DEELX Regular Expression Engine (v1.2)
 //
@@ -7,7 +6,7 @@
 //
 // http://www.regexlab.com/deelx/
 //
-// Author:  ∑ ŸŒ∞ (sswater shi)
+// Author: (sswater shi)
 // sswater@gmail.com
 //
 // $Revision: 1.1.2.26 $
