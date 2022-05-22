@@ -70,7 +70,7 @@ EXIT /B
 	IF NOT EXIST %dest%\Plugins (
 		mkdir %dest%\Plugins
 	)
-	xcopy /y "..\modules\libmusicxml\build\lib\musicxml2.dll" "%dest%\Plugins\"
+	xcopy /y "..\modules\libmusicxml\build\lib\libmusicxml.dll" "%dest%\"
 EXIT /B
 
 @rem --- submodules compilation ----------------------
