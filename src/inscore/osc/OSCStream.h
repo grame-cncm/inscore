@@ -178,8 +178,8 @@ class OSCErrorStream : public OSCStream
 						OSCErrorStream& operator <<(OSCErrorStream& s, const std::string& val);
 						OSCErrorStream& operator <<(OSCErrorStream& s, const IExpression* val);
 						OSCErrorStream& operator <<(OSCErrorStream& s, const IExprArgBase* val);
-				inline	OSCErrorStream& operator <<(OSCErrorStream& s, int val)			{ s.stream() << " " << val; return s; }
-				inline	OSCErrorStream& operator <<(OSCErrorStream& s, long val)		{ s.stream() << " " << (int)val; return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, int val)			{ s.stream() << " " << osc::int32(val); return s; }
+				inline	OSCErrorStream& operator <<(OSCErrorStream& s, long val)		{ s.stream() << " " << osc::int32(val); return s; }
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, float val)		{ s.stream() << " " << val; return s; }
 				inline	OSCErrorStream& operator <<(OSCErrorStream& s, double val)		{ s.stream() << float(val); return s; }
 

@@ -49,7 +49,7 @@ OSCStream gEventsStream (&_evtSocket);
 OSCStream::OSCStream(UdpSocket* socket)
 	: fState(kIdle), fPort(1024), fAddress(kLocalhost), fOutStream(fBuffer, kOutBufferSize), fSocket(socket)
 {
-	fSocket->allowBroadcast();
+	fSocket->SetEnableBroadcast(true);
 }
 
 //--------------------------------------------------------------------------
@@ -111,8 +111,8 @@ OSCStream& OSCStream::end()
 #define CATCHOSC	catch (osc::Exception e) { ITLErr<< "error while sending OSC message: " << e.what() <<ITLEndl; }
 
 
-OSCStream& operator <<(OSCStream& s, int val)		{ try { s.stream() << val; } CATCHOSC return s; }
-OSCStream& operator <<(OSCStream& s, long val)		{ try { s.stream() << (int)val; } CATCHOSC return s; }
+OSCStream& operator <<(OSCStream& s, int val)		{ try { s.stream() << osc::int32(val); } CATCHOSC return s; }
+OSCStream& operator <<(OSCStream& s, long val)		{ try { s.stream() << osc::int32(val); } CATCHOSC return s; }
 OSCStream& operator <<(OSCStream& s, float val)		{ try { s.stream() << val; } CATCHOSC return s; }
 OSCStream& operator <<(OSCStream& s, double val)	{ try { s.stream() << float(val); } CATCHOSC return s; }
 
