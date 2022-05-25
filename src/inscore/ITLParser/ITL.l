@@ -212,8 +212,8 @@ EOL		[\x0a\x0d]
  /*	scene relative dimensions */
  /* ----------------------------------------- */
 
-{DIGIT}+"s"[hw]						yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;
-{DIGIT}+"."{DIGIT}+"s"[hw]			yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;
+[+-]*{DIGIT}+"s"[hw]						yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;
+[+-]*{DIGIT}+"."{DIGIT}+"s"[hw]				yyextra->fText = yytext; debug("FILESTRING", yytext); return STRING;
 
  /* ----------------------------------------- */
  /*	javascript section */
