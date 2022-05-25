@@ -2,7 +2,6 @@
 cmake_minimum_required(VERSION 3.6.0 FATAL_ERROR)
 
 get_filename_component(ROOT ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
-set (GUIDOAR 	${ROOT}/modules/guidoar/src)
 set (OSC 		${ROOT}/lib/oscpack)
 
 if (WIN32)
