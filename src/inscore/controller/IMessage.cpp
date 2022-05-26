@@ -90,7 +90,7 @@ IMessage::IMessage(const IMessage& msg): smartable()
 
 //--------------------------------------------------------------------------
 IMessage::IMessage(const std::string& address, const std::string& msg)
-				: fSrcIP(kLocalHost), fDestIP(kLocalHost), fAddress(address)
+				: fSrcIP(kLocalHost), fAddress(address)
 {
 	fArguments.push_back (new IMsgParam<string>(msg));
 	fHasMessage = true;
@@ -98,7 +98,7 @@ IMessage::IMessage(const std::string& address, const std::string& msg)
 
 //--------------------------------------------------------------------------
 IMessage::IMessage(const std::string& address, const argslist& args, const TUrl& url)
-				: fSrcIP(kLocalHost), fDestIP(kLocalHost), fAddress(address), fHasMessage(false), fUrl(url.fHostname.c_str(), url.fPort)
+				: fSrcIP(kLocalHost), fAddress(address), fHasMessage(false), fUrl(url.fHostname.c_str(), url.fPort)
 {
 	fArguments = args;
 	if (fArguments.size()) {

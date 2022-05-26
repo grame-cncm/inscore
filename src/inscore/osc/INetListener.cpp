@@ -75,11 +75,8 @@ void INetListener::stop()
 //--------------------------------------------------------------------------
 void INetListener::ProcessMessage( const osc::ReceivedMessage& m, const IpEndpointName& src )
 {
-    //if (src.address == fMyAddress) return;	// reject messages that come from the local address
-	
 	SIMessage msg = IMessage::create(m.AddressPattern());
 	msg->setSrcIP (src.address);
-	msg->setDestIP (src.destAddress);
 	ReceivedMessageArgumentIterator i = m.ArgumentsBegin();
 	bool first = true;		// used to handle the message string
 	while (i != m.ArgumentsEnd()) {

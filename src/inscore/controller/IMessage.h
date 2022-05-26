@@ -181,7 +181,6 @@ class IMessage : public Message, public libmapping::smartable
 		enum { kLocalHost = 0x7F000001 };
 
 		unsigned long	fSrcIP;			///< the message source IP number
-		unsigned long	fDestIP;		///< the message destination IP number
 		std::string	fAddress;			///< the message osc destination address
 		argslist	fArguments;			///< the message arguments, index 0 is reserved for the message string
 		bool		fHasMessage;		///< indicates when arguments start with a message string
@@ -199,7 +198,7 @@ class IMessage : public Message, public libmapping::smartable
 			/*!
 				\brief an empty message constructor
 			*/
-			 IMessage() : fSrcIP(kLocalHost), fDestIP(kLocalHost), fHasMessage(false)  {}
+			 IMessage() : fSrcIP(kLocalHost), fHasMessage(false)  {}
 			/*!
 				\brief a clone constructor
 			*/
@@ -208,7 +207,7 @@ class IMessage : public Message, public libmapping::smartable
 				\brief a message constructor with an osc address
 				\param address the message destination address
 			*/
-			 IMessage(const std::string& address) : fSrcIP(kLocalHost), fDestIP(kLocalHost), fAddress(address), fHasMessage(false) {}
+			 IMessage(const std::string& address) : fSrcIP(kLocalHost), fAddress(address), fHasMessage(false) {}
 			/*!
 				\brief a message constructor with an osc address and a message string
 				\param address the message destination address
@@ -289,12 +288,6 @@ class IMessage : public Message, public libmapping::smartable
 		\param addr the address
 	*/
 	void				setSrcIP(unsigned long addr)		{ fSrcIP = addr; }
-
-	/*!
-	 * \brief setDestIP set the destination of the message
-	 * \param addr the address
-	 */
-	void				setDestIP(unsigned long addr)		{ fDestIP = addr; }
 
 	/*!
 		\brief sets the message address
@@ -394,8 +387,6 @@ class IMessage : public Message, public libmapping::smartable
 	template <typename T> void setparam(unsigned int i, T val)  { fArguments[index(i)] = new IMsgParam<T>(val); }
 	/// \brief gives the message source IP
 	unsigned long		src() const				{ return fSrcIP; }
-	/// \brief gives the message destination IP
-	unsigned long		dest() const			{ return fDestIP; }
 	/// \brief gives the message parameters count
 	int					size() const			{ int  n = int(fArguments.size()); return fHasMessage ? n -1 : n; }
 	/// \brief gives the message delay
