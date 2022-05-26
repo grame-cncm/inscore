@@ -107,22 +107,27 @@ void Forwarder::forward(const IMessage * imsg)
 //--------------------------------------------------------------------------
 MsgHandler::msgStatus Forwarder::processForwardMsg(const IMessage* msg)
 {
-	// clear the forward list first
-	for (auto endpoint: fForwardList)
-		delete endpoint;
-	fForwardList.clear();
-
 #if HASOSCStream
-	if (msg->size() == 0)					// no other param
+	if (msg->size() == 0) {					// no other param
+		// clear the forward list first
+		for (auto endpoint: fForwardList)
+			delete endpoint;
+		fForwardList.clear();
 		return MsgHandler::kProcessed;		// that's done
-
+	}
     for (int i=0; i<msg->size(); i++) {
         std::string address;
         if (msg->param(i, address)) {
             IMessage::TUrl url;
             if (!url.parse (address)) return MsgHandler::kBadParameters;
             // Transform hostname in Ip in string format
-            url.fHostname = Tools::ip2string(Tools::getIP(url.fHostname));
+            unsigned long ip = Tools::getIP(url.fHostname);
+            bool isbroadcast = (ip & 0xff) == 0xff;
+            if (isbroadcast) {
+				ITLErr << "Broadcast addresses are not supported by 'forward'" << ITLEndl;
+				return MsgHandler::kBadParameters;
+            }
+            url.fHostname = Tools::ip2string(ip);
 			if (!url.fPort) url.fPort = IAppl::kUPDPort;
 			// Add in host list.
 			switch (url.fProtocol) {
