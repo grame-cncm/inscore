@@ -267,6 +267,13 @@ string IAppl::checkRootPath(const std::string& s)
 }
 
 //--------------------------------------------------------------------------
+void IAppl::add (const nodePtr& node)
+{
+	IObject::add (node);
+	checkEvent (kNewElementEvent, libmapping::rational(0,1), node);
+}
+
+//--------------------------------------------------------------------------
 void IAppl::setReceivedOSC(int n)				{ fApplStat->count(n); }
 void IAppl::setRootPath(const std::string& s)	{ IAppl::fRootPath = checkRootPath(s); }
 
@@ -679,6 +686,7 @@ MsgHandler::msgStatus IAppl::cursor(const IMessage* msg)
 bool IAppl::acceptSimpleEvent(EventsAble::eventype t) const
 {
 	if ( string(t) == kErrorEvent) return true;
+	if ( string(t) == kNewElementEvent) return true;
 	return IObject::acceptSimpleEvent(t);
 }
 

@@ -181,6 +181,7 @@ class IAppl : public IObject, public TILoader
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
 		virtual void		cleanup ();
+		virtual void 		add (const nodePtr& node);
 
 		/*!
 			\brief creates the object virtual nodes
