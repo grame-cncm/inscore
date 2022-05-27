@@ -14,12 +14,13 @@ It has been supported by the ANR
 
 ----------------------------------------------------
 Version 1.33
-- add 'errorAddress' message at application level fir user setting of the osc address for error messages
+- add 'errorAddress' message at application level for user setting of the OSC address of error messages
 - 'forward' message don't support broadcast addresses 
 - 'forward' message behavior change: append addresses to destination list  
 - extend 'newElement' event to application level (/ITL)
 - add 'date%a' query to get the absolute date in seconds (assumes the tempo is 60 bpm)
 - supports dynamic scene relative dimensions and positions
+- fix crash bug with OSC bundles 
 - web version: 
 	- fix concurrent 'faustw' objects creation
 
