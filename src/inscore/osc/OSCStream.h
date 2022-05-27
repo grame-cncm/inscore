@@ -43,8 +43,9 @@ typedef struct OSCStart {
 	OSCStart(const char* a) : fAddress(a) {}
 } OSCStart;
 
+extern const char* getErrOSCAddress();
 typedef struct OSCErr : public OSCStart { 
-	OSCErr() : OSCStart("error:") {}
+	OSCErr() : OSCStart(getErrOSCAddress()) {}
 } OSCErr;
 
 typedef struct OSCWarn : public OSCStart { 
@@ -142,6 +143,7 @@ class OSCErrorStream : public OSCStream
 {
 	std::stringstream	fSStream;
 	std::string			fAddress;
+	static std::string	fOSCAddress;
 	IApplLog*			fLogWindow;
 	// Streamstring to concat error. Introduced for scripts posted from the web.
 	std::stringstream	fSStreamConcat;
@@ -161,7 +163,8 @@ class OSCErrorStream : public OSCStream
 		 * If false new errors are not added.
 		 */
 		void activeConcatError(bool activate);
-
+		void setOSCAddress(const std::string& address)			{ fOSCAddress = address; }
+		static const char* getErrOSCAddress() 					{ return fOSCAddress.c_str(); }
 		/*!
 		 * \brief streamConcat get the concat streamstring
 		 * \return
@@ -194,8 +197,6 @@ template <typename T>	OSCErrorStream& operator <<(OSCErrorStream& s, const std::
 							for (unsigned int i =0; i < val.size(); i++) s << val[i];
 							return s; 
 						}
-
-
 
 extern OSCStream*		_oscout;		// OSC standard output stream
 extern OSCErrorStream*	_oscerr;		// OSC standard input stream

@@ -166,8 +166,9 @@ OSCStream& operator <<(OSCStream& s, const OSCWarn& val)	{ return s.start(val.fA
 OSCStream& operator <<(OSCStream& s, const OSCStart& val)	{ return s.start(val.fAddress); }
 OSCStream& operator <<(OSCStream& s, const OSCEnd )			{ return s.end(); }
 
+const char* getErrOSCAddress() { return OSCErrorStream::getErrOSCAddress(); }
 
-
+std::string OSCErrorStream::fOSCAddress("error:");
 //--------------------------------------------------------------------------
 OSCErrorStream&	OSCErrorStream::end()
 {
@@ -178,6 +179,7 @@ OSCErrorStream&	OSCErrorStream::end()
 	if(fConcat) {
 		fSStreamConcat << fSStream.str() << ";";
 	}
+//	if (!fOSCAddress.empty()) OSCStream::stream() << fOSCAddress.c_str();
 	OSCStream::stream() << fSStream.str().c_str(); OSCStream::end();
 	return *this;
 }

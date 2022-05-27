@@ -99,6 +99,7 @@ const char* kedit_SetMethod			= "edit";			// Set
 const char* keffect_GetSetMethod	= "effect";			// Get Set
 const char* kend_GetSetMethod		= "end";			// Get Set
 const char* kerror_SetMethod		= "error";			// Set
+const char* kerrorAddress_GetSetMethod	= "errorAddress";	// Get Set
 const char* kerrport_GetSetMethod	= "errport";		// Get Set
 const char* kexpression_GetMethod	= "expr";			// Get
 const char* keval_SetMethod			= "eval";			// Set

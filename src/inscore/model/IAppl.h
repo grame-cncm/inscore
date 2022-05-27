@@ -232,6 +232,7 @@ class IAppl : public IObject, public TILoader
 		void		setUDPInPortHandler(int p)		{ IAppl::setUDPInPort(p); }
 		void		setUDPOutPortHandler(int p)		{ IAppl::setUDPOutPort(p); }
 		void		setUDPErrPortHandler(int p)		{ IAppl::setUDPErrPort(p); }
+		void 		setErrOSCAddress (const std::string& address);
 		void		setRate(int rate)				{ fRate = rate; }
 		void		setRealRate(double rate)		{ fRealRate = rate; }
 		void		setReceivedOSC(int n);

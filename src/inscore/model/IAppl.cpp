@@ -209,6 +209,7 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fMsgHandlerMap[kcompatibility_GetSetMethod]		= TSetMethodMsgHandler<IAppl,float>::create(this, &IAppl::setCompatibilityVersion);
 	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPortHandler);
 	fMsgHandlerMap[koutport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPOutPortHandler);
+	fMsgHandlerMap[kerrorAddress_GetSetMethod]	= TSetMethodMsgHandler<IAppl,string>::create(this, &IAppl::setErrOSCAddress);
 	fMsgHandlerMap[kerrport_GetSetMethod]		= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPErrPortHandler);
 	fMsgHandlerMap[kdefaultShow_GetSetMethod]	= TSetMethodMsgHandler<IAppl,bool>::create(this, &IAppl::setDefaultShow);
 	fMsgHandlerMap[kparse_GetSetMethod]			= TSetMethodMsgHandler<IAppl,string>::create(this, &IAppl::setParseVersion);
@@ -219,6 +220,7 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fGetMsgHandlerMap[kport_GetSetMethod]		= TGetParamMsgHandler<int>::create(fUDP.fInPort);
 	fGetMsgHandlerMap[koutport_GetSetMethod]	= TGetParamMsgHandler<int>::create(fUDP.fOutPort);
 	fGetMsgHandlerMap[kerrport_GetSetMethod]	= TGetParamMsgHandler<int>::create(fUDP.fErrPort);
+	fGetMsgHandlerMap[kerrorAddress_GetSetMethod]	= TGetParamMsgHandler<string>::create(fUDP.fErrOSCAddress);
 	fGetMsgHandlerMap[kdefaultShow_GetSetMethod]= TGetParamMethodHandler<IAppl, bool (IAppl::*)() const>::create(this, &IAppl::defaultShow);
 	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fCompatibilityVersionNum);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fRate);
@@ -276,6 +278,13 @@ void IAppl::add (const nodePtr& node)
 //--------------------------------------------------------------------------
 void IAppl::setReceivedOSC(int n)				{ fApplStat->count(n); }
 void IAppl::setRootPath(const std::string& s)	{ IAppl::fRootPath = checkRootPath(s); }
+
+//--------------------------------------------------------------------------
+void IAppl::setErrOSCAddress (const std::string& address)
+{
+	fUDP.fErrOSCAddress = address;
+	oscerr.setOSCAddress(address);
+}
 
 //--------------------------------------------------------------------------
 int IAppl::getParseVersion ()

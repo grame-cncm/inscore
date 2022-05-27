@@ -37,6 +37,7 @@ typedef struct udpinfo
 	int fErrPort;
 	std::string fOutDstAddress;
 	std::string fErrDstAddress;
+	std::string fErrOSCAddress;
 	
 	udpinfo(int port) :
 		fInPort(port), fOutPort(port+1), fErrPort(port+2), 

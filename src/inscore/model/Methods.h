@@ -101,6 +101,7 @@ extern const char* kedit_SetMethod;
 extern const char* keffect_GetSetMethod;
 extern const char* kend_GetSetMethod;
 extern const char* kerror_SetMethod;
+extern const char* kerrorAddress_GetSetMethod;
 extern const char* kerrport_GetSetMethod;
 extern const char* keval_SetMethod;
 extern const char* kevent_SetMethod;
