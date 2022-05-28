@@ -283,7 +283,9 @@ void IAppl::setRootPath(const std::string& s)	{ IAppl::fRootPath = checkRootPath
 void IAppl::setErrOSCAddress (const std::string& address)
 {
 	fUDP.fErrOSCAddress = address;
+#if HASOSCStream
 	oscerr.setOSCAddress(address);
+#endif
 }
 
 //--------------------------------------------------------------------------
