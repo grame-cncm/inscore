@@ -13,6 +13,11 @@ It has been supported by the ANR
 
 
 ----------------------------------------------------
+Version 1.34
+- new 'scount' query at application level : gives the scenes count
+- new 'scenes' message at application level
+
+----------------------------------------------------
 Version 1.33
 - add 'errorAddress' message at application level for user setting of the OSC address of error messages
 - 'forward' message don't support broadcast addresses 
