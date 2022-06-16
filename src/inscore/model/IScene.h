@@ -160,6 +160,7 @@ class IScene : public IRectShape, public TILoader
 
 		float getSceneWidth() const;
 		float getSceneHeight() const;
+		void  foreground ();
 
 	protected:
 				 IScene(const std::string& name, IObject * parent);
@@ -175,7 +176,6 @@ class IScene : public IRectShape, public TILoader
 		MsgHandler::msgStatus setRootPath(const IMessage* msg);
 		MsgHandler::msgStatus preProcessMsg (const IMessage* msg);
 		MsgHandler::msgStatus loadMsg(const IMessage* msg);
-		void		foreground ();
 		void		newScene ();
 		std::string address2scene (const char* addr) const;
 		const std::string& parseVersion () const;
