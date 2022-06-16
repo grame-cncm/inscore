@@ -182,6 +182,7 @@ const char* krun_SetMethod			= "run";			// Set
 const char* ksaturation_GetSetMethod= "saturation";		// Get Set
 const char* ksave_SetMethod			= "save";			// Set
 const char* kscale_GetSetMethod		= "scale";			// Get Set
+const char* kscount_GetMethod		= "scount";			// Get
 const char* kset_SetMethod			= "set";			// Set
 const char* kshear_GetSetMethod		= "shear";			// Get Set
 const char* kshow_GetSetMethod		= "show";			// Get Set
@@ -225,8 +226,9 @@ const char* kyborder_GetSetMethod	= "yborder";		// Get Set
 const char* kyorigin_GetSetMethod	= "yorigin";		// Get Set
 const char* kz_GetSetMethod			= "z";				// Get Set
 
-const char* ksceneHeight_GetMethod   = "sheight";		// Get Set
-const char* ksceneWidth_GetMethod    = "swidth";		// Get Set
+const char* ksceneHeight_GetMethod  = "sheight";		// Get
+const char* ksceneWidth_GetMethod   = "swidth";			// Get
+const char* kscenes_GetSetMethod    = "scenes";			// Get Set
 
 // gesture follower methods
 const char* klearn_SetMethod				= "learn";					// Set

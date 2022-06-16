@@ -177,6 +177,8 @@ class IAppl : public IObject, public TILoader
 		const std::vector<IMessage::TUrl> getForwardList() const { return fForwarder.getForwardList(); }
 		const std::vector<IMessage::TUrl> getCnxList() const 	 { return fConnecter.getCnxList(); }
 		SIMessageList getClients() const						 { return fForwarder.getClients(); }
+		std::vector<std::string> getScenes() const;
+		IScene* 			getScene( std::string name ) const;
 		virtual void		forwardMsg (const IMessage* msg)	 { fForwarder.forward(msg); }
 		virtual void		accept (Updater*);
 		virtual void		print(std::ostream& out) const;
@@ -271,6 +273,7 @@ class IAppl : public IObject, public TILoader
 
 		SIMessage	hello() const;
 		void		helloMsg();
+		int			scenesCount() const;
 //		void		activate() const;
 		std::string	guidoversion() const;
 		std::string	musicxmlversion() const;
@@ -307,6 +310,9 @@ class IAppl : public IObject, public TILoader
 
 		/// \brief application \c 'ticks' message handler.
 		virtual MsgHandler::msgStatus setTicks (const IMessage* msg);
+
+		/// \brief application \c 'scenes' message handler.
+		virtual MsgHandler::msgStatus scenesMsg (const IMessage* msg);
 
 //		/// \brief application \c 'clear' message handler.
 //		virtual MsgHandler::msgStatus urlCache (const IMessage* msg);

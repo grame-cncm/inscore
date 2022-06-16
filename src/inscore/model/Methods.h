@@ -183,6 +183,7 @@ extern const char* krun_SetMethod;
 extern const char* ksaturation_GetSetMethod;
 extern const char* ksave_SetMethod;
 extern const char* kscale_GetSetMethod;
+extern const char* kscount_GetMethod;
 extern const char* kset_SetMethod;
 extern const char* kshear_GetSetMethod;
 extern const char* kshow_GetSetMethod;
@@ -253,6 +254,7 @@ extern const char* kverbose_GetSetMethod;
 
 extern const char* ksceneHeight_GetMethod;
 extern const char* ksceneWidth_GetMethod;
+extern const char* kscenes_GetSetMethod;
 
 } //namespace
 

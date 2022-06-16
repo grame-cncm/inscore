@@ -204,7 +204,7 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fMsgHandlerMap[ktime_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTime);
 	fMsgHandlerMap[kticks_GetSetMethod]			= TMethodMsgHandler<IAppl>::create(this, &IAppl::setTicks);
 	fMsgHandlerMap[krootPath_GetSetMethod]		= TSetMethodMsgHandler<IAppl, string>::create(this, &IAppl::setRootPath);
-//	fMsgHandlerMap["urlCache"]					= TMethodMsgHandler<IAppl>::create(this, &IAppl::urlCache);
+	fMsgHandlerMap[kscenes_GetSetMethod]		= TMethodMsgHandler<IAppl>::create(this, &IAppl::scenesMsg);
 
 	fMsgHandlerMap[kcompatibility_GetSetMethod]		= TSetMethodMsgHandler<IAppl,float>::create(this, &IAppl::setCompatibilityVersion);
 	fMsgHandlerMap[kport_GetSetMethod]			= TSetMethodMsgHandler<IAppl,int>::create(this, &IAppl::setUDPInPortHandler);
@@ -225,13 +225,15 @@ IAppl::IAppl(INScoreApplicationGlue* appl, bool offscreen)
 	fGetMsgHandlerMap[kcompatibility_GetSetMethod]	= TGetParamMsgHandler<float>::create(fCompatibilityVersionNum);
 	fGetMsgHandlerMap[krate_GetSetMethod]		= TGetParamMsgHandler<int>::create(fRate);
 	fGetMsgHandlerMap[kforward_GetSetMethod]	= TGetParamMethodHandler<IAppl, const vector<IMessage::TUrl> (IAppl::*)() const>::create(this, &IAppl::getForwardList);
-	fAltGetMsgHandlerMap[ktime_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::mstime);
-	fAltGetMsgHandlerMap[kticks_GetSetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
+	fAltGetMsgHandlerMap[ktime_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::mstime);
+	fAltGetMsgHandlerMap[kticks_GetSetMethod]	= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::ticks);
+	fAltGetMsgHandlerMap[kscount_GetMethod]		= TGetParamMethodHandler<IAppl, int (IAppl::*)() const>::create(this, &IAppl::scenesCount);
 
 	fAltGetMsgHandlerMap[kIP_GetMethod]				= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::getIP);
 	fAltGetMsgHandlerMap[kversion_GetMethod]		= TGetParamMsgHandler<string>::create(fVersion);
 	fAltGetMsgHandlerMap[kguidoVersion_GetMethod]	= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::guidoversion);
 	fAltGetMsgHandlerMap[kmusicxmlVersion_GetMethod]= TGetParamMethodHandler<IAppl, string (IAppl::*)() const>::create(this, &IAppl::musicxmlversion);
+	fAltGetMsgHandlerMap[kscenes_GetSetMethod]		= TGetParamMethodHandler<IAppl, vector<string> (IAppl::*)() const>::create(this, &IAppl::getScenes);
 
 	fGetMultiMsgHandlerMap[kclients_GeMethod]	= TGetParamMultiMethodHandler<IAppl, SIMessageList (IAppl::*)() const>::create(this, &IAppl::getClients);
 
@@ -266,6 +268,37 @@ string IAppl::checkRootPath(const std::string& s)
 	if (end == '\\')   root[root.length()-1] = '/';
 	else if (end != '/') root += '/';
 	return root;
+}
+
+//--------------------------------------------------------------------------
+vector<string> IAppl::getScenes() const
+{
+	vector<string> out;
+	for (auto obj: elements()) {
+		const IScene * scene = dynamic_cast<const IScene*>((const IObject*)obj);
+		if (scene) out.push_back(scene->name());
+	}
+	return out;
+}
+
+//--------------------------------------------------------------------------
+IScene* IAppl::getScene( std::string name ) const
+{
+	for (auto obj: elements()) {
+		IScene * scene = dynamic_cast<IScene*>((IObject*)obj);
+		if (scene && (scene->name() == name)) return scene;
+	}
+	return nullptr;
+}
+
+//--------------------------------------------------------------------------
+int IAppl::scenesCount() const {
+	int n = 0;
+	for (auto obj: elements()) {
+		if (dynamic_cast<const IScene*>((const IObject*)obj))
+			n++;
+	}
+	return n;
 }
 
 //--------------------------------------------------------------------------
@@ -604,6 +637,25 @@ MsgHandler::msgStatus IAppl::forward(const IMessage* msg)
 MsgHandler::msgStatus IAppl::connect(const IMessage* msg)
 {
 	return fConnecter.processConnectMsg(msg);
+}
+
+//--------------------------------------------------------------------------
+MsgHandler::msgStatus IAppl::scenesMsg (const IMessage* msg)
+{
+	int n = msg->size();
+	for (int i=0; i<n; i++) {
+		string name;
+		if (!msg->param(i, name)) return MsgHandler::kBadParameters;
+		IScene* scene = getScene(name);
+		if (scene) scene->foreground();
+		else {
+			SIObject obj = IObjectFactory::create (name, IScene::kSceneType, this);
+			add (obj);
+			IScene* scene = static_cast<IScene*>((IObject*)obj);
+			scene->foreground();
+		}
+	}
+	return MsgHandler::kProcessed;
 }
 
 //--------------------------------------------------------------------------
