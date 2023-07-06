@@ -117,7 +117,7 @@ lib:
 #===============================================================
 # packaging
 #===============================================================
-npm: $(NPMDIR)/$(NPMLIB) $(NPMDEV)/src
+npm: $(NPMDIR)/$(NPMLIB) $(NPMDEV)/src $(NPMDIR)/readme.md
 	cp src/lib/inscore.d.ts	$(NPMDIR)
 	cp lib/libINScore.js lib/libINScore.wasm $(NPMDIR)
 	cp $(LIB) $(GLUE) $(NPMDEV)
@@ -131,6 +131,11 @@ $(NPMDEV)/src:
 $(NPMDIR)/$(NPMLIB): $(GLUESRC) $(LIBSRC)
 	tsc -p npmconfig.json
 	mv $(NPMLIB) $(NPMDIR)
+
+$(NPMDIR)/readme.md : IVERSION := $(shell grep '"inscore-version"' $(NPMDIR)/package.json | sed -e 's/[^0-9.]*//g')
+$(NPMDIR)/readme.md : $(NPMDIR)/package.json
+	sed -e 's/[1-9]\.[0-9]\.[0-9]/$(IVERSION)/' $@ > tmpreadme
+	mv tmpreadme $@
 
 publish: VERSION := $(shell grep '"version"' $(NPMDIR)/package.json | sed -e 's/[^0-9.]*//g')
 publish: IVERSION := $(shell grep '"inscore-version"' $(NPMDIR)/package.json | sed -e 's/[^0-9.]*//g')

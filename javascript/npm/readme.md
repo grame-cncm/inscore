@@ -2,7 +2,7 @@
 
 
 The INScoreJS library allows to embed the [INScore](https://inscore.grame.fr) engine services in a web page and to design augmented, dynamic and interactive musical scores that can be published on the Internet.  
-INScore engine version is **1.3.2**
+INScore engine version is **1.3.3**
 
 ## Content of the package
 
