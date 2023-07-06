@@ -1,6 +1,6 @@
 /ITL/scene/* del;
 
-/ITL/scene/gmnscore set gmnf "http://inscore.sf.net/scripts/rsrc/score1.gmn";
+/ITL/scene/gmnscore set gmnf "http://inscore.grame.fr/scripts/rsrc/score1.gmn";
 /ITL/scene/gmnscore scale 0.32;
 /ITL/scene/gmnscore y -0.45;
 
