@@ -54,6 +54,16 @@
 #include "INScoreAbout.h"
 #include "QGuidoPainter.h"
 
+#ifdef ANDROID
+#if 0
+	#include <android/log.h>
+	#define ALOG(...) __android_log_print(ANDROID_LOG_ERROR, "INSCORE", __VA_ARGS__);
+#else
+	#define ALOG(...)
+#endif
+#else
+#define ALOG(...)
+#endif
 
 using namespace inscore;
 using namespace std;
@@ -334,9 +344,12 @@ void INScoreAppl::start (int udpinport, int udpoutport)
 	dir.cdUp();
 #endif
 
+ALOG("INScoreAppl::start");
     fGlue = INScore::start (udpinport, udpoutport, udpoutport+1, this);
 	fRate = fGlue->getRate();
 	fTimerId = startTimer (fRate, Qt::PreciseTimer);
 	fSorterTask.start(fGlue);
     started();
+ALOG("... started");
+
 }
