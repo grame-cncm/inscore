@@ -61,7 +61,11 @@
 # include <QGLWidget>
 # endif
 #else
+#if ANDROID
+# include <QScreen>
+#else
 # include <QOpenGLWidget>
+#endif
 #endif
 
 using namespace std;
