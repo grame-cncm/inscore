@@ -23,7 +23,7 @@ option ( WASM 		"Generates an emcc based Makefile" off )
 option ( ANDROID 	"Generates an android Makefile" off )
 option ( QTVIEW 	"Includes Qt view" on )
 option ( MODEL 		"Generates the core model library" off )
-option ( QT6 		"Use Qt version 6" on )
+option ( QT6 		"Use Qt version 6" off )
 
 if (NOT WASM)
 set (CMAKE_BUILD_RPATH ../lib)
