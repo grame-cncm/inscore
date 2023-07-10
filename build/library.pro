@@ -186,7 +186,7 @@ ios {
     CONFIG += arm64 armv8
     CONFIG += staticlib
     LIBS += $$PWD/lib/libGUIDOEngine.a
-	QT += quick quickwidgets # openglwidgets
+	QT += quick quickwidgets openglwidgets
 }
 
 ############################## 
@@ -235,7 +235,7 @@ android {
     HEADERS  +=  $$files($$SRC/mobile/*.h)
     INCLUDEPATH  +=  $$files($$SRC/mobile)
     DEFINES += ANDROID __MOBILE__ OSC_HOST_LITTLE_ENDIAN
-	QT += quick quickwidgets  androidextras # openglwidgets
+	QT += quick quickwidgets # androidextras # openglwidgets
 }
 
 ##############################
