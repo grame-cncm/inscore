@@ -6,7 +6,7 @@ VPACK := INScore-$(VERSION)-$(ID).dmg
 
 push:
 	git config --global user.name 'INScore deployment'
-	git config --global user.email 'fober@grame.fr'
+	git config --global user.email 'dfober@gmail.com'
 	git checkout -t origin/$(BRANCH)
 	mv $(PACK) $(VPACK)
 	git lfs track "*.dmg"
