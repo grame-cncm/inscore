@@ -215,7 +215,7 @@ sign:
 # building INScore for Android
 #===============================================================
 SIGN=--sign ../../rsrc/inscore.keystore grame-inscore  --storepass grameinscore
-ANDROID_API ?= 29
+ANDROID_API ?= 31
 ANDROID_ARCH ?= armeabi-v7a
 #ANDROIDDEPLOYQT ?= /Users/Shared/Qt6/6.2.0/macos/bin/androiddeployqt
 ANDROIDDEPLOYQT ?= androiddeployqt
