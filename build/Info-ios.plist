@@ -25,14 +25,12 @@
 			<string>INScore File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
-			<key>LSIsAppleDefaultForType</key>
-			<true/>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
+			<key>LSIsAppleDefaultForType</key>
+			<true/>
 		</dict>
 	</array>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
 	<key>CFBundleExecutable</key>
 	<string>INScoreViewer</string>
 	<key>CFBundleGetInfoString</key>
@@ -80,7 +78,7 @@
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>fr.grame.iGrame.INScore</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
@@ -96,6 +94,8 @@
 	<key>CFBundleVersion</key>
 	<string>1.34</string>
 	<key>CSResourcesFileMapped</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>No access to the camera.</string>
